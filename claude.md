@@ -18,12 +18,13 @@ This file tracks all updates, changes, and modifications made to the Opulanz Ban
 
 ### Session 1: October 21, 2025
 
-#### Time: 12:00 PM - 1:00 PM
+#### Time: 12:00 PM - 2:00 PM
 
 **User Requests:**
 1. Reorganize project structure by creating folders for each button/feature
 2. Run the development server
 3. Change header text color from white to black for visibility
+4. Add Opulanz logo image next to the "OPULANZ" text in header
 
 ---
 
@@ -177,6 +178,64 @@ className="h-4 w-4 text-brand-grayMed transition-colors"
 
 ---
 
+### 3. Logo Image Added to Header (Oct 21, 2025)
+
+**Objective:** Add Opulanz logo image next to "OPULANZ" text in the header for better branding.
+
+**File Modified:** `components/header.tsx` (also copied to `shared/components/header.tsx`)
+
+**Changes Made:**
+
+#### Import Added
+```tsx
+// Added Next.js Image component
+import Image from "next/image";
+```
+
+#### Logo Section Updated
+```tsx
+// BEFORE
+<Link
+  href={`/${locale}`}
+  className="text-2xl font-bold uppercase tracking-tight text-brand-dark transition-colors hover:text-brand-gold"
+>
+  OPULANZ
+</Link>
+
+// AFTER
+<Link
+  href={`/${locale}`}
+  className="flex items-center gap-3 transition-opacity hover:opacity-80"
+>
+  <Image
+    src="/images/opulanz-logo.png"
+    alt="Opulanz Logo"
+    width={40}
+    height={40}
+    className="h-10 w-auto"
+  />
+  <span className="text-2xl font-bold uppercase tracking-tight text-brand-dark">
+    OPULANZ
+  </span>
+</Link>
+```
+
+**Impact:**
+- ✅ Logo image now displays next to company name
+- ✅ Better brand visibility and recognition
+- ✅ Professional appearance in header
+- ✅ Smooth hover effect on entire logo area
+- ✅ Responsive sizing (h-10, auto width)
+
+**Files Modified:**
+- `components/header.tsx`
+- `shared/components/header.tsx`
+
+**Files Added:**
+- `public/images/opulanz-logo.png` - Brand logo with gold bars and text
+
+---
+
 ## File Changes
 
 ### Files Created
@@ -198,6 +257,9 @@ className="h-4 w-4 text-brand-grayMed transition-colors"
 14. `features/investment-advisory/README.md`
 15. `features/mortgage/README.md`
 16. `claude.md` - This file
+
+#### Image Assets
+1. `public/images/opulanz-logo.png` - Brand logo (gold bars with OPULANZ text)
 
 #### Folders Created
 1. `features/` - Main features directory
@@ -225,14 +287,19 @@ className="h-4 w-4 text-brand-grayMed transition-colors"
    - Updated project structure diagram
    - Added links to ORGANIZATION_SUMMARY.md, PROJECT_STRUCTURE.md, QUICK_REFERENCE.md
 
-2. **components/header.tsx** - Changed text colors from white to black
+2. **components/header.tsx** - Changed text colors from white to black + Added logo
    - Logo color: `text-white` → `text-brand-dark`
    - Nav links: Conditional white → Always `text-brand-dark` (except active = gold)
    - Language selector: Conditional → Always `text-brand-dark`
    - Globe icon: Conditional → Always `text-brand-grayMed`
    - Mobile menu icons: Conditional → Always `text-brand-dark`
+   - Added Image import from next/image
+   - Added logo image next to OPULANZ text
+   - Changed hover effect to opacity transition
 
 3. **shared/components/header.tsx** - Synced with updated header
+
+4. **claude.md** - Updated to track logo addition changes
 
 ### Files Copied
 - `components/hero.tsx` → `features/home/hero.tsx`
@@ -511,10 +578,14 @@ export function ComponentName({ props }: ComponentProps) {
 - 13 documentation files for better organization
 - 9 feature folders with README documentation
 - Shared resources folder for reusable components
+- Opulanz logo image in header (`public/images/opulanz-logo.png`)
+- Logo display next to "OPULANZ" text in header
 
 **Changed:**
 - Header text color from white to black for visibility
 - Updated README.md with new structure information
+- Header hover effect to opacity-based transition
+- Logo area now includes both image and text
 
 **Deprecated:**
 - Original `components/` folder (preserved for backward compatibility)
@@ -549,7 +620,7 @@ export function ComponentName({ props }: ComponentProps) {
 
 ---
 
-**Last Updated:** October 21, 2025, 1:00 PM
+**Last Updated:** October 21, 2025, 2:00 PM
 **Session:** 1
-**Total Changes:** 19 files created, 3 files modified
+**Total Changes:** 17 files created (16 docs + 1 image), 4 files modified
 **Status:** ✅ All changes successfully applied and tested

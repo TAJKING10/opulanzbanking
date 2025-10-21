@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -45,9 +46,18 @@ export function Header({ locale }: HeaderProps) {
         {/* Logo */}
         <Link
           href={`/${locale}`}
-          className="text-2xl font-bold uppercase tracking-tight text-brand-dark transition-colors hover:text-brand-gold"
+          className="flex items-center gap-3 transition-opacity hover:opacity-80"
         >
-          OPULANZ
+          <Image
+            src="/images/opulanz-logo.png"
+            alt="Opulanz Logo"
+            width={40}
+            height={40}
+            className="h-10 w-auto"
+          />
+          <span className="text-2xl font-bold uppercase tracking-tight text-brand-dark">
+            OPULANZ
+          </span>
         </Link>
 
         {/* Desktop Navigation */}

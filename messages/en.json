@@ -1,0 +1,141 @@
+{
+  "common": {
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next",
+    "save": "Save",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "required": "Required"
+  },
+  "nav": {
+    "openAccount": "Open Account",
+    "companyFormation": "Company Formation",
+    "services": "Services",
+    "support": "Support"
+  },
+  "hero": {
+    "home": {
+      "title": "Professional Banking for Modern Business",
+      "subtitle": "Trusted digital banking, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg.",
+      "primaryCta": "Open Account",
+      "secondaryCta": "Learn More"
+    }
+  },
+  "warmReferral": {
+    "title": "Find the Right Banking Partner",
+    "subtitle": "Answer a few questions and we'll connect you with the best banking solution for your needs.",
+    "step1Title": "Your Information",
+    "step2Title": "Business Details",
+    "step3Title": "Partner Match",
+    "email": "Email Address",
+    "clientType": "Account Type",
+    "individual": "Individual",
+    "company": "Company",
+    "country": "Country",
+    "france": "France",
+    "luxembourg": "Luxembourg",
+    "legalForm": "Legal Form",
+    "sarl": "SARL",
+    "sas": "SAS",
+    "sa": "SA",
+    "other": "Other",
+    "expectedVolume": "Expected Monthly Volume",
+    "handoffTitle": "Your Recommended Partner",
+    "handoffDescription": "Based on your profile, we recommend opening your account with {partner}. Opulanz will remain your point of contact throughout the process.",
+    "proceedToPartner": "Proceed to {partner}",
+    "thankYouTitle": "Thank You!",
+    "thankYouDescription": "You'll receive a confirmation email shortly. Need help? Book a 15-minute callback with our team.",
+    "bookCallback": "Book Callback",
+    "consent": {
+      "dataSharing": "I consent to Opulanz sharing my information with banking partners",
+      "terms": "I agree to Opulanz",
+      "termsLink": "Terms & Conditions",
+      "privacy": "Privacy Policy",
+      "partnerTerms": "I understand the account will be opened by the partner bank"
+    }
+  },
+  "whitelabel": {
+    "title": "Open Your Account",
+    "choiceTitle": "Choose Account Type",
+    "individual": "Individual Account",
+    "company": "Company Account",
+    "needCompany": "Need to form a company first?",
+    "formCompany": "Company Formation",
+    "kycTitle": "Identity Verification",
+    "kybTitle": "Business Verification",
+    "uploadId": "Upload ID Document",
+    "uploadSelfie": "Upload Selfie",
+    "uploadPoa": "Proof of Address",
+    "uploadStatutes": "Company Statutes",
+    "uploadRegister": "Company Register Extract",
+    "uploadUbo": "UBO Declaration",
+    "pepDeclaration": "PEP/Sanctions Declaration",
+    "activityCountries": "Countries of Activity",
+    "monthlyVolume": "Expected Monthly Volume",
+    "submitApplication": "Submit Application",
+    "applicationSubmitted": "Application Submitted",
+    "decisionPending": "Your application is under review. You'll receive a decision within 2-3 business days.",
+    "approved": "Account Approved",
+    "approvedMessage": "Congratulations! Your account has been approved.",
+    "yourIban": "Your IBAN",
+    "nextSteps": "Next Steps"
+  },
+  "companyFormation": {
+    "title": "Company Formation in Luxembourg",
+    "selectForm": "Select Company Form",
+    "sarl": "SARL - Private Limited Company",
+    "sarls": "SARL-S - Simplified Private Limited Company",
+    "sa": "SA - Public Limited Company",
+    "scsp": "SCSp - Special Limited Partnership",
+    "soleProprietor": "Sole Proprietor",
+    "wizardTitle": "Company Formation Wizard",
+    "companyDetails": "Company Details",
+    "shareholders": "Shareholders",
+    "capitalDeposit": "Capital Deposit",
+    "payment": "Payment",
+    "confirmation": "Confirmation",
+    "companyName": "Company Name",
+    "businessActivity": "Business Activity",
+    "shareCapital": "Share Capital",
+    "addShareholder": "Add Shareholder",
+    "depositCapital": "Deposit share capital with partner bank",
+    "notaryCertificate": "Notary will issue incorporation certificate",
+    "rcsRegistration": "Registration with Luxembourg RCS",
+    "totalFees": "Total Formation Fees",
+    "proceedToPayment": "Proceed to Payment",
+    "saveProgress": "Save & Resume Later"
+  },
+  "services": {
+    "accounting": {
+      "title": "Accounting & Invoicing",
+      "description": "Professional accounting services powered by Horus and FALCO"
+    },
+    "tax": {
+      "title": "Tax Advisory",
+      "description": "Expert tax consultation for cross-border businesses"
+    },
+    "investment": {
+      "title": "Investment Advisory",
+      "description": "MiFID-compliant investment advice and portfolio management"
+    },
+    "lifeInsurance": {
+      "title": "Life Insurance",
+      "description": "Luxembourg life insurance solutions through Utmost"
+    },
+    "mortgage": {
+      "title": "Mortgage Services",
+      "description": "Home financing solutions in Luxembourg"
+    }
+  },
+  "legal": {
+    "regulated": "Regulated by CSSF (LU) | ACPR & AMF (FR)",
+    "disclaimer": "Opulanz is a digital banking platform. Banking services provided by licensed partners.",
+    "mifid": "Investment services subject to MiFID II regulations",
+    "idd": "Insurance distribution subject to IDD requirements"
+  }
+}

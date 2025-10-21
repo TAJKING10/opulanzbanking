@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Opulanz Brand Colors */
+    --gold: #b59354;
+    --gold-dark: #886844;
+    --gold-light: #dac5a4;
+    --dark: #252623;
+    --off-white: #f6f8f8;
+    --gray-light: #c2c9cd;
+    --gray-med: #949ea3;
+    --teal: #629daf;
+    --beige: #c0aa9a;
+
+    /* Semantic Tokens (shadcn-compatible) */
+    --background: 0 0% 97%;
+    --foreground: 80 10% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 80 10% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 80 10% 15%;
+    --primary: 36 35% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 35 25% 41%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 200 15% 79%;
+    --muted-foreground: 200 10% 58%;
+    --accent: 36 35% 52%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 200 15% 79%;
+    --input: 200 15% 79%;
+    --ring: 36 35% 52%;
+    --radius: 1rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-brand-off text-brand-dark font-sans;
+  }
+}
+
+@layer components {
+  /* Hero Gradient */
+  .hero-gradient {
+    background: linear-gradient(135deg, #252623 0%, #3d3428 50%, #886844 100%);
+  }
+
+  /* Gold Underline */
+  .gold-underline::after {
+    content: '';
+    display: block;
+    width: 64px;
+    height: 5px;
+    background-color: var(--gold);
+    margin-top: 0.75rem;
+  }
+
+  /* Card Hover Effect */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-elevated hover:-translate-y-1;
+  }
+
+  /* Focus Styles */
+  .focus-gold:focus-visible {
+    @apply outline-none ring-2 ring-brand-gold ring-offset-2;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

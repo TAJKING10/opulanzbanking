@@ -45,10 +45,7 @@ export function Header({ locale }: HeaderProps) {
         {/* Logo */}
         <Link
           href={`/${locale}`}
-          className={cn(
-            "text-2xl font-bold uppercase tracking-tight transition-colors hover:text-brand-gold",
-            isScrolled ? "text-brand-dark" : "text-white"
-          )}
+          className="text-2xl font-bold uppercase tracking-tight text-brand-dark transition-colors hover:text-brand-gold"
         >
           OPULANZ
         </Link>
@@ -63,8 +60,7 @@ export function Header({ locale }: HeaderProps) {
                 href={`/${locale}${item.href}`}
                 className={cn(
                   "text-sm font-semibold transition-colors hover:text-brand-gold",
-                  isActive && "text-brand-gold",
-                  !isActive && (isScrolled ? "text-brand-dark" : "text-white")
+                  isActive ? "text-brand-gold" : "text-brand-dark"
                 )}
               >
                 {item.name}
@@ -77,12 +73,7 @@ export function Header({ locale }: HeaderProps) {
         <div className="flex items-center gap-4">
           {/* Language Switcher */}
           <div className="hidden items-center gap-2 sm:flex">
-            <Globe
-              className={cn(
-                "h-4 w-4 transition-colors",
-                isScrolled ? "text-brand-grayMed" : "text-white"
-              )}
-            />
+            <Globe className="h-4 w-4 text-brand-grayMed transition-colors" />
             <select
               value={locale}
               onChange={(e) => {
@@ -90,10 +81,7 @@ export function Header({ locale }: HeaderProps) {
                 const path = pathname.replace(`/${locale}`, `/${newLocale}`);
                 window.location.href = path;
               }}
-              className={cn(
-                "cursor-pointer border-none bg-transparent text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold",
-                isScrolled ? "text-brand-dark" : "text-white"
-              )}
+              className="cursor-pointer border-none bg-transparent text-sm font-semibold text-brand-dark transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold"
             >
               <option value="en">EN</option>
               <option value="fr">FR</option>
@@ -116,19 +104,9 @@ export function Header({ locale }: HeaderProps) {
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
-              <X
-                className={cn(
-                  "h-6 w-6 transition-colors",
-                  isScrolled ? "text-brand-dark" : "text-white"
-                )}
-              />
+              <X className="h-6 w-6 text-brand-dark transition-colors" />
             ) : (
-              <Menu
-                className={cn(
-                  "h-6 w-6 transition-colors",
-                  isScrolled ? "text-brand-dark" : "text-white"
-                )}
-              />
+              <Menu className="h-6 w-6 text-brand-dark transition-colors" />
             )}
           </button>
         </div>

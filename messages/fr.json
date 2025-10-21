@@ -1,0 +1,141 @@
+{
+  "common": {
+    "getStarted": "Commencer",
+    "learnMore": "En savoir plus",
+    "submit": "Soumettre",
+    "cancel": "Annuler",
+    "continue": "Continuer",
+    "back": "Retour",
+    "next": "Suivant",
+    "save": "Enregistrer",
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "required": "Requis"
+  },
+  "nav": {
+    "openAccount": "Ouvrir un compte",
+    "companyFormation": "Création de société",
+    "services": "Services",
+    "support": "Support"
+  },
+  "hero": {
+    "home": {
+      "title": "Banque professionnelle pour les entreprises modernes",
+      "subtitle": "Services bancaires numériques de confiance, création de sociétés et services de conseil pour entrepreneurs et entreprises en France et au Luxembourg.",
+      "primaryCta": "Ouvrir un compte",
+      "secondaryCta": "En savoir plus"
+    }
+  },
+  "warmReferral": {
+    "title": "Trouvez le bon partenaire bancaire",
+    "subtitle": "Répondez à quelques questions et nous vous mettrons en relation avec la meilleure solution bancaire pour vos besoins.",
+    "step1Title": "Vos informations",
+    "step2Title": "Détails de l'entreprise",
+    "step3Title": "Partenaire recommandé",
+    "email": "Adresse e-mail",
+    "clientType": "Type de compte",
+    "individual": "Particulier",
+    "company": "Entreprise",
+    "country": "Pays",
+    "france": "France",
+    "luxembourg": "Luxembourg",
+    "legalForm": "Forme juridique",
+    "sarl": "SARL",
+    "sas": "SAS",
+    "sa": "SA",
+    "other": "Autre",
+    "expectedVolume": "Volume mensuel prévu",
+    "handoffTitle": "Votre partenaire recommandé",
+    "handoffDescription": "En fonction de votre profil, nous recommandons d'ouvrir votre compte avec {partner}. Opulanz restera votre point de contact tout au long du processus.",
+    "proceedToPartner": "Continuer vers {partner}",
+    "thankYouTitle": "Merci !",
+    "thankYouDescription": "Vous recevrez un e-mail de confirmation sous peu. Besoin d'aide ? Réservez un appel de 15 minutes avec notre équipe.",
+    "bookCallback": "Réserver un appel",
+    "consent": {
+      "dataSharing": "Je consens à ce qu'Opulanz partage mes informations avec les partenaires bancaires",
+      "terms": "J'accepte les",
+      "termsLink": "Conditions générales",
+      "privacy": "Politique de confidentialité",
+      "partnerTerms": "Je comprends que le compte sera ouvert par la banque partenaire"
+    }
+  },
+  "whitelabel": {
+    "title": "Ouvrir votre compte",
+    "choiceTitle": "Choisissez le type de compte",
+    "individual": "Compte particulier",
+    "company": "Compte entreprise",
+    "needCompany": "Besoin de créer une société d'abord ?",
+    "formCompany": "Création de société",
+    "kycTitle": "Vérification d'identité",
+    "kybTitle": "Vérification de l'entreprise",
+    "uploadId": "Télécharger pièce d'identité",
+    "uploadSelfie": "Télécharger selfie",
+    "uploadPoa": "Justificatif de domicile",
+    "uploadStatutes": "Statuts de la société",
+    "uploadRegister": "Extrait du registre",
+    "uploadUbo": "Déclaration UBO",
+    "pepDeclaration": "Déclaration PPE/Sanctions",
+    "activityCountries": "Pays d'activité",
+    "monthlyVolume": "Volume mensuel prévu",
+    "submitApplication": "Soumettre la demande",
+    "applicationSubmitted": "Demande soumise",
+    "decisionPending": "Votre demande est en cours d'examen. Vous recevrez une décision dans 2-3 jours ouvrables.",
+    "approved": "Compte approuvé",
+    "approvedMessage": "Félicitations ! Votre compte a été approuvé.",
+    "yourIban": "Votre IBAN",
+    "nextSteps": "Prochaines étapes"
+  },
+  "companyFormation": {
+    "title": "Création de société au Luxembourg",
+    "selectForm": "Sélectionner la forme juridique",
+    "sarl": "SARL - Société à responsabilité limitée",
+    "sarls": "SARL-S - SARL simplifiée",
+    "sa": "SA - Société anonyme",
+    "scsp": "SCSp - Société en commandite spéciale",
+    "soleProprietor": "Entreprise individuelle",
+    "wizardTitle": "Assistant de création",
+    "companyDetails": "Détails de la société",
+    "shareholders": "Actionnaires",
+    "capitalDeposit": "Dépôt de capital",
+    "payment": "Paiement",
+    "confirmation": "Confirmation",
+    "companyName": "Nom de la société",
+    "businessActivity": "Activité commerciale",
+    "shareCapital": "Capital social",
+    "addShareholder": "Ajouter un actionnaire",
+    "depositCapital": "Déposer le capital social auprès de la banque partenaire",
+    "notaryCertificate": "Le notaire délivrera le certificat d'incorporation",
+    "rcsRegistration": "Inscription au RCS du Luxembourg",
+    "totalFees": "Frais de création totaux",
+    "proceedToPayment": "Procéder au paiement",
+    "saveProgress": "Enregistrer et reprendre plus tard"
+  },
+  "services": {
+    "accounting": {
+      "title": "Comptabilité et facturation",
+      "description": "Services comptables professionnels propulsés par Horus et FALCO"
+    },
+    "tax": {
+      "title": "Conseil fiscal",
+      "description": "Conseil fiscal expert pour les entreprises transfrontalières"
+    },
+    "investment": {
+      "title": "Conseil en investissement",
+      "description": "Conseil en investissement et gestion de portefeuille conforme à MiFID"
+    },
+    "lifeInsurance": {
+      "title": "Assurance-vie",
+      "description": "Solutions d'assurance-vie luxembourgeoise via Utmost"
+    },
+    "mortgage": {
+      "title": "Services hypothécaires",
+      "description": "Solutions de financement immobilier au Luxembourg"
+    }
+  },
+  "legal": {
+    "regulated": "Réglementé par CSSF (LU) | ACPR & AMF (FR)",
+    "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
+    "mifid": "Services d'investissement soumis aux réglementations MiFID II",
+    "idd": "Distribution d'assurance soumise aux exigences IDD"
+  }
+}

@@ -54,37 +54,50 @@ Opulanz is a complete, production-ready digital banking platform UI built with N
 
 ## Project Structure
 
+**🎯 NEW: Feature-Based Organization**
+
+This project is now organized by **business features** for better clarity and maintainability!
+
 ```
 opulanzbanking/
-├── app/
-│   ├── [locale]/              # Locale-based routes (en/fr)
-│   │   ├── layout.tsx         # Root layout with header/footer
-│   │   ├── page.tsx           # Homepage
-│   │   ├── open-account/      # Account opening flows
-│   │   ├── company-formation/ # Company formation wizard
-│   │   ├── dashboard/         # User dashboard
-│   │   └── ...
-│   └── globals.css            # Global styles + Tailwind
-├── components/
-│   ├── ui/                    # shadcn/ui primitives
-│   ├── form/                  # Custom form components
-│   ├── hero.tsx
-│   ├── section-heading.tsx
-│   ├── service-card.tsx
-│   ├── status-chip.tsx
-│   ├── timeline.tsx
-│   └── ...
-├── lib/
-│   ├── utils.ts
-│   └── validators/            # Zod schemas
-├── messages/
-│   ├── en.json                # English translations
-│   └── fr.json                # French translations
-├── tailwind.config.ts         # Custom Tailwind theme
-├── i18n.ts                    # i18n configuration
-├── middleware.ts              # Locale routing
-└── package.json
+├── app/                       # Next.js routing
+│   └── [locale]/              # Locale-based routes (en/fr)
+│
+├── features/                  # ⭐ Feature-based organization
+│   ├── home/                  # ✅ Homepage
+│   ├── account-opening/       # ✅ KYC/KYB flows
+│   ├── company-formation/     # ✅ Entity creation
+│   ├── dashboard/             # ✅ User dashboard
+│   ├── accounting/            # 🚧 Lot 2 (planned)
+│   ├── tax-advisory/          # 🚧 Lot 3 (planned)
+│   ├── life-insurance/        # 🚧 Lot 4 (planned)
+│   ├── investment-advisory/   # 🚧 Lot 5 (planned)
+│   └── mortgage/              # 🚧 Lot 6 (planned)
+│
+├── shared/                    # Shared resources
+│   ├── components/            # Reusable UI components
+│   │   ├── ui/                # shadcn/ui primitives
+│   │   └── form/              # Form components
+│   └── lib/                   # Utilities & validators
+│
+├── messages/                  # i18n translations
+│   ├── en.json
+│   └── fr.json
+│
+└── docs/                      # 📚 Documentation
+    ├── PROJECT_STRUCTURE.md       # Detailed structure guide
+    ├── QUICK_REFERENCE.md         # Daily reference
+    ├── MIGRATION_GUIDE.md         # Migration guide
+    ├── ORGANIZATION_SUMMARY.md    # Organization overview
+    ├── DESIGN_SYSTEM.md
+    ├── IMPLEMENTATION_GUIDE.md
+    └── ...
 ```
+
+**📚 For detailed structure information, see:**
+- **[ORGANIZATION_SUMMARY.md](./ORGANIZATION_SUMMARY.md)** - Start here for overview
+- **[PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md)** - Complete structure guide
+- **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** - Quick lookup guide
 
 ---
 

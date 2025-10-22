@@ -1,5 +1,6 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
+import { unstable_setRequestLocale } from 'next-intl/server';
 import { Poppins } from 'next/font/google';
 import { Header } from '@/components/header';
 import { Footer } from '@/shared/components/footer';
@@ -17,6 +18,10 @@ export const metadata = {
     'Trusted digital banking, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg.',
 };
 
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'fr' }];
+}
+
 export default async function LocaleLayout({
   children,
   params: { locale },
@@ -24,6 +29,7 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
+  unstable_setRequestLocale(locale);
   const messages = await getMessages();
 
   return (

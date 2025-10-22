@@ -141,14 +141,14 @@ export function Header({ locale }: HeaderProps) {
                 <Link
                   href={`/${locale}/open-account/individual`}
                   onClick={() => setIsOpenAccountDropdownOpen(false)}
-                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-off hover:text-brand-gold transition-colors border-b border-brand-grayLight"
+                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-gray-50 hover:text-brand-gold transition-colors border-b border-brand-grayLight"
                 >
                   Individual Account
                 </Link>
                 <Link
                   href={`/${locale}/open-account/company`}
                   onClick={() => setIsOpenAccountDropdownOpen(false)}
-                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-off hover:text-brand-gold transition-colors"
+                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-gray-50 hover:text-brand-gold transition-colors"
                 >
                   Company Account
                 </Link>
@@ -179,7 +179,7 @@ export function Header({ locale }: HeaderProps) {
               <Link
                 key={item.name}
                 href={`/${locale}${item.href}`}
-                className="block rounded-lg px-4 py-3 text-base font-semibold text-brand-dark transition-colors hover:bg-brand-off hover:text-brand-gold"
+                className="block rounded-lg px-4 py-3 text-base font-semibold text-brand-dark transition-colors hover:bg-gray-50 hover:text-brand-gold"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.name}

@@ -61,7 +61,7 @@ export default function HomePage() {
       />
 
       {/* Services Section */}
-      <section id="services" className="bg-brand-off py-20 md:py-28">
+      <section id="services" className="bg-white py-20 md:py-28">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline={t('home.services.title')}
@@ -77,7 +77,7 @@ export default function HomePage() {
       </section>
 
       {/* Trust Section */}
-      <section className="bg-brand-grayLight py-20 md:py-28">
+      <section className="bg-white py-20 md:py-28">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline={t('home.trust.title')}
@@ -126,7 +126,7 @@ export default function HomePage() {
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
               href="/open-account"
-              className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-brand-off"
+              className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               {t('common.getStarted')}
             </a>

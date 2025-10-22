@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +23,9 @@ const navigation = [
 export function Header({ locale }: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isOpenAccountDropdownOpen, setIsOpenAccountDropdownOpen] = React.useState(false);
   const pathname = usePathname();
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +34,17 @@ export function Header({ locale }: HeaderProps) {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpenAccountDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -101,14 +114,47 @@ export function Header({ locale }: HeaderProps) {
             </select>
           </div>
 
+          {/* Login Button */}
           <Button
             asChild
-            variant={isScrolled ? "primary" : "default"}
+            variant="outline"
             size="sm"
             className="hidden sm:inline-flex"
           >
-            <Link href={`/${locale}/open-account`}>Get Started</Link>
+            <Link href={`/${locale}/login`}>Login</Link>
           </Button>
+
+          {/* Open Account Dropdown */}
+          <div ref={dropdownRef} className="relative hidden sm:block">
+            <Button
+              variant={isScrolled ? "primary" : "default"}
+              size="sm"
+              onClick={() => setIsOpenAccountDropdownOpen(!isOpenAccountDropdownOpen)}
+              className="flex items-center gap-2"
+            >
+              Open Account
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+
+            {isOpenAccountDropdownOpen && (
+              <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-brand-grayLight rounded-lg shadow-lg z-50">
+                <Link
+                  href={`/${locale}/open-account/individual`}
+                  onClick={() => setIsOpenAccountDropdownOpen(false)}
+                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-off hover:text-brand-gold transition-colors border-b border-brand-grayLight"
+                >
+                  Individual Account
+                </Link>
+                <Link
+                  href={`/${locale}/open-account/company`}
+                  onClick={() => setIsOpenAccountDropdownOpen(false)}
+                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-off hover:text-brand-gold transition-colors"
+                >
+                  Company Account
+                </Link>
+              </div>
+            )}
+          </div>
 
           {/* Mobile Menu Toggle */}
           <button
@@ -153,9 +199,20 @@ export function Header({ locale }: HeaderProps) {
                 <option value="fr">Français</option>
               </select>
             </div>
-            <Button asChild variant="primary" className="mt-4 w-full">
-              <Link href={`/${locale}/open-account`}>Get Started</Link>
-            </Button>
+            <div className="space-y-2 pt-4">
+              <Button asChild variant="outline" className="w-full">
+                <Link href={`/${locale}/login`}>Login</Link>
+              </Button>
+              <div className="space-y-2">
+                <p className="px-4 text-xs font-semibold text-brand-grayMed uppercase tracking-wide">Open Account</p>
+                <Button asChild variant="primary" className="w-full">
+                  <Link href={`/${locale}/open-account/individual`}>Individual Account</Link>
+                </Button>
+                <Button asChild variant="default" className="w-full">
+                  <Link href={`/${locale}/open-account/company`}>Company Account</Link>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       )}

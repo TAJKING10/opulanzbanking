@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { CheckCircle2 } from "lucide-react";
+import ReactCountryFlag from "react-country-flag";
 import {
   whitelabelKYCSchema,
   type WhitelabelKYCFormData,
@@ -25,6 +26,20 @@ export default function IndividualAccountPage() {
   const t = useTranslations();
   const [status, setStatus] = React.useState<ApplicationStatus>("form");
   const [iban, setIban] = React.useState<string>("");
+  const [selectedPhoneCode, setSelectedPhoneCode] = React.useState<string>("+33");
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState<boolean>(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const {
     register,
@@ -234,11 +249,65 @@ export default function IndividualAccountPage() {
                   <Label htmlFor="phoneNumber">
                     Phone Number<span className="text-red-600">*</span>
                   </Label>
-                  <Input
-                    id="phoneNumber"
-                    type="tel"
-                    {...register("phoneNumber")}
-                  />
+                  <div className="relative">
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-2 z-10">
+                      <div ref={dropdownRef} className="relative">
+                        <button
+                          type="button"
+                          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                          className="flex items-center gap-2 bg-transparent border-none text-sm font-medium focus:outline-none cursor-pointer"
+                        >
+                          <ReactCountryFlag
+                            countryCode={COUNTRIES.find(c => c.phoneCode === selectedPhoneCode)?.code || "FR"}
+                            svg
+                            style={{
+                              width: '1.5em',
+                              height: '1.5em',
+                            }}
+                          />
+                          <span>{selectedPhoneCode}</span>
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+
+                        {isDropdownOpen && (
+                          <div className="absolute top-full mt-1 left-0 w-64 max-h-60 overflow-y-auto bg-white border border-brand-grayLight rounded-lg shadow-lg z-50">
+                            {COUNTRIES.map((country) => (
+                              <button
+                                key={country.code}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedPhoneCode(country.phoneCode);
+                                  setIsDropdownOpen(false);
+                                }}
+                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 text-left text-sm"
+                              >
+                                <ReactCountryFlag
+                                  countryCode={country.code}
+                                  svg
+                                  style={{
+                                    width: '1.5em',
+                                    height: '1.5em',
+                                  }}
+                                />
+                                <span className="font-medium">{country.phoneCode}</span>
+                                <span className="text-gray-600 text-xs">{country.name}</span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <span className="text-brand-grayLight">|</span>
+                    </div>
+                    <Input
+                      id="phoneNumber"
+                      type="tel"
+                      placeholder="123456789"
+                      className="pl-32"
+                      {...register("phoneNumber")}
+                    />
+                  </div>
                   {errors.phoneNumber && (
                     <p className="text-xs text-red-600">
                       {errors.phoneNumber.message}

@@ -13,6 +13,7 @@ interface HeaderProps {
 }
 
 const navigation = [
+  { name: "Home", href: "" },
   { name: "Open Account", href: "/open-account" },
   { name: "Company Formation", href: "/company-formation" },
   { name: "Services", href: "/services" },
@@ -63,7 +64,9 @@ export function Header({ locale }: HeaderProps) {
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-8 md:flex">
           {navigation.map((item) => {
-            const isActive = pathname.includes(item.href);
+            const isActive = item.href === ""
+              ? pathname === `/${locale}` || pathname === `/${locale}/`
+              : pathname.includes(item.href);
             return (
               <Link
                 key={item.name}

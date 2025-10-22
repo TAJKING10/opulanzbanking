@@ -137,5 +137,304 @@
     "disclaimer": "Opulanz is a digital banking platform. Banking services provided by licensed partners.",
     "mifid": "Investment services subject to MiFID II regulations",
     "idd": "Insurance distribution subject to IDD requirements"
+  },
+  "footer": {
+    "sections": {
+      "services": "Services",
+      "products": "Products",
+      "company": "Company",
+      "legal": "Legal"
+    },
+    "links": {
+      "services": {
+        "openAccount": "Open Account",
+        "companyFormation": "Company Formation",
+        "accounting": "Accounting & Invoicing",
+        "tax": "Tax Advisory",
+        "investment": "Investment Advisory"
+      },
+      "products": {
+        "lifeInsurance": "Life Insurance",
+        "mortgage": "Mortgage",
+        "businessBanking": "Business Banking"
+      },
+      "company": {
+        "about": "About Us",
+        "support": "Support",
+        "contact": "Contact"
+      },
+      "legal": {
+        "terms": "Terms & Conditions",
+        "privacy": "Privacy Policy",
+        "disclaimers": "Disclaimers",
+        "regulatory": "Regulatory"
+      }
+    },
+    "social": {
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    },
+    "description": "Professional digital banking and advisory services for businesses and individuals in France and Luxembourg.",
+    "copyright": "© {year} Opulanz. All rights reserved.",
+    "regulated": "Regulated by CSSF (LU) | ACPR & AMF (FR)"
+  },
+  "home": {
+    "services": {
+      "title": "Our Services",
+      "description": "Everything you need to grow your business",
+      "summary": "From banking to advisory, we provide comprehensive financial services for modern entrepreneurs.",
+      "banking": {
+        "description": "Professional business banking accounts for individuals and companies"
+      },
+      "formation": {
+        "description": "Complete company formation services in Luxembourg"
+      }
+    },
+    "trust": {
+      "title": "Trusted & Regulated",
+      "description": "Your business in safe hands",
+      "summary": "Opulanz operates under strict regulatory oversight to ensure your financial security."
+    },
+    "regulatory": {
+      "luxembourg": "Luxembourg",
+      "cssf": "Regulated by Commission de Surveillance du Secteur Financier",
+      "france": "France",
+      "acpr": "Autorité de Contrôle Prudentiel et de Résolution",
+      "amf": "Autorité des Marchés Financiers"
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "description": "Open your account in minutes and access professional banking services tailored for your business.",
+      "contact": "Contact Us"
+    }
+  },
+  "openAccount": {
+    "subtitle": "Choose your account type and complete the application in minutes",
+    "individual": {
+      "description": "Personal banking account for individuals with professional features and multi-currency support.",
+      "features": {
+        "iban": "Multi-currency IBAN",
+        "transfers": "SEPA & SWIFT transfers",
+        "card": "Debit card included",
+        "banking": "Mobile & web banking"
+      }
+    },
+    "company": {
+      "description": "Professional business account for companies with advanced features and multi-user access.",
+      "features": {
+        "iban": "Dedicated business IBAN",
+        "access": "Multi-user access control",
+        "accounting": "Accounting integration",
+        "cards": "Corporate cards"
+      }
+    },
+    "formation": {
+      "cta": "We can help you form your company in Luxembourg before opening your business account."
+    },
+    "referral": {
+      "title": "Not sure which banking partner is right for you?",
+      "description": "Answer a few questions and we'll recommend the best banking solution for your needs.",
+      "cta": "Find Your Match"
+    }
+  },
+  "kyc": {
+    "subtitle": "Complete your identity verification to open your account",
+    "sections": {
+      "personalInfo": "Personal Information",
+      "address": "Address",
+      "documents": "Document Verification",
+      "activity": "Activity Information",
+      "consents": "Consents"
+    },
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "dateOfBirth": "Date of Birth",
+      "nationality": "Nationality",
+      "phoneNumber": "Phone Number",
+      "streetAddress": "Street Address",
+      "city": "City",
+      "postalCode": "Postal Code",
+      "country": "Country",
+      "pep": "Are you a Politically Exposed Person (PEP)?",
+      "expectedMonthlyVolume": "Expected Monthly Volume",
+      "sourceOfFunds": "Source of Funds"
+    },
+    "documents": {
+      "help": "Please upload clear photos or scans of the following documents (max 15MB each)"
+    },
+    "pep": {
+      "no": "No",
+      "yes": "Yes"
+    },
+    "volumeOptions": {
+      "0_5k": "€0 - €5,000",
+      "5k_20k": "€5,000 - €20,000",
+      "20k_50k": "€20,000 - €50,000",
+      "50k_plus": "€50,000+"
+    },
+    "sourceOfFunds": {
+      "placeholder": "Please describe the origin of your funds..."
+    },
+    "consents": {
+      "kyc": "I consent to identity verification and compliance checks as required by law",
+      "terms": "I agree to Opulanz Terms & Conditions and Privacy Policy"
+    },
+    "approval": {
+      "nextSteps": "Next Steps",
+      "steps": {
+        "app": "Download our mobile app or access web banking",
+        "security": "Set up your account security (2FA, PIN)",
+        "card": "Request your debit card",
+        "fund": "Fund your account via transfer"
+      }
+    },
+    "buttons": {
+      "dashboard": "Go to Dashboard",
+      "downloadApp": "Download App"
+    }
+  },
+  "companyFormation": {
+    "subtitle": "Complete company formation services with expert guidance",
+    "description": "Choose the legal structure that best fits your business needs",
+    "forms": {
+      "sarl": {
+        "fullName": "Private Limited Company",
+        "minCapital": "€12,000",
+        "minShareholders": 1,
+        "liability": "Limited",
+        "features": {
+          "common": "Most common structure",
+          "flexible": "Flexible management",
+          "capital": "Lower capital requirement",
+          "suitable": "Suitable for SMEs"
+        }
+      },
+      "sarls": {
+        "fullName": "Simplified Private Limited Company",
+        "minCapital": "€1",
+        "features": {
+          "capital": "Very low capital requirement",
+          "formation": "Simplified formation",
+          "startups": "Ideal for startups",
+          "max": "Max capital €100,000"
+        }
+      },
+      "sa": {
+        "fullName": "Public Limited Company",
+        "minCapital": "€30,000",
+        "features": {
+          "public": "Can be listed publicly",
+          "board": "Board of directors required",
+          "credibility": "Higher credibility",
+          "suitable": "Suitable for larger businesses"
+        }
+      },
+      "scsp": {
+        "fullName": "Special Limited Partnership",
+        "minCapital": "No minimum",
+        "features": {
+          "transparent": "Tax transparent",
+          "funds": "Popular for funds",
+          "flexible": "Flexible structure",
+          "liability": "General partner liability"
+        }
+      },
+      "soleProprietor": "Sole Proprietor"
+    },
+    "process": {
+      "title": "Simple Formation Process",
+      "description": "We guide you through every step"
+    },
+    "steps": {
+      "details": {
+        "title": "Company Details",
+        "description": "Provide company information"
+      },
+      "shareholders": {
+        "title": "Shareholders",
+        "description": "Add shareholders and structure"
+      },
+      "capital": {
+        "title": "Capital Deposit",
+        "description": "Deposit share capital"
+      },
+      "payment": {
+        "title": "Payment",
+        "description": "Pay formation fees"
+      },
+      "registration": {
+        "title": "Registration",
+        "description": "Complete RCS registration"
+      }
+    },
+    "fields": {
+      "companyName": {
+        "label": "Company Name",
+        "placeholder": "Enter company name"
+      },
+      "fullName": {
+        "placeholder": "Full Name"
+      },
+      "nationality": {
+        "placeholder": "Nationality"
+      },
+      "email": {
+        "placeholder": "Email"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back! Here's your account overview.",
+    "balance": {
+      "label": "Total Balance"
+    },
+    "buttons": {
+      "addFunds": "Add Funds",
+      "transfer": "Transfer"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "items": {
+        "openAccount": "Open New Account",
+        "formCompany": "Form Company",
+        "bookAdvisory": "Book Advisory",
+        "viewStatements": "View Statements"
+      }
+    },
+    "transactions": {
+      "title": "Recent Transactions",
+      "viewAll": "View All"
+    },
+    "applications": {
+      "title": "Application Status"
+    },
+    "services": {
+      "title": "Our Services",
+      "needHelp": "Need Help?",
+      "description": "Book a consultation with our advisory team",
+      "button": "Book Consultation"
+    }
+  },
+  "compliance": {
+    "FR": {
+      "banking": "Opulanz is a digital banking platform. Banking services are provided by licensed partners regulated by ACPR (Autorité de Contrôle Prudentiel et de Résolution).",
+      "investment": "Investment services are subject to MiFID II regulations and provided by advisors authorized by AMF (Autorité des Marchés Financiers).",
+      "insurance": "Insurance distribution is subject to IDD (Insurance Distribution Directive) requirements. Opulanz acts as an insurance intermediary.",
+      "mortgage": "Mortgage services are provided by licensed credit intermediaries. Subject to responsible lending requirements."
+    },
+    "LU": {
+      "banking": "Banking services are provided by partners licensed and regulated by CSSF (Commission de Surveillance du Secteur Financier).",
+      "investment": "Investment advisory services comply with Luxembourg law and MiFID II regulations. Subject to CSSF supervision.",
+      "insurance": "Life insurance products distributed in compliance with Luxembourg insurance law and IDD requirements.",
+      "mortgage": "Mortgage services provided by regulated credit institutions in Luxembourg. Subject to consumer protection laws."
+    }
+  },
+  "metadata": {
+    "title": "Opulanz - Professional Digital Banking",
+    "description": "Trusted digital banking, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg."
   }
 }

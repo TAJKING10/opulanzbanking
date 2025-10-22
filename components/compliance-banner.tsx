@@ -4,6 +4,7 @@ import * as React from "react";
 import { AlertCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 interface ComplianceBannerProps {
   market: "FR" | "LU";
@@ -12,35 +13,13 @@ interface ComplianceBannerProps {
   className?: string;
 }
 
-const complianceMessages = {
-  FR: {
-    banking:
-      "Opulanz is a digital banking platform. Banking services are provided by licensed partners regulated by ACPR (Autorité de Contrôle Prudentiel et de Résolution).",
-    investment:
-      "Investment services are subject to MiFID II regulations and provided by advisors authorized by AMF (Autorité des Marchés Financiers).",
-    insurance:
-      "Insurance distribution is subject to IDD (Insurance Distribution Directive) requirements. Opulanz acts as an insurance intermediary.",
-    mortgage:
-      "Mortgage services are provided by licensed credit intermediaries. Subject to responsible lending requirements.",
-  },
-  LU: {
-    banking:
-      "Banking services are provided by partners licensed and regulated by CSSF (Commission de Surveillance du Secteur Financier).",
-    investment:
-      "Investment advisory services comply with Luxembourg law and MiFID II regulations. Subject to CSSF supervision.",
-    insurance:
-      "Life insurance products distributed in compliance with Luxembourg insurance law and IDD requirements.",
-    mortgage:
-      "Mortgage services provided by regulated credit institutions in Luxembourg. Subject to consumer protection laws.",
-  },
-};
-
 export function ComplianceBanner({
   market,
   productType = "banking",
   dismissible = true,
   className,
 }: ComplianceBannerProps) {
+  const t = useTranslations();
   const [isDismissed, setIsDismissed] = React.useState(false);
 
   React.useEffect(() => {
@@ -59,7 +38,7 @@ export function ComplianceBanner({
 
   if (isDismissed) return null;
 
-  const message = complianceMessages[market][productType];
+  const message = t(`compliance.${market}.${productType}`);
 
   return (
     <div

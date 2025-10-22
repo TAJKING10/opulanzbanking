@@ -137,5 +137,304 @@
     "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
     "mifid": "Services d'investissement soumis aux réglementations MiFID II",
     "idd": "Distribution d'assurance soumise aux exigences IDD"
+  },
+  "footer": {
+    "sections": {
+      "services": "Services",
+      "products": "Produits",
+      "company": "Entreprise",
+      "legal": "Juridique"
+    },
+    "links": {
+      "services": {
+        "openAccount": "Ouvrir un compte",
+        "companyFormation": "Création de société",
+        "accounting": "Comptabilité et facturation",
+        "tax": "Conseil fiscal",
+        "investment": "Conseil en investissement"
+      },
+      "products": {
+        "lifeInsurance": "Assurance-vie",
+        "mortgage": "Hypothèque",
+        "businessBanking": "Banque d'affaires"
+      },
+      "company": {
+        "about": "À propos",
+        "support": "Support",
+        "contact": "Contact"
+      },
+      "legal": {
+        "terms": "Conditions générales",
+        "privacy": "Politique de confidentialité",
+        "disclaimers": "Avertissements",
+        "regulatory": "Réglementaire"
+      }
+    },
+    "social": {
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    },
+    "description": "Services bancaires et de conseil numériques professionnels pour les entreprises et les particuliers en France et au Luxembourg.",
+    "copyright": "© {year} Opulanz. Tous droits réservés.",
+    "regulated": "Réglementé par CSSF (LU) | ACPR & AMF (FR)"
+  },
+  "home": {
+    "services": {
+      "title": "Nos Services",
+      "description": "Tout ce dont vous avez besoin pour développer votre entreprise",
+      "summary": "De la banque au conseil, nous fournissons des services financiers complets pour les entrepreneurs modernes.",
+      "banking": {
+        "description": "Comptes bancaires professionnels pour les particuliers et les entreprises"
+      },
+      "formation": {
+        "description": "Services complets de création de sociétés au Luxembourg"
+      }
+    },
+    "trust": {
+      "title": "Fiable et Réglementé",
+      "description": "Votre entreprise en mains sûres",
+      "summary": "Opulanz opère sous une surveillance réglementaire stricte pour assurer votre sécurité financière."
+    },
+    "regulatory": {
+      "luxembourg": "Luxembourg",
+      "cssf": "Réglementé par la Commission de Surveillance du Secteur Financier",
+      "france": "France",
+      "acpr": "Autorité de Contrôle Prudentiel et de Résolution",
+      "amf": "Autorité des Marchés Financiers"
+    },
+    "cta": {
+      "title": "Prêt à commencer ?",
+      "description": "Ouvrez votre compte en quelques minutes et accédez à des services bancaires professionnels adaptés à votre entreprise.",
+      "contact": "Contactez-nous"
+    }
+  },
+  "openAccount": {
+    "subtitle": "Choisissez votre type de compte et complétez la demande en quelques minutes",
+    "individual": {
+      "description": "Compte bancaire personnel pour les particuliers avec des fonctionnalités professionnelles et support multi-devises.",
+      "features": {
+        "iban": "IBAN multi-devises",
+        "transfers": "Virements SEPA et SWIFT",
+        "card": "Carte de débit incluse",
+        "banking": "Banque mobile et web"
+      }
+    },
+    "company": {
+      "description": "Compte professionnel pour les entreprises avec des fonctionnalités avancées et accès multi-utilisateurs.",
+      "features": {
+        "iban": "IBAN professionnel dédié",
+        "access": "Contrôle d'accès multi-utilisateurs",
+        "accounting": "Intégration comptable",
+        "cards": "Cartes d'entreprise"
+      }
+    },
+    "formation": {
+      "cta": "Nous pouvons vous aider à créer votre société au Luxembourg avant d'ouvrir votre compte professionnel."
+    },
+    "referral": {
+      "title": "Vous ne savez pas quel partenaire bancaire vous convient ?",
+      "description": "Répondez à quelques questions et nous vous recommanderons la meilleure solution bancaire pour vos besoins.",
+      "cta": "Trouvez votre partenaire"
+    }
+  },
+  "kyc": {
+    "subtitle": "Complétez votre vérification d'identité pour ouvrir votre compte",
+    "sections": {
+      "personalInfo": "Informations personnelles",
+      "address": "Adresse",
+      "documents": "Vérification des documents",
+      "activity": "Informations d'activité",
+      "consents": "Consentements"
+    },
+    "fields": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "dateOfBirth": "Date de naissance",
+      "nationality": "Nationalité",
+      "phoneNumber": "Numéro de téléphone",
+      "streetAddress": "Adresse",
+      "city": "Ville",
+      "postalCode": "Code postal",
+      "country": "Pays",
+      "pep": "Êtes-vous une Personne Politiquement Exposée (PPE) ?",
+      "expectedMonthlyVolume": "Volume mensuel prévu",
+      "sourceOfFunds": "Origine des fonds"
+    },
+    "documents": {
+      "help": "Veuillez télécharger des photos ou scans clairs des documents suivants (max 15 Mo chacun)"
+    },
+    "pep": {
+      "no": "Non",
+      "yes": "Oui"
+    },
+    "volumeOptions": {
+      "0_5k": "0 € - 5 000 €",
+      "5k_20k": "5 000 € - 20 000 €",
+      "20k_50k": "20 000 € - 50 000 €",
+      "50k_plus": "50 000 € +"
+    },
+    "sourceOfFunds": {
+      "placeholder": "Veuillez décrire l'origine de vos fonds..."
+    },
+    "consents": {
+      "kyc": "Je consens à la vérification d'identité et aux contrôles de conformité requis par la loi",
+      "terms": "J'accepte les Conditions Générales et la Politique de Confidentialité d'Opulanz"
+    },
+    "approval": {
+      "nextSteps": "Prochaines étapes",
+      "steps": {
+        "app": "Téléchargez notre application mobile ou accédez à la banque en ligne",
+        "security": "Configurez la sécurité de votre compte (2FA, PIN)",
+        "card": "Demandez votre carte de débit",
+        "fund": "Alimentez votre compte par virement"
+      }
+    },
+    "buttons": {
+      "dashboard": "Aller au tableau de bord",
+      "downloadApp": "Télécharger l'application"
+    }
+  },
+  "companyFormation": {
+    "subtitle": "Services complets de création de société avec conseils d'experts",
+    "description": "Choisissez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
+    "forms": {
+      "sarl": {
+        "fullName": "Société à Responsabilité Limitée",
+        "minCapital": "12 000 €",
+        "minShareholders": 1,
+        "liability": "Limitée",
+        "features": {
+          "common": "Structure la plus courante",
+          "flexible": "Gestion flexible",
+          "capital": "Exigence de capital inférieure",
+          "suitable": "Adapté aux PME"
+        }
+      },
+      "sarls": {
+        "fullName": "Société à Responsabilité Limitée Simplifiée",
+        "minCapital": "1 €",
+        "features": {
+          "capital": "Exigence de capital très faible",
+          "formation": "Formation simplifiée",
+          "startups": "Idéal pour les startups",
+          "max": "Capital maximum de 100 000 €"
+        }
+      },
+      "sa": {
+        "fullName": "Société Anonyme",
+        "minCapital": "30 000 €",
+        "features": {
+          "public": "Peut être cotée en bourse",
+          "board": "Conseil d'administration requis",
+          "credibility": "Crédibilité accrue",
+          "suitable": "Adapté aux grandes entreprises"
+        }
+      },
+      "scsp": {
+        "fullName": "Société en Commandite Spéciale",
+        "minCapital": "Aucun minimum",
+        "features": {
+          "transparent": "Transparence fiscale",
+          "funds": "Populaire pour les fonds",
+          "flexible": "Structure flexible",
+          "liability": "Responsabilité du commandité"
+        }
+      },
+      "soleProprietor": "Entreprise individuelle"
+    },
+    "process": {
+      "title": "Processus de création simple",
+      "description": "Nous vous guidons à chaque étape"
+    },
+    "steps": {
+      "details": {
+        "title": "Détails de la société",
+        "description": "Fournir les informations de la société"
+      },
+      "shareholders": {
+        "title": "Actionnaires",
+        "description": "Ajouter les actionnaires et la structure"
+      },
+      "capital": {
+        "title": "Dépôt de capital",
+        "description": "Déposer le capital social"
+      },
+      "payment": {
+        "title": "Paiement",
+        "description": "Payer les frais de création"
+      },
+      "registration": {
+        "title": "Enregistrement",
+        "description": "Compléter l'enregistrement au RCS"
+      }
+    },
+    "fields": {
+      "companyName": {
+        "label": "Nom de la société",
+        "placeholder": "Entrez le nom de la société"
+      },
+      "fullName": {
+        "placeholder": "Nom complet"
+      },
+      "nationality": {
+        "placeholder": "Nationalité"
+      },
+      "email": {
+        "placeholder": "E-mail"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bienvenue ! Voici un aperçu de votre compte.",
+    "balance": {
+      "label": "Solde total"
+    },
+    "buttons": {
+      "addFunds": "Ajouter des fonds",
+      "transfer": "Virement"
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "items": {
+        "openAccount": "Ouvrir un nouveau compte",
+        "formCompany": "Créer une société",
+        "bookAdvisory": "Réserver un conseil",
+        "viewStatements": "Voir les relevés"
+      }
+    },
+    "transactions": {
+      "title": "Transactions récentes",
+      "viewAll": "Voir tout"
+    },
+    "applications": {
+      "title": "État des demandes"
+    },
+    "services": {
+      "title": "Nos services",
+      "needHelp": "Besoin d'aide ?",
+      "description": "Réservez une consultation avec notre équipe de conseil",
+      "button": "Réserver une consultation"
+    }
+  },
+  "compliance": {
+    "FR": {
+      "banking": "Opulanz est une plateforme bancaire numérique. Les services bancaires sont fournis par des partenaires agréés réglementés par l'ACPR (Autorité de Contrôle Prudentiel et de Résolution).",
+      "investment": "Les services d'investissement sont soumis aux réglementations MiFID II et fournis par des conseillers autorisés par l'AMF (Autorité des Marchés Financiers).",
+      "insurance": "La distribution d'assurance est soumise aux exigences de la DDA (Directive sur la Distribution d'Assurance). Opulanz agit en tant qu'intermédiaire d'assurance.",
+      "mortgage": "Les services hypothécaires sont fournis par des intermédiaires de crédit agréés. Soumis aux exigences de prêt responsable."
+    },
+    "LU": {
+      "banking": "Les services bancaires sont fournis par des partenaires agréés et réglementés par la CSSF (Commission de Surveillance du Secteur Financier).",
+      "investment": "Les services de conseil en investissement sont conformes à la législation luxembourgeoise et aux réglementations MiFID II. Sous la supervision de la CSSF.",
+      "insurance": "Produits d'assurance-vie distribués conformément à la législation luxembourgeoise sur les assurances et aux exigences de la DDA.",
+      "mortgage": "Services hypothécaires fournis par des établissements de crédit réglementés au Luxembourg. Soumis aux lois de protection des consommateurs."
+    }
+  },
+  "metadata": {
+    "title": "Opulanz - Banque Numérique Professionnelle",
+    "description": "Services bancaires numériques, création de sociétés et services de conseil de confiance pour les entrepreneurs et les entreprises en France et au Luxembourg."
   }
 }

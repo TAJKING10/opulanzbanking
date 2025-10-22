@@ -2,7 +2,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Poppins } from 'next/font/google';
 import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
+import { Footer } from '@/shared/components/footer';
 import '@/app/globals.css';
 
 const poppins = Poppins({

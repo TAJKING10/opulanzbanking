@@ -13,37 +13,37 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
       title: t('services.accounting.title'),
       description: t('services.accounting.description'),
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=500&fit=crop',
-      href: '/invoicing-accounting',
+      href: `/${locale}/invoicing-accounting`,
     },
     {
       title: t('nav.openAccount'),
       description: t('home.services.banking.description'),
       image: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=800&h=500&fit=crop',
-      href: '/open-account',
+      href: `/${locale}/open-account`,
     },
     {
       title: t('nav.companyFormation'),
       description: t('home.services.formation.description'),
       image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=500&fit=crop',
-      href: '/company-formation',
+      href: `/${locale}/company-formation`,
     },
     {
       title: t('services.tax.title'),
       description: t('services.tax.description'),
       image: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=500&fit=crop',
-      href: '/tax-advisory',
+      href: `/${locale}/tax-advisory`,
     },
     {
       title: t('services.investment.title'),
       description: t('services.investment.description'),
       image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=500&fit=crop',
-      href: '/investment-advisory',
+      href: `/${locale}/investment-advisory`,
     },
     {
       title: t('services.lifeInsurance.title'),
       description: t('services.lifeInsurance.description'),
       image: 'https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800&h=500&fit=crop',
-      href: '/life-insurance',
+      href: `/${locale}/life-insurance`,
     },
   ];
 
@@ -54,7 +54,7 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
         subtitle={t('hero.home.subtitle')}
         primaryCta={{
           label: t('hero.home.primaryCta'),
-          href: '/open-account',
+          href: `/${locale}/open-account`,
         }}
         secondaryCta={{
           label: t('hero.home.secondaryCta'),
@@ -127,13 +127,13 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href="/open-account"
+              href={`/${locale}/open-account`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               {t('common.getStarted')}
             </a>
             <a
-              href="/support"
+              href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
               {t('home.cta.contact')}

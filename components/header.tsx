@@ -137,18 +137,18 @@ export function Header({ locale }: HeaderProps) {
             </Button>
 
             {isOpenAccountDropdownOpen && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-full bg-gradient-to-b from-brand-goldLight/30 to-white border border-brand-gold/30 rounded-lg shadow-lg z-50">
+              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-full bg-gradient-to-b from-brand-goldLight/70 to-white border border-brand-gold/50 rounded-lg shadow-lg z-50">
                 <Link
                   href={`/${locale}/open-account/individual`}
                   onClick={() => setIsOpenAccountDropdownOpen(false)}
-                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-gold/20 transition-colors border-b border-brand-gold/20 text-center rounded-t-lg"
+                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-gold/30 transition-colors border-b border-brand-gold/30 text-center rounded-t-lg"
                 >
                   Individual Account
                 </Link>
                 <Link
                   href={`/${locale}/open-account/company`}
                   onClick={() => setIsOpenAccountDropdownOpen(false)}
-                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-gold/20 transition-colors text-center rounded-b-lg"
+                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-gold/30 transition-colors text-center rounded-b-lg"
                 >
                   Company Account
                 </Link>

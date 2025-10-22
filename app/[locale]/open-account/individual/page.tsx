@@ -17,6 +17,7 @@ import { ConsentCheckbox } from "@/components/form/consent-checkbox";
 import { FileDropzone } from "@/components/form/file-dropzone";
 import { SectionHeading } from "@/components/section-heading";
 import { StatusChip } from "@/components/status-chip";
+import { COUNTRIES } from "@/shared/lib/countries";
 
 type ApplicationStatus = "form" | "submitted" | "approved" | "declined";
 
@@ -216,11 +217,11 @@ export default function IndividualAccountPage() {
                     className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                   >
                     <option value="">Select nationality</option>
-                    <option value="FR">French</option>
-                    <option value="LU">Luxembourgish</option>
-                    <option value="BE">Belgian</option>
-                    <option value="DE">German</option>
-                    <option value="OTHER">Other</option>
+                    {COUNTRIES.map((country) => (
+                      <option key={country.code} value={country.code}>
+                        {country.name}
+                      </option>
+                    ))}
                   </select>
                   {errors.nationality && (
                     <p className="text-xs text-red-600">
@@ -295,11 +296,12 @@ export default function IndividualAccountPage() {
                       {...register("country")}
                       className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                     >
-                      <option value="">Select</option>
-                      <option value="FR">France</option>
-                      <option value="LU">Luxembourg</option>
-                      <option value="BE">Belgium</option>
-                      <option value="DE">Germany</option>
+                      <option value="">Select country</option>
+                      {COUNTRIES.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.name}
+                        </option>
+                      ))}
                     </select>
                     {errors.country && (
                       <p className="text-xs text-red-600">

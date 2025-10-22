@@ -15,13 +15,13 @@ export default function HomePage() {
     },
     {
       title: t('nav.openAccount'),
-      description: 'Professional business banking accounts for individuals and companies',
+      description: t('home.services.banking.description'),
       image: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=800&h=500&fit=crop',
       href: '/open-account',
     },
     {
       title: t('nav.companyFormation'),
-      description: 'Complete company formation services in Luxembourg',
+      description: t('home.services.formation.description'),
       image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=500&fit=crop',
       href: '/company-formation',
     },
@@ -64,9 +64,9 @@ export default function HomePage() {
       <section id="services" className="bg-brand-off py-20 md:py-28">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline="Our Services"
-            title="Everything you need to grow your business"
-            description="From banking to advisory, we provide comprehensive financial services for modern entrepreneurs."
+            overline={t('home.services.title')}
+            title={t('home.services.description')}
+            description={t('home.services.summary')}
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
@@ -80,34 +80,34 @@ export default function HomePage() {
       <section className="bg-brand-grayLight py-20 md:py-28">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline="Trusted & Regulated"
-            title="Your business in safe hands"
-            description="Opulanz operates under strict regulatory oversight to ensure your financial security."
+            overline={t('home.trust.title')}
+            title={t('home.trust.description')}
+            description={t('home.trust.summary')}
           />
           <div className="grid gap-8 md:grid-cols-3">
             <div className="rounded-2xl bg-white p-8 text-center">
               <div className="mb-4 text-4xl font-bold text-brand-gold">CSSF</div>
               <h3 className="mb-2 text-lg font-bold text-brand-dark">
-                Luxembourg
+                {t('home.regulatory.luxembourg')}
               </h3>
               <p className="text-sm text-brand-grayMed">
-                Regulated by Commission de Surveillance du Secteur Financier
+                {t('home.regulatory.cssf')}
               </p>
             </div>
             <div className="rounded-2xl bg-white p-8 text-center">
               <div className="mb-4 text-4xl font-bold text-brand-gold">
                 ACPR
               </div>
-              <h3 className="mb-2 text-lg font-bold text-brand-dark">France</h3>
+              <h3 className="mb-2 text-lg font-bold text-brand-dark">{t('home.regulatory.france')}</h3>
               <p className="text-sm text-brand-grayMed">
-                Autorité de Contrôle Prudentiel et de Résolution
+                {t('home.regulatory.acpr')}
               </p>
             </div>
             <div className="rounded-2xl bg-white p-8 text-center">
               <div className="mb-4 text-4xl font-bold text-brand-gold">AMF</div>
-              <h3 className="mb-2 text-lg font-bold text-brand-dark">France</h3>
+              <h3 className="mb-2 text-lg font-bold text-brand-dark">{t('home.regulatory.france')}</h3>
               <p className="text-sm text-brand-grayMed">
-                Autorité des Marchés Financiers
+                {t('home.regulatory.amf')}
               </p>
             </div>
           </div>
@@ -118,11 +118,10 @@ export default function HomePage() {
       <section className="hero-gradient py-20 md:py-28">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            Ready to get started?
+            {t('home.cta.title')}
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            Open your account in minutes and access professional banking services
-            tailored for your business.
+            {t('home.cta.description')}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
@@ -135,7 +134,7 @@ export default function HomePage() {
               href="/support"
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
-              Contact Us
+              {t('home.cta.contact')}
             </a>
           </div>
         </div>

@@ -6,7 +6,9 @@
       "Bash(npm install:*)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nConfigure GitHub Pages deployment\n\n- Add static export configuration to next.config.js\n- Set basePath and assetPrefix for GitHub Pages subdirectory\n- Enable unoptimized images for static export\n- Fix Tailwind config duplicate ''accent'' property\n- Add generateStaticParams to layout for locale routes\n- Implement unstable_setRequestLocale for static rendering\n- Create GitHub Actions workflow for automatic deployment\n- Add .nojekyll file to prevent Jekyll processing\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd index.html redirect to /en for GitHub Pages root\n\n- Create index.html that redirects to /opulanzbanking/en\n- Fixes 404 error when accessing root URL\n- Provides fallback link if redirect fails\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []

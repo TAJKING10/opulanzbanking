@@ -126,28 +126,28 @@ export function Header({ locale }: HeaderProps) {
           {/* Open Account Dropdown */}
           <div ref={dropdownRef} className="relative hidden sm:block">
             <Button
-              variant={isScrolled ? "primary" : "default"}
+              variant="default"
               size="sm"
               onClick={() => setIsOpenAccountDropdownOpen(!isOpenAccountDropdownOpen)}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 bg-brand-gold text-white hover:bg-brand-goldDark"
             >
               Open Account
               <ChevronDown className="h-4 w-4" />
             </Button>
 
             {isOpenAccountDropdownOpen && (
-              <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-brand-grayLight rounded-lg shadow-lg z-50">
+              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-full bg-gradient-to-b from-brand-goldLight/70 to-white border border-brand-gold/50 rounded-lg shadow-lg z-50">
                 <Link
                   href={`/${locale}/open-account/individual`}
                   onClick={() => setIsOpenAccountDropdownOpen(false)}
-                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-gray-50 hover:text-brand-gold transition-colors border-b border-brand-grayLight"
+                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-gold/30 transition-colors border-b border-brand-gold/30 text-center rounded-t-lg"
                 >
                   Individual Account
                 </Link>
                 <Link
                   href={`/${locale}/open-account/company`}
                   onClick={() => setIsOpenAccountDropdownOpen(false)}
-                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-gray-50 hover:text-brand-gold transition-colors"
+                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-gold/30 transition-colors text-center rounded-b-lg"
                 >
                   Company Account
                 </Link>

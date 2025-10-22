@@ -27,7 +27,7 @@ const config: Config = {
           grayLight: "#c2c9cd",
           grayMed: "#949ea3",
         },
-        accent: {
+        accentBrand: {
           teal: "#629daf",
           beige: "#c0aa9a",
         },

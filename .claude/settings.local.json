@@ -11,7 +11,9 @@
       "Bash(git commit -m \"$(cat <<''EOF''\nAdd index.html redirect to /en for GitHub Pages root\n\n- Create index.html that redirects to /opulanzbanking/en\n- Fixes 404 error when accessing root URL\n- Provides fallback link if redirect fails\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git commit:*)",
       "Bash(npm run dev:*)",
-      "Bash(NODE_ENV=production npm run build:*)"
+      "Bash(NODE_ENV=production npm run build:*)",
+      "Bash(git pull:*)",
+      "Read(//c/Users/Toufi/OneDrive/Pictures/Screenshots/**)"
     ],
     "deny": [],
     "ask": []

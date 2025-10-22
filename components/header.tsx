@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Globe, ChevronDown } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -22,9 +22,7 @@ const navigation = [
 export function Header({ locale }: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-  const [isOpenAccountDropdownOpen, setIsOpenAccountDropdownOpen] = React.useState(false);
   const pathname = usePathname();
-  const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -33,17 +31,6 @@ export function Header({ locale }: HeaderProps) {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Close dropdown when clicking outside
-  React.useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpenAccountDropdownOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -123,37 +110,15 @@ export function Header({ locale }: HeaderProps) {
             <Link href={`/${locale}/login`}>Login</Link>
           </Button>
 
-          {/* Open Account Dropdown */}
-          <div ref={dropdownRef} className="relative hidden sm:block">
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => setIsOpenAccountDropdownOpen(!isOpenAccountDropdownOpen)}
-              className="flex items-center gap-2 bg-brand-gold text-white hover:bg-brand-goldDark"
-            >
-              Open Account
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-
-            {isOpenAccountDropdownOpen && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-full bg-gradient-to-b from-brand-goldLight/70 to-white border border-brand-gold/50 rounded-lg shadow-lg z-50">
-                <Link
-                  href={`/${locale}/open-account/individual`}
-                  onClick={() => setIsOpenAccountDropdownOpen(false)}
-                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-gold/30 transition-colors border-b border-brand-gold/30 text-center rounded-t-lg"
-                >
-                  Individual Account
-                </Link>
-                <Link
-                  href={`/${locale}/open-account/company`}
-                  onClick={() => setIsOpenAccountDropdownOpen(false)}
-                  className="block px-4 py-3 text-sm font-semibold text-brand-dark hover:bg-brand-gold/30 transition-colors text-center rounded-b-lg"
-                >
-                  Company Account
-                </Link>
-              </div>
-            )}
-          </div>
+          {/* Open Account Button */}
+          <Button
+            asChild
+            variant="default"
+            size="sm"
+            className="hidden sm:inline-flex bg-brand-gold text-white hover:bg-brand-goldDark"
+          >
+            <Link href={`/${locale}/open-account`}>Open Account</Link>
+          </Button>
 
           {/* Mobile Menu Toggle */}
           <button

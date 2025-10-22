@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Building2, User, ArrowRight } from "lucide-react";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 
 export default function OpenAccountPage() {
   const t = useTranslations();
+  const locale = useLocale();
 
   return (
     <>
@@ -65,7 +66,7 @@ export default function OpenAccountPage() {
                   size="lg"
                   className="w-full group-hover:bg-brand-goldDark"
                 >
-                  <Link href="/open-account/individual">
+                  <Link href={`/${locale}/open-account/individual`}>
                     Get Started
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
@@ -110,7 +111,7 @@ export default function OpenAccountPage() {
                   size="lg"
                   className="w-full group-hover:bg-brand-goldDark"
                 >
-                  <Link href="/open-account/company">
+                  <Link href={`/${locale}/open-account/company`}>
                     Get Started
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
@@ -129,7 +130,7 @@ export default function OpenAccountPage() {
               your business account.
             </p>
             <Button asChild variant="outline" size="lg">
-              <Link href="/company-formation">
+              <Link href={`/${locale}/company-formation`}>
                 {t("whitelabel.formCompany")}
               </Link>
             </Button>
@@ -148,7 +149,7 @@ export default function OpenAccountPage() {
             for your needs.
           </p>
           <Button asChild variant="secondary" size="lg">
-            <Link href="/open-account/warm-referral">Find Your Match</Link>
+            <Link href={`/${locale}/open-account/warm-referral`}>Find Your Match</Link>
           </Button>
         </div>
       </section>

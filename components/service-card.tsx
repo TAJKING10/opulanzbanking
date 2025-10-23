@@ -32,30 +32,26 @@ export function ServiceCard({
       transition={{ duration: 0.3 }}
       className={cn("h-full", className)}
     >
-      <Card className="card-hover group h-full overflow-hidden border-none">
-        <div className="relative aspect-[16/10] w-full overflow-hidden">
-          <Image
-            src={image}
-            alt={title}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        </div>
-        <CardContent className="p-6">
-          <h3 className="mb-3 text-xl font-bold text-brand-dark">{title}</h3>
-          <p className="mb-6 text-sm text-brand-grayMed">{description}</p>
-          <Button
-            asChild
-            variant="link"
-            className="group/btn p-0 text-brand-gold"
-          >
-            <Link href={href}>
+      <Link href={href} className="block h-full">
+        <Card className="card-hover group h-full overflow-hidden border-none cursor-pointer">
+          <div className="relative aspect-[16/10] w-full overflow-hidden">
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
+          <CardContent className="p-6">
+            <h3 className="mb-3 text-xl font-bold text-brand-dark">{title}</h3>
+            <p className="mb-6 text-sm text-brand-grayMed">{description}</p>
+            <div className="flex items-center text-brand-gold font-semibold">
               {ctaLabel}
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </div>
+          </CardContent>
+        </Card>
+      </Link>
     </motion.div>
   );
 }

@@ -139,7 +139,7 @@ export default function OpenAccountPage() {
       </section>
 
       {/* Alternative: Warm Referral */}
-      <section className="bg-brand-grayLight py-20">
+      <section className="bg-white py-20">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-4 text-3xl font-bold text-brand-dark">
             Not sure which banking partner is right for you?

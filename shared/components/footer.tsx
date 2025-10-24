@@ -210,7 +210,7 @@ export function Footer({ locale }: FooterProps) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 border-t border-brand-grayLight pt-8">
+        <div className="mt-12 pt-8">
           <div className="flex flex-col items-center justify-between gap-4 text-sm text-brand-grayMed md:flex-row">
             <p>
               {t("footer.copyright", { year: currentYear })}

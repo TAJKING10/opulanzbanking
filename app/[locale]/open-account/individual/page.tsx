@@ -183,10 +183,10 @@ export default function IndividualAccountPage() {
               {/* Personal Details */}
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">
+                  <Label htmlFor="indv_firstName">
                     First Name<span className="text-red-600">*</span>
                   </Label>
-                  <Input id="firstName" {...register("firstName")} />
+                  <Input id="indv_firstName" name="indv_firstName" {...register("firstName")} />
                   {errors.firstName && (
                     <p className="text-xs text-red-600">
                       {errors.firstName.message}
@@ -195,10 +195,10 @@ export default function IndividualAccountPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">
+                  <Label htmlFor="indv_lastName">
                     Last Name<span className="text-red-600">*</span>
                   </Label>
-                  <Input id="lastName" {...register("lastName")} />
+                  <Input id="indv_lastName" name="indv_lastName" {...register("lastName")} />
                   {errors.lastName && (
                     <p className="text-xs text-red-600">
                       {errors.lastName.message}
@@ -207,11 +207,12 @@ export default function IndividualAccountPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="dateOfBirth">
+                  <Label htmlFor="indv_dateOfBirth">
                     Date of Birth<span className="text-red-600">*</span>
                   </Label>
                   <Input
-                    id="dateOfBirth"
+                    id="indv_dateOfBirth"
+                    name="indv_dateOfBirth"
                     type="date"
                     {...register("dateOfBirth")}
                   />
@@ -223,11 +224,12 @@ export default function IndividualAccountPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="nationality">
+                  <Label htmlFor="indv_nationality">
                     Nationality<span className="text-red-600">*</span>
                   </Label>
                   <select
-                    id="nationality"
+                    id="indv_nationality"
+                    name="indv_nationality"
                     {...register("nationality")}
                     className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                   >
@@ -246,7 +248,7 @@ export default function IndividualAccountPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phoneNumber">
+                  <Label htmlFor="indv_phoneNumber">
                     Phone Number<span className="text-red-600">*</span>
                   </Label>
                   <div className="relative">
@@ -301,7 +303,8 @@ export default function IndividualAccountPage() {
                       <span className="text-brand-grayLight">|</span>
                     </div>
                     <Input
-                      id="phoneNumber"
+                      id="indv_phoneNumber"
+                      name="indv_phoneNumber"
                       type="tel"
                       placeholder="123456789"
                       className="pl-32"
@@ -320,10 +323,10 @@ export default function IndividualAccountPage() {
               <div className="space-y-6">
                 <h3 className="text-lg font-bold text-brand-dark">Address</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="address">
+                  <Label htmlFor="indv_address">
                     Street Address<span className="text-red-600">*</span>
                   </Label>
-                  <Input id="address" {...register("address")} />
+                  <Input id="indv_address" name="indv_address" {...register("address")} />
                   {errors.address && (
                     <p className="text-xs text-red-600">
                       {errors.address.message}
@@ -333,10 +336,10 @@ export default function IndividualAccountPage() {
 
                 <div className="grid gap-6 md:grid-cols-3">
                   <div className="space-y-2">
-                    <Label htmlFor="city">
+                    <Label htmlFor="indv_city">
                       City<span className="text-red-600">*</span>
                     </Label>
-                    <Input id="city" {...register("city")} />
+                    <Input id="indv_city" name="indv_city" {...register("city")} />
                     {errors.city && (
                       <p className="text-xs text-red-600">
                         {errors.city.message}
@@ -345,10 +348,10 @@ export default function IndividualAccountPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="postalCode">
+                    <Label htmlFor="indv_postalCode">
                       Postal Code<span className="text-red-600">*</span>
                     </Label>
-                    <Input id="postalCode" {...register("postalCode")} />
+                    <Input id="indv_postalCode" name="indv_postalCode" {...register("postalCode")} />
                     {errors.postalCode && (
                       <p className="text-xs text-red-600">
                         {errors.postalCode.message}
@@ -357,11 +360,12 @@ export default function IndividualAccountPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="country">
+                    <Label htmlFor="indv_country">
                       Country<span className="text-red-600">*</span>
                     </Label>
                     <select
-                      id="country"
+                      id="indv_country"
+                      name="indv_country"
                       {...register("country")}
                       className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                     >
@@ -427,13 +431,14 @@ export default function IndividualAccountPage() {
                 </h3>
 
                 <div className="space-y-2">
-                  <Label htmlFor="isPEP">
+                  <Label htmlFor="indv_isPEP">
                     Are you a Politically Exposed Person (PEP)?
                   </Label>
                   <div className="flex items-center gap-4">
                     <label className="flex items-center gap-2">
                       <input
                         type="radio"
+                        name="indv_isPEP"
                         value="false"
                         checked={!isPEP}
                         onChange={() => setValue("isPEP", false)}
@@ -444,6 +449,7 @@ export default function IndividualAccountPage() {
                     <label className="flex items-center gap-2">
                       <input
                         type="radio"
+                        name="indv_isPEP"
                         value="true"
                         checked={isPEP}
                         onChange={() => setValue("isPEP", true)}
@@ -455,11 +461,12 @@ export default function IndividualAccountPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="expectedMonthlyVolume">
+                  <Label htmlFor="indv_expectedMonthlyVolume">
                     Expected Monthly Volume<span className="text-red-600">*</span>
                   </Label>
                   <select
-                    id="expectedMonthlyVolume"
+                    id="indv_expectedMonthlyVolume"
+                    name="indv_expectedMonthlyVolume"
                     {...register("expectedMonthlyVolume")}
                     className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                   >
@@ -477,11 +484,12 @@ export default function IndividualAccountPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="sourceOfFunds">
+                  <Label htmlFor="indv_sourceOfFunds">
                     Source of Funds<span className="text-red-600">*</span>
                   </Label>
                   <textarea
-                    id="sourceOfFunds"
+                    id="indv_sourceOfFunds"
+                    name="indv_sourceOfFunds"
                     {...register("sourceOfFunds")}
                     rows={4}
                     className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
@@ -499,7 +507,7 @@ export default function IndividualAccountPage() {
               <div className="space-y-4 rounded-xl bg-brand-grayLight/30 p-6">
                 <h3 className="font-bold text-brand-dark">Consents</h3>
                 <ConsentCheckbox
-                  id="consentKYC"
+                  id="indv_consentKYC"
                   checked={consentKYC}
                   onCheckedChange={(checked) =>
                     setValue("consentKYC", checked as boolean)
@@ -509,7 +517,7 @@ export default function IndividualAccountPage() {
                   error={errors.consentKYC?.message}
                 />
                 <ConsentCheckbox
-                  id="consentTerms"
+                  id="indv_consentTerms"
                   checked={consentTerms}
                   onCheckedChange={(checked) =>
                     setValue("consentTerms", checked as boolean)

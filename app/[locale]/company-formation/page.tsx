@@ -159,7 +159,7 @@ export default function CompanyFormationPage() {
       </section>
 
       {/* Process Overview */}
-      <section className="bg-brand-grayLight py-20">
+      <section className="bg-white py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             title="Simple Formation Process"

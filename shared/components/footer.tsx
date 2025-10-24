@@ -20,7 +20,7 @@ export function Footer({ locale }: FooterProps) {
 
   return (
     <footer className="border-t border-brand-grayLight bg-white">
-      <div className="container mx-auto max-w-7xl px-6 py-16">
+      <div className="container mx-auto max-w-7xl px-6 py-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-5">
           {/* Brand Column */}
           <div className="lg:col-span-1">

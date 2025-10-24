@@ -83,14 +83,14 @@ export default function CompanyFormationPage() {
   return (
     <>
       <Hero
-        title={t("companyFormation.title")}
+        title="Company Formation"
         subtitle="Complete company formation services with expert guidance"
       />
 
-      <section className="bg-brand-off py-20">
+      <section className="bg-white py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title={t("companyFormation.selectForm")}
+            title="Choose Your Company Form"
             description="Choose the legal structure that best fits your business needs"
             align="center"
             className="mb-12"
@@ -208,7 +208,7 @@ function CompanyFormationWizard({ formType }: { formType: string }) {
   ];
 
   return (
-    <div className="min-h-screen bg-brand-off py-20">
+    <div className="min-h-screen bg-white py-20">
       <div className="container mx-auto max-w-5xl px-6">
         <div className="mb-12">
           <h1 className="mb-2 text-center text-3xl font-bold text-brand-dark">

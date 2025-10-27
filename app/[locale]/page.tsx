@@ -71,15 +71,19 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
             description={t('home.services.summary')}
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
-              <ServiceCard key={service.title} {...service} />
+            {services.map((service, index) => (
+              <ServiceCard
+                key={service.title}
+                {...service}
+                style={{ animationDelay: `${index * 100}ms` }}
+              />
             ))}
           </div>
         </div>
       </section>
 
       {/* Trust Section */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-brand-off py-20 md:py-28">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline={t('home.trust.title')}
@@ -87,8 +91,8 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
             description={t('home.trust.summary')}
           />
           <div className="grid gap-8 md:grid-cols-3">
-            <div className="rounded-2xl bg-white p-8 text-center">
-              <div className="mb-4 text-4xl font-bold text-brand-gold">CSSF</div>
+            <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white p-8 text-center shadow-sm transition-all duration-300">
+              <div className="mb-4 text-4xl font-bold text-brand-gold transition-transform duration-300 group-hover:scale-110">CSSF</div>
               <h3 className="mb-2 text-lg font-bold text-brand-dark">
                 {t('home.regulatory.luxembourg')}
               </h3>
@@ -96,8 +100,8 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
                 {t('home.regulatory.cssf')}
               </p>
             </div>
-            <div className="rounded-2xl bg-white p-8 text-center">
-              <div className="mb-4 text-4xl font-bold text-brand-gold">
+            <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white p-8 text-center shadow-sm transition-all duration-300">
+              <div className="mb-4 text-4xl font-bold text-brand-gold transition-transform duration-300 group-hover:scale-110">
                 ACPR
               </div>
               <h3 className="mb-2 text-lg font-bold text-brand-dark">{t('home.regulatory.france')}</h3>
@@ -105,8 +109,8 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
                 {t('home.regulatory.acpr')}
               </p>
             </div>
-            <div className="rounded-2xl bg-white p-8 text-center">
-              <div className="mb-4 text-4xl font-bold text-brand-gold">AMF</div>
+            <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white p-8 text-center shadow-sm transition-all duration-300">
+              <div className="mb-4 text-4xl font-bold text-brand-gold transition-transform duration-300 group-hover:scale-110">AMF</div>
               <h3 className="mb-2 text-lg font-bold text-brand-dark">{t('home.regulatory.france')}</h3>
               <p className="text-sm text-brand-grayMed">
                 {t('home.regulatory.amf')}

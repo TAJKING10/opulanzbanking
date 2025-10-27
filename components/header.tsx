@@ -38,8 +38,8 @@ export function Header({ locale }: HeaderProps) {
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
         isScrolled
-          ? "bg-white shadow-md"
-          : "bg-transparent"
+          ? "bg-white/95 backdrop-blur-md shadow-md"
+          : "bg-white shadow-sm"
       )}
     >
       <nav className="container mx-auto flex h-20 max-w-7xl items-center justify-between px-6">

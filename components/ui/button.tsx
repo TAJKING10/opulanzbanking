@@ -4,15 +4,15 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-2xl text-sm font-semibold ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-2xl text-sm font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95",
   {
     variants: {
       variant: {
-        default: "bg-white text-brand-dark hover:bg-brand-off shadow-sm",
-        primary: "bg-brand-gold text-white hover:bg-brand-goldDark",
-        secondary: "bg-brand-goldDark text-white hover:bg-brand-gold",
-        outline: "border-2 border-brand-gold text-brand-gold bg-transparent hover:bg-brand-gold hover:text-white",
-        ghost: "hover:bg-brand-grayLight hover:text-brand-dark",
+        default: "bg-white text-brand-dark hover:bg-brand-off shadow-sm hover:shadow-md",
+        primary: "bg-brand-gold text-white hover:bg-brand-goldDark shadow-md hover:shadow-lg",
+        secondary: "bg-brand-goldDark text-white hover:bg-brand-gold shadow-md hover:shadow-lg",
+        outline: "border-2 border-brand-gold text-brand-gold bg-transparent hover:bg-brand-gold hover:text-white hover:shadow-md",
+        ghost: "hover:bg-brand-grayLight/50 hover:text-brand-dark",
         link: "text-brand-gold underline-offset-4 hover:underline",
       },
       size: {

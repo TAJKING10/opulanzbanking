@@ -186,7 +186,7 @@ export default function IndividualAccountPage() {
                   <Label htmlFor="indv_firstName">
                     First Name<span className="text-red-600">*</span>
                   </Label>
-                  <Input id="indv_firstName" name="indv_firstName" {...register("firstName")} />
+                  <Input id="indv_firstName" {...register("firstName")} />
                   {errors.firstName && (
                     <p className="text-xs text-red-600">
                       {errors.firstName.message}
@@ -198,7 +198,7 @@ export default function IndividualAccountPage() {
                   <Label htmlFor="indv_lastName">
                     Last Name<span className="text-red-600">*</span>
                   </Label>
-                  <Input id="indv_lastName" name="indv_lastName" {...register("lastName")} />
+                  <Input id="indv_lastName" {...register("lastName")} />
                   {errors.lastName && (
                     <p className="text-xs text-red-600">
                       {errors.lastName.message}
@@ -212,7 +212,6 @@ export default function IndividualAccountPage() {
                   </Label>
                   <Input
                     id="indv_dateOfBirth"
-                    name="indv_dateOfBirth"
                     type="date"
                     {...register("dateOfBirth")}
                   />
@@ -229,7 +228,6 @@ export default function IndividualAccountPage() {
                   </Label>
                   <select
                     id="indv_nationality"
-                    name="indv_nationality"
                     {...register("nationality")}
                     className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                   >
@@ -304,7 +302,6 @@ export default function IndividualAccountPage() {
                     </div>
                     <Input
                       id="indv_phoneNumber"
-                      name="indv_phoneNumber"
                       type="tel"
                       placeholder="123456789"
                       className="pl-32"
@@ -326,7 +323,7 @@ export default function IndividualAccountPage() {
                   <Label htmlFor="indv_address">
                     Street Address<span className="text-red-600">*</span>
                   </Label>
-                  <Input id="indv_address" name="indv_address" {...register("address")} />
+                  <Input id="indv_address" {...register("address")} />
                   {errors.address && (
                     <p className="text-xs text-red-600">
                       {errors.address.message}
@@ -339,7 +336,7 @@ export default function IndividualAccountPage() {
                     <Label htmlFor="indv_city">
                       City<span className="text-red-600">*</span>
                     </Label>
-                    <Input id="indv_city" name="indv_city" {...register("city")} />
+                    <Input id="indv_city" {...register("city")} />
                     {errors.city && (
                       <p className="text-xs text-red-600">
                         {errors.city.message}
@@ -351,7 +348,7 @@ export default function IndividualAccountPage() {
                     <Label htmlFor="indv_postalCode">
                       Postal Code<span className="text-red-600">*</span>
                     </Label>
-                    <Input id="indv_postalCode" name="indv_postalCode" {...register("postalCode")} />
+                    <Input id="indv_postalCode" {...register("postalCode")} />
                     {errors.postalCode && (
                       <p className="text-xs text-red-600">
                         {errors.postalCode.message}
@@ -365,7 +362,6 @@ export default function IndividualAccountPage() {
                     </Label>
                     <select
                       id="indv_country"
-                      name="indv_country"
                       {...register("country")}
                       className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                     >
@@ -466,7 +462,6 @@ export default function IndividualAccountPage() {
                   </Label>
                   <select
                     id="indv_expectedMonthlyVolume"
-                    name="indv_expectedMonthlyVolume"
                     {...register("expectedMonthlyVolume")}
                     className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                   >
@@ -489,7 +484,6 @@ export default function IndividualAccountPage() {
                   </Label>
                   <textarea
                     id="indv_sourceOfFunds"
-                    name="indv_sourceOfFunds"
                     {...register("sourceOfFunds")}
                     rows={4}
                     className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"

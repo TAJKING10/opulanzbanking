@@ -25,9 +25,9 @@ const complianceMessages = {
   },
   LU: {
     banking:
-      "Banking services are provided by partners licensed and regulated by CSSF (Commission de Surveillance du Secteur Financier).",
+      "Banking services are provided by licensed and regulated partners.",
     investment:
-      "Investment advisory services comply with Luxembourg law and MiFID II regulations. Subject to CSSF supervision.",
+      "Investment advisory services comply with Luxembourg law and MiFID II regulations.",
     insurance:
       "Life insurance products distributed in compliance with Luxembourg insurance law and IDD requirements.",
     mortgage:

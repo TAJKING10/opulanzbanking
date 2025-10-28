@@ -133,7 +133,7 @@
     }
   },
   "legal": {
-    "regulated": "Regulated by CSSF (LU) | ACPR & AMF (FR)",
+    "regulated": "Regulated by ACPR & AMF (FR)",
     "disclaimer": "Opulanz is a digital banking platform. Banking services provided by licensed partners.",
     "mifid": "Investment services subject to MiFID II regulations",
     "idd": "Insurance distribution subject to IDD requirements"
@@ -178,7 +178,7 @@
     },
     "description": "Professional digital banking and advisory services for businesses and individuals in France and Luxembourg.",
     "copyright": "© {year} Opulanz. All rights reserved.",
-    "regulated": "Regulated by CSSF (LU) | ACPR & AMF (FR)"
+    "regulated": "Regulated by ACPR & AMF (FR)"
   },
   "home": {
     "services": {
@@ -198,8 +198,6 @@
       "summary": "Opulanz operates under strict regulatory oversight to ensure your financial security."
     },
     "regulatory": {
-      "luxembourg": "Luxembourg",
-      "cssf": "Regulated by Commission de Surveillance du Secteur Financier",
       "france": "France",
       "acpr": "Autorité de Contrôle Prudentiel et de Résolution",
       "amf": "Autorité des Marchés Financiers"
@@ -427,8 +425,8 @@
       "mortgage": "Mortgage services are provided by licensed credit intermediaries. Subject to responsible lending requirements."
     },
     "LU": {
-      "banking": "Banking services are provided by partners licensed and regulated by CSSF (Commission de Surveillance du Secteur Financier).",
-      "investment": "Investment advisory services comply with Luxembourg law and MiFID II regulations. Subject to CSSF supervision.",
+      "banking": "Banking services are provided by licensed and regulated partners.",
+      "investment": "Investment advisory services comply with Luxembourg law and MiFID II regulations.",
       "insurance": "Life insurance products distributed in compliance with Luxembourg insurance law and IDD requirements.",
       "mortgage": "Mortgage services provided by regulated credit institutions in Luxembourg. Subject to consumer protection laws."
     }

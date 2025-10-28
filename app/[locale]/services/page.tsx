@@ -85,7 +85,7 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
   ];
 
   const whyChooseUs = [
-    "Regulated by CSSF, ACPR, and AMF for your peace of mind",
+    "Regulated by ACPR and AMF for your peace of mind",
     "Over 25 years of combined expertise in financial services",
     "Personalized service from dedicated account managers",
     "Competitive rates and transparent fee structure",
@@ -199,16 +199,7 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
             title="Your Security is Our Priority"
             description="We are regulated by leading European financial authorities, ensuring the highest standards of security and compliance."
           />
-          <div className="grid gap-8 md:grid-cols-3">
-            <Card className="border-none bg-white shadow-sm">
-              <CardHeader className="text-center">
-                <div className="mb-4 text-4xl font-bold text-brand-gold">CSSF</div>
-                <CardTitle>{t('home.regulatory.luxembourg')}</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-sm text-brand-grayMed">{t('home.regulatory.cssf')}</p>
-              </CardContent>
-            </Card>
+          <div className="grid gap-8 md:grid-cols-2">
             <Card className="border-none bg-white shadow-sm">
               <CardHeader className="text-center">
                 <div className="mb-4 text-4xl font-bold text-brand-gold">ACPR</div>

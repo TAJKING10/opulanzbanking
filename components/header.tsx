@@ -60,7 +60,7 @@ export function Header({ locale }: HeaderProps) {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-10 md:flex">
           {navigation.map((item) => {
             const isActive = item.href === ""
               ? pathname === `/${locale}` || pathname === `/${locale}/`
@@ -70,7 +70,7 @@ export function Header({ locale }: HeaderProps) {
                 key={item.name}
                 href={`/${locale}${item.href}`}
                 className={cn(
-                  "text-sm font-semibold transition-colors hover:text-brand-gold",
+                  "text-sm font-semibold transition-all duration-200 hover:text-brand-gold hover:scale-105 px-1",
                   isActive ? "text-brand-gold" : "text-brand-dark"
                 )}
               >
@@ -81,7 +81,7 @@ export function Header({ locale }: HeaderProps) {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           {/* Language Switcher */}
           <div className="hidden items-center gap-2 sm:flex">
             <Globe className="h-4 w-4 text-brand-grayMed transition-colors" />
@@ -92,7 +92,7 @@ export function Header({ locale }: HeaderProps) {
                 const path = pathname.replace(`/${locale}`, `/${newLocale}`);
                 window.location.href = path;
               }}
-              className="cursor-pointer border-none bg-transparent text-sm font-semibold text-brand-dark transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold"
+              className="cursor-pointer border-none bg-transparent text-sm font-semibold text-brand-dark transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold rounded-md"
             >
               <option value="en">EN</option>
               <option value="fr">FR</option>
@@ -104,7 +104,7 @@ export function Header({ locale }: HeaderProps) {
             asChild
             variant="outline"
             size="sm"
-            className="hidden sm:inline-flex"
+            className="hidden sm:inline-flex transition-all duration-200 hover:scale-105 hover:border-brand-gold"
           >
             <Link href={`/${locale}/login`}>Login</Link>
           </Button>
@@ -114,7 +114,7 @@ export function Header({ locale }: HeaderProps) {
             asChild
             variant="default"
             size="sm"
-            className="hidden sm:inline-flex bg-brand-gold text-white hover:bg-brand-goldDark"
+            className="hidden sm:inline-flex bg-brand-gold text-white hover:bg-brand-goldDark transition-all duration-200 hover:scale-105 shadow-sm hover:shadow-md"
           >
             <Link href={`/${locale}/open-account`}>Open Account</Link>
           </Button>

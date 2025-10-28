@@ -133,7 +133,7 @@
     }
   },
   "legal": {
-    "regulated": "Réglementé par CSSF (LU) | ACPR & AMF (FR)",
+    "regulated": "Réglementé par ACPR & AMF (FR)",
     "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
     "mifid": "Services d'investissement soumis aux réglementations MiFID II",
     "idd": "Distribution d'assurance soumise aux exigences IDD"
@@ -178,7 +178,7 @@
     },
     "description": "Services bancaires et de conseil numériques professionnels pour les entreprises et les particuliers en France et au Luxembourg.",
     "copyright": "© {year} Opulanz. Tous droits réservés.",
-    "regulated": "Réglementé par CSSF (LU) | ACPR & AMF (FR)"
+    "regulated": "Réglementé par ACPR & AMF (FR)"
   },
   "home": {
     "services": {
@@ -198,8 +198,6 @@
       "summary": "Opulanz opère sous une surveillance réglementaire stricte pour assurer votre sécurité financière."
     },
     "regulatory": {
-      "luxembourg": "Luxembourg",
-      "cssf": "Réglementé par la Commission de Surveillance du Secteur Financier",
       "france": "France",
       "acpr": "Autorité de Contrôle Prudentiel et de Résolution",
       "amf": "Autorité des Marchés Financiers"
@@ -427,8 +425,8 @@
       "mortgage": "Les services hypothécaires sont fournis par des intermédiaires de crédit agréés. Soumis aux exigences de prêt responsable."
     },
     "LU": {
-      "banking": "Les services bancaires sont fournis par des partenaires agréés et réglementés par la CSSF (Commission de Surveillance du Secteur Financier).",
-      "investment": "Les services de conseil en investissement sont conformes à la législation luxembourgeoise et aux réglementations MiFID II. Sous la supervision de la CSSF.",
+      "banking": "Les services bancaires sont fournis par des partenaires agréés et réglementés.",
+      "investment": "Les services de conseil en investissement sont conformes à la législation luxembourgeoise et aux réglementations MiFID II.",
       "insurance": "Produits d'assurance-vie distribués conformément à la législation luxembourgeoise sur les assurances et aux exigences de la DDA.",
       "mortgage": "Services hypothécaires fournis par des établissements de crédit réglementés au Luxembourg. Soumis aux lois de protection des consommateurs."
     }

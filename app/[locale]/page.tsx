@@ -91,16 +91,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             title={t('home.trust.description')}
             description={t('home.trust.summary')}
           />
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white p-8 text-center shadow-sm transition-all duration-300">
-              <div className="mb-4 text-4xl font-bold text-brand-gold transition-transform duration-300 group-hover:scale-110">CSSF</div>
-              <h3 className="mb-2 text-lg font-bold text-brand-dark">
-                {t('home.regulatory.luxembourg')}
-              </h3>
-              <p className="text-sm text-brand-grayMed">
-                {t('home.regulatory.cssf')}
-              </p>
-            </div>
+          <div className="grid gap-8 md:grid-cols-2">
             <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white p-8 text-center shadow-sm transition-all duration-300">
               <div className="mb-4 text-4xl font-bold text-brand-gold transition-transform duration-300 group-hover:scale-110">
                 ACPR

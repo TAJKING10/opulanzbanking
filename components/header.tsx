@@ -100,16 +100,6 @@ export function Header({ locale }: HeaderProps) {
             </select>
           </div>
 
-          {/* Login Button */}
-          <Button
-            asChild
-            variant="outline"
-            size="sm"
-            className="hidden sm:inline-flex transition-all duration-200 hover:scale-105 hover:border-brand-gold"
-          >
-            <Link href={`/${locale}/login`}>Login</Link>
-          </Button>
-
           {/* Open Account Button */}
           <Button
             asChild
@@ -164,9 +154,6 @@ export function Header({ locale }: HeaderProps) {
               </select>
             </div>
             <div className="space-y-2 pt-4">
-              <Button asChild variant="outline" className="w-full">
-                <Link href={`/${locale}/login`}>Login</Link>
-              </Button>
               <div className="space-y-2">
                 <p className="px-4 text-xs font-semibold text-brand-grayMed uppercase tracking-wide">Open Account</p>
                 <Button asChild variant="primary" className="w-full">

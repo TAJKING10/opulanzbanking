@@ -33,7 +33,7 @@ export default function ScheduleConsultationPage() {
               {/* Calendly inline widget */}
               <div
                 className="calendly-inline-widget"
-                data-url="https://calendly.com/d/cs8q-pwr-rh9?primary_color=dcbf2f"
+                data-url="https://calendly.com/advansystradingait/new-meeting?primary_color=ae7f06"
                 style={{ minWidth: '320px', height: '700px' }}
               />
             </CardContent>

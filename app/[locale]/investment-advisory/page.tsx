@@ -83,8 +83,8 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
         title={t('services.investment.title')}
         subtitle={t('services.investment.description')}
         primaryCta={{
-          label: "Start Investing",
-          href: `/${locale}/open-account`,
+          label: "Schedule Meeting",
+          href: `/${locale}/investment-advisory/schedule`,
         }}
         secondaryCta={{
           label: "Our Services",
@@ -140,7 +140,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <a href={`/${locale}/open-account`}>Schedule Consultation</a>
+                <a href={`/${locale}/investment-advisory/schedule`}>Schedule Consultation</a>
               </Button>
             </div>
             <div className="space-y-4">
@@ -214,10 +214,10 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href={`/${locale}/open-account`}
+              href={`/${locale}/investment-advisory/schedule`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
-              Get Started
+              Schedule Meeting
             </a>
             <a
               href={`/${locale}/support`}

@@ -61,7 +61,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
         subtitle={t('services.tax.description')}
         primaryCta={{
           label: "Schedule Consultation",
-          href: `/${locale}/open-account`,
+          href: `/${locale}/tax-advisory/schedule`,
         }}
         secondaryCta={{
           label: "Our Services",
@@ -117,7 +117,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <a href={`/${locale}/open-account`}>Book a Consultation</a>
+                <a href={`/${locale}/tax-advisory/schedule`}>Book a Consultation</a>
               </Button>
             </div>
             <div className="space-y-4">
@@ -177,10 +177,10 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href={`/${locale}/open-account`}
+              href={`/${locale}/tax-advisory/schedule`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
-              Get Started
+              Schedule Consultation
             </a>
             <a
               href={`/${locale}/support`}

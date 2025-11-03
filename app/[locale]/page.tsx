@@ -16,6 +16,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       image: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=800&h=500&fit=crop',
       href: `/${locale}/open-account/personal`,
     },
+    {
+      title: 'Open a Business Account',
+      description: 'Get a business account for your existing company or start a new company with integrated banking.',
+      image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=500&fit=crop',
+      href: `/${locale}/open-account/business`,
+    },
   ];
 
   return (
@@ -77,11 +83,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section id="accounts" className="bg-gray-50 py-20 md:py-28">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline="Account Opening"
-            title="Open Your Personal Account"
-            description="Start your banking journey with a personal account. Choose between current/everyday banking or private banking for high-net-worth individuals."
+            overline="Account Options"
+            title="Choose Your Banking Solution"
+            description="Whether you need personal banking or business banking, we have the right solution for you."
           />
-          <div className="mx-auto max-w-2xl">
+          <div className="grid gap-8 md:grid-cols-2">
             {services.map((service, index) => (
               <ServiceCard
                 key={service.title}
@@ -129,20 +135,20 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             Ready to Open Your Account?
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            Start your personal banking journey today. Complete your application in minutes.
+            Start your banking journey today. Choose personal or business account and complete your application in minutes.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
               href={`/${locale}/open-account/personal`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
-              Open Personal Account
+              Personal Account
             </a>
             <a
-              href={`/${locale}/support`}
+              href={`/${locale}/open-account/business`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
-              Contact Support
+              Business Account
             </a>
           </div>
         </div>

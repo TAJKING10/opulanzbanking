@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Calculator, FileText, PieChart, Users, CheckCircle, Clock, Shield, TrendingUp } from "lucide-react";
 import { Hero } from "@/components/hero";
@@ -115,7 +116,7 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <a href={`/${locale}/invoicing-accounting/get-started`}>Start Your Free Trial</a>
+                <Link href={`/${locale}/invoicing-accounting/get-started`}>Start Your Free Trial</Link>
               </Button>
             </div>
             <div className="space-y-4">
@@ -141,18 +142,18 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
             Get started today and experience the difference.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
+            <Link
               href={`/${locale}/invoicing-accounting/get-started`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               Get Started
-            </a>
-            <a
+            </Link>
+            <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
               Contact Sales
-            </a>
+            </Link>
           </div>
         </div>
       </section>

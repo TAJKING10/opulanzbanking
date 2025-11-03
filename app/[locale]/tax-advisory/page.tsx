@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Scale, FileCheck, Briefcase, Globe, CheckCircle, Shield, TrendingDown, UserCheck } from "lucide-react";
 import { Hero } from "@/components/hero";
@@ -117,7 +118,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <a href={`/${locale}/tax-advisory/schedule`}>Book a Consultation</a>
+                <Link href={`/${locale}/tax-advisory/schedule`}>Book a Consultation</Link>
               </Button>
             </div>
             <div className="space-y-4">
@@ -176,18 +177,18 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
             your tax burden while staying fully compliant.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
+            <Link
               href={`/${locale}/tax-advisory/schedule`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               Schedule Consultation
-            </a>
-            <a
+            </Link>
+            <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
               Contact Us
-            </a>
+            </Link>
           </div>
         </div>
       </section>

@@ -5,7 +5,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Globe, MapPin } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Globe, MapPin, Coins, TrendingUp, AlertTriangle, FileText } from "lucide-react";
 
 interface AccountIntentStepProps {
   data: any;
@@ -16,6 +20,11 @@ interface AccountIntentStepProps {
 export function AccountIntentStep({ data, onUpdate, onNext }: AccountIntentStepProps) {
   const [residence, setResidence] = React.useState(data.residence || "");
   const [country, setCountry] = React.useState(data.country || "");
+  const [currencies, setCurrencies] = React.useState<string[]>(data.currencies || []);
+  const [monthlyTransfers, setMonthlyTransfers] = React.useState<number>(data.monthlyTransfers || 5000);
+  const [sourceOfFunds, setSourceOfFunds] = React.useState(data.sourceOfFunds || "");
+  const [sourceOfFundsOther, setSourceOfFundsOther] = React.useState(data.sourceOfFundsOther || "");
+  const [pepScreening, setPepScreening] = React.useState(data.pepScreening || false);
 
   const handleResidenceChange = (value: string) => {
     setResidence(value);
@@ -27,13 +36,62 @@ export function AccountIntentStep({ data, onUpdate, onNext }: AccountIntentStepP
     onUpdate({ country: value });
   };
 
+  const handleCurrencyToggle = (currency: string, checked: boolean) => {
+    const newCurrencies = checked
+      ? [...currencies, currency]
+      : currencies.filter((c) => c !== currency);
+    setCurrencies(newCurrencies);
+    onUpdate({ currencies: newCurrencies });
+  };
+
+  const handleMonthlyTransfersChange = (value: number[]) => {
+    setMonthlyTransfers(value[0]);
+    onUpdate({ monthlyTransfers: value[0] });
+  };
+
+  const handleSourceOfFundsChange = (value: string) => {
+    setSourceOfFunds(value);
+    onUpdate({ sourceOfFunds: value });
+    if (value !== "other") {
+      setSourceOfFundsOther("");
+      onUpdate({ sourceOfFundsOther: "" });
+    }
+  };
+
+  const handleSourceOfFundsOtherChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSourceOfFundsOther(e.target.value);
+    onUpdate({ sourceOfFundsOther: e.target.value });
+  };
+
+  const handlePepScreeningChange = (checked: boolean) => {
+    setPepScreening(checked);
+    onUpdate({ pepScreening: checked });
+  };
+
   const handleContinue = () => {
-    if (residence && (residence === "non-resident" || country)) {
+    if (
+      residence &&
+      (residence === "non-resident" || country) &&
+      currencies.length > 0 &&
+      sourceOfFunds &&
+      (sourceOfFunds !== "other" || sourceOfFundsOther.trim())
+    ) {
       onNext();
     }
   };
 
-  const isFormValid = residence && (residence === "non-resident" || country);
+  const isFormValid =
+    residence &&
+    (residence === "non-resident" || country) &&
+    currencies.length > 0 &&
+    sourceOfFunds &&
+    (sourceOfFunds !== "other" || sourceOfFundsOther.trim());
+
+  const formatCurrency = (value: number) => {
+    if (value >= 1000000) return `€${(value / 1000000).toFixed(1)}M`;
+    if (value >= 1000) return `€${(value / 1000).toFixed(0)}K`;
+    return `€${value}`;
+  };
 
   return (
     <div className="space-y-8">
@@ -129,6 +187,128 @@ export function AccountIntentStep({ data, onUpdate, onNext }: AccountIntentStepP
           </div>
         )}
 
+        {/* Currencies Multi-Select */}
+        <div className="space-y-3">
+          <Label className="flex items-center gap-2 text-base font-semibold text-brand-dark">
+            <Coins className="h-4 w-4 text-brand-gold" />
+            <span>Which currencies do you need? *</span>
+          </Label>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            {["EUR", "USD", "GBP", "Other"].map((currency) => (
+              <div
+                key={currency}
+                className={`flex items-center space-x-2 rounded-lg border-2 p-3 transition-all ${
+                  currencies.includes(currency)
+                    ? "border-brand-gold bg-brand-gold/5"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <Checkbox
+                  id={`currency-${currency}`}
+                  checked={currencies.includes(currency)}
+                  onCheckedChange={(checked) => handleCurrencyToggle(currency, checked as boolean)}
+                />
+                <Label
+                  htmlFor={`currency-${currency}`}
+                  className="cursor-pointer font-medium text-brand-dark"
+                >
+                  {currency}
+                </Label>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-brand-grayMed">
+            Select all currencies you plan to use for transactions
+          </p>
+        </div>
+
+        {/* Monthly Transfers Slider */}
+        <div className="space-y-3">
+          <Label className="flex items-center gap-2 text-base font-semibold text-brand-dark">
+            <TrendingUp className="h-4 w-4 text-brand-gold" />
+            <span>Estimated monthly incoming transfers</span>
+          </Label>
+          <div className="space-y-4">
+            <Slider
+              value={[monthlyTransfers]}
+              onValueChange={handleMonthlyTransfersChange}
+              min={0}
+              max={1000000}
+              step={1000}
+              className="w-full"
+            />
+            <div className="flex justify-between text-sm">
+              <span className="text-brand-grayMed">€0</span>
+              <span className="font-semibold text-brand-gold">{formatCurrency(monthlyTransfers)}</span>
+              <span className="text-brand-grayMed">€1M+</span>
+            </div>
+          </div>
+          <p className="text-xs text-brand-grayMed">
+            This helps us recommend appropriate account features and limits
+          </p>
+        </div>
+
+        {/* Source of Funds */}
+        <div className="space-y-3">
+          <Label htmlFor="source-of-funds" className="flex items-center gap-2 text-base font-semibold text-brand-dark">
+            <FileText className="h-4 w-4 text-brand-gold" />
+            <span>Source of funds (primary) *</span>
+          </Label>
+          <Select value={sourceOfFunds} onValueChange={handleSourceOfFundsChange}>
+            <SelectTrigger id="source-of-funds" className="w-full">
+              <SelectValue placeholder="Select your primary source of funds" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="salary">Salary</SelectItem>
+              <SelectItem value="dividends">Dividends</SelectItem>
+              <SelectItem value="business-income">Business Income</SelectItem>
+              <SelectItem value="asset-sale">Asset Sale</SelectItem>
+              <SelectItem value="savings">Savings</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {sourceOfFunds === "other" && (
+            <Input
+              type="text"
+              placeholder="Please specify your source of funds"
+              value={sourceOfFundsOther}
+              onChange={handleSourceOfFundsOtherChange}
+              className="w-full"
+            />
+          )}
+          <p className="text-xs text-brand-grayMed">
+            Required for compliance and anti-money laundering checks
+          </p>
+        </div>
+
+        {/* PEP Screening */}
+        <div className="rounded-lg border-2 border-amber-200 bg-amber-50 p-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <Label htmlFor="pep-screening" className="flex items-center gap-2 text-base font-semibold text-amber-900">
+                <AlertTriangle className="h-5 w-5" />
+                <span>PEP / Sanctions Screening</span>
+              </Label>
+              <p className="mt-2 text-sm text-amber-800">
+                I confirm that I am not a Politically Exposed Person (PEP) or subject to any international
+                sanctions. PEPs include government officials, senior politicians, and their close associates.
+              </p>
+            </div>
+            <Switch
+              id="pep-screening"
+              checked={pepScreening}
+              onCheckedChange={handlePepScreeningChange}
+              className="mt-1"
+            />
+          </div>
+          {!pepScreening && (
+            <p className="mt-3 text-xs text-amber-700">
+              If you are a PEP or subject to sanctions, additional verification will be required
+            </p>
+          )}
+        </div>
+
         {/* Information Box */}
         <div className="rounded-lg bg-blue-50 p-4">
           <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-blue-900">
@@ -166,3 +346,4 @@ export function AccountIntentStep({ data, onUpdate, onNext }: AccountIntentStepP
     </div>
   );
 }
+

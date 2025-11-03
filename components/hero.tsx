@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -67,7 +68,7 @@ export function Hero({
                   variant="default"
                   className="min-w-48"
                 >
-                  <a href={primaryCta.href}>{primaryCta.label}</a>
+                  <Link href={primaryCta.href}>{primaryCta.label}</Link>
                 </Button>
               )}
               {secondaryCta && (
@@ -77,7 +78,7 @@ export function Hero({
                   variant="outline"
                   className="min-w-48 border-white text-white hover:bg-white/10"
                 >
-                  <a href={secondaryCta.href}>{secondaryCta.label}</a>
+                  <Link href={secondaryCta.href}>{secondaryCta.label}</Link>
                 </Button>
               )}
             </motion.div>

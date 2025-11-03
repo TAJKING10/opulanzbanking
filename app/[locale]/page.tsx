@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { Hero } from '@/components/hero';
@@ -122,18 +123,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             {t('home.cta.description')}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
+            <Link
               href={`/${locale}/open-account`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               {t('common.getStarted')}
-            </a>
-            <a
+            </Link>
+            <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
               {t('home.cta.contact')}
-            </a>
+            </Link>
           </div>
         </div>
       </section>

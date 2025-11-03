@@ -31,7 +31,7 @@ export function Stepper({ steps, currentStep, onStepClick, allowNavigation = tru
         {steps.map((step, stepIdx) => {
           const isCompleted = currentStep > step.id;
           const isCurrent = currentStep === step.id;
-          const canNavigate = allowNavigation && stepId < currentStep;
+          const canNavigate = allowNavigation && step.id < currentStep;
 
           return (
             <li

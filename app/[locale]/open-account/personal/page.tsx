@@ -39,6 +39,13 @@ export default function PersonalAccountPage() {
     emailVerified: false,
     phoneVerified: false,
     accountIntent: "",
+    residence: "",
+    country: "",
+    currencies: [],
+    monthlyTransfers: 5000,
+    sourceOfFunds: "",
+    sourceOfFundsOther: "",
+    pepScreening: false,
     documents: [],
     consents: {
       processing: false,

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { TrendingUp, PieChart, Shield, Target, CheckCircle, Wallet, BarChart3, Users } from "lucide-react";
 import { Hero } from "@/components/hero";
@@ -140,7 +141,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <a href={`/${locale}/investment-advisory/schedule`}>Schedule Consultation</a>
+                <Link href={`/${locale}/investment-advisory/schedule`}>Schedule Consultation</Link>
               </Button>
             </div>
             <div className="space-y-4">
@@ -213,18 +214,18 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
             investment advisors and discover how we can help you reach your financial goals.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
+            <Link
               href={`/${locale}/investment-advisory/schedule`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               Schedule Meeting
-            </a>
-            <a
+            </Link>
+            <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
               Learn More
-            </a>
+            </Link>
           </div>
         </div>
       </section>

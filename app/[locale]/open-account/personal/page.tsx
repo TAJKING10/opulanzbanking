@@ -99,6 +99,15 @@ export default function PersonalAccountPage() {
     setFormData((prev) => ({ ...prev, ...data }));
   };
 
+  // Check if current step allows navigation
+  const canProceed = () => {
+    if (currentStep === 5) {
+      // Review step - check if consents are accepted
+      return formData.canContinueReview === true;
+    }
+    return true; // Other steps handle their own validation
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -163,7 +172,7 @@ export default function PersonalAccountPage() {
       onStepChange={handleStepChange}
       onNext={handleNext}
       onBack={handleBack}
-      canGoNext={currentStep < PERSONAL_ACCOUNT_STEPS.length}
+      canGoNext={currentStep < PERSONAL_ACCOUNT_STEPS.length && canProceed()}
       canGoBack={currentStep > 1}
       isLoading={isLoading}
     >

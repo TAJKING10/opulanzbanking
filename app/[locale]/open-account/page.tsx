@@ -66,7 +66,7 @@ export default function OpenAccountPage() {
                   size="lg"
                   className="w-full group-hover:bg-brand-goldDark"
                 >
-                  <Link href={`/${locale}/open-account/individual`}>
+                  <Link href={`/${locale}/open-account/personal`}>
                     Get Started
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
@@ -111,7 +111,7 @@ export default function OpenAccountPage() {
                   size="lg"
                   className="w-full group-hover:bg-brand-goldDark"
                 >
-                  <Link href={`/${locale}/open-account/company`}>
+                  <Link href={`/${locale}/open-account/business`}>
                     Get Started
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>

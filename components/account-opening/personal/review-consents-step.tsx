@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { AlertCircle, CheckCircle, User, Mail, Phone, MapPin, FileText } from "lucide-react";
+import { AlertCircle, CheckCircle, User, Mail, Phone, MapPin, FileText, Coins, TrendingUp, Wallet, ShieldCheck } from "lucide-react";
 
 interface ReviewConsentsStepProps {
   data: any;
@@ -128,6 +128,71 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
                 </p>
               </div>
             </div>
+
+            {data.currencies && data.currencies.length > 0 && (
+              <div className="flex items-start gap-3">
+                <Coins className="h-5 w-5 flex-shrink-0 text-brand-gold" />
+                <div>
+                  <p className="text-sm font-medium text-brand-dark">Currencies Needed</p>
+                  <p className="text-sm text-brand-grayMed">
+                    {data.currencies.join(", ")}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {data.monthlyTransfers !== undefined && (
+              <div className="flex items-start gap-3">
+                <TrendingUp className="h-5 w-5 flex-shrink-0 text-brand-gold" />
+                <div>
+                  <p className="text-sm font-medium text-brand-dark">Est. Monthly Incoming Transfers</p>
+                  <p className="text-sm text-brand-grayMed">
+                    {new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "EUR",
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    }).format(data.monthlyTransfers)}
+                    {data.monthlyTransfers >= 1000000 ? "+" : ""}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {data.sourceOfFunds && (
+              <div className="flex items-start gap-3">
+                <Wallet className="h-5 w-5 flex-shrink-0 text-brand-gold" />
+                <div>
+                  <p className="text-sm font-medium text-brand-dark">Primary Source of Funds</p>
+                  <p className="text-sm text-brand-grayMed">
+                    {data.sourceOfFunds === "salary" && "Salary"}
+                    {data.sourceOfFunds === "dividends" && "Dividends"}
+                    {data.sourceOfFunds === "business" && "Business Income"}
+                    {data.sourceOfFunds === "asset-sale" && "Asset Sale"}
+                    {data.sourceOfFunds === "savings" && "Savings"}
+                    {data.sourceOfFunds === "other" && data.sourceOfFundsOther
+                      ? `Other: ${data.sourceOfFundsOther}`
+                      : data.sourceOfFunds === "other"
+                      ? "Other"
+                      : ""}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {data.pepScreening !== undefined && (
+              <div className="flex items-start gap-3">
+                <ShieldCheck className="h-5 w-5 flex-shrink-0 text-brand-gold" />
+                <div>
+                  <p className="text-sm font-medium text-brand-dark">PEP / Sanctions Screening</p>
+                  <p className="text-sm text-brand-grayMed">
+                    {data.pepScreening
+                      ? "Confirmed: Not a Politically Exposed Person"
+                      : "Not confirmed"}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

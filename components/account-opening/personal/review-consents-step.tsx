@@ -22,7 +22,11 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
   const handleConsentChange = (consent: keyof typeof consents, checked: boolean) => {
     const newConsents = { ...consents, [consent]: checked };
     setConsents(newConsents);
-    onUpdate({ consents: newConsents });
+    const canContinue = (consent === 'processing' || consent === 'dataSharing')
+      ? (newConsents.processing && newConsents.dataSharing)
+      : (consents.processing && consents.dataSharing);
+
+    onUpdate({ consents: newConsents, canContinueReview: canContinue });
 
     // Log consent with metadata (in real app, send to backend)
     console.log("Consent logged:", {
@@ -34,13 +38,12 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
     });
   };
 
-  const handleContinue = () => {
-    if (consents.processing && consents.dataSharing) {
-      onNext();
-    }
-  };
-
   const canContinue = consents.processing && consents.dataSharing;
+
+  // Update parent component with validation status
+  React.useEffect(() => {
+    onUpdate({ canContinueReview: canContinue });
+  }, [canContinue]);
 
   return (
     <div className="space-y-8">
@@ -305,17 +308,6 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
             </div>
           </div>
         )}
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={handleContinue}
-          disabled={!canContinue}
-          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

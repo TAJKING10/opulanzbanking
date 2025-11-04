@@ -14,7 +14,11 @@
       "Bash(NODE_ENV=production npm run build:*)",
       "Bash(git pull:*)",
       "Read(//c/Users/Toufi/OneDrive/Pictures/Screenshots/**)",
-      "Bash(gh run:*)"
+      "Bash(gh run:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run migrate:*)",
+      "Bash(node test-connection.js:*)",
+      "Bash(node check-credentials.js:*)"
     ],
     "deny": [],
     "ask": []

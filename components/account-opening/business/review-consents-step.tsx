@@ -22,7 +22,6 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
   const handleConsentChange = (consent: keyof typeof consents, checked: boolean) => {
     const newConsents = { ...consents, [consent]: checked };
     setConsents(newConsents);
-    onUpdate({ consents: newConsents });
 
     // Log consent with metadata (in real app, send to backend)
     console.log("Consent logged:", {
@@ -34,13 +33,13 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
     });
   };
 
-  const handleContinue = () => {
-    if (consents.processing && consents.dataSharing) {
-      onNext();
-    }
-  };
+  const isReviewStepValid = consents.processing && consents.dataSharing;
 
-  const canContinue = consents.processing && consents.dataSharing;
+  // Update parent with validation status
+  React.useEffect(() => {
+    onUpdate({ consents, isReviewStepValid });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isReviewStepValid]);
 
   return (
     <div className="space-y-8">
@@ -232,7 +231,7 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
           </p>
         </div>
 
-        {!canContinue && (
+        {!isReviewStepValid && (
           <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-600" />
             <div className="text-sm text-red-900">
@@ -240,17 +239,6 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             </div>
           </div>
         )}
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={handleContinue}
-          disabled={!canContinue}
-          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

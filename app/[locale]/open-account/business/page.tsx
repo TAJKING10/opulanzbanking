@@ -110,6 +110,42 @@ export default function BusinessAccountPage() {
     setFormData((prev) => ({ ...prev, ...data }));
   };
 
+  // Check if current step allows navigation
+  const canProceed = () => {
+    if (currentStep === 1) {
+      // Welcome step - always allow since it's just informational
+      return true;
+    }
+    if (currentStep === 2) {
+      // Company Status step - check if status is selected and details filled
+      return formData.isCompanyStepValid === true;
+    }
+    if (currentStep === 3) {
+      // Jurisdiction step - check if jurisdiction is selected
+      return formData.isJurisdictionStepValid === true;
+    }
+    if (currentStep === 4) {
+      // Directors/UBOs step - check if directors and UBOs are filled
+      return formData.isDirectorsStepValid === true;
+    }
+    if (currentStep === 5) {
+      // Company Formation step - check if details are filled (only for new companies)
+      if (formData.companyStatus === "new") {
+        return formData.isFormationStepValid === true;
+      }
+      return true; // Skip for existing companies
+    }
+    if (currentStep === 6) {
+      // Documents step - check if documents are uploaded or upload later selected
+      return formData.isDocumentsStepValid === true;
+    }
+    if (currentStep === 7) {
+      // Review step - check if consents are accepted
+      return formData.isReviewStepValid === true;
+    }
+    return true; // Other steps handle their own validation
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -190,9 +226,10 @@ export default function BusinessAccountPage() {
       onStepChange={handleStepChange}
       onNext={handleNext}
       onBack={handleBack}
-      canGoNext={currentStep < BUSINESS_ACCOUNT_STEPS.length}
-      canGoBack={currentStep > 1}
+      canGoNext={currentStep < BUSINESS_ACCOUNT_STEPS.length && canProceed()}
+      canGoBack={currentStep > 1 && currentStep < BUSINESS_ACCOUNT_STEPS.length}
       isLoading={isLoading}
+      hideNavigation={currentStep === BUSINESS_ACCOUNT_STEPS.length}
     >
       {renderStep()}
     </AccountOpeningLayout>

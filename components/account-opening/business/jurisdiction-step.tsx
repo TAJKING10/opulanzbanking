@@ -20,11 +20,11 @@ export function JurisdictionStep({ data, onUpdate, onNext }: JurisdictionStepPro
     onUpdate({ jurisdiction: value });
   };
 
-  const handleContinue = () => {
-    if (jurisdiction) {
-      onNext();
-    }
-  };
+  // Update parent with validation status
+  React.useEffect(() => {
+    onUpdate({ isJurisdictionStepValid: !!jurisdiction });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jurisdiction]);
 
   return (
     <div className="space-y-8">
@@ -123,17 +123,6 @@ export function JurisdictionStep({ data, onUpdate, onNext }: JurisdictionStepPro
             </p>
           </div>
         )}
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={handleContinue}
-          disabled={!jurisdiction}
-          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

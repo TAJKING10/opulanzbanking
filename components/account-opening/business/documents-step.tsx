@@ -92,22 +92,21 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
 
   const handleUploadLaterChange = (checked: boolean) => {
     setUploadLater(checked);
-    onUpdate({ uploadLater: checked });
-  };
-
-  const handleContinue = () => {
-    const requiredDocs = documents.filter((doc) => doc.required);
-    const allRequiredUploaded = requiredDocs.every((doc) => doc.uploaded);
-
-    if (allRequiredUploaded || uploadLater) {
-      onUpdate({ documents: documents.filter((doc) => doc.uploaded) });
-      onNext();
-    }
   };
 
   const requiredDocs = documents.filter((doc) => doc.required);
   const allRequiredUploaded = requiredDocs.every((doc) => doc.uploaded);
-  const canContinue = allRequiredUploaded || uploadLater;
+  const isDocumentsStepValid = allRequiredUploaded || uploadLater;
+
+  // Update parent with validation status
+  React.useEffect(() => {
+    onUpdate({
+      documents: documents.filter((doc) => doc.uploaded),
+      uploadLater,
+      isDocumentsStepValid,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDocumentsStepValid, uploadLater]);
 
   return (
     <div className="space-y-8">
@@ -233,7 +232,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
           </ul>
         </div>
 
-        {!canContinue && (
+        {!isDocumentsStepValid && (
           <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-amber-600" />
             <div className="text-sm text-amber-900">
@@ -241,17 +240,6 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
             </div>
           </div>
         )}
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={handleContinue}
-          disabled={!canContinue}
-          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

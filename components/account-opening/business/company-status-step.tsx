@@ -23,18 +23,19 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
     onUpdate({ companyStatus: value });
   };
 
-  const handleContinue = () => {
-    if (companyStatus === "existing" && companyName && registrationNumber) {
-      onUpdate({ companyName, registrationNumber });
-      onNext();
-    } else if (companyStatus === "new") {
-      onNext();
-    }
-  };
-
   const canContinue =
     (companyStatus === "existing" && companyName && registrationNumber) ||
     companyStatus === "new";
+
+  // Update parent with validation status
+  React.useEffect(() => {
+    if (companyStatus === "existing" && companyName && registrationNumber) {
+      onUpdate({ companyName, registrationNumber, isCompanyStepValid: canContinue });
+    } else {
+      onUpdate({ isCompanyStepValid: canContinue });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [companyStatus, companyName, registrationNumber, canContinue]);
 
   return (
     <div className="space-y-8">
@@ -143,17 +144,6 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
             </p>
           </div>
         )}
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={handleContinue}
-          disabled={!canContinue}
-          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

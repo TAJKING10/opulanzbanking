@@ -18,18 +18,18 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
   const [businessActivity, setBusinessActivity] = React.useState(data.businessActivity || "");
   const [shareCapital, setShareCapital] = React.useState(data.shareCapital || "");
 
-  const handleContinue = () => {
-    if (proposedName && businessActivity && shareCapital) {
-      onUpdate({
-        proposedCompanyName: proposedName,
-        businessActivity,
-        shareCapital,
-      });
-      onNext();
-    }
-  };
+  const isFormationStepValid = proposedName && businessActivity && shareCapital;
 
-  const canContinue = proposedName && businessActivity && shareCapital;
+  // Update parent with validation status
+  React.useEffect(() => {
+    onUpdate({
+      proposedCompanyName: proposedName,
+      businessActivity,
+      shareCapital,
+      isFormationStepValid,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFormationStepValid]);
 
   return (
     <div className="space-y-8">
@@ -118,17 +118,6 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
             each stage and coordinate the bank account opening to minimize delays.
           </p>
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={handleContinue}
-          disabled={!canContinue}
-          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

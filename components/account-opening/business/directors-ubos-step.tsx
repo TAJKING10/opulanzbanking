@@ -61,19 +61,15 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
     setUbos(ubos.map((u) => (u.id === id ? { ...u, [field]: value } : u)));
   };
 
-  const handleContinue = () => {
-    const allDirectorsFilled = directors.every((d) => d.firstName && d.lastName && d.email);
-    const allUBOsFilled = ubos.every((u) => u.firstName && u.lastName && u.email && u.ownership);
-
-    if (allDirectorsFilled && allUBOsFilled) {
-      onUpdate({ directors, ubos });
-      onNext();
-    }
-  };
-
-  const canContinue =
+  const isDirectorsStepValid =
     directors.every((d) => d.firstName && d.lastName && d.email) &&
     ubos.every((u) => u.firstName && u.lastName && u.email && u.ownership);
+
+  // Update parent with validation status
+  React.useEffect(() => {
+    onUpdate({ directors, ubos, isDirectorsStepValid });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDirectorsStepValid]);
 
   return (
     <div className="space-y-8">
@@ -223,17 +219,6 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
             prevent financial crime and ensures transparency.
           </p>
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={handleContinue}
-          disabled={!canContinue}
-          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

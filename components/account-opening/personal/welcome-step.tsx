@@ -19,12 +19,6 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
     onUpdate({ mode: value });
   };
 
-  const handleContinue = () => {
-    if (mode) {
-      onNext();
-    }
-  };
-
   return (
     <div className="space-y-8">
       <div>
@@ -104,17 +98,6 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
             <li>• Complete the account opening process</li>
           </ul>
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          type="button"
-          onClick={handleContinue}
-          disabled={!mode}
-          className="rounded-lg bg-brand-gold px-8 py-3 text-base font-semibold text-white transition-all hover:bg-brand-goldDark disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Continue
-        </button>
       </div>
     </div>
   );

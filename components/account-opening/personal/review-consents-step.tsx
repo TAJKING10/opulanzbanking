@@ -43,6 +43,7 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
   // Update parent component with validation status
   React.useEffect(() => {
     onUpdate({ canContinueReview: canContinue });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canContinue]);
 
   return (

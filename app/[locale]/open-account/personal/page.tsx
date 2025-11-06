@@ -101,6 +101,22 @@ export default function PersonalAccountPage() {
 
   // Check if current step allows navigation
   const canProceed = () => {
+    if (currentStep === 1) {
+      // Welcome step - check if mode is selected
+      return !!formData.mode;
+    }
+    if (currentStep === 2) {
+      // Identity step - check if all fields are filled and verified
+      return formData.isIdentityStepValid === true;
+    }
+    if (currentStep === 3) {
+      // Intent step - check if all required fields are filled
+      return formData.isIntentStepValid === true;
+    }
+    if (currentStep === 4) {
+      // Documents step - check if documents are uploaded or upload later is selected
+      return formData.isDocumentsStepValid === true;
+    }
     if (currentStep === 5) {
       // Review step - check if consents are accepted
       return formData.canContinueReview === true;
@@ -173,8 +189,9 @@ export default function PersonalAccountPage() {
       onNext={handleNext}
       onBack={handleBack}
       canGoNext={currentStep < PERSONAL_ACCOUNT_STEPS.length && canProceed()}
-      canGoBack={currentStep > 1}
+      canGoBack={currentStep > 1 && currentStep < PERSONAL_ACCOUNT_STEPS.length}
       isLoading={isLoading}
+      hideNavigation={currentStep === PERSONAL_ACCOUNT_STEPS.length}
     >
       {renderStep()}
     </AccountOpeningLayout>

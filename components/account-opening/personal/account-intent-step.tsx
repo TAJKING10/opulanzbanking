@@ -68,24 +68,18 @@ export function AccountIntentStep({ data, onUpdate, onNext }: AccountIntentStepP
     onUpdate({ pepScreening: checked });
   };
 
-  const handleContinue = () => {
-    if (
-      residence &&
-      (residence === "non-resident" || country) &&
-      currencies.length > 0 &&
-      sourceOfFunds &&
-      (sourceOfFunds !== "other" || sourceOfFundsOther.trim())
-    ) {
-      onNext();
-    }
-  };
-
   const isFormValid =
     residence &&
     (residence === "non-resident" || country) &&
     currencies.length > 0 &&
     sourceOfFunds &&
     (sourceOfFunds !== "other" || sourceOfFundsOther.trim());
+
+  // Update parent with validation status
+  React.useEffect(() => {
+    onUpdate({ isIntentStepValid: isFormValid });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFormValid]);
 
   const formatCurrency = (value: number) => {
     if (value >= 1000000) return `€${(value / 1000000).toFixed(1)}M`;
@@ -331,17 +325,6 @@ export function AccountIntentStep({ data, onUpdate, onNext }: AccountIntentStepP
             </p>
           </div>
         )}
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={handleContinue}
-          disabled={!isFormValid}
-          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

@@ -83,19 +83,18 @@ export function EligibilityDocumentsStep({ data, onUpdate, onNext }: Eligibility
     onUpdate({ uploadLater: checked });
   };
 
-  const handleContinue = () => {
-    const requiredDocs = documents.filter((doc) => doc.required);
-    const allRequiredUploaded = requiredDocs.every((doc) => doc.uploaded);
-
-    if (allRequiredUploaded || uploadLater) {
-      onUpdate({ documents: documents.filter((doc) => doc.uploaded) });
-      onNext();
-    }
-  };
-
   const requiredDocs = documents.filter((doc) => doc.required);
   const allRequiredUploaded = requiredDocs.every((doc) => doc.uploaded);
   const canContinue = allRequiredUploaded || uploadLater;
+
+  // Update parent with validation status and documents
+  React.useEffect(() => {
+    onUpdate({
+      isDocumentsStepValid: canContinue,
+      documents: documents.filter((doc) => doc.uploaded)
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canContinue]);
 
   return (
     <div className="space-y-8">
@@ -229,17 +228,6 @@ export function EligibilityDocumentsStep({ data, onUpdate, onNext }: Eligibility
             </div>
           </div>
         )}
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={handleContinue}
-          disabled={!canContinue}
-          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

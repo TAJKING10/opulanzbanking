@@ -64,19 +64,6 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
     }
   };
 
-  const handleContinue = () => {
-    if (
-      formState.firstName &&
-      formState.lastName &&
-      formState.email &&
-      formState.phone &&
-      verification.emailVerified &&
-      verification.phoneVerified
-    ) {
-      onNext();
-    }
-  };
-
   const isFormValid =
     formState.firstName &&
     formState.lastName &&
@@ -84,6 +71,12 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
     formState.phone &&
     verification.emailVerified &&
     verification.phoneVerified;
+
+  // Update parent with validation status
+  React.useEffect(() => {
+    onUpdate({ isIdentityStepValid: isFormValid });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFormValid]);
 
   return (
     <div className="space-y-8">
@@ -249,17 +242,6 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
             </div>
           </div>
         )}
-      </div>
-
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          onClick={handleContinue}
-          disabled={!isFormValid}
-          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

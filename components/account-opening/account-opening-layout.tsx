@@ -17,6 +17,7 @@ interface AccountOpeningLayoutProps {
   isLoading?: boolean;
   title: string;
   description?: string;
+  hideNavigation?: boolean;
 }
 
 export function AccountOpeningLayout({
@@ -31,6 +32,7 @@ export function AccountOpeningLayout({
   isLoading = false,
   title,
   description,
+  hideNavigation = false,
 }: AccountOpeningLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -51,42 +53,46 @@ export function AccountOpeningLayout({
           {children}
         </div>
 
-        {/* Navigation Buttons */}
-        <div className="mt-8 flex items-center justify-between">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onBack}
-            disabled={!canGoBack || isLoading}
-            className="min-w-32"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
-          </Button>
+        {/* Navigation Buttons - Hidden on submission step */}
+        {!hideNavigation && (
+          <>
+            <div className="mt-8 flex items-center justify-between">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onBack}
+                disabled={!canGoBack || isLoading}
+                className="min-w-32"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back
+              </Button>
 
-          <Button
-            type="button"
-            onClick={onNext}
-            disabled={!canGoNext || isLoading}
-            className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark"
-          >
-            {isLoading ? (
-              "Processing..."
-            ) : (
-              <>
-                Continue
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </>
-            )}
-          </Button>
-        </div>
+              <Button
+                type="button"
+                onClick={onNext}
+                disabled={!canGoNext || isLoading}
+                className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark"
+              >
+                {isLoading ? (
+                  "Processing..."
+                ) : (
+                  <>
+                    Continue
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </div>
 
-        {/* Progress saved indicator */}
-        <div className="mt-6 text-center">
-          <p className="text-sm text-brand-grayMed">
-            Your progress is automatically saved. You can return anytime to complete your application.
-          </p>
-        </div>
+            {/* Progress saved indicator */}
+            <div className="mt-6 text-center">
+              <p className="text-sm text-brand-grayMed">
+                Your progress is automatically saved. You can return anytime to complete your application.
+              </p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

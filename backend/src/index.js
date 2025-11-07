@@ -13,6 +13,10 @@ require('dotenv').config();
 
 const { testConnection } = require('./config/db');
 const userRoutes = require('./routes/users');
+const applicationRoutes = require('./routes/applications');
+const documentRoutes = require('./routes/documents');
+const companyRoutes = require('./routes/companies');
+const appointmentRoutes = require('./routes/appointments');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -26,6 +30,10 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // API Routes
 app.use('/api/users', userRoutes);
+app.use('/api/applications', applicationRoutes);
+app.use('/api', documentRoutes); // Documents routes include /api/applications/:id/documents and /api/documents/:id
+app.use('/api/companies', companyRoutes);
+app.use('/api/appointments', appointmentRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -49,6 +57,34 @@ app.get('/', (req, res) => {
         create: 'POST /api/users',
         update: 'PUT /api/users/:id',
         delete: 'DELETE /api/users/:id',
+      },
+      applications: {
+        getAll: 'GET /api/applications',
+        getOne: 'GET /api/applications/:id',
+        create: 'POST /api/applications',
+        update: 'PATCH /api/applications/:id',
+        delete: 'DELETE /api/applications/:id',
+      },
+      documents: {
+        getByApplication: 'GET /api/applications/:id/documents',
+        getOne: 'GET /api/documents/:id',
+        create: 'POST /api/applications/:id/documents',
+        update: 'PATCH /api/documents/:id',
+        delete: 'DELETE /api/documents/:id',
+      },
+      companies: {
+        getAll: 'GET /api/companies',
+        getOne: 'GET /api/companies/:id',
+        create: 'POST /api/companies',
+        update: 'PATCH /api/companies/:id',
+        delete: 'DELETE /api/companies/:id',
+      },
+      appointments: {
+        getAll: 'GET /api/appointments',
+        getOne: 'GET /api/appointments/:id',
+        create: 'POST /api/appointments',
+        update: 'PATCH /api/appointments/:id',
+        delete: 'DELETE /api/appointments/:id',
       },
     },
   });
@@ -88,11 +124,17 @@ const startServer = async () => {
     app.listen(PORT, () => {
       console.log('');
       console.log('🚀 Opulanz Banking API Server Started');
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       console.log(`📡 Server running on: http://localhost:${PORT}`);
       console.log(`🏥 Health check: http://localhost:${PORT}/health`);
-      console.log(`👥 Users API: http://localhost:${PORT}/api/users`);
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      console.log('');
+      console.log('📚 Available API Endpoints:');
+      console.log(`   👥 Users:        http://localhost:${PORT}/api/users`);
+      console.log(`   📋 Applications: http://localhost:${PORT}/api/applications`);
+      console.log(`   📄 Documents:    http://localhost:${PORT}/api/documents`);
+      console.log(`   🏢 Companies:    http://localhost:${PORT}/api/companies`);
+      console.log(`   📅 Appointments: http://localhost:${PORT}/api/appointments`);
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       console.log('');
     });
   } catch (err) {

@@ -24,7 +24,16 @@
       "Bash(netstat:*)",
       "Bash(findstr:*)",
       "Bash(taskkill:*)",
-      "Bash(node test-api.js:*)"
+      "Bash(node test-api.js:*)",
+      "Bash(curl:*)",
+      "Bash(python:*)",
+      "Bash(nul)",
+      "Bash(where:*)",
+      "Bash(psql \"postgresql://opulanz_admin:Advensys2025?@opulanz-pg.postgres.database.azure.com:5432/postgres?sslmode=require\" -c \"SELECT id, type, status, payload->>''firstName'' as first_name, payload->>''lastName'' as last_name, payload->>''email'' as email, created_at FROM applications WHERE payload->>''email'' = ''toufic-jandqah@hotmail.com'' ORDER BY created_at DESC;\")",
+      "Bash(node -e:*)",
+      "Bash(echo:*)",
+      "Bash(timeout /t 2 /nobreak)",
+      "Bash(timeout /t 1 /nobreak)"
     ],
     "deny": [],
     "ask": []

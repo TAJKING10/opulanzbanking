@@ -79,7 +79,7 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
         subtitle={t('services.lifeInsurance.description')}
         primaryCta={{
           label: "Get a Quote",
-          href: `/${locale}/open-account`,
+          href: `/${locale}/insurance`,
         }}
         secondaryCta={{
           label: "Learn More",
@@ -135,7 +135,7 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <a href={`/${locale}/open-account`}>Get Started Today</a>
+                <a href={`/${locale}/insurance`}>Get Started Today</a>
               </Button>
             </div>
             <div className="space-y-4">
@@ -234,7 +234,7 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href={`/${locale}/open-account`}
+              href={`/${locale}/insurance`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               Get Free Quote

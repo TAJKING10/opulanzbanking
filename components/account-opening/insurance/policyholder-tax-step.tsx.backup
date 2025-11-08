@@ -70,13 +70,21 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
     setFormState((prev) => ({ ...prev, additionalTaxResidencies: updated }));
   };
 
-  // Validation - Relaxed to allow testing
+  // Validation
   const isFormValid = React.useMemo(() => {
-    // Only require basic fields to allow progression
     return (
+      formState.title &&
       formState.firstName &&
       formState.lastName &&
-      formState.email
+      formState.dateOfBirth &&
+      formState.placeOfBirth &&
+      formState.nationality &&
+      formState.email &&
+      formState.phone &&
+      formState.addressLine1 &&
+      formState.city &&
+      formState.postalCode &&
+      formState.country
     );
   }, [formState]);
 

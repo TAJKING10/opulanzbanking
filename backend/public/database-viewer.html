@@ -257,6 +257,8 @@
                     <option value="">All Types</option>
                     <option value="individual">Individual</option>
                     <option value="company">Company</option>
+                    <option value="accounting">Accounting</option>
+                    <option value="insurance">Insurance</option>
                 </select>
 
                 <select id="statusFilter">
@@ -339,12 +341,12 @@
             const total = allData.length;
             const submitted = allData.filter(a => a.status === 'submitted').length;
             const approved = allData.filter(a => a.status === 'approved').length;
-            const companies = allData.filter(a => a.type === 'company').length;
+            const insurance = allData.filter(a => a.type === 'insurance').length;
 
             document.getElementById('total').textContent = total;
             document.getElementById('submitted').textContent = submitted;
             document.getElementById('approved').textContent = approved;
-            document.getElementById('companies').textContent = companies;
+            document.getElementById('companies').textContent = insurance;
         }
 
         function renderTable() {
@@ -368,16 +370,31 @@
             }
 
             tbody.innerHTML = filtered.map(app => {
-                // Different field names for individual vs company
-                const name = app.type === 'company'
-                    ? (app.payload.companyName || '-')
-                    : `${app.payload.firstName || ''} ${app.payload.lastName || ''}`.trim() || '-';
+                // Different field names for individual vs company vs accounting vs insurance
+                let name = '-';
+                if (app.type === 'company') {
+                    name = app.payload.companyName || '-';
+                } else if (app.type === 'accounting') {
+                    name = app.payload.legalName || app.payload.tradeName || '-';
+                } else if (app.type === 'insurance') {
+                    name = `${app.payload.firstName || ''} ${app.payload.lastName || ''}`.trim() || '-';
+                } else {
+                    name = `${app.payload.firstName || ''} ${app.payload.lastName || ''}`.trim() || '-';
+                }
 
-                const email = app.payload.email ||
-                    (app.payload.directors && app.payload.directors[0] ? app.payload.directors[0].email : '-');
+                let email = app.payload.email || '-';
+                if (app.type === 'company' && !app.payload.email && app.payload.directors && app.payload.directors[0]) {
+                    email = app.payload.directors[0].email || '-';
+                } else if (app.type === 'accounting' && !app.payload.email && app.payload.primaryContact) {
+                    email = app.payload.primaryContact.email || '-';
+                }
 
-                const phone = app.payload.phone ||
-                    (app.payload.directors && app.payload.directors[0] ? app.payload.directors[0].phone : '-');
+                let phone = app.payload.phone || '-';
+                if (app.type === 'company' && !app.payload.phone && app.payload.directors && app.payload.directors[0]) {
+                    phone = app.payload.directors[0].phone || '-';
+                } else if (app.type === 'accounting' && !app.payload.phone && app.payload.primaryContact) {
+                    phone = app.payload.primaryContact.phone || '-';
+                }
 
                 return `
                     <tr>

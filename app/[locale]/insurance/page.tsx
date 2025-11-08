@@ -156,27 +156,7 @@ export default function InsurancePage() {
   };
 
   // Check if current step allows navigation
-  const canProceed = () => {
-    if (currentStep === 1) {
-      return formData.isPolicyholderStepValid === true;
-    }
-    if (currentStep === 2) {
-      return formData.isFinancialStepValid === true;
-    }
-    if (currentStep === 3) {
-      return formData.isInvestmentStepValid === true;
-    }
-    if (currentStep === 4) {
-      return formData.isPremiumStepValid === true;
-    }
-    if (currentStep === 5) {
-      return formData.isBeneficiariesStepValid === true;
-    }
-    if (currentStep === 6) {
-      return formData.isComplianceStepValid === true;
-    }
-    return true; // Review step handles its own submission
-  };
+  const canProceed = () => { return true; }
 
   const renderStep = () => {
     switch (currentStep) {

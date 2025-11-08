@@ -66,7 +66,7 @@ export default function OpenAccountPage() {
                   size="lg"
                   className="w-full group-hover:bg-brand-goldDark"
                 >
-                  <Link href={`/${locale}/open-account/individual`}>
+                  <Link href={`/${locale}/open-account/personal`}>
                     Get Started
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
@@ -111,7 +111,7 @@ export default function OpenAccountPage() {
                   size="lg"
                   className="w-full group-hover:bg-brand-goldDark"
                 >
-                  <Link href={`/${locale}/open-account/company`}>
+                  <Link href={`/${locale}/open-account/business`}>
                     Get Started
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
@@ -135,22 +135,6 @@ export default function OpenAccountPage() {
               </Link>
             </Button>
           </div>
-        </div>
-      </section>
-
-      {/* Alternative: Warm Referral */}
-      <section className="bg-white py-20">
-        <div className="container mx-auto max-w-4xl px-6 text-center">
-          <h2 className="mb-4 text-3xl font-bold text-brand-dark">
-            Not sure which banking partner is right for you?
-          </h2>
-          <p className="mb-8 text-lg text-brand-grayMed">
-            Answer a few questions and we'll recommend the best banking solution
-            for your needs.
-          </p>
-          <Button asChild variant="secondary" size="lg">
-            <Link href={`/${locale}/open-account/warm-referral`}>Find Your Match</Link>
-          </Button>
         </div>
       </section>
     </>

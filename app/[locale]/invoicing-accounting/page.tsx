@@ -61,7 +61,7 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
         subtitle={t('services.accounting.description')}
         primaryCta={{
           label: "Get Started",
-          href: `/${locale}/invoicing-accounting/get-started`,
+          href: `/${locale}/invoicing-accounting/onboarding`,
         }}
         secondaryCta={{
           label: "Learn More",
@@ -116,7 +116,7 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <Link href={`/${locale}/invoicing-accounting/get-started`}>Start Your Free Trial</Link>
+                <Link href={`/${locale}/invoicing-accounting/onboarding`}>Start Your Free Trial</Link>
               </Button>
             </div>
             <div className="space-y-4">
@@ -143,7 +143,7 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href={`/${locale}/invoicing-accounting/get-started`}
+              href={`/${locale}/invoicing-accounting/onboarding`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               Get Started

@@ -46,11 +46,115 @@ export function ReviewSubmitStep({ data, onUpdate, locale }: ReviewSubmitStepPro
     setSubmitError(null);
 
     try {
-      // Simulate API call - replace with actual API endpoint
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Generate application ID (in real implementation, this comes from API)
+      // Generate application ID
       const appId = `INS-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+
+      console.log("Submitting life insurance application:", data);
+
+      // Prepare payload for Azure backend
+      const applicationPayload = {
+        type: "insurance",
+        status: "submitted",
+        payload: {
+          // Personal Information & Tax
+          title: data.title,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          dateOfBirth: data.dateOfBirth,
+          placeOfBirth: data.placeOfBirth,
+          nationality: data.nationality,
+          email: data.email,
+          phone: data.phone,
+          address: {
+            addressLine1: data.addressLine1,
+            addressLine2: data.addressLine2,
+            city: data.city,
+            postalCode: data.postalCode,
+            country: data.country,
+          },
+          taxResidentLU: data.taxResidentLU,
+          additionalTaxResidencies: data.additionalTaxResidencies || [],
+
+          // Financial Profile
+          employmentStatus: data.employmentStatus,
+          occupation: data.occupation,
+          employer: data.employer,
+          annualIncome: data.annualIncome,
+          totalAssets: data.totalAssets,
+          liquidAssets: data.liquidAssets,
+          sourceOfFunds: data.sourceOfFunds,
+          sourceOfFundsDetails: data.sourceOfFundsDetails,
+          sourceOfWealth: data.sourceOfWealth,
+          sourceOfWealthDetails: data.sourceOfWealthDetails,
+          isPEP: data.isPEP,
+          pepDetails: data.pepDetails,
+
+          // Investment Profile
+          investmentHorizon: data.investmentHorizon,
+          investmentKnowledge: data.investmentKnowledge,
+          investmentExperience: data.investmentExperience,
+          riskTolerance: data.riskTolerance,
+          investmentObjective: data.investmentObjective,
+          expectedReturn: data.expectedReturn,
+          liquidityNeeds: data.liquidityNeeds,
+
+          // Premium & Payments
+          currency: data.currency,
+          premiumType: data.premiumType,
+          singlePremiumAmount: data.singlePremiumAmount,
+          regularPremiumAmount: data.regularPremiumAmount,
+          regularPremiumFrequency: data.regularPremiumFrequency,
+          paymentMethod: data.paymentMethod,
+          bankDetails: {
+            accountHolder: data.accountHolder,
+            iban: data.iban,
+            bic: data.bic,
+            bankName: data.bankName,
+          },
+
+          // Beneficiaries
+          beneficiaries: data.beneficiaries || [],
+
+          // Compliance & Declarations
+          declarations: {
+            healthDeclaration: data.healthDeclaration,
+            accuracyDeclaration: data.accuracyDeclaration,
+            taxComplianceDeclaration: data.taxComplianceDeclaration,
+            amlDeclaration: data.amlDeclaration,
+            dataProcessingConsent: data.dataProcessingConsent,
+            termsAndConditions: data.termsAndConditions,
+            electronicSignature: data.electronicSignature,
+            marketingConsent: data.marketingConsent,
+          },
+          complianceDocuments: data.complianceDocuments?.map((doc: any) => ({
+            name: doc.name,
+            type: doc.type,
+            size: doc.size
+          })) || [],
+          uploadLater: data.uploadLater,
+
+          // Metadata
+          applicationId: appId,
+          submittedAt: new Date().toISOString(),
+        }
+      };
+
+      // Submit to Azure backend API
+      const response = await fetch('http://localhost:5000/api/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(applicationPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit life insurance application to backend');
+      }
+
+      const result = await response.json();
+      console.log("Life insurance application saved to Azure database:", result);
+
       setApplicationId(appId);
 
       // Clear saved progress

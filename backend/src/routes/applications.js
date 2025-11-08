@@ -52,10 +52,10 @@ router.post('/', async (req, res) => {
     const { type, status = 'draft', payload = {} } = req.body;
 
     // Validation
-    if (!type || !['individual', 'company'].includes(type)) {
+    if (!type || !['individual', 'company', 'accounting', 'insurance'].includes(type)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid type. Must be "individual" or "company"'
+        error: 'Invalid type. Must be "individual", "company", "accounting", or "insurance"'
       });
     }
 

@@ -44,16 +44,110 @@ export default function CompanyAccountPage() {
   });
 
   const onSubmit = async (data: WhitelabelKYBFormData) => {
-    // Simulate API submission
-    console.log("Submitting KYB data:", data);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      console.log("Submitting KYB data:", data);
 
-    // Simulate approval for demo
-    setStatus("submitted");
-    setTimeout(() => {
-      setStatus("approved");
-      setIban("LU28 0019 4006 4475 0001");
-    }, 3000);
+      // Prepare the payload for the backend
+      const applicationPayload = {
+        type: "company",
+        status: "submitted",
+        payload: {
+          // Company Information
+          companyName: data.companyName,
+          registrationNumber: data.registrationNumber,
+          dateOfIncorporation: data.dateOfIncorporation,
+          legalForm: data.legalForm,
+
+          // Company Address
+          companyAddress: data.companyAddress,
+          companyCity: data.companyCity,
+          companyPostalCode: data.companyPostalCode,
+          companyCountry: data.companyCountry,
+
+          // Business Activity
+          businessActivity: data.businessActivity,
+          activityCountries: data.activityCountries,
+          expectedMonthlyVolume: data.expectedMonthlyVolume,
+
+          // Consents
+          consentKYB: data.consentKYB,
+          consentTerms: data.consentTerms,
+
+          // Metadata
+          submittedAt: new Date().toISOString(),
+        }
+      };
+
+      // Submit application to backend API
+      const applicationResponse = await fetch('http://localhost:5000/api/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(applicationPayload),
+      });
+
+      if (!applicationResponse.ok) {
+        throw new Error('Failed to submit application');
+      }
+
+      const applicationResult = await applicationResponse.json();
+      console.log("Application submitted successfully:", applicationResult);
+
+      // Also create a company record
+      const companyPayload = {
+        name: data.companyName,
+        registration_number: data.registrationNumber,
+        country: data.companyCountry,
+        legal_form: data.legalForm,
+        incorporation_date: data.dateOfIncorporation,
+        registered_address: {
+          street: data.companyAddress,
+          city: data.companyCity,
+          zip: data.companyPostalCode,
+          country: data.companyCountry,
+        },
+      };
+
+      const companyResponse = await fetch('http://localhost:5000/api/companies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(companyPayload),
+      });
+
+      if (!companyResponse.ok) {
+        console.warn('Failed to create company record, but application was saved');
+      } else {
+        const companyResult = await companyResponse.json();
+        console.log("Company record created:", companyResult);
+      }
+
+      // TODO: Handle document uploads separately
+      // For now, we'll store document file names in the console
+      if (data.statutes && data.statutes.length > 0) {
+        console.log("Statutes to upload:", data.statutes[0].name);
+      }
+      if (data.registerExtract && data.registerExtract.length > 0) {
+        console.log("Register Extract to upload:", data.registerExtract[0].name);
+      }
+      if (data.uboDeclaration && data.uboDeclaration.length > 0) {
+        console.log("UBO Declaration to upload:", data.uboDeclaration[0].name);
+      }
+
+      // Show submitted status
+      setStatus("submitted");
+
+      // Simulate approval for demo (in production, this would be done by admin)
+      setTimeout(() => {
+        setStatus("approved");
+        setIban("LU28 0019 4006 4475 0001");
+      }, 3000);
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      alert("Failed to submit application. Please try again.");
+    }
   };
 
   if (status === "approved") {

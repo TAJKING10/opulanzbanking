@@ -22,11 +22,23 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(helmet()); // Security headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrcAttr: ["'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+    },
+  },
+})); // Security headers with CSP configured
 app.use(cors()); // Enable CORS for frontend
 app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+
+// Serve static files from public directory
+app.use(express.static('public'));
 
 // API Routes
 app.use('/api/users', userRoutes);

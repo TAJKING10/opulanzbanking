@@ -65,16 +65,82 @@ export default function IndividualAccountPage() {
   const consentTerms = watch("consentTerms");
 
   const onSubmit = async (data: WhitelabelKYCFormData) => {
-    // Simulate API submission
-    console.log("Submitting KYC data:", data);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      console.log("Submitting KYC data:", data);
 
-    // Simulate approval for demo
-    setStatus("submitted");
-    setTimeout(() => {
-      setStatus("approved");
-      setIban("LU28 0019 4006 4475 0000");
-    }, 3000);
+      // Prepare the payload for the backend
+      const applicationPayload = {
+        type: "individual",
+        status: "submitted",
+        payload: {
+          // Personal Information
+          firstName: data.firstName,
+          lastName: data.lastName,
+          dateOfBirth: data.dateOfBirth,
+          nationality: data.nationality,
+          phoneNumber: data.phoneNumber,
+          phoneCode: selectedPhoneCode,
+
+          // Address Information
+          address: data.address,
+          city: data.city,
+          postalCode: data.postalCode,
+          country: data.country,
+
+          // Activity Information
+          isPEP: data.isPEP,
+          expectedMonthlyVolume: data.expectedMonthlyVolume,
+          sourceOfFunds: data.sourceOfFunds,
+
+          // Consents
+          consentKYC: data.consentKYC,
+          consentTerms: data.consentTerms,
+
+          // Metadata
+          submittedAt: new Date().toISOString(),
+        }
+      };
+
+      // Submit to backend API
+      const response = await fetch('http://localhost:5000/api/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(applicationPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit application');
+      }
+
+      const result = await response.json();
+      console.log("Application submitted successfully:", result);
+
+      // TODO: Handle document uploads separately
+      // For now, we'll store document file names in the console
+      if (data.idDocument && data.idDocument.length > 0) {
+        console.log("ID Document to upload:", data.idDocument[0].name);
+      }
+      if (data.selfie && data.selfie.length > 0) {
+        console.log("Selfie to upload:", data.selfie[0].name);
+      }
+      if (data.proofOfAddress && data.proofOfAddress.length > 0) {
+        console.log("Proof of Address to upload:", data.proofOfAddress[0].name);
+      }
+
+      // Show submitted status
+      setStatus("submitted");
+
+      // Simulate approval for demo (in production, this would be done by admin)
+      setTimeout(() => {
+        setStatus("approved");
+        setIban("LU28 0019 4006 4475 0000");
+      }, 3000);
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      alert("Failed to submit application. Please try again.");
+    }
   };
 
   if (status === "approved") {

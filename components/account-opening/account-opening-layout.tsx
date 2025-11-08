@@ -56,33 +56,38 @@ export function AccountOpeningLayout({
         {/* Navigation Buttons - Hidden on submission step */}
         {!hideNavigation && (
           <>
-            <div className="mt-8 flex items-center justify-between">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onBack}
-                disabled={!canGoBack || isLoading}
-                className="min-w-32"
-              >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
-              </Button>
+            <div className="mt-8 rounded-lg border-4 border-red-500 bg-yellow-100 p-6">
+              <p className="mb-4 text-center font-bold text-red-600">
+                DEBUG: canGoNext={String(canGoNext)} | canGoBack={String(canGoBack)} | hideNav={String(hideNavigation)}
+              </p>
+              <div className="flex items-center justify-between">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onBack}
+                  disabled={!canGoBack || isLoading}
+                  className="min-w-32"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back
+                </Button>
 
-              <Button
-                type="button"
-                onClick={onNext}
-                disabled={!canGoNext || isLoading}
-                className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark"
-              >
-                {isLoading ? (
-                  "Processing..."
-                ) : (
-                  <>
-                    Continue
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </Button>
+                <Button
+                  type="button"
+                  onClick={onNext}
+                  disabled={!canGoNext || isLoading}
+                  className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark disabled:bg-gray-400"
+                >
+                  {isLoading ? (
+                    "Processing..."
+                  ) : (
+                    <>
+                      Continue
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
 
             {/* Progress saved indicator */}

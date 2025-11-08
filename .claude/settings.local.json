@@ -33,7 +33,15 @@
       "Bash(node -e:*)",
       "Bash(echo:*)",
       "Bash(timeout /t 2 /nobreak)",
-      "Bash(timeout /t 1 /nobreak)"
+      "Bash(timeout /t 1 /nobreak)",
+      "Bash(psql \"postgresql://opulanz_admin:Advensys2025?@opulanz-pg.postgres.database.azure.com:5432/postgres?sslmode=require\" -c \"ALTER TABLE applications DROP CONSTRAINT IF EXISTS applications_type_check; ALTER TABLE applications ADD CONSTRAINT applications_type_check CHECK (type IN (''individual'', ''company'', ''accounting''));\")",
+      "Bash(node migrations/add-accounting-type.js:*)",
+      "Bash(node migrations/add-insurance-type.js:*)",
+      "Bash(psql \"postgresql://opulanz_admin:Advensys2025?@opulanz-pg.postgres.database.azure.com:5432/postgres?sslmode=require\" -c \"SELECT type, COUNT(*) as count FROM applications GROUP BY type ORDER BY type;\")",
+      "Bash(cat:*)",
+      "Bash(for file in financial-profile-step.tsx investment-profile-step.tsx premium-payments-step.tsx beneficiaries-step.tsx compliance-declarations-step.tsx)",
+      "Bash(do echo \"Processing $file\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

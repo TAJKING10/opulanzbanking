@@ -138,17 +138,94 @@ export default function AccountingOnboardingPage() {
     setIsLoading(true);
 
     try {
-      // In a real app, submit to backend API
+      const appId = `OPL-ACC-${Date.now()}`;
+
       console.log("Submitting accounting onboarding:", formData);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Prepare payload for Azure backend
+      const applicationPayload = {
+        type: "accounting",
+        status: "submitted",
+        payload: {
+          // Company Basics
+          companyType: formData.companyType,
+          companyTypeOther: formData.companyTypeOther,
+          countryOfIncorporation: formData.countryOfIncorporation,
+          dateOfIncorporation: formData.dateOfIncorporation,
+          shareCapital: {
+            amount: formData.shareCapitalAmount,
+            currency: formData.shareCapitalCurrency
+          },
+          legalName: formData.legalName,
+          tradeName: formData.tradeName,
+          registrationNumber: formData.registrationNumber,
+          vatNumber: formData.vatNumber,
+
+          // Activity & Scale
+          businessActivity: formData.businessActivity,
+          turnoverLastFY: {
+            amount: formData.turnoverLastFYAmount,
+            currency: formData.turnoverLastFYCurrency
+          },
+          turnoverCurrentFY: {
+            amount: formData.turnoverCurrentFYAmount,
+            currency: formData.turnoverCurrentFYCurrency
+          },
+          employeesFTE: formData.employeesFTE,
+
+          // Contacts & Addresses
+          registeredAddress: formData.registeredAddress,
+          operatingAddress: formData.operatingAddress,
+          sameAsRegistered: formData.sameAsRegistered,
+          primaryContact: formData.primaryContact,
+          accountingContact: formData.accountingContact,
+          hasAccountingContact: formData.hasAccountingContact,
+
+          // Billing Volume
+          salesInvoicesMonth: formData.salesInvoicesMonth,
+          purchaseInvoicesMonth: formData.purchaseInvoicesMonth,
+          payrollNeeded: formData.payrollNeeded,
+          payrollEmployees: formData.payrollEmployees,
+          multiCurrencyEnabled: formData.multiCurrencyEnabled,
+          multiCurrencies: formData.multiCurrencies,
+
+          // Documents
+          documents: formData.documents?.map((doc: any) => ({
+            name: doc.name,
+            type: doc.type,
+            size: doc.size
+          })) || [],
+
+          // Consent
+          consent: formData.consent,
+
+          // Metadata
+          applicationId: appId,
+          submittedAt: new Date().toISOString(),
+        }
+      };
+
+      // Submit to Azure backend API
+      const response = await fetch('http://localhost:5000/api/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(applicationPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit accounting onboarding to backend');
+      }
+
+      const result = await response.json();
+      console.log("Accounting onboarding saved to Azure database:", result);
 
       // Clear saved progress
       localStorage.removeItem("accounting-onboarding-progress");
 
       // Redirect to success page or show confirmation
-      alert("Application submitted successfully! We'll be in touch soon.");
+      alert(`Application submitted successfully! Reference: ${appId}\n\nWe'll be in touch soon.`);
       router.push(`/${locale}/invoicing-accounting`);
     } catch (error) {
       console.error("Submission error:", error);
@@ -225,6 +302,7 @@ export default function AccountingOnboardingPage() {
       canGoNext={currentStep < ACCOUNTING_STEPS.length}
       canGoBack={currentStep > 1}
       isLoading={isLoading}
+      hideNavigation={currentStep === ACCOUNTING_STEPS.length}
     >
       {renderStep()}
     </AccountOpeningLayout>

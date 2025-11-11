@@ -51,13 +51,10 @@ export function Header({ locale }: HeaderProps) {
           <Image
             src="/images/opulanz-logo.png"
             alt="Opulanz Logo"
-            width={40}
-            height={40}
-            className="h-10 w-auto"
+            width={60}
+            height={60}
+            className="h-16 w-auto"
           />
-          <span className="text-2xl font-bold uppercase tracking-tight text-brand-dark">
-            OPULANZ
-          </span>
         </Link>
 
         {/* Desktop Navigation */}

@@ -20,7 +20,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     {
       title: t('nav.openAccount'),
       description: t('home.services.banking.description'),
-      image: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=800&h=500&fit=crop',
+      image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=500&fit=crop',
       href: `/${locale}/open-account`,
     },
     {
@@ -32,13 +32,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     {
       title: t('services.tax.title'),
       description: t('services.tax.description'),
-      image: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=500&fit=crop',
+      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=500&fit=crop',
       href: `/${locale}/tax-advisory`,
     },
     {
       title: t('services.investment.title'),
       description: t('services.investment.description'),
-      image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=500&fit=crop',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
       href: `/${locale}/investment-advisory`,
     },
     {

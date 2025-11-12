@@ -200,11 +200,11 @@ function CompanyFormationWizard({ formType }: { formType: string }) {
   const totalSteps = 5;
 
   const steps = [
-    { number: 1, title: t("companyFormation.companyDetails") },
-    { number: 2, title: t("companyFormation.shareholders") },
-    { number: 3, title: t("companyFormation.capitalDeposit") },
-    { number: 4, title: t("companyFormation.payment") },
-    { number: 5, title: t("companyFormation.confirmation") },
+    { number: 1, title: "Company Details" },
+    { number: 2, title: "Shareholders" },
+    { number: 3, title: "Capital Deposit" },
+    { number: 4, title: "Payment" },
+    { number: 5, title: "Confirmation" },
   ];
 
   return (
@@ -212,7 +212,7 @@ function CompanyFormationWizard({ formType }: { formType: string }) {
       <div className="container mx-auto max-w-5xl px-6">
         <div className="mb-12">
           <h1 className="mb-2 text-center text-3xl font-bold text-brand-dark">
-            {t("companyFormation.wizardTitle")}
+            Company Formation Wizard
           </h1>
           <p className="text-center text-brand-grayMed">
             Forming a {formType.toUpperCase()} in Luxembourg
@@ -276,20 +276,20 @@ function CompanyFormationWizard({ formType }: { formType: string }) {
                   variant="outline"
                   onClick={() => setCurrentStep(currentStep - 1)}
                 >
-                  {t("common.back")}
+                  Back
                 </Button>
               )}
               <div className="ml-auto flex gap-4">
-                <Button variant="ghost">{t("companyFormation.saveProgress")}</Button>
+                <Button variant="ghost">Save & Resume Later</Button>
                 {currentStep < totalSteps ? (
                   <Button
                     variant="primary"
                     onClick={() => setCurrentStep(currentStep + 1)}
                   >
-                    {t("common.next")}
+                    Next
                   </Button>
                 ) : (
-                  <Button variant="primary">{t("common.submit")}</Button>
+                  <Button variant="primary">Submit</Button>
                 )}
               </div>
             </div>
@@ -305,30 +305,27 @@ function StepCompanyDetails() {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="companyName">
-          {t("companyFormation.companyName")}
-          <span className="text-red-600">*</span>
+        <Label htmlFor="companyName" className="text-sm font-semibold text-brand-dark">
+          Company Name <span className="text-red-600">*</span>
         </Label>
-        <Input id="companyName" placeholder="Enter company name" />
+        <Input id="companyName" placeholder="e.g., Acme Luxembourg S.à r.l." />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="businessActivity">
-          {t("companyFormation.businessActivity")}
-          <span className="text-red-600">*</span>
+        <Label htmlFor="businessActivity" className="text-sm font-semibold text-brand-dark">
+          Business Activity <span className="text-red-600">*</span>
         </Label>
         <textarea
           id="businessActivity"
           rows={4}
           className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-          placeholder="Describe your business activity..."
+          placeholder="Describe your primary business activities..."
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="shareCapital">
-          {t("companyFormation.shareCapital")}
-          <span className="text-red-600">*</span>
+        <Label htmlFor="shareCapital" className="text-sm font-semibold text-brand-dark">
+          Share Capital (EUR) <span className="text-red-600">*</span>
         </Label>
         <Input id="shareCapital" type="number" placeholder="12000" />
         <p className="text-xs text-brand-grayMed">
@@ -346,14 +343,26 @@ function StepShareholders() {
       <div className="rounded-xl border border-brand-grayLight bg-white p-6">
         <h4 className="mb-4 font-bold text-brand-dark">Shareholder 1</h4>
         <div className="grid gap-4 md:grid-cols-2">
-          <Input placeholder="Full Name" />
-          <Input placeholder="Nationality" />
-          <Input placeholder="Email" />
-          <Input placeholder="Ownership %" type="number" />
+          <div className="space-y-2">
+            <Label className="text-sm font-semibold text-brand-dark">Full Name</Label>
+            <Input placeholder="John Doe" />
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-semibold text-brand-dark">Nationality</Label>
+            <Input placeholder="Luxembourg" />
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-semibold text-brand-dark">Email Address</Label>
+            <Input placeholder="john@example.com" type="email" />
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-semibold text-brand-dark">Ownership (%)</Label>
+            <Input placeholder="100" type="number" min="0" max="100" />
+          </div>
         </div>
       </div>
       <Button variant="outline" className="w-full">
-        {t("companyFormation.addShareholder")}
+        + Add Another Shareholder
       </Button>
     </div>
   );
@@ -363,7 +372,7 @@ function StepCapitalDeposit() {
   const t = useTranslations();
   return (
     <div className="space-y-6">
-      <div className="rounded-xl bg-accent-beige/30 p-6">
+      <div className="rounded-xl bg-brand-goldLight/20 p-6">
         <h4 className="mb-4 font-bold text-brand-dark">Capital Deposit Process</h4>
         <div className="space-y-4">
           <div className="flex gap-4">
@@ -372,7 +381,7 @@ function StepCapitalDeposit() {
             </div>
             <div>
               <p className="font-semibold text-brand-dark">
-                {t("companyFormation.depositCapital")}
+                Deposit share capital with partner bank
               </p>
               <p className="text-sm text-brand-grayMed">
                 We'll provide bank details for the capital deposit
@@ -385,7 +394,7 @@ function StepCapitalDeposit() {
             </div>
             <div>
               <p className="font-semibold text-brand-dark">
-                {t("companyFormation.notaryCertificate")}
+                Notary will issue incorporation certificate
               </p>
               <p className="text-sm text-brand-grayMed">
                 After deposit confirmation, notary proceeds with incorporation
@@ -398,7 +407,7 @@ function StepCapitalDeposit() {
             </div>
             <div>
               <p className="font-semibold text-brand-dark">
-                {t("companyFormation.rcsRegistration")}
+                Registration with Luxembourg RCS
               </p>
               <p className="text-sm text-brand-grayMed">
                 Company is registered with Luxembourg Business Registers
@@ -417,7 +426,7 @@ function StepPayment() {
     <div className="space-y-6">
       <div className="rounded-xl bg-brand-grayLight/50 p-6">
         <h4 className="mb-4 text-lg font-bold text-brand-dark">
-          {t("companyFormation.totalFees")}
+          Total Formation Fees
         </h4>
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
@@ -441,7 +450,7 @@ function StepPayment() {
         </div>
       </div>
       <Button variant="primary" size="lg" className="w-full">
-        {t("companyFormation.proceedToPayment")}
+        Proceed to Payment
       </Button>
     </div>
   );

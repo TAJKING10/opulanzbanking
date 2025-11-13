@@ -14,11 +14,6 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
 
   const services = [
     {
-      icon: Scale,
-      title: "Tax Planning",
-      description: "Strategic tax planning to minimize your tax liability while ensuring full compliance with regulations.",
-    },
-    {
       icon: FileCheck,
       title: "Tax Return Preparation",
       description: "Professional preparation and filing of corporate and individual tax returns across multiple jurisdictions.",

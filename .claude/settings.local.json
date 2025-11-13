@@ -51,7 +51,9 @@
       "Bash(npm --version)",
       "WebSearch",
       "WebFetch(domain:narvi.com)",
-      "WebFetch(domain:api.narvi.com)"
+      "WebFetch(domain:api.narvi.com)",
+      "Bash(psql:*)",
+      "Bash(tee:*)"
     ],
     "deny": [],
     "ask": []

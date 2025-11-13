@@ -30,6 +30,12 @@ export default function IndividualAccountPage() {
   const [isDropdownOpen, setIsDropdownOpen] = React.useState<boolean>(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
+  // Reset status when component mounts to ensure fresh start
+  React.useEffect(() => {
+    // Clear any persisted state on mount
+    setStatus("form");
+  }, []);
+
   // Close dropdown when clicking outside
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -46,6 +52,7 @@ export default function IndividualAccountPage() {
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<WhitelabelKYCFormData>({
     resolver: zodResolver(whitelabelKYCSchema),
@@ -59,6 +66,14 @@ export default function IndividualAccountPage() {
       proofOfAddress: [],
     },
   });
+
+  // Function to reset everything for a new application
+  const startNewApplication = () => {
+    setStatus("form");
+    setIban("");
+    setSelectedPhoneCode("+33");
+    reset();
+  };
 
   const isPEP = watch("isPEP");
   const consentKYC = watch("consentKYC");
@@ -192,12 +207,22 @@ export default function IndividualAccountPage() {
                 </ul>
               </div>
 
-              <div className="mt-10 flex gap-4">
-                <Button variant="primary" size="lg" className="flex-1">
-                  Go to Dashboard
-                </Button>
-                <Button variant="outline" size="lg" className="flex-1">
-                  Download App
+              <div className="mt-10 flex flex-col gap-4">
+                <div className="flex gap-4">
+                  <Button variant="primary" size="lg" className="flex-1">
+                    Go to Dashboard
+                  </Button>
+                  <Button variant="outline" size="lg" className="flex-1">
+                    Download App
+                  </Button>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  onClick={startNewApplication}
+                  className="w-full text-brand-grayMed hover:text-brand-dark"
+                >
+                  Start New Application
                 </Button>
               </div>
             </CardContent>

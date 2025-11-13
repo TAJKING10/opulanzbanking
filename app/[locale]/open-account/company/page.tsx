@@ -26,10 +26,17 @@ export default function CompanyAccountPage() {
   const [status, setStatus] = React.useState<ApplicationStatus>("form");
   const [iban, setIban] = React.useState<string>("");
 
+  // Reset status when component mounts to ensure fresh start
+  React.useEffect(() => {
+    // Clear any persisted state on mount
+    setStatus("form");
+  }, []);
+
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<WhitelabelKYBFormData>({
     resolver: zodResolver(whitelabelKYBSchema),
@@ -42,6 +49,13 @@ export default function CompanyAccountPage() {
       uboDeclaration: [],
     },
   });
+
+  // Function to reset everything for a new application
+  const startNewApplication = () => {
+    setStatus("form");
+    setIban("");
+    reset();
+  };
 
   const onSubmit = async (data: WhitelabelKYBFormData) => {
     try {
@@ -199,12 +213,22 @@ export default function CompanyAccountPage() {
                 </ul>
               </div>
 
-              <div className="mt-10 flex gap-4">
-                <Button variant="primary" size="lg" className="flex-1">
-                  Go to Dashboard
-                </Button>
-                <Button variant="outline" size="lg" className="flex-1">
-                  Download App
+              <div className="mt-10 flex flex-col gap-4">
+                <div className="flex gap-4">
+                  <Button variant="primary" size="lg" className="flex-1">
+                    Go to Dashboard
+                  </Button>
+                  <Button variant="outline" size="lg" className="flex-1">
+                    Download App
+                  </Button>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  onClick={startNewApplication}
+                  className="w-full text-brand-grayMed hover:text-brand-dark"
+                >
+                  Start New Application
                 </Button>
               </div>
             </CardContent>

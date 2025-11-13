@@ -41,7 +41,17 @@
       "Bash(cat:*)",
       "Bash(for file in financial-profile-step.tsx investment-profile-step.tsx premium-payments-step.tsx beneficiaries-step.tsx compliance-declarations-step.tsx)",
       "Bash(do echo \"Processing $file\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(openssl ecparam:*)",
+      "Bash(openssl ec:*)",
+      "Bash(timeout /t 3 /nobreak)",
+      "Bash(dir /s /b *.html 2)",
+      "Bash(dir:*)",
+      "Bash(node:*)",
+      "Bash(npm --version)",
+      "WebSearch",
+      "WebFetch(domain:narvi.com)",
+      "WebFetch(domain:api.narvi.com)"
     ],
     "deny": [],
     "ask": []

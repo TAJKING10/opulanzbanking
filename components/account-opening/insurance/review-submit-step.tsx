@@ -254,6 +254,105 @@ export function ReviewSubmitStep({ data, onUpdate, locale }: ReviewSubmitStepPro
           </div>
         </div>
 
+        {/* PayPal Payment Section */}
+        <div className="rounded-lg border-2 border-brand-gold bg-gradient-to-b from-white to-brand-gold/5 p-8">
+          <div className="space-y-6">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-brand-dark">Complete Your Payment</h3>
+              <p className="mt-2 text-brand-grayMed">
+                Pay your premium now to activate your policy immediately
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-brand-grayLight bg-white p-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b border-brand-grayLight pb-4">
+                  <span className="text-lg font-semibold text-brand-dark">Premium Amount:</span>
+                  <span className="text-2xl font-bold text-brand-gold">
+                    {data.premiumType === "single" ? (
+                      <>
+                        {data.currency === "EUR" ? "€" : data.currency === "USD" ? "$" : ""}
+                        {parseFloat(data.singlePremiumAmount || "0").toLocaleString()}
+                      </>
+                    ) : (
+                      <>
+                        {data.currency === "EUR" ? "€" : data.currency === "USD" ? "$" : ""}
+                        {parseFloat(data.regularPremiumAmount || "0").toLocaleString()}
+                        <span className="ml-2 text-base font-normal text-brand-grayMed">
+                          / {data.regularPremiumFrequency}
+                        </span>
+                      </>
+                    )}
+                  </span>
+                </div>
+
+                <div className="space-y-3 text-sm text-brand-grayMed">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span>Secure payment processing via PayPal</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span>Policy activation upon payment confirmation</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span>Instant email receipt and policy documents</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* PayPal Button */}
+            <div className="flex flex-col items-center justify-center gap-4">
+              <form
+                action="https://www.paypal.com/ncp/payment/RDXD9J28Z94BL"
+                method="post"
+                target="_blank"
+                className="inline-flex flex-col items-center justify-center gap-2"
+              >
+                <button
+                  type="submit"
+                  className="min-w-[11.625rem] rounded border-none bg-[#FFD140] px-8 py-3 text-base font-bold leading-5 text-black transition-all hover:bg-[#FFC520] focus:outline-none focus:ring-2 focus:ring-[#FFD140] focus:ring-offset-2"
+                  style={{ fontFamily: '"Helvetica Neue", Arial, sans-serif' }}
+                >
+                  Pay with PayPal
+                </button>
+                <img
+                  src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg"
+                  alt="Accepted payment methods"
+                  className="h-8"
+                />
+                <div className="text-xs text-brand-grayMed">
+                  Secured by{" "}
+                  <img
+                    src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg"
+                    alt="PayPal"
+                    className="inline h-3.5 align-middle"
+                  />
+                </div>
+              </form>
+
+              <p className="text-center text-sm text-brand-grayMed">
+                After payment, your policy will be issued and sent to {data.email}
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+              <div className="flex items-start gap-2">
+                <Info className="mt-0.5 h-5 w-5 text-amber-600" />
+                <div className="space-y-1 text-left text-sm text-amber-800">
+                  <p className="font-semibold">Important</p>
+                  <p>
+                    Your policy coverage will begin immediately after successful payment confirmation.
+                    You will receive your policy documents and payment receipt via email within minutes.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
           <div className="flex items-start gap-2">
             <Info className="mt-0.5 h-5 w-5 text-blue-600" />

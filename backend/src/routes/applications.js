@@ -14,6 +14,7 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/db');
+const { createNarviAccount } = require('../services/narvi');
 
 /**
  * POST /api/applications
@@ -75,9 +76,49 @@ router.post('/', async (req, res) => {
       [type, status, JSON.stringify(payload)]
     );
 
+    const application = result.rows[0];
+
+    // If application is submitted, send to Narvi
+    let narviResponse = null;
+    if (status === 'submitted' && (type === 'individual' || type === 'company')) {
+      console.log(`🔄 Application #${application.id} is submitted, sending to Narvi...`);
+
+      narviResponse = await createNarviAccount({
+        id: application.id,
+        type: application.type,
+        payload: application.payload
+      });
+
+      // If Narvi account created successfully, update our database with Narvi ID
+      if (narviResponse.success && narviResponse.narviAccountId) {
+        const narviIdField = type === 'company' ? 'narvi_company_id' : 'narvi_customer_id';
+
+        await pool.query(
+          `UPDATE applications SET ${narviIdField} = $1 WHERE id = $2`,
+          [narviResponse.narviAccountId, application.id]
+        );
+
+        console.log(`✅ Application #${application.id} linked to Narvi account: ${narviResponse.narviAccountId}`);
+
+        // Update the application object with Narvi ID
+        application[narviIdField] = narviResponse.narviAccountId;
+      } else {
+        console.warn(`⚠️ Application #${application.id} saved but Narvi integration failed:`, narviResponse.error);
+      }
+    }
+
     res.status(201).json({
       success: true,
-      data: result.rows[0]
+      data: application,
+      narvi: narviResponse ? {
+        sent: true,
+        success: narviResponse.success,
+        accountId: narviResponse.narviAccountId,
+        error: narviResponse.error
+      } : {
+        sent: false,
+        reason: status !== 'submitted' ? 'Application not in submitted status' : 'Type not supported'
+      }
     });
   } catch (error) {
     console.error('Error creating application:', error);

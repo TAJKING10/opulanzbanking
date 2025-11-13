@@ -14,11 +14,6 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
 
   const services = [
     {
-      icon: Target,
-      title: "Wealth Management",
-      description: "Comprehensive wealth management solutions tailored to your financial goals and risk profile.",
-    },
-    {
       icon: PieChart,
       title: "Portfolio Diversification",
       description: "Strategic asset allocation across multiple investment classes to optimize returns and manage risk.",
@@ -27,16 +22,6 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
       icon: BarChart3,
       title: "Investment Strategy",
       description: "Customized investment strategies aligned with your long-term financial objectives.",
-    },
-    {
-      icon: Shield,
-      title: "Risk Management",
-      description: "Sophisticated risk assessment and mitigation strategies to protect your investments.",
-    },
-    {
-      icon: Wallet,
-      title: "Asset Management",
-      description: "Professional management of your investment portfolio with regular performance reviews.",
     },
     {
       icon: Users,

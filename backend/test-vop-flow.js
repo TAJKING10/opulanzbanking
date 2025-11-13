@@ -17,12 +17,12 @@ async function testVopFlow() {
 
     const accountsResult = await narviService.listAccounts();
 
-    if (!accountsResult.success || !accountsResult.data || accountsResult.data.length === 0) {
+    if (!accountsResult.success || !accountsResult.data || !accountsResult.data.results || accountsResult.data.results.length === 0) {
       console.log('❌ No accounts available for testing');
       return;
     }
 
-    const account = accountsResult.data[0];
+    const account = accountsResult.data.results[0];
     console.log('✅ Using account:', account.number);
     console.log('   Balance:', (account.balance / 100).toFixed(2), account.currency);
     console.log('   PID:', account.pid);

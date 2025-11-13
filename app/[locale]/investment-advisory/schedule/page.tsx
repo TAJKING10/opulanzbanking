@@ -33,7 +33,7 @@ export default function ScheduleInvestmentMeetingPage() {
               {/* Calendly inline widget */}
               <div
                 className="calendly-inline-widget"
-                data-url="https://calendly.com/advansystradingait/new-meeting?primary_color=ae7f06"
+                data-url="https://calendly.com/opulanz-banking/tax-advisory-clone?hide_event_type_details=1&primary_color=d0ab08"
                 style={{ minWidth: '320px', height: '700px' }}
               />
             </CardContent>

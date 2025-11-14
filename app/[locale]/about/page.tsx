@@ -16,18 +16,18 @@ export default function AboutPage() {
   const strengths = [
     {
       icon: Users,
-      title: "Expert Financial Advisors",
-      description: "Our team consists of certified financial professionals with years of experience in the industry.",
+      title: "Business Banking Expertise",
+      description: "Over 17 years of experience serving commercial companies, financial institutions, and investment funds across Europe.",
     },
     {
       icon: Target,
-      title: "Personalized Solutions",
-      description: "We create customized financial plans tailored to your specific needs and goals.",
+      title: "All-in-One Platform",
+      description: "Complete business solution from company formation to banking, accounting, tax advisory, investment, and insurance.",
     },
     {
       icon: Globe,
-      title: "Comprehensive Services",
-      description: "From insurance to investments, we offer a full range of financial services under one roof.",
+      title: "Modern Technology",
+      description: "Leveraging Artificial Intelligence and Blockchain to make business banking better, easier, and more efficient.",
     },
   ];
 
@@ -55,17 +55,17 @@ export default function AboutPage() {
   ];
 
   const stats = [
-    { number: "1000+", label: "Satisfied Clients" },
+    { number: "17+", label: "Years of Experience" },
+    { number: "1000+", label: "Business Clients" },
     { number: "€50M+", label: "Assets Under Management" },
-    { number: "15+", label: "Years of Experience" },
     { number: "99%", label: "Client Satisfaction" },
   ];
 
   return (
     <>
       <Hero
-        title="About Advensys in Finance"
-        subtitle="Your Trusted Financial Partner"
+        title="About Opulanz"
+        subtitle="The One-Stop-Shop Business Banking Platform"
       />
 
       {/* Our Story */}
@@ -73,27 +73,30 @@ export default function AboutPage() {
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
             overline="OUR STORY"
-            title="Building Trust Through Excellence"
+            title="Transforming Business Banking"
             align="center"
             className="mb-12"
           />
 
           <div className="prose prose-lg max-w-none">
             <p className="text-lg text-brand-grayMed mb-6">
-              Advensys in Finance began with a simple mission: to provide reliable, affordable financial solutions
-              to individuals and businesses across Europe.
+              Opulanz is part of Groupe Advensys Luxembourg S.A., a holding company with over 17 years of experience
+              in providing comprehensive business solutions across Europe. We built Opulanz with a clear vision:
+              to become the leader in European online banking for businesses.
             </p>
 
             <p className="text-brand-grayMed mb-6">
-              We have built strong relationships with top financial institutions, allowing us to offer comprehensive
-              coverage options at competitive rates. Our commitment to excellence and customer satisfaction has made
-              us a trusted name in the financial industry.
+              Our mission is to improve the ecosystem of business banking, payments, and operational processes,
+              making them better, easier, and more efficient using modern technology including Artificial Intelligence
+              and Blockchain. We offer a complete one-stop-shop platform where businesses can handle everything
+              from company formation to banking, accounting, tax advisory, investment, and insurance.
             </p>
 
             <p className="text-brand-grayMed">
-              Today, we serve thousands of satisfied clients across Europe, from individuals seeking personal
-              protection to businesses requiring comprehensive commercial coverage. Our experienced team continues
-              to adapt to changing market needs while maintaining our core values of integrity, service, and reliability.
+              Today, we serve commercial companies, financial institutions, investment funds, and freelancers across
+              Europe. Our experienced team continues to innovate with cutting-edge technology while maintaining
+              the highest standards of security, compliance, and customer service. Made in Luxembourg, we represent
+              quality, trust, and innovation in business banking.
             </p>
           </div>
         </div>
@@ -166,7 +169,7 @@ export default function AboutPage() {
           <SectionHeading
             overline="LICENSES & CERTIFICATIONS"
             title="Fully Licensed & Certified"
-            description="We maintain all necessary licenses and certifications to provide insurance services across multiple states, ensuring compliance with industry regulations and standards."
+            description="We maintain all necessary licenses and certifications to provide business banking and financial services across Europe, ensuring compliance with industry regulations and standards."
             align="center"
             className="mb-12"
           />
@@ -198,8 +201,8 @@ export default function AboutPage() {
       <section className="bg-white py-20 md:py-28">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
-            title="Why Choose Advensys?"
-            description="What makes us your trusted financial partner"
+            title="Why Choose Opulanz?"
+            description="What makes us your trusted business banking partner"
             align="center"
             className="mb-12"
           />
@@ -207,28 +210,28 @@ export default function AboutPage() {
           <div className="space-y-6">
             {[
               {
-                title: "Expert Financial Advisors",
-                description: "Our team of certified financial professionals brings years of industry experience to help you make informed decisions.",
+                title: "One-Stop-Shop Platform",
+                description: "Complete business solution covering company formation, banking, accounting, tax advisory, investment, insurance, and more - all in one platform.",
               },
               {
-                title: "Personalized Service",
-                description: "We take the time to understand your unique situation and create customized financial solutions that align with your goals.",
+                title: "17+ Years of Experience",
+                description: "Part of Groupe Advensys Luxembourg S.A., we bring nearly two decades of expertise in serving businesses across Europe.",
               },
               {
-                title: "Comprehensive Coverage",
-                description: "From insurance to investment advisory and banking intermediation, we provide a full suite of financial services.",
+                title: "Modern Technology Stack",
+                description: "Built with cutting-edge Artificial Intelligence and Blockchain technology to provide efficient, secure, and innovative banking solutions.",
               },
               {
-                title: "Strong Industry Relationships",
-                description: "Our partnerships with top financial institutions allow us to offer competitive rates and comprehensive options.",
+                title: "Business-Focused Approach",
+                description: "Specifically designed for commercial companies, financial institutions, investment funds, and freelancers - not retail banking.",
               },
               {
-                title: "Commitment to Excellence",
-                description: "We maintain the highest standards of integrity, service, and reliability in everything we do.",
+                title: "Made in Luxembourg",
+                description: "Operating from Luxembourg, we represent European quality, trust, and compliance with the highest banking standards.",
               },
               {
-                title: "Regulatory Compliance",
-                description: "Fully licensed and certified, we ensure all operations meet industry regulations and standards.",
+                title: "Future-Ready Vision",
+                description: "Working towards full banking license with integrated blockchain and green technologies to lead the European online banking market.",
               },
             ].map((benefit, index) => (
               <Card key={index} className="border-none">
@@ -258,7 +261,7 @@ export default function AboutPage() {
             Ready to Get Started?
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            Join thousands of individuals and businesses across Europe who trust Advensys for their financial needs.
+            Join thousands of businesses across Europe who trust Opulanz as their all-in-one banking and business solution platform.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button

@@ -17,26 +17,36 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       icon: FileCheck,
       title: "Tax Return Preparation",
       description: "Professional preparation and filing of corporate and individual tax returns across multiple jurisdictions.",
+      href: `/${locale}/tax-advisory/tax-return-preparation`,
+      price: "€90",
     },
     {
       icon: Globe,
       title: "International Tax",
       description: "Expert guidance on cross-border tax matters, transfer pricing, and double taxation treaties.",
+      href: `/${locale}/tax-advisory/international-tax`,
+      price: "€250",
     },
     {
       icon: Briefcase,
       title: "Corporate Tax",
       description: "Comprehensive corporate tax services including restructuring, M&A tax advice, and VAT consulting.",
+      href: `/${locale}/tax-advisory/corporate-tax`,
+      price: "€150",
     },
     {
       icon: Shield,
       title: "Tax Compliance",
       description: "Ensure ongoing compliance with changing tax laws and regulations in Luxembourg and beyond.",
+      href: `/${locale}/tax-advisory/tax-compliance`,
+      price: "€250",
     },
     {
       icon: UserCheck,
       title: "Personal Tax Advisory",
       description: "Personalized tax advice for high-net-worth individuals and expatriates.",
+      href: `/${locale}/tax-advisory/personal-tax-advisory`,
+      price: "€100",
     },
   ];
 
@@ -57,7 +67,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
         subtitle={t('services.tax.description')}
         primaryCta={{
           label: "Schedule Consultation",
-          href: `/${locale}/tax-advisory/schedule`,
+          href: `/${locale}/tax-advisory/booking`,
         }}
         secondaryCta={{
           label: "Our Services",
@@ -77,17 +87,22 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
             {services.map((service) => {
               const Icon = service.icon;
               return (
-                <Card key={service.title} className="border-none shadow-sm">
-                  <CardHeader>
-                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-gold/10">
-                      <Icon className="h-6 w-6 text-brand-gold" />
-                    </div>
-                    <CardTitle className="text-xl">{service.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-brand-grayMed">{service.description}</p>
-                  </CardContent>
-                </Card>
+                <Link key={service.title} href={service.href}>
+                  <Card className="border-none shadow-sm hover:shadow-md transition-shadow h-full cursor-pointer">
+                    <CardHeader>
+                      <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-gold/10">
+                        <Icon className="h-6 w-6 text-brand-gold" />
+                      </div>
+                      <CardTitle className="text-xl">{service.title}</CardTitle>
+                      <div className="mt-2">
+                        <span className="text-2xl font-bold text-brand-gold">{service.price}</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-brand-grayMed">{service.description}</p>
+                    </CardContent>
+                  </Card>
+                </Link>
               );
             })}
           </div>
@@ -108,13 +123,6 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                 interests and optimizes your tax position. We stay ahead of regulatory changes to keep you
                 compliant and competitive.
               </p>
-              <Button
-                asChild
-                size="lg"
-                className="bg-brand-gold text-white hover:bg-brand-goldDark"
-              >
-                <Link href={`/${locale}/tax-advisory/schedule`}>Book a Consultation</Link>
-              </Button>
             </div>
             <div className="space-y-4">
               {benefits.map((benefit) => (
@@ -173,7 +181,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href={`/${locale}/tax-advisory/schedule`}
+              href={`/${locale}/tax-advisory/booking`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               Schedule Consultation

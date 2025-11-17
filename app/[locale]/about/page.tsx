@@ -17,7 +17,7 @@ export default function AboutPage() {
     {
       icon: Users,
       title: "Business Banking Expertise",
-      description: "Over 17 years of experience serving commercial companies, financial institutions, and investment funds across Europe.",
+      description: "Over 18+ years of experience serving commercial companies, financial institutions, and investment funds across Europe.",
     },
     {
       icon: Target,
@@ -55,10 +55,8 @@ export default function AboutPage() {
   ];
 
   const stats = [
-    { number: "17+", label: "Years of Experience" },
-    { number: "1000+", label: "Business Clients" },
-    { number: "€50M+", label: "Assets Under Management" },
-    { number: "99%", label: "Client Satisfaction" },
+    { number: "18+", label: "Years of Experience" },
+    { number: "500+", label: "Business Clients" },
   ];
 
   return (
@@ -78,52 +76,78 @@ export default function AboutPage() {
             className="mb-12"
           />
 
-          <div className="prose prose-lg max-w-none">
-            <p className="text-lg text-brand-grayMed mb-6">
-              Opulanz is part of Groupe Advensys Luxembourg S.A., a holding company with over 17 years of experience
-              in providing comprehensive business solutions across Europe. We built Opulanz with a clear vision:
-              to become the leader in European online banking for businesses.
-            </p>
+          <div className="space-y-6">
+            <div className="rounded-2xl bg-gradient-to-br from-brand-goldLight/20 to-brand-gold/10 p-8 border-l-4 border-brand-gold">
+              <p className="text-base text-brand-grayMed leading-relaxed">
+                Opulanz is part of <span className="font-semibold text-brand-dark">Groupe Advensys Luxembourg S.A.</span>, a holding company with over <span className="font-semibold text-brand-gold">18+ years of experience</span> in providing comprehensive business solutions across Europe. We built Opulanz with a clear vision: to become the leader in European online banking for businesses.
+              </p>
+            </div>
 
-            <p className="text-brand-grayMed mb-6">
-              Our mission is to improve the ecosystem of business banking, payments, and operational processes,
-              making them better, easier, and more efficient using modern technology including Artificial Intelligence
-              and Blockchain. We offer a complete one-stop-shop platform where businesses can handle everything
-              from company formation to banking, accounting, tax advisory, investment, and insurance.
-            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="rounded-xl bg-white p-6 shadow-sm border border-brand-grayLight">
+                <div className="flex items-start gap-3 mb-3">
+                  <Target className="h-6 w-6 text-brand-gold flex-shrink-0 mt-1" />
+                  <h3 className="text-lg font-bold text-brand-dark">Our Mission</h3>
+                </div>
+                <p className="text-base text-brand-grayMed leading-relaxed">
+                  To improve the ecosystem of business banking, payments, and operational processes using modern technology including AI and Blockchain.
+                </p>
+              </div>
 
-            <p className="text-brand-grayMed">
-              Today, we serve commercial companies, financial institutions, investment funds, and freelancers across
-              Europe. Our experienced team continues to innovate with cutting-edge technology while maintaining
-              the highest standards of security, compliance, and customer service. Made in Luxembourg, we represent
-              quality, trust, and innovation in business banking.
+              <div className="rounded-xl bg-white p-6 shadow-sm border border-brand-grayLight">
+                <div className="flex items-start gap-3 mb-3">
+                  <Eye className="h-6 w-6 text-brand-gold flex-shrink-0 mt-1" />
+                  <h3 className="text-lg font-bold text-brand-dark">Our Vision</h3>
+                </div>
+                <p className="text-base text-brand-grayMed leading-relaxed">
+                  To become the leaders of the European online banking market with full banking license and integrated blockchain technologies.
+                </p>
+              </div>
+            </div>
+
+            <p className="text-base text-brand-grayMed leading-relaxed text-center">
+              Today, we serve <span className="font-semibold text-brand-dark">commercial companies, financial institutions, investment funds, and freelancers</span> across Europe. Our experienced team continues to innovate with cutting-edge technology while maintaining the highest standards of security, compliance, and customer service. We represent quality, trust, and innovation in business banking.
             </p>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="bg-brand-off py-20">
-        <div className="container mx-auto max-w-7xl px-6">
-          <SectionHeading
-            title="Our Impact"
-            description="Our growth reflects the trust our clients place in us"
-            align="center"
-            className="mb-12"
-          />
+      <section className="relative bg-gradient-to-br from-brand-dark via-brand-grayDark to-brand-dark py-24 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-gold rounded-full filter blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-brand-gold rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        </div>
+        <div className="container mx-auto max-w-5xl px-6 relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-block mb-4">
+              <span className="text-brand-gold text-sm font-bold tracking-wider uppercase">Our Impact</span>
+              <div className="h-1 w-16 bg-gradient-to-r from-brand-gold to-brand-goldDark mx-auto mt-2 rounded-full"></div>
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+              Trusted by Businesses Across Europe
+            </h2>
+            <p className="text-lg text-white/80 max-w-2xl mx-auto">
+              Our growth reflects the trust our clients place in us
+            </p>
+          </div>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
             {stats.map((stat, index) => (
-              <Card key={index} className="border-none text-center shadow-sm">
-                <CardContent className="p-8">
-                  <div className="mb-2 text-4xl font-bold text-brand-gold">
-                    {stat.number}
-                  </div>
-                  <p className="text-sm font-semibold text-brand-dark">
-                    {stat.label}
-                  </p>
-                </CardContent>
-              </Card>
+              <div key={index} className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-gold via-brand-goldDark to-brand-gold rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl scale-105"></div>
+                <Card className="relative border-2 border-brand-gold/30 bg-white/10 backdrop-blur-md text-center shadow-2xl hover:shadow-brand-gold/20 transition-all duration-500 hover:scale-110 hover:-translate-y-2 min-w-[280px]">
+                  <CardContent className="p-10">
+                    <div className="mb-4 text-6xl md:text-7xl font-black bg-gradient-to-br from-brand-gold via-brand-goldLight to-brand-goldDark bg-clip-text text-transparent drop-shadow-lg">
+                      {stat.number}
+                    </div>
+                    <div className="h-1 w-12 bg-gradient-to-r from-brand-gold to-brand-goldDark mx-auto mb-4 rounded-full"></div>
+                    <p className="text-lg font-bold text-white tracking-wide">
+                      {stat.label}
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
             ))}
           </div>
         </div>
@@ -152,7 +176,7 @@ export default function AboutPage() {
                     <h3 className="mb-3 text-xl font-bold text-brand-dark">
                       {strength.title}
                     </h3>
-                    <p className="text-sm text-brand-grayMed">
+                    <p className="text-base text-brand-grayMed leading-relaxed">
                       {strength.description}
                     </p>
                   </CardContent>
@@ -214,7 +238,7 @@ export default function AboutPage() {
                 description: "Complete business solution covering company formation, banking, accounting, tax advisory, investment, insurance, and more - all in one platform.",
               },
               {
-                title: "17+ Years of Experience",
+                title: "18+ Years of Experience",
                 description: "Part of Groupe Advensys Luxembourg S.A., we bring nearly two decades of expertise in serving businesses across Europe.",
               },
               {
@@ -226,8 +250,8 @@ export default function AboutPage() {
                 description: "Specifically designed for commercial companies, financial institutions, investment funds, and freelancers - not retail banking.",
               },
               {
-                title: "Made in Luxembourg",
-                description: "Operating from Luxembourg, we represent European quality, trust, and compliance with the highest banking standards.",
+                title: "European Quality Standards",
+                description: "Operating across Europe, we maintain the highest standards of quality, trust, and compliance with banking regulations.",
               },
               {
                 title: "Future-Ready Vision",
@@ -243,7 +267,7 @@ export default function AboutPage() {
                     <h3 className="mb-2 text-lg font-bold text-brand-dark">
                       {benefit.title}
                     </h3>
-                    <p className="text-sm text-brand-grayMed">
+                    <p className="text-base text-brand-grayMed leading-relaxed">
                       {benefit.description}
                     </p>
                   </div>

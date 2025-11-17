@@ -38,18 +38,18 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
   ];
 
   const benefits = [
-    "Specialized expertise in life insurance products",
+    "Independent broker representing your interests",
+    "Access to policies from multiple leading insurance providers",
     "Personalized needs analysis and coverage recommendations",
-    "Advanced features like living benefits and estate planning",
-    "Tax-advantaged wealth building strategies",
+    "Expert guidance on advanced features and estate planning",
     "Ongoing policy management and support",
   ];
 
   return (
     <>
       <Hero
-        title="Life Insurance Services"
-        subtitle="Comprehensive life insurance solutions that ensure your loved ones are financially protected when they need it most"
+        title="Life Insurance Brokerage Services"
+        subtitle="As your trusted insurance broker, we connect you with comprehensive life insurance solutions to financially protect your loved ones"
         primaryCta={{
           label: "Get a Quote",
           href: `/${locale}/support`,
@@ -65,15 +65,15 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
             overline="Overview"
-            title="Dedicated Life Insurance Solutions"
+            title="Your Trusted Life Insurance Broker"
             align="center"
             className="mb-12"
           />
 
           <div className="prose prose-lg max-w-none">
             <p className="text-lg text-brand-grayMed text-center mb-12">
-              Our dedicated life insurance services focus exclusively on providing comprehensive life insurance
-              solutions that ensure your loved ones are financially protected when they need it most.
+              As an independent insurance broker, we work on your behalf to find and connect you with the best
+              life insurance solutions from leading providers, ensuring your loved ones are financially protected.
             </p>
           </div>
         </div>
@@ -84,8 +84,8 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline="Our Services"
-            title="Comprehensive Life Insurance Products"
-            description="Choose from our range of life insurance solutions designed to meet your specific protection needs."
+            title="Life Insurance Products We Broker"
+            description="We help you access a wide range of life insurance solutions from trusted providers to meet your specific protection needs."
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => {
@@ -114,12 +114,13 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
               <h2 className="mb-6 text-3xl font-bold text-brand-dark md:text-4xl">
-                Why Choose Our Life Insurance Services?
+                Why Choose Us as Your Insurance Broker?
               </h2>
               <p className="mb-8 text-lg text-brand-grayMed">
-                Our dedicated focus on life insurance means you get specialized expertise and personalized service
-                that generic financial firms simply cannot match. We understand that protecting your family is your
-                top priority, and we're here to help you find the right solution with confidence.
+                As an independent insurance broker, we work for you, not the insurance companies. Our specialized
+                expertise helps you compare policies from multiple providers to find the best coverage at competitive
+                rates. We understand that protecting your family is your top priority, and we're here to guide you
+                through the selection process with confidence.
               </p>
               <Button
                 asChild
@@ -147,29 +148,29 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline="Why We're Different"
-            title="Specialized Life Insurance Expertise"
-            description="Our exclusive focus on life insurance allows us to provide unmatched service and expertise."
+            title="Professional Insurance Brokerage Expertise"
+            description="As independent brokers, we provide unbiased advice and access to the best insurance solutions for your needs."
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="text-center">
               <Shield className="mx-auto mb-4 h-12 w-12 text-brand-gold" />
-              <h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Advisors</h3>
-              <p className="text-sm text-brand-grayMed">Specialized knowledge in all types of life insurance products</p>
+              <h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Brokers</h3>
+              <p className="text-sm text-brand-grayMed">Specialized knowledge to connect you with the right insurance products</p>
             </div>
             <div className="text-center">
               <FileText className="mx-auto mb-4 h-12 w-12 text-brand-gold" />
               <h3 className="mb-2 text-lg font-bold text-brand-dark">Needs Analysis</h3>
-              <p className="text-sm text-brand-grayMed">Personalized assessment to find the perfect coverage</p>
+              <p className="text-sm text-brand-grayMed">Personalized assessment to find the perfect coverage from multiple providers</p>
             </div>
             <div className="text-center">
               <TrendingUp className="mx-auto mb-4 h-12 w-12 text-brand-gold" />
               <h3 className="mb-2 text-lg font-bold text-brand-dark">Wealth Building</h3>
-              <p className="text-sm text-brand-grayMed">Tax-advantaged strategies for long-term financial growth</p>
+              <p className="text-sm text-brand-grayMed">Guidance on tax-advantaged strategies for long-term financial growth</p>
             </div>
             <div className="text-center">
               <Users className="mx-auto mb-4 h-12 w-12 text-brand-gold" />
               <h3 className="mb-2 text-lg font-bold text-brand-dark">Ongoing Support</h3>
-              <p className="text-sm text-brand-grayMed">Continuous policy management and service</p>
+              <p className="text-sm text-brand-grayMed">Continuous policy management and brokerage support</p>
             </div>
           </div>
         </div>
@@ -182,8 +183,8 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
             Protect Your Family's Future Today
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            Get started with a personalized consultation to discover the life insurance solution
-            that best fits your family's needs and financial goals.
+            Get started with a personalized consultation. We'll help you compare options from leading
+            insurance providers to find the solution that best fits your family's needs and financial goals.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a

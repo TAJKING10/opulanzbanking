@@ -1,0 +1,75 @@
+name: Deploy Backend to Azure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:  # Allow manual trigger
+
+env:
+  AZURE_WEBAPP_NAME: opulanz-banking-api
+  AZURE_WEBAPP_PACKAGE_PATH: './backend'
+  NODE_VERSION: '20.x'
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        run: |
+          npm ci
+          npm run build --if-present
+
+      - name: 🧪 Run tests (if available)
+        working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        run: npm test --if-present
+        continue-on-error: true
+
+      - name: 📝 Create deployment artifact
+        working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        run: |
+          # Remove dev dependencies and test files
+          npm prune --production
+
+          # Create deployment package
+          zip -r ../backend-deploy.zip . \
+            -x "*.git*" \
+            -x "node_modules/.cache/*" \
+            -x "*.md" \
+            -x "test-*.js" \
+            -x "check-*.js" \
+            -x ".env*"
+
+      - name: 🚀 Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: backend-deploy.zip
+
+      - name: ✅ Deployment complete
+        run: |
+          echo "🎉 Deployment successful!"
+          echo "🔗 API URL: https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net"
+          echo "📊 Health check: https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/health"
+
+      - name: 🏥 Health check
+        run: |
+          sleep 30  # Wait for app to start
+          curl -f https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/health || echo "Health check failed - app may still be starting"

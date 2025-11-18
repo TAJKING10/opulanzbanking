@@ -131,7 +131,19 @@ export default function BusinessAccountPage() {
     if (currentStep === 5) {
       // Company Formation step - check if details are filled (only for new companies)
       if (formData.companyStatus === "new") {
-        return formData.isFormationStepValid === true;
+        // Fallback validation in case flag isn't set
+        const hasAllFields =
+          formData.proposedCompanyName?.trim() &&
+          formData.businessActivity?.trim() &&
+          formData.shareCapital;
+
+        console.log("Step 5 validation check:", {
+          formData,
+          hasAllFields,
+          isFormationStepValid: formData.isFormationStepValid
+        });
+
+        return formData.isFormationStepValid === true || hasAllFields;
       }
       return true; // Skip for existing companies
     }

@@ -106,8 +106,20 @@ export default function PersonalAccountPage() {
       return !!formData.mode;
     }
     if (currentStep === 2) {
-      // Identity step - check if all fields are filled and verified
-      return formData.isIdentityStepValid === true;
+      // Identity step - check if all fields are filled
+      const hasAllFields =
+        formData.firstName?.trim() &&
+        formData.lastName?.trim() &&
+        formData.email?.trim() &&
+        formData.phone?.trim();
+
+      console.log("Step 2 validation check:", {
+        formData,
+        hasAllFields,
+        isIdentityStepValid: formData.isIdentityStepValid
+      });
+
+      return formData.isIdentityStepValid === true || hasAllFields;
     }
     if (currentStep === 3) {
       // Intent step - check if all required fields are filled

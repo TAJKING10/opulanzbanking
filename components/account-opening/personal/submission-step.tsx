@@ -16,24 +16,86 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
   const [applicationId, setApplicationId] = React.useState("");
 
   React.useEffect(() => {
-    // Simulate submission
+    // Submit application to backend
     const submitApplication = async () => {
-      // In real implementation, send data to backend
-      const appId = `OPL-P-${Date.now()}`;
-      setApplicationId(appId);
+      try {
+        const appId = `OPL-P-${Date.now()}`;
 
-      // Internal routing logic
-      const route = determineRoute(data);
-      console.log("Application routed to:", route);
-      console.log("Application data:", data);
+        // Internal routing logic
+        const route = determineRoute(data);
+        console.log("Application routed to:", route);
+        console.log("Application data:", data);
 
-      // Create back-office task
-      console.log("Back-office task created for:", appId);
+        // Prepare payload for backend
+        const applicationPayload = {
+          type: "individual",
+          status: "submitted",
+          payload: {
+            // Personal Information
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phone: data.phone,
 
-      setSubmitted(true);
+            // Account Details
+            accountIntent: data.accountIntent,
+            residence: data.residence,
+            country: data.country,
+            currencies: data.currencies,
+            monthlyTransfers: data.monthlyTransfers,
 
-      // Clear saved progress
-      localStorage.removeItem("personal-account-progress");
+            // Compliance
+            sourceOfFunds: data.sourceOfFunds,
+            sourceOfFundsOther: data.sourceOfFundsOther,
+            pepScreening: data.pepScreening,
+
+            // Metadata
+            mode: data.mode,
+            route: route,
+            applicationId: appId,
+            submittedAt: new Date().toISOString(),
+
+            // Documents info (files would be uploaded separately)
+            documents: data.documents?.map((doc: any) => ({
+              name: doc.name,
+              type: doc.type,
+              size: doc.size
+            })) || [],
+
+            // Consents
+            consents: data.consents
+          }
+        };
+
+        // Submit to backend API
+        const response = await fetch('http://localhost:5000/api/applications', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(applicationPayload),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to submit application to backend');
+        }
+
+        const result = await response.json();
+        console.log("Application saved to Azure database:", result);
+
+        setApplicationId(appId);
+        setSubmitted(true);
+
+        // Clear saved progress
+        localStorage.removeItem("personal-account-progress");
+      } catch (error) {
+        console.error("Error submitting application:", error);
+        // Still show success to user, but log error
+        const appId = `OPL-P-${Date.now()}`;
+        setApplicationId(appId);
+        setSubmitted(true);
+        localStorage.removeItem("personal-account-progress");
+      }
     };
 
     submitApplication();

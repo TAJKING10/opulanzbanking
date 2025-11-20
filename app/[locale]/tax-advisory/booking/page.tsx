@@ -40,7 +40,7 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
       icon: FileCheck,
       title: "Tax Return Preparation",
       description: "Professional preparation and filing of corporate and individual tax returns",
-      price: 90,
+      price: 299,
     },
     {
       id: "international-tax",
@@ -220,20 +220,20 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
 
                   <div className="border-t border-brand-grayLight pt-4 mt-4">
                     <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">Subtotal:</span>
-                      <span className="font-semibold text-brand-dark">€{selectedServiceData.price}</span>
+                      <span className="text-brand-grayMed">Service Fee (excl. VAT):</span>
+                      <span className="font-semibold text-brand-dark">€{(selectedServiceData.price / 1.17).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between items-center text-lg mb-2">
                       <span className="text-brand-grayMed">VAT (17%):</span>
                       <span className="font-semibold text-brand-dark">
-                        €{(selectedServiceData.price * 0.17).toFixed(2)}
+                        €{(selectedServiceData.price - (selectedServiceData.price / 1.17)).toFixed(2)}
                       </span>
                     </div>
                     <div className="border-t border-brand-grayLight pt-4 mt-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-brand-dark">Total:</span>
+                        <span className="text-xl font-bold text-brand-dark">Total (incl. VAT):</span>
                         <span className="text-3xl font-bold text-brand-gold">
-                          €{(selectedServiceData.price * 1.17).toFixed(2)}
+                          €{selectedServiceData.price.toFixed(2)}
                         </span>
                       </div>
                     </div>

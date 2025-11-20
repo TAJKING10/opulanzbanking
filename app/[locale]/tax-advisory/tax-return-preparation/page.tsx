@@ -243,54 +243,80 @@ export default function TaxReturnPreparationPage({ params: { locale } }: { param
       />
 
       {/* Booking Section - At Top */}
-      <section className="bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20">
-        <div className="container mx-auto max-w-4xl px-6">
+      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20 overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-brand-goldLight/20 rounded-full blur-3xl"></div>
+
+        <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <div className="text-center mb-8">
-            <div className="mb-6 rounded-lg bg-white p-8 shadow-lg border-2 border-brand-gold/20">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <h3 className="text-4xl font-bold text-brand-dark">€299</h3>
+            <div className="relative">
+              {/* 3D shadow effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/30 to-transparent rounded-2xl blur-2xl transform translate-x-6 translate-y-6"></div>
+              <div className="relative mb-6 rounded-2xl bg-white p-8 shadow-2xl border-2 border-brand-gold/20 backdrop-blur-sm hover:shadow-3xl transition-all duration-300 hover:-translate-y-1">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-brand-gold rounded-full blur-xl opacity-40"></div>
+                    <h3 className="relative text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-brand-goldDark">€299</h3>
+                  </div>
+                </div>
+                <p className="text-lg text-brand-grayMed mb-6">Fixed fee for tax return preparation service</p>
+                <p className="text-sm text-brand-grayMed mb-6">60-minute consultation with expert tax advisor</p>
+                <Button
+                  onClick={() => setShowCalendly(true)}
+                  size="lg"
+                  className="relative bg-gradient-to-r from-brand-gold to-brand-goldDark text-white hover:from-brand-goldDark hover:to-brand-gold w-full sm:w-auto min-w-64 h-14 text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                >
+                  <span className="relative z-10">Book Your Consultation Now</span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-2xl"></div>
+                </Button>
               </div>
-              <p className="text-lg text-brand-grayMed mb-6">Fixed fee for tax return preparation service</p>
-              <p className="text-sm text-brand-grayMed mb-6">60-minute consultation with expert tax advisor</p>
-              <Button
-                onClick={() => setShowCalendly(true)}
-                size="lg"
-                className="bg-brand-gold text-white hover:bg-brand-goldDark w-full sm:w-auto min-w-64 h-14 text-lg"
-              >
-                Book Your Consultation Now
-              </Button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Overview Section */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container mx-auto max-w-7xl px-6">
+      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+        {/* Decorative grid background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30"></div>
+
+        <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <div>
-              <SectionHeading
-                overline="SERVICE DETAILS"
-                title="Professional Tax Return Services"
-                align="left"
-                className="mb-8"
-              />
-              <p className="mb-6 text-lg text-brand-grayMed">
-                Let our experienced tax professionals handle the complexity of tax return preparation.
-                We ensure accuracy, compliance, and timely filing across multiple jurisdictions.
-              </p>
-              <p className="mb-8 text-brand-grayMed">
-                Whether you're an individual taxpayer or a business entity, our comprehensive service
-                covers all aspects of tax return preparation, from documentation review to final submission.
-              </p>
+            <div className="relative">
+              {/* 3D-style card effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/20 to-transparent rounded-2xl blur-xl transform translate-x-4 translate-y-4"></div>
+              <div className="relative bg-white rounded-2xl shadow-2xl p-8 border border-brand-grayLight/50 backdrop-blur-sm hover:shadow-3xl transition-shadow duration-300">
+                <SectionHeading
+                  overline="SERVICE DETAILS"
+                  title="Professional Tax Return Services"
+                  align="left"
+                  className="mb-8"
+                />
+                <p className="mb-6 text-lg text-brand-grayMed">
+                  Let our experienced tax professionals handle the complexity of tax return preparation.
+                  We ensure accuracy, compliance, and timely filing across multiple jurisdictions.
+                </p>
+                <p className="mb-8 text-brand-grayMed">
+                  Whether you're an individual taxpayer or a business entity, our comprehensive service
+                  covers all aspects of tax return preparation, from documentation review to final submission.
+                </p>
+              </div>
             </div>
 
             <div>
               <h3 className="mb-6 text-xl font-bold text-brand-dark">What's Included</h3>
               <div className="space-y-4">
-                {features.map((feature) => (
-                  <div key={feature} className="flex items-start gap-3">
-                    <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" />
+                {features.map((feature, index) => (
+                  <div
+                    key={feature}
+                    className="group flex items-start gap-3 p-4 rounded-xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-lg transition-all duration-300 hover:translate-x-1"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-brand-gold rounded-full blur-md opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                      <CheckCircle className="relative mt-1 h-5 w-5 flex-shrink-0 text-brand-gold group-hover:scale-110 transition-transform" />
+                    </div>
                     <p className="text-brand-dark">{feature}</p>
                   </div>
                 ))}
@@ -301,8 +327,12 @@ export default function TaxReturnPreparationPage({ params: { locale } }: { param
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-gray-50 py-20 md:py-28">
-        <div className="container mx-auto max-w-4xl px-6">
+      <section className="relative bg-gray-50 py-20 md:py-28 overflow-hidden">
+        {/* Animated background orbs */}
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-brand-goldLight/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl"></div>
+
+        <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <SectionHeading
             overline="WHY CHOOSE US"
             title="Benefits of Professional Tax Return Preparation"
@@ -310,13 +340,24 @@ export default function TaxReturnPreparationPage({ params: { locale } }: { param
             className="mb-12"
           />
           <div className="grid gap-6 md:grid-cols-2">
-            {benefits.map((benefit) => (
-              <Card key={benefit} className="border-none shadow-sm">
-                <CardContent className="flex items-start gap-4 p-6">
-                  <CheckCircle className="h-6 w-6 text-brand-gold flex-shrink-0 mt-1" />
-                  <p className="text-lg text-brand-dark">{benefit}</p>
-                </CardContent>
-              </Card>
+            {benefits.map((benefit, index) => (
+              <div
+                key={benefit}
+                className="group relative"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* 3D shadow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-1"></div>
+                <Card className="relative border-none shadow-sm hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1 bg-white/80 backdrop-blur-sm">
+                  <CardContent className="flex items-start gap-4 p-6">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-brand-gold rounded-full blur-md opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                      <CheckCircle className="relative h-6 w-6 text-brand-gold flex-shrink-0 mt-1 group-hover:scale-110 transition-transform" />
+                    </div>
+                    <p className="text-lg text-brand-dark group-hover:text-brand-dark/90 transition-colors">{benefit}</p>
+                  </CardContent>
+                </Card>
+              </div>
             ))}
           </div>
         </div>

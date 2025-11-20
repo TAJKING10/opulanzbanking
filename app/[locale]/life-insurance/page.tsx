@@ -59,71 +59,62 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
         }}
       />
 
-      {/* Stats Banner */}
-      <section className="bg-brand-gold py-8">
-        <div className="container mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">18+</div>
-              <div className="text-sm text-white/90">Years of Experience</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">500+</div>
-              <div className="text-sm text-white/90">Happy Clients</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">10+</div>
-              <div className="text-sm text-white/90">Insurance Partners</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">100%</div>
-              <div className="text-sm text-white/90">Independent Advice</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Overview Section */}
-      <section id="overview" className="bg-gradient-to-b from-white to-gray-50 py-12 md:py-16">
-        <div className="container mx-auto max-w-6xl px-6">
+      <section id="overview" className="relative bg-gradient-to-b from-white via-gray-50/30 to-gray-50 py-12 md:py-16 overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 -right-20 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto max-w-6xl px-6 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
+            <div className="space-y-6">
               <SectionHeading
                 overline="Overview"
                 title="Your Trusted Life Insurance Broker"
                 align="left"
                 className="mb-6"
               />
-              <p className="text-lg text-brand-grayMed mb-6">
+              <p className="text-lg text-brand-grayMed leading-relaxed">
                 As an independent insurance broker, we work on your behalf to find and connect you with the best
                 life insurance solutions from leading providers, ensuring your loved ones are financially protected.
               </p>
               <div className="flex flex-wrap gap-3">
-                <div className="inline-flex items-center gap-2 bg-brand-gold/10 px-4 py-2 rounded-lg">
-                  <Shield className="h-5 w-5 text-brand-gold" />
+                <div className="group inline-flex items-center gap-2 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 px-4 py-2.5 rounded-xl border border-brand-gold/20 hover:border-brand-gold/40 transition-all hover:shadow-md">
+                  <Shield className="h-5 w-5 text-brand-gold group-hover:scale-110 transition-transform" />
                   <span className="text-sm font-semibold text-brand-dark">Unbiased Advice</span>
                 </div>
-                <div className="inline-flex items-center gap-2 bg-brand-gold/10 px-4 py-2 rounded-lg">
-                  <Users className="h-5 w-5 text-brand-gold" />
+                <div className="group inline-flex items-center gap-2 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 px-4 py-2.5 rounded-xl border border-brand-gold/20 hover:border-brand-gold/40 transition-all hover:shadow-md">
+                  <Users className="h-5 w-5 text-brand-gold group-hover:scale-110 transition-transform" />
                   <span className="text-sm font-semibold text-brand-dark">Multiple Providers</span>
                 </div>
-                <div className="inline-flex items-center gap-2 bg-brand-gold/10 px-4 py-2 rounded-lg">
-                  <Heart className="h-5 w-5 text-brand-gold" />
+                <div className="group inline-flex items-center gap-2 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 px-4 py-2.5 rounded-xl border border-brand-gold/20 hover:border-brand-gold/40 transition-all hover:shadow-md">
+                  <Heart className="h-5 w-5 text-brand-gold group-hover:scale-110 transition-transform" />
                   <span className="text-sm font-semibold text-brand-dark">Family Protection</span>
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-brand-grayLight">
-              <h3 className="text-xl font-bold text-brand-dark mb-4">Why Choose a Broker?</h3>
-              <div className="space-y-4">
-                {benefits.map((benefit, idx) => (
-                  <div key={benefit} className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-brand-gold/20 flex items-center justify-center">
-                      <span className="text-xs font-bold text-brand-gold">{idx + 1}</span>
-                    </div>
-                    <p className="text-sm text-brand-dark">{benefit}</p>
+            <div className="relative">
+              {/* 3D-style card effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/20 to-transparent rounded-2xl blur-xl transform translate-x-4 translate-y-4"></div>
+              <div className="relative bg-white rounded-2xl shadow-2xl p-8 border border-brand-grayLight/50 backdrop-blur-sm hover:shadow-3xl transition-shadow duration-300">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-gold to-brand-goldDark flex items-center justify-center shadow-lg">
+                    <CheckCircle className="h-6 w-6 text-white" />
                   </div>
-                ))}
+                  <h3 className="text-xl font-bold text-brand-dark">Why Choose a Broker?</h3>
+                </div>
+                <div className="space-y-4">
+                  {benefits.map((benefit, idx) => (
+                    <div key={benefit} className="group flex items-start gap-3 p-3 rounded-lg hover:bg-brand-gold/5 transition-colors">
+                      <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-brand-gold/30 to-brand-gold/10 flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:scale-110 transition-all">
+                        <span className="text-xs font-bold text-brand-gold">{idx + 1}</span>
+                      </div>
+                      <p className="text-sm text-brand-dark leading-relaxed pt-0.5">{benefit}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -131,8 +122,14 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
       </section>
 
       {/* Products Section */}
-      <section id="products" className="bg-gray-50 py-16 md:py-20">
-        <div className="container mx-auto max-w-7xl px-6">
+      <section id="products" className="relative bg-gray-50 py-16 md:py-20 overflow-hidden">
+        {/* Animated background pattern */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+          <div className="absolute top-0 left-1/4 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        </div>
+
+        <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <SectionHeading
             overline="Our Services"
             title="Life Insurance Products We Broker"
@@ -143,20 +140,28 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
             {products.map((product, idx) => {
               const Icon = product.icon;
               return (
-                <Card key={product.title} className="border-none shadow-md hover:shadow-xl transition-shadow group">
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-brand-gold to-brand-goldDark group-hover:scale-110 transition-transform">
-                        <Icon className="h-7 w-7 text-white" />
+                <div key={product.title} className="group relative">
+                  {/* 3D shadow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2"></div>
+                  <Card className="relative border-none shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:-translate-y-1 bg-white/80 backdrop-blur-sm">
+                    <CardHeader className="space-y-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="relative">
+                          {/* Glowing effect behind icon */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-brand-gold to-brand-goldDark rounded-xl blur-md opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                          <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-brand-gold to-brand-goldDark shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                            <Icon className="h-7 w-7 text-white" />
+                          </div>
+                        </div>
+                        <span className="text-xs font-bold text-brand-gold/40 bg-brand-gold/10 px-2 py-1 rounded-full">0{idx + 1}</span>
                       </div>
-                      <span className="text-xs font-bold text-brand-gold/40">0{idx + 1}</span>
-                    </div>
-                    <CardTitle className="text-lg">{product.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-brand-grayMed leading-relaxed">{product.description}</p>
-                  </CardContent>
-                </Card>
+                      <CardTitle className="text-lg group-hover:text-brand-gold transition-colors">{product.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-brand-grayMed leading-relaxed">{product.description}</p>
+                    </CardContent>
+                  </Card>
+                </div>
               );
             })}
           </div>
@@ -164,8 +169,11 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
       </section>
 
       {/* How It Works Section */}
-      <section className="bg-white py-16 md:py-20">
-        <div className="container mx-auto max-w-7xl px-6">
+      <section className="relative bg-white py-16 md:py-20 overflow-hidden">
+        {/* Decorative grid background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30"></div>
+
+        <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <SectionHeading
             overline="Simple Process"
             title="How We Help You Find the Right Coverage"
@@ -173,35 +181,40 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
             className="mb-12"
           />
           <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center relative">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold text-white text-2xl font-bold mb-4">1</div>
-              <h3 className="text-lg font-bold text-brand-dark mb-2">Free Consultation</h3>
-              <p className="text-sm text-brand-grayMed">Schedule a no-obligation meeting to discuss your needs</p>
-              <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-brand-gold/20 -translate-x-1/2"></div>
-            </div>
-            <div className="text-center relative">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold text-white text-2xl font-bold mb-4">2</div>
-              <h3 className="text-lg font-bold text-brand-dark mb-2">Compare Options</h3>
-              <p className="text-sm text-brand-grayMed">We present policies from multiple top providers</p>
-              <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-brand-gold/20 -translate-x-1/2"></div>
-            </div>
-            <div className="text-center relative">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold text-white text-2xl font-bold mb-4">3</div>
-              <h3 className="text-lg font-bold text-brand-dark mb-2">Expert Guidance</h3>
-              <p className="text-sm text-brand-grayMed">Get unbiased recommendations tailored to you</p>
-              <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-brand-gold/20 -translate-x-1/2"></div>
-            </div>
-            <div className="text-center">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold text-white text-2xl font-bold mb-4">4</div>
-              <h3 className="text-lg font-bold text-brand-dark mb-2">Ongoing Support</h3>
-              <p className="text-sm text-brand-grayMed">Continuous assistance throughout your policy lifecycle</p>
-            </div>
+            {[
+              { num: 1, title: "Free Consultation", desc: "Schedule a no-obligation meeting to discuss your needs" },
+              { num: 2, title: "Compare Options", desc: "We present policies from multiple top providers" },
+              { num: 3, title: "Expert Guidance", desc: "Get unbiased recommendations tailored to you" },
+              { num: 4, title: "Ongoing Support", desc: "Continuous assistance throughout your policy lifecycle" }
+            ].map((step, idx) => (
+              <div key={step.num} className="group text-center relative">
+                {/* 3D number circle with glow */}
+                <div className="relative inline-block mb-4">
+                  <div className="absolute inset-0 bg-brand-gold rounded-full blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                  <div className="relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-gold via-brand-gold to-brand-goldDark text-white text-2xl font-bold shadow-xl group-hover:scale-110 group-hover:shadow-2xl transition-all duration-300">
+                    <span className="relative z-10">{step.num}</span>
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
+                  </div>
+                </div>
+
+                <h3 className="text-lg font-bold text-brand-dark mb-2 group-hover:text-brand-gold transition-colors">{step.title}</h3>
+                <p className="text-sm text-brand-grayMed leading-relaxed">{step.desc}</p>
+
+                {/* Animated connecting line */}
+                {idx < 3 && (
+                  <div className="hidden md:block absolute top-8 left-full w-full h-0.5 -translate-x-1/2 overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-brand-gold/40 via-brand-gold/20 to-brand-gold/40"></div>
+                    <div className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-transparent via-brand-gold to-transparent animate-pulse"></div>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-16 md:py-20">
+      <section className="relative bg-gradient-to-b from-gray-50 to-white py-16 md:py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline="Why We're Different"
@@ -210,34 +223,34 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
             className="mb-10"
           />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border border-brand-grayLight">
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-brand-gold/10 mb-4">
-                <Shield className="h-7 w-7 text-brand-gold" />
-              </div>
-              <h3 className="mb-3 text-lg font-bold text-brand-dark">Expert Brokers</h3>
-              <p className="text-sm text-brand-grayMed leading-relaxed">Specialized knowledge to connect you with the right insurance products</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border border-brand-grayLight">
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-brand-gold/10 mb-4">
-                <FileText className="h-7 w-7 text-brand-gold" />
-              </div>
-              <h3 className="mb-3 text-lg font-bold text-brand-dark">Needs Analysis</h3>
-              <p className="text-sm text-brand-grayMed leading-relaxed">Personalized assessment to find the perfect coverage from multiple providers</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border border-brand-grayLight">
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-brand-gold/10 mb-4">
-                <TrendingUp className="h-7 w-7 text-brand-gold" />
-              </div>
-              <h3 className="mb-3 text-lg font-bold text-brand-dark">Wealth Building</h3>
-              <p className="text-sm text-brand-grayMed leading-relaxed">Guidance on tax-advantaged strategies for long-term financial growth</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border border-brand-grayLight">
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-brand-gold/10 mb-4">
-                <Users className="h-7 w-7 text-brand-gold" />
-              </div>
-              <h3 className="mb-3 text-lg font-bold text-brand-dark">Ongoing Support</h3>
-              <p className="text-sm text-brand-grayMed leading-relaxed">Continuous policy management and brokerage support</p>
-            </div>
+            {[
+              { icon: Shield, title: "Expert Brokers", desc: "Specialized knowledge to connect you with the right insurance products" },
+              { icon: FileText, title: "Needs Analysis", desc: "Personalized assessment to find the perfect coverage from multiple providers" },
+              { icon: TrendingUp, title: "Wealth Building", desc: "Guidance on tax-advantaged strategies for long-term financial growth" },
+              { icon: Users, title: "Ongoing Support", desc: "Continuous policy management and brokerage support" }
+            ].map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <div key={feature.title} className="group relative">
+                  {/* 3D layered shadow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 translate-y-2 blur-sm"></div>
+
+                  <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-brand-grayLight/50 group-hover:-translate-y-1 group-hover:border-brand-gold/30">
+                    {/* Animated icon container */}
+                    <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-brand-gold/20 to-brand-gold/5 mb-4 overflow-hidden group-hover:scale-110 transition-transform duration-300">
+                      <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <Icon className="relative z-10 h-7 w-7 text-brand-gold group-hover:scale-110 transition-transform" />
+                    </div>
+
+                    <h3 className="mb-3 text-lg font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{feature.title}</h3>
+                    <p className="text-sm text-brand-grayMed leading-relaxed">{feature.desc}</p>
+
+                    {/* Decorative corner accent */}
+                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-brand-gold/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

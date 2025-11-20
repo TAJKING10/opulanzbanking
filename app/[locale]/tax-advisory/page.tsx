@@ -18,7 +18,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       title: "Tax Return Preparation",
       description: "Professional preparation and filing of corporate and individual tax returns across multiple jurisdictions.",
       href: `/${locale}/tax-advisory/tax-return-preparation`,
-      price: "€90",
+      price: "€299",
     },
     {
       icon: Globe,

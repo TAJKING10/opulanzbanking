@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FileCheck, CheckCircle, Clock, Euro } from "lucide-react";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -9,7 +10,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default function TaxReturnPreparationPage({ params: { locale } }: { params: { locale: string } }) {
+  const router = useRouter();
   const [showCalendly, setShowCalendly] = React.useState(false);
+  const [showPayment, setShowPayment] = React.useState(false);
 
   React.useEffect(() => {
     if (showCalendly) {
@@ -17,6 +20,21 @@ export default function TaxReturnPreparationPage({ params: { locale } }: { param
       script.src = "https://assets.calendly.com/assets/external/widget.js";
       script.async = true;
       document.body.appendChild(script);
+
+      // Listen for Calendly events
+      const handleCalendlyEvent = (e: MessageEvent) => {
+        if (e.data.event === "calendly.event_scheduled") {
+          // Move to payment page after booking
+          setShowCalendly(false);
+          setShowPayment(true);
+        }
+      };
+
+      window.addEventListener("message", handleCalendlyEvent);
+
+      return () => {
+        window.removeEventListener("message", handleCalendlyEvent);
+      };
     }
   }, [showCalendly]);
 
@@ -36,17 +54,137 @@ export default function TaxReturnPreparationPage({ params: { locale } }: { param
     "Professional expertise at affordable rates",
   ];
 
+  if (showPayment) {
+    const totalPrice = 299;
+    const servicePrice = totalPrice / 1.17; // Price without VAT
+    const vat = totalPrice - servicePrice; // VAT amount
+
+    return (
+      <>
+        <section className="hero-gradient py-16 md:py-20">
+          <div className="container mx-auto max-w-4xl px-6">
+            <div className="text-center">
+              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
+                <CheckCircle className="h-10 w-10 text-white" />
+              </div>
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+                Consultation Scheduled!
+              </h1>
+              <p className="text-lg text-white/90">
+                Now complete your payment to confirm your booking
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white py-12 md:py-16">
+          <div className="container mx-auto max-w-3xl px-6">
+            <SectionHeading
+              overline="FINAL STEP"
+              title="Complete Your Payment"
+              align="center"
+              className="mb-12"
+            />
+
+            <Card className="border-2 border-brand-grayLight mb-8">
+              <CardContent className="p-8">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-brand-gold/10">
+                    <FileCheck className="h-6 w-6 text-brand-gold" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-brand-dark mb-2">Tax Return Preparation</h3>
+                    <p className="text-sm text-brand-grayMed mb-2">Professional preparation and filing of corporate and individual tax returns</p>
+                    <p className="text-sm text-brand-grayMed">Duration: 60 minutes</p>
+                  </div>
+                </div>
+
+                <div className="border-t border-brand-grayLight pt-6">
+                  <div className="flex justify-between items-center text-lg mb-3">
+                    <span className="text-brand-grayMed">Service Fee (excl. VAT):</span>
+                    <span className="font-semibold text-brand-dark">€{servicePrice.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-lg mb-3">
+                    <span className="text-brand-grayMed">VAT (17%):</span>
+                    <span className="font-semibold text-brand-dark">€{vat.toFixed(2)}</span>
+                  </div>
+                  <div className="border-t border-brand-grayLight pt-4 mt-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xl font-bold text-brand-dark">Total (incl. VAT):</span>
+                      <span className="text-3xl font-bold text-brand-gold">€{totalPrice.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 border-brand-grayLight mb-8">
+              <CardContent className="p-8">
+                <h3 className="text-xl font-bold text-brand-dark mb-4">Payment Method</h3>
+                <p className="text-brand-grayMed mb-6">
+                  Select your preferred payment method to complete your booking.
+                </p>
+
+                <div className="space-y-4">
+                  <Button className="w-full bg-brand-gold text-white hover:bg-brand-goldDark h-14 text-lg">
+                    Pay with Credit/Debit Card
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10 h-14 text-lg"
+                  >
+                    Pay with Bank Transfer
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full border-2 border-brand-grayMed text-brand-grayMed hover:bg-gray-50 h-14 text-lg"
+                  >
+                    Pay with PayPal
+                  </Button>
+                </div>
+
+                <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-900">
+                    <strong>Note:</strong> Your consultation slot is reserved for 15 minutes. Please complete
+                    the payment to confirm your booking.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="flex gap-4">
+              <Button
+                variant="outline"
+                onClick={() => { setShowPayment(false); setShowCalendly(false); }}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="flex-1"
+              >
+                <Link href={`/${locale}/tax-advisory`}>Back to Tax Advisory</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
   if (showCalendly) {
     return (
       <>
-        <section className="bg-gradient-to-b from-brand-dark to-brand-grayDark py-16 md:py-20">
+        <section className="hero-gradient py-16 md:py-20">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
                 Book Your Tax Return Preparation
               </h1>
               <p className="text-lg text-white/90">
-                Schedule your 60-minute consultation - €90
+                Schedule your 60-minute consultation - €299
               </p>
             </div>
           </div>
@@ -69,7 +207,7 @@ export default function TaxReturnPreparationPage({ params: { locale } }: { param
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
                   <Euro className="h-6 w-6 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-brand-dark">€90 Fee</h3>
+                <h3 className="mb-2 text-lg font-bold text-brand-dark">€299 Fee</h3>
                 <p className="text-sm text-brand-grayMed">
                   Fixed price for tax return preparation service
                 </p>
@@ -110,7 +248,7 @@ export default function TaxReturnPreparationPage({ params: { locale } }: { param
           <div className="text-center mb-8">
             <div className="mb-6 rounded-lg bg-white p-8 shadow-lg border-2 border-brand-gold/20">
               <div className="flex items-center justify-center gap-3 mb-4">
-                <h3 className="text-4xl font-bold text-brand-dark">€90</h3>
+                <h3 className="text-4xl font-bold text-brand-dark">€299</h3>
               </div>
               <p className="text-lg text-brand-grayMed mb-6">Fixed fee for tax return preparation service</p>
               <p className="text-sm text-brand-grayMed mb-6">60-minute consultation with expert tax advisor</p>
@@ -199,7 +337,7 @@ export default function TaxReturnPreparationPage({ params: { locale } }: { param
               size="lg"
               className="bg-white text-brand-dark hover:bg-gray-50 min-w-48"
             >
-              Book Consultation - €90
+              Book Consultation - €299
             </Button>
             <Button
               asChild

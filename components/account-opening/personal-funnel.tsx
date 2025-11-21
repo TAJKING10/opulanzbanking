@@ -57,6 +57,11 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
   const [formData, setFormData] = React.useState<Partial<PersonalApplication>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [redirectUrl, setRedirectUrl] = React.useState<string>("");
+
+  // Scroll to top whenever step changes
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentStep]);
   const [partnerName, setPartnerName] = React.useState<string>("");
 
   // Step 1: Welcome - No form needed
@@ -172,12 +177,14 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
     }
 
     if (isValid && currentStep < STEPS.length) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       setCurrentStep(currentStep + 1);
     }
   };
 
   const handleBack = () => {
     if (currentStep > 1) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       setCurrentStep(currentStep - 1);
     }
   };

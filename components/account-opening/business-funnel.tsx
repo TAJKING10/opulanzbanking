@@ -47,6 +47,11 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [redirectUrl, setRedirectUrl] = React.useState<string>("");
   const [partnerName, setPartnerName] = React.useState<string>("");
+  // Scroll to top whenever step changes
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentStep]);
+
   const [directors, setDirectors] = React.useState<DirectorOrUBO[]>([]);
 
   // Company Status Form
@@ -180,12 +185,14 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
     }
 
     if (isValid && currentStep < STEPS.length) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       setCurrentStep(currentStep + 1);
     }
   };
 
   const handleBack = () => {
     if (currentStep > 1) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       setCurrentStep(currentStep - 1);
     }
   };

@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormStepper, Step } from "./form-stepper";
-import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Plus, Trash2, Clock, FileText } from "lucide-react";
 import type {
   BusinessApplication,
   PersonalIdentity,
@@ -256,7 +256,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
       <div className="bg-white rounded-2xl shadow-lg p-8">
         {/* Step 1: Welcome */}
         {currentStep === 1 && (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div className="text-center space-y-4">
               <h2 className="text-3xl font-bold text-brand-dark">
                 Open Your Business Account
@@ -266,13 +266,175 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 max-w-md mx-auto mt-12">
+            {/* Process Timeline */}
+            <div className="bg-brand-goldLight/10 rounded-xl p-6 border border-brand-gold/20">
+              <h3 className="text-xl font-bold text-brand-dark mb-4 flex items-center gap-2">
+                <Clock className="h-5 w-5 text-brand-gold" />
+                Application Timeline
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold flex-shrink-0">1</div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-brand-dark">Application Submission</div>
+                    <div className="text-sm text-brand-grayMed">Complete the online form (15-20 minutes)</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold flex-shrink-0">2</div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-brand-dark">Document Review</div>
+                    <div className="text-sm text-brand-grayMed">Partner bank reviews company documents and UBO information (2-5 business days)</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold flex-shrink-0">3</div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-brand-dark">KYC & Compliance</div>
+                    <div className="text-sm text-brand-grayMed">Enhanced due diligence for business accounts (3-7 business days)</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold flex-shrink-0">4</div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-brand-dark">Account Activation</div>
+                    <div className="text-sm text-brand-grayMed">Receive IBAN, credentials, and corporate cards (2-3 business days)</div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-brand-gold/20">
+                <p className="text-sm text-brand-dark">
+                  <strong>Total estimated time: 7-15 business days</strong>
+                </p>
+                <p className="text-xs text-brand-grayMed mt-1">
+                  Timeline may vary based on company structure complexity and document completeness
+                </p>
+              </div>
+            </div>
+
+            {/* Eligibility Requirements */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="border border-brand-grayLight rounded-xl p-6">
+                <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-brand-gold" />
+                  Eligibility Requirements
+                </h3>
+                <ul className="space-y-2 text-sm text-brand-dark">
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>Company registered in EU/EEA or select jurisdictions</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>Valid company registration documents</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>Articles of association or equivalent</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>UBO declaration (Ultimate Beneficial Owners)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>All directors/signatories have valid ID</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>Company tax identification number</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="border border-brand-grayLight rounded-xl p-6">
+                <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-brand-gold" />
+                  Required Documents
+                </h3>
+                <ul className="space-y-2 text-sm text-brand-dark">
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>Certificate of incorporation (dated within 3 months)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>Articles of association / company bylaws</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>Register of directors and shareholders</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>ID/passport for all directors and UBOs ({'>'}25% ownership)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>Proof of business address (utility bill, lease)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold">✓</span>
+                    <span>Business plan or activity description</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* How It Works */}
+            <div className="bg-gray-50 rounded-xl p-6">
+              <h3 className="text-lg font-bold text-brand-dark mb-4">How It Works</h3>
+              <div className="space-y-4 text-sm text-brand-grayMed">
+                <p>
+                  <strong className="text-brand-dark">Smart Routing:</strong> Based on your company's jurisdiction, industry, and banking needs, we automatically route your application to the most suitable Opulanz partner bank.
+                </p>
+                <p>
+                  <strong className="text-brand-dark">Priority Processing:</strong> Your application includes a secure signed referral code from Opulanz, ensuring expedited review and preferential commercial terms from our partner banks.
+                </p>
+                <p>
+                  <strong className="text-brand-dark">Enhanced Due Diligence:</strong> Business accounts undergo comprehensive KYC/AML screening including UBO verification, business activity assessment, and source of funds validation to ensure full regulatory compliance.
+                </p>
+                <p>
+                  <strong className="text-brand-dark">No Obligation:</strong> Submitting this application does not commit you to opening an account. You'll receive final terms and can decide whether to proceed after partner bank approval.
+                </p>
+              </div>
+            </div>
+
+            {/* Account Features */}
+            <div className="border-2 border-brand-gold/30 rounded-xl p-6 bg-gradient-to-br from-brand-goldLight/5 to-transparent">
+              <h3 className="text-lg font-bold text-brand-dark mb-4">Business Account Features</h3>
+              <div className="grid sm:grid-cols-2 gap-3 text-sm text-brand-dark">
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
+                  <span>Dedicated business IBAN in EUR</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
+                  <span>SEPA transfers and SWIFT payments</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
+                  <span>Corporate debit/credit cards</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
+                  <span>Multi-user access with permissions</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
+                  <span>Accounting software integration</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
+                  <span>Dedicated business support</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button size="lg" onClick={handleNext}>
                 Start Business Application
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="lg" onClick={onSwitchMode}>
-                Switch to Personal Account
               </Button>
             </div>
           </div>

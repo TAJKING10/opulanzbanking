@@ -23,7 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormStepper, Step } from "./form-stepper";
-import { ArrowLeft, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Clock, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type {
   PersonalApplication,
@@ -231,7 +231,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
       <div className="bg-white rounded-2xl shadow-lg p-8">
         {/* Step 1: Welcome */}
         {currentStep === 1 && (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div className="text-center space-y-4">
               <h2 className="text-3xl font-bold text-brand-dark">
                 Open Your Personal Account
@@ -241,14 +241,164 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 max-w-md mx-auto mt-12">
+            {/* Process Timeline */}
+            <div className="bg-brand-goldLight/10 rounded-xl p-6 border border-brand-gold/20">
+              <h3 className="text-xl font-bold text-brand-dark mb-4 flex items-center gap-2">
+                <Clock className="h-5 w-5 text-brand-gold" />
+                Application Timeline
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">1</div>
+                  <div>
+                    <p className="font-semibold text-brand-dark">Submit Application (10 minutes)</p>
+                    <p className="text-sm text-brand-grayMed">Complete online form with your details</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">2</div>
+                  <div>
+                    <p className="font-semibold text-brand-dark">Partner Review (24-72 hours)</p>
+                    <p className="text-sm text-brand-grayMed">Partner bank reviews your application</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">3</div>
+                  <div>
+                    <p className="font-semibold text-brand-dark">KYC Verification (1-3 days)</p>
+                    <p className="text-sm text-brand-grayMed">Identity and document verification</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">4</div>
+                  <div>
+                    <p className="font-semibold text-brand-dark">Account Activation (1-2 days)</p>
+                    <p className="text-sm text-brand-grayMed">Receive IBAN and access credentials</p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-brand-gold/20">
+                <p className="text-sm font-semibold text-brand-dark">
+                  ⏱️ Total Time: Approximately 5-7 business days
+                </p>
+              </div>
+            </div>
+
+            {/* Eligibility Requirements */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="border border-brand-grayLight rounded-xl p-6">
+                <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-brand-gold" />
+                  Eligibility Requirements
+                </h3>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold mt-0.5">✓</span>
+                    <span className="text-brand-dark">18 years or older</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold mt-0.5">✓</span>
+                    <span className="text-brand-dark">Valid government-issued ID or passport</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold mt-0.5">✓</span>
+                    <span className="text-brand-dark">Proof of address (utility bill, bank statement)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold mt-0.5">✓</span>
+                    <span className="text-brand-dark">EU/EEA resident or valid residence permit</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold mt-0.5">✓</span>
+                    <span className="text-brand-dark">Tax identification number (TIN)</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="border border-brand-grayLight rounded-xl p-6">
+                <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-brand-gold" />
+                  Required Documents
+                </h3>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold mt-0.5">•</span>
+                    <span className="text-brand-dark">Valid ID card or passport (color scan)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold mt-0.5">•</span>
+                    <span className="text-brand-dark">Proof of address (dated within 3 months)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold mt-0.5">•</span>
+                    <span className="text-brand-dark">Proof of income (payslips or tax returns)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-brand-gold mt-0.5">•</span>
+                    <span className="text-brand-dark">Source of funds declaration</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* How It Works */}
+            <div className="bg-gray-50 rounded-xl p-6">
+              <h3 className="text-lg font-bold text-brand-dark mb-4">How It Works</h3>
+              <div className="space-y-4 text-sm text-brand-grayMed">
+                <p>
+                  <strong className="text-brand-dark">Smart Matching:</strong> Based on your jurisdiction preferences, we automatically route your application to the most suitable Opulanz partner bank.
+                </p>
+                <p>
+                  <strong className="text-brand-dark">Warm Referral:</strong> Your application includes a secure signed referral code, ensuring priority processing and preferential terms.
+                </p>
+                <p>
+                  <strong className="text-brand-dark">Data Security:</strong> All information is encrypted and transmitted securely. We comply with GDPR and Luxembourg banking regulations.
+                </p>
+                <p>
+                  <strong className="text-brand-dark">No Commitment:</strong> Submitting this application does not obligate you to open an account. You can review final terms before accepting.
+                </p>
+              </div>
+            </div>
+
+            {/* Account Features */}
+            <div className="border-2 border-brand-gold/30 rounded-xl p-6 bg-gradient-to-br from-brand-goldLight/5 to-transparent">
+              <h3 className="text-lg font-bold text-brand-dark mb-4">What You'll Get</h3>
+              <div className="grid sm:grid-cols-2 gap-3 text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                  <span className="text-brand-dark">Multi-currency IBAN account</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                  <span className="text-brand-dark">SEPA & SWIFT transfers</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                  <span className="text-brand-dark">Debit card (Mastercard/Visa)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                  <span className="text-brand-dark">Mobile & online banking</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                  <span className="text-brand-dark">24/7 customer support</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                  <span className="text-brand-dark">EU-regulated protection</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button size="lg" onClick={handleNext}>
                 Start Personal Application
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button variant="outline" size="lg" onClick={onSwitchMode}>
-                Switch to Business Account
-              </Button>
+              <p className="text-xs text-center text-brand-grayMed">
+                By continuing, you agree to our Terms of Service and Privacy Policy
+              </p>
             </div>
           </div>
         )}

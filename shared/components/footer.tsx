@@ -20,17 +20,17 @@ export function Footer({ locale }: FooterProps) {
 
   return (
     <footer className="border-t border-brand-grayLight bg-gradient-to-b from-white to-gray-50">
-      <div className="container mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
+      <div className="container mx-auto max-w-7xl px-6 py-12">
+        <div className="grid gap-12 lg:grid-cols-[2fr,3fr]">
           {/* Brand Column */}
-          <div className="lg:col-span-2">
+          <div>
             <Link
               href={`/${locale}`}
               className="text-2xl font-bold uppercase tracking-tight text-brand-dark hover:text-brand-gold transition-colors"
             >
               OPULANZ
             </Link>
-            <p className="mt-4 text-sm text-brand-grayMed leading-relaxed max-w-md">
+            <p className="mt-4 text-sm text-brand-grayMed leading-relaxed max-w-sm">
               {t("footer.description")}
             </p>
             <div className="mt-6 flex gap-3">
@@ -52,16 +52,19 @@ export function Footer({ locale }: FooterProps) {
             </div>
           </div>
 
+          {/* Links Grid - Compressed */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 gap-y-8">
+
           {/* Services Column */}
           <div>
-            <h3 className="mb-5 text-sm font-bold uppercase tracking-wide text-brand-dark">
+            <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-dark">
               {t("footer.sections.services")}
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
                 <Link
                   href={`/${locale}/open-account`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.services.openAccount")}
                 </Link>
@@ -69,7 +72,7 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/company-formation`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.services.companyFormation")}
                 </Link>
@@ -77,7 +80,7 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/invoicing-accounting`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.services.accounting")}
                 </Link>
@@ -85,7 +88,7 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/tax-advisory`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.services.tax")}
                 </Link>
@@ -93,7 +96,7 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/investment-advisory`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.services.investment")}
                 </Link>
@@ -103,14 +106,14 @@ export function Footer({ locale }: FooterProps) {
 
           {/* Products Column */}
           <div>
-            <h3 className="mb-5 text-sm font-bold uppercase tracking-wide text-brand-dark">
+            <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-dark">
               {t("footer.sections.products")}
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
                 <Link
                   href={`/${locale}/life-insurance`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.products.lifeInsurance")}
                 </Link>
@@ -118,7 +121,7 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/mortgage`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.products.mortgage")}
                 </Link>
@@ -126,7 +129,7 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/open-account`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.products.businessBanking")}
                 </Link>
@@ -136,14 +139,14 @@ export function Footer({ locale }: FooterProps) {
 
           {/* Company Column */}
           <div>
-            <h3 className="mb-5 text-sm font-bold uppercase tracking-wide text-brand-dark">
+            <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-dark">
               {t("footer.sections.company")}
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
                 <Link
                   href={`/${locale}/about`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.company.about")}
                 </Link>
@@ -151,7 +154,7 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/support`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.company.support")}
                 </Link>
@@ -159,7 +162,7 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/support`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.company.contact")}
                 </Link>
@@ -169,14 +172,14 @@ export function Footer({ locale }: FooterProps) {
 
           {/* Legal Column */}
           <div>
-            <h3 className="mb-5 text-sm font-bold uppercase tracking-wide text-brand-dark">
+            <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-dark">
               {t("footer.sections.legal")}
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
                 <Link
                   href={`/${locale}/legal/terms`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.legal.terms")}
                 </Link>
@@ -184,7 +187,7 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/legal/privacy`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.legal.privacy")}
                 </Link>
@@ -192,7 +195,7 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/legal/disclaimers`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.legal.disclaimers")}
                 </Link>
@@ -200,12 +203,13 @@ export function Footer({ locale }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/legal/regulatory`}
-                  className="text-sm text-brand-grayMed transition-colors hover:text-brand-gold"
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.legal.regulatory")}
                 </Link>
               </li>
             </ul>
+          </div>
           </div>
         </div>
 

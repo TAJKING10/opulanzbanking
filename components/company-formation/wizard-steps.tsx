@@ -151,7 +151,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
           </div>
           {directors.length === 0 ? (
             <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
-              No directors added yet. {dossier.formType} requires at least {COMPANY_FORM_RULES[dossier.formType!].minDirectors} directors.
+              No directors added yet. {dossier.formType} requires at least {'minDirectors' in COMPANY_FORM_RULES[dossier.formType!] ? COMPANY_FORM_RULES[dossier.formType!].minDirectors : 1} directors.
             </div>
           ) : (
             <div className="space-y-4">

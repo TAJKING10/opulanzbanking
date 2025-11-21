@@ -151,7 +151,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
           </div>
           {directors.length === 0 ? (
             <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
-              No directors added yet. {dossier.formType} requires at least {'minDirectors' in COMPANY_FORM_RULES[dossier.formType!] ? COMPANY_FORM_RULES[dossier.formType!].minDirectors : 1} directors.
+              No directors added yet. {dossier.formType} requires at least {(COMPANY_FORM_RULES[dossier.formType!] as any).minDirectors || 1} directors.
             </div>
           ) : (
             <div className="space-y-4">
@@ -183,7 +183,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
           </div>
           {managers.length === 0 ? (
             <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
-              No managers added yet. {dossier.formType} requires at least {COMPANY_FORM_RULES[dossier.formType!].minManagers} manager.
+              No managers added yet. {dossier.formType} requires at least {(COMPANY_FORM_RULES[dossier.formType!] as any).minManagers || 1} manager.
             </div>
           ) : (
             <div className="space-y-4">
@@ -383,7 +383,7 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
   React.useEffect(() => {
     updateDossier({
       capitalAmount,
-      capitalPaidUpPercent: rules.requiresPaidUpPercent ? paidUpPercent : undefined,
+      capitalPaidUpPercent: (rules as any).requiresPaidUpPercent ? paidUpPercent : undefined,
       contributions,
     });
   }, [capitalAmount, paidUpPercent, contributions]);
@@ -435,7 +435,7 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
         )}
       </div>
 
-      {rules.requiresPaidUpPercent && (
+      {(rules as any).requiresPaidUpPercent && (
         <div className="space-y-2">
           <Label htmlFor="paidUpPercent">
             Paid-Up Percentage <span className="text-red-500">*</span>

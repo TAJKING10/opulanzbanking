@@ -240,7 +240,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
             <li className="flex items-start gap-2">
               <CheckCircle className="h-5 w-5 text-brand-gold flex-shrink-0 mt-0.5" />
               <span className="text-brand-dark">
-                Requires {rules.minDirectors} or more directors
+                Requires {(rules as any).minDirectors} or more directors
               </span>
             </li>
           )}
@@ -248,7 +248,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
             <li className="flex items-start gap-2">
               <CheckCircle className="h-5 w-5 text-brand-gold flex-shrink-0 mt-0.5" />
               <span className="text-brand-dark">
-                Requires {rules.minManagers} or more managers
+                Requires {(rules as any).minManagers} or more managers
               </span>
             </li>
           )}

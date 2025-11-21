@@ -7,12 +7,12 @@ import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { CompanyFormationWizard } from "@/components/company-formation/company-formation-wizard";
+import type { CompanyFormType } from "@/types/company-formation";
 
 const companyForms = [
   {
-    id: "sarl",
+    id: "SARL" as const,
     name: "SARL",
     fullName: "Private Limited Company",
     minCapital: "€12,000",
@@ -26,7 +26,7 @@ const companyForms = [
     ],
   },
   {
-    id: "sarls",
+    id: "SARL-S" as const,
     name: "SARL-S",
     fullName: "Simplified Private Limited Company",
     minCapital: "€1",
@@ -40,7 +40,7 @@ const companyForms = [
     ],
   },
   {
-    id: "sa",
+    id: "SA" as const,
     name: "SA",
     fullName: "Public Limited Company",
     minCapital: "€30,000",
@@ -54,7 +54,7 @@ const companyForms = [
     ],
   },
   {
-    id: "scsp",
+    id: "SCSp" as const,
     name: "SCSp",
     fullName: "Special Limited Partnership",
     minCapital: "No minimum",
@@ -67,44 +67,58 @@ const companyForms = [
       "General partner liability",
     ],
   },
+  {
+    id: "SOLE" as const,
+    name: "Sole Proprietor",
+    fullName: "Individual Enterprise",
+    minCapital: "No minimum",
+    minShareholders: 1,
+    liability: "Unlimited",
+    features: [
+      "Simplest structure",
+      "No separate legal entity",
+      "Full control",
+      "Personal liability",
+    ],
+  },
 ];
-
-type Step = "select" | "wizard";
 
 export default function CompanyFormationPage() {
   const t = useTranslations();
-  const [step, setStep] = React.useState<Step>("select");
-  const [selectedForm, setSelectedForm] = React.useState<string>("");
+  const [selectedForm, setSelectedForm] = React.useState<CompanyFormType | null>(null);
 
-  if (step === "wizard" && selectedForm) {
-    return <CompanyFormationWizard formType={selectedForm} />;
+  if (selectedForm) {
+    return (
+      <CompanyFormationWizard
+        initialFormType={selectedForm}
+        onBack={() => setSelectedForm(null)}
+      />
+    );
   }
 
   return (
     <>
       <Hero
-        title="Company Formation"
-        subtitle="Complete company formation services with expert guidance"
+        title="Company Formation in Luxembourg"
+        subtitle="Complete company formation services with expert guidance. Choose your structure and start your formation wizard."
       />
 
+      {/* Company Types Selection */}
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             title="Choose Your Company Form"
-            description="Choose the legal structure that best fits your business needs"
+            description="Select the legal structure that best fits your business needs"
             align="center"
             className="mb-12"
           />
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {companyForms.map((form) => (
               <Card
                 key={form.id}
-                className="card-hover group cursor-pointer border-2 border-brand-grayLight transition-all hover:border-brand-gold"
-                onClick={() => {
-                  setSelectedForm(form.id);
-                  setStep("wizard");
-                }}
+                className="card-hover group cursor-pointer border-2 border-brand-grayLight transition-all hover:border-brand-gold hover:shadow-lg"
+                onClick={() => setSelectedForm(form.id)}
               >
                 <CardHeader>
                   <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-goldLight">
@@ -147,9 +161,9 @@ export default function CompanyFormationPage() {
                   </ul>
                   <Button
                     variant="outline"
-                    className="w-full group-hover:border-brand-gold group-hover:text-brand-gold"
+                    className="w-full group-hover:border-brand-gold group-hover:bg-brand-goldLight/10 group-hover:text-brand-gold"
                   >
-                    Select {form.name}
+                    Start Formation
                   </Button>
                 </CardContent>
               </Card>
@@ -159,28 +173,31 @@ export default function CompanyFormationPage() {
       </section>
 
       {/* Process Overview */}
-      <section className="bg-white py-20">
+      <section className="bg-gray-50 py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title="Simple Formation Process"
-            description="We guide you through every step"
+            title="Simple 8-Step Formation Process"
+            description="We guide you through every step of the company formation"
             align="center"
             className="mb-12"
           />
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: FileText, title: "Company Details", desc: "Provide company information" },
-              { icon: Users, title: "Shareholders", desc: "Add shareholders and structure" },
-              { icon: Building2, title: "Capital Deposit", desc: "Deposit share capital" },
-              { icon: CreditCard, title: "Payment", desc: "Pay formation fees" },
-              { icon: CheckCircle, title: "Registration", desc: "Complete RCS registration" },
+              { icon: Building2, title: "Company Type", desc: "Select your legal structure" },
+              { icon: FileText, title: "General Info", desc: "Provide company details" },
+              { icon: Users, title: "People", desc: "Add shareholders & directors" },
+              { icon: CreditCard, title: "Capital", desc: "Define share capital" },
+              { icon: FileText, title: "Activity", desc: "Business activity details" },
+              { icon: Building2, title: "Notary", desc: "Notary preferences" },
+              { icon: FileText, title: "Documents", desc: "Upload required docs" },
+              { icon: CheckCircle, title: "Submit", desc: "Review and submit" },
             ].map((item, index) => {
               const Icon = item.icon;
               return (
                 <div key={item.title} className="text-center">
-                  <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold text-white">
-                    <Icon className="h-8 w-8" />
+                  <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold text-white font-bold">
+                    {index + 1}
                   </div>
                   <h3 className="mb-2 font-bold text-brand-dark">{item.title}</h3>
                   <p className="text-sm text-brand-grayMed">{item.desc}</p>
@@ -190,284 +207,55 @@ export default function CompanyFormationPage() {
           </div>
         </div>
       </section>
+
+      {/* Benefits */}
+      <section className="bg-white py-20">
+        <div className="container mx-auto max-w-7xl px-6">
+          <SectionHeading
+            title="Why Form Your Company with Opulanz?"
+            align="center"
+            className="mb-12"
+          />
+
+          <div className="grid gap-8 md:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CheckCircle className="mb-4 h-12 w-12 text-brand-gold" />
+                <CardTitle>Expert Guidance</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-brand-grayMed">
+                  Our team of Luxembourg corporate law experts guide you through every step of the formation process.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CheckCircle className="mb-4 h-12 w-12 text-brand-gold" />
+                <CardTitle>Fast & Efficient</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-brand-grayMed">
+                  Complete the online wizard in minutes. Most formations completed within 2-3 weeks.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CheckCircle className="mb-4 h-12 w-12 text-brand-gold" />
+                <CardTitle>Full Service</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-brand-grayMed">
+                  From notary coordination to RCS registration, we handle everything for you.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
     </>
-  );
-}
-
-function CompanyFormationWizard({ formType }: { formType: string }) {
-  const t = useTranslations();
-  const [currentStep, setCurrentStep] = React.useState(1);
-  const totalSteps = 5;
-
-  const steps = [
-    { number: 1, title: "Company Details" },
-    { number: 2, title: "Shareholders" },
-    { number: 3, title: "Capital Deposit" },
-    { number: 4, title: "Payment" },
-    { number: 5, title: "Confirmation" },
-  ];
-
-  return (
-    <div className="min-h-screen bg-white py-20">
-      <div className="container mx-auto max-w-5xl px-6">
-        <div className="mb-12">
-          <h1 className="mb-2 text-center text-3xl font-bold text-brand-dark">
-            Company Formation Wizard
-          </h1>
-          <p className="text-center text-brand-grayMed">
-            Forming a {formType.toUpperCase()} in Luxembourg
-          </p>
-        </div>
-
-        {/* Progress Steps */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between">
-            {steps.map((step, index) => {
-              const isActive = currentStep === step.number;
-              const isCompleted = currentStep > step.number;
-              const isLast = index === steps.length - 1;
-
-              return (
-                <React.Fragment key={step.number}>
-                  <div className="flex flex-col items-center">
-                    <div
-                      className={`mb-2 flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${
-                        isCompleted
-                          ? "bg-brand-gold text-white"
-                          : isActive
-                          ? "bg-brand-goldLight text-brand-goldDark ring-4 ring-brand-goldLight/30"
-                          : "bg-brand-grayLight text-brand-grayMed"
-                      }`}
-                    >
-                      {isCompleted ? "✓" : step.number}
-                    </div>
-                    <p className="hidden text-xs text-brand-grayMed md:block">
-                      {step.title}
-                    </p>
-                  </div>
-                  {!isLast && (
-                    <div
-                      className={`h-1 flex-1 ${
-                        isCompleted ? "bg-brand-gold" : "bg-brand-grayLight"
-                      }`}
-                    />
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Step Content */}
-        <Card className="border-none shadow-elevated">
-          <CardHeader>
-            <CardTitle>{steps[currentStep - 1].title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {currentStep === 1 && <StepCompanyDetails />}
-            {currentStep === 2 && <StepShareholders />}
-            {currentStep === 3 && <StepCapitalDeposit />}
-            {currentStep === 4 && <StepPayment />}
-            {currentStep === 5 && <StepConfirmation />}
-
-            <div className="mt-8 flex justify-between">
-              {currentStep > 1 && (
-                <Button
-                  variant="outline"
-                  onClick={() => setCurrentStep(currentStep - 1)}
-                >
-                  Back
-                </Button>
-              )}
-              <div className="ml-auto flex gap-4">
-                <Button variant="ghost">Save & Resume Later</Button>
-                {currentStep < totalSteps ? (
-                  <Button
-                    variant="primary"
-                    onClick={() => setCurrentStep(currentStep + 1)}
-                  >
-                    Next
-                  </Button>
-                ) : (
-                  <Button variant="primary">Submit</Button>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-}
-
-function StepCompanyDetails() {
-  const t = useTranslations();
-  return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="companyName" className="text-sm font-semibold text-brand-dark">
-          Company Name <span className="text-red-600">*</span>
-        </Label>
-        <Input id="companyName" placeholder="e.g., Acme Luxembourg S.à r.l." />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="businessActivity" className="text-sm font-semibold text-brand-dark">
-          Business Activity <span className="text-red-600">*</span>
-        </Label>
-        <textarea
-          id="businessActivity"
-          rows={4}
-          className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-          placeholder="Describe your primary business activities..."
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="shareCapital" className="text-sm font-semibold text-brand-dark">
-          Share Capital (EUR) <span className="text-red-600">*</span>
-        </Label>
-        <Input id="shareCapital" type="number" placeholder="12000" />
-        <p className="text-xs text-brand-grayMed">
-          Minimum capital: €12,000 for SARL
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function StepShareholders() {
-  const t = useTranslations();
-  return (
-    <div className="space-y-6">
-      <div className="rounded-xl border border-brand-grayLight bg-white p-6">
-        <h4 className="mb-4 font-bold text-brand-dark">Shareholder 1</h4>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label className="text-sm font-semibold text-brand-dark">Full Name</Label>
-            <Input placeholder="John Doe" />
-          </div>
-          <div className="space-y-2">
-            <Label className="text-sm font-semibold text-brand-dark">Nationality</Label>
-            <Input placeholder="Luxembourg" />
-          </div>
-          <div className="space-y-2">
-            <Label className="text-sm font-semibold text-brand-dark">Email Address</Label>
-            <Input placeholder="john@example.com" type="email" />
-          </div>
-          <div className="space-y-2">
-            <Label className="text-sm font-semibold text-brand-dark">Ownership (%)</Label>
-            <Input placeholder="100" type="number" min="0" max="100" />
-          </div>
-        </div>
-      </div>
-      <Button variant="outline" className="w-full">
-        + Add Another Shareholder
-      </Button>
-    </div>
-  );
-}
-
-function StepCapitalDeposit() {
-  const t = useTranslations();
-  return (
-    <div className="space-y-6">
-      <div className="rounded-xl bg-brand-goldLight/20 p-6">
-        <h4 className="mb-4 font-bold text-brand-dark">Capital Deposit Process</h4>
-        <div className="space-y-4">
-          <div className="flex gap-4">
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold">
-              1
-            </div>
-            <div>
-              <p className="font-semibold text-brand-dark">
-                Deposit share capital with partner bank
-              </p>
-              <p className="text-sm text-brand-grayMed">
-                We'll provide bank details for the capital deposit
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold">
-              2
-            </div>
-            <div>
-              <p className="font-semibold text-brand-dark">
-                Notary will issue incorporation certificate
-              </p>
-              <p className="text-sm text-brand-grayMed">
-                After deposit confirmation, notary proceeds with incorporation
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold">
-              3
-            </div>
-            <div>
-              <p className="font-semibold text-brand-dark">
-                Registration with Luxembourg RCS
-              </p>
-              <p className="text-sm text-brand-grayMed">
-                Company is registered with Luxembourg Business Registers
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StepPayment() {
-  const t = useTranslations();
-  return (
-    <div className="space-y-6">
-      <div className="rounded-xl bg-brand-grayLight/50 p-6">
-        <h4 className="mb-4 text-lg font-bold text-brand-dark">
-          Total Formation Fees
-        </h4>
-        <div className="space-y-3">
-          <div className="flex justify-between text-sm">
-            <span className="text-brand-grayMed">Formation fees</span>
-            <span className="font-semibold text-brand-dark">€1,500</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-brand-grayMed">Notary fees</span>
-            <span className="font-semibold text-brand-dark">€800</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-brand-grayMed">Registration fees</span>
-            <span className="font-semibold text-brand-dark">€300</span>
-          </div>
-          <div className="border-t border-brand-grayMed pt-3">
-            <div className="flex justify-between">
-              <span className="text-lg font-bold text-brand-dark">Total</span>
-              <span className="text-2xl font-bold text-brand-gold">€2,600</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <Button variant="primary" size="lg" className="w-full">
-        Proceed to Payment
-      </Button>
-    </div>
-  );
-}
-
-function StepConfirmation() {
-  return (
-    <div className="space-y-6 text-center">
-      <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-        <CheckCircle className="h-10 w-10 text-green-600" />
-      </div>
-      <h3 className="text-2xl font-bold text-brand-dark">
-        Company Formation Initiated!
-      </h3>
-      <p className="text-brand-grayMed">
-        We'll keep you updated on each step. Expected completion: 2-3 weeks.
-      </p>
-    </div>
   );
 }

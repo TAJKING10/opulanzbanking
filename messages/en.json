@@ -5,6 +5,7 @@
     "submit": "Submit",
     "cancel": "Cancel",
     "continue": "Continue",
+    "select": "Select",
     "back": "Back",
     "next": "Next",
     "save": "Save",
@@ -125,7 +126,7 @@
     },
     "lifeInsurance": {
       "title": "Life Insurance",
-      "description": "Luxembourg life insurance solutions through Utmost"
+      "description": "Expert insurance brokerage services connecting you with leading providers"
     },
     "mortgage": {
       "title": "Mortgage Services",
@@ -176,7 +177,7 @@
       "facebook": "Facebook",
       "instagram": "Instagram"
     },
-    "description": "Professional digital banking and advisory services for businesses and individuals in France and Luxembourg.",
+    "description": "The One-Stop-Shop Business Banking Platform. Part of Groupe Advensys Luxembourg S.A., with 18+ years of experience providing comprehensive business solutions across Europe.",
     "copyright": "© {year} Opulanz. All rights reserved.",
     "regulated": "Regulated by ACPR & AMF (FR)"
   },

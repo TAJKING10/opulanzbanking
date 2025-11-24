@@ -18,7 +18,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       title: "Tax Return Preparation",
       description: "Professional preparation and filing of corporate and individual tax returns across multiple jurisdictions.",
       href: `/${locale}/tax-advisory/tax-return-preparation`,
-      price: "€90",
+      price: "€299",
     },
     {
       icon: Globe,
@@ -76,8 +76,13 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       />
 
       {/* Services Section */}
-      <section id="services" className="bg-white py-20 md:py-28">
-        <div className="container mx-auto max-w-7xl px-6">
+      <section id="services" className="relative bg-white py-20 md:py-28 overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-brand-goldLight/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl animate-pulse"></div>
+
+        <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <SectionHeading
             overline="Tax Services"
             title="Expert Tax Advisory for Businesses & Individuals"
@@ -88,20 +93,24 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
               const Icon = service.icon;
               return (
                 <Link key={service.title} href={service.href}>
-                  <Card className="border-none shadow-sm hover:shadow-md transition-shadow h-full cursor-pointer">
-                    <CardHeader>
-                      <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-gold/10">
-                        <Icon className="h-6 w-6 text-brand-gold" />
-                      </div>
-                      <CardTitle className="text-xl">{service.title}</CardTitle>
-                      <div className="mt-2">
-                        <span className="text-2xl font-bold text-brand-gold">{service.price}</span>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-brand-grayMed">{service.description}</p>
-                    </CardContent>
-                  </Card>
+                  <div className="group relative h-full">
+                    {/* 3D shadow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2"></div>
+                    <Card className="relative border-none shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:-translate-y-1 h-full cursor-pointer bg-white/80 backdrop-blur-sm">
+                      <CardHeader className="space-y-4">
+                        <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-brand-gold to-brand-goldDark shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                          <Icon className="h-7 w-7 text-white" />
+                        </div>
+                        <CardTitle className="text-xl group-hover:text-brand-gold transition-colors">{service.title}</CardTitle>
+                        <div className="mt-2">
+                          <span className="text-2xl font-bold text-brand-gold group-hover:scale-105 inline-block transition-transform">{service.price}</span>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-brand-grayMed">{service.description}</p>
+                      </CardContent>
+                    </Card>
+                  </div>
                 </Link>
               );
             })}
@@ -110,25 +119,39 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="bg-gray-50 py-20 md:py-28">
-        <div className="container mx-auto max-w-7xl px-6">
+      <section className="relative bg-gray-50 py-20 md:py-28 overflow-hidden">
+        {/* Decorative grid background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30"></div>
+
+        <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <div>
-              <h2 className="mb-6 text-3xl font-bold text-brand-dark md:text-4xl">
-                Trusted Tax Experts in Luxembourg
-              </h2>
-              <p className="mb-8 text-lg text-brand-grayMed">
-                With decades of combined experience and deep knowledge of Luxembourg and international tax law,
-                our team of certified tax advisors delivers practical, actionable advice that protects your
-                interests and optimizes your tax position. We stay ahead of regulatory changes to keep you
-                compliant and competitive.
-              </p>
+            <div className="relative">
+              {/* 3D-style card effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/20 to-transparent rounded-2xl blur-xl transform translate-x-4 translate-y-4"></div>
+              <div className="relative bg-white rounded-2xl shadow-2xl p-8 border border-brand-grayLight/50 backdrop-blur-sm hover:shadow-3xl transition-shadow duration-300">
+                <h2 className="mb-6 text-3xl font-bold text-brand-dark md:text-4xl">
+                  Trusted Tax Experts in Luxembourg
+                </h2>
+                <p className="mb-8 text-lg text-brand-grayMed">
+                  With decades of combined experience and deep knowledge of Luxembourg and international tax law,
+                  our team of certified tax advisors delivers practical, actionable advice that protects your
+                  interests and optimizes your tax position. We stay ahead of regulatory changes to keep you
+                  compliant and competitive.
+                </p>
+              </div>
             </div>
             <div className="space-y-4">
-              {benefits.map((benefit) => (
-                <div key={benefit} className="flex items-start gap-3">
-                  <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" />
-                  <p className="text-brand-dark">{benefit}</p>
+              {benefits.map((benefit, index) => (
+                <div
+                  key={benefit}
+                  className="group flex items-start gap-3 p-4 rounded-xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-lg transition-all duration-300 hover:-translate-x-1"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-brand-gold rounded-full blur-md opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                    <CheckCircle className="relative mt-1 h-5 w-5 flex-shrink-0 text-brand-gold group-hover:scale-110 transition-transform" />
+                  </div>
+                  <p className="text-brand-dark group-hover:text-brand-dark/90 transition-colors">{benefit}</p>
                 </div>
               ))}
             </div>
@@ -137,32 +160,60 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       </section>
 
       {/* Expertise Section */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container mx-auto max-w-7xl px-6">
+      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+        {/* Animated background orbs */}
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-brand-goldLight/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl"></div>
+
+        <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <SectionHeading
             overline="Our Expertise"
             title="Comprehensive Tax Coverage"
             description="From local compliance to international tax structures, we cover all aspects of tax advisory."
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            <div className="text-center">
-              <TrendingDown className="mx-auto mb-4 h-12 w-12 text-brand-gold" />
-              <h3 className="mb-2 text-xl font-bold text-brand-dark">Tax Optimization</h3>
+            <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+              <div className="relative inline-block mb-4">
+                <div className="absolute inset-0 bg-brand-gold rounded-full blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                <div className="relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-gold via-brand-gold to-brand-goldDark text-white shadow-xl group-hover:scale-110 group-hover:shadow-2xl transition-all duration-300">
+                  <TrendingDown className="h-8 w-8 relative z-10" />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
+                </div>
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">Tax Optimization</h3>
               <p className="text-sm text-brand-grayMed">Minimize tax burden legally and ethically</p>
             </div>
-            <div className="text-center">
-              <Shield className="mx-auto mb-4 h-12 w-12 text-brand-gold" />
-              <h3 className="mb-2 text-xl font-bold text-brand-dark">Compliance</h3>
+            <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+              <div className="relative inline-block mb-4">
+                <div className="absolute inset-0 bg-brand-gold rounded-full blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                <div className="relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-gold via-brand-gold to-brand-goldDark text-white shadow-xl group-hover:scale-110 group-hover:shadow-2xl transition-all duration-300">
+                  <Shield className="h-8 w-8 relative z-10" />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
+                </div>
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">Compliance</h3>
               <p className="text-sm text-brand-grayMed">Full adherence to tax regulations</p>
             </div>
-            <div className="text-center">
-              <Globe className="mx-auto mb-4 h-12 w-12 text-brand-gold" />
-              <h3 className="mb-2 text-xl font-bold text-brand-dark">International</h3>
+            <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+              <div className="relative inline-block mb-4">
+                <div className="absolute inset-0 bg-brand-gold rounded-full blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                <div className="relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-gold via-brand-gold to-brand-goldDark text-white shadow-xl group-hover:scale-110 group-hover:shadow-2xl transition-all duration-300">
+                  <Globe className="h-8 w-8 relative z-10" />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
+                </div>
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">International</h3>
               <p className="text-sm text-brand-grayMed">Cross-border tax expertise</p>
             </div>
-            <div className="text-center">
-              <UserCheck className="mx-auto mb-4 h-12 w-12 text-brand-gold" />
-              <h3 className="mb-2 text-xl font-bold text-brand-dark">Personal Service</h3>
+            <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+              <div className="relative inline-block mb-4">
+                <div className="absolute inset-0 bg-brand-gold rounded-full blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                <div className="relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-gold via-brand-gold to-brand-goldDark text-white shadow-xl group-hover:scale-110 group-hover:shadow-2xl transition-all duration-300">
+                  <UserCheck className="h-8 w-8 relative z-10" />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
+                </div>
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">Personal Service</h3>
               <p className="text-sm text-brand-grayMed">Dedicated tax advisors for your needs</p>
             </div>
           </div>

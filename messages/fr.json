@@ -5,6 +5,7 @@
     "submit": "Soumettre",
     "cancel": "Annuler",
     "continue": "Continuer",
+    "select": "Sélectionner",
     "back": "Retour",
     "next": "Suivant",
     "save": "Enregistrer",
@@ -125,7 +126,7 @@
     },
     "lifeInsurance": {
       "title": "Assurance-vie",
-      "description": "Solutions d'assurance-vie luxembourgeoise via Utmost"
+      "description": "Services de courtage d'assurance experts vous connectant aux principaux fournisseurs"
     },
     "mortgage": {
       "title": "Services hypothécaires",
@@ -176,7 +177,7 @@
       "facebook": "Facebook",
       "instagram": "Instagram"
     },
-    "description": "Services bancaires et de conseil numériques professionnels pour les entreprises et les particuliers en France et au Luxembourg.",
+    "description": "La Plateforme Bancaire Tout-en-Un pour les Entreprises. Membre du Groupe Advensys Luxembourg S.A., avec plus de 18 ans d'expérience dans les solutions d'affaires complètes en Europe.",
     "copyright": "© {year} Opulanz. Tous droits réservés.",
     "regulated": "Réglementé par ACPR & AMF (FR)"
   },

@@ -17,6 +17,7 @@ const applicationRoutes = require('./routes/applications');
 const documentRoutes = require('./routes/documents');
 const companyRoutes = require('./routes/companies');
 const appointmentRoutes = require('./routes/appointments');
+const notificationRoutes = require('./routes/notifications');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -46,6 +47,7 @@ app.use('/api/applications', applicationRoutes);
 app.use('/api', documentRoutes); // Documents routes include /api/applications/:id/documents and /api/documents/:id
 app.use('/api/companies', companyRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 import { useState, useEffect, useRef } from "react";
+import emailjs from '@emailjs/browser';
 
 export default function PersonalTaxAdvisoryPage({ params: { locale } }: { params: { locale: string } }) {
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
@@ -22,6 +23,93 @@ export default function PersonalTaxAdvisoryPage({ params: { locale } }: { params
   const totalPrice = 100;
   const servicePrice = totalPrice / 1.17;
   const vat = totalPrice - servicePrice;
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init('YOUR_PUBLIC_KEY'); // Replace with your EmailJS public key
+  }, []);
+
+  // Generate PDF receipt
+  const generatePDFReceipt = () => {
+    if (!bookingData || !bookingData.paymentDetails) return;
+
+    const receiptContent = `
+OPULANZ BANKING - PAYMENT RECEIPT
+==================================================
+
+Service: Personal Tax Advisory
+Date: ${new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+Time: ${new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+Duration: 60 minutes
+
+CLIENT INFORMATION
+==================================================
+Name: ${bookingData.inviteeName}
+Email: ${bookingData.inviteeEmail}
+
+PAYMENT DETAILS
+==================================================
+Order ID: ${bookingData.paymentDetails.orderId}
+Amount: €100.00 (incl. VAT)
+Service Fee: €${(100 / 1.17).toFixed(2)} (excl. VAT)
+VAT (17%): €${(100 - 100 / 1.17).toFixed(2)}
+Payment Method: PayPal
+Status: ${bookingData.paymentDetails.status}
+Date: ${new Date(bookingData.paymentDetails.timestamp).toLocaleString('en-US')}
+
+Thank you for choosing Opulanz Banking!
+Contact: opulanz.banking@gmail.com
+    `;
+
+    const blob = new Blob([receiptContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Opulanz-Receipt-${bookingData.paymentDetails.orderId}.txt`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  // Send email receipts
+  const sendEmailReceipts = async () => {
+    if (!bookingData || !bookingData.paymentDetails) return;
+
+    const templateParams = {
+      to_email: bookingData.inviteeEmail,
+      to_name: bookingData.inviteeName,
+      service_name: 'Personal Tax Advisory',
+      appointment_date: new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+      appointment_time: new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      order_id: bookingData.paymentDetails.orderId,
+      amount: '€100.00',
+      service_fee: '€' + (100 / 1.17).toFixed(2),
+      vat: '€' + (100 - 100 / 1.17).toFixed(2),
+      payment_status: bookingData.paymentDetails.status,
+      payment_date: new Date(bookingData.paymentDetails.timestamp).toLocaleString('en-US')
+    };
+
+    try {
+      // Send to customer
+      await emailjs.send(
+        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        templateParams,
+        'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+      );
+
+      // Send to admin
+      await emailjs.send(
+        'YOUR_SERVICE_ID',
+        'YOUR_ADMIN_TEMPLATE_ID', // You'll need a separate template for admin
+        { ...templateParams, to_email: 'opulanz.banking@gmail.com', to_name: 'Opulanz Admin' },
+        'YOUR_PUBLIC_KEY'
+      );
+
+      console.log('✅ Email receipts sent successfully');
+    } catch (error) {
+      console.error('❌ Error sending emails:', error);
+    }
+  };
+
 
   // Load Calendly script when calendar step is active
   useEffect(() => {
@@ -78,6 +166,19 @@ export default function PersonalTaxAdvisoryPage({ params: { locale } }: { params
           },
           onApprove: function(data: any, actions: any) {
             return actions.order.capture().then(function(details: any) {
+              setBookingData((prev: any) => ({
+                ...prev,
+                paymentDetails: {
+                  orderId: data.orderID,
+                  payerId: details.payer.payer_id,
+                  payerEmail: details.payer.email_address,
+                  payerName: details.payer.name.given_name + ' ' + details.payer.name.surname,
+                  amount: details.purchase_units[0].amount.value,
+                  currency: details.purchase_units[0].amount.currency_code,
+                  status: details.status,
+                  timestamp: new Date().toISOString()
+                }
+              }));
               setPaymentCompleted(true);
             });
           },
@@ -120,6 +221,9 @@ export default function PersonalTaxAdvisoryPage({ params: { locale } }: { params
           calendlyLink: bookingData.eventUri
         })
       });
+
+      sendEmailReceipts();
+
 
       setStep('confirmation');
     } catch (error) {
@@ -184,7 +288,10 @@ export default function PersonalTaxAdvisoryPage({ params: { locale } }: { params
                 <li>✓ Prepare your personal tax questions and documents</li>
               </ul>
             </div>
-            <Button onClick={() => window.location.href = `/${locale}`} className="w-full bg-brand-gold text-white hover:bg-brand-goldDark">Return to Home</Button>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Button onClick={generatePDFReceipt} variant="outline" className="w-full border-2 border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white">Download Receipt</Button>
+              <Button onClick={() => window.location.href = `/${locale}`} className="w-full bg-brand-gold text-white hover:bg-brand-goldDark">Return to Home</Button>
+            </div>
           </div>
         </section></>
     );

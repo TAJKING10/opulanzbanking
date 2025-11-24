@@ -7,7 +7,7 @@ import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Script from "next/script";
+
 import { useState, useEffect, useRef } from "react";
 
 export default function InternationalTaxPage({ params: { locale } }: { params: { locale: string } }) {
@@ -33,6 +33,17 @@ export default function InternationalTaxPage({ params: { locale } }: { params: {
       document.head.appendChild(script);
     }
   }, [step, calendlyLoaded]);
+  // Load PayPal SDK when payment step is active
+  useEffect(() => {
+    if (step === 'payment' && !paypalLoaded) {
+      const script = document.createElement('script');
+      script.src = 'https://www.paypal.com/sdk/js?client-id=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo&currency=EUR';
+      script.async = true;
+      script.onload = () => setPaypalLoaded(true);
+      document.head.appendChild(script);
+    }
+  }, [step, paypalLoaded]);
+
 
   // Listen for Calendly events
   useEffect(() => {
@@ -244,16 +255,7 @@ export default function InternationalTaxPage({ params: { locale } }: { params: {
           </div>
         </section>
 
-        <Script
-          src="https://assets.calendly.com/assets/external/widget.js"
-          strategy="lazyOnload"
-        />
-        <Script
-          src="https://www.paypal.com/sdk/js?client-id=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo&currency=EUR"
-          strategy="lazyOnload"
-          onLoad={() => setPaypalLoaded(true)}
-        />
-      </>
+        </>
     );
   }
 
@@ -401,16 +403,7 @@ export default function InternationalTaxPage({ params: { locale } }: { params: {
           </div>
         </section>
 
-        <Script
-          src="https://assets.calendly.com/assets/external/widget.js"
-          strategy="lazyOnload"
-        />
-        <Script
-          src="https://www.paypal.com/sdk/js?client-id=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo&currency=EUR"
-          strategy="lazyOnload"
-          onLoad={() => setPaypalLoaded(true)}
-        />
-      </>
+        </>
     );
   }
 
@@ -473,16 +466,7 @@ export default function InternationalTaxPage({ params: { locale } }: { params: {
           </div>
         </section>
 
-        <Script
-          src="https://assets.calendly.com/assets/external/widget.js"
-          strategy="lazyOnload"
-        />
-        <Script
-          src="https://www.paypal.com/sdk/js?client-id=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo&currency=EUR"
-          strategy="lazyOnload"
-          onLoad={() => setPaypalLoaded(true)}
-        />
-      </>
+        </>
     );
   }
 
@@ -634,15 +618,6 @@ export default function InternationalTaxPage({ params: { locale } }: { params: {
         </div>
       </section>
 
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
-      <Script
-        src="https://www.paypal.com/sdk/js?client-id=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo&currency=EUR"
-        strategy="lazyOnload"
-        onLoad={() => setPaypalLoaded(true)}
-      />
-    </>
+      </>
   );
 }

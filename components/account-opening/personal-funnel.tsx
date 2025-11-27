@@ -23,7 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormStepper, Step } from "./form-stepper";
-import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Clock, FileText } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Clock, FileText, Upload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type {
   PersonalApplication,
@@ -36,7 +36,7 @@ import type {
   SourceOfFunds,
   AccountType,
 } from "@/types/account-opening";
-import { generateReferralRouting, saveReferralEntry, getPartnerDisplayName, getPartnerExplanation } from "@/lib/referral-routing";
+// Removed: import { generateReferralRouting, saveReferralEntry, getPartnerDisplayName, getPartnerExplanation } from "@/lib/referral-routing";
 
 const STEPS: Step[] = [
   { id: "welcome", label: "Welcome", shortLabel: "Welcome" },
@@ -56,13 +56,21 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
   const [currentStep, setCurrentStep] = React.useState(1);
   const [formData, setFormData] = React.useState<Partial<PersonalApplication>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [redirectUrl, setRedirectUrl] = React.useState<string>("");
+  const [applicationId, setApplicationId] = React.useState<string>("");
+
+  // Document uploads state
+  const [uploadedDocuments, setUploadedDocuments] = React.useState<Array<{
+    name: string;
+    type: string;
+    size: number;
+    data: string; // base64 encoded
+    category: string;
+  }>>([]);
 
   // Scroll to top whenever step changes
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep]);
-  const [partnerName, setPartnerName] = React.useState<string>("");
 
   // Step 1: Welcome - No form needed
 
@@ -189,10 +197,43 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
     }
   };
 
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, category: string) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (file.size > maxSize) {
+      alert("File size must be less than 5MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target?.result as string;
+      setUploadedDocuments(prev => [...prev, {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        data: base64,
+        category: category
+      }]);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeDocument = (index: number) => {
+    setUploadedDocuments(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
     try {
+      // Generate unique application ID
+      const appId = `OPL-PA-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
       // Build complete application
       const application: PersonalApplication = {
         userRef: crypto.randomUUID(),
@@ -203,15 +244,19 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
         createdAt: new Date().toISOString(),
       };
 
-      // Generate referral routing
-      const routing = await generateReferralRouting(application);
+      // Save application to localStorage with unique ID
+      const applications = JSON.parse(localStorage.getItem("opulanz_applications") || "[]");
+      applications.push({
+        id: appId,
+        type: "personal",
+        application,
+        documents: uploadedDocuments,
+        submittedAt: new Date().toISOString(),
+      });
+      localStorage.setItem("opulanz_applications", JSON.stringify(applications));
 
-      // Save to localStorage
-      saveReferralEntry(application, routing.partner);
-
-      // Store for handoff display
-      setPartnerName(getPartnerDisplayName(routing.partner));
-      setRedirectUrl(routing.redirectUrl);
+      // Store application ID for display
+      setApplicationId(appId);
 
       // Move to final step
       setCurrentStep(6);
@@ -722,64 +767,220 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                <div>
-                  <p className="font-medium text-brand-dark">Valid ID or Passport</p>
-                  <p className="text-sm text-brand-grayMed">Government-issued photo ID</p>
+              {/* Valid ID or Passport */}
+              <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-brand-dark">Valid ID or Passport</p>
+                    <p className="text-sm text-brand-grayMed">Government-issued photo ID</p>
+                  </div>
+                </div>
+                <div className="pl-8">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "id_document")}
+                    className="hidden"
+                    id="step4-id-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("step4-id-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {uploadedDocuments.some(d => d.category === "id_document") ? "✓ Uploaded" : "Upload ID"}
+                  </Button>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                <div>
-                  <p className="font-medium text-brand-dark">Proof of Address</p>
-                  <p className="text-sm text-brand-grayMed">Utility bill or bank statement (less than 3 months old)</p>
+              {/* Proof of Address */}
+              <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-brand-dark">Proof of Address</p>
+                    <p className="text-sm text-brand-grayMed">Utility bill or bank statement (less than 3 months old)</p>
+                  </div>
+                </div>
+                <div className="pl-8">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "proof_of_address")}
+                    className="hidden"
+                    id="step4-address-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("step4-address-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {uploadedDocuments.some(d => d.category === "proof_of_address") ? "✓ Uploaded" : "Upload Proof"}
+                  </Button>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                <div>
-                  <p className="font-medium text-brand-dark">Tax Identification Number</p>
-                  <p className="text-sm text-brand-grayMed">If applicable in your jurisdiction</p>
+              {/* Tax Identification Number */}
+              <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-brand-dark">Tax Identification Number</p>
+                    <p className="text-sm text-brand-grayMed">If applicable in your jurisdiction</p>
+                  </div>
+                </div>
+                <div className="pl-8">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "tax_id_document")}
+                    className="hidden"
+                    id="step4-tax-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("step4-tax-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {uploadedDocuments.some(d => d.category === "tax_id_document") ? "✓ Uploaded" : "Upload Tax ID"}
+                  </Button>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                <div>
-                  <p className="font-medium text-brand-dark">Source of Funds Documentation</p>
-                  <p className="text-sm text-brand-grayMed">Pay slips, investment statements, or other proof</p>
+              {/* Source of Funds Documentation */}
+              <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-brand-dark">Source of Funds Documentation</p>
+                    <p className="text-sm text-brand-grayMed">Pay slips, investment statements, or other proof</p>
+                  </div>
+                </div>
+                <div className="pl-8">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "source_of_funds")}
+                    className="hidden"
+                    id="step4-funds-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("step4-funds-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {uploadedDocuments.some(d => d.category === "source_of_funds") ? "✓ Uploaded" : "Upload Proof"}
+                  </Button>
                 </div>
               </div>
 
+              {/* Private Banking Additional Documents */}
               {formData.intent?.accountType === "private_banking" && (
                 <>
-                  <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                    <div>
-                      <p className="font-medium text-brand-dark">Proof of Assets</p>
-                      <p className="text-sm text-brand-grayMed">Bank statements, investment portfolios</p>
+                  <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="font-medium text-brand-dark">Proof of Assets</p>
+                        <p className="text-sm text-brand-grayMed">Bank statements, investment portfolios</p>
+                      </div>
+                    </div>
+                    <div className="pl-8">
+                      <input
+                        type="file"
+                        accept="image/*,.pdf"
+                        onChange={(e) => handleFileUpload(e, "proof_of_assets")}
+                        className="hidden"
+                        id="step4-assets-upload"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById("step4-assets-upload")?.click()}
+                        className="w-full sm:w-auto"
+                      >
+                        <Upload className="mr-2 h-4 w-4" />
+                        {uploadedDocuments.some(d => d.category === "proof_of_assets") ? "✓ Uploaded" : "Upload Assets"}
+                      </Button>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                    <div>
-                      <p className="font-medium text-brand-dark">Income Evidence</p>
-                      <p className="text-sm text-brand-grayMed">Tax returns, employment contracts</p>
+                  <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="font-medium text-brand-dark">Income Evidence</p>
+                        <p className="text-sm text-brand-grayMed">Tax returns, employment contracts</p>
+                      </div>
+                    </div>
+                    <div className="pl-8">
+                      <input
+                        type="file"
+                        accept="image/*,.pdf"
+                        onChange={(e) => handleFileUpload(e, "income_evidence")}
+                        className="hidden"
+                        id="step4-income-upload"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById("step4-income-upload")?.click()}
+                        className="w-full sm:w-auto"
+                      >
+                        <Upload className="mr-2 h-4 w-4" />
+                        {uploadedDocuments.some(d => d.category === "income_evidence") ? "✓ Uploaded" : "Upload Income Proof"}
+                      </Button>
                     </div>
                   </div>
                 </>
               )}
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
-              <p className="text-sm text-blue-900">
-                <strong>Note:</strong> You will be asked to upload these documents in the next stage with your partner bank.
-              </p>
-            </div>
+            {/* Uploaded Documents List */}
+            {uploadedDocuments.length > 0 && (
+              <div className="space-y-2 pt-6 border-t border-gray-200 mt-6">
+                <Label>Uploaded Documents ({uploadedDocuments.length})</Label>
+                <div className="space-y-2">
+                  {uploadedDocuments.map((doc, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <FileText className="h-5 w-5 text-brand-gold flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium text-brand-dark truncate">{doc.name}</p>
+                          <p className="text-xs text-brand-grayMed">
+                            {doc.category.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} • {(doc.size / 1024).toFixed(0)} KB
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeDocument(index)}
+                        className="flex-shrink-0"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -883,36 +1084,49 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
         {/* Step 6: Submission */}
         {currentStep === 6 && (
-          <div className="space-y-6 text-center">
-            <div className="mx-auto w-16 h-16 bg-brand-goldLight rounded-full flex items-center justify-center">
-              <CheckCircle className="h-10 w-10 text-brand-gold" />
+          <div className="space-y-8 text-center">
+            <div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-12 w-12 text-green-600" />
             </div>
 
             <div>
-              <h2 className="text-3xl font-bold text-brand-dark mb-2">
-                Thanks! We're Matching Your Profile
+              <h2 className="text-3xl font-bold text-brand-dark mb-4">
+                Application Submitted Successfully!
               </h2>
-              <p className="text-lg text-brand-grayMed max-w-2xl mx-auto">
-                {partnerName === "Opulanz Banking"
-                  ? "Your application requires manual review. Our team will match you with the best Opulanz Partner Bank and contact you within 24-72 hours."
-                  : `Your application has been prepared for ${partnerName}. Opulanz remains your point of contact throughout the process.`
-                }
+              <p className="text-lg text-brand-grayMed max-w-2xl mx-auto mb-6">
+                Thank you for submitting your personal account application. Our team will review your information and contact you within 24-72 hours.
               </p>
             </div>
 
-            {redirectUrl && (
-              <div className="p-6 bg-gray-50 rounded-lg">
-                <p className="text-sm text-brand-grayMed mb-4">
-                  Click below to continue with your partner bank
-                </p>
-                <Button size="lg" asChild>
-                  <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
-                    Continue with {partnerName}
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </a>
-                </Button>
+            <div className="p-8 bg-gradient-to-br from-brand-goldLight/20 to-brand-gold/10 rounded-2xl border-2 border-brand-gold/30 max-w-md mx-auto">
+              <p className="text-sm text-brand-grayMed mb-3 font-semibold uppercase tracking-wide">
+                Your Application Number
+              </p>
+              <div className="text-3xl font-bold text-brand-dark mb-2 font-mono tracking-tight">
+                {applicationId}
               </div>
-            )}
+              <p className="text-sm text-brand-grayMed">
+                Please save this number for your records
+              </p>
+            </div>
+
+            <div className="p-6 bg-blue-50 rounded-lg border border-blue-200 max-w-2xl mx-auto text-left">
+              <h3 className="font-semibold text-brand-dark mb-3">What happens next?</h3>
+              <ul className="space-y-2 text-sm text-brand-grayMed">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span>Our compliance team will review your application</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span>We'll match you with the most suitable Opulanz partner bank</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span>You'll receive an email with next steps within 24-72 hours</span>
+                </li>
+              </ul>
+            </div>
 
             <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button variant="outline" size="lg" asChild>

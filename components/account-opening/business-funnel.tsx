@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormStepper, Step } from "./form-stepper";
-import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Plus, Trash2, Clock, FileText } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Plus, Trash2, Clock, FileText, Upload, X } from "lucide-react";
 import type {
   BusinessApplication,
   PersonalIdentity,
@@ -24,7 +24,7 @@ import type {
   DirectorOrUBO,
   BusinessConsents,
 } from "@/types/account-opening";
-import { generateReferralRouting, saveReferralEntry, getPartnerDisplayName } from "@/lib/referral-routing";
+// Removed: import { generateReferralRouting, saveReferralEntry, getPartnerDisplayName } from "@/lib/referral-routing";
 
 const STEPS: Step[] = [
   { id: "welcome", label: "Welcome", shortLabel: "Welcome" },
@@ -45,8 +45,17 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
   const [currentStep, setCurrentStep] = React.useState(1);
   const [formData, setFormData] = React.useState<Partial<BusinessApplication>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [redirectUrl, setRedirectUrl] = React.useState<string>("");
-  const [partnerName, setPartnerName] = React.useState<string>("");
+  const [applicationId, setApplicationId] = React.useState<string>("");
+
+  // Document uploads state
+  const [uploadedDocuments, setUploadedDocuments] = React.useState<Array<{
+    name: string;
+    type: string;
+    size: number;
+    data: string; // base64 encoded
+    category: string;
+  }>>([]);
+
   // Scroll to top whenever step changes
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -197,10 +206,43 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
     }
   };
 
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, category: string) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (file.size > maxSize) {
+      alert("File size must be less than 5MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target?.result as string;
+      setUploadedDocuments(prev => [...prev, {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        data: base64,
+        category: category
+      }]);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeDocument = (index: number) => {
+    setUploadedDocuments(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
     try {
+      // Generate unique application ID
+      const appId = `OPL-BA-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
       const application: BusinessApplication = {
         userRef: crypto.randomUUID(),
         mode: "business",
@@ -212,11 +254,20 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
         createdAt: new Date().toISOString(),
       };
 
-      const routing = await generateReferralRouting(application);
-      saveReferralEntry(application, routing.partner);
+      // Save application to localStorage with unique ID
+      const applications = JSON.parse(localStorage.getItem("opulanz_applications") || "[]");
+      applications.push({
+        id: appId,
+        type: "business",
+        application,
+        documents: uploadedDocuments,
+        submittedAt: new Date().toISOString(),
+      });
+      localStorage.setItem("opulanz_applications", JSON.stringify(applications));
 
-      setPartnerName(getPartnerDisplayName(routing.partner));
-      setRedirectUrl(routing.redirectUrl);
+      // Store application ID for display
+      setApplicationId(appId);
+
       setCurrentStep(7);
     } catch (error) {
       console.error("Submission error:", error);
@@ -748,6 +799,188 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                 ))}
               </div>
             </div>
+
+            {/* Document Upload Section */}
+            <div className="space-y-4 pt-6 border-t border-gray-200">
+              <div>
+                <h3 className="text-lg font-semibold text-brand-dark mb-2">Supporting Documents</h3>
+                <p className="text-sm text-brand-grayMed mb-4">
+                  Please upload the following documents to support your business application
+                </p>
+              </div>
+
+              {/* Company Registration Certificate */}
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Company Registration Certificate <span className="text-red-500">*</span>
+                </Label>
+                <div className="flex items-center gap-4">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "company_registration")}
+                    className="hidden"
+                    id="company-registration-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("company-registration-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload Registration Certificate
+                  </Button>
+                </div>
+              </div>
+
+              {/* Articles of Association */}
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Articles of Association / Statutes <span className="text-red-500">*</span>
+                </Label>
+                <div className="flex items-center gap-4">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "articles_of_association")}
+                    className="hidden"
+                    id="articles-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("articles-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload Articles of Association
+                  </Button>
+                </div>
+              </div>
+
+              {/* Shareholder Register */}
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Shareholder Register / UBO Declaration <span className="text-red-500">*</span>
+                </Label>
+                <div className="flex items-center gap-4">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "shareholder_register")}
+                    className="hidden"
+                    id="shareholder-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("shareholder-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload Shareholder Register
+                  </Button>
+                </div>
+              </div>
+
+              {/* Business Plan */}
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Business Plan / Activity Description
+                  <span className="text-xs text-brand-grayMed font-normal">(Recommended)</span>
+                </Label>
+                <div className="flex items-center gap-4">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "business_plan")}
+                    className="hidden"
+                    id="business-plan-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("business-plan-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload Business Plan
+                  </Button>
+                </div>
+              </div>
+
+              {/* Financial Statements */}
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Recent Financial Statements
+                  <span className="text-xs text-brand-grayMed font-normal">(If existing company)</span>
+                </Label>
+                <div className="flex items-center gap-4">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "financial_statements")}
+                    className="hidden"
+                    id="financial-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("financial-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload Financial Statements
+                  </Button>
+                </div>
+              </div>
+
+              {/* Uploaded Documents List */}
+              {uploadedDocuments.length > 0 && (
+                <div className="space-y-2 pt-4">
+                  <Label>Uploaded Documents ({uploadedDocuments.length})</Label>
+                  <div className="space-y-2">
+                    {uploadedDocuments.map((doc, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <FileText className="h-5 w-5 text-brand-gold flex-shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium text-brand-dark truncate">{doc.name}</p>
+                            <p className="text-xs text-brand-grayMed">
+                              {doc.category.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} • {(doc.size / 1024).toFixed(0)} KB
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeDocument(index)}
+                          className="flex-shrink-0"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <p className="text-xs text-brand-grayMed">
+                Accepted formats: JPG, PNG, PDF • Maximum size: 5MB per file
+              </p>
+            </div>
           </form>
         )}
 
@@ -975,36 +1208,49 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
         {/* Step 7: Submission */}
         {currentStep === 7 && (
-          <div className="space-y-6 text-center">
-            <div className="mx-auto w-16 h-16 bg-brand-goldLight rounded-full flex items-center justify-center">
-              <CheckCircle className="h-10 w-10 text-brand-gold" />
+          <div className="space-y-8 text-center">
+            <div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-12 w-12 text-green-600" />
             </div>
 
             <div>
-              <h2 className="text-3xl font-bold text-brand-dark mb-2">
-                Thanks! We're Processing Your Application
+              <h2 className="text-3xl font-bold text-brand-dark mb-4">
+                Application Submitted Successfully!
               </h2>
-              <p className="text-lg text-brand-grayMed max-w-2xl mx-auto">
-                {partnerName === "Opulanz Banking"
-                  ? "Your business application requires manual review. Our team will match you with the best Opulanz Partner Bank and contact you within 24-72 hours."
-                  : `Your application has been prepared for ${partnerName}. Opulanz remains your point of contact throughout the process.`
-                }
+              <p className="text-lg text-brand-grayMed max-w-2xl mx-auto mb-6">
+                Thank you for submitting your business account application. Our team will review your information and contact you within 24-72 hours.
               </p>
             </div>
 
-            {redirectUrl && (
-              <div className="p-6 bg-gray-50 rounded-lg">
-                <p className="text-sm text-brand-grayMed mb-4">
-                  Click below to continue with your partner bank
-                </p>
-                <Button size="lg" asChild>
-                  <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
-                    Continue with {partnerName}
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </a>
-                </Button>
+            <div className="p-8 bg-gradient-to-br from-brand-goldLight/20 to-brand-gold/10 rounded-2xl border-2 border-brand-gold/30 max-w-md mx-auto">
+              <p className="text-sm text-brand-grayMed mb-3 font-semibold uppercase tracking-wide">
+                Your Application Number
+              </p>
+              <div className="text-3xl font-bold text-brand-dark mb-2 font-mono tracking-tight">
+                {applicationId}
               </div>
-            )}
+              <p className="text-sm text-brand-grayMed">
+                Please save this number for your records
+              </p>
+            </div>
+
+            <div className="p-6 bg-blue-50 rounded-lg border border-blue-200 max-w-2xl mx-auto text-left">
+              <h3 className="font-semibold text-brand-dark mb-3">What happens next?</h3>
+              <ul className="space-y-2 text-sm text-brand-grayMed">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span>Our compliance team will review your application and supporting documents</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span>We'll match your business with the most suitable Opulanz partner bank</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span>You'll receive an email with next steps within 24-72 hours</span>
+                </li>
+              </ul>
+            </div>
 
             <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button variant="outline" size="lg" asChild>

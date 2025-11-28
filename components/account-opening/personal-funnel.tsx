@@ -47,6 +47,158 @@ const STEPS: Step[] = [
   { id: "submission", label: "Submission", shortLabel: "Submit" },
 ];
 
+const COUNTRY_CODES = [
+  { code: "+93", country: "Afghanistan", flag: "🇦🇫" },
+  { code: "+355", country: "Albania", flag: "🇦🇱" },
+  { code: "+213", country: "Algeria", flag: "🇩🇿" },
+  { code: "+376", country: "Andorra", flag: "🇦🇩" },
+  { code: "+244", country: "Angola", flag: "🇦🇴" },
+  { code: "+54", country: "Argentina", flag: "🇦🇷" },
+  { code: "+374", country: "Armenia", flag: "🇦🇲" },
+  { code: "+61", country: "Australia", flag: "🇦🇺" },
+  { code: "+43", country: "Austria", flag: "🇦🇹" },
+  { code: "+994", country: "Azerbaijan", flag: "🇦🇿" },
+  { code: "+973", country: "Bahrain", flag: "🇧🇭" },
+  { code: "+880", country: "Bangladesh", flag: "🇧🇩" },
+  { code: "+375", country: "Belarus", flag: "🇧🇾" },
+  { code: "+32", country: "Belgium", flag: "🇧🇪" },
+  { code: "+229", country: "Benin", flag: "🇧🇯" },
+  { code: "+975", country: "Bhutan", flag: "🇧🇹" },
+  { code: "+591", country: "Bolivia", flag: "🇧🇴" },
+  { code: "+387", country: "Bosnia", flag: "🇧🇦" },
+  { code: "+55", country: "Brazil", flag: "🇧🇷" },
+  { code: "+673", country: "Brunei", flag: "🇧🇳" },
+  { code: "+359", country: "Bulgaria", flag: "🇧🇬" },
+  { code: "+855", country: "Cambodia", flag: "🇰🇭" },
+  { code: "+237", country: "Cameroon", flag: "🇨🇲" },
+  { code: "+1", country: "Canada", flag: "🇨🇦" },
+  { code: "+56", country: "Chile", flag: "🇨🇱" },
+  { code: "+86", country: "China", flag: "🇨🇳" },
+  { code: "+57", country: "Colombia", flag: "🇨🇴" },
+  { code: "+506", country: "Costa Rica", flag: "🇨🇷" },
+  { code: "+385", country: "Croatia", flag: "🇭🇷" },
+  { code: "+53", country: "Cuba", flag: "🇨🇺" },
+  { code: "+357", country: "Cyprus", flag: "🇨🇾" },
+  { code: "+420", country: "Czech Republic", flag: "🇨🇿" },
+  { code: "+45", country: "Denmark", flag: "🇩🇰" },
+  { code: "+593", country: "Ecuador", flag: "🇪🇨" },
+  { code: "+20", country: "Egypt", flag: "🇪🇬" },
+  { code: "+503", country: "El Salvador", flag: "🇸🇻" },
+  { code: "+372", country: "Estonia", flag: "🇪🇪" },
+  { code: "+251", country: "Ethiopia", flag: "🇪🇹" },
+  { code: "+358", country: "Finland", flag: "🇫🇮" },
+  { code: "+33", country: "France", flag: "🇫🇷" },
+  { code: "+995", country: "Georgia", flag: "🇬🇪" },
+  { code: "+49", country: "Germany", flag: "🇩🇪" },
+  { code: "+233", country: "Ghana", flag: "🇬🇭" },
+  { code: "+30", country: "Greece", flag: "🇬🇷" },
+  { code: "+502", country: "Guatemala", flag: "🇬🇹" },
+  { code: "+509", country: "Haiti", flag: "🇭🇹" },
+  { code: "+504", country: "Honduras", flag: "🇭🇳" },
+  { code: "+852", country: "Hong Kong", flag: "🇭🇰" },
+  { code: "+36", country: "Hungary", flag: "🇭🇺" },
+  { code: "+354", country: "Iceland", flag: "🇮🇸" },
+  { code: "+91", country: "India", flag: "🇮🇳" },
+  { code: "+62", country: "Indonesia", flag: "🇮🇩" },
+  { code: "+98", country: "Iran", flag: "🇮🇷" },
+  { code: "+964", country: "Iraq", flag: "🇮🇶" },
+  { code: "+353", country: "Ireland", flag: "🇮🇪" },
+  { code: "+972", country: "Israel", flag: "🇮🇱" },
+  { code: "+39", country: "Italy", flag: "🇮🇹" },
+  { code: "+81", country: "Japan", flag: "🇯🇵" },
+  { code: "+962", country: "Jordan", flag: "🇯🇴" },
+  { code: "+7", country: "Kazakhstan", flag: "🇰🇿" },
+  { code: "+254", country: "Kenya", flag: "🇰🇪" },
+  { code: "+965", country: "Kuwait", flag: "🇰🇼" },
+  { code: "+371", country: "Latvia", flag: "🇱🇻" },
+  { code: "+961", country: "Lebanon", flag: "🇱🇧" },
+  { code: "+218", country: "Libya", flag: "🇱🇾" },
+  { code: "+370", country: "Lithuania", flag: "🇱🇹" },
+  { code: "+352", country: "Luxembourg", flag: "🇱🇺" },
+  { code: "+60", country: "Malaysia", flag: "🇲🇾" },
+  { code: "+960", country: "Maldives", flag: "🇲🇻" },
+  { code: "+356", country: "Malta", flag: "🇲🇹" },
+  { code: "+52", country: "Mexico", flag: "🇲🇽" },
+  { code: "+373", country: "Moldova", flag: "🇲🇩" },
+  { code: "+377", country: "Monaco", flag: "🇲🇨" },
+  { code: "+976", country: "Mongolia", flag: "🇲🇳" },
+  { code: "+382", country: "Montenegro", flag: "🇲🇪" },
+  { code: "+212", country: "Morocco", flag: "🇲🇦" },
+  { code: "+95", country: "Myanmar", flag: "🇲🇲" },
+  { code: "+977", country: "Nepal", flag: "🇳🇵" },
+  { code: "+31", country: "Netherlands", flag: "🇳🇱" },
+  { code: "+64", country: "New Zealand", flag: "🇳🇿" },
+  { code: "+234", country: "Nigeria", flag: "🇳🇬" },
+  { code: "+47", country: "Norway", flag: "🇳🇴" },
+  { code: "+968", country: "Oman", flag: "🇴🇲" },
+  { code: "+92", country: "Pakistan", flag: "🇵🇰" },
+  { code: "+970", country: "Palestine", flag: "🇵🇸" },
+  { code: "+507", country: "Panama", flag: "🇵🇦" },
+  { code: "+51", country: "Peru", flag: "🇵🇪" },
+  { code: "+63", country: "Philippines", flag: "🇵🇭" },
+  { code: "+48", country: "Poland", flag: "🇵🇱" },
+  { code: "+351", country: "Portugal", flag: "🇵🇹" },
+  { code: "+974", country: "Qatar", flag: "🇶🇦" },
+  { code: "+40", country: "Romania", flag: "🇷🇴" },
+  { code: "+7", country: "Russia", flag: "🇷🇺" },
+  { code: "+966", country: "Saudi Arabia", flag: "🇸🇦" },
+  { code: "+381", country: "Serbia", flag: "🇷🇸" },
+  { code: "+65", country: "Singapore", flag: "🇸🇬" },
+  { code: "+421", country: "Slovakia", flag: "🇸🇰" },
+  { code: "+386", country: "Slovenia", flag: "🇸🇮" },
+  { code: "+27", country: "South Africa", flag: "🇿🇦" },
+  { code: "+82", country: "South Korea", flag: "🇰🇷" },
+  { code: "+34", country: "Spain", flag: "🇪🇸" },
+  { code: "+94", country: "Sri Lanka", flag: "🇱🇰" },
+  { code: "+46", country: "Sweden", flag: "🇸🇪" },
+  { code: "+41", country: "Switzerland", flag: "🇨🇭" },
+  { code: "+963", country: "Syria", flag: "🇸🇾" },
+  { code: "+886", country: "Taiwan", flag: "🇹🇼" },
+  { code: "+66", country: "Thailand", flag: "🇹🇭" },
+  { code: "+216", country: "Tunisia", flag: "🇹🇳" },
+  { code: "+90", country: "Turkey", flag: "🇹🇷" },
+  { code: "+971", country: "UAE", flag: "🇦🇪" },
+  { code: "+44", country: "UK", flag: "🇬🇧" },
+  { code: "+1", country: "USA", flag: "🇺🇸" },
+  { code: "+598", country: "Uruguay", flag: "🇺🇾" },
+  { code: "+58", country: "Venezuela", flag: "🇻🇪" },
+  { code: "+84", country: "Vietnam", flag: "🇻🇳" },
+  { code: "+967", country: "Yemen", flag: "🇾🇪" },
+];
+
+const COUNTRIES = [
+  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
+  "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
+  "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
+  "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia",
+  "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+  "Denmark", "Djibouti", "Dominica", "Dominican Republic",
+  "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
+  "Fiji", "Finland", "France",
+  "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
+  "Haiti", "Honduras", "Hungary",
+  "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy",
+  "Jamaica", "Japan", "Jordan",
+  "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan",
+  "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
+  "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius",
+  "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar",
+  "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway",
+  "Oman",
+  "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
+  "Qatar",
+  "Romania", "Russia", "Rwanda",
+  "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe",
+  "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands",
+  "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
+  "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey",
+  "Turkmenistan", "Tuvalu",
+  "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan",
+  "Vanuatu", "Vatican City", "Venezuela", "Vietnam",
+  "Yemen",
+  "Zambia", "Zimbabwe"
+];
+
 interface PersonalFunnelProps {
   onSwitchMode: () => void;
   locale: string;
@@ -79,7 +231,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
     email: z.string().email("Invalid email address"),
-    mobile: z.string().min(10, "Invalid phone number"),
+    countryCode: z.string().min(1, "Country code is required"),
+    mobile: z.string().min(6, "Invalid phone number"),
     countryOfResidence: z.string().min(1, "Country is required"),
     taxCountry: z.string().min(1, "Tax residency is required"),
     taxId: z.string().optional(),
@@ -515,15 +668,47 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               <Label htmlFor="mobile">
                 Mobile Phone <span className="text-red-500">*</span>
               </Label>
-              <Input
-                id="mobile"
-                type="tel"
-                {...step2Form.register("mobile")}
-                placeholder="+352 123 456 789"
-              />
-              {step2Form.formState.errors.mobile && (
+              <div className="relative">
+                <div className="flex items-center border border-input rounded-md bg-background h-10 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                  <Select
+                    value={step2Form.watch("countryCode") || ""}
+                    onValueChange={(value) => step2Form.setValue("countryCode", value)}
+                  >
+                    <SelectTrigger className="h-full border-0 bg-transparent hover:bg-transparent focus:ring-0 focus:ring-offset-0 w-[110px] px-3 gap-1.5">
+                      <SelectValue placeholder="Select">
+                        {step2Form.watch("countryCode") && (
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-xl leading-none">{COUNTRY_CODES.find(c => c.code === step2Form.watch("countryCode"))?.flag}</span>
+                            <span className="text-sm">{step2Form.watch("countryCode")}</span>
+                          </div>
+                        )}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {COUNTRY_CODES.map((item) => (
+                        <SelectItem key={`${item.code}-${item.country}`} value={item.code}>
+                          <div className="flex items-center gap-3">
+                            <span className="text-xl">{item.flag}</span>
+                            <span className="text-sm font-medium min-w-[50px]">{item.code}</span>
+                            <span className="text-sm text-muted-foreground">{item.country}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className="h-5 w-px bg-border"></div>
+                  <Input
+                    id="mobile"
+                    type="tel"
+                    {...step2Form.register("mobile")}
+                    placeholder="123456789"
+                    className="flex-1 h-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-3 shadow-none"
+                  />
+                </div>
+              </div>
+              {(step2Form.formState.errors.countryCode || step2Form.formState.errors.mobile) && (
                 <p className="text-sm text-red-500">
-                  {step2Form.formState.errors.mobile.message}
+                  {step2Form.formState.errors.countryCode?.message || step2Form.formState.errors.mobile?.message}
                 </p>
               )}
             </div>
@@ -549,11 +734,21 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <Label htmlFor="nationality">
                   Nationality <span className="text-red-500">*</span>
                 </Label>
-                <Input
-                  id="nationality"
-                  {...step2Form.register("nationality")}
-                  placeholder="Luxembourg"
-                />
+                <Select
+                  value={step2Form.watch("nationality") || ""}
+                  onValueChange={(value) => step2Form.setValue("nationality", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select nationality" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    {COUNTRIES.map((country) => (
+                      <SelectItem key={country} value={country}>
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {step2Form.formState.errors.nationality && (
                   <p className="text-sm text-red-500">
                     {step2Form.formState.errors.nationality.message}

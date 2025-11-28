@@ -116,7 +116,7 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <Link href={`/${locale}/invoicing-accounting/onboarding`}>Start Your Free Trial</Link>
+                <Link href={`/${locale}/invoicing-accounting/onboarding`}>Get Started</Link>
               </Button>
             </div>
             <div className="space-y-4">

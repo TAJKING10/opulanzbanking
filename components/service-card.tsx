@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -28,28 +28,57 @@ export function ServiceCard({
   className,
   style,
 }: ServiceCardProps) {
+  const cardRef = React.useRef<HTMLDivElement>(null);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 30 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [7, -7]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-7, 7]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const xPct = (mouseX / width - 0.5);
+    const yPct = (mouseY / height - 0.5);
+
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      whileHover={{
-        y: -12,
-        rotateX: 2,
-        rotateY: 2,
-        scale: 1.02,
-      }}
       transition={{
-        duration: 0.4,
-        type: "spring",
-        stiffness: 300,
-        damping: 20
+        duration: 0.6,
+        ease: "easeOut"
       }}
-      className={cn("h-full perspective-1000", className)}
       style={{
         ...style,
+        rotateX,
+        rotateY,
         transformStyle: "preserve-3d",
       }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={cn("h-full perspective-1000", className)}
     >
       <Link href={href} className="block h-full">
         <Card className="card-hover group h-full overflow-hidden border-none cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-white to-gray-50">

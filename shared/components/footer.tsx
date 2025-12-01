@@ -21,39 +21,8 @@ export function Footer({ locale }: FooterProps) {
   return (
     <footer className="border-t border-brand-grayLight bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto max-w-7xl px-6 py-12">
-        <div className="grid gap-12 lg:grid-cols-[2fr,3fr]">
-          {/* Brand Column */}
-          <div>
-            <Link
-              href={`/${locale}`}
-              className="text-2xl font-bold uppercase tracking-tight text-brand-dark hover:text-brand-gold transition-colors"
-            >
-              OPULANZ
-            </Link>
-            <p className="mt-4 text-sm text-brand-grayMed leading-relaxed max-w-sm">
-              {t("footer.description")}
-            </p>
-            <div className="mt-6 flex gap-3">
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={social.key}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={t(`footer.social.${social.key}`)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-gold text-white transition-all hover:bg-brand-goldDark hover:scale-110"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Links Grid - Compressed */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 gap-y-8">
+        {/* Links Grid at Top */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 gap-y-8 mb-12">
 
           {/* Services Column */}
           <div>
@@ -210,11 +179,42 @@ export function Footer({ locale }: FooterProps) {
               </li>
             </ul>
           </div>
+        </div>
+
+        {/* Brand Section Below Links */}
+        <div className="border-t border-brand-grayLight pt-8 pb-8">
+          <div className="flex flex-col items-center text-center">
+            <Link
+              href={`/${locale}`}
+              className="text-2xl font-bold uppercase tracking-tight text-brand-dark hover:text-brand-gold transition-colors"
+            >
+              OPULANZ
+            </Link>
+            <p className="mt-4 text-sm text-brand-grayMed leading-relaxed max-w-md">
+              {t("footer.description")}
+            </p>
+            <div className="mt-6 flex gap-3">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.key}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={t(`footer.social.${social.key}`)}
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-gold text-white transition-all hover:bg-brand-goldDark hover:scale-110"
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                );
+              })}
+            </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 border-t border-brand-grayLight pt-8">
+        <div className="border-t border-brand-grayLight pt-8">
           <div className="flex flex-col items-center justify-between gap-4 text-sm text-brand-grayMed md:flex-row">
             <p className="text-center md:text-left">
               © {currentYear} {t("footer.copyright", { year: currentYear }).replace(`© ${currentYear} `, '')}

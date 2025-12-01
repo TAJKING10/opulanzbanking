@@ -297,6 +297,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           firstName: values.firstName,
           lastName: values.lastName,
           email: values.email,
+          countryCode: values.countryCode,
           mobile: values.mobile,
           countryOfResidence: values.countryOfResidence,
           taxResidencies: [{ country: (values as any).taxCountry, tin: (values as any).taxId }],

@@ -2,21 +2,11 @@
 
 import React from 'react';
 import { useKYCWizard } from '@/contexts/KYCWizardContext';
-import { CheckCircle, Download, FileText } from 'lucide-react';
+import { CheckCircle, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function SuccessStep() {
-  const { data, resetWizard } = useKYCWizard();
-
-  const handleDownloadJSON = () => {
-    const dataStr = JSON.stringify(data, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `opulanz-kyc-${Date.now()}.json`;
-    link.click();
-  };
+  const { resetWizard } = useKYCWizard();
 
   return (
     <div className="text-center py-12">
@@ -82,23 +72,12 @@ export function SuccessStep() {
       </div>
 
       <div className="bg-white border border-brand-grayLight rounded-xl p-6 max-w-2xl mx-auto mb-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <FileText className="w-8 h-8 text-brand-gold" />
-            <div className="text-left">
-              <p className="text-sm font-semibold text-brand-dark">Application Reference</p>
-              <p className="text-xs text-brand-grayMed">KYC-{Date.now().toString().slice(-8)}</p>
-            </div>
+        <div className="flex items-center justify-center gap-3">
+          <FileText className="w-8 h-8 text-brand-gold" />
+          <div className="text-center">
+            <p className="text-sm font-semibold text-brand-dark">Application Reference</p>
+            <p className="text-xs text-brand-grayMed">KYC-{Date.now().toString().slice(-8)}</p>
           </div>
-          <Button
-            onClick={handleDownloadJSON}
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-2"
-          >
-            <Download className="w-4 h-4" />
-            Download Data
-          </Button>
         </div>
       </div>
 

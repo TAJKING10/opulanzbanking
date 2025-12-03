@@ -53,7 +53,8 @@
       "WebFetch(domain:narvi.com)",
       "WebFetch(domain:api.narvi.com)",
       "Bash(psql:*)",
-      "Bash(tee:*)"
+      "Bash(tee:*)",
+      "Bash(cp:*)"
     ],
     "deny": [],
     "ask": []

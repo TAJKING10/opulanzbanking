@@ -125,7 +125,8 @@ Contact: opulanz.banking@gmail.com
   useEffect(() => {
     if (step === 'payment' && !paypalLoaded) {
       const script = document.createElement('script');
-      script.src = 'https://www.paypal.com/sdk/js?client-id=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo&currency=EUR';
+      const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR`;
       script.async = true;
       script.onload = () => setPaypalLoaded(true);
       document.head.appendChild(script);

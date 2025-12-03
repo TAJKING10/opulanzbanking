@@ -1,0 +1,100 @@
+═══════════════════════════════════════════════════════════════════
+OPULANZ BANKING - AZURE APP SERVICE CONFIGURATION
+═══════════════════════════════════════════════════════════════════
+
+Copy these values into Azure Portal > App Service > Configuration > Application Settings
+
+
+═══════════════════════════════════════════════════════════════════
+BACKEND API (Node.js/Express)
+═══════════════════════════════════════════════════════════════════
+
+PORT=5000
+NODE_ENV=production
+DB_HOST=opulanz-pg.postgres.database.azure.com
+DB_USER=opulanz_admin
+DB_PASSWORD=Advensys2025Secure!
+DB_NAME=postgres
+DB_PORT=5432
+FRONTEND_URL=https://your-frontend-app.azurewebsites.net
+LOG_LEVEL=info
+NARVI_API_URL=https://api.narvi.com/rest/v1.0
+NARVI_API_KEY_ID=EY66Z3MKPW4K26K6
+NARVI_PRIVATE_KEY_PATH=/home/site/wwwroot/banking_private.pem
+NARVI_API_IP_WHITELIST=80.232.250.236
+EMAIL_USER=opulanz.banking@gmail.com
+EMAIL_PASS=dpbqsmhgoqgblbub
+ADMIN_EMAIL=opulanz.banking@gmail.com
+
+
+═══════════════════════════════════════════════════════════════════
+FRONTEND (Next.js)
+═══════════════════════════════════════════════════════════════════
+
+NEXT_PUBLIC_API_URL=https://your-backend-app.azurewebsites.net
+NEXT_PUBLIC_APP_NAME=Opulanz Banking
+NEXT_PUBLIC_APP_URL=https://your-frontend-app.azurewebsites.net
+NEXT_PUBLIC_ENABLE_ANALYTICS=true
+NEXT_PUBLIC_ENABLE_DEBUG=false
+
+
+═══════════════════════════════════════════════════════════════════
+IMPORTANT NOTES
+═══════════════════════════════════════════════════════════════════
+
+1. UPDATE URLs:
+   - Replace "your-frontend-app" with actual Azure frontend app name
+   - Replace "your-backend-app" with actual Azure backend app name
+
+2. UPLOAD PRIVATE KEY:
+   - File: banking_private.pem (located in project root)
+   - Upload to Azure: /home/site/wwwroot/banking_private.pem
+   - Use Azure Portal > App Service > Advanced Tools (Kudu) > Debug Console
+
+3. DATABASE FIREWALL:
+   - Go to Azure PostgreSQL > Connection Security
+   - Add rule: "Allow Azure Services" = ON
+   - Or whitelist specific App Service outbound IPs
+
+4. SSL/TLS:
+   - PostgreSQL requires SSL (already configured)
+   - Custom domain requires SSL certificate
+   - Enable "HTTPS Only" in App Service settings
+
+5. DEPLOYMENT:
+   - Backend: Deploy from backend/ folder
+   - Frontend: Deploy from root folder (Next.js project)
+   - Set startup command if needed: "npm start" or "node server.js"
+
+
+═══════════════════════════════════════════════════════════════════
+DATABASE CONNECTION STRING (Alternative Format)
+═══════════════════════════════════════════════════════════════════
+
+If using a single connection string instead:
+
+DATABASE_URL=postgresql://opulanz_admin:Advensys2025Secure!@opulanz-pg.postgres.database.azure.com:5432/postgres?sslmode=require
+
+
+═══════════════════════════════════════════════════════════════════
+HEALTH CHECK ENDPOINTS
+═══════════════════════════════════════════════════════════════════
+
+After deployment, verify:
+
+Backend:  https://your-backend-app.azurewebsites.net/health
+Frontend: https://your-frontend-app.azurewebsites.net/en
+
+
+═══════════════════════════════════════════════════════════════════
+CURRENT LOCAL SETUP (FOR REFERENCE)
+═══════════════════════════════════════════════════════════════════
+
+Backend:  http://localhost:5000
+Frontend: http://localhost:3000
+Database: opulanz-pg.postgres.database.azure.com (Azure PostgreSQL)
+
+
+═══════════════════════════════════════════════════════════════════
+Generated: December 1, 2025
+═══════════════════════════════════════════════════════════════════

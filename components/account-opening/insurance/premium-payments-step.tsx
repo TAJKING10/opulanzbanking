@@ -62,8 +62,13 @@ export function PremiumPaymentsStep({ data, onUpdate, onNext }: PremiumPaymentsS
     }
 
     const paymentDetailsValid =
-      formState.paymentMethod !== "bank-transfer" ||
-      (formState.accountHolder && formState.iban && formState.bic && formState.bankName);
+      formState.paymentMethod === "paypal" ||
+      formState.paymentMethod === "check" ||
+      (formState.paymentMethod === "bank-transfer" &&
+        formState.accountHolder &&
+        formState.iban &&
+        formState.bic &&
+        formState.bankName);
 
     return baseValid && premiumValid && paymentDetailsValid;
   }, [formState, minPremium]);
@@ -318,6 +323,26 @@ export function PremiumPaymentsStep({ data, onUpdate, onNext }: PremiumPaymentsS
                   </div>
                 </div>
               )}
+
+              <div
+                className={`flex items-start space-x-3 rounded-lg border-2 p-4 transition-all ${
+                  formState.paymentMethod === "paypal"
+                    ? "border-brand-gold bg-brand-gold/5"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <RadioGroupItem value="paypal" id="payment-paypal" />
+                <div className="flex-1">
+                  <Label htmlFor="payment-paypal" className="cursor-pointer font-medium">
+                    PayPal
+                  </Label>
+                  <p className="text-sm text-brand-grayMed">
+                    {formState.premiumType === "single"
+                      ? "Pay securely with PayPal, debit or credit card"
+                      : "Set up recurring payments via PayPal"}
+                  </p>
+                </div>
+              </div>
             </div>
           </RadioGroup>
         </div>
@@ -420,6 +445,82 @@ export function PremiumPaymentsStep({ data, onUpdate, onNext }: PremiumPaymentsS
               <p className="mt-2">
                 Include your application reference number on the check memo line.
               </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PayPal Payment */}
+      {formState.paymentMethod === "paypal" && (
+        <div className="space-y-6">
+          <h3 className="text-lg font-semibold text-brand-dark">PayPal Payment</h3>
+
+          <div className="rounded-lg border border-brand-grayLight bg-gray-50 p-6">
+            <div className="space-y-4">
+              <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+                <div className="flex items-start gap-2">
+                  <Info className="mt-0.5 h-5 w-5 text-blue-600" />
+                  <div className="space-y-1 text-sm text-blue-800">
+                    <p className="font-semibold">Secure PayPal Payment</p>
+                    <p>
+                      You will be redirected to PayPal to complete your payment securely. You can pay with your PayPal balance, bank account, or credit/debit card.
+                    </p>
+                    {formState.premiumType === "single" && formState.singlePremiumAmount && (
+                      <p className="mt-2 font-semibold">
+                        Amount to pay: {formatCurrency(formState.singlePremiumAmount)}
+                      </p>
+                    )}
+                    {formState.premiumType === "regular" && formState.regularPremiumAmount && (
+                      <p className="mt-2 font-semibold">
+                        {formState.regularPremiumFrequency} payment: {formatCurrency(formState.regularPremiumAmount)}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* PayPal Button */}
+              <div className="flex justify-center">
+                <form
+                  action="https://www.paypal.com/ncp/payment/RDXD9J28Z94BL"
+                  method="post"
+                  target="_blank"
+                  className="inline-flex flex-col items-center justify-center gap-2"
+                >
+                  <button
+                    type="submit"
+                    className="min-w-[11.625rem] rounded border-none bg-[#FFD140] px-8 py-2.5 text-base font-bold leading-5 text-black transition-all hover:bg-[#FFC520] focus:outline-none focus:ring-2 focus:ring-[#FFD140] focus:ring-offset-2"
+                    style={{ fontFamily: '"Helvetica Neue", Arial, sans-serif' }}
+                  >
+                    Pay with PayPal
+                  </button>
+                  <img
+                    src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg"
+                    alt="Accepted payment methods"
+                    className="h-8"
+                  />
+                  <div className="text-xs text-brand-grayMed">
+                    Secured by{" "}
+                    <img
+                      src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg"
+                      alt="PayPal"
+                      className="inline h-3.5 align-middle"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+            <div className="flex items-start gap-2">
+              <Info className="mt-0.5 h-5 w-5 text-amber-600" />
+              <div className="space-y-1 text-sm text-amber-800">
+                <p className="font-semibold">Payment Verification</p>
+                <p>
+                  After completing your PayPal payment, you will receive a confirmation email. Your application will be processed once the payment is verified.
+                </p>
+              </div>
             </div>
           </div>
         </div>

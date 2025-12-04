@@ -1,0 +1,221 @@
+═══════════════════════════════════════════════════════════════════
+OPULANZ BANKING - COMPLETE .ENV QUICK REFERENCE
+═══════════════════════════════════════════════════════════════════
+For Senior Full Stack Developer - Azure Deployment
+Last Updated: December 1, 2025
+═══════════════════════════════════════════════════════════════════
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ FILES CREATED FOR YOU                                         │
+└───────────────────────────────────────────────────────────────┘
+
+📄 COMPLETE_ENV_FILE.env          → Master file with EVERYTHING
+📄 backend\.env.COMPLETE          → Backend only (clean)
+📄 .env.local.COMPLETE            → Frontend only (clean)
+📄 ENV_CONFIGURATION_FOR_AZURE.md → Full documentation
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ BACKEND ENVIRONMENT VARIABLES (17 variables)                  │
+└───────────────────────────────────────────────────────────────┘
+
+PORT=5000
+NODE_ENV=development
+DB_HOST=opulanz-pg.postgres.database.azure.com
+DB_USER=opulanz_admin
+DB_PASSWORD=Advensys2025Secure!
+DB_NAME=postgres
+DB_PORT=5432
+FRONTEND_URL=http://localhost:3000
+LOG_LEVEL=debug
+NARVI_API_URL=https://api.narvi.com/rest/v1.0
+NARVI_API_KEY_ID=EY66Z3MKPW4K26K6
+NARVI_PRIVATE_KEY_PATH=C:/Users/Toufi/AndroidStudioProjects/opulanzbanking/banking_private.pem
+NARVI_API_IP_WHITELIST=80.232.250.236
+EMAIL_USER=opulanz.banking@gmail.com
+EMAIL_PASS=dpbqsmhgoqgblbub
+ADMIN_EMAIL=opulanz.banking@gmail.com
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ FRONTEND ENVIRONMENT VARIABLES (8 variables)                  │
+└───────────────────────────────────────────────────────────────┘
+
+NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_APP_NAME=Opulanz Banking
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_PAYPAL_CLIENT_ID=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo
+NEXT_PUBLIC_PAYPAL_CURRENCY=EUR
+NEXT_PUBLIC_ENABLE_ANALYTICS=false
+NEXT_PUBLIC_ENABLE_DEBUG=true
+NEXT_PUBLIC_ENVIRONMENT=development
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ ALL API KEYS & CREDENTIALS IN ONE PLACE                      │
+└───────────────────────────────────────────────────────────────┘
+
+🗄️  Database:
+   Host: opulanz-pg.postgres.database.azure.com
+   User: opulanz_admin
+   Pass: Advensys2025Secure!
+   Name: postgres
+   Port: 5432
+
+🏦 Narvi Banking API:
+   URL: https://api.narvi.com/rest/v1.0
+   Key ID: EY66Z3MKPW4K26K6
+   Private Key: banking_private.pem (upload to Azure!)
+   IP Whitelist: 80.232.250.236
+
+💳 PayPal (Sandbox):
+   Client ID: AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo
+   Currency: EUR
+   Test Card: 4111 1111 1111 1111
+   Expiry: 12/2030
+   CVV: 123
+
+📧 Email (Gmail SMTP):
+   User: opulanz.banking@gmail.com
+   App Password: dpbqsmhgoqgblbub
+   Admin: opulanz.banking@gmail.com
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ WHAT'S INTEGRATED & WORKING                                   │
+└───────────────────────────────────────────────────────────────┘
+
+✅ Azure PostgreSQL Database (5 tables created)
+   - users
+   - applications (supports 5 types)
+   - documents
+   - companies
+   - appointments
+
+✅ Application Types:
+   - individual (Individual accounts)
+   - company (Company accounts)
+   - accounting (Accounting services)
+   - insurance (Life insurance)
+   - company_formation (SARL, SARL-S, SA, SCSp, SOLE)
+
+✅ Narvi Banking API Integration
+   - Private key authentication
+   - Customer creation
+   - Company creation
+   - Account provisioning
+
+✅ PayPal Payment Integration
+   - Investment Advisory (€99.90)
+   - Tax Advisory Services (€299.90 - €599.90)
+   - Sandbox testing enabled
+   - Live card payments ready
+
+✅ Email Notifications (Gmail)
+   - Application confirmations
+   - Payment receipts
+   - Admin notifications
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ FOR AZURE DEPLOYMENT - CRITICAL CHANGES                       │
+└───────────────────────────────────────────────────────────────┘
+
+🔄 Update These URLs:
+   FRONTEND_URL → https://your-frontend.azurewebsites.net
+   NEXT_PUBLIC_API_URL → https://your-backend.azurewebsites.net
+   NEXT_PUBLIC_APP_URL → https://your-frontend.azurewebsites.net
+
+🔄 Update These Settings:
+   NODE_ENV → production
+   LOG_LEVEL → info
+   NEXT_PUBLIC_ENABLE_DEBUG → false
+   NEXT_PUBLIC_ENABLE_ANALYTICS → true
+
+📤 Upload This File:
+   banking_private.pem → /home/site/wwwroot/banking_private.pem
+   Update: NARVI_PRIVATE_KEY_PATH=/home/site/wwwroot/banking_private.pem
+
+🔒 Azure PostgreSQL Firewall:
+   Enable: "Allow access to Azure services"
+   Or whitelist App Service outbound IPs
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ HOW TO USE THESE FILES                                        │
+└───────────────────────────────────────────────────────────────┘
+
+For Local Development:
+1. Copy backend\.env.COMPLETE to backend\.env
+2. Copy .env.local.COMPLETE to .env.local
+3. Start backend: cd backend && node src/index.js
+4. Start frontend: npm run dev
+
+For Azure App Service:
+1. Open Azure Portal
+2. Go to App Service > Configuration > Application Settings
+3. Click "New application setting"
+4. Add each variable one by one from the lists above
+5. Click "Save" when done
+6. Restart the App Service
+
+Alternative (Azure CLI):
+az webapp config appsettings set --name <app-name> --resource-group <rg> --settings PORT=5000 NODE_ENV=production ...
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ TESTING AFTER DEPLOYMENT                                      │
+└───────────────────────────────────────────────────────────────┘
+
+Backend Health Check:
+curl https://your-backend.azurewebsites.net/health
+
+Expected Response:
+{
+  "status": "OK",
+  "timestamp": "2025-12-01T...",
+  "database": "connected"
+}
+
+Frontend Test:
+Open: https://your-frontend.azurewebsites.net/en
+
+Test PayPal:
+1. Go to /en/investment-advisory/schedule
+2. Click "Schedule Consultation"
+3. Use test card: 4111 1111 1111 1111
+4. Complete payment (should work instantly)
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ CURRENT STATUS (Local Environment)                            │
+└───────────────────────────────────────────────────────────────┘
+
+✅ Backend Running: http://localhost:5000
+✅ Frontend Running: http://localhost:3000
+✅ Database Connected: Azure PostgreSQL
+✅ All APIs Working: Narvi, PayPal, Email
+✅ All Forms Saving: Individual, Company, Insurance, Accounting, Company Formation
+
+
+┌───────────────────────────────────────────────────────────────┐
+│ SECURITY REMINDERS                                            │
+└───────────────────────────────────────────────────────────────┘
+
+⚠️  NEVER commit .env files to Git
+⚠️  Share credentials via secure channel only
+⚠️  Use Azure Key Vault for production secrets
+⚠️  Rotate passwords after initial deployment
+⚠️  Keep banking_private.pem file secure
+⚠️  Enable HTTPS Only in Azure App Service
+⚠️  Use PayPal Live keys for production
+⚠️  Monitor API usage and rate limits
+
+
+═══════════════════════════════════════════════════════════════════
+Need Help?
+- Full docs: ENV_CONFIGURATION_FOR_AZURE.md
+- Complete .env: COMPLETE_ENV_FILE.env
+- Azure settings: AZURE_APP_SETTINGS.txt
+═══════════════════════════════════════════════════════════════════

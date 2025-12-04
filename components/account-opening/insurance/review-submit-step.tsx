@@ -46,11 +46,115 @@ export function ReviewSubmitStep({ data, onUpdate, locale }: ReviewSubmitStepPro
     setSubmitError(null);
 
     try {
-      // Simulate API call - replace with actual API endpoint
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Generate application ID (in real implementation, this comes from API)
+      // Generate application ID
       const appId = `INS-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+
+      console.log("Submitting life insurance application:", data);
+
+      // Prepare payload for Azure backend
+      const applicationPayload = {
+        type: "insurance",
+        status: "submitted",
+        payload: {
+          // Personal Information & Tax
+          title: data.title,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          dateOfBirth: data.dateOfBirth,
+          placeOfBirth: data.placeOfBirth,
+          nationality: data.nationality,
+          email: data.email,
+          phone: data.phone,
+          address: {
+            addressLine1: data.addressLine1,
+            addressLine2: data.addressLine2,
+            city: data.city,
+            postalCode: data.postalCode,
+            country: data.country,
+          },
+          taxResidentLU: data.taxResidentLU,
+          additionalTaxResidencies: data.additionalTaxResidencies || [],
+
+          // Financial Profile
+          employmentStatus: data.employmentStatus,
+          occupation: data.occupation,
+          employer: data.employer,
+          annualIncome: data.annualIncome,
+          totalAssets: data.totalAssets,
+          liquidAssets: data.liquidAssets,
+          sourceOfFunds: data.sourceOfFunds,
+          sourceOfFundsDetails: data.sourceOfFundsDetails,
+          sourceOfWealth: data.sourceOfWealth,
+          sourceOfWealthDetails: data.sourceOfWealthDetails,
+          isPEP: data.isPEP,
+          pepDetails: data.pepDetails,
+
+          // Investment Profile
+          investmentHorizon: data.investmentHorizon,
+          investmentKnowledge: data.investmentKnowledge,
+          investmentExperience: data.investmentExperience,
+          riskTolerance: data.riskTolerance,
+          investmentObjective: data.investmentObjective,
+          expectedReturn: data.expectedReturn,
+          liquidityNeeds: data.liquidityNeeds,
+
+          // Premium & Payments
+          currency: data.currency,
+          premiumType: data.premiumType,
+          singlePremiumAmount: data.singlePremiumAmount,
+          regularPremiumAmount: data.regularPremiumAmount,
+          regularPremiumFrequency: data.regularPremiumFrequency,
+          paymentMethod: data.paymentMethod,
+          bankDetails: {
+            accountHolder: data.accountHolder,
+            iban: data.iban,
+            bic: data.bic,
+            bankName: data.bankName,
+          },
+
+          // Beneficiaries
+          beneficiaries: data.beneficiaries || [],
+
+          // Compliance & Declarations
+          declarations: {
+            healthDeclaration: data.healthDeclaration,
+            accuracyDeclaration: data.accuracyDeclaration,
+            taxComplianceDeclaration: data.taxComplianceDeclaration,
+            amlDeclaration: data.amlDeclaration,
+            dataProcessingConsent: data.dataProcessingConsent,
+            termsAndConditions: data.termsAndConditions,
+            electronicSignature: data.electronicSignature,
+            marketingConsent: data.marketingConsent,
+          },
+          complianceDocuments: data.complianceDocuments?.map((doc: any) => ({
+            name: doc.name,
+            type: doc.type,
+            size: doc.size
+          })) || [],
+          uploadLater: data.uploadLater,
+
+          // Metadata
+          applicationId: appId,
+          submittedAt: new Date().toISOString(),
+        }
+      };
+
+      // Submit to Azure backend API
+      const response = await fetch('http://localhost:5000/api/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(applicationPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit life insurance application to backend');
+      }
+
+      const result = await response.json();
+      console.log("Life insurance application saved to Azure database:", result);
+
       setApplicationId(appId);
 
       // Clear saved progress
@@ -145,6 +249,105 @@ export function ReviewSubmitStep({ data, onUpdate, locale }: ReviewSubmitStepPro
                   Once approved, your policy will be issued and you'll receive your policy documents
                   and payment instructions.
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* PayPal Payment Section */}
+        <div className="rounded-lg border-2 border-brand-gold bg-gradient-to-b from-white to-brand-gold/5 p-8">
+          <div className="space-y-6">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-brand-dark">Complete Your Payment</h3>
+              <p className="mt-2 text-brand-grayMed">
+                Pay your premium now to activate your policy immediately
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-brand-grayLight bg-white p-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b border-brand-grayLight pb-4">
+                  <span className="text-lg font-semibold text-brand-dark">Premium Amount:</span>
+                  <span className="text-2xl font-bold text-brand-gold">
+                    {data.premiumType === "single" ? (
+                      <>
+                        {data.currency === "EUR" ? "€" : data.currency === "USD" ? "$" : ""}
+                        {parseFloat(data.singlePremiumAmount || "0").toLocaleString()}
+                      </>
+                    ) : (
+                      <>
+                        {data.currency === "EUR" ? "€" : data.currency === "USD" ? "$" : ""}
+                        {parseFloat(data.regularPremiumAmount || "0").toLocaleString()}
+                        <span className="ml-2 text-base font-normal text-brand-grayMed">
+                          / {data.regularPremiumFrequency}
+                        </span>
+                      </>
+                    )}
+                  </span>
+                </div>
+
+                <div className="space-y-3 text-sm text-brand-grayMed">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span>Secure payment processing via PayPal</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span>Policy activation upon payment confirmation</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <span>Instant email receipt and policy documents</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* PayPal Button */}
+            <div className="flex flex-col items-center justify-center gap-4">
+              <form
+                action="https://www.paypal.com/ncp/payment/RDXD9J28Z94BL"
+                method="post"
+                target="_blank"
+                className="inline-flex flex-col items-center justify-center gap-2"
+              >
+                <button
+                  type="submit"
+                  className="min-w-[11.625rem] rounded border-none bg-[#FFD140] px-8 py-3 text-base font-bold leading-5 text-black transition-all hover:bg-[#FFC520] focus:outline-none focus:ring-2 focus:ring-[#FFD140] focus:ring-offset-2"
+                  style={{ fontFamily: '"Helvetica Neue", Arial, sans-serif' }}
+                >
+                  Pay with PayPal
+                </button>
+                <img
+                  src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg"
+                  alt="Accepted payment methods"
+                  className="h-8"
+                />
+                <div className="text-xs text-brand-grayMed">
+                  Secured by{" "}
+                  <img
+                    src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg"
+                    alt="PayPal"
+                    className="inline h-3.5 align-middle"
+                  />
+                </div>
+              </form>
+
+              <p className="text-center text-sm text-brand-grayMed">
+                After payment, your policy will be issued and sent to {data.email}
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+              <div className="flex items-start gap-2">
+                <Info className="mt-0.5 h-5 w-5 text-amber-600" />
+                <div className="space-y-1 text-left text-sm text-amber-800">
+                  <p className="font-semibold">Important</p>
+                  <p>
+                    Your policy coverage will begin immediately after successful payment confirmation.
+                    You will receive your policy documents and payment receipt via email within minutes.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

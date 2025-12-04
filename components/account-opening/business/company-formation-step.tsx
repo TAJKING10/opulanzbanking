@@ -29,7 +29,7 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
       isFormationStepValid,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFormationStepValid]);
+  }, [proposedName, businessActivity, shareCapital, isFormationStepValid]);
 
   return (
     <div className="space-y-8">

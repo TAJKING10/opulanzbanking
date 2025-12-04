@@ -432,26 +432,84 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
     updateDossier({ paymentStatus: "PAID" });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!termsAccepted || !privacyAccepted || !accuracyConfirmed) {
       alert("Please accept all required consents");
       return;
     }
 
-    // Build final payload
-    const finalDossier: CompanyFormationDossier = dossier as CompanyFormationDossier;
-    finalDossier.updatedAt = new Date().toISOString();
+    setIsProcessing(true);
 
-    // Save to localStorage
-    const existingDossiers = localStorage.getItem("opulanz_company_formations");
-    const dossiers = existingDossiers ? JSON.parse(existingDossiers) : [];
-    dossiers.push(finalDossier);
-    localStorage.setItem("opulanz_company_formations", JSON.stringify(dossiers));
+    try {
+      // Build final payload
+      const finalDossier: CompanyFormationDossier = dossier as CompanyFormationDossier;
+      finalDossier.updatedAt = new Date().toISOString();
 
-    // Log to console
-    console.log("🏢 Company Formation Dossier Submitted:", finalDossier);
+      // Save to backend database
+      const applicationPayload = {
+        type: "company_formation",
+        status: "submitted",
+        payload: {
+          formType: finalDossier.formType,
+          country: finalDossier.country,
+          proposedNames: finalDossier.proposedNames,
+          purpose: finalDossier.purpose,
+          registeredOffice: finalDossier.registeredOffice,
+          duration: finalDossier.duration,
+          shareholders: finalDossier.shareholders,
+          directors: finalDossier.directors,
+          managers: finalDossier.managers,
+          ubos: finalDossier.ubos,
+          capitalAmount: finalDossier.capitalAmount,
+          capitalCurrency: finalDossier.capitalCurrency,
+          contributions: finalDossier.contributions,
+          naceCode: finalDossier.naceCode,
+          expectedTurnover: finalDossier.expectedTurnover,
+          numberOfEmployees: finalDossier.numberOfEmployees,
+          notaryPreferences: finalDossier.notaryPreferences,
+          domiciliationNeeded: finalDossier.domiciliationNeeded,
+          uploads: finalDossier.uploads,
+          consents: finalDossier.consents,
+          setupFeeAmount: finalDossier.setupFeeAmount,
+          paymentStatus: finalDossier.paymentStatus,
+          userRef: finalDossier.userRef,
+          submittedAt: new Date().toISOString(),
+        },
+      };
 
-    setIsSubmitted(true);
+      const response = await fetch("http://localhost:5000/api/applications", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(applicationPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit application");
+      }
+
+      const result = await response.json();
+      console.log("✅ Company Formation Dossier saved to backend:", result);
+
+      // Save to localStorage (backup)
+      const existingDossiers = localStorage.getItem("opulanz_company_formations");
+      const dossiers = existingDossiers ? JSON.parse(existingDossiers) : [];
+      dossiers.push(finalDossier);
+      localStorage.setItem("opulanz_company_formations", JSON.stringify(dossiers));
+
+      // Log to console
+      console.log("🏢 Company Formation Dossier Submitted:", finalDossier);
+
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting company formation:", error);
+      alert(
+        "Failed to submit company formation. Please try again or contact support."
+      );
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (isSubmitted) {

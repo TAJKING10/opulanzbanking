@@ -42,6 +42,7 @@ export interface PersonalIdentity {
   firstName: string;
   lastName: string;
   email: string;
+  countryCode: string;
   mobile: string;
   countryOfResidence: string;
   taxResidencies: TaxResidency[];

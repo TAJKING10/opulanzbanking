@@ -23,7 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormStepper, Step } from "./form-stepper";
-import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Clock, FileText } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Clock, FileText, Upload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type {
   PersonalApplication,
@@ -36,7 +36,7 @@ import type {
   SourceOfFunds,
   AccountType,
 } from "@/types/account-opening";
-import { generateReferralRouting, saveReferralEntry, getPartnerDisplayName, getPartnerExplanation } from "@/lib/referral-routing";
+// Removed: import { generateReferralRouting, saveReferralEntry, getPartnerDisplayName, getPartnerExplanation } from "@/lib/referral-routing";
 
 const STEPS: Step[] = [
   { id: "welcome", label: "Welcome", shortLabel: "Welcome" },
@@ -45,6 +45,158 @@ const STEPS: Step[] = [
   { id: "eligibility", label: "Eligibility", shortLabel: "Eligibility" },
   { id: "review", label: "Review & Consents", shortLabel: "Review" },
   { id: "submission", label: "Submission", shortLabel: "Submit" },
+];
+
+const COUNTRY_CODES = [
+  { code: "+93", country: "Afghanistan", flag: "🇦🇫" },
+  { code: "+355", country: "Albania", flag: "🇦🇱" },
+  { code: "+213", country: "Algeria", flag: "🇩🇿" },
+  { code: "+376", country: "Andorra", flag: "🇦🇩" },
+  { code: "+244", country: "Angola", flag: "🇦🇴" },
+  { code: "+54", country: "Argentina", flag: "🇦🇷" },
+  { code: "+374", country: "Armenia", flag: "🇦🇲" },
+  { code: "+61", country: "Australia", flag: "🇦🇺" },
+  { code: "+43", country: "Austria", flag: "🇦🇹" },
+  { code: "+994", country: "Azerbaijan", flag: "🇦🇿" },
+  { code: "+973", country: "Bahrain", flag: "🇧🇭" },
+  { code: "+880", country: "Bangladesh", flag: "🇧🇩" },
+  { code: "+375", country: "Belarus", flag: "🇧🇾" },
+  { code: "+32", country: "Belgium", flag: "🇧🇪" },
+  { code: "+229", country: "Benin", flag: "🇧🇯" },
+  { code: "+975", country: "Bhutan", flag: "🇧🇹" },
+  { code: "+591", country: "Bolivia", flag: "🇧🇴" },
+  { code: "+387", country: "Bosnia", flag: "🇧🇦" },
+  { code: "+55", country: "Brazil", flag: "🇧🇷" },
+  { code: "+673", country: "Brunei", flag: "🇧🇳" },
+  { code: "+359", country: "Bulgaria", flag: "🇧🇬" },
+  { code: "+855", country: "Cambodia", flag: "🇰🇭" },
+  { code: "+237", country: "Cameroon", flag: "🇨🇲" },
+  { code: "+1", country: "Canada", flag: "🇨🇦" },
+  { code: "+56", country: "Chile", flag: "🇨🇱" },
+  { code: "+86", country: "China", flag: "🇨🇳" },
+  { code: "+57", country: "Colombia", flag: "🇨🇴" },
+  { code: "+506", country: "Costa Rica", flag: "🇨🇷" },
+  { code: "+385", country: "Croatia", flag: "🇭🇷" },
+  { code: "+53", country: "Cuba", flag: "🇨🇺" },
+  { code: "+357", country: "Cyprus", flag: "🇨🇾" },
+  { code: "+420", country: "Czech Republic", flag: "🇨🇿" },
+  { code: "+45", country: "Denmark", flag: "🇩🇰" },
+  { code: "+593", country: "Ecuador", flag: "🇪🇨" },
+  { code: "+20", country: "Egypt", flag: "🇪🇬" },
+  { code: "+503", country: "El Salvador", flag: "🇸🇻" },
+  { code: "+372", country: "Estonia", flag: "🇪🇪" },
+  { code: "+251", country: "Ethiopia", flag: "🇪🇹" },
+  { code: "+358", country: "Finland", flag: "🇫🇮" },
+  { code: "+33", country: "France", flag: "🇫🇷" },
+  { code: "+995", country: "Georgia", flag: "🇬🇪" },
+  { code: "+49", country: "Germany", flag: "🇩🇪" },
+  { code: "+233", country: "Ghana", flag: "🇬🇭" },
+  { code: "+30", country: "Greece", flag: "🇬🇷" },
+  { code: "+502", country: "Guatemala", flag: "🇬🇹" },
+  { code: "+509", country: "Haiti", flag: "🇭🇹" },
+  { code: "+504", country: "Honduras", flag: "🇭🇳" },
+  { code: "+852", country: "Hong Kong", flag: "🇭🇰" },
+  { code: "+36", country: "Hungary", flag: "🇭🇺" },
+  { code: "+354", country: "Iceland", flag: "🇮🇸" },
+  { code: "+91", country: "India", flag: "🇮🇳" },
+  { code: "+62", country: "Indonesia", flag: "🇮🇩" },
+  { code: "+98", country: "Iran", flag: "🇮🇷" },
+  { code: "+964", country: "Iraq", flag: "🇮🇶" },
+  { code: "+353", country: "Ireland", flag: "🇮🇪" },
+  { code: "+972", country: "Israel", flag: "🇮🇱" },
+  { code: "+39", country: "Italy", flag: "🇮🇹" },
+  { code: "+81", country: "Japan", flag: "🇯🇵" },
+  { code: "+962", country: "Jordan", flag: "🇯🇴" },
+  { code: "+7", country: "Kazakhstan", flag: "🇰🇿" },
+  { code: "+254", country: "Kenya", flag: "🇰🇪" },
+  { code: "+965", country: "Kuwait", flag: "🇰🇼" },
+  { code: "+371", country: "Latvia", flag: "🇱🇻" },
+  { code: "+961", country: "Lebanon", flag: "🇱🇧" },
+  { code: "+218", country: "Libya", flag: "🇱🇾" },
+  { code: "+370", country: "Lithuania", flag: "🇱🇹" },
+  { code: "+352", country: "Luxembourg", flag: "🇱🇺" },
+  { code: "+60", country: "Malaysia", flag: "🇲🇾" },
+  { code: "+960", country: "Maldives", flag: "🇲🇻" },
+  { code: "+356", country: "Malta", flag: "🇲🇹" },
+  { code: "+52", country: "Mexico", flag: "🇲🇽" },
+  { code: "+373", country: "Moldova", flag: "🇲🇩" },
+  { code: "+377", country: "Monaco", flag: "🇲🇨" },
+  { code: "+976", country: "Mongolia", flag: "🇲🇳" },
+  { code: "+382", country: "Montenegro", flag: "🇲🇪" },
+  { code: "+212", country: "Morocco", flag: "🇲🇦" },
+  { code: "+95", country: "Myanmar", flag: "🇲🇲" },
+  { code: "+977", country: "Nepal", flag: "🇳🇵" },
+  { code: "+31", country: "Netherlands", flag: "🇳🇱" },
+  { code: "+64", country: "New Zealand", flag: "🇳🇿" },
+  { code: "+234", country: "Nigeria", flag: "🇳🇬" },
+  { code: "+47", country: "Norway", flag: "🇳🇴" },
+  { code: "+968", country: "Oman", flag: "🇴🇲" },
+  { code: "+92", country: "Pakistan", flag: "🇵🇰" },
+  { code: "+970", country: "Palestine", flag: "🇵🇸" },
+  { code: "+507", country: "Panama", flag: "🇵🇦" },
+  { code: "+51", country: "Peru", flag: "🇵🇪" },
+  { code: "+63", country: "Philippines", flag: "🇵🇭" },
+  { code: "+48", country: "Poland", flag: "🇵🇱" },
+  { code: "+351", country: "Portugal", flag: "🇵🇹" },
+  { code: "+974", country: "Qatar", flag: "🇶🇦" },
+  { code: "+40", country: "Romania", flag: "🇷🇴" },
+  { code: "+7", country: "Russia", flag: "🇷🇺" },
+  { code: "+966", country: "Saudi Arabia", flag: "🇸🇦" },
+  { code: "+381", country: "Serbia", flag: "🇷🇸" },
+  { code: "+65", country: "Singapore", flag: "🇸🇬" },
+  { code: "+421", country: "Slovakia", flag: "🇸🇰" },
+  { code: "+386", country: "Slovenia", flag: "🇸🇮" },
+  { code: "+27", country: "South Africa", flag: "🇿🇦" },
+  { code: "+82", country: "South Korea", flag: "🇰🇷" },
+  { code: "+34", country: "Spain", flag: "🇪🇸" },
+  { code: "+94", country: "Sri Lanka", flag: "🇱🇰" },
+  { code: "+46", country: "Sweden", flag: "🇸🇪" },
+  { code: "+41", country: "Switzerland", flag: "🇨🇭" },
+  { code: "+963", country: "Syria", flag: "🇸🇾" },
+  { code: "+886", country: "Taiwan", flag: "🇹🇼" },
+  { code: "+66", country: "Thailand", flag: "🇹🇭" },
+  { code: "+216", country: "Tunisia", flag: "🇹🇳" },
+  { code: "+90", country: "Turkey", flag: "🇹🇷" },
+  { code: "+971", country: "UAE", flag: "🇦🇪" },
+  { code: "+44", country: "UK", flag: "🇬🇧" },
+  { code: "+1", country: "USA", flag: "🇺🇸" },
+  { code: "+598", country: "Uruguay", flag: "🇺🇾" },
+  { code: "+58", country: "Venezuela", flag: "🇻🇪" },
+  { code: "+84", country: "Vietnam", flag: "🇻🇳" },
+  { code: "+967", country: "Yemen", flag: "🇾🇪" },
+];
+
+const COUNTRIES = [
+  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
+  "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
+  "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
+  "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia",
+  "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+  "Denmark", "Djibouti", "Dominica", "Dominican Republic",
+  "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
+  "Fiji", "Finland", "France",
+  "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
+  "Haiti", "Honduras", "Hungary",
+  "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy",
+  "Jamaica", "Japan", "Jordan",
+  "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan",
+  "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
+  "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius",
+  "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar",
+  "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway",
+  "Oman",
+  "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
+  "Qatar",
+  "Romania", "Russia", "Rwanda",
+  "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe",
+  "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands",
+  "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
+  "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey",
+  "Turkmenistan", "Tuvalu",
+  "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan",
+  "Vanuatu", "Vatican City", "Venezuela", "Vietnam",
+  "Yemen",
+  "Zambia", "Zimbabwe"
 ];
 
 interface PersonalFunnelProps {
@@ -56,13 +208,21 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
   const [currentStep, setCurrentStep] = React.useState(1);
   const [formData, setFormData] = React.useState<Partial<PersonalApplication>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [redirectUrl, setRedirectUrl] = React.useState<string>("");
+  const [applicationId, setApplicationId] = React.useState<string>("");
+
+  // Document uploads state
+  const [uploadedDocuments, setUploadedDocuments] = React.useState<Array<{
+    name: string;
+    type: string;
+    size: number;
+    data: string; // base64 encoded
+    category: string;
+  }>>([]);
 
   // Scroll to top whenever step changes
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep]);
-  const [partnerName, setPartnerName] = React.useState<string>("");
 
   // Step 1: Welcome - No form needed
 
@@ -71,7 +231,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
     email: z.string().email("Invalid email address"),
-    mobile: z.string().min(10, "Invalid phone number"),
+    countryCode: z.string().min(1, "Country code is required"),
+    mobile: z.string().min(6, "Invalid phone number"),
     countryOfResidence: z.string().min(1, "Country is required"),
     taxCountry: z.string().min(1, "Tax residency is required"),
     taxId: z.string().optional(),
@@ -136,6 +297,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           firstName: values.firstName,
           lastName: values.lastName,
           email: values.email,
+          countryCode: values.countryCode,
           mobile: values.mobile,
           countryOfResidence: values.countryOfResidence,
           taxResidencies: [{ country: (values as any).taxCountry, tin: (values as any).taxId }],
@@ -189,10 +351,43 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
     }
   };
 
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, category: string) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (file.size > maxSize) {
+      alert("File size must be less than 5MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target?.result as string;
+      setUploadedDocuments(prev => [...prev, {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        data: base64,
+        category: category
+      }]);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeDocument = (index: number) => {
+    setUploadedDocuments(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
     try {
+      // Generate unique application ID
+      const appId = `OPL-PA-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
       // Build complete application
       const application: PersonalApplication = {
         userRef: crypto.randomUUID(),
@@ -203,15 +398,19 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
         createdAt: new Date().toISOString(),
       };
 
-      // Generate referral routing
-      const routing = await generateReferralRouting(application);
+      // Save application to localStorage with unique ID
+      const applications = JSON.parse(localStorage.getItem("opulanz_applications") || "[]");
+      applications.push({
+        id: appId,
+        type: "personal",
+        application,
+        documents: uploadedDocuments,
+        submittedAt: new Date().toISOString(),
+      });
+      localStorage.setItem("opulanz_applications", JSON.stringify(applications));
 
-      // Save to localStorage
-      saveReferralEntry(application, routing.partner);
-
-      // Store for handoff display
-      setPartnerName(getPartnerDisplayName(routing.partner));
-      setRedirectUrl(routing.redirectUrl);
+      // Store application ID for display
+      setApplicationId(appId);
 
       // Move to final step
       setCurrentStep(6);
@@ -470,15 +669,47 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               <Label htmlFor="mobile">
                 Mobile Phone <span className="text-red-500">*</span>
               </Label>
-              <Input
-                id="mobile"
-                type="tel"
-                {...step2Form.register("mobile")}
-                placeholder="+352 123 456 789"
-              />
-              {step2Form.formState.errors.mobile && (
+              <div className="relative">
+                <div className="flex items-center border border-input rounded-md bg-background h-10 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                  <Select
+                    value={step2Form.watch("countryCode") || ""}
+                    onValueChange={(value) => step2Form.setValue("countryCode", value)}
+                  >
+                    <SelectTrigger className="h-full border-0 bg-transparent hover:bg-transparent focus:ring-0 focus:ring-offset-0 w-[110px] px-3 gap-1.5">
+                      <SelectValue placeholder="Select">
+                        {step2Form.watch("countryCode") && (
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-xl leading-none">{COUNTRY_CODES.find(c => c.code === step2Form.watch("countryCode"))?.flag}</span>
+                            <span className="text-sm">{step2Form.watch("countryCode")}</span>
+                          </div>
+                        )}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {COUNTRY_CODES.map((item) => (
+                        <SelectItem key={`${item.code}-${item.country}`} value={item.code}>
+                          <div className="flex items-center gap-3">
+                            <span className="text-xl">{item.flag}</span>
+                            <span className="text-sm font-medium min-w-[50px]">{item.code}</span>
+                            <span className="text-sm text-muted-foreground">{item.country}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className="h-5 w-px bg-border"></div>
+                  <Input
+                    id="mobile"
+                    type="tel"
+                    {...step2Form.register("mobile")}
+                    placeholder="123456789"
+                    className="flex-1 h-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-3 shadow-none"
+                  />
+                </div>
+              </div>
+              {(step2Form.formState.errors.countryCode || step2Form.formState.errors.mobile) && (
                 <p className="text-sm text-red-500">
-                  {step2Form.formState.errors.mobile.message}
+                  {step2Form.formState.errors.countryCode?.message || step2Form.formState.errors.mobile?.message}
                 </p>
               )}
             </div>
@@ -504,11 +735,21 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <Label htmlFor="nationality">
                   Nationality <span className="text-red-500">*</span>
                 </Label>
-                <Input
-                  id="nationality"
-                  {...step2Form.register("nationality")}
-                  placeholder="Luxembourg"
-                />
+                <Select
+                  value={step2Form.watch("nationality") || ""}
+                  onValueChange={(value) => step2Form.setValue("nationality", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select nationality" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    {COUNTRIES.map((country) => (
+                      <SelectItem key={country} value={country}>
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {step2Form.formState.errors.nationality && (
                   <p className="text-sm text-red-500">
                     {step2Form.formState.errors.nationality.message}
@@ -722,64 +963,220 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                <div>
-                  <p className="font-medium text-brand-dark">Valid ID or Passport</p>
-                  <p className="text-sm text-brand-grayMed">Government-issued photo ID</p>
+              {/* Valid ID or Passport */}
+              <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-brand-dark">Valid ID or Passport</p>
+                    <p className="text-sm text-brand-grayMed">Government-issued photo ID</p>
+                  </div>
+                </div>
+                <div className="pl-8">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "id_document")}
+                    className="hidden"
+                    id="step4-id-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("step4-id-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {uploadedDocuments.some(d => d.category === "id_document") ? "✓ Uploaded" : "Upload ID"}
+                  </Button>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                <div>
-                  <p className="font-medium text-brand-dark">Proof of Address</p>
-                  <p className="text-sm text-brand-grayMed">Utility bill or bank statement (less than 3 months old)</p>
+              {/* Proof of Address */}
+              <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-brand-dark">Proof of Address</p>
+                    <p className="text-sm text-brand-grayMed">Utility bill or bank statement (less than 3 months old)</p>
+                  </div>
+                </div>
+                <div className="pl-8">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "proof_of_address")}
+                    className="hidden"
+                    id="step4-address-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("step4-address-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {uploadedDocuments.some(d => d.category === "proof_of_address") ? "✓ Uploaded" : "Upload Proof"}
+                  </Button>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                <div>
-                  <p className="font-medium text-brand-dark">Tax Identification Number</p>
-                  <p className="text-sm text-brand-grayMed">If applicable in your jurisdiction</p>
+              {/* Tax Identification Number */}
+              <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-brand-dark">Tax Identification Number</p>
+                    <p className="text-sm text-brand-grayMed">If applicable in your jurisdiction</p>
+                  </div>
+                </div>
+                <div className="pl-8">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "tax_id_document")}
+                    className="hidden"
+                    id="step4-tax-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("step4-tax-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {uploadedDocuments.some(d => d.category === "tax_id_document") ? "✓ Uploaded" : "Upload Tax ID"}
+                  </Button>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                <div>
-                  <p className="font-medium text-brand-dark">Source of Funds Documentation</p>
-                  <p className="text-sm text-brand-grayMed">Pay slips, investment statements, or other proof</p>
+              {/* Source of Funds Documentation */}
+              <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium text-brand-dark">Source of Funds Documentation</p>
+                    <p className="text-sm text-brand-grayMed">Pay slips, investment statements, or other proof</p>
+                  </div>
+                </div>
+                <div className="pl-8">
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileUpload(e, "source_of_funds")}
+                    className="hidden"
+                    id="step4-funds-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById("step4-funds-upload")?.click()}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {uploadedDocuments.some(d => d.category === "source_of_funds") ? "✓ Uploaded" : "Upload Proof"}
+                  </Button>
                 </div>
               </div>
 
+              {/* Private Banking Additional Documents */}
               {formData.intent?.accountType === "private_banking" && (
                 <>
-                  <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                    <div>
-                      <p className="font-medium text-brand-dark">Proof of Assets</p>
-                      <p className="text-sm text-brand-grayMed">Bank statements, investment portfolios</p>
+                  <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="font-medium text-brand-dark">Proof of Assets</p>
+                        <p className="text-sm text-brand-grayMed">Bank statements, investment portfolios</p>
+                      </div>
+                    </div>
+                    <div className="pl-8">
+                      <input
+                        type="file"
+                        accept="image/*,.pdf"
+                        onChange={(e) => handleFileUpload(e, "proof_of_assets")}
+                        className="hidden"
+                        id="step4-assets-upload"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById("step4-assets-upload")?.click()}
+                        className="w-full sm:w-auto"
+                      >
+                        <Upload className="mr-2 h-4 w-4" />
+                        {uploadedDocuments.some(d => d.category === "proof_of_assets") ? "✓ Uploaded" : "Upload Assets"}
+                      </Button>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-brand-goldLight/10 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5" />
-                    <div>
-                      <p className="font-medium text-brand-dark">Income Evidence</p>
-                      <p className="text-sm text-brand-grayMed">Tax returns, employment contracts</p>
+                  <div className="p-4 bg-brand-goldLight/10 rounded-lg space-y-3">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="font-medium text-brand-dark">Income Evidence</p>
+                        <p className="text-sm text-brand-grayMed">Tax returns, employment contracts</p>
+                      </div>
+                    </div>
+                    <div className="pl-8">
+                      <input
+                        type="file"
+                        accept="image/*,.pdf"
+                        onChange={(e) => handleFileUpload(e, "income_evidence")}
+                        className="hidden"
+                        id="step4-income-upload"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById("step4-income-upload")?.click()}
+                        className="w-full sm:w-auto"
+                      >
+                        <Upload className="mr-2 h-4 w-4" />
+                        {uploadedDocuments.some(d => d.category === "income_evidence") ? "✓ Uploaded" : "Upload Income Proof"}
+                      </Button>
                     </div>
                   </div>
                 </>
               )}
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
-              <p className="text-sm text-blue-900">
-                <strong>Note:</strong> You will be asked to upload these documents in the next stage with your partner bank.
-              </p>
-            </div>
+            {/* Uploaded Documents List */}
+            {uploadedDocuments.length > 0 && (
+              <div className="space-y-2 pt-6 border-t border-gray-200 mt-6">
+                <Label>Uploaded Documents ({uploadedDocuments.length})</Label>
+                <div className="space-y-2">
+                  {uploadedDocuments.map((doc, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <FileText className="h-5 w-5 text-brand-gold flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium text-brand-dark truncate">{doc.name}</p>
+                          <p className="text-xs text-brand-grayMed">
+                            {doc.category.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} • {(doc.size / 1024).toFixed(0)} KB
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeDocument(index)}
+                        className="flex-shrink-0"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -883,36 +1280,49 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
         {/* Step 6: Submission */}
         {currentStep === 6 && (
-          <div className="space-y-6 text-center">
-            <div className="mx-auto w-16 h-16 bg-brand-goldLight rounded-full flex items-center justify-center">
-              <CheckCircle className="h-10 w-10 text-brand-gold" />
+          <div className="space-y-8 text-center">
+            <div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-12 w-12 text-green-600" />
             </div>
 
             <div>
-              <h2 className="text-3xl font-bold text-brand-dark mb-2">
-                Thanks! We're Matching Your Profile
+              <h2 className="text-3xl font-bold text-brand-dark mb-4">
+                Application Submitted Successfully!
               </h2>
-              <p className="text-lg text-brand-grayMed max-w-2xl mx-auto">
-                {partnerName === "Opulanz Banking"
-                  ? "Your application requires manual review. Our team will match you with the best Opulanz Partner Bank and contact you within 24-72 hours."
-                  : `Your application has been prepared for ${partnerName}. Opulanz remains your point of contact throughout the process.`
-                }
+              <p className="text-lg text-brand-grayMed max-w-2xl mx-auto mb-6">
+                Thank you for submitting your personal account application. Our team will review your information and contact you within 24-72 hours.
               </p>
             </div>
 
-            {redirectUrl && (
-              <div className="p-6 bg-gray-50 rounded-lg">
-                <p className="text-sm text-brand-grayMed mb-4">
-                  Click below to continue with your partner bank
-                </p>
-                <Button size="lg" asChild>
-                  <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
-                    Continue with {partnerName}
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </a>
-                </Button>
+            <div className="p-8 bg-gradient-to-br from-brand-goldLight/20 to-brand-gold/10 rounded-2xl border-2 border-brand-gold/30 max-w-md mx-auto">
+              <p className="text-sm text-brand-grayMed mb-3 font-semibold uppercase tracking-wide">
+                Your Application Number
+              </p>
+              <div className="text-3xl font-bold text-brand-dark mb-2 font-mono tracking-tight">
+                {applicationId}
               </div>
-            )}
+              <p className="text-sm text-brand-grayMed">
+                Please save this number for your records
+              </p>
+            </div>
+
+            <div className="p-6 bg-blue-50 rounded-lg border border-blue-200 max-w-2xl mx-auto text-left">
+              <h3 className="font-semibold text-brand-dark mb-3">What happens next?</h3>
+              <ul className="space-y-2 text-sm text-brand-grayMed">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span>Our compliance team will review your application</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span>We'll match you with the most suitable Opulanz partner bank</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span>You'll receive an email with next steps within 24-72 hours</span>
+                </li>
+              </ul>
+            </div>
 
             <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button variant="outline" size="lg" asChild>

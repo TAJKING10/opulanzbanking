@@ -3,7 +3,13 @@
 import * as React from "react";
 import { Upload, X, FileText, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { formatFileSize } from "@/shared/lib/file-upload";
+import { useDragAndDrop } from "@/shared/hooks/use-drag-and-drop";
 
+// Constants
+const UPLOAD_DELAY_MS = 1500;
+
+// Types
 export interface UploadedDocument {
   type: string;
   fileId: string;
@@ -21,6 +27,53 @@ interface DocUploadProps {
   helpText?: string;
 }
 
+// Helper function
+const generateFileId = (): string => {
+  return `file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+};
+
+// Uploaded Document Card Component
+interface UploadedDocCardProps {
+  document: UploadedDocument;
+  label: string;
+  helpText?: string;
+  onRemove: () => void;
+}
+
+const UploadedDocCard = React.memo(
+  ({ document, label, helpText, onRemove }: UploadedDocCardProps) => (
+    <div className="space-y-2">
+      <p className="text-sm font-medium text-brand-dark">{label}</p>
+      <div className="flex items-center justify-between rounded-lg border-2 border-green-200 bg-green-50 p-4">
+        <div className="flex items-center gap-3">
+          <CheckCircle className="h-5 w-5 text-green-600" />
+          <div>
+            <p className="text-sm font-medium text-brand-dark">
+              {document.fileName}
+            </p>
+            <p className="text-xs text-brand-grayMed">
+              {formatFileSize(document.fileSize)}
+            </p>
+          </div>
+        </div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={onRemove}
+          className="text-red-500 hover:text-red-700"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      </div>
+      {helpText && <p className="text-xs text-brand-grayMed">{helpText}</p>}
+    </div>
+  )
+);
+
+UploadedDocCard.displayName = "UploadedDocCard";
+
+// Main Component
 export function DocUpload({
   label,
   documentType,
@@ -30,87 +83,48 @@ export function DocUpload({
   accept = ".pdf,.png,.jpg,.jpeg",
   helpText,
 }: DocUploadProps) {
-  const [isDragging, setIsDragging] = React.useState(false);
   const [isUploading, setIsUploading] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const { isDragging, handleDragOver, handleDragLeave, handleDrop } =
+    useDragAndDrop();
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
+  const handleFile = React.useCallback(
+    async (file: File) => {
+      setIsUploading(true);
 
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
+      // Simulate file upload (in real app, upload to server/S3)
+      await new Promise((resolve) => setTimeout(resolve, UPLOAD_DELAY_MS));
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const files = Array.from(e.dataTransfer.files);
-    if (files.length > 0) {
-      handleFile(files[0]);
-    }
-  };
+      onUpload({
+        type: documentType,
+        fileId: generateFileId(),
+        fileName: file.name,
+        fileSize: file.size,
+      });
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      handleFile(files[0]);
-    }
-  };
+      setIsUploading(false);
+    },
+    [documentType, onUpload]
+  );
 
-  const handleFile = async (file: File) => {
-    setIsUploading(true);
-
-    // Simulate file upload (in real app, upload to server/S3)
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    const fileId = `file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-    onUpload({
-      type: documentType,
-      fileId,
-      fileName: file.name,
-      fileSize: file.size,
-    });
-
-    setIsUploading(false);
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes < 1024) return bytes + " B";
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
-  };
+  const handleFileSelect = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        handleFile(files[0]);
+      }
+    },
+    [handleFile]
+  );
 
   if (uploadedDoc) {
     return (
-      <div className="space-y-2">
-        <p className="text-sm font-medium text-brand-dark">{label}</p>
-        <div className="flex items-center justify-between rounded-lg border-2 border-green-200 bg-green-50 p-4">
-          <div className="flex items-center gap-3">
-            <CheckCircle className="h-5 w-5 text-green-600" />
-            <div>
-              <p className="text-sm font-medium text-brand-dark">
-                {uploadedDoc.fileName}
-              </p>
-              <p className="text-xs text-brand-grayMed">
-                {formatFileSize(uploadedDoc.fileSize)}
-              </p>
-            </div>
-          </div>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={onRemove}
-            className="text-red-500 hover:text-red-700"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-        {helpText && <p className="text-xs text-brand-grayMed">{helpText}</p>}
-      </div>
+      <UploadedDocCard
+        document={uploadedDoc}
+        label={label}
+        helpText={helpText}
+        onRemove={onRemove}
+      />
     );
   }
 
@@ -120,7 +134,7 @@ export function DocUpload({
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+        onDrop={(e) => handleDrop(e, handleFile)}
         onClick={() => fileInputRef.current?.click()}
         className={`cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-all ${
           isDragging

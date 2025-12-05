@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight, Mail, Clock, FileText } from "lucide-react";
+import { saveApplicationMetadata } from "@/shared/lib/storage";
 
 interface BusinessSubmissionStepProps {
   data: any;
@@ -29,6 +30,44 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
 
       // Create back-office task
       console.log("Back-office task created for:", appId);
+
+      // Save complete application data with full details
+      try {
+        const completeApplication = {
+          id: appId,
+          type: "business",
+          submittedAt: new Date().toISOString(),
+          status: "submitted",
+          route: route,
+          data: data, // Store complete form data
+        };
+        
+        localStorage.setItem(
+          `application_${appId}`,
+          JSON.stringify(completeApplication)
+        );
+
+        // Also save to applications list with summary
+        const result = saveApplicationMetadata({
+          id: appId,
+          type: "business",
+          submittedAt: new Date().toISOString(),
+          status: "submitted",
+          summary: {
+            email: data.email,
+            companyName: data.companyName,
+            jurisdiction: data.jurisdiction,
+            accountType: data.accountType,
+            route: route,
+          },
+        });
+
+        if (!result.success) {
+          console.warn("Failed to save application metadata:", result.error);
+        }
+      } catch (error) {
+        console.error("Failed to save application:", error);
+      }
 
       setSubmitted(true);
 

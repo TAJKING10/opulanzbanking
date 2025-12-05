@@ -9,7 +9,7 @@ import ReactCountryFlag from "react-country-flag";
 import {
   whitelabelKYCSchema,
   type WhitelabelKYCFormData,
-} from "@/lib/validators/whitelabel";
+} from "@/shared/lib/validators/whitelabel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -348,10 +348,10 @@ export default function IndividualAccountPage() {
                     <Label htmlFor="indv_postalCode">
                       Postal Code<span className="text-red-600">*</span>
                     </Label>
-                    <Input id="indv_postalCode" {...register("postalCode")} />
-                    {errors.postalCode && (
+                    <Input id="indv_postalCode" {...register("postal")} />
+                    {errors.postal && (
                       <p className="text-xs text-red-600">
-                        {errors.postalCode.message}
+                        {errors.postal.message}
                       </p>
                     )}
                   </div>

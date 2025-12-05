@@ -5,69 +5,66 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Users, Plus, X } from "lucide-react";
+import { DirectorOrUBO } from "@/shared/types/person";
+import { usePersonList } from "@/shared/hooks/use-person-list";
+import { StepProps } from "@/shared/types/step-props";
 
-interface DirectorsUBOsStepProps {
-  data: any;
-  onUpdate: (data: any) => void;
-  onNext: () => void;
+interface DirectorsUBOsData {
+  directors?: DirectorOrUBO[];
+  ubos?: DirectorOrUBO[];
+  isDirectorsStepValid?: boolean;
 }
 
-interface Person {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  ownership?: string;
-}
+interface DirectorsUBOsStepProps extends StepProps<DirectorsUBOsData> {}
+
+type Person = DirectorOrUBO;
 
 export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepProps) {
-  const [directors, setDirectors] = React.useState<Person[]>(
+  const directors = usePersonList<Person>(
     data.directors?.length > 0 ? data.directors : [{ id: "1", firstName: "", lastName: "", email: "" }]
   );
-  const [ubos, setUbos] = React.useState<Person[]>(
+  
+  const ubos = usePersonList<Person>(
     data.ubos?.length > 0
       ? data.ubos
       : [{ id: "1", firstName: "", lastName: "", email: "", ownership: "" }]
   );
 
   const addDirector = () => {
-    setDirectors([...directors, { id: Date.now().toString(), firstName: "", lastName: "", email: "" }]);
+    directors.add({ id: Date.now().toString(), firstName: "", lastName: "", email: "" });
   };
 
   const removeDirector = (id: string) => {
-    if (directors.length > 1) {
-      setDirectors(directors.filter((d) => d.id !== id));
+    if (directors.count > 1) {
+      directors.remove(id);
     }
   };
 
   const updateDirector = (id: string, field: string, value: string) => {
-    setDirectors(directors.map((d) => (d.id === id ? { ...d, [field]: value } : d)));
+    directors.updateField(id, field as keyof Person, value);
   };
 
   const addUBO = () => {
-    setUbos([
-      ...ubos,
-      { id: Date.now().toString(), firstName: "", lastName: "", email: "", ownership: "" },
-    ]);
+    ubos.add({ id: Date.now().toString(), firstName: "", lastName: "", email: "", ownership: "" });
   };
 
   const removeUBO = (id: string) => {
-    if (ubos.length > 1) {
-      setUbos(ubos.filter((u) => u.id !== id));
+    if (ubos.count > 1) {
+      ubos.remove(id);
     }
   };
 
   const updateUBO = (id: string, field: string, value: string) => {
-    setUbos(ubos.map((u) => (u.id === id ? { ...u, [field]: value } : u)));
+    ubos.updateField(id, field as keyof Person, value);
   };
 
   const isDirectorsStepValid =
-    directors.every((d) => d.firstName && d.lastName && d.email) &&
-    ubos.every((u) => u.firstName && u.lastName && u.email && u.ownership);
+    directors.items.every((d) => d.firstName && d.lastName && d.email) &&
+    ubos.items.every((u) => u.firstName && u.lastName && u.email && u.ownership);
 
   // Update parent with validation status
   React.useEffect(() => {
-    onUpdate({ directors, ubos, isDirectorsStepValid });
+    onUpdate({ directors: directors.items, ubos: ubos.items, isDirectorsStepValid });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDirectorsStepValid]);
 
@@ -94,7 +91,7 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
             </Button>
           </div>
 
-          {directors.map((director, index) => (
+          {directors.items.map((director, index) => (
             <div key={director.id} className="rounded-lg border border-brand-grayLight bg-gray-50 p-4">
               <div className="mb-3 flex items-center justify-between">
                 <h4 className="font-semibold text-brand-dark">Director {index + 1}</h4>
@@ -159,11 +156,11 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
             </Button>
           </div>
 
-          {ubos.map((ubo, index) => (
+          {ubos.items.map((ubo, index) => (
             <div key={ubo.id} className="rounded-lg border border-brand-grayLight bg-gray-50 p-4">
               <div className="mb-3 flex items-center justify-between">
                 <h4 className="font-semibold text-brand-dark">UBO {index + 1}</h4>
-                {ubos.length > 1 && (
+                {ubos.count > 1 && (
                   <Button type="button" onClick={() => removeUBO(ubo.id)} variant="ghost" size="sm">
                     <X className="h-4 w-4" />
                   </Button>

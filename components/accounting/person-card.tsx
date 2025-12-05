@@ -10,14 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PersonWithRole } from "@/shared/types/person";
 
-export interface Person {
-  firstName: string;
-  lastName: string;
-  role: string;
-  email: string;
-  phone: string;
-}
+export type Person = PersonWithRole;
 
 const ROLES = [
   { value: "ceo", label: "CEO" },

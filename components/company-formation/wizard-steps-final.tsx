@@ -3,6 +3,9 @@
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Briefcase,
   Upload,
@@ -28,18 +31,49 @@ type StepProps = {
 };
 
 // Step 5: Activity & Scale
-export function Step5Activity({ dossier, updateDossier }: StepProps) {
-  const [naceCode, setNaceCode] = React.useState(dossier.naceCode || "");
-  const [expectedTurnover, setExpectedTurnover] = React.useState(dossier.expectedTurnover || 0);
-  const [numberOfEmployees, setNumberOfEmployees] = React.useState(dossier.numberOfEmployees || 0);
+const step5Schema = z.object({
+  naceCode: z.string().min(1, "NACE code is required"),
+  expectedTurnover: z.number().min(0, "Expected turnover must be 0 or greater"),
+  numberOfEmployees: z.number().min(0, "Number of employees must be 0 or greater").optional(),
+});
+
+type Step5FormData = z.infer<typeof step5Schema>;
+
+export function Step5Activity({ dossier, updateDossier, stepValidationRef }: StepProps & { stepValidationRef?: React.MutableRefObject<(() => Promise<boolean>) | null> }) {
+  const form = useForm<Step5FormData>({
+    resolver: zodResolver(step5Schema),
+    mode: "onChange",
+    defaultValues: {
+      naceCode: dossier.naceCode || "",
+      expectedTurnover: dossier.expectedTurnover || 0,
+      numberOfEmployees: dossier.numberOfEmployees || 0,
+    },
+  });
 
   React.useEffect(() => {
-    updateDossier({
-      naceCode,
-      expectedTurnover,
-      numberOfEmployees,
+    if (stepValidationRef) {
+      stepValidationRef.current = async () => {
+        const result = await form.trigger();
+        return result;
+      };
+    }
+    return () => {
+      if (stepValidationRef) {
+        stepValidationRef.current = null;
+      }
+    };
+  }, [form, stepValidationRef]);
+
+  React.useEffect(() => {
+    const subscription = form.watch((values) => {
+      updateDossier({
+        naceCode: values.naceCode,
+        expectedTurnover: values.expectedTurnover,
+        numberOfEmployees: values.numberOfEmployees,
+      });
     });
-  }, [naceCode, expectedTurnover, numberOfEmployees]);
+    return () => subscription.unsubscribe();
+  }, [form, updateDossier]);
 
   return (
     <div className="space-y-6">
@@ -49,10 +83,14 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
         </Label>
         <Input
           id="naceCode"
-          value={naceCode}
-          onChange={(e) => setNaceCode(e.target.value)}
+          {...form.register("naceCode")}
           placeholder="e.g., 62.01 - Computer programming activities"
         />
+        {form.formState.errors.naceCode && (
+          <p className="text-sm text-red-500">
+            {form.formState.errors.naceCode.message}
+          </p>
+        )}
         <p className="text-xs text-brand-grayMed">
           Statistical classification of economic activities in the EU.{" "}
           <a
@@ -74,10 +112,14 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
           id="expectedTurnover"
           type="number"
           min="0"
-          value={expectedTurnover}
-          onChange={(e) => setExpectedTurnover(parseFloat(e.target.value) || 0)}
+          {...form.register("expectedTurnover", { valueAsNumber: true })}
           placeholder="e.g., 500000"
         />
+        {form.formState.errors.expectedTurnover && (
+          <p className="text-sm text-red-500">
+            {form.formState.errors.expectedTurnover.message}
+          </p>
+        )}
         <p className="text-xs text-brand-grayMed">
           Estimated annual revenue for the first year
         </p>
@@ -91,10 +133,14 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
           id="numberOfEmployees"
           type="number"
           min="0"
-          value={numberOfEmployees}
-          onChange={(e) => setNumberOfEmployees(parseInt(e.target.value) || 0)}
+          {...form.register("numberOfEmployees", { valueAsNumber: true })}
           placeholder="e.g., 5"
         />
+        {form.formState.errors.numberOfEmployees && (
+          <p className="text-sm text-red-500">
+            {form.formState.errors.numberOfEmployees.message}
+          </p>
+        )}
         <p className="text-xs text-brand-grayMed">
           Expected number of employees when starting operations
         </p>
@@ -230,10 +276,52 @@ export function Step6NotaryDomiciliation({ dossier, updateDossier }: StepProps) 
 }
 
 // Step 7: Documents
-export function Step7Documents({ dossier, updateDossier }: StepProps) {
+const step7Schema = z.object({
+  hasIdDocs: z.boolean().refine(val => val === true, "At least one ID/Passport document is required"),
+  hasLeaseDocs: z.boolean().optional(),
+});
+
+type Step7FormData = z.infer<typeof step7Schema>;
+
+export function Step7Documents({ dossier, updateDossier, stepValidationRef }: StepProps & { stepValidationRef?: React.MutableRefObject<(() => Promise<boolean>) | null> }) {
   const [idDocs, setIdDocs] = React.useState<UploadedFile[]>(dossier.uploads?.ids || []);
   const [leaseDocs, setLeaseDocs] = React.useState<UploadedFile[]>(dossier.uploads?.leaseOrDomiciliation || []);
   const [capitalCert, setCapitalCert] = React.useState<UploadedFile | null>(dossier.uploads?.capitalCertificate || null);
+  const [validationError, setValidationError] = React.useState<string>("");
+
+  const form = useForm<Step7FormData>({
+    resolver: zodResolver(step7Schema),
+    mode: "onChange",
+    defaultValues: {
+      hasIdDocs: idDocs.length > 0,
+      hasLeaseDocs: leaseDocs.length > 0,
+    },
+  });
+
+  React.useEffect(() => {
+    if (stepValidationRef) {
+      stepValidationRef.current = async () => {
+        setValidationError("");
+        
+        if (idDocs.length === 0) {
+          setValidationError("Please upload at least one ID/Passport document");
+          return false;
+        }
+        
+        if (!dossier.domiciliationNeeded && leaseDocs.length === 0) {
+          setValidationError("Please upload lease agreement or property title, or select domiciliation service in Step 6");
+          return false;
+        }
+        
+        return true;
+      };
+    }
+    return () => {
+      if (stepValidationRef) {
+        stepValidationRef.current = null;
+      }
+    };
+  }, [stepValidationRef, idDocs, leaseDocs, dossier.domiciliationNeeded]);
 
   React.useEffect(() => {
     updateDossier({
@@ -243,7 +331,16 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
         capitalCertificate: capitalCert,
       },
     });
-  }, [idDocs, leaseDocs, capitalCert]);
+    
+    form.setValue("hasIdDocs", idDocs.length > 0);
+    form.setValue("hasLeaseDocs", leaseDocs.length > 0);
+    
+    if (validationError) {
+      if (idDocs.length > 0 && (dossier.domiciliationNeeded || leaseDocs.length > 0)) {
+        setValidationError("");
+      }
+    }
+  }, [idDocs, leaseDocs, capitalCert, dossier.domiciliationNeeded]);
 
   const simulateUpload = (type: "id" | "lease" | "capital") => (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -289,6 +386,15 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
 
   return (
     <div className="space-y-8">
+      {validationError && (
+        <div className="rounded-xl bg-red-50 p-4 border border-red-200">
+          <p className="text-sm text-red-600">
+            <AlertCircle className="inline h-4 w-4 mr-1" />
+            {validationError}
+          </p>
+        </div>
+      )}
+      
       {/* ID Documents */}
       <div>
         <h3 className="mb-2 text-lg font-bold text-brand-dark">
@@ -297,6 +403,11 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
         <p className="mb-4 text-sm text-brand-grayMed">
           Upload ID or passport copies for all directors, managers, and UBOs
         </p>
+        {idDocs.length === 0 && form.formState.isSubmitted && (
+          <p className="text-sm text-red-500 mb-2">
+            At least one ID/Passport document is required
+          </p>
+        )}
         <div className="space-y-4">
           {idDocs.map((file) => (
             <FileCard key={file.id} file={file} onRemove={() => removeFile("id", file.id)} />
@@ -326,6 +437,11 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
           <p className="mb-4 text-sm text-brand-grayMed">
             Proof of registered office address in Luxembourg
           </p>
+          {leaseDocs.length === 0 && form.formState.isSubmitted && (
+            <p className="text-sm text-red-500 mb-2">
+              Lease agreement or property title is required
+            </p>
+          )}
           <div className="space-y-4">
             {leaseDocs.map((file) => (
               <FileCard key={file.id} file={file} onRemove={() => removeFile("lease", file.id)} />

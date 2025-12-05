@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle2, AlertTriangle, Info, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { saveApplicationMetadata } from "@/shared/lib/storage";
 
 interface ReviewSubmitStepProps {
   data: any;
@@ -52,6 +53,43 @@ export function ReviewSubmitStep({ data, onUpdate, locale }: ReviewSubmitStepPro
       // Generate application ID (in real implementation, this comes from API)
       const appId = `INS-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
       setApplicationId(appId);
+
+      // Save complete application data with full details
+      try {
+        const completeApplication = {
+          id: appId,
+          type: "personal",
+          submittedAt: new Date().toISOString(),
+          status: "submitted",
+          data: data, // Store complete form data
+        };
+        
+        localStorage.setItem(
+          `application_${appId}`,
+          JSON.stringify(completeApplication)
+        );
+
+        // Also save to applications list with summary
+        const result = saveApplicationMetadata({
+          id: appId,
+          type: "personal",
+          submittedAt: new Date().toISOString(),
+          status: "submitted",
+          summary: {
+            email: data.email,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            insuranceType: data.insuranceType,
+            coverage: data.coverage,
+          },
+        });
+
+        if (!result.success) {
+          console.warn("Failed to save application metadata:", result.error);
+        }
+      } catch (error) {
+        console.error("Failed to save application:", error);
+      }
 
       // Clear saved progress
       localStorage.removeItem("insurance-application-progress");

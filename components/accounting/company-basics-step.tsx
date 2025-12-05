@@ -39,12 +39,14 @@ interface CompanyBasicsStepProps {
   data: any;
   onUpdate: (data: any) => void;
   onNext: () => void;
+  onValidate?: (isValid: boolean) => void;
 }
 
 export function CompanyBasicsStep({
   data,
   onUpdate,
   onNext,
+  onValidate,
 }: CompanyBasicsStepProps) {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
@@ -78,11 +80,12 @@ export function CompanyBasicsStep({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleContinue = () => {
-    if (validate()) {
-      onNext();
+  React.useEffect(() => {
+    if (onValidate) {
+      const isValid = validate();
+      onValidate(isValid);
     }
-  };
+  }, [data]);
 
   return (
     <div className="space-y-6">
@@ -269,15 +272,6 @@ export function CompanyBasicsStep({
             If you don't have a VAT number yet, leave blank
           </p>
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleContinue}
-          className="rounded-lg bg-brand-gold px-6 py-3 font-semibold text-white transition-all hover:bg-brand-goldDark"
-        >
-          Continue
-        </button>
       </div>
     </div>
   );

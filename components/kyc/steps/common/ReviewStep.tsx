@@ -1,20 +1,52 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useKYCWizard } from '@/contexts/KYCWizardContext';
 import { WizardNavigation } from '../../WizardNavigation';
 
 export function ReviewStep() {
-  const { data, prevStep, nextStep } = useKYCWizard();
+  const { data, prevStep, nextStep, updateData } = useKYCWizard();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = () => {
-    // Log to console for demo
-    console.log('=== OPULANZ KYC SUBMISSION ===');
-    console.log(JSON.stringify(data, null, 2));
-    console.log('============================');
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setError(null);
 
-    // In production, this would send to backend
-    nextStep();
+    try {
+      console.log('=== OPULANZ KYC SUBMISSION ===');
+      console.log('Sending data to backend:', JSON.stringify(data, null, 2));
+
+      const response = await fetch('http://localhost:5000/api/kyc/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit application');
+      }
+
+      console.log('✅ Application submitted successfully:', result);
+
+      // Store the application ID and envelope ID for the success page
+      updateData({
+        applicationId: result.applicationId,
+        envelopeId: result.envelopeId,
+      });
+
+      // Move to success step
+      nextStep();
+    } catch (err) {
+      console.error('❌ Submission error:', err);
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const isIndividual = data.clientType === 'PP';
@@ -312,14 +344,45 @@ export function ReviewStep() {
             </span>
           </label>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-50 border border-red-300 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <svg className="w-5 h-5 text-red-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+              <div>
+                <h4 className="text-sm font-semibold text-red-800 mb-1">Submission Failed</h4>
+                <p className="text-sm text-red-700">{error}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Loading Message */}
+        {isSubmitting && (
+          <div className="bg-blue-50 border border-blue-300 rounded-lg p-4">
+            <div className="flex items-center gap-3">
+              <svg className="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <div>
+                <h4 className="text-sm font-semibold text-blue-800">Submitting Application...</h4>
+                <p className="text-sm text-blue-700">Generating documents and preparing signature request</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <WizardNavigation
         onNext={handleSubmit}
         onPrev={prevStep}
-        canGoPrev={true}
-        canGoNext={true}
-        nextLabel="Submit Application"
+        canGoPrev={!isSubmitting}
+        canGoNext={!isSubmitting}
+        nextLabel={isSubmitting ? "Submitting..." : "Submit Application"}
       />
     </div>
   );

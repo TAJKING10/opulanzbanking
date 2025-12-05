@@ -19,6 +19,7 @@ const documentGenerationRoutes = require('./routes/document-generation');
 const companyRoutes = require('./routes/companies');
 const appointmentRoutes = require('./routes/appointments');
 const notificationRoutes = require('./routes/notifications');
+const kycRoutes = require('./routes/kyc');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -50,6 +51,7 @@ app.use('/api/document-generation', documentGenerationRoutes); // Document gener
 app.use('/api/companies', companyRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/kyc', kycRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

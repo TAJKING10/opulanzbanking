@@ -2,6 +2,9 @@
 
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Building2,
   CheckCircle,
@@ -28,6 +31,7 @@ interface CompanyFormationWizardProps {
 
 export function CompanyFormationWizard({ initialFormType, onBack }: CompanyFormationWizardProps) {
   const [currentStep, setCurrentStep] = React.useState(1);
+  const stepValidationRef = React.useRef<(() => Promise<boolean>) | null>(null);
   const [dossier, setDossier] = React.useState<Partial<CompanyFormationDossier>>({
     formType: initialFormType,
     country: "LU",
@@ -67,12 +71,22 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
     }
   }, [dossier]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // Validate current step if validation is available
+    if (stepValidationRef.current) {
+      const isValid = await stepValidationRef.current();
+      if (!isValid) {
+        return;
+      }
+    }
+
     if (currentStep < WIZARD_STEPS.length) {
       setDossier(prev => ({ ...prev, updatedAt: new Date().toISOString() }));
       setCurrentStep(currentStep + 1);
     }
   };
+
+
 
   const handleBack = () => {
     if (currentStep > 1) {
@@ -154,12 +168,12 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
           </CardHeader>
           <CardContent>
             {currentStep === 1 && <Step1CompanyType dossier={dossier} updateDossier={updateDossier} />}
-            {currentStep === 2 && <Step2GeneralInfo dossier={dossier} updateDossier={updateDossier} />}
+            {currentStep === 2 && <Step2GeneralInfo dossier={dossier} updateDossier={updateDossier} stepValidationRef={stepValidationRef} />}
             {currentStep === 3 && <Step3People dossier={dossier} updateDossier={updateDossier} />}
             {currentStep === 4 && <Step4Capital dossier={dossier} updateDossier={updateDossier} />}
-            {currentStep === 5 && <Step5Activity dossier={dossier} updateDossier={updateDossier} />}
+            {currentStep === 5 && <Step5Activity dossier={dossier} updateDossier={updateDossier} stepValidationRef={stepValidationRef} />}
             {currentStep === 6 && <Step6NotaryDomiciliation dossier={dossier} updateDossier={updateDossier} />}
-            {currentStep === 7 && <Step7Documents dossier={dossier} updateDossier={updateDossier} />}
+            {currentStep === 7 && <Step7Documents dossier={dossier} updateDossier={updateDossier} stepValidationRef={stepValidationRef} />}
             {currentStep === 8 && <Step8ReviewSubmit dossier={dossier} updateDossier={updateDossier} />}
 
             {/* Navigation */}
@@ -175,7 +189,6 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
                 <Button variant="ghost">Save & Resume Later</Button>
                 {currentStep < WIZARD_STEPS.length ? (
                   <Button
-                    variant="primary"
                     onClick={handleNext}
                   >
                     Next
@@ -265,22 +278,57 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
 }
 
 // Step 2: General Info
-function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
-  const [primaryName, setPrimaryName] = React.useState(dossier.proposedNames?.[0] || "");
-  const [alternateName, setAlternateName] = React.useState(dossier.proposedNames?.[1] || "");
-  const [purpose, setPurpose] = React.useState(dossier.purpose || "");
-  const [registeredOffice, setRegisteredOffice] = React.useState(dossier.registeredOffice || "");
-  const [duration, setDuration] = React.useState(dossier.duration || "unlimited");
+const step2Schema = z.object({
+  primaryName: z.string().min(1, "Company name is required").min(3, "Company name must be at least 3 characters"),
+  alternateName: z.string().optional(),
+  purpose: z.string().min(10, "Company purpose must be at least 10 characters"),
+  registeredOffice: z.string().min(10, "Registered office address must be at least 10 characters"),
+  duration: z.string().min(1, "Duration is required"),
+});
 
+type Step2FormData = z.infer<typeof step2Schema>;
+
+function Step2GeneralInfo({ dossier, updateDossier, stepValidationRef }: StepProps & { stepValidationRef?: React.MutableRefObject<(() => Promise<boolean>) | null> }) {
+  const form = useForm<Step2FormData>({
+    resolver: zodResolver(step2Schema),
+    mode: "onChange",
+    defaultValues: {
+      primaryName: dossier.proposedNames?.[0] || "",
+      alternateName: dossier.proposedNames?.[1] || "",
+      purpose: dossier.purpose || "",
+      registeredOffice: dossier.registeredOffice || "",
+      duration: dossier.duration || "unlimited",
+    },
+  });
+
+  // Register validation function
   React.useEffect(() => {
-    const names = [primaryName, alternateName].filter(Boolean);
-    updateDossier({
-      proposedNames: names,
-      purpose,
-      registeredOffice,
-      duration,
+    if (stepValidationRef) {
+      stepValidationRef.current = async () => {
+        const result = await form.trigger();
+        return result;
+      };
+    }
+    return () => {
+      if (stepValidationRef) {
+        stepValidationRef.current = null;
+      }
+    };
+  }, [form, stepValidationRef]);
+
+  // Update dossier on field changes
+  React.useEffect(() => {
+    const subscription = form.watch((values) => {
+      const names = [values.primaryName, values.alternateName].filter(Boolean) as string[];
+      updateDossier({
+        proposedNames: names,
+        purpose: values.purpose,
+        registeredOffice: values.registeredOffice,
+        duration: values.duration,
+      });
     });
-  }, [primaryName, alternateName, purpose, registeredOffice, duration]);
+    return () => subscription.unsubscribe();
+  }, [form, updateDossier]);
 
   return (
     <div className="space-y-6">
@@ -290,10 +338,14 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
         </Label>
         <Input
           id="primaryName"
-          value={primaryName}
-          onChange={(e) => setPrimaryName(e.target.value)}
+          {...form.register("primaryName")}
           placeholder="e.g., Acme Luxembourg S.à r.l."
         />
+        {form.formState.errors.primaryName && (
+          <p className="text-sm text-red-500">
+            {form.formState.errors.primaryName.message}
+          </p>
+        )}
         <p className="text-xs text-brand-grayMed">
           Include the legal form suffix (S.à r.l., S.A., etc.)
         </p>
@@ -305,8 +357,7 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
         </Label>
         <Input
           id="alternateName"
-          value={alternateName}
-          onChange={(e) => setAlternateName(e.target.value)}
+          {...form.register("alternateName")}
           placeholder="e.g., Acme Lux S.à r.l."
         />
         <p className="text-xs text-brand-grayMed">
@@ -320,12 +371,16 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
         </Label>
         <textarea
           id="purpose"
-          value={purpose}
-          onChange={(e) => setPurpose(e.target.value)}
+          {...form.register("purpose")}
           rows={5}
           className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
           placeholder="Describe the main business activities and purpose of the company..."
         />
+        {form.formState.errors.purpose && (
+          <p className="text-sm text-red-500">
+            {form.formState.errors.purpose.message}
+          </p>
+        )}
       </div>
 
       <div className="space-y-2">
@@ -334,12 +389,16 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
         </Label>
         <textarea
           id="registeredOffice"
-          value={registeredOffice}
-          onChange={(e) => setRegisteredOffice(e.target.value)}
+          {...form.register("registeredOffice")}
           rows={3}
           className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
           placeholder="Street address, postal code, city, Luxembourg"
         />
+        {form.formState.errors.registeredOffice && (
+          <p className="text-sm text-red-500">
+            {form.formState.errors.registeredOffice.message}
+          </p>
+        )}
         <p className="text-xs text-brand-grayMed">
           Or select domiciliation service in Step 6
         </p>
@@ -351,10 +410,14 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
         </Label>
         <Input
           id="duration"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
+          {...form.register("duration")}
           placeholder="unlimited"
         />
+        {form.formState.errors.duration && (
+          <p className="text-sm text-red-500">
+            {form.formState.errors.duration.message}
+          </p>
+        )}
         <p className="text-xs text-brand-grayMed">
           Most companies choose "unlimited"
         </p>

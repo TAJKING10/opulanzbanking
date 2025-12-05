@@ -106,15 +106,6 @@ export function DocumentsStep({
           your onboarding process.
         </p>
       </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleContinue}
-          className="rounded-lg bg-brand-gold px-6 py-3 font-semibold text-white transition-all hover:bg-brand-goldDark"
-        >
-          Continue
-        </button>
-      </div>
     </div>
   );
 }

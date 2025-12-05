@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-interface SectionHeadingProps {
+export interface SectionHeadingProps {
   overline?: string;
   title: string;
   description?: string;

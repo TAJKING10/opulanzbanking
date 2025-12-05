@@ -2,12 +2,9 @@
 
 import * as React from "react";
 import { Building2, Briefcase } from "lucide-react";
+import { WelcomeStepProps } from "@/shared/types/step-props";
 
-interface BusinessWelcomeStepProps {
-  data: any;
-  onUpdate: (data: any) => void;
-  onNext: () => void;
-}
+type BusinessWelcomeStepProps = WelcomeStepProps;
 
 export function BusinessWelcomeStep({ data, onUpdate, onNext }: BusinessWelcomeStepProps) {
   return (

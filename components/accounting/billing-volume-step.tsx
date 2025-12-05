@@ -18,12 +18,14 @@ interface BillingVolumeStepProps {
   data: any;
   onUpdate: (data: any) => void;
   onNext: () => void;
+  onValidate?: (isValid: boolean) => void;
 }
 
 export function BillingVolumeStep({
   data,
   onUpdate,
   onNext,
+  onValidate,
 }: BillingVolumeStepProps) {
   const [payrollNeeded, setPayrollNeeded] = React.useState(
     data.payrollNeeded || false
@@ -75,18 +77,14 @@ export function BillingVolumeStep({
   const validate = () => {
     const newErrors: Record<string, string> = {};
 
-    if (
-      data.salesInvoicesMonth === undefined ||
-      data.salesInvoicesMonth < 0
-    )
-      newErrors.salesInvoicesMonth =
-        "Average monthly sales invoices is required";
-    if (
-      data.purchaseInvoicesMonth === undefined ||
-      data.purchaseInvoicesMonth < 0
-    )
-      newErrors.purchaseInvoicesMonth =
-        "Average monthly purchase invoices is required";
+    if (data.salesInvoicesMonth === undefined || data.salesInvoicesMonth === null || data.salesInvoicesMonth === "") {
+      newErrors.salesInvoicesMonth = "Average monthly sales invoices is required";
+    }
+    
+    if (data.purchaseInvoicesMonth === undefined || data.purchaseInvoicesMonth === null || data.purchaseInvoicesMonth === "") {
+      newErrors.purchaseInvoicesMonth = "Average monthly purchase invoices is required";
+    }
+    
     if (
       payrollNeeded &&
       (!data.payrollEmployees || data.payrollEmployees < 1)
@@ -100,11 +98,31 @@ export function BillingVolumeStep({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleContinue = () => {
-    if (validate()) {
-      onNext();
+  React.useEffect(() => {
+    if (onValidate) {
+      const newErrors: Record<string, string> = {};
+
+      if (data.salesInvoicesMonth === undefined || data.salesInvoicesMonth === null || data.salesInvoicesMonth === "") {
+        newErrors.salesInvoicesMonth = "Average monthly sales invoices is required";
+      }
+      
+      if (data.purchaseInvoicesMonth === undefined || data.purchaseInvoicesMonth === null || data.purchaseInvoicesMonth === "") {
+        newErrors.purchaseInvoicesMonth = "Average monthly purchase invoices is required";
+      }
+      
+      if (
+        payrollNeeded &&
+        (!data.payrollEmployees || data.payrollEmployees < 1)
+      )
+        newErrors.payrollEmployees =
+          "Number of employees on payroll must be at least 1";
+      if (multiCurrency && selectedCurrencies.length === 0)
+        newErrors.multiCurrencies = "Please select at least one currency";
+
+      const isValid = Object.keys(newErrors).length === 0;
+      onValidate(isValid);
     }
-  };
+  }, [data, payrollNeeded, multiCurrency, selectedCurrencies, onValidate]);
 
   return (
     <div className="space-y-6">
@@ -270,15 +288,6 @@ export function BillingVolumeStep({
             </div>
           )}
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleContinue}
-          className="rounded-lg bg-brand-gold px-6 py-3 font-semibold text-white transition-all hover:bg-brand-goldDark"
-        >
-          Continue
-        </button>
       </div>
     </div>
   );

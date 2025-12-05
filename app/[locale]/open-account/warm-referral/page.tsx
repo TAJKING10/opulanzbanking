@@ -9,7 +9,7 @@ import { CheckCircle2, ArrowRight } from "lucide-react";
 import {
   warmReferralSchema,
   type WarmReferralFormData,
-} from "@/lib/validators/warm-referral";
+} from "@/shared/lib/validators/warm-referral";
 import { generateRedirectUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

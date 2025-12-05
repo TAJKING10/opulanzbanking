@@ -7,25 +7,13 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Globe, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { navigation, services } from "@/shared/lib/navigation";
 
 interface HeaderProps {
   locale: string;
 }
 
-const navigation = [
-  { name: "Open Account", href: "/open-account" },
-  { name: "Company Formation", href: "/company-formation" },
-  { name: "Services", href: "/services" },
-  { name: "Support", href: "/support" },
-];
-
-const services = [
-  { name: "Company Formation", href: "/company-formation" },
-  { name: "Tax Advisory", href: "/tax-advisory" },
-  { name: "Investment Advisory", href: "/investment-advisory" },
-  { name: "Life Insurance", href: "/life-insurance" },
-  { name: "Accounting & Invoicing", href: "/invoicing-accounting" },
-];
+// navigation and services now sourced from shared/lib/navigation
 
 export function Header({ locale }: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false);

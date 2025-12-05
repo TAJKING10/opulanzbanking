@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight, Mail, Clock, FileText } from "lucide-react";
+import { saveApplicationMetadata } from "@/shared/lib/storage";
 
 interface SubmissionStepProps {
   data: any;
@@ -29,6 +30,51 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
 
       // Create back-office task
       console.log("Back-office task created for:", appId);
+
+      // Save complete application data with full details
+      try {
+        const completeApplication = {
+          id: appId,
+          type: "personal",
+          submittedAt: new Date().toISOString(),
+          status: "submitted",
+          route: route,
+          data: data, // Store complete form data
+        };
+        
+        const storageKey = `application_${appId}`;
+        localStorage.setItem(
+          storageKey,
+          JSON.stringify(completeApplication)
+        );
+
+        console.log("✅ Full application saved to localStorage");
+        console.log(`Key: ${storageKey}`);
+        console.log("Full data:", completeApplication);
+        console.log("To retrieve: localStorage.getItem('${storageKey}')");
+
+        // Also save to applications list with summary
+        const result = saveApplicationMetadata({
+          id: appId,
+          type: "personal",
+          submittedAt: new Date().toISOString(),
+          status: "submitted",
+          summary: {
+            email: data.email,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            accountType: data.accountType,
+            nationality: data.nationality,
+            route: route,
+          },
+        });
+
+        if (!result.success) {
+          console.warn("Failed to save application metadata:", result.error);
+        }
+      } catch (error) {
+        console.error("Failed to save application:", error);
+      }
 
       setSubmitted(true);
 

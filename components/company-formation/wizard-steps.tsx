@@ -2,6 +2,9 @@
 
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Users,
   Euro,
@@ -23,6 +26,7 @@ import {
   UploadedFile,
   COMPANY_FORM_RULES,
 } from "@/types/company-formation";
+import { usePersonList, useShareholderList } from "@/shared/hooks/use-person-list";
 
 type StepProps = {
   dossier: Partial<CompanyFormationDossier>;
@@ -31,16 +35,25 @@ type StepProps = {
 
 // Step 3: People (Shareholders, Directors, UBOs)
 export function Step3People({ dossier, updateDossier }: StepProps) {
-  const [shareholders, setShareholders] = React.useState<Person[]>(dossier.shareholders || []);
-  const [directors, setDirectors] = React.useState<Person[]>(dossier.directors || []);
-  const [managers, setManagers] = React.useState<Person[]>(dossier.managers || []);
-  const [ubos, setUbos] = React.useState<Person[]>(dossier.ubos || []);
+  const shareholdersWithPercent = (dossier.shareholders || []).map(s => ({
+    ...s,
+    sharePercent: s.sharePercent ?? 0
+  }));
+  const shareholders = useShareholderList<Person & { sharePercent: number }>(shareholdersWithPercent);
+  const directors = usePersonList<Person>(dossier.directors || []);
+  const managers = usePersonList<Person>(dossier.managers || []);
+  const ubos = usePersonList<Person>(dossier.ubos || []);
   const [editingPerson, setEditingPerson] = React.useState<Person | null>(null);
   const [editingType, setEditingType] = React.useState<"shareholder" | "director" | "manager" | "ubo" | null>(null);
 
   React.useEffect(() => {
-    updateDossier({ shareholders, directors, managers, ubos });
-  }, [shareholders, directors, managers, ubos]);
+    updateDossier({ 
+      shareholders: shareholders.items, 
+      directors: directors.items, 
+      managers: managers.items, 
+      ubos: ubos.items 
+    });
+  }, [shareholders.items, directors.items, managers.items, ubos.items]);
 
   const addPerson = (type: "shareholder" | "director" | "manager" | "ubo") => {
     const newPerson: Person = {
@@ -65,16 +78,19 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
 
     switch (editingType) {
       case "shareholder":
-        setShareholders([...shareholders.filter(p => p.id !== editingPerson.id), editingPerson]);
+        shareholders.upsert({
+          ...editingPerson,
+          sharePercent: editingPerson.sharePercent ?? 0
+        });
         break;
       case "director":
-        setDirectors([...directors.filter(p => p.id !== editingPerson.id), editingPerson]);
+        directors.upsert(editingPerson);
         break;
       case "manager":
-        setManagers([...managers.filter(p => p.id !== editingPerson.id), editingPerson]);
+        managers.upsert(editingPerson);
         break;
       case "ubo":
-        setUbos([...ubos.filter(p => p.id !== editingPerson.id), editingPerson]);
+        ubos.upsert(editingPerson);
         break;
     }
 
@@ -85,21 +101,19 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
   const deletePerson = (id: string, type: "shareholder" | "director" | "manager" | "ubo") => {
     switch (type) {
       case "shareholder":
-        setShareholders(shareholders.filter(p => p.id !== id));
+        shareholders.remove(id);
         break;
       case "director":
-        setDirectors(directors.filter(p => p.id !== id));
+        directors.remove(id);
         break;
       case "manager":
-        setManagers(managers.filter(p => p.id !== id));
+        managers.remove(id);
         break;
       case "ubo":
-        setUbos(ubos.filter(p => p.id !== id));
+        ubos.remove(id);
         break;
     }
   };
-
-  const totalSharePercent = shareholders.reduce((sum, p) => sum + (p.sharePercent || 0), 0);
 
   return (
     <div className="space-y-8">
@@ -112,13 +126,13 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
             Add Shareholder
           </Button>
         </div>
-        {shareholders.length === 0 ? (
+        {shareholders.isEmpty ? (
           <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
             No shareholders added yet. Click "Add Shareholder" to begin.
           </div>
         ) : (
           <div className="space-y-4">
-            {shareholders.map((person) => (
+            {shareholders.items.map((person) => (
               <PersonCard
                 key={person.id}
                 person={person}
@@ -129,10 +143,10 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                 onDelete={() => deletePerson(person.id, "shareholder")}
               />
             ))}
-            {totalSharePercent !== 100 && (
+            {!shareholders.isOwnershipValid && (
               <div className="flex items-center gap-2 rounded-xl bg-yellow-50 p-4 text-sm text-yellow-900">
                 <AlertCircle className="h-5 w-5" />
-                <span>Total ownership: {totalSharePercent}% (should equal 100%)</span>
+                <span>Total ownership: {shareholders.totalSharePercent}% (should equal 100%)</span>
               </div>
             )}
           </div>
@@ -149,13 +163,13 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
               Add Director
             </Button>
           </div>
-          {directors.length === 0 ? (
+          {directors.isEmpty ? (
             <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
               No directors added yet. {dossier.formType} requires at least {(COMPANY_FORM_RULES[dossier.formType!] as any).minDirectors || 1} directors.
             </div>
           ) : (
             <div className="space-y-4">
-              {directors.map((person) => (
+              {directors.items.map((person) => (
                 <PersonCard
                   key={person.id}
                   person={person}
@@ -181,13 +195,13 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
               Add Manager
             </Button>
           </div>
-          {managers.length === 0 ? (
+          {managers.isEmpty ? (
             <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
               No managers added yet. {dossier.formType} requires at least {(COMPANY_FORM_RULES[dossier.formType!] as any).minManagers || 1} manager.
             </div>
           ) : (
             <div className="space-y-4">
-              {managers.map((person) => (
+              {managers.items.map((person) => (
                 <PersonCard
                   key={person.id}
                   person={person}
@@ -215,13 +229,13 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
         <p className="mb-4 text-sm text-brand-grayMed">
           Individuals who own or control more than 25% of the company
         </p>
-        {ubos.length === 0 ? (
+        {ubos.isEmpty ? (
           <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
             No UBOs added yet.
           </div>
         ) : (
           <div className="space-y-4">
-            {ubos.map((person) => (
+            {ubos.items.map((person) => (
               <PersonCard
                 key={person.id}
                 person={person}
@@ -239,103 +253,35 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
 
       {/* Edit Modal */}
       {editingPerson && editingType && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <h3 className="mb-6 text-2xl font-bold text-brand-dark">
-              {editingPerson.firstName ? "Edit" : "Add"} {editingType}
-            </h3>
-            <div className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label>First Name *</Label>
-                  <Input
-                    value={editingPerson.firstName}
-                    onChange={(e) => setEditingPerson({ ...editingPerson, firstName: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Last Name *</Label>
-                  <Input
-                    value={editingPerson.lastName}
-                    onChange={(e) => setEditingPerson({ ...editingPerson, lastName: e.target.value })}
-                  />
-                </div>
-              </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label>Date of Birth *</Label>
-                  <Input
-                    type="date"
-                    value={editingPerson.dob}
-                    onChange={(e) => setEditingPerson({ ...editingPerson, dob: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Nationality *</Label>
-                  <Input
-                    value={editingPerson.nationality}
-                    onChange={(e) => setEditingPerson({ ...editingPerson, nationality: e.target.value })}
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label>Address *</Label>
-                <Input
-                  value={editingPerson.address}
-                  onChange={(e) => setEditingPerson({ ...editingPerson, address: e.target.value })}
-                />
-              </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input
-                    type="email"
-                    value={editingPerson.email}
-                    onChange={(e) => setEditingPerson({ ...editingPerson, email: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Phone</Label>
-                  <Input
-                    value={editingPerson.phone}
-                    onChange={(e) => setEditingPerson({ ...editingPerson, phone: e.target.value })}
-                  />
-                </div>
-              </div>
-              {editingType === "shareholder" && (
-                <div className="space-y-2">
-                  <Label>Ownership Percentage *</Label>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={editingPerson.sharePercent || 0}
-                    onChange={(e) => setEditingPerson({ ...editingPerson, sharePercent: parseFloat(e.target.value) })}
-                  />
-                </div>
-              )}
-              {editingType === "ubo" && (
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="isPep"
-                    checked={editingPerson.isPep}
-                    onCheckedChange={(checked) => setEditingPerson({ ...editingPerson, isPep: checked as boolean })}
-                  />
-                  <Label htmlFor="isPep">This person is a Politically Exposed Person (PEP)</Label>
-                </div>
-              )}
-            </div>
-            <div className="mt-6 flex justify-end gap-4">
-              <Button variant="outline" onClick={() => {
-                setEditingPerson(null);
-                setEditingType(null);
-              }}>
-                Cancel
-              </Button>
-              <Button onClick={savePerson}>Save</Button>
-            </div>
-          </div>
-        </div>
+        <PersonEditModal
+          person={editingPerson}
+          type={editingType}
+          onSave={(updatedPerson) => {
+            switch (editingType) {
+              case "shareholder":
+                shareholders.upsert({
+                  ...updatedPerson,
+                  sharePercent: updatedPerson.sharePercent ?? 0
+                });
+                break;
+              case "director":
+                directors.upsert(updatedPerson);
+                break;
+              case "manager":
+                managers.upsert(updatedPerson);
+                break;
+              case "ubo":
+                ubos.upsert(updatedPerson);
+                break;
+            }
+            setEditingPerson(null);
+            setEditingType(null);
+          }}
+          onCancel={() => {
+            setEditingPerson(null);
+            setEditingType(null);
+          }}
+        />
       )}
     </div>
   );
@@ -347,11 +293,17 @@ function PersonCard({ person, showPep, onEdit, onDelete }: {
   onEdit: () => void;
   onDelete: () => void;
 }) {
+  const isComplete = person.firstName && person.lastName && person.dob && person.nationality && person.address;
+  
   return (
-    <div className="flex items-center justify-between rounded-xl border border-brand-grayLight p-4">
+    <div className={`flex items-center justify-between rounded-xl border p-4 ${
+      isComplete ? 'border-brand-grayLight' : 'border-yellow-300 bg-yellow-50'
+    }`}>
       <div className="flex items-center gap-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight text-brand-goldDark font-bold">
-          {person.firstName[0]}{person.lastName[0]}
+        <div className={`flex h-12 w-12 items-center justify-center rounded-full font-bold ${
+          isComplete ? 'bg-brand-goldLight text-brand-goldDark' : 'bg-yellow-200 text-yellow-700'
+        }`}>
+          {person.firstName[0] || '?'}{person.lastName[0] || '?'}
         </div>
         <div>
           <p className="font-semibold text-brand-dark">{person.firstName} {person.lastName}</p>
@@ -530,4 +482,165 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
   );
 }
 
-// Continue with remaining steps in the next message due to length...
+const personSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  dob: z.string().min(1, "Date of birth is required"),
+  nationality: z.string().min(1, "Nationality is required"),
+  address: z.string().min(1, "Address is required"),
+  email: z.union([z.string().email("Invalid email"), z.literal("")]).optional(),
+  phone: z.string().optional(),
+  sharePercent: z.number().optional(),
+  isPep: z.boolean().optional(),
+});
+
+const shareholderSchema = personSchema.extend({
+  sharePercent: z.number().min(0.01, "Ownership must be greater than 0").max(100, "Ownership cannot exceed 100%"),
+});
+
+type PersonFormData = z.infer<typeof personSchema>;
+
+function PersonEditModal({ 
+  person, 
+  type, 
+  onSave, 
+  onCancel 
+}: { 
+  person: Person; 
+  type: "shareholder" | "director" | "manager" | "ubo";
+  onSave: (person: Person) => void;
+  onCancel: () => void;
+}) {
+  const schema = type === "shareholder" ? shareholderSchema : personSchema;
+  
+  const form = useForm<PersonFormData>({
+    resolver: zodResolver(schema),
+    mode: "onChange",
+    defaultValues: {
+      firstName: person.firstName || "",
+      lastName: person.lastName || "",
+      dob: person.dob || "",
+      nationality: person.nationality || "",
+      address: person.address || "",
+      email: person.email || "",
+      phone: person.phone || "",
+      sharePercent: person.sharePercent || (type === "shareholder" ? 0 : undefined),
+      isPep: person.isPep || false,
+    },
+  });
+
+  const handleSubmit = (data: PersonFormData) => {
+    const updatedPerson: Person = {
+      ...person,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      dob: data.dob,
+      nationality: data.nationality,
+      address: data.address,
+      email: data.email || "",
+      phone: data.phone || "",
+      isPep: data.isPep || false,
+    };
+
+    if (type === "shareholder" && data.sharePercent !== undefined) {
+      updatedPerson.sharePercent = data.sharePercent;
+    }
+
+    onSave(updatedPerson);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+        <h3 className="mb-6 text-2xl font-bold text-brand-dark">
+          {person.firstName ? "Edit" : "Add"} {type}
+        </h3>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label>First Name *</Label>
+              <Input {...form.register("firstName")} />
+              {form.formState.errors.firstName && (
+                <p className="text-sm text-red-500">{form.formState.errors.firstName.message}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label>Last Name *</Label>
+              <Input {...form.register("lastName")} />
+              {form.formState.errors.lastName && (
+                <p className="text-sm text-red-500">{form.formState.errors.lastName.message}</p>
+              )}
+            </div>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label>Date of Birth *</Label>
+              <Input type="date" {...form.register("dob")} />
+              {form.formState.errors.dob && (
+                <p className="text-sm text-red-500">{form.formState.errors.dob.message}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label>Nationality *</Label>
+              <Input {...form.register("nationality")} />
+              {form.formState.errors.nationality && (
+                <p className="text-sm text-red-500">{form.formState.errors.nationality.message}</p>
+              )}
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Address *</Label>
+            <Input {...form.register("address")} />
+            {form.formState.errors.address && (
+              <p className="text-sm text-red-500">{form.formState.errors.address.message}</p>
+            )}
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input type="email" {...form.register("email")} />
+              {form.formState.errors.email && (
+                <p className="text-sm text-red-500">{form.formState.errors.email.message}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label>Phone</Label>
+              <Input {...form.register("phone")} />
+            </div>
+          </div>
+          {type === "shareholder" && (
+            <div className="space-y-2">
+              <Label>Ownership Percentage *</Label>
+              <Input
+                type="number"
+                step="0.01"
+                min="0"
+                max="100"
+                {...form.register("sharePercent", { valueAsNumber: true })}
+              />
+              {form.formState.errors.sharePercent && (
+                <p className="text-sm text-red-500">{form.formState.errors.sharePercent.message}</p>
+              )}
+            </div>
+          )}
+          {type === "ubo" && (
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="isPep"
+                checked={form.watch("isPep")}
+                onCheckedChange={(checked) => form.setValue("isPep", checked as boolean)}
+              />
+              <Label htmlFor="isPep">This person is a Politically Exposed Person (PEP)</Label>
+            </div>
+          )}
+          <div className="mt-6 flex justify-end gap-4">
+            <Button type="button" variant="outline" onClick={onCancel}>
+              Cancel
+            </Button>
+            <Button type="submit">Save</Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

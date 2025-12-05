@@ -9,6 +9,9 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { commonPersonFields, taxFields, consentFields } from "@/shared/lib/validators/common-fields";
+import { saveApplicationMetadata } from "@/shared/lib/storage";
+import { processFileUpload, type UploadedDocument } from "@/shared/lib/file-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,13 +51,8 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
   const [applicationId, setApplicationId] = React.useState<string>("");
 
   // Document uploads state
-  const [uploadedDocuments, setUploadedDocuments] = React.useState<Array<{
-    name: string;
-    type: string;
-    size: number;
-    data: string; // base64 encoded
-    category: string;
-  }>>([]);
+  const [uploadedDocuments, setUploadedDocuments] = React.useState<UploadedDocument[]>([]);
+  const [uploadedFiles, setUploadedFiles] = React.useState<Map<string, File>>(new Map());
 
   // Scroll to top whenever step changes
   React.useEffect(() => {
@@ -83,13 +81,12 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
     email: z.string().email("Invalid email address"),
-    countryCode: z.string().min(1, "Country code is required"),
-    mobile: z.string().min(10, "Invalid phone number"),
+    dateOfBirth: z.string().min(1, "Date of birth is required"),
+    nationality: z.string().min(1, "Nationality is required"),
+    mobile: z.string().min(6, "Invalid phone number"),
     countryOfResidence: z.string().min(1, "Country is required"),
     taxCountry: z.string().min(1, "Tax residency is required"),
     taxId: z.string().optional(),
-    dateOfBirth: z.string().min(1, "Date of birth is required"),
-    nationality: z.string().min(1, "Nationality is required"),
   });
 
   const contactForm = useForm({
@@ -151,6 +148,20 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
     if (currentStep === 3) {
       isValid = await contactForm.trigger();
+      console.log('Step 3 (Contact) validation:', isValid, contactForm.formState.errors);
+      console.log('Step 3 form values:', contactForm.getValues());
+      
+      if (!isValid) {
+        console.error('Validation failed for contact form');
+        const firstError = Object.keys(contactForm.formState.errors)[0];
+        if (firstError) {
+          const element = document.getElementById(firstError);
+          element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element?.focus();
+        }
+        return;
+      }
+      
       if (isValid) {
         const values = contactForm.getValues();
         const contactPerson: PersonalIdentity = {
@@ -213,29 +224,24 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
     if (!files || files.length === 0) return;
 
     const file = files[0];
-    const maxSize = 5 * 1024 * 1024; // 5MB
-
-    if (file.size > maxSize) {
-      alert("File size must be less than 5MB");
+    
+    const result = await processFileUpload(file, category);
+    if (!result.success) {
+      alert(result.error);
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const base64 = e.target?.result as string;
-      setUploadedDocuments(prev => [...prev, {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        data: base64,
-        category: category
-      }]);
-    };
-    reader.readAsDataURL(file);
+    setUploadedDocuments(prev => [...prev, result.document]);
+    setUploadedFiles(prev => new Map(prev).set(result.document.id, file));
   };
 
-  const removeDocument = (index: number) => {
-    setUploadedDocuments(prev => prev.filter((_, i) => i !== index));
+  const removeDocument = (documentId: string) => {
+    setUploadedDocuments(prev => prev.filter(doc => doc.id !== documentId));
+    setUploadedFiles(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(documentId);
+      return newMap;
+    });
   };
 
   const handleSubmit = async () => {
@@ -256,16 +262,44 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
         createdAt: new Date().toISOString(),
       };
 
-      // Save application to localStorage with unique ID
-      const applications = JSON.parse(localStorage.getItem("opulanz_applications") || "[]");
-      applications.push({
+      // Save complete application data with all details
+      try {
+        const completeApplication = {
+          id: appId,
+          type: "business",
+          submittedAt: new Date().toISOString(),
+          status: "submitted",
+          data: application, // Store complete application data
+          documents: uploadedDocuments, // Store document metadata
+        };
+        
+        const storageKey = `application_${appId}`;
+        localStorage.setItem(storageKey, JSON.stringify(completeApplication));
+        
+        console.log("✅ Full business application saved to localStorage");
+        console.log(`Key: ${storageKey}`);
+        console.log("Full data:", completeApplication);
+      } catch (error) {
+        console.error("Failed to save full application:", error);
+      }
+
+      // Save application metadata only (no file content) to prevent quota errors
+      const saveResult = saveApplicationMetadata({
         id: appId,
         type: "business",
-        application,
-        documents: uploadedDocuments,
         submittedAt: new Date().toISOString(),
+        status: "submitted",
+        summary: {
+          companyName: application.company?.companyName || "N/A",
+          contactName: `${application.contactPerson.firstName} ${application.contactPerson.lastName}`,
+          contactEmail: application.contactPerson.email,
+          documentsCount: uploadedDocuments.length,
+        },
       });
-      localStorage.setItem("opulanz_applications", JSON.stringify(applications));
+
+      if (!saveResult.success) {
+        throw new Error(saveResult.error || "Failed to save application");
+      }
 
       // Store application ID for display
       setApplicationId(appId);
@@ -273,6 +307,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
       setCurrentStep(7);
     } catch (error) {
       console.error("Submission error:", error);
+      alert(error instanceof Error ? error.message : "Failed to submit application. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -666,6 +701,11 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                   Date of Birth <span className="text-red-500">*</span>
                 </Label>
                 <Input id="dateOfBirth" type="date" {...contactForm.register("dateOfBirth")} />
+              {contactForm.formState.errors.dateOfBirth && (
+                  <p className="text-sm text-red-500">
+                    {contactForm.formState.errors.dateOfBirth.message}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -673,6 +713,11 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                   Nationality <span className="text-red-500">*</span>
                 </Label>
                 <Input id="nationality" {...contactForm.register("nationality")} />
+              {contactForm.formState.errors.nationality && (
+                  <p className="text-sm text-red-500">
+                    {contactForm.formState.errors.nationality.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -953,8 +998,8 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                 <div className="space-y-2 pt-4">
                   <Label>Uploaded Documents ({uploadedDocuments.length})</Label>
                   <div className="space-y-2">
-                    {uploadedDocuments.map((doc, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    {uploadedDocuments.map((doc) => (
+                      <div key={doc.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-center gap-3 flex-1 min-w-0">
                           <FileText className="h-5 w-5 text-brand-gold flex-shrink-0" />
                           <div className="min-w-0 flex-1">
@@ -968,7 +1013,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                           type="button"
                           variant="ghost"
                           size="sm"
-                          onClick={() => removeDocument(index)}
+                          onClick={() => removeDocument(doc.id)}
                           className="flex-shrink-0"
                         >
                           <X className="h-4 w-4" />

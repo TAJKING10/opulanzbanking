@@ -4,12 +4,7 @@ import * as React from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { CreditCard, Landmark } from "lucide-react";
-
-interface WelcomeStepProps {
-  data: any;
-  onUpdate: (data: any) => void;
-  onNext: () => void;
-}
+import { WelcomeStepProps } from "@/shared/types/step-props";
 
 export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
   const [mode, setMode] = React.useState(data.mode || "");

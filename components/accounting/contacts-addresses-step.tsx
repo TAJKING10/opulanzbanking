@@ -5,17 +5,26 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { AddressBlock, Address } from "./address-block";
 import { PersonCard, Person } from "./person-card";
+import { StepProps } from "@/shared/types/step-props";
 
-interface ContactsAddressesStepProps {
-  data: any;
-  onUpdate: (data: any) => void;
-  onNext: () => void;
+interface ContactsAddressesData {
+  registeredAddress?: Address;
+  operatingAddress?: Address;
+  sameAsRegistered?: boolean;
+  primaryContact?: Person;
+  accountingContact?: Person;
+  hasAccountingContact?: boolean;
+}
+
+interface ContactsAddressesStepProps extends StepProps<ContactsAddressesData> {
+  onValidate?: (isValid: boolean) => void;
 }
 
 export function ContactsAddressesStep({
   data,
   onUpdate,
   onNext,
+  onValidate,
 }: ContactsAddressesStepProps) {
   const [sameAsRegistered, setSameAsRegistered] = React.useState(
     data.sameAsRegistered || false
@@ -25,7 +34,7 @@ export function ContactsAddressesStep({
   );
   const [errors, setErrors] = React.useState<Record<string, any>>({});
 
-  const updateField = (field: string, value: any) => {
+  const updateField = <K extends keyof ContactsAddressesData>(field: K, value: ContactsAddressesData[K]) => {
     onUpdate({ [field]: value });
   };
 
@@ -113,11 +122,12 @@ export function ContactsAddressesStep({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleContinue = () => {
-    if (validate()) {
-      onNext();
+  React.useEffect(() => {
+    if (onValidate) {
+      const isValid = validate();
+      onValidate(isValid);
     }
-  };
+  }, [data, sameAsRegistered, hasAccountingContact]);
 
   return (
     <div className="space-y-6">
@@ -186,6 +196,7 @@ export function ContactsAddressesStep({
           label="Primary Contact"
           person={
             data.primaryContact || {
+              id: "",
               firstName: "",
               lastName: "",
               role: "",
@@ -219,6 +230,7 @@ export function ContactsAddressesStep({
               label="Accounting Contact"
               person={
                 data.accountingContact || {
+                  id: "",
                   firstName: "",
                   lastName: "",
                   role: "",
@@ -230,15 +242,6 @@ export function ContactsAddressesStep({
             />
           )}
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleContinue}
-          className="rounded-lg bg-brand-gold px-6 py-3 font-semibold text-white transition-all hover:bg-brand-goldDark"
-        >
-          Continue
-        </button>
       </div>
     </div>
   );

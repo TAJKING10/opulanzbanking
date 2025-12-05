@@ -29,6 +29,7 @@ export default function AccountingOnboardingPage() {
 
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isStepValid, setIsStepValid] = React.useState(true);
   const [formData, setFormData] = React.useState<Record<string, any>>({
     // Company Basics
     companyType: "",
@@ -65,6 +66,7 @@ export default function AccountingOnboardingPage() {
     },
     sameAsRegistered: false,
     primaryContact: {
+      id: "",
       firstName: "",
       lastName: "",
       role: "",
@@ -75,8 +77,8 @@ export default function AccountingOnboardingPage() {
     hasAccountingContact: false,
 
     // Billing Volume
-    salesInvoicesMonth: 0,
-    purchaseInvoicesMonth: 0,
+    salesInvoicesMonth: undefined,
+    purchaseInvoicesMonth: undefined,
     payrollNeeded: false,
     payrollEmployees: 0,
     multiCurrencyEnabled: false,
@@ -112,8 +114,10 @@ export default function AccountingOnboardingPage() {
   }, [formData, currentStep]);
 
   const handleNext = () => {
-    if (currentStep < ACCOUNTING_STEPS.length) {
+    // Only proceed if current step is valid
+    if (isStepValid && currentStep < ACCOUNTING_STEPS.length) {
       setCurrentStep(currentStep + 1);
+      setIsStepValid(true); // Reset for next step
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
@@ -166,6 +170,7 @@ export default function AccountingOnboardingPage() {
             data={formData}
             onUpdate={updateFormData}
             onNext={handleNext}
+            onValidate={setIsStepValid}
           />
         );
       case 2:
@@ -174,6 +179,7 @@ export default function AccountingOnboardingPage() {
             data={formData}
             onUpdate={updateFormData}
             onNext={handleNext}
+            onValidate={setIsStepValid}
           />
         );
       case 3:
@@ -182,6 +188,7 @@ export default function AccountingOnboardingPage() {
             data={formData}
             onUpdate={updateFormData}
             onNext={handleNext}
+            onValidate={setIsStepValid}
           />
         );
       case 4:
@@ -190,6 +197,7 @@ export default function AccountingOnboardingPage() {
             data={formData}
             onUpdate={updateFormData}
             onNext={handleNext}
+            onValidate={setIsStepValid}
           />
         );
       case 5:
@@ -222,7 +230,7 @@ export default function AccountingOnboardingPage() {
       onStepChange={handleStepChange}
       onNext={handleNext}
       onBack={handleBack}
-      canGoNext={currentStep < ACCOUNTING_STEPS.length}
+      canGoNext={currentStep < ACCOUNTING_STEPS.length && isStepValid}
       canGoBack={currentStep > 1}
       isLoading={isLoading}
     >

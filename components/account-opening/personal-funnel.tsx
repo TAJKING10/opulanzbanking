@@ -9,6 +9,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { commonPersonFields, taxFields, consentFields } from "@/shared/lib/validators/common-fields";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +25,7 @@ import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormStepper, Step } from "./form-stepper";
 import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Clock, FileText, Upload, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { COUNTRIES } from "@/shared/lib/countries";
 import type {
   PersonalApplication,
   PersonalIdentity,
@@ -36,6 +37,8 @@ import type {
   SourceOfFunds,
   AccountType,
 } from "@/types/account-opening";
+import { saveApplicationMetadata, safeGetItem } from "@/shared/lib/storage";
+import { processFileUpload, type UploadedDocument } from "@/shared/lib/file-upload";
 // Removed: import { generateReferralRouting, saveReferralEntry, getPartnerDisplayName, getPartnerExplanation } from "@/lib/referral-routing";
 
 const STEPS: Step[] = [
@@ -47,157 +50,7 @@ const STEPS: Step[] = [
   { id: "submission", label: "Submission", shortLabel: "Submit" },
 ];
 
-const COUNTRY_CODES = [
-  { code: "+93", country: "Afghanistan", flag: "🇦🇫" },
-  { code: "+355", country: "Albania", flag: "🇦🇱" },
-  { code: "+213", country: "Algeria", flag: "🇩🇿" },
-  { code: "+376", country: "Andorra", flag: "🇦🇩" },
-  { code: "+244", country: "Angola", flag: "🇦🇴" },
-  { code: "+54", country: "Argentina", flag: "🇦🇷" },
-  { code: "+374", country: "Armenia", flag: "🇦🇲" },
-  { code: "+61", country: "Australia", flag: "🇦🇺" },
-  { code: "+43", country: "Austria", flag: "🇦🇹" },
-  { code: "+994", country: "Azerbaijan", flag: "🇦🇿" },
-  { code: "+973", country: "Bahrain", flag: "🇧🇭" },
-  { code: "+880", country: "Bangladesh", flag: "🇧🇩" },
-  { code: "+375", country: "Belarus", flag: "🇧🇾" },
-  { code: "+32", country: "Belgium", flag: "🇧🇪" },
-  { code: "+229", country: "Benin", flag: "🇧🇯" },
-  { code: "+975", country: "Bhutan", flag: "🇧🇹" },
-  { code: "+591", country: "Bolivia", flag: "🇧🇴" },
-  { code: "+387", country: "Bosnia", flag: "🇧🇦" },
-  { code: "+55", country: "Brazil", flag: "🇧🇷" },
-  { code: "+673", country: "Brunei", flag: "🇧🇳" },
-  { code: "+359", country: "Bulgaria", flag: "🇧🇬" },
-  { code: "+855", country: "Cambodia", flag: "🇰🇭" },
-  { code: "+237", country: "Cameroon", flag: "🇨🇲" },
-  { code: "+1", country: "Canada", flag: "🇨🇦" },
-  { code: "+56", country: "Chile", flag: "🇨🇱" },
-  { code: "+86", country: "China", flag: "🇨🇳" },
-  { code: "+57", country: "Colombia", flag: "🇨🇴" },
-  { code: "+506", country: "Costa Rica", flag: "🇨🇷" },
-  { code: "+385", country: "Croatia", flag: "🇭🇷" },
-  { code: "+53", country: "Cuba", flag: "🇨🇺" },
-  { code: "+357", country: "Cyprus", flag: "🇨🇾" },
-  { code: "+420", country: "Czech Republic", flag: "🇨🇿" },
-  { code: "+45", country: "Denmark", flag: "🇩🇰" },
-  { code: "+593", country: "Ecuador", flag: "🇪🇨" },
-  { code: "+20", country: "Egypt", flag: "🇪🇬" },
-  { code: "+503", country: "El Salvador", flag: "🇸🇻" },
-  { code: "+372", country: "Estonia", flag: "🇪🇪" },
-  { code: "+251", country: "Ethiopia", flag: "🇪🇹" },
-  { code: "+358", country: "Finland", flag: "🇫🇮" },
-  { code: "+33", country: "France", flag: "🇫🇷" },
-  { code: "+995", country: "Georgia", flag: "🇬🇪" },
-  { code: "+49", country: "Germany", flag: "🇩🇪" },
-  { code: "+233", country: "Ghana", flag: "🇬🇭" },
-  { code: "+30", country: "Greece", flag: "🇬🇷" },
-  { code: "+502", country: "Guatemala", flag: "🇬🇹" },
-  { code: "+509", country: "Haiti", flag: "🇭🇹" },
-  { code: "+504", country: "Honduras", flag: "🇭🇳" },
-  { code: "+852", country: "Hong Kong", flag: "🇭🇰" },
-  { code: "+36", country: "Hungary", flag: "🇭🇺" },
-  { code: "+354", country: "Iceland", flag: "🇮🇸" },
-  { code: "+91", country: "India", flag: "🇮🇳" },
-  { code: "+62", country: "Indonesia", flag: "🇮🇩" },
-  { code: "+98", country: "Iran", flag: "🇮🇷" },
-  { code: "+964", country: "Iraq", flag: "🇮🇶" },
-  { code: "+353", country: "Ireland", flag: "🇮🇪" },
-  { code: "+972", country: "Israel", flag: "🇮🇱" },
-  { code: "+39", country: "Italy", flag: "🇮🇹" },
-  { code: "+81", country: "Japan", flag: "🇯🇵" },
-  { code: "+962", country: "Jordan", flag: "🇯🇴" },
-  { code: "+7", country: "Kazakhstan", flag: "🇰🇿" },
-  { code: "+254", country: "Kenya", flag: "🇰🇪" },
-  { code: "+965", country: "Kuwait", flag: "🇰🇼" },
-  { code: "+371", country: "Latvia", flag: "🇱🇻" },
-  { code: "+961", country: "Lebanon", flag: "🇱🇧" },
-  { code: "+218", country: "Libya", flag: "🇱🇾" },
-  { code: "+370", country: "Lithuania", flag: "🇱🇹" },
-  { code: "+352", country: "Luxembourg", flag: "🇱🇺" },
-  { code: "+60", country: "Malaysia", flag: "🇲🇾" },
-  { code: "+960", country: "Maldives", flag: "🇲🇻" },
-  { code: "+356", country: "Malta", flag: "🇲🇹" },
-  { code: "+52", country: "Mexico", flag: "🇲🇽" },
-  { code: "+373", country: "Moldova", flag: "🇲🇩" },
-  { code: "+377", country: "Monaco", flag: "🇲🇨" },
-  { code: "+976", country: "Mongolia", flag: "🇲🇳" },
-  { code: "+382", country: "Montenegro", flag: "🇲🇪" },
-  { code: "+212", country: "Morocco", flag: "🇲🇦" },
-  { code: "+95", country: "Myanmar", flag: "🇲🇲" },
-  { code: "+977", country: "Nepal", flag: "🇳🇵" },
-  { code: "+31", country: "Netherlands", flag: "🇳🇱" },
-  { code: "+64", country: "New Zealand", flag: "🇳🇿" },
-  { code: "+234", country: "Nigeria", flag: "🇳🇬" },
-  { code: "+47", country: "Norway", flag: "🇳🇴" },
-  { code: "+968", country: "Oman", flag: "🇴🇲" },
-  { code: "+92", country: "Pakistan", flag: "🇵🇰" },
-  { code: "+970", country: "Palestine", flag: "🇵🇸" },
-  { code: "+507", country: "Panama", flag: "🇵🇦" },
-  { code: "+51", country: "Peru", flag: "🇵🇪" },
-  { code: "+63", country: "Philippines", flag: "🇵🇭" },
-  { code: "+48", country: "Poland", flag: "🇵🇱" },
-  { code: "+351", country: "Portugal", flag: "🇵🇹" },
-  { code: "+974", country: "Qatar", flag: "🇶🇦" },
-  { code: "+40", country: "Romania", flag: "🇷🇴" },
-  { code: "+7", country: "Russia", flag: "🇷🇺" },
-  { code: "+966", country: "Saudi Arabia", flag: "🇸🇦" },
-  { code: "+381", country: "Serbia", flag: "🇷🇸" },
-  { code: "+65", country: "Singapore", flag: "🇸🇬" },
-  { code: "+421", country: "Slovakia", flag: "🇸🇰" },
-  { code: "+386", country: "Slovenia", flag: "🇸🇮" },
-  { code: "+27", country: "South Africa", flag: "🇿🇦" },
-  { code: "+82", country: "South Korea", flag: "🇰🇷" },
-  { code: "+34", country: "Spain", flag: "🇪🇸" },
-  { code: "+94", country: "Sri Lanka", flag: "🇱🇰" },
-  { code: "+46", country: "Sweden", flag: "🇸🇪" },
-  { code: "+41", country: "Switzerland", flag: "🇨🇭" },
-  { code: "+963", country: "Syria", flag: "🇸🇾" },
-  { code: "+886", country: "Taiwan", flag: "🇹🇼" },
-  { code: "+66", country: "Thailand", flag: "🇹🇭" },
-  { code: "+216", country: "Tunisia", flag: "🇹🇳" },
-  { code: "+90", country: "Turkey", flag: "🇹🇷" },
-  { code: "+971", country: "UAE", flag: "🇦🇪" },
-  { code: "+44", country: "UK", flag: "🇬🇧" },
-  { code: "+1", country: "USA", flag: "🇺🇸" },
-  { code: "+598", country: "Uruguay", flag: "🇺🇾" },
-  { code: "+58", country: "Venezuela", flag: "🇻🇪" },
-  { code: "+84", country: "Vietnam", flag: "🇻🇳" },
-  { code: "+967", country: "Yemen", flag: "🇾🇪" },
-];
 
-const COUNTRIES = [
-  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
-  "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
-  "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
-  "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia",
-  "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
-  "Denmark", "Djibouti", "Dominica", "Dominican Republic",
-  "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
-  "Fiji", "Finland", "France",
-  "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
-  "Haiti", "Honduras", "Hungary",
-  "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy",
-  "Jamaica", "Japan", "Jordan",
-  "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan",
-  "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
-  "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius",
-  "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar",
-  "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway",
-  "Oman",
-  "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
-  "Qatar",
-  "Romania", "Russia", "Rwanda",
-  "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe",
-  "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands",
-  "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
-  "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey",
-  "Turkmenistan", "Tuvalu",
-  "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan",
-  "Vanuatu", "Vatican City", "Venezuela", "Vietnam",
-  "Yemen",
-  "Zambia", "Zimbabwe"
-];
 
 interface PersonalFunnelProps {
   onSwitchMode: () => void;
@@ -210,14 +63,9 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [applicationId, setApplicationId] = React.useState<string>("");
 
-  // Document uploads state
-  const [uploadedDocuments, setUploadedDocuments] = React.useState<Array<{
-    name: string;
-    type: string;
-    size: number;
-    data: string; // base64 encoded
-    category: string;
-  }>>([]);
+  // Document uploads state (metadata only, files stored separately)
+  const [uploadedDocuments, setUploadedDocuments] = React.useState<UploadedDocument[]>([]);
+  const [uploadedFiles, setUploadedFiles] = React.useState<Map<string, File>>(new Map());
 
   // Scroll to top whenever step changes
   React.useEffect(() => {
@@ -231,13 +79,12 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
     email: z.string().email("Invalid email address"),
+    dateOfBirth: z.string().min(1, "Date of birth is required"),
+    nationality: z.string().min(1, "Nationality is required"),
     countryCode: z.string().min(1, "Country code is required"),
     mobile: z.string().min(6, "Invalid phone number"),
     countryOfResidence: z.string().min(1, "Country is required"),
-    taxCountry: z.string().min(1, "Tax residency is required"),
-    taxId: z.string().optional(),
-    dateOfBirth: z.string().min(1, "Date of birth is required"),
-    nationality: z.string().min(1, "Nationality is required"),
+    ...taxFields,
   });
 
   const step2Form = useForm({
@@ -271,8 +118,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
   // Step 5: Consents
   const step5Schema = z.object({
-    dataProcessing: z.boolean().refine((val) => val === true, "You must consent to data processing"),
-    dataSharing: z.boolean().refine((val) => val === true, "You must authorize data sharing"),
+    dataProcessing: consentFields.dataProcessing,
+    dataSharing: consentFields.dataSharing,
     marketingOptIn: z.boolean(),
   });
 
@@ -291,8 +138,10 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
     if (currentStep === 2) {
       isValid = await step2Form.trigger();
+      console.log('Step 2 validation:', isValid, step2Form.formState.errors);
       if (isValid) {
         const values = step2Form.getValues();
+        console.log('Step 2 values:', values);
         const identity: PersonalIdentity = {
           firstName: values.firstName,
           lastName: values.lastName,
@@ -305,6 +154,15 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           nationality: values.nationality,
         };
         setFormData((prev) => ({ ...prev, identity }));
+      } else {
+        // Scroll to first error
+        console.error('Validation errors:', step2Form.formState.errors);
+        const firstError = Object.keys(step2Form.formState.errors)[0];
+        if (firstError) {
+          const element = document.getElementById(firstError);
+          element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
       }
     }
 
@@ -322,6 +180,14 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           isPEP: values.isPEP,
         };
         setFormData((prev) => ({ ...prev, intent }));
+      } else {
+        // Scroll to first error
+        const firstError = Object.keys(step3Form.formState.errors)[0];
+        if (firstError) {
+          const element = document.querySelector(`[name="${firstError}"]`) as HTMLElement;
+          element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
       }
     }
 
@@ -335,6 +201,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           marketingOptIn: values.marketingOptIn,
         };
         setFormData((prev) => ({ ...prev, consents }));
+      } else {
+        return;
       }
     }
 
@@ -356,29 +224,25 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
     if (!files || files.length === 0) return;
 
     const file = files[0];
-    const maxSize = 5 * 1024 * 1024; // 5MB
-
-    if (file.size > maxSize) {
-      alert("File size must be less than 5MB");
+    const result = processFileUpload(file, category);
+    
+    if (!result.success) {
+      alert(result.error);
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const base64 = e.target?.result as string;
-      setUploadedDocuments(prev => [...prev, {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        data: base64,
-        category: category
-      }]);
-    };
-    reader.readAsDataURL(file);
+    // Store metadata and file reference separately
+    setUploadedDocuments(prev => [...prev, result.document]);
+    setUploadedFiles(prev => new Map(prev).set(result.document.id, file));
   };
 
-  const removeDocument = (index: number) => {
-    setUploadedDocuments(prev => prev.filter((_, i) => i !== index));
+  const removeDocument = (id: string) => {
+    setUploadedDocuments(prev => prev.filter(doc => doc.id !== id));
+    setUploadedFiles(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(id);
+      return newMap;
+    });
   };
 
   const handleSubmit = async () => {
@@ -398,16 +262,46 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
         createdAt: new Date().toISOString(),
       };
 
-      // Save application to localStorage with unique ID
-      const applications = JSON.parse(localStorage.getItem("opulanz_applications") || "[]");
-      applications.push({
+      // Save complete application data with all details
+      try {
+        const completeApplication = {
+          id: appId,
+          type: "personal",
+          submittedAt: new Date().toISOString(),
+          status: "submitted",
+          data: application, // Store complete application data
+          documents: uploadedDocuments, // Store document metadata
+        };
+        
+        const storageKey = `application_${appId}`;
+        localStorage.setItem(storageKey, JSON.stringify(completeApplication));
+        
+        console.log("✅ Full application saved to localStorage");
+        console.log(`Key: ${storageKey}`);
+        console.log("Full data:", completeApplication);
+      } catch (error) {
+        console.error("Failed to save full application:", error);
+      }
+
+      // Save only metadata (no base64 documents)
+      const result = saveApplicationMetadata({
         id: appId,
         type: "personal",
-        application,
-        documents: uploadedDocuments,
         submittedAt: new Date().toISOString(),
+        status: "submitted",
+        summary: {
+          name: `${formData.identity?.firstName} ${formData.identity?.lastName}`,
+          email: formData.identity?.email,
+          accountType: formData.intent?.accountType,
+          documentsCount: uploadedDocuments.length,
+        },
       });
-      localStorage.setItem("opulanz_applications", JSON.stringify(applications));
+
+      if (!result.success) {
+        // If storage fails, still allow submission (data sent to server)
+        console.warn("Failed to save to localStorage:", result.error);
+        alert("Note: Application submitted but couldn't save locally. Please save your application ID: " + appId);
+      }
 
       // Store application ID for display
       setApplicationId(appId);
@@ -416,6 +310,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
       setCurrentStep(6);
     } catch (error) {
       console.error("Submission error:", error);
+      alert("An error occurred during submission. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -679,19 +574,19 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                       <SelectValue placeholder="Select">
                         {step2Form.watch("countryCode") && (
                           <div className="flex items-center gap-1.5">
-                            <span className="text-xl leading-none">{COUNTRY_CODES.find(c => c.code === step2Form.watch("countryCode"))?.flag}</span>
-                            <span className="text-sm">{step2Form.watch("countryCode")}</span>
+                            <span className="text-xl leading-none">{step2Form.watch("countryCode")}</span>
+                            <span className="text-sm">{COUNTRIES.find(c => c.code === step2Form.watch("countryCode"))?.phoneCode}</span>
                           </div>
                         )}
                       </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="max-h-[300px]">
-                      {COUNTRY_CODES.map((item) => (
-                        <SelectItem key={`${item.code}-${item.country}`} value={item.code}>
+                      {COUNTRIES.map((item) => (
+                        <SelectItem key={item.code} value={item.code}>
                           <div className="flex items-center gap-3">
-                            <span className="text-xl">{item.flag}</span>
-                            <span className="text-sm font-medium min-w-[50px]">{item.code}</span>
-                            <span className="text-sm text-muted-foreground">{item.country}</span>
+                            <span className="text-sm">{item.code}</span>
+                            <span className="text-sm font-medium min-w-[50px]">{item.phoneCode}</span>
+                            <span className="text-sm text-muted-foreground">{item.name}</span>
                           </div>
                         </SelectItem>
                       ))}
@@ -744,8 +639,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                   </SelectTrigger>
                   <SelectContent className="max-h-[300px]">
                     {COUNTRIES.map((country) => (
-                      <SelectItem key={country} value={country}>
-                        {country}
+                      <SelectItem key={country.code} value={country.code}>
+                        { country.name }
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -853,12 +748,17 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                           step3Form.setValue("jurisdictions" as any, current.filter((j) => j !== value));
                         }
                       }}
-                    />
+                      />
                     <Label htmlFor={jur} className="font-normal cursor-pointer">
                       {jur}
                     </Label>
                   </div>
                 ))}
+                {step3Form.formState.errors.jurisdictions && (
+             <p className="text-sm text-red-500">
+               {step3Form.formState.errors.jurisdictions.message}
+             </p>
+           )}
               </div>
             </div>
 
@@ -885,6 +785,11 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                   </div>
                 ))}
               </div>
+               {step3Form.formState.errors.currencies && (
+                  <p className="text-sm text-red-500">
+                    {step3Form.formState.errors.currencies.message}
+                  </p>
+                )}
             </div>
 
             <div className="space-y-4">
@@ -894,7 +799,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               </Label>
               <Slider
                 value={[step3Form.watch("estimatedMonthlyIncoming") || 5000]}
-                onValueChange={(value) => step3Form.setValue("estimatedMonthlyIncoming", value[0])}
+                onValueChange={(vals: number[]) => step3Form.setValue("estimatedMonthlyIncoming", vals[0])}
                 min={1000}
                 max={100000}
                 step={1000}
@@ -1152,8 +1057,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               <div className="space-y-2 pt-6 border-t border-gray-200 mt-6">
                 <Label>Uploaded Documents ({uploadedDocuments.length})</Label>
                 <div className="space-y-2">
-                  {uploadedDocuments.map((doc, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  {uploadedDocuments.map((doc) => (
+                    <div key={doc.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <FileText className="h-5 w-5 text-brand-gold flex-shrink-0" />
                         <div className="min-w-0 flex-1">
@@ -1167,7 +1072,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        onClick={() => removeDocument(index)}
+                        onClick={() => removeDocument(doc.id)}
                         className="flex-shrink-0"
                       >
                         <X className="h-4 w-4" />

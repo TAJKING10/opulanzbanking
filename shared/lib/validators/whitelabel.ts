@@ -1,35 +1,29 @@
 import { z } from 'zod';
+import { commonPersonFields, addressFields, consentFields, businessActivityFields, fileFields, pepField } from './common-fields';
 
 export const whitelabelKYCSchema = z.object({
   // Personal Information
-  firstName: z.string().min(2, 'First name is required'),
-  lastName: z.string().min(2, 'Last name is required'),
-  dateOfBirth: z.string().min(1, 'Date of birth is required'),
-  nationality: z.string().min(1, 'Nationality is required'),
-  phoneNumber: z.string().min(10, 'Valid phone number required'),
+  ...commonPersonFields,
+  phoneNumber: commonPersonFields.phone,
   address: z.string().min(5, 'Address is required'),
-  city: z.string().min(2, 'City is required'),
-  postalCode: z.string().min(4, 'Postal code is required'),
-  country: z.string().min(2, 'Country is required'),
+  ...addressFields,
 
   // Documents (simulated with file names)
-  idDocument: z.array(z.instanceof(File)).min(1, 'ID document required'),
-  selfie: z.array(z.instanceof(File)).min(1, 'Selfie required'),
-  proofOfAddress: z.array(z.instanceof(File)).min(1, 'Proof of address required'),
+  idDocument: fileFields.singleFile.refine(() => true, { message: 'ID document required' }),
+  selfie: fileFields.singleFile.refine(() => true, { message: 'Selfie required' }),
+  proofOfAddress: fileFields.singleFile.refine(() => true, { message: 'Proof of address required' }),
 
   // Activity Information
-  isPEP: z.boolean(),
+  ...pepField,
   activityCountries: z.array(z.string()).min(1, 'Select at least one country'),
   expectedMonthlyVolume: z.string().min(1, 'Expected volume required'),
   sourceOfFunds: z.string().min(10, 'Please describe source of funds'),
 
   // Consents
-  consentKYC: z.boolean().refine((val) => val === true, {
+  consentKYC: consentFields.terms.refine((val) => val === true, {
     message: 'You must consent to KYC verification',
   }),
-  consentTerms: z.boolean().refine((val) => val === true, {
-    message: 'You must agree to terms and conditions',
-  }),
+  consentTerms: consentFields.terms,
 });
 
 export const whitelabelKYBSchema = z.object({
@@ -39,27 +33,23 @@ export const whitelabelKYBSchema = z.object({
   dateOfIncorporation: z.string().min(1, 'Date of incorporation required'),
   legalForm: z.string().min(1, 'Legal form required'),
   companyAddress: z.string().min(5, 'Company address required'),
-  companyCity: z.string().min(2, 'City is required'),
-  companyPostalCode: z.string().min(4, 'Postal code is required'),
-  companyCountry: z.string().min(2, 'Country is required'),
+  companyCity: addressFields.city,
+  companyPostalCode: addressFields.postal,
+  companyCountry: addressFields.country,
 
   // Documents
-  statutes: z.array(z.instanceof(File)).min(1, 'Company statutes required'),
-  registerExtract: z.array(z.instanceof(File)).min(1, 'Register extract required'),
-  uboDeclaration: z.array(z.instanceof(File)).min(1, 'UBO declaration required'),
+  statutes: fileFields.singleFile.refine(() => true, { message: 'Company statutes required' }),
+  registerExtract: fileFields.singleFile.refine(() => true, { message: 'Register extract required' }),
+  uboDeclaration: fileFields.singleFile.refine(() => true, { message: 'UBO declaration required' }),
 
   // Business Activity
-  businessActivity: z.string().min(10, 'Describe your business activity'),
-  activityCountries: z.array(z.string()).min(1, 'Select at least one country'),
-  expectedMonthlyVolume: z.string().min(1, 'Expected volume required'),
+  ...businessActivityFields,
 
   // Consents
-  consentKYB: z.boolean().refine((val) => val === true, {
+  consentKYB: consentFields.terms.refine((val) => val === true, {
     message: 'You must consent to KYB verification',
   }),
-  consentTerms: z.boolean().refine((val) => val === true, {
-    message: 'You must agree to terms and conditions',
-  }),
+  consentTerms: consentFields.terms,
 });
 
 export type WhitelabelKYCFormData = z.infer<typeof whitelabelKYCSchema>;

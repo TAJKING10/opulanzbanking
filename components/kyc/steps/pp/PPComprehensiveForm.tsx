@@ -163,7 +163,7 @@ export function PPComprehensiveForm() {
       },
     };
 
-    updateData(structuredData);
+    updateData(structuredData as any);
     nextStep();
   };
 

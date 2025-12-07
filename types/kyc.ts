@@ -217,11 +217,14 @@ export interface CompanyIdentity {
 }
 
 export interface Representative {
+  title?: Title;
   lastName: string;
   firstName: string;
   position: string;
   phone: string;
   email: string;
+  dateOfBirth?: string;
+  nationality?: string;
   isPEP: boolean;
 }
 
@@ -372,6 +375,8 @@ export interface SignatureMetadata {
 export interface IndividualClientData {
   clientType: "PP";
   preferredLanguage: Language;
+  applicationId?: string;
+  envelopeId?: string;
   basicContact: {
     email: string;
     mobile: string;
@@ -428,6 +433,8 @@ export interface IndividualClientData {
 export interface CorporateClientData {
   clientType: "PM";
   preferredLanguage: Language;
+  applicationId?: string;
+  envelopeId?: string;
   basicContact: {
     email: string;
     mobile: string;

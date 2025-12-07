@@ -121,14 +121,15 @@ export function PMComprehensiveForm() {
       },
       representatives: [
         {
-          title: formData.rep1Title,
+          title: formData.rep1Title as any,
           firstName: formData.rep1FirstName,
           lastName: formData.rep1LastName,
           position: formData.rep1Position,
           email: formData.rep1Email,
-          mobile: formData.rep1Mobile,
+          phone: formData.rep1Mobile,
           dateOfBirth: formData.rep1DateOfBirth,
           nationality: formData.rep1Nationality,
+          isPEP: false,
         },
       ],
       fatcaCrs: {
@@ -168,7 +169,7 @@ export function PMComprehensiveForm() {
       },
     };
 
-    updateData(structuredData);
+    updateData(structuredData as any);
     nextStep();
   };
 

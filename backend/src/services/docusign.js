@@ -71,7 +71,9 @@ class DocuSignService {
       const document = new docusign.Document();
       document.documentBase64 = doc.buffer.toString('base64');
       document.name = doc.name;
-      document.fileExtension = 'pdf';
+      // Extract file extension from filename (supports both .pdf and .docx)
+      const fileExt = doc.name.split('.').pop() || 'docx';
+      document.fileExtension = fileExt;
       document.documentId = String(index + 1);
       return document;
     });

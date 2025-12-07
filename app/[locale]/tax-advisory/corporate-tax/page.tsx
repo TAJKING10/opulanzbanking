@@ -2,41 +2,219 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Briefcase, CheckCircle, Clock, Euro } from "lucide-react";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+import { useState, useEffect, useRef } from "react";
+import emailjs from '@emailjs/browser';
+
 export default function CorporateTaxPage({ params: { locale } }: { params: { locale: string } }) {
-  const router = useRouter();
-  const [showCalendly, setShowCalendly] = React.useState(false);
-  const [showPayment, setShowPayment] = React.useState(false);
+  const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
+  const [bookingData, setBookingData] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [paypalLoaded, setPaypalLoaded] = useState(false);
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [calendlyLoaded, setCalendlyLoaded] = useState(false);
+  const paypalRef = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    if (showCalendly) {
-      const script = document.createElement("script");
-      script.src = "https://assets.calendly.com/assets/external/widget.js";
-      script.async = true;
-      document.body.appendChild(script);
+  const totalPrice = 150;
+  const servicePrice = totalPrice / 1.17;
+  const vat = totalPrice - servicePrice;
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init('YOUR_PUBLIC_KEY'); // Replace with your EmailJS public key
+  }, []);
 
-      // Listen for Calendly events
-      const handleCalendlyEvent = (e: MessageEvent) => {
-        if (e.data.event === "calendly.event_scheduled") {
-          // Move to payment page after booking
-          setShowCalendly(false);
-          setShowPayment(true);
-        }
-      };
+  // Generate PDF receipt
+  const generatePDFReceipt = () => {
+    if (!bookingData || !bookingData.paymentDetails) return;
 
-      window.addEventListener("message", handleCalendlyEvent);
+    const receiptContent = `
+OPULANZ BANKING - PAYMENT RECEIPT
+==================================================
 
-      return () => {
-        window.removeEventListener("message", handleCalendlyEvent);
-      };
+Service: Corporate Tax
+Date: ${new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+Time: ${new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+Duration: 60 minutes
+
+CLIENT INFORMATION
+==================================================
+Name: ${bookingData.inviteeName}
+Email: ${bookingData.inviteeEmail}
+
+PAYMENT DETAILS
+==================================================
+Order ID: ${bookingData.paymentDetails.orderId}
+Amount: €150.00 (incl. VAT)
+Service Fee: €${(150 / 1.17).toFixed(2)} (excl. VAT)
+VAT (17%): €${(150 - 150 / 1.17).toFixed(2)}
+Payment Method: PayPal
+Status: ${bookingData.paymentDetails.status}
+Date: ${new Date(bookingData.paymentDetails.timestamp).toLocaleString('en-US')}
+
+Thank you for choosing Opulanz Banking!
+Contact: opulanz.banking@gmail.com
+    `;
+
+    const blob = new Blob([receiptContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Opulanz-Receipt-${bookingData.paymentDetails.orderId}.txt`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  // Send email receipts
+  const sendEmailReceipts = async () => {
+    if (!bookingData || !bookingData.paymentDetails) return;
+
+    const templateParams = {
+      to_email: bookingData.inviteeEmail,
+      to_name: bookingData.inviteeName,
+      service_name: 'Corporate Tax',
+      appointment_date: new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+      appointment_time: new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      order_id: bookingData.paymentDetails.orderId,
+      amount: '€150.00',
+      service_fee: '€' + (150 / 1.17).toFixed(2),
+      vat: '€' + (150 - 150 / 1.17).toFixed(2),
+      payment_status: bookingData.paymentDetails.status,
+      payment_date: new Date(bookingData.paymentDetails.timestamp).toLocaleString('en-US')
+    };
+
+    try {
+      // Send to customer
+      await emailjs.send(
+        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        templateParams,
+        'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+      );
+
+      // Send to admin
+      await emailjs.send(
+        'YOUR_SERVICE_ID',
+        'YOUR_ADMIN_TEMPLATE_ID', // You'll need a separate template for admin
+        { ...templateParams, to_email: 'opulanz.banking@gmail.com', to_name: 'Opulanz Admin' },
+        'YOUR_PUBLIC_KEY'
+      );
+
+      console.log('✅ Email receipts sent successfully');
+    } catch (error) {
+      console.error('❌ Error sending emails:', error);
     }
-  }, [showCalendly]);
+  };
+
+
+  // Load Calendly script when calendar step is active
+  useEffect(() => {
+    if (step === 'calendar' && !calendlyLoaded) {
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      script.onload = () => setCalendlyLoaded(true);
+      document.head.appendChild(script);
+    }
+  }, [step, calendlyLoaded]);
+  // Load PayPal SDK when payment step is active
+  useEffect(() => {
+    if (step === 'payment' && !paypalLoaded) {
+      const script = document.createElement('script');
+      const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR`;
+      script.async = true;
+      script.onload = () => setPaypalLoaded(true);
+      document.head.appendChild(script);
+    }
+  }, [step, paypalLoaded]);
+
+
+  useEffect(() => {
+    const handleCalendlyEvent = (e: MessageEvent) => {
+      if (e.data.event && e.data.event.indexOf('calendly') === 0 && e.data.event === 'calendly.event_scheduled') {
+        setBookingData({
+          eventUri: e.data.payload.event.uri,
+          inviteeUri: e.data.payload.invitee.uri,
+          inviteeName: e.data.payload.invitee.name,
+          inviteeEmail: e.data.payload.invitee.email,
+          eventStartTime: e.data.payload.event.start_time,
+          eventEndTime: e.data.payload.event.end_time,
+        });
+        setStep('payment');
+      }
+    };
+    window.addEventListener('message', handleCalendlyEvent);
+    return () => window.removeEventListener('message', handleCalendlyEvent);
+  }, []);
+
+  useEffect(() => {
+    if (step === 'payment' && paypalLoaded && paypalRef.current && bookingData) {
+      paypalRef.current.innerHTML = '';
+      // @ts-ignore
+      if (window.paypal) {
+        // @ts-ignore
+        window.paypal.Buttons({
+          style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', height: 50 },
+          createOrder: function(data: any, actions: any) {
+            return actions.order.create({
+              purchase_units: [{ description: 'Corporate Tax - 60 minutes', amount: { currency_code: 'EUR', value: totalPrice.toFixed(2) } }]
+            });
+          },
+          onApprove: function(data: any, actions: any) {
+            return actions.order.capture().then(function(details: any) {
+              setBookingData((prev: any) => ({
+                ...prev,
+                paymentDetails: {
+                  orderId: data.orderID,
+                  payerId: details.payer.payer_id,
+                  payerEmail: details.payer.email_address,
+                  payerName: details.payer.name.given_name + ' ' + details.payer.name.surname,
+                  amount: details.purchase_units[0].amount.value,
+                  currency: details.purchase_units[0].amount.currency_code,
+                  status: details.status,
+                  timestamp: new Date().toISOString()
+                }
+              }));
+              setPaymentCompleted(true);
+            });
+          },
+          onError: function(err: any) {
+            alert('Payment failed. Please try again.');
+          }
+        }).render(paypalRef.current);
+      }
+    }
+  }, [step, paypalLoaded, bookingData, totalPrice]);
+
+  const handlePaymentComplete = async () => {
+    if (!paymentCompleted) { alert('Please complete the PayPal payment first.'); return; }
+    setLoading(true);
+    try {
+      await fetch('http://localhost:5000/api/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: bookingData.inviteeName, email: bookingData.inviteeEmail, calendly_id: bookingData.eventUri,
+          calendly_event_uri: bookingData.eventUri, meeting_type: 'Corporate Tax', status: 'confirmed',
+          start_time: bookingData.eventStartTime, end_time: bookingData.eventEndTime,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, location: 'Video Conference',
+          notes: `Paid consultation - €${totalPrice}`
+        })
+      });
+      sendEmailReceipts();
+
+      setStep('confirmation');
+    } catch (error) {
+      alert('There was an error processing your payment. Please contact support.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const features = [
     "Comprehensive corporate tax services and planning",
@@ -49,16 +227,80 @@ export default function CorporateTaxPage({ params: { locale } }: { params: { loc
 
   const benefits = [
     "Optimize corporate tax structure",
-    "Reduce overall tax burden legally",
-    "Expert M&A and restructuring advice",
-    "VAT and corporate tax compliance",
+    "Expert guidance on complex tax matters",
+    "Ensure compliance with regulations",
+    "Professional expertise for businesses",
   ];
 
-  if (showPayment) {
-    const totalPrice = 150;
-    const servicePrice = totalPrice / 1.17; // Price without VAT
-    const vat = totalPrice - servicePrice; // VAT amount
+  if (step === 'confirmation' && bookingData) {
+    return (
+      <>
+        <section className="hero-gradient py-16 md:py-20">
+          <div className="container mx-auto max-w-4xl px-6">
+            <div className="text-center">
+              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-500">
+                <CheckCircle className="h-12 w-12 text-white" />
+              </div>
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">Payment Confirmed!</h1>
+              <p className="text-lg text-white/90">Thank you for your payment. Your appointment is now confirmed.</p>
+            </div>
+          </div>
+        </section>
+        <section className="bg-white py-12 md:py-16">
+          <div className="container mx-auto max-w-3xl px-6">
+            <Card className="mb-8 border-brand-gold/30 shadow-lg">
+              <CardContent className="p-8">
+                <h3 className="mb-4 text-xl font-bold text-brand-dark">Confirmed Appointment</h3>
+                <div className="space-y-3 text-left">
+                  <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                    <span className="text-brand-grayMed">Service:</span>
+                    <span className="font-semibold text-brand-dark">Corporate Tax</span>
+                  </div>
+                  <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                    <span className="text-brand-grayMed">Name:</span>
+                    <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                    <span className="text-brand-grayMed">Email:</span>
+                    <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                    <span className="text-brand-grayMed">Date:</span>
+                    <span className="font-semibold text-brand-dark">
+                      {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                    </span>
+                  </div>
+                  <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                    <span className="text-brand-grayMed">Time:</span>
+                    <span className="font-semibold text-brand-dark">
+                      {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-brand-grayMed">Duration:</span>
+                    <span className="font-semibold text-brand-dark">60 minutes</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <div className="rounded-lg bg-brand-goldLight/20 p-6 mb-8">
+              <h4 className="mb-3 font-semibold text-brand-dark">What's Next?</h4>
+              <ul className="space-y-2 text-sm text-brand-grayMed">
+                <li>✓ Check your email ({bookingData.inviteeEmail}) for the meeting link and calendar invite</li>
+                <li>✓ Prepare your tax documents and questions</li>
+                <li>✓ Join the video conference at your scheduled time</li>
+                <li>✓ Our team has been notified and will be ready for your consultation</li>
+              </ul>
+            </div>
+            <Button onClick={() => window.location.href = `/${locale}`} className="w-full bg-brand-gold text-white hover:bg-brand-goldDark">
+              Return to Home
+            </Button>
+          </div>
+        </section></>
+    );
+  }
 
+  if (step === 'payment' && bookingData) {
     return (
       <>
         <section className="hero-gradient py-16 md:py-20">
@@ -67,25 +309,44 @@ export default function CorporateTaxPage({ params: { locale } }: { params: { loc
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
                 <CheckCircle className="h-10 w-10 text-white" />
               </div>
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Consultation Scheduled!
-              </h1>
-              <p className="text-lg text-white/90">
-                Now complete your payment to confirm your booking
-              </p>
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">Time Slot Reserved!</h1>
+              <p className="text-lg text-white/90">Complete your payment to confirm your booking</p>
             </div>
           </div>
         </section>
-
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-3xl px-6">
-            <SectionHeading
-              overline="FINAL STEP"
-              title="Complete Your Payment"
-              align="center"
-              className="mb-12"
-            />
-
+            <Card className="mb-8 border-brand-gold/30 shadow-lg">
+              <CardContent className="p-8">
+                <h3 className="mb-4 text-xl font-bold text-brand-dark">Your Appointment Details</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                    <span className="text-brand-grayMed">Name:</span>
+                    <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                    <span className="text-brand-grayMed">Email:</span>
+                    <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                    <span className="text-brand-grayMed">Date:</span>
+                    <span className="font-semibold text-brand-dark">
+                      {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                    </span>
+                  </div>
+                  <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                    <span className="text-brand-grayMed">Time:</span>
+                    <span className="font-semibold text-brand-dark">
+                      {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-brand-grayMed">Duration:</span>
+                    <span className="font-semibold text-brand-dark">60 minutes</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
             <Card className="border-2 border-brand-grayLight mb-8">
               <CardContent className="p-8">
                 <div className="flex items-start gap-4 mb-6">
@@ -94,11 +355,10 @@ export default function CorporateTaxPage({ params: { locale } }: { params: { loc
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-brand-dark mb-2">Corporate Tax</h3>
-                    <p className="text-sm text-brand-grayMed mb-2">Comprehensive corporate tax services including M&A and VAT consulting</p>
+                    <p className="text-sm text-brand-grayMed mb-2">Comprehensive corporate tax services and planning</p>
                     <p className="text-sm text-brand-grayMed">Duration: 60 minutes</p>
                   </div>
                 </div>
-
                 <div className="border-t border-brand-grayLight pt-6">
                   <div className="flex justify-between items-center text-lg mb-3">
                     <span className="text-brand-grayMed">Service Fee (excl. VAT):</span>
@@ -117,79 +377,54 @@ export default function CorporateTaxPage({ params: { locale } }: { params: { loc
                 </div>
               </CardContent>
             </Card>
-
-            <Card className="border-2 border-brand-grayLight mb-8">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold text-brand-dark mb-4">Payment Method</h3>
-                <p className="text-brand-grayMed mb-6">
-                  Select your preferred payment method to complete your booking.
-                </p>
-
-                <div className="space-y-4">
-                  <Button className="w-full bg-brand-gold text-white hover:bg-brand-goldDark h-14 text-lg">
-                    Pay with Credit/Debit Card
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10 h-14 text-lg"
-                  >
-                    Pay with Bank Transfer
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full border-2 border-brand-grayMed text-brand-grayMed hover:bg-gray-50 h-14 text-lg"
-                  >
-                    Pay with PayPal
-                  </Button>
-                </div>
-
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <p className="text-sm text-blue-900">
-                    <strong>Note:</strong> Your consultation slot is reserved for 15 minutes. Please complete
-                    the payment to confirm your booking.
-                  </p>
+            <Card className="border-none shadow-lg">
+              <CardContent className="p-8 md:p-12">
+                <div className="text-center">
+                  <div className="mb-6">
+                    <h3 className="mb-2 text-xl font-bold text-brand-dark">Complete Your Payment</h3>
+                    <p className="text-3xl font-bold text-brand-gold">€{totalPrice.toFixed(2)}</p>
+                    <p className="mt-2 text-sm text-brand-grayMed">One-time payment for 60-minute consultation</p>
+                  </div>
+                  <div className="mx-auto max-w-md">
+                    <div ref={paypalRef} id="paypal-button-container"></div>
+                    <div className="mt-6 rounded-lg bg-blue-50 p-4">
+                      <p className="text-sm text-blue-800">
+                        <strong>Testing:</strong> Use card <code className="rounded bg-blue-100 px-2 py-1">4111 1111 1111 1111</code> (Expiry: 12/2030, CVV: 123)
+                      </p>
+                    </div>
+                  </div>
+                  {paymentCompleted && (
+                    <div className="mt-6">
+                      <div className="mb-4 rounded-lg bg-green-50 p-4 text-green-800">
+                        <div className="flex items-center justify-center gap-2">
+                          <CheckCircle className="h-5 w-5" />
+                          <span className="font-semibold">Payment Successful!</span>
+                        </div>
+                      </div>
+                      <Button type="button" onClick={handlePaymentComplete} disabled={loading} className="bg-brand-gold text-white hover:bg-brand-goldDark">
+                        {loading ? 'Processing...' : 'Continue to Confirmation'}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
-
-            <div className="flex gap-4">
-              <Button
-                variant="outline"
-                onClick={() => { setShowPayment(false); setShowCalendly(false); }}
-                className="flex-1"
-              >
-                Cancel
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="flex-1"
-              >
-                <Link href={`/${locale}/tax-advisory`}>Back to Tax Advisory</Link>
-              </Button>
-            </div>
           </div>
-        </section>
-      </>
+        </section></>
     );
   }
 
-  if (showCalendly) {
+  if (step === 'calendar') {
     return (
       <>
         <section className="hero-gradient py-16 md:py-20">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Book Your Corporate Tax Consultation
-              </h1>
-              <p className="text-lg text-white/90">
-                Schedule your 60-minute consultation - €150
-              </p>
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">Book Your Corporate Tax Consultation</h1>
+              <p className="text-lg text-white/90">Schedule your 60-minute consultation - €{totalPrice}</p>
             </div>
           </div>
         </section>
-
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-5xl px-6">
             <div className="grid gap-8 md:grid-cols-3 mb-8">
@@ -198,99 +433,71 @@ export default function CorporateTaxPage({ params: { locale } }: { params: { loc
                   <Clock className="h-6 w-6 text-brand-goldDark" />
                 </div>
                 <h3 className="mb-2 text-lg font-bold text-brand-dark">60-Minute Consultation</h3>
-                <p className="text-sm text-brand-grayMed">
-                  Professional consultation session with our expert tax advisor
-                </p>
+                <p className="text-sm text-brand-grayMed">Professional consultation session with our expert tax advisor</p>
               </div>
-
               <div className="text-center">
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
                   <Euro className="h-6 w-6 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-brand-dark">€150 Fee</h3>
-                <p className="text-sm text-brand-grayMed">
-                  Fixed price for corporate tax advisory service
-                </p>
+                <h3 className="mb-2 text-lg font-bold text-brand-dark">€{totalPrice} Fee</h3>
+                <p className="text-sm text-brand-grayMed">Fixed price for corporate tax service</p>
               </div>
-
               <div className="text-center">
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
                   <Briefcase className="h-6 w-6 text-brand-goldDark" />
                 </div>
                 <h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Service</h3>
-                <p className="text-sm text-brand-grayMed">
-                  Corporate tax planning and optimization
-                </p>
+                <p className="text-sm text-brand-grayMed">Corporate tax planning and compliance</p>
               </div>
             </div>
-
-            <div
-              className="calendly-inline-widget"
-              data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a"
-              style={{ minWidth: '320px', height: '700px' }}
-            />
+            <div className="calendly-inline-widget" data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a" style={{ minWidth: '320px', height: '700px' }} />
           </div>
-        </section>
-      </>
+        </section></>
     );
   }
 
   return (
     <>
-      <Hero
-        title="Corporate Tax Services"
-        subtitle="Comprehensive corporate tax planning, restructuring, M&A advice, and VAT consulting"
-      />
-
-      {/* Booking Section - At Top */}
-      <section className="bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20">
-        <div className="container mx-auto max-w-4xl px-6">
+      <Hero title="Corporate Tax" subtitle="Comprehensive corporate tax services and planning" />
+      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20 overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <div className="text-center mb-8">
-            <div className="mb-6 rounded-lg bg-white p-8 shadow-lg border-2 border-brand-gold/20">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <h3 className="text-4xl font-bold text-brand-dark">€150</h3>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/30 to-transparent rounded-2xl blur-2xl transform translate-x-6 translate-y-6"></div>
+              <div className="relative mb-6 rounded-2xl bg-white p-8 shadow-2xl border-2 border-brand-gold/20 backdrop-blur-sm hover:shadow-3xl transition-all duration-300 hover:-translate-y-1">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-brand-gold rounded-full blur-xl opacity-40"></div>
+                    <h3 className="relative text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-brand-goldDark">€{totalPrice}</h3>
+                  </div>
+                </div>
+                <p className="text-lg text-brand-grayMed mb-6">Fixed fee for corporate tax service</p>
+                <p className="text-sm text-brand-grayMed mb-6">60-minute consultation with expert tax advisor</p>
+                <Button onClick={() => setStep('calendar')} size="lg" className="relative bg-gradient-to-r from-brand-gold to-brand-goldDark text-white hover:from-brand-goldDark hover:to-brand-gold w-full sm:w-auto min-w-64 h-14 text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                  <span className="relative z-10">Book Your Consultation Now</span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-2xl"></div>
+                </Button>
               </div>
-              <p className="text-lg text-brand-grayMed mb-6">Fixed fee for corporate tax advisory service</p>
-              <p className="text-sm text-brand-grayMed mb-6">60-minute consultation with expert tax advisor</p>
-              <Button
-                onClick={() => setShowCalendly(true)}
-                size="lg"
-                className="bg-brand-gold text-white hover:bg-brand-goldDark w-full sm:w-auto min-w-64 h-14 text-lg"
-              >
-                Book Your Consultation Now
-              </Button>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Overview Section */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container mx-auto max-w-7xl px-6">
+      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+        <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <div>
-              <SectionHeading
-                overline="SERVICE DETAILS"
-                title="Strategic Corporate Tax Solutions"
-                align="left"
-                className="mb-8"
-              />
-              <p className="mb-6 text-lg text-brand-grayMed">
-                Corporate tax planning is essential for business success. Our experienced advisors provide
-                strategic guidance on corporate tax optimization, restructuring, mergers and acquisitions,
-                and VAT compliance.
-              </p>
-              <p className="mb-8 text-brand-grayMed">
-                Whether you're planning a corporate restructuring, considering an M&A transaction, or need
-                ongoing corporate tax advice, we provide comprehensive solutions tailored to your business needs.
-              </p>
+            <div className="relative">
+              <div className="relative bg-white rounded-2xl shadow-2xl p-8 border border-brand-grayLight/50">
+                <SectionHeading overline="SERVICE DETAILS" title="Corporate Tax Services" align="left" className="mb-8" />
+                <p className="mb-6 text-lg text-brand-grayMed">Our expert team provides comprehensive corporate tax planning and compliance services to optimize your business's tax position.</p>
+                <p className="mb-8 text-brand-grayMed">From restructuring to M&A tax advice, we ensure your corporate transactions are tax-efficient and compliant.</p>
+              </div>
             </div>
-
             <div>
               <h3 className="mb-6 text-xl font-bold text-brand-dark">What's Included</h3>
               <div className="space-y-4">
                 {features.map((feature) => (
-                  <div key={feature} className="flex items-start gap-3">
+                  <div key={feature} className="group flex items-start gap-3 p-4 rounded-xl bg-white/60 hover:bg-white hover:shadow-lg transition-all">
                     <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" />
                     <p className="text-brand-dark">{feature}</p>
                   </div>
@@ -300,19 +507,12 @@ export default function CorporateTaxPage({ params: { locale } }: { params: { loc
           </div>
         </div>
       </section>
-
-      {/* Benefits Section */}
-      <section className="bg-gray-50 py-20 md:py-28">
+      <section className="relative bg-gray-50 py-20 md:py-28">
         <div className="container mx-auto max-w-4xl px-6">
-          <SectionHeading
-            overline="WHY CHOOSE US"
-            title="Benefits of Expert Corporate Tax Advisory"
-            align="center"
-            className="mb-12"
-          />
+          <SectionHeading overline="WHY CHOOSE US" title="Benefits of Professional Corporate Tax Advice" align="center" className="mb-12" />
           <div className="grid gap-6 md:grid-cols-2">
             {benefits.map((benefit) => (
-              <Card key={benefit} className="border-none shadow-sm">
+              <Card key={benefit} className="border-none shadow-sm hover:shadow-xl transition-all">
                 <CardContent className="flex items-start gap-4 p-6">
                   <CheckCircle className="h-6 w-6 text-brand-gold flex-shrink-0 mt-1" />
                   <p className="text-lg text-brand-dark">{benefit}</p>
@@ -322,35 +522,19 @@ export default function CorporateTaxPage({ params: { locale } }: { params: { loc
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
       <section className="hero-gradient py-20 md:py-28">
         <div className="container mx-auto max-w-4xl px-6 text-center">
-          <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            Optimize Your Corporate Tax Strategy
-          </h2>
-          <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            Book your consultation now and get expert advice on corporate tax planning and optimization.
-          </p>
+          <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">Ready to Optimize Your Corporate Tax?</h2>
+          <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">Book your consultation now and let our experts help you with corporate tax planning.</p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button
-              onClick={() => setShowCalendly(true)}
-              size="lg"
-              className="bg-white text-brand-dark hover:bg-gray-50 min-w-48"
-            >
-              Book Consultation - €150
+            <Button onClick={() => setStep('calendar')} size="lg" className="bg-white text-brand-dark hover:bg-gray-50 min-w-48">
+              Book Consultation - €{totalPrice}
             </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="border-2 border-white bg-transparent text-white hover:bg-white/10 min-w-48"
-            >
+            <Button asChild variant="outline" size="lg" className="border-2 border-white bg-transparent text-white hover:bg-white/10 min-w-48">
               <Link href={`/${locale}/tax-advisory`}>Back to Tax Advisory</Link>
             </Button>
           </div>
         </div>
-      </section>
-    </>
+      </section></>
   );
 }

@@ -56,13 +56,13 @@ export function AccountOpeningLayout({
         {/* Navigation Buttons - Hidden on submission step */}
         {!hideNavigation && (
           <>
-            <div className="mt-8 flex items-center justify-between">
+            <div className="mt-8 flex items-center justify-between gap-4">
               <Button
                 type="button"
                 variant="outline"
                 onClick={onBack}
                 disabled={!canGoBack || isLoading}
-                className="min-w-32"
+                className="min-w-32 border-brand-grayLight text-brand-dark hover:bg-brand-grayLight/10"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back
@@ -72,7 +72,7 @@ export function AccountOpeningLayout({
                 type="button"
                 onClick={onNext}
                 disabled={!canGoNext || isLoading}
-                className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark"
+                className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark disabled:bg-gray-400 disabled:opacity-50"
               >
                 {isLoading ? (
                   "Processing..."

@@ -1,9 +1,166 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/db');
-const pdfGenerator = require('../services/pdfGenerator');
+const documentGenerator = require('../services/document-generator');
+const { convertDocumentsToPDF } = require('../services/pdf-converter');
 const azureStorage = require('../services/azureStorage');
 const docusign = require('../services/docusign');
+
+/**
+ * Map KYC form data to document template format
+ */
+function mapKYCDataToTemplateFormat(kycData) {
+  const isIndividual = kycData.clientType === 'PP';
+  const isCompany = kycData.clientType === 'PM';
+
+  // Extract holder/representative data
+  const holder1 = kycData.holders?.holder1 || {};
+  const representative = kycData.representatives?.[0] || {};
+  const company = kycData.company || {};
+
+  const clientInfo = isIndividual ? holder1 : representative;
+
+  return {
+    client_type: kycData.clientType,
+
+    // Client information
+    client: {
+      id: kycData.applicationId || Date.now(),
+      full_name: isIndividual
+        ? `${holder1.title || ''} ${holder1.firstName || ''} ${holder1.lastName || ''}`.trim()
+        : company.legalName || '',
+      first_name: clientInfo.firstName || '',
+      last_name: clientInfo.lastName || '',
+      email: kycData.basicContact?.email || clientInfo.email || '',
+      phone: kycData.basicContact?.mobile || clientInfo.mobile || '',
+      address: holder1.address?.line1 || company.registeredAddress?.line1 || '',
+      city: holder1.address?.city || company.registeredAddress?.city || '',
+      postal_code: holder1.address?.postalCode || company.registeredAddress?.postalCode || '',
+      country: holder1.address?.country || company.registeredAddress?.country || '',
+      birthdate: holder1.dateOfBirth || '',
+      nationality: holder1.nationality || '',
+      place_of_birth: holder1.placeOfBirth || '',
+    },
+
+    // Company data (for PM)
+    company: isCompany ? {
+      name: company.legalName || '',
+      trading_name: company.tradingName || '',
+      legal_form: company.legalForm || '',
+      rcs_number: company.registrationNumber || '',
+      sector: company.sector || '',
+      address: company.registeredAddress?.line1 || '',
+      city: company.registeredAddress?.city || '',
+      country: company.registeredAddress?.country || '',
+      regulated_activity: false,
+      regulator: '',
+    } : null,
+
+    // Representative (for PM)
+    representative: isCompany ? {
+      name: `${representative.title || ''} ${representative.firstName || ''} ${representative.lastName || ''}`.trim(),
+      position: representative.position || '',
+      email: representative.email || '',
+      phone: representative.mobile || '',
+    } : null,
+
+    // Family situation (for PP)
+    family: {
+      marital_status: holder1.maritalStatus || '',
+      marriage_date: '',
+      children: [],
+    },
+
+    // Financial profile
+    financial_profile: {
+      income_range: kycData.financialSituation?.annualIncome || '',
+      patrimony_range: kycData.financialSituation?.totalAssets || '',
+      revenue: kycData.financialSituation?.annualRevenue || '',
+      balance_sheet_total: kycData.financialSituation?.totalAssets || '',
+      equity: kycData.financialSituation?.liquidAssets || '',
+      debt_ratio: kycData.financialSituation?.outstandingDebts || '',
+      origin_of_funds: kycData.originOfFunds?.primary || '',
+      bank_name: '',
+      assets: {
+        cash: kycData.financialSituation?.liquidAssets || 0,
+        financial: kycData.financialSituation?.liquidAssets || 0,
+        real_estate: kycData.financialSituation?.realEstateValue || 0,
+        professional: 0,
+      },
+      source_of_revenue: kycData.financialSituation?.incomeSource || '',
+    },
+
+    // Investment profile
+    risk_profile: {
+      category: kycData.investmentProfile?.riskTolerance || 'Équilibré',
+      score: 0,
+      max_drawdown_accepted: kycData.investmentProfile?.maxLossAcceptable || 0,
+      horizon_years: kycData.investmentProfile?.investmentHorizon === 'short' ? 3 :
+                     kycData.investmentProfile?.investmentHorizon === 'medium' ? 7 : 10,
+    },
+
+    // Knowledge & experience
+    knowledge_experience: {
+      stocks: kycData.investmentProfile?.experience !== 'beginner',
+      bonds: kycData.investmentProfile?.experience === 'experienced',
+      funds: true,
+      derivatives: kycData.investmentProfile?.experience === 'experienced',
+    },
+
+    // Objectives
+    objectives: {
+      preservation: kycData.investmentProfile?.objective === 'capital_preservation' ? 1 : 3,
+      growth: kycData.investmentProfile?.objective === 'growth' ? 1 : 2,
+      income: kycData.investmentProfile?.objective === 'income' ? 1 : 4,
+      diversification: 2,
+      tax_optimization: 3,
+      structuration: kycData.missionType === 'advisory',
+      protection: true,
+      investment_help: true,
+      financing: false,
+    },
+
+    // Mission type
+    mission: {
+      diagnostic: true,
+      followup: true,
+      investment_advice: kycData.missionType === 'advisory',
+    },
+
+    // Fees
+    fees: {
+      study_fee: kycData.initialInvestment || '0',
+      followup_rate: '1.5',
+    },
+
+    // Preferences
+    preferences: {
+      email: true,
+      mail: false,
+      phone: true,
+    },
+
+    // Investment plan
+    investment_plan: {
+      products: [],
+    },
+
+    // Follow-up
+    followup: {
+      frequency: 'semestriellement',
+    },
+
+    // Services
+    services: {
+      rto: false,
+    },
+
+    // Account
+    account: {
+      reference: `OPZ-${Date.now()}`,
+    },
+  };
+}
 
 /**
  * POST /api/kyc/submit
@@ -18,8 +175,9 @@ router.post('/submit', async (req, res) => {
     const {
       clientType,
       basicContact,
-      identityData,
-      companyData,
+      holders,
+      company,
+      representatives,
       preferredLanguage
     } = req.body;
 
@@ -45,27 +203,24 @@ router.post('/submit', async (req, res) => {
     const applicationId = applicationResult.rows[0].id;
     console.log(`✅ Application ${applicationId} saved to database`);
 
-    // 2. Generate PDF documents
-    const kycData = {
-      clientType,
-      basicContact,
-      identityData,
-      companyData,
-      preferredLanguage
-    };
+    // 2. Map KYC data to template format
+    const templateData = mapKYCDataToTemplateFormat(req.body);
 
-    const documents = await pdfGenerator.generateAllDocuments(kycData);
-    console.log(`✅ Generated ${documents.length} PDF documents`);
+    // 3. Generate DOCX documents from templates
+    const documents = await documentGenerator.generateOnboardingDocuments(templateData);
+    console.log(`✅ Generated ${documents.length} DOCX documents from templates`);
 
-    // 3. Upload documents to Azure Blob Storage
+    // Note: DocuSign accepts DOCX files directly - no PDF conversion needed!
+
+    // 4. Upload documents to Azure Blob Storage
     const uploadedDocuments = [];
 
     for (const doc of documents) {
       try {
         const uploadResult = await azureStorage.uploadDocument(
           doc.buffer,
-          doc.name,
-          'application/pdf'
+          doc.filename,
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         );
 
         // Save document record to database
@@ -82,8 +237,8 @@ router.post('/submit', async (req, res) => {
           RETURNING id`,
           [
             applicationId,
-            doc.type,
-            doc.name,
+            'regulatory_document',
+            doc.filename,
             uploadResult.url,
             uploadResult.blobName,
             'generated'
@@ -92,25 +247,24 @@ router.post('/submit', async (req, res) => {
 
         uploadedDocuments.push({
           id: docResult.rows[0].id,
-          type: doc.type,
-          name: doc.name,
+          name: doc.filename,
           url: uploadResult.url,
           buffer: doc.buffer
         });
 
-        console.log(`✅ Uploaded ${doc.name} to Azure Blob Storage`);
+        console.log(`✅ Uploaded ${doc.filename} to Azure Blob Storage`);
       } catch (error) {
-        console.error(`Error uploading ${doc.name}:`, error.message);
+        console.error(`Error uploading ${doc.filename}:`, error.message);
       }
     }
 
     // 4. Send to DocuSign (if configured)
     if (docusign.isConfigured && uploadedDocuments.length > 0) {
       try {
-        const signerEmail = basicContact.email;
+        const signerEmail = basicContact.email || basicContact?.email;
         const signerName = clientType === 'PP'
-          ? `${identityData.firstName} ${identityData.lastName}`
-          : companyData.companyName;
+          ? `${holders?.holder1?.firstName || ''} ${holders?.holder1?.lastName || ''}`.trim() || 'Client'
+          : company?.legalName || representatives?.[0]?.firstName + ' ' + representatives?.[0]?.lastName || 'Client';
 
         const envelopeResult = await docusign.sendEnvelopeForSignature({
           documents: uploadedDocuments,

@@ -25,9 +25,9 @@ class AzureStorageService {
     if (!this.isConfigured) return false;
 
     try {
-      await this.containerClient.createIfNotExists({
-        access: 'private'
-      });
+      // Create container without public access (private by default)
+      await this.containerClient.createIfNotExists();
+      console.log(`✅ Container '${this.containerName}' ready`);
       return true;
     } catch (error) {
       console.error('Error creating container:', error.message);

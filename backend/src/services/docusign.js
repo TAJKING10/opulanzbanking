@@ -127,7 +127,12 @@ class DocuSignService {
         statusDateTime: results.statusDateTime
       };
     } catch (error) {
-      console.error('Error creating DocuSign envelope:', error);
+      console.error('Error creating DocuSign envelope:', error.message);
+      if (error.response) {
+        console.error('DocuSign API Response Status:', error.response.status);
+        console.error('DocuSign API Response StatusText:', error.response.statusText);
+        console.error('DocuSign API Error Details:', JSON.stringify(error.response.data, null, 2));
+      }
       throw new Error(`Failed to send envelope: ${error.message}`);
     }
   }

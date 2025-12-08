@@ -273,8 +273,9 @@ router.post('/submit', async (req, res) => {
             name: signerName
           },
           emailSubject: 'OPULANZ BANKING - Documents à signer / Documents to sign',
-          emailBody: 'Veuillez signer les documents joints / Please sign the attached documents',
-          callbackUrl: `${process.env.BACKEND_URL || 'http://localhost:5000'}/api/kyc/docusign-webhook`
+          emailBody: 'Veuillez signer les documents joints / Please sign the attached documents'
+          // callbackUrl temporarily disabled - requires HTTPS for webhooks
+          // callbackUrl: `${process.env.BACKEND_URL || 'http://localhost:5000'}/api/kyc/docusign-webhook`
         });
 
         // Update documents with DocuSign envelope ID

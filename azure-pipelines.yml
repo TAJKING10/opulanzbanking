@@ -22,7 +22,7 @@ steps:
   - task: AzureAppServiceSettings@1
     displayName: 'Configure App Service environment variables'
     inputs:
-      azureSubscription: 'opulanz-rg'
+      azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-backend'
       appSettings: |
         [
@@ -43,6 +43,6 @@ steps:
   - task: AzureWebApp@1
     displayName: 'Deploy Backend App'
     inputs:
-      azureSubscription: 'opulanz-rg'
+      azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-backend'
       package: '.'

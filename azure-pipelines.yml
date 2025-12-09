@@ -4,7 +4,7 @@ trigger:
       - backend
 
 pool:
-  name: Default
+  name: Azure Pipelines
   demands:
     - agent.name -equals SelfHosted-Backend
 

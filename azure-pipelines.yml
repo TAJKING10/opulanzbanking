@@ -17,7 +17,16 @@ steps:
 
   - script: |
       npm install
-    displayName: 'Install dependencies'
+      npm run build   # if you have a build step
+    displayName: 'Install dependencies & build'
+
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
 
   - task: AzureAppServiceSettings@1
     displayName: 'Configure App Service Settings'
@@ -45,4 +54,4 @@ steps:
     inputs:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-backend'
-      package: '.'
+      package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'

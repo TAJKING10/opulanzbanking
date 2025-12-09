@@ -4,9 +4,7 @@ trigger:
       - backend
 
 pool:
-  name: SelfHosted-Backend
-  demands:
-    - agent.name -equals SelfHosted-Backend
+  vmImage: 'ubuntu-latest'
 
 variables:
 - group: backend-env-vars

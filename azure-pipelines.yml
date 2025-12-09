@@ -12,15 +12,15 @@ variables:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '18.x'
-    displayName: 'Install Node.js'
+      versionSpec: '24.x'
+    displayName: 'Use Node.js 24'
 
   - script: |
       npm install
-    displayName: 'Install backend dependencies'
+    displayName: 'Install dependencies'
 
   - task: AzureAppServiceSettings@1
-    displayName: 'Configure App Service environment variables'
+    displayName: 'Configure App Service Settings'
     inputs:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-backend'
@@ -41,7 +41,7 @@ steps:
         ]
 
   - task: AzureWebApp@1
-    displayName: 'Deploy Backend App'
+    displayName: 'Deploy to Azure App Service'
     inputs:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-backend'

@@ -5,6 +5,8 @@ trigger:
 
 pool:
   name: SelfHosted-Backend
+  demands:
+    - agent.name -equals SelfHosted-Backend
 
 variables:
 - group: backend-env-vars

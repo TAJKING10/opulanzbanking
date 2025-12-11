@@ -16,16 +16,16 @@ steps:
     displayName: 'Use Node.js 24'
 
   - script: |
-      npm install
-      npm run build   # if you have a build step
+      cd backend
+      npm ci
     displayName: 'Install dependencies & build'
 
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/backend-$(Build.BuildId).zip'
       replaceExistingArchive: true
 
   - task: AzureAppServiceSettings@1
@@ -54,4 +54,4 @@ steps:
     inputs:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-backend'
-      package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      package: '$(Build.ArtifactStagingDirectory)/backend-$(Build.BuildId).zip'

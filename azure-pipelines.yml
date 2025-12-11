@@ -18,7 +18,14 @@ steps:
   - script: |
       cd backend
       npm ci
-    displayName: 'Install dependencies & build'
+    displayName: 'Install backend dependencies'
+
+  # Optional: run migrations before packaging (uncomment if you want CI to run migrations)
+  # - script: |
+  #     cd backend
+  #     # ensure env vars are available (DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT)
+  #     npm run migrate:all
+  #   displayName: 'Run DB migrations (optional)'
 
   - task: ArchiveFiles@2
     inputs:

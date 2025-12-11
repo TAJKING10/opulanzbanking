@@ -1,14 +1,13 @@
 "use client";
 
 import * as React from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Globe, CheckCircle, Clock, Euro } from "lucide-react";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
-import { useState, useEffect, useRef } from "react";
 import emailjs from '@emailjs/browser';
 
 export default function InternationalTaxPage({ params: { locale } }: { params: { locale: string } }) {
@@ -19,11 +18,54 @@ export default function InternationalTaxPage({ params: { locale } }: { params: {
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState<any>(null);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
+  const [useManualBooking, setUseManualBooking] = useState(false);
   const paypalRef = useRef<HTMLDivElement>(null);
 
   const totalPrice = 250;
   const servicePrice = totalPrice / 1.17; // Price without VAT
   const vat = totalPrice - servicePrice;
+
+  // Reset function to clear all booking data
+  const resetBooking = () => {
+    localStorage.removeItem('internationalTaxBookingData');
+    localStorage.removeItem('internationalTaxStep');
+    setBookingData(null);
+    setPaymentCompleted(false);
+    setPaymentDetails(null);
+    setUseManualBooking(false);
+    setStep('info');
+  };
+
+  // Manual booking form submission
+  const handleManualBooking = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const dateStr = formData.get('date') as string;
+    const timeStr = formData.get('time') as string;
+    const eventStartTime = `${dateStr}T${timeStr}`;
+
+    // Calculate end time (60 minutes later)
+    const startDate = new Date(eventStartTime);
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+    const eventEndTime = endDate.toISOString();
+
+    // Merge with existing bookingData (if from Calendly) or create new
+    const completeBookingInfo = {
+      ...(bookingData || {}),
+      inviteeName: formData.get('name') as string,
+      inviteeEmail: formData.get('email') as string,
+      eventStartTime: eventStartTime,
+      eventEndTime: eventEndTime,
+      // If not from Calendly, generate manual URIs
+      eventUri: bookingData?.eventUri || `manual-${Date.now()}`,
+      inviteeUri: bookingData?.inviteeUri || `manual-invitee-${Date.now()}`,
+    };
+
+    console.log('✅ Complete booking info:', completeBookingInfo);
+    setBookingData(completeBookingInfo);
+    setStep('payment');
+  };
 
   // Load booking data from localStorage on mount
   useEffect(() => {
@@ -194,35 +236,56 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
   // Listen for Calendly events
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
-      // Log all message events for debugging
-      console.log('Message received:', e.data);
+      // Only process Calendly events
+      if (!e.data.event || e.data.event.indexOf('calendly') !== 0) {
+        return;
+      }
 
-      if (e.data.event && e.data.event.indexOf('calendly') === 0) {
-        console.log('Calendly Event:', e.data.event);
-        console.log('Full event data:', JSON.stringify(e.data, null, 2));
+      console.log('🎯 Calendly Event:', e.data.event);
+      console.log('📦 Full event data:', e.data);
 
-        if (e.data.event === 'calendly.event_scheduled') {
-          console.log('Booking details payload:', e.data.payload);
+      if (e.data.event === 'calendly.event_scheduled') {
+        console.log('✅ EVENT SCHEDULED! Processing...');
+        console.log('📋 Payload:', e.data.payload);
 
-          // Extract data with fallbacks
-          const payload = e.data.payload || {};
-          const event = payload.event || {};
-          const invitee = payload.invitee || {};
+        try {
+          // Calendly sends data in the payload
+          const payload = e.data.payload;
 
-          const bookingInfo = {
-            eventUri: event.uri || '',
-            inviteeUri: invitee.uri || '',
-            inviteeName: invitee.name || '',
-            inviteeEmail: invitee.email || '',
-            eventStartTime: event.start_time || event.startTime || '',
-            eventEndTime: event.end_time || event.endTime || '',
-          };
+          if (!payload) {
+            console.error('❌ No payload received from Calendly');
+            alert('Calendly booking failed. Please use Manual Booking instead.');
+            setUseManualBooking(true);
+            return;
+          }
 
-          console.log('Extracted booking info:', bookingInfo);
-          setBookingData(bookingInfo);
+          console.log('📋 Full Payload Structure:', JSON.stringify(payload, null, 2));
 
-          // Move to payment step
-          setStep('payment');
+          // Calendly inline widget limitation: only provides URIs, not actual data
+          // Solution: Show manual form with the Calendly URIs pre-filled
+          const eventUri = payload.event?.uri || '';
+          const inviteeUri = payload.invitee?.uri || '';
+
+          console.log('✅ Calendly booking successful!');
+          console.log('🔗 Event URI:', eventUri);
+          console.log('🔗 Invitee URI:', inviteeUri);
+          console.log('📝 Switching to manual form to collect details');
+
+          // Store the Calendly URIs
+          setBookingData({
+            eventUri: eventUri,
+            inviteeUri: inviteeUri,
+            isFromCalendly: true
+          });
+
+          // Show manual form to collect user details
+          alert('✅ Time slot reserved on Calendly!\n\nPlease fill in your details to complete the booking.');
+          setUseManualBooking(true);
+
+        } catch (error) {
+          console.error('❌ Error processing Calendly event:', error);
+          alert('Error processing booking. Please use Manual Booking instead.');
+          setUseManualBooking(true);
         }
       }
     };
@@ -505,9 +568,7 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
               </Button>
               <Button
                 onClick={() => {
-                  // Clear booking data for fresh start
-                  localStorage.removeItem('internationalTaxBookingData');
-                  localStorage.removeItem('internationalTaxStep');
+                  resetBooking();
                   window.location.href = `/${locale}`;
                 }}
                 className="w-full bg-brand-gold text-white hover:bg-brand-goldDark"
@@ -524,22 +585,35 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
 
   // If payment step but no booking data, redirect to calendar
   if (step === 'payment' && !bookingData) {
+    // Clear localStorage and redirect
+    localStorage.removeItem('internationalTaxBookingData');
+    localStorage.removeItem('internationalTaxStep');
+    setStep('calendar');
+    return null;
+  }
+
+  // If confirmation step but no booking data, show error and reset
+  if (step === 'confirmation' && (!bookingData || !bookingData.inviteeName || !bookingData.eventStartTime)) {
     return (
       <>
         <section className="hero-gradient py-16 md:py-20">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
+              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-red-500">
+                <CheckCircle className="h-12 w-12 text-white" />
+              </div>
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
                 No Booking Found
               </h1>
-              <p className="mb-8 text-lg text-white/90">
-                Please schedule your appointment first before proceeding to payment.
+              <p className="text-lg text-white/90 mb-8">
+                You need to book an appointment through Calendly first before seeing the confirmation.
               </p>
               <Button
-                onClick={() => setStep('calendar')}
+                onClick={resetBooking}
+                size="lg"
                 className="bg-white text-brand-dark hover:bg-gray-50"
               >
-                Schedule Appointment
+                Start Fresh - Book Appointment
               </Button>
             </div>
           </div>
@@ -550,27 +624,36 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
 
   // Step 2: Payment
   if (step === 'payment' && bookingData) {
+    // Validate booking data - if missing critical info, redirect to calendar
+    if (!bookingData.inviteeName || !bookingData.inviteeEmail || !bookingData.eventStartTime) {
+      console.error('Invalid booking data:', bookingData);
+      resetBooking();
+      return null;
+    }
+
     // Validate and format appointment details
-    const appointmentName = bookingData.inviteeName || 'Not provided';
-    const appointmentEmail = bookingData.inviteeEmail || 'Not provided';
-    const startDate = bookingData.eventStartTime ? new Date(bookingData.eventStartTime) : null;
+    const appointmentName = bookingData.inviteeName;
+    const appointmentEmail = bookingData.inviteeEmail;
+    const startDate = new Date(bookingData.eventStartTime);
     const isValidDate = startDate && !isNaN(startDate.getTime());
 
-    const formattedDate = isValidDate
-      ? startDate!.toLocaleDateString('en-US', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })
-      : 'Date not set';
+    if (!isValidDate) {
+      console.error('Invalid date:', bookingData.eventStartTime);
+      resetBooking();
+      return null;
+    }
 
-    const formattedTime = isValidDate
-      ? startDate!.toLocaleTimeString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit'
-        })
-      : 'Time not set';
+    const formattedDate = startDate.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const formattedTime = startDate.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
 
     return (
       <>
@@ -708,6 +791,115 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
 
   // Step 1: Calendar
   if (step === 'calendar') {
+    if (useManualBooking) {
+      // Manual booking form
+      return (
+        <>
+          <section className="hero-gradient py-16 md:py-20">
+            <div className="container mx-auto max-w-4xl px-6">
+              <div className="text-center">
+                <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+                  Book Your Consultation
+                </h1>
+                <p className="text-lg text-white/90">
+                  Fill in your details to proceed with payment
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white py-12 md:py-16">
+            <div className="container mx-auto max-w-2xl px-6">
+              <Card className="border-2 border-brand-gold/30">
+                <CardContent className="p-8">
+                  <form onSubmit={handleManualBooking} className="space-y-6">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                        placeholder="John Smith"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                        placeholder="john@example.com"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="date" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Preferred Date *
+                      </label>
+                      <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        required
+                        min={new Date().toISOString().split('T')[0]}
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="time" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Preferred Time *
+                      </label>
+                      <input
+                        type="time"
+                        id="time"
+                        name="time"
+                        required
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                      />
+                    </div>
+
+                    <div className="bg-brand-goldLight/20 rounded-lg p-4">
+                      <p className="text-sm text-brand-dark">
+                        <strong>Note:</strong> This is a preferred time. We'll contact you to confirm availability.
+                      </p>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setUseManualBooking(false)}
+                        className="flex-1"
+                      >
+                        Back to Calendly
+                      </Button>
+                      <Button
+                        type="submit"
+                        className="flex-1 bg-brand-gold text-white hover:bg-brand-goldDark"
+                      >
+                        Continue to Payment
+                      </Button>
+                    </div>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+        </>
+      );
+    }
+
+    // Calendly widget view
     return (
       <>
         <section className="hero-gradient py-16 md:py-20">
@@ -725,6 +917,16 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
 
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-5xl px-6">
+            <div className="mb-6 text-center">
+              <Button
+                onClick={() => setUseManualBooking(true)}
+                variant="outline"
+                className="border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
+              >
+                Having trouble with Calendly? Use Manual Booking →
+              </Button>
+            </div>
+
             <div className="grid gap-8 md:grid-cols-3 mb-8">
               <div className="text-center">
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">

@@ -55,7 +55,8 @@
       "Bash(psql:*)",
       "Bash(tee:*)",
       "Bash(cp:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

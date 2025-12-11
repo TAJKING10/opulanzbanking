@@ -20,6 +20,34 @@ export default function TaxReturnPreparationPage({ params: { locale } }: { param
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const paypalRef = useRef<HTMLDivElement>(null);
 
+  // Load booking data from localStorage on mount
+  useEffect(() => {
+    const savedBookingData = localStorage.getItem('taxAdvisoryBookingData');
+    const savedStep = localStorage.getItem('taxAdvisoryStep');
+
+    if (savedBookingData) {
+      try {
+        const parsedData = JSON.parse(savedBookingData);
+        setBookingData(parsedData);
+        if (savedStep && ['info', 'calendar', 'payment', 'confirmation'].includes(savedStep)) {
+          setStep(savedStep as any);
+        }
+      } catch (error) {
+        console.error('Error loading booking data:', error);
+        localStorage.removeItem('taxAdvisoryBookingData');
+        localStorage.removeItem('taxAdvisoryStep');
+      }
+    }
+  }, []);
+
+  // Save booking data to localStorage whenever it changes
+  useEffect(() => {
+    if (bookingData) {
+      localStorage.setItem('taxAdvisoryBookingData', JSON.stringify(bookingData));
+      localStorage.setItem('taxAdvisoryStep', step);
+    }
+  }, [bookingData, step]);
+
   const totalPrice = 299;
   const servicePrice = totalPrice / 1.17; // Price without VAT
   const vat = totalPrice - servicePrice;
@@ -137,21 +165,32 @@ Contact: opulanz.banking@gmail.com
   // Listen for Calendly events
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
+      // Log all message events for debugging
+      console.log('Message received:', e.data);
+
       if (e.data.event && e.data.event.indexOf('calendly') === 0) {
         console.log('Calendly Event:', e.data.event);
+        console.log('Full event data:', JSON.stringify(e.data, null, 2));
 
         if (e.data.event === 'calendly.event_scheduled') {
-          console.log('Booking details:', e.data.payload);
+          console.log('Booking details payload:', e.data.payload);
 
-          // Store booking data
-          setBookingData({
-            eventUri: e.data.payload.event.uri,
-            inviteeUri: e.data.payload.invitee.uri,
-            inviteeName: e.data.payload.invitee.name,
-            inviteeEmail: e.data.payload.invitee.email,
-            eventStartTime: e.data.payload.event.start_time,
-            eventEndTime: e.data.payload.event.end_time,
-          });
+          // Extract data with fallbacks
+          const payload = e.data.payload || {};
+          const event = payload.event || {};
+          const invitee = payload.invitee || {};
+
+          const bookingInfo = {
+            eventUri: event.uri || '',
+            inviteeUri: invitee.uri || '',
+            inviteeName: invitee.name || '',
+            inviteeEmail: invitee.email || '',
+            eventStartTime: event.start_time || event.startTime || '',
+            eventEndTime: event.end_time || event.endTime || '',
+          };
+
+          console.log('Extracted booking info:', bookingInfo);
+          setBookingData(bookingInfo);
 
           // Move to payment step
           setStep('payment');
@@ -246,8 +285,18 @@ Contact: opulanz.banking@gmail.com
         console.error('Appointment creation failed:', errorData);
       }
 
-      sendEmailReceipts();
+      // Store payment details in booking data for receipt generation
+      const updatedBookingData = {
+        ...bookingData,
+        paymentDetails: {
+          orderId: `ORDER-${Date.now()}`,
+          status: 'completed',
+          timestamp: new Date().toISOString()
+        }
+      };
+      setBookingData(updatedBookingData);
 
+      sendEmailReceipts();
 
       setStep('confirmation');
     } catch (error) {
@@ -276,6 +325,28 @@ Contact: opulanz.banking@gmail.com
 
   // Step 3: Confirmation
   if (step === 'confirmation' && bookingData) {
+    // Validate and format appointment details
+    const appointmentName = bookingData.inviteeName || 'Not provided';
+    const appointmentEmail = bookingData.inviteeEmail || 'Not provided';
+    const startDate = bookingData.eventStartTime ? new Date(bookingData.eventStartTime) : null;
+    const isValidDate = startDate && !isNaN(startDate.getTime());
+
+    const formattedDate = isValidDate
+      ? startDate!.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      : 'Date not set';
+
+    const formattedTime = isValidDate
+      ? startDate!.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      : 'Time not set';
+
     return (
       <>
         <section className="hero-gradient py-16 md:py-20">
@@ -306,31 +377,19 @@ Contact: opulanz.banking@gmail.com
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Name:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentName}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Email:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentEmail}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Date:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedDate}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Time:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedTime}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-brand-grayMed">Duration:</span>
@@ -343,19 +402,33 @@ Contact: opulanz.banking@gmail.com
             <div className="rounded-lg bg-brand-goldLight/20 p-6 mb-8">
               <h4 className="mb-3 font-semibold text-brand-dark">What's Next?</h4>
               <ul className="space-y-2 text-sm text-brand-grayMed">
-                <li>✓ Check your email ({bookingData.inviteeEmail}) for the meeting link and calendar invite</li>
+                <li>✓ Check your email ({appointmentEmail}) for the meeting link and calendar invite</li>
                 <li>✓ Prepare your tax documents and questions</li>
                 <li>✓ Join the video conference at your scheduled time</li>
                 <li>✓ Our team has been notified and will be ready for your consultation</li>
               </ul>
             </div>
 
-            <Button
-              onClick={() => window.location.href = `/${locale}`}
-              className="w-full bg-brand-gold text-white hover:bg-brand-goldDark"
-            >
-              Return to Home
-            </Button>
+            <div className="flex flex-col gap-4">
+              <Button
+                onClick={generatePDFReceipt}
+                variant="outline"
+                className="w-full border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
+              >
+                Download Receipt
+              </Button>
+              <Button
+                onClick={() => {
+                  // Clear booking data for fresh start
+                  localStorage.removeItem('taxAdvisoryBookingData');
+                  localStorage.removeItem('taxAdvisoryStep');
+                  window.location.href = `/${locale}`;
+                }}
+                className="w-full bg-brand-gold text-white hover:bg-brand-goldDark"
+              >
+                Return to Home
+              </Button>
+            </div>
           </div>
         </section>
 
@@ -363,8 +436,56 @@ Contact: opulanz.banking@gmail.com
     );
   }
 
+  // If payment step but no booking data, redirect to calendar
+  if (step === 'payment' && !bookingData) {
+    return (
+      <>
+        <section className="hero-gradient py-16 md:py-20">
+          <div className="container mx-auto max-w-4xl px-6">
+            <div className="text-center">
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+                No Booking Found
+              </h1>
+              <p className="mb-8 text-lg text-white/90">
+                Please schedule your appointment first before proceeding to payment.
+              </p>
+              <Button
+                onClick={() => setStep('calendar')}
+                className="bg-white text-brand-dark hover:bg-gray-50"
+              >
+                Schedule Appointment
+              </Button>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
   // Step 2: Payment
   if (step === 'payment' && bookingData) {
+    // Validate and format appointment details
+    const appointmentName = bookingData.inviteeName || 'Not provided';
+    const appointmentEmail = bookingData.inviteeEmail || 'Not provided';
+    const startDate = bookingData.eventStartTime ? new Date(bookingData.eventStartTime) : null;
+    const isValidDate = startDate && !isNaN(startDate.getTime());
+
+    const formattedDate = isValidDate
+      ? startDate!.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      : 'Date not set';
+
+    const formattedTime = isValidDate
+      ? startDate!.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      : 'Time not set';
+
     return (
       <>
         <section className="hero-gradient py-16 md:py-20">
@@ -391,31 +512,19 @@ Contact: opulanz.banking@gmail.com
                 <div className="space-y-3">
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Name:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentName}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Email:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentEmail}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Date:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedDate}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Time:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedTime}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-brand-grayMed">Duration:</span>

@@ -87,29 +87,94 @@
     "nextSteps": "Prochaines étapes"
   },
   "companyFormation": {
-    "title": "Création de société au Luxembourg",
-    "selectForm": "Sélectionner la forme juridique",
-    "sarl": "SARL - Société à responsabilité limitée",
-    "sarls": "SARL-S - SARL simplifiée",
-    "sa": "SA - Société anonyme",
-    "scsp": "SCSp - Société en commandite spéciale",
-    "soleProprietor": "Entreprise individuelle",
-    "wizardTitle": "Assistant de création",
-    "companyDetails": "Détails de la société",
-    "shareholders": "Actionnaires",
-    "capitalDeposit": "Dépôt de capital",
-    "payment": "Paiement",
-    "confirmation": "Confirmation",
-    "companyName": "Nom de la société",
-    "businessActivity": "Activité commerciale",
-    "shareCapital": "Capital social",
-    "addShareholder": "Ajouter un actionnaire",
-    "depositCapital": "Déposer le capital social auprès de la banque partenaire",
-    "notaryCertificate": "Le notaire délivrera le certificat d'incorporation",
-    "rcsRegistration": "Inscription au RCS du Luxembourg",
-    "totalFees": "Frais de création totaux",
-    "proceedToPayment": "Procéder au paiement",
-    "saveProgress": "Enregistrer et reprendre plus tard"
+    "subtitle": "Services complets de création de société avec conseils d'experts",
+    "description": "Choisissez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
+    "forms": {
+      "sarl": {
+        "fullName": "Société à Responsabilité Limitée",
+        "minCapital": "12 000 €",
+        "minShareholders": 1,
+        "liability": "Limitée",
+        "features": {
+          "common": "Structure la plus courante",
+          "flexible": "Gestion flexible",
+          "capital": "Exigence de capital inférieure",
+          "suitable": "Adapté aux PME"
+        }
+      },
+      "sarls": {
+        "fullName": "Société à Responsabilité Limitée Simplifiée",
+        "minCapital": "1 €",
+        "features": {
+          "capital": "Exigence de capital très faible",
+          "formation": "Formation simplifiée",
+          "startups": "Idéal pour les startups",
+          "max": "Capital maximum de 100 000 €"
+        }
+      },
+      "sa": {
+        "fullName": "Société Anonyme",
+        "minCapital": "30 000 €",
+        "features": {
+          "public": "Peut être cotée en bourse",
+          "board": "Conseil d'administration requis",
+          "credibility": "Crédibilité accrue",
+          "suitable": "Adapté aux grandes entreprises"
+        }
+      },
+      "scsp": {
+        "fullName": "Société en Commandite Spéciale",
+        "minCapital": "Aucun minimum",
+        "features": {
+          "transparent": "Transparence fiscale",
+          "funds": "Populaire pour les fonds",
+          "flexible": "Structure flexible",
+          "liability": "Responsabilité du commandité"
+        }
+      },
+      "soleProprietor": "Entreprise individuelle"
+    },
+    "process": {
+      "title": "Processus de création simple",
+      "description": "Nous vous guidons à chaque étape"
+    },
+    "steps": {
+      "details": {
+        "title": "Détails de la société",
+        "description": "Fournir les informations de la société"
+      },
+      "shareholders": {
+        "title": "Actionnaires",
+        "description": "Ajouter les actionnaires et la structure"
+      },
+      "capital": {
+        "title": "Dépôt de capital",
+        "description": "Déposer le capital social"
+      },
+      "payment": {
+        "title": "Paiement",
+        "description": "Payer les frais de création"
+      },
+      "registration": {
+        "title": "Enregistrement",
+        "description": "Compléter l'enregistrement au RCS"
+      }
+    },
+    "fields": {
+      "companyName": {
+        "label": "Nom de la société",
+        "placeholder": "Entrez le nom de la société"
+      },
+      "fullName": {
+        "placeholder": "Nom complet"
+      },
+      "nationality": {
+        "placeholder": "Nationalité"
+      },
+      "email": {
+        "placeholder": "E-mail"
+      }
+    }
   },
   "services": {
     "accounting": {
@@ -295,96 +360,6 @@
       "downloadApp": "Télécharger l'application"
     }
   },
-  "companyFormation": {
-    "subtitle": "Services complets de création de société avec conseils d'experts",
-    "description": "Choisissez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
-    "forms": {
-      "sarl": {
-        "fullName": "Société à Responsabilité Limitée",
-        "minCapital": "12 000 €",
-        "minShareholders": 1,
-        "liability": "Limitée",
-        "features": {
-          "common": "Structure la plus courante",
-          "flexible": "Gestion flexible",
-          "capital": "Exigence de capital inférieure",
-          "suitable": "Adapté aux PME"
-        }
-      },
-      "sarls": {
-        "fullName": "Société à Responsabilité Limitée Simplifiée",
-        "minCapital": "1 €",
-        "features": {
-          "capital": "Exigence de capital très faible",
-          "formation": "Formation simplifiée",
-          "startups": "Idéal pour les startups",
-          "max": "Capital maximum de 100 000 €"
-        }
-      },
-      "sa": {
-        "fullName": "Société Anonyme",
-        "minCapital": "30 000 €",
-        "features": {
-          "public": "Peut être cotée en bourse",
-          "board": "Conseil d'administration requis",
-          "credibility": "Crédibilité accrue",
-          "suitable": "Adapté aux grandes entreprises"
-        }
-      },
-      "scsp": {
-        "fullName": "Société en Commandite Spéciale",
-        "minCapital": "Aucun minimum",
-        "features": {
-          "transparent": "Transparence fiscale",
-          "funds": "Populaire pour les fonds",
-          "flexible": "Structure flexible",
-          "liability": "Responsabilité du commandité"
-        }
-      },
-      "soleProprietor": "Entreprise individuelle"
-    },
-    "process": {
-      "title": "Processus de création simple",
-      "description": "Nous vous guidons à chaque étape"
-    },
-    "steps": {
-      "details": {
-        "title": "Détails de la société",
-        "description": "Fournir les informations de la société"
-      },
-      "shareholders": {
-        "title": "Actionnaires",
-        "description": "Ajouter les actionnaires et la structure"
-      },
-      "capital": {
-        "title": "Dépôt de capital",
-        "description": "Déposer le capital social"
-      },
-      "payment": {
-        "title": "Paiement",
-        "description": "Payer les frais de création"
-      },
-      "registration": {
-        "title": "Enregistrement",
-        "description": "Compléter l'enregistrement au RCS"
-      }
-    },
-    "fields": {
-      "companyName": {
-        "label": "Nom de la société",
-        "placeholder": "Entrez le nom de la société"
-      },
-      "fullName": {
-        "placeholder": "Nom complet"
-      },
-      "nationality": {
-        "placeholder": "Nationalité"
-      },
-      "email": {
-        "placeholder": "E-mail"
-      }
-    }
-  },
   "dashboard": {
     "title": "Tableau de bord",
     "welcome": "Bienvenue ! Voici un aperçu de votre compte.",
@@ -435,5 +410,249 @@
   "metadata": {
     "title": "Opulanz - Banque Numérique Professionnelle",
     "description": "Services bancaires numériques, création de sociétés et services de conseil de confiance pour les entrepreneurs et les entreprises en France et au Luxembourg."
+  },
+  "investmentAdvisory": {
+    "onboarding": {
+      "badge": "Conseil en Investissement",
+      "title": "Informations Client & Conformité (KYC)",
+      "subtitle": "Pour vous fournir des services de conseil en investissement personnalisés, nous devons collecter certaines informations pour la conformité réglementaire et pour comprendre votre profil d'investisseur.",
+      "securityNotice": "Vos informations sont chiffrées et sécurisées. Nous respectons le RGPD et la réglementation bancaire française (ACPR, AMF)."
+    },
+    "wizard": {
+      "steps": {
+        "clientType": "Type de Client",
+        "information": "Informations",
+        "review": "Révision",
+        "complete": "Terminé"
+      },
+      "progress": {
+        "step": "Étape",
+        "of": "sur",
+        "complete": "Terminé"
+      }
+    },
+    "clientType": {
+      "welcome": "Bienvenue chez Opulanz",
+      "subtitle": "Commençons votre parcours d'investissement",
+      "question": "Êtes-vous un particulier ou une entreprise ?",
+      "individual": {
+        "title": "Particulier",
+        "description": "Compte d'investissement personnel"
+      },
+      "company": {
+        "title": "Entreprise",
+        "description": "Compte d'investissement professionnel"
+      },
+      "contact": {
+        "email": "Adresse e-mail",
+        "mobile": "Téléphone portable",
+        "mobilePlaceholder": "+33 6 12 34 56 78",
+        "emailPlaceholder": "votre@email.com",
+        "language": "Langue préférée"
+      }
+    },
+    "individual": {
+      "title": "Informations Client Particulier",
+      "subtitle": "Veuillez fournir toutes les informations requises ci-dessous. Toutes les sections doivent être complétées.",
+      "sectionNumbers": {
+        "identity": "1",
+        "professional": "2",
+        "family": "3",
+        "financial": "4",
+        "origin": "5",
+        "investment": "6",
+        "risk": "7",
+        "mission": "8",
+        "consents": "9"
+      },
+      "sections": {
+        "identity": "Identité Personnelle",
+        "address": "Adresse de Résidence",
+        "taxResidency": "Résidence Fiscale",
+        "professional": "Situation Professionnelle",
+        "family": "Situation Familiale",
+        "financial": "Situation Financière",
+        "origin": "Origine des Fonds",
+        "investmentKnowledge": "Connaissances & Expérience en Investissement",
+        "investmentObjectives": "Objectifs & Horizon d'Investissement",
+        "riskProfile": "Profil de Risque",
+        "mission": "Type de Mission & Investissement Initial",
+        "consents": "Consentements & Autorisations"
+      },
+      "fields": {
+        "title": "Civilité",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "dateOfBirth": "Date de Naissance",
+        "placeOfBirth": "Lieu de Naissance",
+        "nationality": "Nationalité",
+        "maritalStatus": "Situation Matrimoniale",
+        "addressLine1": "Adresse Ligne 1",
+        "addressLine2": "Adresse Ligne 2",
+        "city": "Ville",
+        "postalCode": "Code Postal",
+        "country": "Pays",
+        "taxCountry": "Pays de Résidence Fiscale",
+        "taxId": "Numéro d'Identification Fiscale",
+        "professionalStatus": "Statut Professionnel",
+        "employerName": "Nom de l'Employeur",
+        "position": "Poste/Fonction",
+        "sector": "Secteur d'Activité",
+        "numberOfDependents": "Nombre de Personnes à Charge",
+        "annualIncome": "Revenu Annuel (€)",
+        "incomeSource": "Source Principale de Revenu",
+        "totalAssets": "Patrimoine Total (€)",
+        "liquidAssets": "Actifs Liquides (€)",
+        "realEstateValue": "Valeur Immobilière (€)",
+        "outstandingDebts": "Dettes en Cours (€)",
+        "originOfFunds": "Origine Principale des Fonds",
+        "originDetails": "Détails Supplémentaires",
+        "investmentExperience": "Expérience en Investissement",
+        "knownProducts": "Produits d'Investissement Connus",
+        "investmentHorizon": "Horizon d'Investissement",
+        "investmentObjective": "Objectif d'Investissement",
+        "expectedReturn": "Rendement Annuel Attendu (%)",
+        "riskTolerance": "Tolérance au Risque",
+        "maxLoss": "Perte Maximale Acceptable (%)",
+        "missionType": "Type de Service",
+        "initialInvestment": "Montant d'Investissement Initial (€)"
+      },
+      "placeholders": {
+        "cityCountry": "Ville, Pays",
+        "describeOrigin": "Veuillez décrire l'origine de vos fonds...",
+        "additionalDetails": "Toute information complémentaire..."
+      },
+      "options": {
+        "titles": {
+          "mr": "M.",
+          "mrs": "Mme",
+          "ms": "Mlle",
+          "dr": "Dr"
+        },
+        "maritalStatus": {
+          "single": "Célibataire",
+          "married": "Marié(e)",
+          "divorced": "Divorcé(e)",
+          "widowed": "Veuf/Veuve",
+          "civilPartnership": "Partenariat Civil (PACS)"
+        },
+        "professionalStatus": {
+          "employed": "Salarié(e)",
+          "selfEmployed": "Travailleur Indépendant",
+          "retired": "Retraité(e)",
+          "unemployed": "Sans Emploi",
+          "student": "Étudiant(e)"
+        },
+        "originOfFunds": {
+          "salary": "Salaire/Revenu d'Emploi",
+          "business": "Revenu d'Entreprise",
+          "investment": "Revenus d'Investissements",
+          "inheritance": "Héritage",
+          "savings": "Épargne Personnelle",
+          "other": "Autre"
+        },
+        "investmentExperience": {
+          "beginner": "Débutant (Aucune Expérience)",
+          "intermediate": "Intermédiaire (1-3 ans)",
+          "advanced": "Avancé (3-5 ans)",
+          "expert": "Expert (5+ ans)"
+        },
+        "investmentProducts": {
+          "stocks": "Actions/Titres",
+          "bonds": "Obligations",
+          "mutualFunds": "Fonds Communs de Placement",
+          "etfs": "ETF",
+          "realEstate": "Immobilier",
+          "crypto": "Cryptomonnaies",
+          "derivatives": "Produits Dérivés"
+        },
+        "investmentHorizon": {
+          "short": "Court terme (< 2 ans)",
+          "medium": "Moyen terme (2-5 ans)",
+          "long": "Long terme (5-10 ans)",
+          "veryLong": "Très long terme (10+ ans)"
+        },
+        "investmentObjective": {
+          "preservation": "Préservation du Capital",
+          "income": "Génération de Revenus",
+          "growth": "Croissance du Capital",
+          "balanced": "Croissance & Revenus Équilibrés"
+        },
+        "riskTolerance": {
+          "conservative": "Conservateur (Risque Faible)",
+          "moderate": "Modéré (Risque Moyen)",
+          "aggressive": "Agressif (Risque Élevé)",
+          "veryAggressive": "Très Agressif (Risque Très Élevé)"
+        },
+        "missionType": {
+          "advisory": "Conseil en Investissement",
+          "management": "Gestion sous Mandat"
+        }
+      },
+      "consents": {
+        "dataProcessing": "Je consens à ce qu'Opulanz traite mes données personnelles à des fins de KYC et de conseil en investissement conformément au RGPD",
+        "kyc": "Je consens à la vérification d'identité et aux contrôles de conformité LCB-FT requis par la réglementation française (ACPR, AMF)",
+        "electronic": "Je consens à recevoir et signer des documents électroniquement via DocuSign",
+        "marketing": "Je consens à recevoir des communications marketing d'Opulanz (optionnel)"
+      }
+    },
+    "company": {
+      "title": "Informations Client Entreprise",
+      "subtitle": "Veuillez fournir toutes les informations requises ci-dessous. Toutes les sections doivent être complétées."
+    },
+    "review": {
+      "title": "Vérification & Confirmation",
+      "subtitle": "Veuillez vérifier attentivement toutes les informations avant de soumettre.",
+      "declaration": {
+        "title": "Déclaration",
+        "text": "Je confirme par la présente que toutes les informations fournies sont vraies et exactes à ma connaissance. Je comprends que ces informations seront utilisées à des fins de conformité réglementaire (KYC/LCB-FT) et pour générer la documentation requise pour mon compte d'investissement.",
+        "checkbox": "Je confirme avoir vérifié toutes les informations et accepte les conditions"
+      },
+      "submit": "Soumettre la Demande",
+      "submitting": "Soumission en cours..."
+    },
+    "success": {
+      "title": "Demande Soumise avec Succès !",
+      "subtitle": "Merci d'avoir complété votre inscription client. Vos informations ont été reçues, les documents ont été générés et une demande de signature a été envoyée à votre adresse e-mail.",
+      "actions": {
+        "home": "Retour à l'Accueil",
+        "new": "Nouvelle Demande"
+      }
+    }
+  },
+  "about": {
+    "strengths": {
+      "banking": {
+        "title": "Expertise Bancaire d'Entreprise",
+        "description": "Plus de 18 ans d'expérience au service des entreprises commerciales, des institutions financières et des fonds d'investissement en Europe."
+      },
+      "platform": {
+        "title": "Plateforme Tout-en-Un",
+        "description": "Solution complète pour les entreprises, de la création de société aux services bancaires, comptabilité, conseil fiscal, investissement et assurance."
+      },
+      "technology": {
+        "title": "Technologie Moderne",
+        "description": "Utilisation de l'Intelligence Artificielle et de la Blockchain pour rendre les services bancaires aux entreprises meilleurs, plus faciles et plus efficaces."
+      }
+    }
+  },
+  "taxAdvisory": {
+    "services": {
+      "taxReturn": {
+        "title": "Préparation des Déclarations Fiscales",
+        "description": "Préparation et dépôt professionnels des déclarations fiscales d'entreprise et individuelles dans plusieurs juridictions.",
+        "price": "€299"
+      },
+      "international": {
+        "title": "Fiscalité Internationale",
+        "description": "Conseils experts sur les questions fiscales transfrontalières, les prix de transfert et les conventions de double imposition.",
+        "price": "€250"
+      },
+      "corporate": {
+        "title": "Fiscalité d'Entreprise",
+        "description": "Services fiscaux d'entreprise complets incluant la restructuration, les conseils fiscaux en fusions-acquisitions et le conseil en TVA.",
+        "price": "€150"
+      }
+    }
   }
 }

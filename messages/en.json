@@ -634,7 +634,35 @@
     }
   },
   "about": {
+    "hero": {
+      "title": "About Opulanz",
+      "subtitle": "The One-Stop-Shop Business Banking Platform"
+    },
+    "story": {
+      "overline": "OUR STORY",
+      "title": "Transforming Business Banking",
+      "intro": "Opulanz is part of Groupe Advensys Luxembourg S.A., a holding company with over 18+ years of experience in providing comprehensive business solutions across Europe. We built Opulanz with a clear vision: to become the leader in European online banking for businesses.",
+      "mission": {
+        "title": "Our Mission",
+        "description": "To improve the ecosystem of business banking, payments, and operational processes using modern technology including AI and Blockchain."
+      },
+      "vision": {
+        "title": "Our Vision",
+        "description": "To become the leaders of the European online banking market with full banking license and integrated blockchain technologies."
+      },
+      "summary": "Today, we serve commercial companies, financial institutions, investment funds, and freelancers across Europe. Our experienced team continues to innovate with cutting-edge technology while maintaining the highest standards of security, compliance, and customer service. We represent quality, trust, and innovation in business banking."
+    },
+    "stats": {
+      "overline": "Our Impact",
+      "title": "Trusted by Businesses Across Europe",
+      "subtitle": "Our growth reflects the trust our clients place in us",
+      "yearsExperience": "Years of Experience",
+      "businessClients": "Business Clients"
+    },
     "strengths": {
+      "overline": "OUR STRENGTHS",
+      "title": "What Sets Us Apart",
+      "subtitle": "Three key pillars of our success",
       "banking": {
         "title": "Business Banking Expertise",
         "description": "Over 18+ years of experience serving commercial companies, financial institutions, and investment funds across Europe."
@@ -647,6 +675,63 @@
         "title": "Modern Technology",
         "description": "Leveraging Artificial Intelligence and Blockchain to make business banking better, easier, and more efficient."
       }
+    },
+    "certifications": {
+      "overline": "LICENSES & CERTIFICATIONS",
+      "title": "Fully Licensed & Certified",
+      "subtitle": "We maintain all necessary licenses and certifications to provide business banking and financial services across Europe, ensuring compliance with industry regulations and standards.",
+      "stateLicensed": {
+        "title": "State Licensed",
+        "description": "State Licensed Agents"
+      },
+      "certified": {
+        "title": "Certified",
+        "description": "Industry Certified Professionals"
+      },
+      "bonded": {
+        "title": "Bonded",
+        "description": "Bonded & Insured Operations"
+      },
+      "accredited": {
+        "title": "Accredited",
+        "description": "Better Business Bureau Accredited"
+      }
+    },
+    "whyChoose": {
+      "title": "Why Choose Opulanz?",
+      "subtitle": "What makes us your trusted business banking partner",
+      "benefits": {
+        "platform": {
+          "title": "One-Stop-Shop Platform",
+          "description": "Complete business solution covering company formation, banking, accounting, tax advisory, investment, insurance, and more - all in one platform."
+        },
+        "experience": {
+          "title": "18+ Years of Experience",
+          "description": "Part of Groupe Advensys Luxembourg S.A., we bring nearly two decades of expertise in serving businesses across Europe."
+        },
+        "technology": {
+          "title": "Modern Technology Stack",
+          "description": "Built with cutting-edge Artificial Intelligence and Blockchain technology to provide efficient, secure, and innovative banking solutions."
+        },
+        "focus": {
+          "title": "Business-Focused Approach",
+          "description": "Specifically designed for commercial companies, financial institutions, investment funds, and freelancers - not retail banking."
+        },
+        "quality": {
+          "title": "European Quality Standards",
+          "description": "Operating across Europe, we maintain the highest standards of quality, trust, and compliance with banking regulations."
+        },
+        "vision": {
+          "title": "Future-Ready Vision",
+          "description": "Working towards full banking license with integrated blockchain and green technologies to lead the European online banking market."
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to Get Started?",
+      "subtitle": "Join thousands of businesses across Europe who trust Opulanz as their all-in-one banking and business solution platform.",
+      "openAccount": "Open an Account",
+      "contactUs": "Contact Us"
     }
   },
   "taxAdvisory": {

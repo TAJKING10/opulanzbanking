@@ -17,36 +17,42 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       description: t('services.accounting.description'),
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=500&fit=crop',
       href: `/${locale}/invoicing-accounting`,
+      ctaLabel: t('common.learnMore'),
     },
     {
       title: t('nav.openAccount'),
       description: t('home.services.banking.description'),
       image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=500&fit=crop',
       href: `/${locale}/open-account`,
+      ctaLabel: t('common.learnMore'),
     },
     {
       title: t('nav.companyFormation'),
       description: t('home.services.formation.description'),
       image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=500&fit=crop',
       href: `/${locale}/company-formation`,
+      ctaLabel: t('common.learnMore'),
     },
     {
       title: t('services.tax.title'),
       description: t('services.tax.description'),
       image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=500&fit=crop',
       href: `/${locale}/tax-advisory`,
+      ctaLabel: t('common.learnMore'),
     },
     {
       title: t('services.investment.title'),
       description: t('services.investment.description'),
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
       href: `/${locale}/investment-advisory`,
+      ctaLabel: t('common.learnMore'),
     },
     {
       title: t('services.lifeInsurance.title'),
       description: t('services.lifeInsurance.description'),
       image: 'https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800&h=500&fit=crop',
       href: `/${locale}/life-insurance`,
+      ctaLabel: t('common.learnMore'),
     },
   ];
 
@@ -133,7 +139,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <div className="container mx-auto max-w-4xl px-6 text-center relative z-10">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-2 text-sm font-medium text-white border border-white/20">
             <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-            Ready to get started?
+            {t('common.readyToStart')}
           </div>
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl drop-shadow-lg">
             {t('home.cta.title')}

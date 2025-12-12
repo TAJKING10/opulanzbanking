@@ -2,6 +2,7 @@
   "common": {
     "getStarted": "Get Started",
     "learnMore": "Learn More",
+    "readyToStart": "Ready to get started?",
     "submit": "Submit",
     "cancel": "Cancel",
     "continue": "Continue",
@@ -14,10 +15,19 @@
     "required": "Required"
   },
   "nav": {
+    "home": "Home",
+    "about": "About",
     "openAccount": "Open Account",
     "companyFormation": "Company Formation",
     "services": "Services",
-    "support": "Support"
+    "ourServices": "Our Services",
+    "support": "Support",
+    "taxAdvisory": "Tax Advisory",
+    "investmentAdvisory": "Investment Advisory",
+    "lifeInsurance": "Life Insurance",
+    "accountingInvoicing": "Accounting & Invoicing",
+    "individualAccount": "Individual Account",
+    "companyAccount": "Company Account"
   },
   "hero": {
     "home": {

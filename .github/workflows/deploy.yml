@@ -37,6 +37,9 @@ jobs:
         env:
           NODE_ENV: production
 
+      - name: Fix locale routes
+        run: node scripts/fix-locale-routes.js
+
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll
 

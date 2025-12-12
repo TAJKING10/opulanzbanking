@@ -87,6 +87,12 @@
     "nextSteps": "Prochaines étapes"
   },
   "companyFormation": {
+    "hero": {
+      "title": "Création de Société au Luxembourg"
+    },
+    "selection": {
+      "title": "Choisissez la Forme de Votre Société"
+    },
     "subtitle": "Services complets de création de société avec conseils d'experts",
     "description": "Choisissez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
     "forms": {
@@ -138,7 +144,18 @@
       "title": "Processus de création simple",
       "description": "Nous vous guidons à chaque étape"
     },
+    "labels": {
+      "minCapital": "Capital min. :",
+      "shareholders": "Actionnaires :",
+      "minPrefix": "Min.",
+      "liability": "Responsabilité :",
+      "startFormation": "Démarrer la Création"
+    },
     "steps": {
+      "companyType": {
+        "title": "Type de Société",
+        "description": "Sélectionnez votre structure juridique"
+      },
       "details": {
         "title": "Détails de la société",
         "description": "Fournir les informations de la société"
@@ -150,6 +167,22 @@
       "capital": {
         "title": "Dépôt de capital",
         "description": "Déposer le capital social"
+      },
+      "activity": {
+        "title": "Activité",
+        "description": "Détails de l'activité commerciale"
+      },
+      "notary": {
+        "title": "Notaire",
+        "description": "Préférences du notaire"
+      },
+      "documents": {
+        "title": "Documents",
+        "description": "Télécharger les documents requis"
+      },
+      "submit": {
+        "title": "Soumettre",
+        "description": "Réviser et soumettre"
       },
       "payment": {
         "title": "Paiement",

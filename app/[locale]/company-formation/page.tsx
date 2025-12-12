@@ -99,7 +99,7 @@ export default function CompanyFormationPage() {
   return (
     <>
       <Hero
-        title="Company Formation in Luxembourg"
+        title={t('hero.title')}
         subtitle={t('subtitle')}
       />
 
@@ -107,7 +107,7 @@ export default function CompanyFormationPage() {
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title="Choose Your Company Form"
+            title={t('selection.title')}
             description={t('description')}
             align="center"
             className="mb-12"
@@ -130,19 +130,19 @@ export default function CompanyFormationPage() {
                 <CardContent className="space-y-4">
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-brand-grayMed">Min. Capital:</span>
+                      <span className="text-brand-grayMed">{t('labels.minCapital')}</span>
                       <span className="font-semibold text-brand-dark">
                         {form.minCapital}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-brand-grayMed">Shareholders:</span>
+                      <span className="text-brand-grayMed">{t('labels.shareholders')}</span>
                       <span className="font-semibold text-brand-dark">
-                        Min. {form.minShareholders}
+                        {t('labels.minPrefix')} {form.minShareholders}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-brand-grayMed">Liability:</span>
+                      <span className="text-brand-grayMed">{t('labels.liability')}</span>
                       <span className="font-semibold text-brand-dark">
                         {form.liability}
                       </span>
@@ -163,7 +163,7 @@ export default function CompanyFormationPage() {
                     variant="outline"
                     className="w-full group-hover:border-brand-gold group-hover:bg-brand-goldLight/10 group-hover:text-brand-gold"
                   >
-                    Start Formation
+                    {t('labels.startFormation')}
                   </Button>
                 </CardContent>
               </Card>
@@ -184,26 +184,23 @@ export default function CompanyFormationPage() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: Building2, title: "Company Type", desc: "Select your legal structure" },
+              { icon: Building2, title: t('steps.companyType.title'), desc: t('steps.companyType.description') },
               { icon: FileText, title: t('steps.details.title'), desc: t('steps.details.description') },
               { icon: Users, title: t('steps.shareholders.title'), desc: t('steps.shareholders.description') },
               { icon: CreditCard, title: t('steps.capital.title'), desc: t('steps.capital.description') },
-              { icon: FileText, title: "Activity", desc: "Business activity details" },
-              { icon: Building2, title: "Notary", desc: "Notary preferences" },
-              { icon: FileText, title: "Documents", desc: "Upload required docs" },
-              { icon: CheckCircle, title: "Submit", desc: "Review and submit" },
-            ].map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.title} className="text-center">
-                  <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold text-white font-bold">
-                    {index + 1}
-                  </div>
-                  <h3 className="mb-2 font-bold text-brand-dark">{item.title}</h3>
-                  <p className="text-sm text-brand-grayMed">{item.desc}</p>
+              { icon: FileText, title: t('steps.activity.title'), desc: t('steps.activity.description') },
+              { icon: Building2, title: t('steps.notary.title'), desc: t('steps.notary.description') },
+              { icon: FileText, title: t('steps.documents.title'), desc: t('steps.documents.description') },
+              { icon: CheckCircle, title: t('steps.submit.title'), desc: t('steps.submit.description') },
+            ].map((item, index) => (
+              <div key={item.title} className="text-center">
+                <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold text-white font-bold">
+                  {index + 1}
                 </div>
-              );
-            })}
+                <h3 className="mb-2 font-bold text-brand-dark">{item.title}</h3>
+                <p className="text-sm text-brand-grayMed">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

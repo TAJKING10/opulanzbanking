@@ -87,6 +87,12 @@
     "nextSteps": "Next Steps"
   },
   "companyFormation": {
+    "hero": {
+      "title": "Company Formation in Luxembourg"
+    },
+    "selection": {
+      "title": "Choose Your Company Form"
+    },
     "subtitle": "Complete company formation services with expert guidance",
     "description": "Choose the legal structure that best fits your business needs",
     "forms": {
@@ -138,7 +144,18 @@
       "title": "Simple Formation Process",
       "description": "We guide you through every step"
     },
+    "labels": {
+      "minCapital": "Min. Capital:",
+      "shareholders": "Shareholders:",
+      "minPrefix": "Min.",
+      "liability": "Liability:",
+      "startFormation": "Start Formation"
+    },
     "steps": {
+      "companyType": {
+        "title": "Company Type",
+        "description": "Select your legal structure"
+      },
       "details": {
         "title": "Company Details",
         "description": "Provide company information"
@@ -150,6 +167,22 @@
       "capital": {
         "title": "Capital Deposit",
         "description": "Deposit share capital"
+      },
+      "activity": {
+        "title": "Activity",
+        "description": "Business activity details"
+      },
+      "notary": {
+        "title": "Notary",
+        "description": "Notary preferences"
+      },
+      "documents": {
+        "title": "Documents",
+        "description": "Upload required docs"
+      },
+      "submit": {
+        "title": "Submit",
+        "description": "Review and submit"
       },
       "payment": {
         "title": "Payment",

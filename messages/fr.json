@@ -2,6 +2,7 @@
   "common": {
     "getStarted": "Commencer",
     "learnMore": "En savoir plus",
+    "readyToStart": "Prêt à commencer ?",
     "submit": "Soumettre",
     "cancel": "Annuler",
     "continue": "Continuer",
@@ -14,10 +15,19 @@
     "required": "Requis"
   },
   "nav": {
+    "home": "Accueil",
+    "about": "À Propos",
     "openAccount": "Ouvrir un compte",
     "companyFormation": "Création de société",
     "services": "Services",
-    "support": "Support"
+    "ourServices": "Nos Services",
+    "support": "Support",
+    "taxAdvisory": "Conseil fiscal",
+    "investmentAdvisory": "Conseil en investissement",
+    "lifeInsurance": "Assurance-vie",
+    "accountingInvoicing": "Comptabilité et facturation",
+    "individualAccount": "Compte Particulier",
+    "companyAccount": "Compte Entreprise"
   },
   "hero": {
     "home": {
@@ -87,6 +97,12 @@
     "nextSteps": "Prochaines étapes"
   },
   "companyFormation": {
+    "hero": {
+      "title": "Création de Société au Luxembourg"
+    },
+    "selection": {
+      "title": "Choisissez la Forme de Votre Société"
+    },
     "subtitle": "Services complets de création de société avec conseils d'experts",
     "description": "Choisissez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
     "forms": {
@@ -138,7 +154,18 @@
       "title": "Processus de création simple",
       "description": "Nous vous guidons à chaque étape"
     },
+    "labels": {
+      "minCapital": "Capital min. :",
+      "shareholders": "Actionnaires :",
+      "minPrefix": "Min.",
+      "liability": "Responsabilité :",
+      "startFormation": "Démarrer la Création"
+    },
     "steps": {
+      "companyType": {
+        "title": "Type de Société",
+        "description": "Sélectionnez votre structure juridique"
+      },
       "details": {
         "title": "Détails de la société",
         "description": "Fournir les informations de la société"
@@ -150,6 +177,22 @@
       "capital": {
         "title": "Dépôt de capital",
         "description": "Déposer le capital social"
+      },
+      "activity": {
+        "title": "Activité",
+        "description": "Détails de l'activité commerciale"
+      },
+      "notary": {
+        "title": "Notaire",
+        "description": "Préférences du notaire"
+      },
+      "documents": {
+        "title": "Documents",
+        "description": "Télécharger les documents requis"
+      },
+      "submit": {
+        "title": "Soumettre",
+        "description": "Réviser et soumettre"
       },
       "payment": {
         "title": "Paiement",
@@ -173,6 +216,21 @@
       },
       "email": {
         "placeholder": "E-mail"
+      }
+    },
+    "benefits": {
+      "title": "Pourquoi Créer Votre Société avec Opulanz ?",
+      "expertGuidance": {
+        "title": "Accompagnement Expert",
+        "description": "Notre équipe d'experts en droit des sociétés luxembourgeois vous guide à chaque étape du processus de création."
+      },
+      "fastEfficient": {
+        "title": "Rapide & Efficace",
+        "description": "Complétez l'assistant en ligne en quelques minutes. La plupart des créations sont finalisées en 2-3 semaines."
+      },
+      "fullService": {
+        "title": "Service Complet",
+        "description": "De la coordination notariale à l'enregistrement au RCS, nous gérons tout pour vous."
       }
     }
   },

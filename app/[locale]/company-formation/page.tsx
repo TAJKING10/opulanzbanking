@@ -10,82 +10,82 @@ import { Button } from "@/components/ui/button";
 import { CompanyFormationWizard } from "@/components/company-formation/company-formation-wizard";
 import type { CompanyFormType } from "@/types/company-formation";
 
-const companyForms = [
-  {
-    id: "SARL" as const,
-    name: "SARL",
-    fullName: "Private Limited Company",
-    minCapital: "€12,000",
-    minShareholders: 1,
-    liability: "Limited",
-    features: [
-      "Most common structure",
-      "Flexible management",
-      "Lower capital requirement",
-      "Suitable for SMEs",
-    ],
-  },
-  {
-    id: "SARL-S" as const,
-    name: "SARL-S",
-    fullName: "Simplified Private Limited Company",
-    minCapital: "€1",
-    minShareholders: 1,
-    liability: "Limited",
-    features: [
-      "Very low capital requirement",
-      "Simplified formation",
-      "Ideal for startups",
-      "Max capital €100,000",
-    ],
-  },
-  {
-    id: "SA" as const,
-    name: "SA",
-    fullName: "Public Limited Company",
-    minCapital: "€30,000",
-    minShareholders: 1,
-    liability: "Limited",
-    features: [
-      "Can be listed publicly",
-      "Board of directors required",
-      "Higher credibility",
-      "Suitable for larger businesses",
-    ],
-  },
-  {
-    id: "SCSp" as const,
-    name: "SCSp",
-    fullName: "Special Limited Partnership",
-    minCapital: "No minimum",
-    minShareholders: 2,
-    liability: "Mixed",
-    features: [
-      "Tax transparent",
-      "Popular for funds",
-      "Flexible structure",
-      "General partner liability",
-    ],
-  },
-  {
-    id: "SOLE" as const,
-    name: "Sole Proprietor",
-    fullName: "Individual Enterprise",
-    minCapital: "No minimum",
-    minShareholders: 1,
-    liability: "Unlimited",
-    features: [
-      "Simplest structure",
-      "No separate legal entity",
-      "Full control",
-      "Personal liability",
-    ],
-  },
-];
-
 export default function CompanyFormationPage() {
-  const t = useTranslations();
+  const t = useTranslations('companyFormation');
   const [selectedForm, setSelectedForm] = React.useState<CompanyFormType | null>(null);
+
+  const companyForms = [
+    {
+      id: "SARL" as const,
+      name: "SARL",
+      fullName: t('forms.sarl.fullName'),
+      minCapital: t('forms.sarl.minCapital'),
+      minShareholders: 1,
+      liability: t('forms.sarl.liability'),
+      features: [
+        t('forms.sarl.features.common'),
+        t('forms.sarl.features.flexible'),
+        t('forms.sarl.features.capital'),
+        t('forms.sarl.features.suitable'),
+      ],
+    },
+    {
+      id: "SARL-S" as const,
+      name: "SARL-S",
+      fullName: t('forms.sarls.fullName'),
+      minCapital: t('forms.sarls.minCapital'),
+      minShareholders: 1,
+      liability: t('forms.sarl.liability'),
+      features: [
+        t('forms.sarls.features.capital'),
+        t('forms.sarls.features.formation'),
+        t('forms.sarls.features.startups'),
+        t('forms.sarls.features.max'),
+      ],
+    },
+    {
+      id: "SA" as const,
+      name: "SA",
+      fullName: t('forms.sa.fullName'),
+      minCapital: t('forms.sa.minCapital'),
+      minShareholders: 1,
+      liability: t('forms.sarl.liability'),
+      features: [
+        t('forms.sa.features.public'),
+        t('forms.sa.features.board'),
+        t('forms.sa.features.credibility'),
+        t('forms.sa.features.suitable'),
+      ],
+    },
+    {
+      id: "SCSp" as const,
+      name: "SCSp",
+      fullName: t('forms.scsp.fullName'),
+      minCapital: t('forms.scsp.minCapital'),
+      minShareholders: 2,
+      liability: "Mixed",
+      features: [
+        t('forms.scsp.features.transparent'),
+        t('forms.scsp.features.funds'),
+        t('forms.scsp.features.flexible'),
+        t('forms.scsp.features.liability'),
+      ],
+    },
+    {
+      id: "SOLE" as const,
+      name: t('forms.soleProprietor'),
+      fullName: t('forms.soleProprietor'),
+      minCapital: t('forms.scsp.minCapital'),
+      minShareholders: 1,
+      liability: "Unlimited",
+      features: [
+        "Simplest structure",
+        "No separate legal entity",
+        "Full control",
+        "Personal liability",
+      ],
+    },
+  ];
 
   if (selectedForm) {
     return (
@@ -100,7 +100,7 @@ export default function CompanyFormationPage() {
     <>
       <Hero
         title="Company Formation in Luxembourg"
-        subtitle="Complete company formation services with expert guidance. Choose your structure and start your formation wizard."
+        subtitle={t('subtitle')}
       />
 
       {/* Company Types Selection */}
@@ -108,7 +108,7 @@ export default function CompanyFormationPage() {
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             title="Choose Your Company Form"
-            description="Select the legal structure that best fits your business needs"
+            description={t('description')}
             align="center"
             className="mb-12"
           />
@@ -176,8 +176,8 @@ export default function CompanyFormationPage() {
       <section className="bg-gray-50 py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title="Simple 8-Step Formation Process"
-            description="We guide you through every step of the company formation"
+            title={t('process.title')}
+            description={t('process.description')}
             align="center"
             className="mb-12"
           />
@@ -185,9 +185,9 @@ export default function CompanyFormationPage() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
               { icon: Building2, title: "Company Type", desc: "Select your legal structure" },
-              { icon: FileText, title: "General Info", desc: "Provide company details" },
-              { icon: Users, title: "People", desc: "Add shareholders & directors" },
-              { icon: CreditCard, title: "Capital", desc: "Define share capital" },
+              { icon: FileText, title: t('steps.details.title'), desc: t('steps.details.description') },
+              { icon: Users, title: t('steps.shareholders.title'), desc: t('steps.shareholders.description') },
+              { icon: CreditCard, title: t('steps.capital.title'), desc: t('steps.capital.description') },
               { icon: FileText, title: "Activity", desc: "Business activity details" },
               { icon: Building2, title: "Notary", desc: "Notary preferences" },
               { icon: FileText, title: "Documents", desc: "Upload required docs" },

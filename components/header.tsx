@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Menu, X, Globe, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -11,23 +12,24 @@ interface HeaderProps {
   locale: string;
 }
 
-const navigation = [
-  { name: "Home", href: "" },
-  { name: "About", href: "/about" },
-  { name: "Open Account", href: "/open-account" },
-  { name: "Services", href: "/services" },
-  { name: "Support", href: "/support" },
-];
-
-const services = [
-  { name: "Company Formation", href: "/company-formation" },
-  { name: "Tax Advisory", href: "/tax-advisory" },
-  { name: "Investment Advisory", href: "/investment-advisory" },
-  { name: "Life Insurance", href: "/life-insurance" },
-  { name: "Accounting & Invoicing", href: "/invoicing-accounting" },
-];
-
 export function Header({ locale }: HeaderProps) {
+  const t = useTranslations();
+
+  const navigation = [
+    { name: t('nav.home'), href: "" },
+    { name: t('nav.about'), href: "/about" },
+    { name: t('nav.openAccount'), href: "/open-account" },
+    { name: t('nav.services'), href: "/services" },
+    { name: t('nav.support'), href: "/support" },
+  ];
+
+  const services = [
+    { name: t('nav.companyFormation'), href: "/company-formation" },
+    { name: t('nav.taxAdvisory'), href: "/tax-advisory" },
+    { name: t('nav.investmentAdvisory'), href: "/investment-advisory" },
+    { name: t('nav.lifeInsurance'), href: "/life-insurance" },
+    { name: t('nav.accountingInvoicing'), href: "/invoicing-accounting" },
+  ];
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isServicesDropdownOpen, setIsServicesDropdownOpen] = React.useState(false);
@@ -102,7 +104,7 @@ export function Header({ locale }: HeaderProps) {
                             href={`/${locale}/services`}
                             className="block px-4 py-2.5 text-sm font-bold text-brand-gold transition-colors hover:bg-brand-off"
                           >
-                            Our Services
+                            {t('nav.ourServices')}
                           </Link>
                           {services.map((service) => (
                             <Link
@@ -162,7 +164,7 @@ export function Header({ locale }: HeaderProps) {
             size="sm"
             className="hidden sm:inline-flex bg-brand-gold text-white hover:bg-brand-goldDark transition-all duration-200 hover:scale-105 shadow-sm hover:shadow-md"
           >
-            <Link href={`/${locale}/open-account`}>Open Account</Link>
+            <Link href={`/${locale}/open-account`}>{t('nav.openAccount')}</Link>
           </Button>
 
           {/* Mobile Menu Toggle */}
@@ -208,7 +210,7 @@ export function Header({ locale }: HeaderProps) {
                           className="block rounded-lg px-4 py-2.5 text-sm font-bold text-brand-gold transition-colors hover:bg-gray-50"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
-                          Our Services
+                          {t('nav.ourServices')}
                         </Link>
                         {services.map((service) => (
                           <Link
@@ -253,12 +255,12 @@ export function Header({ locale }: HeaderProps) {
             </div>
             <div className="space-y-2 pt-4">
               <div className="space-y-2">
-                <p className="px-4 text-xs font-semibold text-brand-grayMed uppercase tracking-wide">Open Account</p>
+                <p className="px-4 text-xs font-semibold text-brand-grayMed uppercase tracking-wide">{t('nav.openAccount')}</p>
                 <Button asChild variant="primary" className="w-full">
-                  <Link href={`/${locale}/open-account/individual`}>Individual Account</Link>
+                  <Link href={`/${locale}/open-account/individual`}>{t('nav.individualAccount')}</Link>
                 </Button>
                 <Button asChild variant="default" className="w-full">
-                  <Link href={`/${locale}/open-account/company`}>Company Account</Link>
+                  <Link href={`/${locale}/open-account/company`}>{t('nav.companyAccount')}</Link>
                 </Button>
               </div>
             </div>

@@ -2,6 +2,7 @@
   "common": {
     "getStarted": "Commencer",
     "learnMore": "En savoir plus",
+    "readyToStart": "Prêt à commencer ?",
     "submit": "Soumettre",
     "cancel": "Annuler",
     "continue": "Continuer",
@@ -14,10 +15,19 @@
     "required": "Requis"
   },
   "nav": {
+    "home": "Accueil",
+    "about": "À Propos",
     "openAccount": "Ouvrir un compte",
     "companyFormation": "Création de société",
     "services": "Services",
-    "support": "Support"
+    "ourServices": "Nos Services",
+    "support": "Support",
+    "taxAdvisory": "Conseil fiscal",
+    "investmentAdvisory": "Conseil en investissement",
+    "lifeInsurance": "Assurance-vie",
+    "accountingInvoicing": "Comptabilité et facturation",
+    "individualAccount": "Compte Particulier",
+    "companyAccount": "Compte Entreprise"
   },
   "hero": {
     "home": {

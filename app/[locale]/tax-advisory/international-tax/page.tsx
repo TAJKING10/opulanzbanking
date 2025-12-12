@@ -249,42 +249,64 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
         console.log('📋 Payload:', e.data.payload);
 
         try {
-          // Calendly sends data in the payload
           const payload = e.data.payload;
 
           if (!payload) {
             console.error('❌ No payload received from Calendly');
-            alert('Calendly booking failed. Please use Manual Booking instead.');
-            setUseManualBooking(true);
             return;
           }
 
-          console.log('📋 Full Payload Structure:', JSON.stringify(payload, null, 2));
+          console.log('📋 Full Payload:', JSON.stringify(payload, null, 2));
 
-          // Calendly inline widget limitation: only provides URIs, not actual data
-          // Solution: Show manual form with the Calendly URIs pre-filled
-          const eventUri = payload.event?.uri || '';
-          const inviteeUri = payload.invitee?.uri || '';
+          // Extract all available data from Calendly
+          const event = payload.event || {};
+          const invitee = payload.invitee || {};
 
-          console.log('✅ Calendly booking successful!');
+          const eventUri = event.uri || '';
+          const inviteeUri = invitee.uri || '';
+          const startTime = event.start_time || '';
+          const endTime = event.end_time || '';
+
+          console.log('✅ Calendly event scheduled!');
           console.log('🔗 Event URI:', eventUri);
           console.log('🔗 Invitee URI:', inviteeUri);
-          console.log('📝 Switching to manual form to collect details');
+          console.log('📅 Start Time:', startTime);
+          console.log('📅 End Time:', endTime);
 
-          // Store the Calendly URIs
-          setBookingData({
+          // Merge with prefilled data (name, email) from earlier form
+          const completeBookingData = {
+            ...bookingData, // Contains inviteeName and inviteeEmail from prefill
             eventUri: eventUri,
             inviteeUri: inviteeUri,
+            eventStartTime: startTime,
+            eventEndTime: endTime,
             isFromCalendly: true
-          });
+          };
 
-          // Show manual form to collect user details
-          alert('✅ Time slot reserved on Calendly!\n\nPlease fill in your details to complete the booking.');
-          setUseManualBooking(true);
+          console.log('📝 Complete booking data:', completeBookingData);
+
+          // Validate we have all required data
+          if (completeBookingData.inviteeName &&
+              completeBookingData.inviteeEmail &&
+              completeBookingData.eventStartTime) {
+            console.log('✅ ALL DATA CAPTURED! Going directly to payment!');
+            setBookingData(completeBookingData);
+            setStep('payment');
+          } else if (completeBookingData.inviteeName && completeBookingData.inviteeEmail) {
+            console.log('⚠️ Missing date/time, showing manual form');
+            setBookingData(completeBookingData);
+            alert('✅ Time slot booked on Calendly!\n\nPlease confirm the date and time you selected.');
+            setUseManualBooking(true);
+          } else {
+            console.log('⚠️ Missing required data, showing manual form');
+            setBookingData(completeBookingData);
+            alert('Please fill in your details to complete the booking.');
+            setUseManualBooking(true);
+          }
 
         } catch (error) {
           console.error('❌ Error processing Calendly event:', error);
-          alert('Error processing booking. Please use Manual Booking instead.');
+          alert('Error processing booking. Please use Manual Booking.');
           setUseManualBooking(true);
         }
       }
@@ -789,8 +811,107 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
     );
   }
 
+  // Prefill handler - capture data from Calendly form before showing widget
+  const handlePrefillForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const prefillData = {
+      name: formData.get('prefill_name') as string,
+      email: formData.get('prefill_email') as string,
+    };
+
+    console.log('Prefill data captured:', prefillData);
+
+    // Store prefill data
+    setBookingData({
+      inviteeName: prefillData.name,
+      inviteeEmail: prefillData.email,
+      isPrefilled: true
+    });
+
+    // Show Calendly with prefilled data
+    setUseManualBooking(false);
+  };
+
   // Step 1: Calendar
   if (step === 'calendar') {
+    // First, show prefill form to capture user details
+    if (!bookingData?.isPrefilled && !useManualBooking) {
+      return (
+        <>
+          <section className="hero-gradient py-16 md:py-20">
+            <div className="container mx-auto max-w-4xl px-6">
+              <div className="text-center">
+                <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+                  Book Your Consultation
+                </h1>
+                <p className="text-lg text-white/90">
+                  Step 1: Enter your details
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white py-12 md:py-16">
+            <div className="container mx-auto max-w-2xl px-6">
+              <Card className="border-2 border-brand-gold/30">
+                <CardContent className="p-8">
+                  <div className="mb-6 text-center">
+                    <h3 className="text-2xl font-bold text-brand-dark mb-2">Enter Your Details</h3>
+                    <p className="text-brand-grayMed">We'll use this to schedule your appointment</p>
+                  </div>
+
+                  <form onSubmit={handlePrefillForm} className="space-y-6">
+                    <div>
+                      <label htmlFor="prefill_name" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="prefill_name"
+                        name="prefill_name"
+                        required
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                        placeholder="Toufic Jandah"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="prefill_email" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        id="prefill_email"
+                        name="prefill_email"
+                        required
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                        placeholder="toufic@example.com"
+                      />
+                    </div>
+
+                    <div className="bg-brand-goldLight/20 rounded-lg p-4">
+                      <p className="text-sm text-brand-dark">
+                        <strong>Next step:</strong> After entering your details, you'll select your preferred date and time on our calendar.
+                      </p>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full bg-brand-gold text-white hover:bg-brand-goldDark"
+                    >
+                      Continue to Calendar →
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+        </>
+      );
+    }
+
     if (useManualBooking) {
       // Manual booking form
       return (
@@ -822,6 +943,7 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
                         id="name"
                         name="name"
                         required
+                        defaultValue={bookingData?.inviteeName || ''}
                         className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
                         placeholder="John Smith"
                       />
@@ -836,6 +958,7 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
                         id="email"
                         name="email"
                         required
+                        defaultValue={bookingData?.inviteeEmail || ''}
                         className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
                         placeholder="john@example.com"
                       />
@@ -850,6 +973,7 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
                         id="date"
                         name="date"
                         required
+                        defaultValue={bookingData?.eventStartTime ? new Date(bookingData.eventStartTime).toISOString().split('T')[0] : ''}
                         min={new Date().toISOString().split('T')[0]}
                         className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
                       />
@@ -864,15 +988,26 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
                         id="time"
                         name="time"
                         required
+                        defaultValue={bookingData?.eventStartTime ? new Date(bookingData.eventStartTime).toTimeString().slice(0, 5) : ''}
                         className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
                       />
                     </div>
 
-                    <div className="bg-brand-goldLight/20 rounded-lg p-4">
-                      <p className="text-sm text-brand-dark">
-                        <strong>Note:</strong> This is a preferred time. We'll contact you to confirm availability.
-                      </p>
-                    </div>
+                    {bookingData?.isFromCalendly && bookingData?.eventStartTime ? (
+                      <div className="bg-green-50 border-2 border-green-200 rounded-lg p-4">
+                        <p className="text-sm text-green-800">
+                          <strong>✅ Success!</strong> All fields are pre-filled with your Calendly booking details. Please verify and click Continue.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="bg-brand-goldLight/20 rounded-lg p-4">
+                        <p className="text-sm text-brand-dark">
+                          <strong>Note:</strong> {bookingData?.isFromCalendly
+                            ? 'Please enter the date and time you just selected on Calendly.'
+                            : 'This is a preferred time. We\'ll contact you to confirm availability.'}
+                        </p>
+                      </div>
+                    )}
 
                     <div className="flex gap-4">
                       <Button
@@ -961,7 +1096,7 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
 
             <div
               className="calendly-inline-widget"
-              data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a"
+              data-url={`https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a&name=${encodeURIComponent(bookingData?.inviteeName || '')}&email=${encodeURIComponent(bookingData?.inviteeEmail || '')}`}
               style={{ minWidth: '320px', height: '700px' }}
             />
           </div>

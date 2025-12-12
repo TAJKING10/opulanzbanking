@@ -2,6 +2,7 @@
   "common": {
     "getStarted": "Get Started",
     "learnMore": "Learn More",
+    "readyToStart": "Ready to get started?",
     "submit": "Submit",
     "cancel": "Cancel",
     "continue": "Continue",
@@ -14,10 +15,19 @@
     "required": "Required"
   },
   "nav": {
+    "home": "Home",
+    "about": "About",
     "openAccount": "Open Account",
     "companyFormation": "Company Formation",
     "services": "Services",
-    "support": "Support"
+    "ourServices": "Our Services",
+    "support": "Support",
+    "taxAdvisory": "Tax Advisory",
+    "investmentAdvisory": "Investment Advisory",
+    "lifeInsurance": "Life Insurance",
+    "accountingInvoicing": "Accounting & Invoicing",
+    "individualAccount": "Individual Account",
+    "companyAccount": "Company Account"
   },
   "hero": {
     "home": {
@@ -87,6 +97,12 @@
     "nextSteps": "Next Steps"
   },
   "companyFormation": {
+    "hero": {
+      "title": "Company Formation in Luxembourg"
+    },
+    "selection": {
+      "title": "Choose Your Company Form"
+    },
     "subtitle": "Complete company formation services with expert guidance",
     "description": "Choose the legal structure that best fits your business needs",
     "forms": {
@@ -138,7 +154,18 @@
       "title": "Simple Formation Process",
       "description": "We guide you through every step"
     },
+    "labels": {
+      "minCapital": "Min. Capital:",
+      "shareholders": "Shareholders:",
+      "minPrefix": "Min.",
+      "liability": "Liability:",
+      "startFormation": "Start Formation"
+    },
     "steps": {
+      "companyType": {
+        "title": "Company Type",
+        "description": "Select your legal structure"
+      },
       "details": {
         "title": "Company Details",
         "description": "Provide company information"
@@ -150,6 +177,22 @@
       "capital": {
         "title": "Capital Deposit",
         "description": "Deposit share capital"
+      },
+      "activity": {
+        "title": "Activity",
+        "description": "Business activity details"
+      },
+      "notary": {
+        "title": "Notary",
+        "description": "Notary preferences"
+      },
+      "documents": {
+        "title": "Documents",
+        "description": "Upload required docs"
+      },
+      "submit": {
+        "title": "Submit",
+        "description": "Review and submit"
       },
       "payment": {
         "title": "Payment",
@@ -173,6 +216,21 @@
       },
       "email": {
         "placeholder": "Email"
+      }
+    },
+    "benefits": {
+      "title": "Why Form Your Company with Opulanz?",
+      "expertGuidance": {
+        "title": "Expert Guidance",
+        "description": "Our team of Luxembourg corporate law experts guide you through every step of the formation process."
+      },
+      "fastEfficient": {
+        "title": "Fast & Efficient",
+        "description": "Complete the online wizard in minutes. Most formations completed within 2-3 weeks."
+      },
+      "fullService": {
+        "title": "Full Service",
+        "description": "From notary coordination to RCS registration, we handle everything for you."
       }
     }
   },

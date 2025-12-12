@@ -212,7 +212,7 @@ export default function CompanyFormationPage() {
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title="Why Form Your Company with Opulanz?"
+            title={t('benefits.title')}
             align="center"
             className="mb-12"
           />
@@ -221,11 +221,11 @@ export default function CompanyFormationPage() {
             <Card>
               <CardHeader>
                 <CheckCircle className="mb-4 h-12 w-12 text-brand-gold" />
-                <CardTitle>Expert Guidance</CardTitle>
+                <CardTitle>{t('benefits.expertGuidance.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-brand-grayMed">
-                  Our team of Luxembourg corporate law experts guide you through every step of the formation process.
+                  {t('benefits.expertGuidance.description')}
                 </p>
               </CardContent>
             </Card>
@@ -233,11 +233,11 @@ export default function CompanyFormationPage() {
             <Card>
               <CardHeader>
                 <CheckCircle className="mb-4 h-12 w-12 text-brand-gold" />
-                <CardTitle>Fast & Efficient</CardTitle>
+                <CardTitle>{t('benefits.fastEfficient.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-brand-grayMed">
-                  Complete the online wizard in minutes. Most formations completed within 2-3 weeks.
+                  {t('benefits.fastEfficient.description')}
                 </p>
               </CardContent>
             </Card>
@@ -245,11 +245,11 @@ export default function CompanyFormationPage() {
             <Card>
               <CardHeader>
                 <CheckCircle className="mb-4 h-12 w-12 text-brand-gold" />
-                <CardTitle>Full Service</CardTitle>
+                <CardTitle>{t('benefits.fullService.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-brand-grayMed">
-                  From notary coordination to RCS registration, we handle everything for you.
+                  {t('benefits.fullService.description')}
                 </p>
               </CardContent>
             </Card>

@@ -621,7 +621,35 @@
     }
   },
   "about": {
+    "hero": {
+      "title": "À Propos d'Opulanz",
+      "subtitle": "La Plateforme Bancaire d'Entreprise Tout-en-Un"
+    },
+    "story": {
+      "overline": "NOTRE HISTOIRE",
+      "title": "Transformer la Banque d'Entreprise",
+      "intro": "Opulanz fait partie du Groupe Advensys Luxembourg S.A., une société holding avec plus de 18 ans d'expérience dans la fourniture de solutions d'affaires complètes à travers l'Europe. Nous avons construit Opulanz avec une vision claire : devenir le leader de la banque en ligne européenne pour les entreprises.",
+      "mission": {
+        "title": "Notre Mission",
+        "description": "Améliorer l'écosystème de la banque d'entreprise, des paiements et des processus opérationnels en utilisant les technologies modernes, notamment l'IA et la Blockchain."
+      },
+      "vision": {
+        "title": "Notre Vision",
+        "description": "Devenir les leaders du marché bancaire en ligne européen avec une licence bancaire complète et des technologies blockchain intégrées."
+      },
+      "summary": "Aujourd'hui, nous servons des entreprises commerciales, des institutions financières, des fonds d'investissement et des freelances à travers l'Europe. Notre équipe expérimentée continue d'innover avec une technologie de pointe tout en maintenant les plus hauts standards de sécurité, de conformité et de service client. Nous représentons la qualité, la confiance et l'innovation dans la banque d'entreprise."
+    },
+    "stats": {
+      "overline": "Notre Impact",
+      "title": "Approuvé par les Entreprises à Travers l'Europe",
+      "subtitle": "Notre croissance reflète la confiance que nos clients nous accordent",
+      "yearsExperience": "Ans d'Expérience",
+      "businessClients": "Clients Professionnels"
+    },
     "strengths": {
+      "overline": "NOS FORCES",
+      "title": "Ce Qui Nous Distingue",
+      "subtitle": "Les trois piliers clés de notre succès",
       "banking": {
         "title": "Expertise Bancaire d'Entreprise",
         "description": "Plus de 18 ans d'expérience au service des entreprises commerciales, des institutions financières et des fonds d'investissement en Europe."
@@ -634,6 +662,63 @@
         "title": "Technologie Moderne",
         "description": "Utilisation de l'Intelligence Artificielle et de la Blockchain pour rendre les services bancaires aux entreprises meilleurs, plus faciles et plus efficaces."
       }
+    },
+    "certifications": {
+      "overline": "LICENCES & CERTIFICATIONS",
+      "title": "Entièrement Licencié & Certifié",
+      "subtitle": "Nous détenons toutes les licences et certifications nécessaires pour fournir des services bancaires et financiers d'entreprise à travers l'Europe, garantissant la conformité avec les réglementations et normes de l'industrie.",
+      "stateLicensed": {
+        "title": "Agréé par l'État",
+        "description": "Agents Agréés par l'État"
+      },
+      "certified": {
+        "title": "Certifié",
+        "description": "Professionnels Certifiés de l'Industrie"
+      },
+      "bonded": {
+        "title": "Cautionné",
+        "description": "Opérations Cautionnées & Assurées"
+      },
+      "accredited": {
+        "title": "Accrédité",
+        "description": "Accrédité Better Business Bureau"
+      }
+    },
+    "whyChoose": {
+      "title": "Pourquoi Choisir Opulanz ?",
+      "subtitle": "Ce qui fait de nous votre partenaire bancaire d'entreprise de confiance",
+      "benefits": {
+        "platform": {
+          "title": "Plateforme Tout-en-Un",
+          "description": "Solution d'affaires complète couvrant la création de société, les services bancaires, la comptabilité, le conseil fiscal, l'investissement, l'assurance et plus encore - tout sur une seule plateforme."
+        },
+        "experience": {
+          "title": "18+ Ans d'Expérience",
+          "description": "Membre du Groupe Advensys Luxembourg S.A., nous apportons près de deux décennies d'expertise au service des entreprises à travers l'Europe."
+        },
+        "technology": {
+          "title": "Stack Technologique Moderne",
+          "description": "Construit avec une Intelligence Artificielle et une technologie Blockchain de pointe pour fournir des solutions bancaires efficaces, sécurisées et innovantes."
+        },
+        "focus": {
+          "title": "Approche Axée sur les Entreprises",
+          "description": "Spécialement conçu pour les entreprises commerciales, les institutions financières, les fonds d'investissement et les freelances - pas de banque de détail."
+        },
+        "quality": {
+          "title": "Normes de Qualité Européennes",
+          "description": "Opérant à travers l'Europe, nous maintenons les plus hauts standards de qualité, de confiance et de conformité avec les réglementations bancaires."
+        },
+        "vision": {
+          "title": "Vision Tournée vers l'Avenir",
+          "description": "Travaillant vers une licence bancaire complète avec des technologies blockchain et vertes intégrées pour diriger le marché bancaire en ligne européen."
+        }
+      }
+    },
+    "cta": {
+      "title": "Prêt à Commencer ?",
+      "subtitle": "Rejoignez des milliers d'entreprises à travers l'Europe qui font confiance à Opulanz comme plateforme bancaire et solution d'affaires tout-en-un.",
+      "openAccount": "Ouvrir un Compte",
+      "contactUs": "Nous Contacter"
     }
   },
   "taxAdvisory": {

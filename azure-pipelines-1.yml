@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - feature/Refactored-code
+      - main
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -12,8 +12,8 @@ variables:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '20.x'
-    displayName: 'Use Node.js 20'
+      versionSpec: '24.x'
+    displayName: 'Use Node.js 24'
 
   # 🔹 Build with env variables injected
   - script: |

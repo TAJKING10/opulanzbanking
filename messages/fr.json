@@ -256,6 +256,77 @@
       "description": "Solutions de financement immobilier au Luxembourg"
     }
   },
+  "taxAdvisory": {
+    "hero": {
+      "primaryCta": "Planifier une consultation",
+      "secondaryCta": "Nos Services"
+    },
+    "services": {
+      "overline": "Services fiscaux",
+      "title": "Conseil fiscal expert pour les entreprises et les particuliers",
+      "description": "Naviguez dans les réglementations fiscales complexes en toute confiance. Nos conseillers fiscaux expérimentés fournissent des conseils stratégiques pour optimiser votre position fiscale.",
+      "taxReturn": {
+        "title": "Préparation de déclarations fiscales",
+        "description": "Préparation et dépôt professionnels de déclarations fiscales d'entreprise et individuelles dans plusieurs juridictions."
+      },
+      "international": {
+        "title": "Fiscalité internationale",
+        "description": "Conseils d'experts sur les questions fiscales transfrontalières, les prix de transfert et les conventions de double imposition."
+      },
+      "corporate": {
+        "title": "Fiscalité des entreprises",
+        "description": "Services fiscaux complets pour les entreprises, y compris la restructuration, les conseils fiscaux en matière de fusions-acquisitions et le conseil en TVA."
+      },
+      "compliance": {
+        "title": "Conformité fiscale",
+        "description": "Assurez une conformité continue avec l'évolution des lois et réglementations fiscales au Luxembourg et au-delà."
+      },
+      "personal": {
+        "title": "Conseil fiscal personnel",
+        "description": "Conseils fiscaux personnalisés pour les particuliers fortunés et les expatriés."
+      }
+    },
+    "whyChoose": {
+      "title": "Experts fiscaux de confiance au Luxembourg",
+      "description": "Avec des décennies d'expérience combinée et une connaissance approfondie du droit fiscal luxembourgeois et international, notre équipe de conseillers fiscaux certifiés fournit des conseils pratiques et exploitables qui protègent vos intérêts et optimisent votre position fiscale. Nous restons à l'avant-garde des changements réglementaires pour vous maintenir conforme et compétitif."
+    },
+    "benefits": {
+      "1": "Réduire la charge fiscale grâce à une planification stratégique",
+      "2": "Rester conforme aux réglementations fiscales complexes",
+      "3": "Connaissance experte du droit fiscal luxembourgeois et européen",
+      "4": "Conseils proactifs sur les structures fiscalement efficaces",
+      "5": "Soutien lors des audits et litiges fiscaux",
+      "6": "Mises à jour régulières sur les changements de lois fiscales",
+      "7": "Expertise fiscale multi-juridictionnelle"
+    },
+    "expertise": {
+      "overline": "Notre expertise",
+      "title": "Couverture fiscale complète",
+      "description": "De la conformité locale aux structures fiscales internationales, nous couvrons tous les aspects du conseil fiscal.",
+      "optimization": {
+        "title": "Optimisation fiscale",
+        "description": "Minimiser la charge fiscale de manière légale et éthique"
+      },
+      "compliance": {
+        "title": "Conformité",
+        "description": "Respect total des réglementations fiscales"
+      },
+      "international": {
+        "title": "International",
+        "description": "Expertise fiscale transfrontalière"
+      },
+      "personal": {
+        "title": "Service personnalisé",
+        "description": "Conseillers fiscaux dédiés à vos besoins"
+      }
+    },
+    "cta": {
+      "title": "Optimisons votre stratégie fiscale",
+      "description": "Planifiez une consultation avec nos experts fiscaux pour découvrir comment nous pouvons vous aider à réduire votre charge fiscale tout en restant pleinement conforme.",
+      "schedule": "Planifier une consultation",
+      "contact": "Nous contacter"
+    }
+  },
   "legal": {
     "regulated": "Réglementé par ACPR & AMF (FR)",
     "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
@@ -334,6 +405,9 @@
   },
   "openAccount": {
     "subtitle": "Choisissez votre type de compte et complétez la demande en quelques minutes",
+    "buttons": {
+      "getStarted": "Commencer"
+    },
     "individual": {
       "description": "Compte bancaire personnel pour les particuliers avec des fonctionnalités professionnelles et support multi-devises.",
       "features": {

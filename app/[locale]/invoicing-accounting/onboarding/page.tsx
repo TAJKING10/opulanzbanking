@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
 import { Step } from "@/components/account-opening/stepper";
 
@@ -13,19 +14,20 @@ import { BillingVolumeStep } from "@/components/accounting/billing-volume-step";
 import { DocumentsStep } from "@/components/accounting/documents-step";
 import { ReviewSubmitStep } from "@/components/accounting/review-submit-step";
 
-const ACCOUNTING_STEPS: Step[] = [
-  { id: 1, label: "Company", description: "Basic details" },
-  { id: 2, label: "Activity", description: "Business & scale" },
-  { id: 3, label: "Contacts", description: "Addresses & people" },
-  { id: 4, label: "Volume", description: "Billing info" },
-  { id: 5, label: "Documents", description: "Optional uploads" },
-  { id: 6, label: "Review", description: "Confirm & submit" },
-];
-
 export default function AccountingOnboardingPage() {
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string;
+  const t = useTranslations();
+
+  const ACCOUNTING_STEPS: Step[] = [
+    { id: 1, label: t('accounting.steps.company.label'), description: t('accounting.steps.company.description') },
+    { id: 2, label: t('accounting.steps.activity.label'), description: t('accounting.steps.activity.description') },
+    { id: 3, label: t('accounting.steps.contacts.label'), description: t('accounting.steps.contacts.description') },
+    { id: 4, label: t('accounting.steps.volume.label'), description: t('accounting.steps.volume.description') },
+    { id: 5, label: t('accounting.steps.documents.label'), description: t('accounting.steps.documents.description') },
+    { id: 6, label: t('accounting.steps.review.label'), description: t('accounting.steps.review.description') },
+  ];
 
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);

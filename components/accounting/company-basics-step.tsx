@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -46,6 +47,7 @@ export function CompanyBasicsStep({
   onUpdate,
   onNext,
 }: CompanyBasicsStepProps) {
+  const t = useTranslations();
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const updateField = (field: string, value: any) => {
@@ -63,16 +65,16 @@ export function CompanyBasicsStep({
   const validate = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!data.companyType) newErrors.companyType = "Company type is required";
+    if (!data.companyType) newErrors.companyType = t('accounting.companyBasics.errors.companyTypeRequired');
     if (data.companyType === "other" && !data.companyTypeOther)
-      newErrors.companyTypeOther = "Please specify company type";
+      newErrors.companyTypeOther = t('accounting.companyBasics.errors.specifyRequired');
     if (!data.countryOfIncorporation)
-      newErrors.countryOfIncorporation = "Country is required";
+      newErrors.countryOfIncorporation = t('accounting.companyBasics.errors.countryRequired');
     if (!data.dateOfIncorporation)
-      newErrors.dateOfIncorporation = "Date is required";
+      newErrors.dateOfIncorporation = t('accounting.companyBasics.errors.dateRequired');
     if (!data.shareCapitalAmount || data.shareCapitalAmount <= 0)
-      newErrors.shareCapitalAmount = "Share capital must be greater than 0";
-    if (!data.legalName) newErrors.legalName = "Legal name is required";
+      newErrors.shareCapitalAmount = t('accounting.companyBasics.errors.shareCapitalRequired');
+    if (!data.legalName) newErrors.legalName = t('accounting.companyBasics.errors.legalNameRequired');
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -88,10 +90,10 @@ export function CompanyBasicsStep({
     <div className="space-y-6">
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">
-          Company Basics
+          {t('accounting.companyBasics.title')}
         </h2>
         <p className="text-brand-grayMed">
-          Tell us about your company's legal structure and registration details.
+          {t('accounting.companyBasics.subtitle')}
         </p>
       </div>
 
@@ -99,7 +101,7 @@ export function CompanyBasicsStep({
         {/* Company Type */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Company Type <span className="text-red-500">*</span>
+            {t('accounting.companyBasics.fields.companyType')} <span className="text-red-500">*</span>
           </Label>
           <Select
             value={data.companyType || ""}
@@ -108,7 +110,7 @@ export function CompanyBasicsStep({
             <SelectTrigger
               className={errors.companyType ? "border-red-500" : ""}
             >
-              <SelectValue placeholder="Select company type" />
+              <SelectValue placeholder={t('accounting.companyBasics.placeholders.companyType')} />
             </SelectTrigger>
             <SelectContent>
               {COMPANY_TYPES.map((type) => (

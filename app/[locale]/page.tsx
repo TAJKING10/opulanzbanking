@@ -18,6 +18,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=500&fit=crop',
       href: `/${locale}/invoicing-accounting`,
       ctaLabel: t('common.learnMore'),
+      exploreLabel: t('common.explore'),
     },
     {
       title: t('nav.openAccount'),
@@ -25,6 +26,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=500&fit=crop',
       href: `/${locale}/open-account`,
       ctaLabel: t('common.learnMore'),
+      exploreLabel: t('common.explore'),
     },
     {
       title: t('nav.companyFormation'),
@@ -32,6 +34,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=500&fit=crop',
       href: `/${locale}/company-formation`,
       ctaLabel: t('common.learnMore'),
+      exploreLabel: t('common.explore'),
     },
     {
       title: t('services.tax.title'),
@@ -39,6 +42,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=500&fit=crop',
       href: `/${locale}/tax-advisory`,
       ctaLabel: t('common.learnMore'),
+      exploreLabel: t('common.explore'),
     },
     {
       title: t('services.investment.title'),
@@ -46,6 +50,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
       href: `/${locale}/investment-advisory`,
       ctaLabel: t('common.learnMore'),
+      exploreLabel: t('common.explore'),
     },
     {
       title: t('services.lifeInsurance.title'),
@@ -53,6 +58,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       image: 'https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800&h=500&fit=crop',
       href: `/${locale}/life-insurance`,
       ctaLabel: t('common.learnMore'),
+      exploreLabel: t('common.explore'),
     },
   ];
 

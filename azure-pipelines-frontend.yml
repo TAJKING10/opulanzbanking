@@ -16,9 +16,10 @@ steps:
     displayName: 'Use Node.js 18'
 
   - script: |
-      npm ci
-      npm run build
-    displayName: 'Build Next.js'
+      npm install --no-audit --no-fund
+      npm run export
+    displayName: 'Build & Export Next.js'
+    
     env:
       NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
       NEXT_PUBLIC_APP_NAME: $(NEXT_PUBLIC_APP_NAME)

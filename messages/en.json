@@ -938,5 +938,122 @@
       "openAccount": "Open an Account",
       "contactUs": "Contact Us"
     }
+  },
+  "accounting": {
+    "onboarding": {
+      "title": "Accounting & Bookkeeping Onboarding",
+      "subtitle": "Complete your application in 6 simple steps",
+      "autoSave": "Your progress is automatically saved. You can return anytime to complete your application."
+    },
+    "steps": {
+      "company": {
+        "label": "Company",
+        "description": "Basic details"
+      },
+      "activity": {
+        "label": "Activity",
+        "description": "Business & scale"
+      },
+      "contacts": {
+        "label": "Contacts",
+        "description": "Addresses & people"
+      },
+      "volume": {
+        "label": "Volume",
+        "description": "Billing info"
+      },
+      "documents": {
+        "label": "Documents",
+        "description": "Optional uploads"
+      },
+      "review": {
+        "label": "Review",
+        "description": "Confirm & submit"
+      }
+    },
+    "companyBasics": {
+      "title": "Company Basics",
+      "subtitle": "Tell us about your company's legal structure and registration details.",
+      "fields": {
+        "companyType": "Company Type",
+        "companyTypeOther": "Specify Company Type",
+        "countryOfIncorporation": "Country of Incorporation",
+        "dateOfIncorporation": "Date of Incorporation",
+        "shareCapital": "Share Capital",
+        "legalName": "Registered Name (Legal)",
+        "tradeName": "Trade Name (Optional)",
+        "registrationNumber": "Registration Number (Optional)",
+        "vatNumber": "VAT Number (Optional)"
+      },
+      "placeholders": {
+        "companyType": "Select company type",
+        "country": "Select country",
+        "date": "mm/dd/yyyy",
+        "legalName": "Company Legal Name S.A.",
+        "tradeName": "Trading as...",
+        "registrationNumber": "RCS B123456",
+        "vatNumber": "LU12345678"
+      },
+      "hints": {
+        "tradeName": "If different from legal name",
+        "registrationNumber": "Company registration or RCS number",
+        "vatNumber": "If you don't have a VAT number yet, leave blank"
+      },
+      "errors": {
+        "companyTypeRequired": "Company type is required",
+        "specifyRequired": "Please specify company type",
+        "countryRequired": "Country is required",
+        "dateRequired": "Date is required",
+        "shareCapitalRequired": "Share capital must be greater than 0",
+        "legalNameRequired": "Legal name is required"
+      }
+    },
+    "features": {
+      "invoicing": {
+        "title": "Professional Invoicing",
+        "description": "Create and send professional invoices with automated payment reminders and tracking."
+      },
+      "bookkeeping": {
+        "title": "Bookkeeping Services",
+        "description": "Comprehensive bookkeeping services to keep your financial records accurate and up-to-date."
+      },
+      "reporting": {
+        "title": "Financial Reporting",
+        "description": "Detailed financial reports and insights to help you make informed business decisions."
+      },
+      "payroll": {
+        "title": "Payroll Management",
+        "description": "Efficient payroll processing with automated tax calculations and compliance."
+      },
+      "compliance": {
+        "title": "Compliance & Audit",
+        "description": "Ensure compliance with local regulations and prepare for audits with confidence."
+      },
+      "planning": {
+        "title": "Financial Planning",
+        "description": "Strategic financial planning and analysis to support your business growth."
+      }
+    },
+    "benefits": {
+      "title": "Why Choose Our Accounting Services?",
+      "subtitle": "We combine cutting-edge technology with expert financial knowledge to deliver accounting services that help your business thrive. Our team of certified accountants ensures accuracy, compliance, and strategic insights for your financial success.",
+      "list": [
+        "Save time with automated invoicing and bookkeeping",
+        "Reduce errors with professional accounting expertise",
+        "Stay compliant with local tax regulations",
+        "Get real-time insights into your financial health",
+        "Focus on growing your business while we handle the numbers",
+        "Secure cloud-based access to your financial data anytime"
+      ]
+    },
+    "cta": {
+      "title": "Ready to Streamline Your Finances?",
+      "subtitle": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference."
+    },
+    "sections": {
+      "ourServices": "Our Services",
+      "completeSolutions": "Complete Accounting Solutions for Your Business",
+      "solutionsDesc": "From invoicing to financial reporting, we provide comprehensive accounting services tailored to your business needs."
+    }
   }
 }

@@ -925,5 +925,122 @@
       "openAccount": "Ouvrir un Compte",
       "contactUs": "Nous Contacter"
     }
+  },
+  "accounting": {
+    "onboarding": {
+      "title": "Inscription Comptabilité et Facturation",
+      "subtitle": "Complétez votre demande en 6 étapes simples",
+      "autoSave": "Votre progression est automatiquement sauvegardée. Vous pouvez revenir à tout moment pour compléter votre demande."
+    },
+    "steps": {
+      "company": {
+        "label": "Société",
+        "description": "Informations de base"
+      },
+      "activity": {
+        "label": "Activité",
+        "description": "Entreprise et échelle"
+      },
+      "contacts": {
+        "label": "Contacts",
+        "description": "Adresses et personnes"
+      },
+      "volume": {
+        "label": "Volume",
+        "description": "Informations de facturation"
+      },
+      "documents": {
+        "label": "Documents",
+        "description": "Téléchargements optionnels"
+      },
+      "review": {
+        "label": "Révision",
+        "description": "Confirmer et soumettre"
+      }
+    },
+    "companyBasics": {
+      "title": "Informations de Base de la Société",
+      "subtitle": "Parlez-nous de la structure juridique et des détails d'enregistrement de votre société.",
+      "fields": {
+        "companyType": "Type de Société",
+        "companyTypeOther": "Spécifier le Type de Société",
+        "countryOfIncorporation": "Pays de Constitution",
+        "dateOfIncorporation": "Date de Constitution",
+        "shareCapital": "Capital Social",
+        "legalName": "Nom Légal (Raison Sociale)",
+        "tradeName": "Nom Commercial (Optionnel)",
+        "registrationNumber": "Numéro d'Enregistrement (Optionnel)",
+        "vatNumber": "Numéro de TVA (Optionnel)"
+      },
+      "placeholders": {
+        "companyType": "Sélectionner le type de société",
+        "country": "Sélectionner le pays",
+        "date": "jj/mm/aaaa",
+        "legalName": "Nom Légal de la Société S.A.",
+        "tradeName": "Nom commercial...",
+        "registrationNumber": "RCS B123456",
+        "vatNumber": "LU12345678"
+      },
+      "hints": {
+        "tradeName": "Si différent du nom légal",
+        "registrationNumber": "Numéro d'enregistrement de la société ou RCS",
+        "vatNumber": "Si vous n'avez pas encore de numéro de TVA, laissez vide"
+      },
+      "errors": {
+        "companyTypeRequired": "Le type de société est requis",
+        "specifyRequired": "Veuillez spécifier le type de société",
+        "countryRequired": "Le pays est requis",
+        "dateRequired": "La date est requise",
+        "shareCapitalRequired": "Le capital social doit être supérieur à 0",
+        "legalNameRequired": "Le nom légal est requis"
+      }
+    },
+    "features": {
+      "invoicing": {
+        "title": "Facturation Professionnelle",
+        "description": "Créez et envoyez des factures professionnelles avec des rappels de paiement et un suivi automatisés."
+      },
+      "bookkeeping": {
+        "title": "Services de Tenue de Livres",
+        "description": "Services complets de tenue de livres pour maintenir vos registres financiers précis et à jour."
+      },
+      "reporting": {
+        "title": "Rapports Financiers",
+        "description": "Rapports financiers détaillés et informations pour vous aider à prendre des décisions commerciales éclairées."
+      },
+      "payroll": {
+        "title": "Gestion de la Paie",
+        "description": "Traitement efficace de la paie avec calculs fiscaux automatisés et conformité."
+      },
+      "compliance": {
+        "title": "Conformité et Audit",
+        "description": "Assurez la conformité avec les réglementations locales et préparez-vous aux audits en toute confiance."
+      },
+      "planning": {
+        "title": "Planification Financière",
+        "description": "Planification et analyse financières stratégiques pour soutenir la croissance de votre entreprise."
+      }
+    },
+    "benefits": {
+      "title": "Pourquoi Choisir Nos Services Comptables ?",
+      "subtitle": "Nous combinons une technologie de pointe avec des connaissances financières expertes pour fournir des services comptables qui aident votre entreprise à prospérer. Notre équipe de comptables certifiés assure précision, conformité et perspectives stratégiques pour votre succès financier.",
+      "list": [
+        "Gagnez du temps avec la facturation et la tenue de livres automatisées",
+        "Réduisez les erreurs grâce à une expertise comptable professionnelle",
+        "Restez conforme aux réglementations fiscales locales",
+        "Obtenez des informations en temps réel sur votre santé financière",
+        "Concentrez-vous sur la croissance de votre entreprise pendant que nous gérons les chiffres",
+        "Accès cloud sécurisé à vos données financières à tout moment"
+      ]
+    },
+    "cta": {
+      "title": "Prêt à Rationaliser Vos Finances ?",
+      "subtitle": "Rejoignez des milliers d'entreprises qui nous font confiance pour leurs besoins en comptabilité et facturation. Commencez aujourd'hui et découvrez la différence."
+    },
+    "sections": {
+      "ourServices": "Nos Services",
+      "completeSolutions": "Solutions Comptables Complètes pour Votre Entreprise",
+      "solutionsDesc": "De la facturation aux rapports financiers, nous fournissons des services comptables complets adaptés aux besoins de votre entreprise."
+    }
   }
 }

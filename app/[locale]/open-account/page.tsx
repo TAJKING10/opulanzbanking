@@ -17,7 +17,7 @@ export default function OpenAccountPage() {
     <>
       <Hero
         title={t("whitelabel.title")}
-        subtitle="Choose your account type and complete the application in minutes"
+        subtitle={t("openAccount.subtitle")}
       />
 
       <section className="bg-brand-off py-20">
@@ -39,25 +39,24 @@ export default function OpenAccountPage() {
                   {t("whitelabel.individual")}
                 </h3>
                 <p className="mb-6 text-brand-grayMed">
-                  Personal banking account for individuals with professional
-                  features and multi-currency support.
+                  {t("openAccount.individual.description")}
                 </p>
                 <ul className="mb-8 space-y-2 text-sm text-brand-dark">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Multi-currency IBAN</span>
+                    <span>{t("openAccount.individual.features.iban")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>SEPA & SWIFT transfers</span>
+                    <span>{t("openAccount.individual.features.transfers")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Debit card included</span>
+                    <span>{t("openAccount.individual.features.card")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Mobile & web banking</span>
+                    <span>{t("openAccount.individual.features.banking")}</span>
                   </li>
                 </ul>
                 <Button
@@ -67,7 +66,7 @@ export default function OpenAccountPage() {
                   className="w-full group-hover:bg-brand-goldDark"
                 >
                   <Link href={`/${locale}/open-account/start?mode=personal`}>
-                    Get Started
+                    {t("openAccount.buttons.getStarted")}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
@@ -84,25 +83,24 @@ export default function OpenAccountPage() {
                   {t("whitelabel.company")}
                 </h3>
                 <p className="mb-6 text-brand-grayMed">
-                  Professional business account for companies with advanced
-                  features and multi-user access.
+                  {t("openAccount.company.description")}
                 </p>
                 <ul className="mb-8 space-y-2 text-sm text-brand-dark">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Dedicated business IBAN</span>
+                    <span>{t("openAccount.company.features.iban")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Multi-user access control</span>
+                    <span>{t("openAccount.company.features.access")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Accounting integration</span>
+                    <span>{t("openAccount.company.features.accounting")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Corporate cards</span>
+                    <span>{t("openAccount.company.features.cards")}</span>
                   </li>
                 </ul>
                 <Button
@@ -112,7 +110,7 @@ export default function OpenAccountPage() {
                   className="w-full group-hover:bg-brand-goldDark"
                 >
                   <Link href={`/${locale}/open-account/start?mode=business`}>
-                    Get Started
+                    {t("openAccount.buttons.getStarted")}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
@@ -126,8 +124,7 @@ export default function OpenAccountPage() {
               {t("whitelabel.needCompany")}
             </h3>
             <p className="mb-6 text-brand-grayMed">
-              We can help you form your company in Luxembourg before opening
-              your business account.
+              {t("openAccount.formation.cta")}
             </p>
             <Button asChild variant="outline" size="lg">
               <Link href={`/${locale}/company-formation`}>

@@ -764,6 +764,78 @@
         "home": "Return to Homepage",
         "new": "Start New Application"
       }
+    },
+    "hero": {
+      "primaryCta": "Schedule Meeting",
+      "secondaryCta": "Our Services"
+    },
+    "services": {
+      "overline": "Investment Services",
+      "title": "Professional Investment Advisory",
+      "description": "Build and grow your wealth with expert investment guidance tailored to your unique financial situation.",
+      "portfolioDiversification": {
+        "title": "Portfolio Diversification",
+        "description": "Strategic asset allocation across multiple investment classes to optimize returns and manage risk."
+      },
+      "investmentStrategy": {
+        "title": "Investment Strategy",
+        "description": "Customized investment strategies aligned with your long-term financial objectives."
+      },
+      "retirementPlanning": {
+        "title": "Retirement Planning",
+        "description": "Strategic retirement planning to ensure financial security in your golden years."
+      }
+    },
+    "whyChoose": {
+      "title": "Grow Your Wealth with Confidence",
+      "description": "Our investment advisory team brings decades of experience in global markets and financial planning. We combine sophisticated analysis with personalized service to help you achieve your financial goals. Whether you're planning for retirement, building wealth, or seeking passive income, we provide the expertise and support you need.",
+      "cta": "Schedule Consultation"
+    },
+    "benefits": {
+      "1": "Access to exclusive investment opportunities",
+      "2": "Personalized investment strategies",
+      "3": "Regular portfolio rebalancing",
+      "4": "Transparent fee structure",
+      "5": "Expert market analysis and insights",
+      "6": "Tax-efficient investment solutions",
+      "7": "Ongoing portfolio monitoring and reporting"
+    },
+    "investmentOptions": {
+      "overline": "Investment Options",
+      "title": "Diverse Investment Opportunities",
+      "description": "Access a wide range of investment vehicles tailored to your risk tolerance and financial objectives.",
+      "equities": {
+        "title": "Equities",
+        "description": "Global stock market investments with growth potential",
+        "risk": "Medium to High"
+      },
+      "fixedIncome": {
+        "title": "Fixed Income",
+        "description": "Bonds and other debt securities for stable returns",
+        "risk": "Low to Medium"
+      },
+      "alternative": {
+        "title": "Alternative Investments",
+        "description": "Private equity, real estate, and hedge funds",
+        "risk": "Medium to High"
+      },
+      "sustainable": {
+        "title": "Sustainable Investing",
+        "description": "ESG-focused investments for responsible growth",
+        "risk": "Medium"
+      },
+      "riskLevel": "Risk Level:"
+    },
+    "stats": {
+      "aum": "Assets Under Management",
+      "clients": "Satisfied Clients",
+      "experience": "Years of Experience"
+    },
+    "cta": {
+      "title": "Start Building Your Investment Portfolio",
+      "description": "Take the first step towards financial freedom. Schedule a consultation with our investment advisors and discover how we can help you reach your financial goals.",
+      "schedule": "Schedule Meeting",
+      "learnMore": "Learn More"
     }
   },
   "about": {

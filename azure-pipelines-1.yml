@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - main
+      - feature/Refactored-code
 
 pool:
   vmImage: 'ubuntu-latest'

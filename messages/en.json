@@ -256,6 +256,77 @@
       "description": "Home financing solutions in Luxembourg"
     }
   },
+  "taxAdvisory": {
+    "hero": {
+      "primaryCta": "Schedule Consultation",
+      "secondaryCta": "Our Services"
+    },
+    "services": {
+      "overline": "Tax Services",
+      "title": "Expert Tax Advisory for Businesses & Individuals",
+      "description": "Navigate complex tax regulations with confidence. Our experienced tax advisors provide strategic guidance to optimize your tax position.",
+      "taxReturn": {
+        "title": "Tax Return Preparation",
+        "description": "Professional preparation and filing of corporate and individual tax returns across multiple jurisdictions."
+      },
+      "international": {
+        "title": "International Tax",
+        "description": "Expert guidance on cross-border tax matters, transfer pricing, and double taxation treaties."
+      },
+      "corporate": {
+        "title": "Corporate Tax",
+        "description": "Comprehensive corporate tax services including restructuring, M&A tax advice, and VAT consulting."
+      },
+      "compliance": {
+        "title": "Tax Compliance",
+        "description": "Ensure ongoing compliance with changing tax laws and regulations in Luxembourg and beyond."
+      },
+      "personal": {
+        "title": "Personal Tax Advisory",
+        "description": "Personalized tax advice for high-net-worth individuals and expatriates."
+      }
+    },
+    "whyChoose": {
+      "title": "Trusted Tax Experts in Luxembourg",
+      "description": "With decades of combined experience and deep knowledge of Luxembourg and international tax law, our team of certified tax advisors delivers practical, actionable advice that protects your interests and optimizes your tax position. We stay ahead of regulatory changes to keep you compliant and competitive."
+    },
+    "benefits": {
+      "1": "Reduce tax burden through strategic planning",
+      "2": "Stay compliant with complex tax regulations",
+      "3": "Expert knowledge of Luxembourg and EU tax law",
+      "4": "Proactive advice on tax-efficient structures",
+      "5": "Support during tax audits and disputes",
+      "6": "Regular updates on tax law changes",
+      "7": "Multi-jurisdictional tax expertise"
+    },
+    "expertise": {
+      "overline": "Our Expertise",
+      "title": "Comprehensive Tax Coverage",
+      "description": "From local compliance to international tax structures, we cover all aspects of tax advisory.",
+      "optimization": {
+        "title": "Tax Optimization",
+        "description": "Minimize tax burden legally and ethically"
+      },
+      "compliance": {
+        "title": "Compliance",
+        "description": "Full adherence to tax regulations"
+      },
+      "international": {
+        "title": "International",
+        "description": "Cross-border tax expertise"
+      },
+      "personal": {
+        "title": "Personal Service",
+        "description": "Dedicated tax advisors for your needs"
+      }
+    },
+    "cta": {
+      "title": "Let's Optimize Your Tax Strategy",
+      "description": "Schedule a consultation with our tax experts to discover how we can help you reduce your tax burden while staying fully compliant.",
+      "schedule": "Schedule Consultation",
+      "contact": "Contact Us"
+    }
+  },
   "legal": {
     "regulated": "Regulated by ACPR & AMF (FR)",
     "disclaimer": "Opulanz is a digital banking platform. Banking services provided by licensed partners.",
@@ -334,6 +405,9 @@
   },
   "openAccount": {
     "subtitle": "Choose your account type and complete the application in minutes",
+    "buttons": {
+      "getStarted": "Get Started"
+    },
     "individual": {
       "description": "Personal banking account for individuals with professional features and multi-currency support.",
       "features": {
@@ -344,7 +418,7 @@
       }
     },
     "company": {
-      "description": "Professional business account for companies with advanced features and multi-user access.",
+      "description": "Professional business account for companies with advanced features and multi-currency support.",
       "features": {
         "iban": "Dedicated business IBAN",
         "access": "Multi-user access control",

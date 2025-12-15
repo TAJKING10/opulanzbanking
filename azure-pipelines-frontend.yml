@@ -7,18 +7,18 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: frontend-env-vars  # your variable group
+  - group: frontend-env-vars
 
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '24.x'
-    displayName: 'Use Node.js 24'
+      versionSpec: '18.x'
+    displayName: 'Use Node.js 18'
 
   - script: |
-      npm install --no-audit --no-fund
+      npm ci
       npm run build
-    displayName: 'Install & Build Next.js'
+    displayName: 'Build Next.js'
     env:
       NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
       NEXT_PUBLIC_APP_NAME: $(NEXT_PUBLIC_APP_NAME)
@@ -31,15 +31,14 @@ steps:
 
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      rootFolderOrFile: 'out'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/frontend-$(Build.BuildId).zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
       replaceExistingArchive: true
 
   - task: AzureWebApp@1
-    displayName: 'Deploy to rg-opulanz-frontend'
     inputs:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-frontend'
-      package: '$(Build.ArtifactStagingDirectory)/frontend-$(Build.BuildId).zip'
+      package: '$(Build.ArtifactStagingDirectory)/frontend.zip'

@@ -7,7 +7,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-- group: frontend-env-vars
+  - group: frontend-env-vars  # your variable group
 
 steps:
   - task: NodeTool@0
@@ -15,7 +15,6 @@ steps:
       versionSpec: '24.x'
     displayName: 'Use Node.js 24'
 
-  # 🔹 Build with env variables injected
   - script: |
       npm install --no-audit --no-fund
       npm run build

@@ -2,6 +2,7 @@
   "common": {
     "getStarted": "Commencer",
     "learnMore": "En savoir plus",
+    "explore": "Explorer →",
     "readyToStart": "Prêt à commencer ?",
     "submit": "Soumettre",
     "cancel": "Annuler",
@@ -21,7 +22,7 @@
     "companyFormation": "Création de société",
     "services": "Services",
     "ourServices": "Nos Services",
-    "support": "Support",
+    "support": "Assistance",
     "taxAdvisory": "Conseil fiscal",
     "investmentAdvisory": "Conseil en investissement",
     "lifeInsurance": "Assurance-vie",
@@ -355,7 +356,7 @@
       },
       "company": {
         "about": "À propos",
-        "support": "Support",
+        "support": "Assistance",
         "contact": "Contact"
       },
       "legal": {
@@ -750,6 +751,78 @@
         "home": "Retour à l'Accueil",
         "new": "Nouvelle Demande"
       }
+    },
+    "hero": {
+      "primaryCta": "Planifier une réunion",
+      "secondaryCta": "Nos Services"
+    },
+    "services": {
+      "overline": "Services d'investissement",
+      "title": "Conseil en investissement professionnel",
+      "description": "Construisez et développez votre patrimoine avec des conseils d'experts en investissement adaptés à votre situation financière unique.",
+      "portfolioDiversification": {
+        "title": "Diversification du portefeuille",
+        "description": "Allocation stratégique d'actifs sur plusieurs classes d'investissement pour optimiser les rendements et gérer les risques."
+      },
+      "investmentStrategy": {
+        "title": "Stratégie d'investissement",
+        "description": "Stratégies d'investissement personnalisées alignées sur vos objectifs financiers à long terme."
+      },
+      "retirementPlanning": {
+        "title": "Planification de la retraite",
+        "description": "Planification stratégique de la retraite pour assurer la sécurité financière pendant vos années dorées."
+      }
+    },
+    "whyChoose": {
+      "title": "Développez votre patrimoine en toute confiance",
+      "description": "Notre équipe de conseil en investissement possède des décennies d'expérience sur les marchés mondiaux et en planification financière. Nous combinons une analyse sophistiquée avec un service personnalisé pour vous aider à atteindre vos objectifs financiers. Que vous planifiez votre retraite, la constitution d'un patrimoine ou la recherche de revenus passifs, nous vous apportons l'expertise et le soutien dont vous avez besoin.",
+      "cta": "Planifier une consultation"
+    },
+    "benefits": {
+      "1": "Accès à des opportunités d'investissement exclusives",
+      "2": "Stratégies d'investissement personnalisées",
+      "3": "Rééquilibrage régulier du portefeuille",
+      "4": "Structure de frais transparente",
+      "5": "Analyses de marché et informations d'experts",
+      "6": "Solutions d'investissement fiscalement efficientes",
+      "7": "Surveillance et reporting continus du portefeuille"
+    },
+    "investmentOptions": {
+      "overline": "Options d'investissement",
+      "title": "Opportunités d'investissement diversifiées",
+      "description": "Accédez à un large éventail de véhicules d'investissement adaptés à votre tolérance au risque et à vos objectifs financiers.",
+      "equities": {
+        "title": "Actions",
+        "description": "Investissements boursiers mondiaux avec potentiel de croissance",
+        "risk": "Moyen à Élevé"
+      },
+      "fixedIncome": {
+        "title": "Titres à revenu fixe",
+        "description": "Obligations et autres titres de créance pour des rendements stables",
+        "risk": "Faible à Moyen"
+      },
+      "alternative": {
+        "title": "Investissements alternatifs",
+        "description": "Capital-investissement, immobilier et fonds spéculatifs",
+        "risk": "Moyen à Élevé"
+      },
+      "sustainable": {
+        "title": "Investissement durable",
+        "description": "Investissements axés sur l'ESG pour une croissance responsable",
+        "risk": "Moyen"
+      },
+      "riskLevel": "Niveau de risque :"
+    },
+    "stats": {
+      "aum": "Actifs sous gestion",
+      "clients": "Clients satisfaits",
+      "experience": "Années d'expérience"
+    },
+    "cta": {
+      "title": "Commencez à construire votre portefeuille d'investissement",
+      "description": "Faites le premier pas vers la liberté financière. Planifiez une consultation avec nos conseillers en investissement et découvrez comment nous pouvons vous aider à atteindre vos objectifs financiers.",
+      "schedule": "Planifier une réunion",
+      "learnMore": "En savoir plus"
     }
   },
   "about": {
@@ -851,25 +924,6 @@
       "subtitle": "Rejoignez des milliers d'entreprises à travers l'Europe qui font confiance à Opulanz comme plateforme bancaire et solution d'affaires tout-en-un.",
       "openAccount": "Ouvrir un Compte",
       "contactUs": "Nous Contacter"
-    }
-  },
-  "taxAdvisory": {
-    "services": {
-      "taxReturn": {
-        "title": "Préparation des Déclarations Fiscales",
-        "description": "Préparation et dépôt professionnels des déclarations fiscales d'entreprise et individuelles dans plusieurs juridictions.",
-        "price": "€299"
-      },
-      "international": {
-        "title": "Fiscalité Internationale",
-        "description": "Conseils experts sur les questions fiscales transfrontalières, les prix de transfert et les conventions de double imposition.",
-        "price": "€250"
-      },
-      "corporate": {
-        "title": "Fiscalité d'Entreprise",
-        "description": "Services fiscaux d'entreprise complets incluant la restructuration, les conseils fiscaux en fusions-acquisitions et le conseil en TVA.",
-        "price": "€150"
-      }
     }
   },
   "accounting": {

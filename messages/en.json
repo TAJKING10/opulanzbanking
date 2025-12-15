@@ -867,23 +867,4 @@
       "contactUs": "Contact Us"
     }
   },
-  "taxAdvisory": {
-    "services": {
-      "taxReturn": {
-        "title": "Tax Return Preparation",
-        "description": "Professional preparation and filing of corporate and individual tax returns across multiple jurisdictions.",
-        "price": "€299"
-      },
-      "international": {
-        "title": "International Tax",
-        "description": "Expert guidance on cross-border tax matters, transfer pricing, and double taxation treaties.",
-        "price": "€250"
-      },
-      "corporate": {
-        "title": "Corporate Tax",
-        "description": "Comprehensive corporate tax services including restructuring, M&A tax advice, and VAT consulting.",
-        "price": "€150"
-      }
-    }
-  }
 }

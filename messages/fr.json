@@ -854,23 +854,4 @@
       "contactUs": "Nous Contacter"
     }
   },
-  "taxAdvisory": {
-    "services": {
-      "taxReturn": {
-        "title": "Préparation des Déclarations Fiscales",
-        "description": "Préparation et dépôt professionnels des déclarations fiscales d'entreprise et individuelles dans plusieurs juridictions.",
-        "price": "€299"
-      },
-      "international": {
-        "title": "Fiscalité Internationale",
-        "description": "Conseils experts sur les questions fiscales transfrontalières, les prix de transfert et les conventions de double imposition.",
-        "price": "€250"
-      },
-      "corporate": {
-        "title": "Fiscalité d'Entreprise",
-        "description": "Services fiscaux d'entreprise complets incluant la restructuration, les conseils fiscaux en fusions-acquisitions et le conseil en TVA.",
-        "price": "€150"
-      }
-    }
-  }
 }

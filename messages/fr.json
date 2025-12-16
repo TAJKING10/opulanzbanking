@@ -1042,5 +1042,223 @@
       "completeSolutions": "Solutions Comptables Complètes pour Votre Entreprise",
       "solutionsDesc": "De la facturation aux rapports financiers, nous fournissons des services comptables complets adaptés aux besoins de votre entreprise."
     }
+  },
+  "supportPage": {
+    "hero": {
+      "title": "Comment Pouvons-Nous Vous Aider ?",
+      "subtitle": "Contactez notre équipe d'assistance pour toute question ou aide dont vous avez besoin"
+    },
+    "contactMethods": {
+      "title": "Nous Contacter",
+      "description": "Choisissez votre moyen préféré pour nous joindre",
+      "phone": {
+        "title": "Assistance Téléphonique",
+        "description": "Parlez directement avec notre équipe d'assistance",
+        "number": "+352 20 30 40 50",
+        "hours": "Lun-Ven, 9h00-18h00 CET"
+      },
+      "email": {
+        "title": "Assistance par E-mail",
+        "description": "Envoyez-nous vos questions à tout moment",
+        "address": "support@opulanz.com",
+        "response": "Réponse sous 24 heures"
+      },
+      "chat": {
+        "title": "Chat en Direct",
+        "description": "Discutez avec nous en temps réel",
+        "button": "Démarrer le Chat",
+        "availability": "Disponible pendant les heures de bureau"
+      }
+    },
+    "contactForm": {
+      "title": "Envoyez-Nous un Message",
+      "description": "Remplissez le formulaire ci-dessous et nous vous répondrons dès que possible",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "E-mail",
+      "phone": "Numéro de Téléphone",
+      "subject": "Sujet",
+      "message": "Message",
+      "selectSubject": "Sélectionner un sujet",
+      "subjects": {
+        "account": "Questions sur le Compte",
+        "technical": "Assistance Technique",
+        "company": "Création de Société",
+        "billing": "Facturation et Paiements",
+        "other": "Autre"
+      },
+      "messagePlaceholder": "Comment pouvons-nous vous aider ?",
+      "submit": "Envoyer le Message"
+    },
+    "faq": {
+      "title": "Questions Fréquemment Posées",
+      "description": "Trouvez des réponses rapides aux questions courantes",
+      "questions": {
+        "openAccount": {
+          "question": "Combien de temps faut-il pour ouvrir un compte ?",
+          "answer": "Les comptes individuels peuvent être ouverts dans les 24 à 48 heures après vérification des documents. Les comptes professionnels prennent généralement 3 à 5 jours ouvrables."
+        },
+        "documents": {
+          "question": "Quels documents sont nécessaires pour ouvrir un compte ?",
+          "answer": "Pour les comptes individuels : passeport ou carte d'identité valide, justificatif de domicile (facture de services publics ou relevé bancaire), et documentation sur l'origine des fonds. Pour les comptes professionnels : documents d'enregistrement de la société, informations sur les bénéficiaires effectifs et plan d'affaires."
+        },
+        "fees": {
+          "question": "Y a-t-il des frais mensuels ?",
+          "answer": "Nous offrons une tarification transparente sans frais cachés. Les frais mensuels varient selon le type de compte. Les comptes individuels commencent à partir de 10 €/mois et les comptes professionnels à partir de 25 €/mois."
+        },
+        "currencies": {
+          "question": "Quelles devises supportez-vous ?",
+          "answer": "Nous supportons EUR, USD, GBP, CHF et d'autres devises majeures. Les IBAN multi-devises sont disponibles pour tous les types de comptes."
+        },
+        "contact": {
+          "question": "Comment puis-je contacter l'assistance ?",
+          "answer": "Vous pouvez nous joindre par téléphone au +352 20 30 40 50, par e-mail à support@opulanz.com, ou par chat en direct pendant les heures de bureau (Lun-Ven, 9h00-18h00 CET)."
+        }
+      }
+    },
+    "resources": {
+      "title": "Ressources Supplémentaires",
+      "description": "Explorez notre centre d'aide et notre documentation",
+      "documentation": {
+        "title": "Documentation",
+        "description": "Parcourez nos guides complets et tutoriels",
+        "button": "Voir la Documentation"
+      },
+      "helpCenter": {
+        "title": "Centre d'Aide",
+        "description": "Recherchez dans notre base de connaissances pour obtenir des réponses",
+        "button": "Visiter le Centre d'Aide"
+      },
+      "status": {
+        "title": "État des Services",
+        "description": "Vérifiez l'état de nos services",
+        "button": "Voir l'État"
+      }
+    },
+    "offices": {
+      "title": "Nos Bureaux",
+      "description": "Visitez-nous dans l'un de nos emplacements",
+      "luxembourg": {
+        "title": "Bureau de Luxembourg",
+        "address": "1, Rue de la Poste",
+        "city": "L-2346 Luxembourg",
+        "country": "Luxembourg",
+        "phone": "Téléphone",
+        "email": "E-mail"
+      },
+      "france": {
+        "title": "Bureau de France",
+        "address": "25, Rue de la Paix",
+        "city": "75002 Paris",
+        "country": "France",
+        "phone": "Téléphone",
+        "email": "E-mail"
+      }
+    }
+  },
+  "lifeInsurance": {
+    "hero": {
+      "title": "Services de Courtage en Assurance Vie",
+      "subtitle": "En tant que courtier d'assurance de confiance, nous vous mettons en relation avec des solutions d'assurance vie complètes pour protéger financièrement vos proches",
+      "primaryCta": "Obtenir un Devis",
+      "secondaryCta": "En Savoir Plus"
+    },
+    "overview": {
+      "overline": "Aperçu",
+      "title": "Votre Courtier en Assurance Vie de Confiance",
+      "description": "En tant que courtier d'assurance indépendant, nous travaillons en votre nom pour trouver et vous mettre en relation avec les meilleures solutions d'assurance vie auprès des principaux fournisseurs, garantissant la protection financière de vos proches.",
+      "badges": {
+        "unbiased": "Conseils Impartiaux",
+        "multipleProviders": "Plusieurs Fournisseurs",
+        "familyProtection": "Protection Familiale"
+      },
+      "whyChoose": "Pourquoi Choisir un Courtier ?",
+      "benefits": {
+        "1": "Courtier indépendant représentant vos intérêts",
+        "2": "Accès aux polices de plusieurs fournisseurs d'assurance de premier plan",
+        "3": "Analyse personnalisée des besoins et recommandations de couverture",
+        "4": "Conseils d'experts sur les fonctionnalités avancées et la planification successorale",
+        "5": "Gestion continue des polices et assistance"
+      }
+    },
+    "products": {
+      "overline": "Nos Services",
+      "title": "Produits d'Assurance Vie que Nous Proposons",
+      "description": "Nous vous aidons à accéder à un large éventail de solutions d'assurance vie auprès de fournisseurs de confiance pour répondre à vos besoins spécifiques de protection.",
+      "termLife": {
+        "title": "Assurance Vie Temporaire",
+        "description": "Options de 10, 20 ou 30 ans avec des primes nivelées pour une protection abordable pendant vos années les plus critiques."
+      },
+      "wholeLife": {
+        "title": "Assurance Vie Entière",
+        "description": "Couverture à vie avec accumulation de valeur de rachat qui offre une protection permanente et une croissance financière."
+      },
+      "universalLife": {
+        "title": "Assurance Vie Universelle",
+        "description": "Primes flexibles et prestations de décès ajustables qui s'adaptent à votre situation financière changeante."
+      },
+      "variableLife": {
+        "title": "Assurance Vie Variable",
+        "description": "Croissance de la valeur de rachat liée aux investissements qui vous permet d'augmenter potentiellement la valeur de votre police au fil du temps."
+      },
+      "groupLife": {
+        "title": "Assurance Vie Collective",
+        "description": "Plans d'assurance vie parrainés par l'employeur qui offrent une couverture à des tarifs de groupe compétitifs."
+      }
+    },
+    "process": {
+      "overline": "Processus Simple",
+      "title": "Comment Nous Vous Aidons à Trouver la Bonne Couverture",
+      "steps": {
+        "1": {
+          "title": "Consultation Gratuite",
+          "description": "Planifiez une réunion sans obligation pour discuter de vos besoins"
+        },
+        "2": {
+          "title": "Comparer les Options",
+          "description": "Nous présentons des polices de plusieurs fournisseurs de premier plan"
+        },
+        "3": {
+          "title": "Conseils d'Experts",
+          "description": "Obtenez des recommandations impartiales adaptées à vous"
+        },
+        "4": {
+          "title": "Assistance Continue",
+          "description": "Assistance continue tout au long du cycle de vie de votre police"
+        }
+      }
+    },
+    "features": {
+      "overline": "Pourquoi Nous Sommes Différents",
+      "title": "Expertise Professionnelle en Courtage d'Assurance",
+      "description": "En tant que courtiers indépendants, nous fournissons des conseils impartiaux et un accès aux meilleures solutions d'assurance pour vos besoins.",
+      "expertBrokers": {
+        "title": "Courtiers Experts",
+        "description": "Connaissances spécialisées pour vous mettre en relation avec les bons produits d'assurance"
+      },
+      "needsAnalysis": {
+        "title": "Analyse des Besoins",
+        "description": "Évaluation personnalisée pour trouver la couverture parfaite auprès de plusieurs fournisseurs"
+      },
+      "wealthBuilding": {
+        "title": "Constitution de Patrimoine",
+        "description": "Conseils sur les stratégies fiscalement avantageuses pour une croissance financière à long terme"
+      },
+      "ongoingSupport": {
+        "title": "Assistance Continue",
+        "description": "Gestion continue des polices et assistance en courtage"
+      }
+    },
+    "cta": {
+      "title": "Protégez l'Avenir de Votre Famille Aujourd'hui",
+      "description": "Commencez par une consultation personnalisée. Nous vous aiderons à comparer les options des principaux fournisseurs d'assurance pour trouver la solution qui correspond le mieux aux besoins et aux objectifs financiers de votre famille.",
+      "benefits": {
+        "consultation": "Consultation Gratuite",
+        "compare": "Comparer Plusieurs Fournisseurs",
+        "guidance": "Conseils d'Experts"
+      },
+      "primaryButton": "Obtenir un Devis Gratuit",
+      "secondaryButton": "Parler à un Conseiller"
+    }
   }
 }

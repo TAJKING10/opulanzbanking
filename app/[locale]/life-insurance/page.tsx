@@ -2,59 +2,60 @@
 
 import * as React from "react";
 import { Heart, Shield, Users, TrendingUp, CheckCircle, FileText, DollarSign, Briefcase, Clock } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 export default function LifeInsurancePage({ params: { locale } }: { params: { locale: string } }) {
+  const t = useTranslations("lifeInsurance");
   const products = [
     {
       icon: Clock,
-      title: "Term Life Insurance",
-      description: "10, 20, or 30-year term options with level premiums for affordable protection during your most critical years.",
+      title: t("products.termLife.title"),
+      description: t("products.termLife.description"),
     },
     {
       icon: Heart,
-      title: "Whole Life Insurance",
-      description: "Lifetime coverage with cash value accumulation that provides permanent protection and financial growth.",
+      title: t("products.wholeLife.title"),
+      description: t("products.wholeLife.description"),
     },
     {
       icon: TrendingUp,
-      title: "Universal Life Insurance",
-      description: "Flexible premiums and adjustable death benefits that adapt to your changing financial situation.",
+      title: t("products.universalLife.title"),
+      description: t("products.universalLife.description"),
     },
     {
       icon: DollarSign,
-      title: "Variable Life Insurance",
-      description: "Investment-linked cash value growth that allows you to potentially increase your policy's value over time.",
+      title: t("products.variableLife.title"),
+      description: t("products.variableLife.description"),
     },
     {
       icon: Briefcase,
-      title: "Group Life Insurance",
-      description: "Employer-sponsored life insurance plans that provide coverage at competitive group rates.",
+      title: t("products.groupLife.title"),
+      description: t("products.groupLife.description"),
     },
   ];
 
   const benefits = [
-    "Independent broker representing your interests",
-    "Access to policies from multiple leading insurance providers",
-    "Personalized needs analysis and coverage recommendations",
-    "Expert guidance on advanced features and estate planning",
-    "Ongoing policy management and support",
+    t("overview.benefits.1"),
+    t("overview.benefits.2"),
+    t("overview.benefits.3"),
+    t("overview.benefits.4"),
+    t("overview.benefits.5"),
   ];
 
   return (
     <>
       <Hero
-        title="Life Insurance Brokerage Services"
-        subtitle="As your trusted insurance broker, we connect you with comprehensive life insurance solutions to financially protect your loved ones"
+        title={t("hero.title")}
+        subtitle={t("hero.subtitle")}
         primaryCta={{
-          label: "Get a Quote",
+          label: t("hero.primaryCta"),
           href: `/${locale}/life-insurance/schedule`,
         }}
         secondaryCta={{
-          label: "Learn More",
+          label: t("hero.secondaryCta"),
           href: "#overview",
         }}
       />
@@ -71,27 +72,26 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <SectionHeading
-                overline="Overview"
-                title="Your Trusted Life Insurance Broker"
+                overline={t("overview.overline")}
+                title={t("overview.title")}
                 align="left"
                 className="mb-6"
               />
               <p className="text-lg text-brand-grayMed leading-relaxed">
-                As an independent insurance broker, we work on your behalf to find and connect you with the best
-                life insurance solutions from leading providers, ensuring your loved ones are financially protected.
+                {t("overview.description")}
               </p>
               <div className="flex flex-wrap gap-3">
                 <div className="group inline-flex items-center gap-2 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 px-4 py-2.5 rounded-xl border border-brand-gold/20 hover:border-brand-gold/40 transition-all hover:shadow-md">
                   <Shield className="h-5 w-5 text-brand-gold group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-semibold text-brand-dark">Unbiased Advice</span>
+                  <span className="text-sm font-semibold text-brand-dark">{t("overview.badges.unbiased")}</span>
                 </div>
                 <div className="group inline-flex items-center gap-2 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 px-4 py-2.5 rounded-xl border border-brand-gold/20 hover:border-brand-gold/40 transition-all hover:shadow-md">
                   <Users className="h-5 w-5 text-brand-gold group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-semibold text-brand-dark">Multiple Providers</span>
+                  <span className="text-sm font-semibold text-brand-dark">{t("overview.badges.multipleProviders")}</span>
                 </div>
                 <div className="group inline-flex items-center gap-2 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 px-4 py-2.5 rounded-xl border border-brand-gold/20 hover:border-brand-gold/40 transition-all hover:shadow-md">
                   <Heart className="h-5 w-5 text-brand-gold group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-semibold text-brand-dark">Family Protection</span>
+                  <span className="text-sm font-semibold text-brand-dark">{t("overview.badges.familyProtection")}</span>
                 </div>
               </div>
             </div>
@@ -103,7 +103,7 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-gold to-brand-goldDark flex items-center justify-center shadow-lg">
                     <CheckCircle className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-brand-dark">Why Choose a Broker?</h3>
+                  <h3 className="text-xl font-bold text-brand-dark">{t("overview.whyChoose")}</h3>
                 </div>
                 <div className="space-y-4">
                   {benefits.map((benefit, idx) => (
@@ -131,9 +131,9 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
 
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <SectionHeading
-            overline="Our Services"
-            title="Life Insurance Products We Broker"
-            description="We help you access a wide range of life insurance solutions from trusted providers to meet your specific protection needs."
+            overline={t("products.overline")}
+            title={t("products.title")}
+            description={t("products.description")}
             className="mb-10"
           />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -175,17 +175,17 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
 
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <SectionHeading
-            overline="Simple Process"
-            title="How We Help You Find the Right Coverage"
+            overline={t("process.overline")}
+            title={t("process.title")}
             align="center"
             className="mb-12"
           />
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { num: 1, title: "Free Consultation", desc: "Schedule a no-obligation meeting to discuss your needs" },
-              { num: 2, title: "Compare Options", desc: "We present policies from multiple top providers" },
-              { num: 3, title: "Expert Guidance", desc: "Get unbiased recommendations tailored to you" },
-              { num: 4, title: "Ongoing Support", desc: "Continuous assistance throughout your policy lifecycle" }
+              { num: 1, title: t("process.steps.1.title"), desc: t("process.steps.1.description") },
+              { num: 2, title: t("process.steps.2.title"), desc: t("process.steps.2.description") },
+              { num: 3, title: t("process.steps.3.title"), desc: t("process.steps.3.description") },
+              { num: 4, title: t("process.steps.4.title"), desc: t("process.steps.4.description") }
             ].map((step, idx) => (
               <div key={step.num} className="group text-center relative">
                 {/* 3D number circle with glow */}
@@ -217,17 +217,17 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
       <section className="relative bg-gradient-to-b from-gray-50 to-white py-16 md:py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline="Why We're Different"
-            title="Professional Insurance Brokerage Expertise"
-            description="As independent brokers, we provide unbiased advice and access to the best insurance solutions for your needs."
+            overline={t("features.overline")}
+            title={t("features.title")}
+            description={t("features.description")}
             className="mb-10"
           />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: Shield, title: "Expert Brokers", desc: "Specialized knowledge to connect you with the right insurance products" },
-              { icon: FileText, title: "Needs Analysis", desc: "Personalized assessment to find the perfect coverage from multiple providers" },
-              { icon: TrendingUp, title: "Wealth Building", desc: "Guidance on tax-advantaged strategies for long-term financial growth" },
-              { icon: Users, title: "Ongoing Support", desc: "Continuous policy management and brokerage support" }
+              { icon: Shield, title: t("features.expertBrokers.title"), desc: t("features.expertBrokers.description") },
+              { icon: FileText, title: t("features.needsAnalysis.title"), desc: t("features.needsAnalysis.description") },
+              { icon: TrendingUp, title: t("features.wealthBuilding.title"), desc: t("features.wealthBuilding.description") },
+              { icon: Users, title: t("features.ongoingSupport.title"), desc: t("features.ongoingSupport.description") }
             ].map((feature) => {
               const Icon = feature.icon;
               return (
@@ -261,26 +261,25 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/20">
             <div className="text-center mb-8">
               <h2 className="mb-4 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Protect Your Family's Future Today
+                {t("cta.title")}
               </h2>
               <p className="mx-auto max-w-2xl text-balance text-lg text-white/90">
-                Get started with a personalized consultation. We'll help you compare options from leading
-                insurance providers to find the solution that best fits your family's needs and financial goals.
+                {t("cta.description")}
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="text-center bg-white/10 rounded-xl p-4">
                 <CheckCircle className="h-8 w-8 text-white mx-auto mb-2" />
-                <p className="text-sm text-white font-semibold">Free Consultation</p>
+                <p className="text-sm text-white font-semibold">{t("cta.benefits.consultation")}</p>
               </div>
               <div className="text-center bg-white/10 rounded-xl p-4">
                 <CheckCircle className="h-8 w-8 text-white mx-auto mb-2" />
-                <p className="text-sm text-white font-semibold">Compare Multiple Providers</p>
+                <p className="text-sm text-white font-semibold">{t("cta.benefits.compare")}</p>
               </div>
               <div className="text-center bg-white/10 rounded-xl p-4">
                 <CheckCircle className="h-8 w-8 text-white mx-auto mb-2" />
-                <p className="text-sm text-white font-semibold">Expert Guidance</p>
+                <p className="text-sm text-white font-semibold">{t("cta.benefits.guidance")}</p>
               </div>
             </div>
 
@@ -289,13 +288,13 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
                 href={`/${locale}/life-insurance/schedule`}
                 className="inline-flex h-14 min-w-56 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-lg transition-all hover:bg-gray-50 hover:scale-105"
               >
-                Get Free Quote
+                {t("cta.primaryButton")}
               </a>
               <a
                 href={`/${locale}/life-insurance/schedule`}
                 className="inline-flex h-14 min-w-56 items-center justify-center rounded-2xl border-2 border-white bg-white/10 px-8 text-base font-semibold text-white transition-all hover:bg-white/20"
               >
-                Talk to an Advisor
+                {t("cta.secondaryButton")}
               </a>
             </div>
           </div>

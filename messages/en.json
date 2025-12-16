@@ -1055,5 +1055,118 @@
       "completeSolutions": "Complete Accounting Solutions for Your Business",
       "solutionsDesc": "From invoicing to financial reporting, we provide comprehensive accounting services tailored to your business needs."
     }
+  },
+  "supportPage": {
+    "hero": {
+      "title": "How Can We Help You?",
+      "subtitle": "Get in touch with our support team for any questions or assistance you need"
+    },
+    "contactMethods": {
+      "title": "Get in Touch",
+      "description": "Choose your preferred way to reach us",
+      "phone": {
+        "title": "Phone Support",
+        "description": "Speak directly with our support team",
+        "number": "+352 20 30 40 50",
+        "hours": "Mon-Fri, 9:00-18:00 CET"
+      },
+      "email": {
+        "title": "Email Support",
+        "description": "Send us your questions anytime",
+        "address": "support@opulanz.com",
+        "response": "Response within 24 hours"
+      },
+      "chat": {
+        "title": "Live Chat",
+        "description": "Chat with us in real-time",
+        "button": "Start Chat",
+        "availability": "Available during business hours"
+      }
+    },
+    "contactForm": {
+      "title": "Send Us a Message",
+      "description": "Fill out the form below and we'll get back to you as soon as possible",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "subject": "Subject",
+      "message": "Message",
+      "selectSubject": "Select a subject",
+      "subjects": {
+        "account": "Account Questions",
+        "technical": "Technical Support",
+        "company": "Company Formation",
+        "billing": "Billing & Payments",
+        "other": "Other"
+      },
+      "messagePlaceholder": "How can we help you?",
+      "submit": "Send Message"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "description": "Find quick answers to common questions",
+      "questions": {
+        "openAccount": {
+          "question": "How long does it take to open an account?",
+          "answer": "Individual accounts can be opened within 24-48 hours after document verification. Business accounts typically take 3-5 business days."
+        },
+        "documents": {
+          "question": "What documents do I need to open an account?",
+          "answer": "For individual accounts: valid passport or ID card, proof of address (utility bill or bank statement), and source of funds documentation. For business accounts: company registration documents, beneficial owner information, and business plan."
+        },
+        "fees": {
+          "question": "Are there any monthly fees?",
+          "answer": "We offer transparent pricing with no hidden fees. Monthly fees vary by account type. Individual accounts start from €10/month, and business accounts from €25/month."
+        },
+        "currencies": {
+          "question": "Which currencies do you support?",
+          "answer": "We support EUR, USD, GBP, CHF, and other major currencies. Multi-currency IBANs are available for all account types."
+        },
+        "contact": {
+          "question": "How can I contact support?",
+          "answer": "You can reach us via phone at +352 20 30 40 50, email at support@opulanz.com, or live chat during business hours (Mon-Fri, 9:00-18:00 CET)."
+        }
+      }
+    },
+    "resources": {
+      "title": "Additional Resources",
+      "description": "Explore our help center and documentation",
+      "documentation": {
+        "title": "Documentation",
+        "description": "Browse our comprehensive guides and tutorials",
+        "button": "View Docs"
+      },
+      "helpCenter": {
+        "title": "Help Center",
+        "description": "Search our knowledge base for answers",
+        "button": "Visit Help Center"
+      },
+      "status": {
+        "title": "Service Status",
+        "description": "Check the status of our services",
+        "button": "View Status"
+      }
+    },
+    "offices": {
+      "title": "Our Offices",
+      "description": "Visit us at one of our locations",
+      "luxembourg": {
+        "title": "Luxembourg Office",
+        "address": "1, Rue de la Poste",
+        "city": "L-2346 Luxembourg",
+        "country": "Luxembourg",
+        "phone": "Phone",
+        "email": "Email"
+      },
+      "france": {
+        "title": "France Office",
+        "address": "25, Rue de la Paix",
+        "city": "75002 Paris",
+        "country": "France",
+        "phone": "Phone",
+        "email": "Email"
+      }
+    }
   }
 }

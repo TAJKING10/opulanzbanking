@@ -1042,5 +1042,118 @@
       "completeSolutions": "Solutions Comptables Complètes pour Votre Entreprise",
       "solutionsDesc": "De la facturation aux rapports financiers, nous fournissons des services comptables complets adaptés aux besoins de votre entreprise."
     }
+  },
+  "supportPage": {
+    "hero": {
+      "title": "Comment Pouvons-Nous Vous Aider ?",
+      "subtitle": "Contactez notre équipe d'assistance pour toute question ou aide dont vous avez besoin"
+    },
+    "contactMethods": {
+      "title": "Nous Contacter",
+      "description": "Choisissez votre moyen préféré pour nous joindre",
+      "phone": {
+        "title": "Assistance Téléphonique",
+        "description": "Parlez directement avec notre équipe d'assistance",
+        "number": "+352 20 30 40 50",
+        "hours": "Lun-Ven, 9h00-18h00 CET"
+      },
+      "email": {
+        "title": "Assistance par E-mail",
+        "description": "Envoyez-nous vos questions à tout moment",
+        "address": "support@opulanz.com",
+        "response": "Réponse sous 24 heures"
+      },
+      "chat": {
+        "title": "Chat en Direct",
+        "description": "Discutez avec nous en temps réel",
+        "button": "Démarrer le Chat",
+        "availability": "Disponible pendant les heures de bureau"
+      }
+    },
+    "contactForm": {
+      "title": "Envoyez-Nous un Message",
+      "description": "Remplissez le formulaire ci-dessous et nous vous répondrons dès que possible",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "E-mail",
+      "phone": "Numéro de Téléphone",
+      "subject": "Sujet",
+      "message": "Message",
+      "selectSubject": "Sélectionner un sujet",
+      "subjects": {
+        "account": "Questions sur le Compte",
+        "technical": "Assistance Technique",
+        "company": "Création de Société",
+        "billing": "Facturation et Paiements",
+        "other": "Autre"
+      },
+      "messagePlaceholder": "Comment pouvons-nous vous aider ?",
+      "submit": "Envoyer le Message"
+    },
+    "faq": {
+      "title": "Questions Fréquemment Posées",
+      "description": "Trouvez des réponses rapides aux questions courantes",
+      "questions": {
+        "openAccount": {
+          "question": "Combien de temps faut-il pour ouvrir un compte ?",
+          "answer": "Les comptes individuels peuvent être ouverts dans les 24 à 48 heures après vérification des documents. Les comptes professionnels prennent généralement 3 à 5 jours ouvrables."
+        },
+        "documents": {
+          "question": "Quels documents sont nécessaires pour ouvrir un compte ?",
+          "answer": "Pour les comptes individuels : passeport ou carte d'identité valide, justificatif de domicile (facture de services publics ou relevé bancaire), et documentation sur l'origine des fonds. Pour les comptes professionnels : documents d'enregistrement de la société, informations sur les bénéficiaires effectifs et plan d'affaires."
+        },
+        "fees": {
+          "question": "Y a-t-il des frais mensuels ?",
+          "answer": "Nous offrons une tarification transparente sans frais cachés. Les frais mensuels varient selon le type de compte. Les comptes individuels commencent à partir de 10 €/mois et les comptes professionnels à partir de 25 €/mois."
+        },
+        "currencies": {
+          "question": "Quelles devises supportez-vous ?",
+          "answer": "Nous supportons EUR, USD, GBP, CHF et d'autres devises majeures. Les IBAN multi-devises sont disponibles pour tous les types de comptes."
+        },
+        "contact": {
+          "question": "Comment puis-je contacter l'assistance ?",
+          "answer": "Vous pouvez nous joindre par téléphone au +352 20 30 40 50, par e-mail à support@opulanz.com, ou par chat en direct pendant les heures de bureau (Lun-Ven, 9h00-18h00 CET)."
+        }
+      }
+    },
+    "resources": {
+      "title": "Ressources Supplémentaires",
+      "description": "Explorez notre centre d'aide et notre documentation",
+      "documentation": {
+        "title": "Documentation",
+        "description": "Parcourez nos guides complets et tutoriels",
+        "button": "Voir la Documentation"
+      },
+      "helpCenter": {
+        "title": "Centre d'Aide",
+        "description": "Recherchez dans notre base de connaissances pour obtenir des réponses",
+        "button": "Visiter le Centre d'Aide"
+      },
+      "status": {
+        "title": "État des Services",
+        "description": "Vérifiez l'état de nos services",
+        "button": "Voir l'État"
+      }
+    },
+    "offices": {
+      "title": "Nos Bureaux",
+      "description": "Visitez-nous dans l'un de nos emplacements",
+      "luxembourg": {
+        "title": "Bureau de Luxembourg",
+        "address": "1, Rue de la Poste",
+        "city": "L-2346 Luxembourg",
+        "country": "Luxembourg",
+        "phone": "Téléphone",
+        "email": "E-mail"
+      },
+      "france": {
+        "title": "Bureau de France",
+        "address": "25, Rue de la Paix",
+        "city": "75002 Paris",
+        "country": "France",
+        "phone": "Téléphone",
+        "email": "E-mail"
+      }
+    }
   }
 }

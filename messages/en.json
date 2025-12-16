@@ -1168,5 +1168,110 @@
         "email": "Email"
       }
     }
+  },
+  "lifeInsurance": {
+    "hero": {
+      "title": "Life Insurance Brokerage Services",
+      "subtitle": "As your trusted insurance broker, we connect you with comprehensive life insurance solutions to financially protect your loved ones",
+      "primaryCta": "Get a Quote",
+      "secondaryCta": "Learn More"
+    },
+    "overview": {
+      "overline": "Overview",
+      "title": "Your Trusted Life Insurance Broker",
+      "description": "As an independent insurance broker, we work on your behalf to find and connect you with the best life insurance solutions from leading providers, ensuring your loved ones are financially protected.",
+      "badges": {
+        "unbiased": "Unbiased Advice",
+        "multipleProviders": "Multiple Providers",
+        "familyProtection": "Family Protection"
+      },
+      "whyChoose": "Why Choose a Broker?",
+      "benefits": {
+        "1": "Independent broker representing your interests",
+        "2": "Access to policies from multiple leading insurance providers",
+        "3": "Personalized needs analysis and coverage recommendations",
+        "4": "Expert guidance on advanced features and estate planning",
+        "5": "Ongoing policy management and support"
+      }
+    },
+    "products": {
+      "overline": "Our Services",
+      "title": "Life Insurance Products We Broker",
+      "description": "We help you access a wide range of life insurance solutions from trusted providers to meet your specific protection needs.",
+      "termLife": {
+        "title": "Term Life Insurance",
+        "description": "10, 20, or 30-year term options with level premiums for affordable protection during your most critical years."
+      },
+      "wholeLife": {
+        "title": "Whole Life Insurance",
+        "description": "Lifetime coverage with cash value accumulation that provides permanent protection and financial growth."
+      },
+      "universalLife": {
+        "title": "Universal Life Insurance",
+        "description": "Flexible premiums and adjustable death benefits that adapt to your changing financial situation."
+      },
+      "variableLife": {
+        "title": "Variable Life Insurance",
+        "description": "Investment-linked cash value growth that allows you to potentially increase your policy's value over time."
+      },
+      "groupLife": {
+        "title": "Group Life Insurance",
+        "description": "Employer-sponsored life insurance plans that provide coverage at competitive group rates."
+      }
+    },
+    "process": {
+      "overline": "Simple Process",
+      "title": "How We Help You Find the Right Coverage",
+      "steps": {
+        "1": {
+          "title": "Free Consultation",
+          "description": "Schedule a no-obligation meeting to discuss your needs"
+        },
+        "2": {
+          "title": "Compare Options",
+          "description": "We present policies from multiple top providers"
+        },
+        "3": {
+          "title": "Expert Guidance",
+          "description": "Get unbiased recommendations tailored to you"
+        },
+        "4": {
+          "title": "Ongoing Support",
+          "description": "Continuous assistance throughout your policy lifecycle"
+        }
+      }
+    },
+    "features": {
+      "overline": "Why We're Different",
+      "title": "Professional Insurance Brokerage Expertise",
+      "description": "As independent brokers, we provide unbiased advice and access to the best insurance solutions for your needs.",
+      "expertBrokers": {
+        "title": "Expert Brokers",
+        "description": "Specialized knowledge to connect you with the right insurance products"
+      },
+      "needsAnalysis": {
+        "title": "Needs Analysis",
+        "description": "Personalized assessment to find the perfect coverage from multiple providers"
+      },
+      "wealthBuilding": {
+        "title": "Wealth Building",
+        "description": "Guidance on tax-advantaged strategies for long-term financial growth"
+      },
+      "ongoingSupport": {
+        "title": "Ongoing Support",
+        "description": "Continuous policy management and brokerage support"
+      }
+    },
+    "cta": {
+      "title": "Protect Your Family's Future Today",
+      "description": "Get started with a personalized consultation. We'll help you compare options from leading insurance providers to find the solution that best fits your family's needs and financial goals.",
+      "benefits": {
+        "consultation": "Free Consultation",
+        "compare": "Compare Multiple Providers",
+        "guidance": "Expert Guidance"
+      },
+      "primaryButton": "Get Free Quote",
+      "secondaryButton": "Talk to an Advisor"
+    }
   }
 }

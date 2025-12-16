@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Phone, Mail, MessageCircle, HelpCircle, FileText, Clock } from "lucide-react";
 import ReactCountryFlag from "react-country-flag";
 import { Hero } from "@/components/hero";
@@ -13,8 +13,7 @@ import { Label } from "@/components/ui/label";
 import { COUNTRIES } from "@/shared/lib/countries";
 
 export default function SupportPage() {
-  const t = useTranslations();
-  const locale = useLocale();
+  const t = useTranslations("supportPage");
   const [selectedPhoneCode, setSelectedPhoneCode] = React.useState<string>("+33");
   const [isDropdownOpen, setIsDropdownOpen] = React.useState<boolean>(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -30,19 +29,42 @@ export default function SupportPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const faqs = [
+    {
+      question: t("faq.questions.openAccount.question"),
+      answer: t("faq.questions.openAccount.answer"),
+    },
+    {
+      question: t("faq.questions.documents.question"),
+      answer: t("faq.questions.documents.answer"),
+    },
+    {
+      question: t("faq.questions.fees.question"),
+      answer: t("faq.questions.fees.answer"),
+    },
+    {
+      question: t("faq.questions.currencies.question"),
+      answer: t("faq.questions.currencies.answer"),
+    },
+    {
+      question: t("faq.questions.contact.question"),
+      answer: t("faq.questions.contact.answer"),
+    },
+  ];
+
   return (
     <>
       <Hero
-        title="How Can We Help You?"
-        subtitle="Get in touch with our support team for any questions or assistance you need"
+        title={t("hero.title")}
+        subtitle={t("hero.subtitle")}
       />
 
       {/* Contact Methods */}
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title="Get in Touch"
-            description="Choose your preferred way to reach us"
+            title={t("contactMethods.title")}
+            description={t("contactMethods.description")}
             align="center"
             className="mb-12"
           />
@@ -54,14 +76,14 @@ export default function SupportPage() {
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
                   <Phone className="h-8 w-8 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-brand-dark">Phone Support</h3>
+                <h3 className="mb-3 text-xl font-bold text-brand-dark">{t("contactMethods.phone.title")}</h3>
                 <p className="mb-4 text-sm text-brand-grayMed">
-                  Speak directly with our support team
+                  {t("contactMethods.phone.description")}
                 </p>
                 <p className="mb-2 text-lg font-semibold text-brand-gold">
-                  +352 20 30 40 50
+                  {t("contactMethods.phone.number")}
                 </p>
-                <p className="text-xs text-brand-grayMed">Mon-Fri, 9:00-18:00 CET</p>
+                <p className="text-xs text-brand-grayMed">{t("contactMethods.phone.hours")}</p>
               </CardContent>
             </Card>
 
@@ -71,17 +93,17 @@ export default function SupportPage() {
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
                   <Mail className="h-8 w-8 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-brand-dark">Email Support</h3>
+                <h3 className="mb-3 text-xl font-bold text-brand-dark">{t("contactMethods.email.title")}</h3>
                 <p className="mb-4 text-sm text-brand-grayMed">
-                  Send us your questions anytime
+                  {t("contactMethods.email.description")}
                 </p>
                 <a
-                  href="mailto:support@opulanz.com"
+                  href={`mailto:${t("contactMethods.email.address")}`}
                   className="mb-2 block text-lg font-semibold text-brand-gold hover:text-brand-goldDark"
                 >
-                  support@opulanz.com
+                  {t("contactMethods.email.address")}
                 </a>
-                <p className="text-xs text-brand-grayMed">Response within 24 hours</p>
+                <p className="text-xs text-brand-grayMed">{t("contactMethods.email.response")}</p>
               </CardContent>
             </Card>
 
@@ -91,15 +113,15 @@ export default function SupportPage() {
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
                   <MessageCircle className="h-8 w-8 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-brand-dark">Live Chat</h3>
+                <h3 className="mb-3 text-xl font-bold text-brand-dark">{t("contactMethods.chat.title")}</h3>
                 <p className="mb-4 text-sm text-brand-grayMed">
-                  Chat with us in real-time
+                  {t("contactMethods.chat.description")}
                 </p>
                 <Button variant="primary" className="w-full">
-                  Start Chat
+                  {t("contactMethods.chat.button")}
                 </Button>
                 <p className="mt-2 text-xs text-brand-grayMed">
-                  Available during business hours
+                  {t("contactMethods.chat.availability")}
                 </p>
               </CardContent>
             </Card>
@@ -111,8 +133,8 @@ export default function SupportPage() {
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
-            title="Send Us a Message"
-            description="Fill out the form below and we'll get back to you as soon as possible"
+            title={t("contactForm.title")}
+            description={t("contactForm.description")}
             align="center"
             className="mb-12"
           />
@@ -123,14 +145,14 @@ export default function SupportPage() {
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">
-                      First Name <span className="text-red-600">*</span>
+                      {t("contactForm.firstName")} <span className="text-red-600">*</span>
                     </Label>
                     <Input id="firstName" placeholder="John" required />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="lastName">
-                      Last Name <span className="text-red-600">*</span>
+                      {t("contactForm.lastName")} <span className="text-red-600">*</span>
                     </Label>
                     <Input id="lastName" placeholder="Doe" required />
                   </div>
@@ -138,7 +160,7 @@ export default function SupportPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="email">
-                    Email <span className="text-red-600">*</span>
+                    {t("contactForm.email")} <span className="text-red-600">*</span>
                   </Label>
                   <Input
                     id="email"
@@ -149,7 +171,7 @@ export default function SupportPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
+                  <Label htmlFor="phone">{t("contactForm.phone")}</Label>
                   <div className="relative">
                     <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-2 z-10">
                       <div ref={dropdownRef} className="relative">
@@ -212,37 +234,37 @@ export default function SupportPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="subject">
-                    Subject <span className="text-red-600">*</span>
+                    {t("contactForm.subject")} <span className="text-red-600">*</span>
                   </Label>
                   <select
                     id="subject"
                     required
                     className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                   >
-                    <option value="">Select a subject</option>
-                    <option value="account">Account Questions</option>
-                    <option value="technical">Technical Support</option>
-                    <option value="company">Company Formation</option>
-                    <option value="billing">Billing & Payments</option>
-                    <option value="other">Other</option>
+                    <option value="">{t("contactForm.selectSubject")}</option>
+                    <option value="account">{t("contactForm.subjects.account")}</option>
+                    <option value="technical">{t("contactForm.subjects.technical")}</option>
+                    <option value="company">{t("contactForm.subjects.company")}</option>
+                    <option value="billing">{t("contactForm.subjects.billing")}</option>
+                    <option value="other">{t("contactForm.subjects.other")}</option>
                   </select>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="message">
-                    Message <span className="text-red-600">*</span>
+                    {t("contactForm.message")} <span className="text-red-600">*</span>
                   </Label>
                   <textarea
                     id="message"
                     rows={6}
                     required
                     className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-                    placeholder="How can we help you?"
+                    placeholder={t("contactForm.messagePlaceholder")}
                   />
                 </div>
 
                 <Button type="submit" variant="primary" size="lg" className="w-full">
-                  Send Message
+                  {t("contactForm.submit")}
                 </Button>
               </form>
             </CardContent>
@@ -254,40 +276,14 @@ export default function SupportPage() {
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
-            title="Frequently Asked Questions"
-            description="Find quick answers to common questions"
+            title={t("faq.title")}
+            description={t("faq.description")}
             align="center"
             className="mb-12"
           />
 
           <div className="space-y-4">
-            {[
-              {
-                question: "How long does it take to open an account?",
-                answer:
-                  "Individual accounts can be opened within 24-48 hours after document verification. Business accounts typically take 3-5 business days.",
-              },
-              {
-                question: "What documents do I need to open an account?",
-                answer:
-                  "For individual accounts: valid passport or ID card, proof of address (utility bill or bank statement), and source of funds documentation. For business accounts: company registration documents, beneficial owner information, and business plan.",
-              },
-              {
-                question: "Are there any monthly fees?",
-                answer:
-                  "We offer transparent pricing with no hidden fees. Monthly fees vary by account type. Individual accounts start from €10/month, and business accounts from €25/month.",
-              },
-              {
-                question: "Which currencies do you support?",
-                answer:
-                  "We support EUR, USD, GBP, CHF, and other major currencies. Multi-currency IBANs are available for all account types.",
-              },
-              {
-                question: "How can I contact support?",
-                answer:
-                  "You can reach us via phone at +352 20 30 40 50, email at support@opulanz.com, or live chat during business hours (Mon-Fri, 9:00-18:00 CET).",
-              },
-            ].map((faq, index) => (
+            {faqs.map((faq, index) => (
               <Card key={index} className="border-none">
                 <CardHeader>
                   <CardTitle className="flex items-start gap-3 text-lg">
@@ -308,8 +304,8 @@ export default function SupportPage() {
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title="Additional Resources"
-            description="Explore our help center and documentation"
+            title={t("resources.title")}
+            description={t("resources.description")}
             align="center"
             className="mb-12"
           />
@@ -321,12 +317,12 @@ export default function SupportPage() {
                   <FileText className="h-8 w-8 text-brand-goldDark" />
                 </div>
                 <h3 className="mb-3 text-xl font-bold text-brand-dark">
-                  Documentation
+                  {t("resources.documentation.title")}
                 </h3>
                 <p className="mb-6 text-sm text-brand-grayMed">
-                  Browse our comprehensive guides and tutorials
+                  {t("resources.documentation.description")}
                 </p>
-                <Button variant="outline">View Docs</Button>
+                <Button variant="outline">{t("resources.documentation.button")}</Button>
               </CardContent>
             </Card>
 
@@ -335,11 +331,11 @@ export default function SupportPage() {
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
                   <HelpCircle className="h-8 w-8 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-brand-dark">Help Center</h3>
+                <h3 className="mb-3 text-xl font-bold text-brand-dark">{t("resources.helpCenter.title")}</h3>
                 <p className="mb-6 text-sm text-brand-grayMed">
-                  Search our knowledge base for answers
+                  {t("resources.helpCenter.description")}
                 </p>
-                <Button variant="outline">Visit Help Center</Button>
+                <Button variant="outline">{t("resources.helpCenter.button")}</Button>
               </CardContent>
             </Card>
 
@@ -349,12 +345,12 @@ export default function SupportPage() {
                   <Clock className="h-8 w-8 text-brand-goldDark" />
                 </div>
                 <h3 className="mb-3 text-xl font-bold text-brand-dark">
-                  Service Status
+                  {t("resources.status.title")}
                 </h3>
                 <p className="mb-6 text-sm text-brand-grayMed">
-                  Check the status of our services
+                  {t("resources.status.description")}
                 </p>
-                <Button variant="outline">View Status</Button>
+                <Button variant="outline">{t("resources.status.button")}</Button>
               </CardContent>
             </Card>
           </div>
@@ -365,8 +361,8 @@ export default function SupportPage() {
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title="Our Offices"
-            description="Visit us at one of our locations"
+            title={t("offices.title")}
+            description={t("offices.description")}
             align="center"
             className="mb-12"
           />
@@ -375,17 +371,17 @@ export default function SupportPage() {
             <Card className="border-none">
               <CardContent className="p-8">
                 <h3 className="mb-4 text-xl font-bold text-brand-dark">
-                  Luxembourg Office
+                  {t("offices.luxembourg.title")}
                 </h3>
                 <div className="space-y-2 text-sm text-brand-grayMed">
-                  <p>1, Rue de la Poste</p>
-                  <p>L-2346 Luxembourg</p>
-                  <p>Luxembourg</p>
+                  <p>{t("offices.luxembourg.address")}</p>
+                  <p>{t("offices.luxembourg.city")}</p>
+                  <p>{t("offices.luxembourg.country")}</p>
                   <p className="mt-4">
-                    <strong className="text-brand-dark">Phone:</strong> +352 20 30 40 50
+                    <strong className="text-brand-dark">{t("offices.luxembourg.phone")}:</strong> +352 20 30 40 50
                   </p>
                   <p>
-                    <strong className="text-brand-dark">Email:</strong>{" "}
+                    <strong className="text-brand-dark">{t("offices.luxembourg.email")}:</strong>{" "}
                     luxembourg@opulanz.com
                   </p>
                 </div>
@@ -395,17 +391,17 @@ export default function SupportPage() {
             <Card className="border-none">
               <CardContent className="p-8">
                 <h3 className="mb-4 text-xl font-bold text-brand-dark">
-                  France Office
+                  {t("offices.france.title")}
                 </h3>
                 <div className="space-y-2 text-sm text-brand-grayMed">
-                  <p>25, Rue de la Paix</p>
-                  <p>75002 Paris</p>
-                  <p>France</p>
+                  <p>{t("offices.france.address")}</p>
+                  <p>{t("offices.france.city")}</p>
+                  <p>{t("offices.france.country")}</p>
                   <p className="mt-4">
-                    <strong className="text-brand-dark">Phone:</strong> +33 1 23 45 67 89
+                    <strong className="text-brand-dark">{t("offices.france.phone")}:</strong> +33 1 23 45 67 89
                   </p>
                   <p>
-                    <strong className="text-brand-dark">Email:</strong>{" "}
+                    <strong className="text-brand-dark">{t("offices.france.email")}:</strong>{" "}
                     france@opulanz.com
                   </p>
                 </div>

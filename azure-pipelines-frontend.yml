@@ -10,22 +10,20 @@ variables:
   - group: frontend-env-vars
 
 steps:
-# 1️⃣ Use Node.js 20
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 2️⃣ Install all dependencies
 - script: |
     npm ci
   displayName: 'Install dependencies'
 
-# 3️⃣ Build Next.js
 - script: |
     npm run build
   displayName: 'Build Next.js'
   env:
+    NODE_ENV: "production"
     NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
     NEXT_PUBLIC_APP_NAME: $(NEXT_PUBLIC_APP_NAME)
     NEXT_PUBLIC_APP_URL: $(NEXT_PUBLIC_APP_URL)
@@ -34,9 +32,7 @@ steps:
     NEXT_PUBLIC_ENABLE_ANALYTICS: $(NEXT_PUBLIC_ENABLE_ANALYTICS)
     NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
     NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
-    NODE_ENV: "production"
 
-# 4️⃣ Archive ALL runtime assets
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '.'
@@ -47,20 +43,11 @@ steps:
     include: |
       .next/**
       public/**
-      node_modules/**
       package.json
       package-lock.json
-      next.config.js
-      postcss.config.js
-      app/**
-      components/**
-      lib/**
 
-# 5️⃣ Deploy to Azure App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'
     appName: 'rg-opulanz-frontend'
     package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
-    enableCustomDeployment: true
-    deploymentMethod: zipDeploy

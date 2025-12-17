@@ -18,23 +18,12 @@ steps:
   - script: |
       npm ci
       npm run build
-      
     displayName: 'Build frontend'
-    env:
-      NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
-      NEXT_PUBLIC_APP_NAME: $(NEXT_PUBLIC_APP_NAME)
-      NEXT_PUBLIC_APP_URL: $(NEXT_PUBLIC_APP_URL)
-      NEXT_PUBLIC_PAYPAL_CLIENT_ID: $(NEXT_PUBLIC_PAYPAL_CLIENT_ID)
-      NEXT_PUBLIC_PAYPAL_CURRENCY: $(NEXT_PUBLIC_PAYPAL_CURRENCY)
-      NEXT_PUBLIC_ENABLE_ANALYTICS: $(NEXT_PUBLIC_ENABLE_ANALYTICS)
-      NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
-      NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
 
   - script: |
       mkdir build_output
       cp -R .next build_output/
       cp -R public build_output/
-      cp -R node_modules build_output/
       cp package.json build_output/
       cp package-lock.json build_output/
       touch build_output/.skipOryxBuild
@@ -42,7 +31,7 @@ steps:
 
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '.'
+      rootFolderOrFile: 'build_output'
       includeRootFolder: false
       archiveType: 'zip'
       archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
@@ -54,4 +43,6 @@ steps:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-frontend'
       package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+      enableCustomDeployment: true
+      removeAdditionalFilesFlag: true
     displayName: 'Deploy to App Service'

@@ -12,8 +12,8 @@ variables:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '24.x'
-    displayName: 'Use Node.js 24'
+      versionSpec: '22.x'
+    displayName: 'Use Node.js 22'
 
   - script: |
       npm ci

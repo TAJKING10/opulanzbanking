@@ -43,7 +43,15 @@ steps:
     replaceExistingArchive: true
   displayName: 'Archive deploy folder'
 
-# 5️⃣ Deploy to Azure App Service using Oryx runtime
+# 5️⃣ Publish artifact for reuse in other pipelines/environments
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+    ArtifactName: 'frontend'
+    publishLocation: 'Container'
+  displayName: 'Publish frontend artifact'
+
+# 6️⃣ Deploy to Azure App Service using Oryx runtime
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'

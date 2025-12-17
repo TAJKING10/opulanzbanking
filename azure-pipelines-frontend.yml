@@ -12,8 +12,8 @@ variables:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '18.x'
-    displayName: 'Use Node.js 18'
+      versionSpec: '24.x'
+    displayName: 'Use Node.js 24'
 
   - script: |
       npm install --no-audit --no-fund

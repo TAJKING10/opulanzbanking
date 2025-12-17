@@ -7,56 +7,51 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: frontend-env-vars
+  - group: frontend-env-vars   # Make sure this has all NEXT_PUBLIC_* variables
 
 steps:
-# 1️⃣ Use Node 22
+# 1️⃣ Use Node.js
 - task: NodeTool@0
   inputs:
-    versionSpec: '22.x'
-  displayName: 'Use Node.js 22'
+    versionSpec: '18.x'
+  displayName: 'Use Node.js 18'
 
-# 2️⃣ Install dependencies (runtime + build) and build Next.js
+# 2️⃣ Install dependencies
 - script: |
-    npm ci
+    npm ci --prefer-offline --no-audit --no-fund
+  displayName: 'Install dependencies'
+
+# 3️⃣ Build Next.js
+- script: |
     npm run build
-  displayName: 'Install dependencies and build frontend'
+  displayName: 'Build Next.js'
+  env:
+    NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
+    NEXT_PUBLIC_APP_NAME: $(NEXT_PUBLIC_APP_NAME)
+    NEXT_PUBLIC_APP_URL: $(NEXT_PUBLIC_APP_URL)
+    NEXT_PUBLIC_PAYPAL_CLIENT_ID: $(NEXT_PUBLIC_PAYPAL_CLIENT_ID)
+    NEXT_PUBLIC_PAYPAL_CURRENCY: $(NEXT_PUBLIC_PAYPAL_CURRENCY)
+    NEXT_PUBLIC_ENABLE_ANALYTICS: $(NEXT_PUBLIC_ENABLE_ANALYTICS)
+    NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
+    NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
 
-# 3️⃣ Prepare deployment folder (do NOT include node_modules)
-- script: |
-    rm -rf deploy
-    mkdir deploy
-    cp -R .next deploy/
-    cp -R public deploy/
-    cp package.json deploy/
-    cp package-lock.json deploy/
-    touch deploy/.skipOryxBuild
-  displayName: 'Prepare deploy folder'
-
-# 4️⃣ Archive deployment folder
+# 4️⃣ Prepare artifact (deploy only build + package.json)
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: 'deploy'
+    rootFolderOrFile: '.'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
     replaceExistingArchive: true
-  displayName: 'Archive deploy folder'
+    include: |
+      .next/**
+      package.json
+      package-lock.json
+      node_modules/**
 
-# 5️⃣ Publish artifact for reuse in other pipelines/environments
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/frontend.zip'
-    ArtifactName: 'frontend'
-    publishLocation: 'Container'
-  displayName: 'Publish frontend artifact'
-
-# 6️⃣ Deploy to Azure App Service using Oryx runtime
+# 5️⃣ Deploy to Azure App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'
     appName: 'rg-opulanz-frontend'
     package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
-    enableCustomDeployment: true
-    removeAdditionalFilesFlag: true   # Deletes old artifacts before deployment
-  displayName: 'Deploy to App Service'

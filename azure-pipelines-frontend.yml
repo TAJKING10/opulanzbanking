@@ -1,13 +1,13 @@
 trigger:
   branches:
     include:
-      - main
+      - main   # Only build/deploy main
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: frontend-env-vars   # Make sure this has all NEXT_PUBLIC_* variables
+  - group: frontend-env-vars   # Make sure all NEXT_PUBLIC_* variables exist here
 
 steps:
 # 1️⃣ Use Node.js
@@ -35,7 +35,7 @@ steps:
     NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
     NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
 
-# 4️⃣ Prepare artifact (deploy only build + package.json)
+# 4️⃣ Prepare artifact (only build output + package.json)
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '.'

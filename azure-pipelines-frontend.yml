@@ -76,5 +76,5 @@ steps:
     inputs:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-frontend'
-      package: '$(Pipeline.Workspace)/drop/app.zip'
+      package: '$(Build.ArtifactStagingDirectory)/app.zip'
     displayName: 'Deploy to Azure App Service'

@@ -1293,6 +1293,29 @@
           "label": "Soumettre",
           "description": "Dernière étape"
         }
+      },
+      "welcomeStep": {
+        "title": "Bienvenue chez Opulanz",
+        "subtitle": "Commençons l'ouverture de votre compte bancaire personnel. Cela devrait prendre environ 10 minutes.",
+        "accountTypeQuestion": "Quel type de compte souhaitez-vous ouvrir ?",
+        "accountTypes": {
+          "current": {
+            "title": "Compte Courant / Quotidien",
+            "description": "Services bancaires personnels standard pour les transactions quotidiennes, paiements et épargne. Convient aux résidents et non-résidents."
+          },
+          "private": {
+            "title": "Banque Privée",
+            "description": "Services de gestion de patrimoine et de banque privée pour les particuliers fortunés. Dépôt minimum généralement requis."
+          }
+        },
+        "whatHappensNext": "Quelle est la suite ?",
+        "timeline": {
+          "step1": "Nous recueillerons vos informations personnelles",
+          "step2": "Vérifier votre identité et vos coordonnées",
+          "step3": "Vous mettre en relation avec la Banque Partenaire Opulanz",
+          "step4": "Finaliser le processus d'ouverture de compte"
+        },
+        "continueButton": "Continuer"
       }
     },
     "business": {

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ interface IdentityContactStepProps {
 }
 
 export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactStepProps) {
+  const t = useTranslations("accountOpening.personal.identityStep");
   const [formState, setFormState] = React.useState({
     firstName: data.firstName || "",
     lastName: data.lastName || "",
@@ -89,9 +91,9 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Your Identity & Contact</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          We need to verify your identity and contact information for regulatory compliance.
+          {t("subtitle")}
         </p>
       </div>
 
@@ -99,25 +101,25 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
         {/* Name Fields */}
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="firstName">First Name *</Label>
+            <Label htmlFor="firstName">{t("firstName")} {t("required")}</Label>
             <Input
               id="firstName"
               type="text"
               value={formState.firstName}
               onChange={(e) => handleInputChange("firstName", e.target.value)}
-              placeholder="Enter your first name"
+              placeholder={t("firstNamePlaceholder")}
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="lastName">Last Name *</Label>
+            <Label htmlFor="lastName">{t("lastName")} {t("required")}</Label>
             <Input
               id="lastName"
               type="text"
               value={formState.lastName}
               onChange={(e) => handleInputChange("lastName", e.target.value)}
-              placeholder="Enter your last name"
+              placeholder={t("lastNamePlaceholder")}
               required
             />
           </div>
@@ -125,26 +127,26 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
 
         {/* Email - Verification Disabled */}
         <div className="space-y-2">
-          <Label htmlFor="email">Email Address *</Label>
+          <Label htmlFor="email">{t("email")} {t("required")}</Label>
           <Input
             id="email"
             type="email"
             value={formState.email}
             onChange={(e) => handleInputChange("email", e.target.value)}
-            placeholder="your.email@example.com"
+            placeholder={t("emailPlaceholder")}
             required
           />
         </div>
 
         {/* Phone - Verification Disabled */}
         <div className="space-y-2">
-          <Label htmlFor="phone">Phone Number *</Label>
+          <Label htmlFor="phone">{t("phone")} {t("required")}</Label>
           <Input
             id="phone"
             type="tel"
             value={formState.phone}
             onChange={(e) => handleInputChange("phone", e.target.value)}
-            placeholder="+352 123 456 789"
+            placeholder={t("phonePlaceholder")}
             required
           />
         </div>
@@ -153,7 +155,7 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
           <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-amber-600" />
             <div className="text-sm text-amber-900">
-              Please complete all required fields to continue.
+              {t("validationError")}
             </div>
           </div>
         )}

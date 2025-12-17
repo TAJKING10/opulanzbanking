@@ -18,6 +18,7 @@ steps:
   - script: |
       npm install --no-audit --no-fund
       npm run build
+      npm run export
     displayName: 'Build Next.js'
     
     env:

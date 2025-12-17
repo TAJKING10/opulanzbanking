@@ -1273,5 +1273,196 @@
       "primaryButton": "Get Free Quote",
       "secondaryButton": "Talk to an Advisor"
     }
+  },
+  "accountOpening": {
+    "start": {
+      "loading": "Loading..."
+    },
+    "personal": {
+      "title": "Open a Personal Account",
+      "description": "Complete your application in 6 simple steps",
+      "steps": {
+        "welcome": {
+          "label": "Welcome",
+          "description": "Get started"
+        },
+        "identity": {
+          "label": "Identity",
+          "description": "Your details"
+        },
+        "intent": {
+          "label": "Intent",
+          "description": "Account type"
+        },
+        "documents": {
+          "label": "Documents",
+          "description": "Verification"
+        },
+        "review": {
+          "label": "Review",
+          "description": "Confirm details"
+        },
+        "submit": {
+          "label": "Submit",
+          "description": "Final step"
+        }
+      }
+    },
+    "business": {
+      "title": "Open a Business Account",
+      "description": "Complete your business banking application",
+      "steps": {
+        "welcome": {
+          "label": "Welcome",
+          "description": "Get started"
+        },
+        "company": {
+          "label": "Company",
+          "description": "Status"
+        },
+        "jurisdiction": {
+          "label": "Jurisdiction",
+          "description": "Location"
+        },
+        "directors": {
+          "label": "Directors",
+          "description": "UBOs"
+        },
+        "formation": {
+          "label": "Formation",
+          "description": "If new"
+        },
+        "documents": {
+          "label": "Documents",
+          "description": "Verification"
+        },
+        "review": {
+          "label": "Review",
+          "description": "Confirm"
+        },
+        "submit": {
+          "label": "Submit",
+          "description": "Final step"
+        }
+      }
+    },
+    "individual": {
+      "title": "Individual Account KYC",
+      "description": "Complete your identity verification to open your account",
+      "form": {
+        "personalInfo": "Personal Information",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "dateOfBirth": "Date of Birth",
+        "nationality": "Nationality",
+        "selectNationality": "Select nationality",
+        "phoneNumber": "Phone Number",
+        "address": "Address",
+        "streetAddress": "Street Address",
+        "city": "City",
+        "postalCode": "Postal Code",
+        "country": "Country",
+        "selectCountry": "Select country",
+        "documentVerification": "Document Verification",
+        "documentDescription": "Please upload clear photos or scans of the following documents (max 15MB each)",
+        "activityInfo": "Activity Information",
+        "isPEP": "Are you a Politically Exposed Person (PEP)?",
+        "no": "No",
+        "yes": "Yes",
+        "expectedMonthlyVolume": "Expected Monthly Volume",
+        "selectRange": "Select range",
+        "sourceOfFunds": "Source of Funds",
+        "sourceOfFundsPlaceholder": "Please describe the origin of your funds...",
+        "consents": "Consents",
+        "consentKYC": "I consent to identity verification and compliance checks as required by law",
+        "consentTerms": "I agree to Opulanz",
+        "termsLink": "Terms & Conditions",
+        "privacyLink": "Privacy Policy"
+      },
+      "approved": {
+        "message": "Your account has been successfully approved!",
+        "nextSteps": {
+          "mobileApp": "Download our mobile app or access web banking",
+          "security": "Set up your account security (2FA, PIN)",
+          "debitCard": "Request your debit card",
+          "fundAccount": "Fund your account via transfer"
+        },
+        "buttons": {
+          "dashboard": "Go to Dashboard",
+          "downloadApp": "Download App",
+          "startNew": "Start New Application"
+        }
+      },
+      "submitted": {
+        "message": "Your account application is being reviewed. You will receive a decision within 24-48 hours."
+      }
+    },
+    "company": {
+      "title": "Company Account KYB",
+      "description": "Complete your business verification to open your company account",
+      "form": {
+        "companyInfo": "Company Information",
+        "companyName": "Company Name",
+        "registrationNumber": "Registration Number",
+        "dateOfIncorporation": "Date of Incorporation",
+        "legalForm": "Legal Form",
+        "selectLegalForm": "Select legal form",
+        "companyAddress": "Company Address",
+        "streetAddress": "Street Address",
+        "city": "City",
+        "postalCode": "Postal Code",
+        "country": "Country",
+        "selectCountry": "Select country",
+        "companyDocuments": "Company Documents",
+        "documentDescription": "Please upload clear copies of the following documents (max 15MB each)",
+        "businessActivity": "Business Activity",
+        "businessActivityDescription": "Business Activity Description",
+        "businessActivityPlaceholder": "Describe your main business activities...",
+        "activityCountries": "Countries of Activity",
+        "activityCountriesHelp": "Hold Ctrl (Windows) or Cmd (Mac) to select multiple countries",
+        "expectedMonthlyVolume": "Expected Monthly Transaction Volume",
+        "selectRange": "Select range",
+        "consents": "Consents",
+        "consentKYB": "I consent to business verification and compliance checks as required by law",
+        "consentTerms": "I agree to Opulanz",
+        "termsLink": "Terms & Conditions",
+        "privacyLink": "Privacy Policy"
+      },
+      "approved": {
+        "message": "Your business account has been successfully approved!",
+        "nextSteps": {
+          "multiUser": "Set up multi-user access for your team",
+          "accounting": "Configure accounting integration",
+          "corporateCards": "Order corporate debit cards",
+          "fundAccount": "Fund your account via transfer"
+        },
+        "buttons": {
+          "dashboard": "Go to Dashboard",
+          "downloadApp": "Download App",
+          "startNew": "Start New Application"
+        }
+      },
+      "submitted": {
+        "message": "Your business account application is being reviewed. You will receive a decision within 2-3 business days."
+      }
+    },
+    "warmReferral": {
+      "handoff": {
+        "title": "Secure Handoff",
+        "description": "Your information will be securely transferred to {partner}",
+        "step1": {
+          "title": "Secure Handoff",
+          "description": "Your information will be securely transferred to {partner}"
+        },
+        "step2": {
+          "title": "Complete Application",
+          "description": "Follow {partner}'s process to complete your application"
+        },
+        "step3": {
+          "title": "Opulanz Support",
+          "description": "We remain your point of contact for any questions"
+        }
+      }
+    }
   }
 }

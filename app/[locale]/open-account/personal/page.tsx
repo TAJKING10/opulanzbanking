@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
 import { Step } from "@/components/account-opening/stepper";
 
@@ -13,7 +14,7 @@ import { EligibilityDocumentsStep } from "@/components/account-opening/personal/
 import { ReviewConsentsStep } from "@/components/account-opening/personal/review-consents-step";
 import { SubmissionStep } from "@/components/account-opening/personal/submission-step";
 
-const PERSONAL_ACCOUNT_STEPS: Step[] = [
+const PERSONAL_ACCOUNT_STEPS_EN: Step[] = [
   { id: 1, label: "Welcome", description: "Get started" },
   { id: 2, label: "Identity", description: "Your details" },
   { id: 3, label: "Intent", description: "Account type" },
@@ -26,6 +27,16 @@ export default function PersonalAccountPage() {
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string;
+  const t = useTranslations("accountOpening.personal");
+
+  const PERSONAL_ACCOUNT_STEPS: Step[] = [
+    { id: 1, label: t("steps.welcome.label"), description: t("steps.welcome.description") },
+    { id: 2, label: t("steps.identity.label"), description: t("steps.identity.description") },
+    { id: 3, label: t("steps.intent.label"), description: t("steps.intent.description") },
+    { id: 4, label: t("steps.documents.label"), description: t("steps.documents.description") },
+    { id: 5, label: t("steps.review.label"), description: t("steps.review.description") },
+    { id: 6, label: t("steps.submit.label"), description: t("steps.submit.description") },
+  ];
 
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -193,8 +204,8 @@ export default function PersonalAccountPage() {
 
   return (
     <AccountOpeningLayout
-      title="Open a Personal Account"
-      description="Complete your application in 6 simple steps"
+      title={t("title")}
+      description={t("description")}
       steps={PERSONAL_ACCOUNT_STEPS}
       currentStep={currentStep}
       onStepChange={handleStepChange}

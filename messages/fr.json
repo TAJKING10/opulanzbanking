@@ -1260,5 +1260,196 @@
       "primaryButton": "Obtenir un Devis Gratuit",
       "secondaryButton": "Parler à un Conseiller"
     }
+  },
+  "accountOpening": {
+    "start": {
+      "loading": "Chargement..."
+    },
+    "personal": {
+      "title": "Ouvrir un Compte Personnel",
+      "description": "Complétez votre demande en 6 étapes simples",
+      "steps": {
+        "welcome": {
+          "label": "Bienvenue",
+          "description": "Commencer"
+        },
+        "identity": {
+          "label": "Identité",
+          "description": "Vos détails"
+        },
+        "intent": {
+          "label": "Intention",
+          "description": "Type de compte"
+        },
+        "documents": {
+          "label": "Documents",
+          "description": "Vérification"
+        },
+        "review": {
+          "label": "Révision",
+          "description": "Confirmer les détails"
+        },
+        "submit": {
+          "label": "Soumettre",
+          "description": "Dernière étape"
+        }
+      }
+    },
+    "business": {
+      "title": "Ouvrir un Compte Professionnel",
+      "description": "Complétez votre demande de compte bancaire professionnel",
+      "steps": {
+        "welcome": {
+          "label": "Bienvenue",
+          "description": "Commencer"
+        },
+        "company": {
+          "label": "Entreprise",
+          "description": "Statut"
+        },
+        "jurisdiction": {
+          "label": "Juridiction",
+          "description": "Lieu"
+        },
+        "directors": {
+          "label": "Administrateurs",
+          "description": "Bénéficiaires Effectifs"
+        },
+        "formation": {
+          "label": "Formation",
+          "description": "Si nouvelle"
+        },
+        "documents": {
+          "label": "Documents",
+          "description": "Vérification"
+        },
+        "review": {
+          "label": "Révision",
+          "description": "Confirmer"
+        },
+        "submit": {
+          "label": "Soumettre",
+          "description": "Dernière étape"
+        }
+      }
+    },
+    "individual": {
+      "title": "KYC Compte Individuel",
+      "description": "Complétez votre vérification d'identité pour ouvrir votre compte",
+      "form": {
+        "personalInfo": "Informations Personnelles",
+        "firstName": "Prénom",
+        "lastName": "Nom de Famille",
+        "dateOfBirth": "Date de Naissance",
+        "nationality": "Nationalité",
+        "selectNationality": "Sélectionnez la nationalité",
+        "phoneNumber": "Numéro de Téléphone",
+        "address": "Adresse",
+        "streetAddress": "Adresse Postale",
+        "city": "Ville",
+        "postalCode": "Code Postal",
+        "country": "Pays",
+        "selectCountry": "Sélectionnez le pays",
+        "documentVerification": "Vérification des Documents",
+        "documentDescription": "Veuillez télécharger des photos ou des scans clairs des documents suivants (max 15 Mo chacun)",
+        "activityInfo": "Informations sur l'Activité",
+        "isPEP": "Êtes-vous une Personne Politiquement Exposée (PPE) ?",
+        "no": "Non",
+        "yes": "Oui",
+        "expectedMonthlyVolume": "Volume Mensuel Prévu",
+        "selectRange": "Sélectionnez la plage",
+        "sourceOfFunds": "Origine des Fonds",
+        "sourceOfFundsPlaceholder": "Veuillez décrire l'origine de vos fonds...",
+        "consents": "Consentements",
+        "consentKYC": "Je consens à la vérification d'identité et aux contrôles de conformité exigés par la loi",
+        "consentTerms": "J'accepte les",
+        "termsLink": "Conditions Générales",
+        "privacyLink": "Politique de Confidentialité"
+      },
+      "approved": {
+        "message": "Votre compte a été approuvé avec succès !",
+        "nextSteps": {
+          "mobileApp": "Téléchargez notre application mobile ou accédez à la banque en ligne",
+          "security": "Configurez la sécurité de votre compte (2FA, PIN)",
+          "debitCard": "Demandez votre carte de débit",
+          "fundAccount": "Alimentez votre compte par virement"
+        },
+        "buttons": {
+          "dashboard": "Aller au Tableau de Bord",
+          "downloadApp": "Télécharger l'Application",
+          "startNew": "Nouvelle Demande"
+        }
+      },
+      "submitted": {
+        "message": "Votre demande de compte est en cours d'examen. Vous recevrez une décision dans les 24 à 48 heures."
+      }
+    },
+    "company": {
+      "title": "KYB Compte Entreprise",
+      "description": "Complétez votre vérification d'entreprise pour ouvrir votre compte professionnel",
+      "form": {
+        "companyInfo": "Informations sur l'Entreprise",
+        "companyName": "Nom de l'Entreprise",
+        "registrationNumber": "Numéro d'Enregistrement",
+        "dateOfIncorporation": "Date de Constitution",
+        "legalForm": "Forme Juridique",
+        "selectLegalForm": "Sélectionnez la forme juridique",
+        "companyAddress": "Adresse de l'Entreprise",
+        "streetAddress": "Adresse Postale",
+        "city": "Ville",
+        "postalCode": "Code Postal",
+        "country": "Pays",
+        "selectCountry": "Sélectionnez le pays",
+        "companyDocuments": "Documents de l'Entreprise",
+        "documentDescription": "Veuillez télécharger des copies claires des documents suivants (max 15 Mo chacun)",
+        "businessActivity": "Activité Commerciale",
+        "businessActivityDescription": "Description de l'Activité Commerciale",
+        "businessActivityPlaceholder": "Décrivez vos principales activités commerciales...",
+        "activityCountries": "Pays d'Activité",
+        "activityCountriesHelp": "Maintenez Ctrl (Windows) ou Cmd (Mac) pour sélectionner plusieurs pays",
+        "expectedMonthlyVolume": "Volume de Transactions Mensuelles Prévu",
+        "selectRange": "Sélectionnez la plage",
+        "consents": "Consentements",
+        "consentKYB": "Je consens à la vérification d'entreprise et aux contrôles de conformité exigés par la loi",
+        "consentTerms": "J'accepte les",
+        "termsLink": "Conditions Générales",
+        "privacyLink": "Politique de Confidentialité"
+      },
+      "approved": {
+        "message": "Votre compte professionnel a été approuvé avec succès !",
+        "nextSteps": {
+          "multiUser": "Configurez l'accès multi-utilisateurs pour votre équipe",
+          "accounting": "Configurez l'intégration comptable",
+          "corporateCards": "Commandez des cartes de débit d'entreprise",
+          "fundAccount": "Alimentez votre compte par virement"
+        },
+        "buttons": {
+          "dashboard": "Aller au Tableau de Bord",
+          "downloadApp": "Télécharger l'Application",
+          "startNew": "Nouvelle Demande"
+        }
+      },
+      "submitted": {
+        "message": "Votre demande de compte professionnel est en cours d'examen. Vous recevrez une décision dans les 2 à 3 jours ouvrables."
+      }
+    },
+    "warmReferral": {
+      "handoff": {
+        "title": "Transfert Sécurisé",
+        "description": "Vos informations seront transférées de manière sécurisée à {partner}",
+        "step1": {
+          "title": "Transfert Sécurisé",
+          "description": "Vos informations seront transférées de manière sécurisée à {partner}"
+        },
+        "step2": {
+          "title": "Compléter la Demande",
+          "description": "Suivez le processus de {partner} pour compléter votre demande"
+        },
+        "step3": {
+          "title": "Support Opulanz",
+          "description": "Nous restons votre point de contact pour toute question"
+        }
+      }
+    }
   }
 }

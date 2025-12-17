@@ -1329,6 +1329,20 @@
           "step4": "Complete the account opening process"
         },
         "continueButton": "Continue"
+      },
+      "identityStep": {
+        "title": "Your Identity & Contact",
+        "subtitle": "We need to verify your identity and contact information for regulatory compliance.",
+        "firstName": "First Name",
+        "firstNamePlaceholder": "Enter your first name",
+        "lastName": "Last Name",
+        "lastNamePlaceholder": "Enter your last name",
+        "email": "Email Address",
+        "emailPlaceholder": "your.email@example.com",
+        "phone": "Phone Number",
+        "phonePlaceholder": "+352 123 456 789",
+        "required": "*",
+        "validationError": "Please complete all required fields to continue."
       }
     },
     "business": {

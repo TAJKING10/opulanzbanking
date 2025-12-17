@@ -1316,6 +1316,20 @@
           "step4": "Finaliser le processus d'ouverture de compte"
         },
         "continueButton": "Continuer"
+      },
+      "identityStep": {
+        "title": "Votre Identité et Coordonnées",
+        "subtitle": "Nous devons vérifier votre identité et vos coordonnées pour des raisons réglementaires.",
+        "firstName": "Prénom",
+        "firstNamePlaceholder": "Entrez votre prénom",
+        "lastName": "Nom de famille",
+        "lastNamePlaceholder": "Entrez votre nom de famille",
+        "email": "Adresse e-mail",
+        "emailPlaceholder": "votre.email@exemple.com",
+        "phone": "Numéro de téléphone",
+        "phonePlaceholder": "+352 123 456 789",
+        "required": "*",
+        "validationError": "Veuillez compléter tous les champs obligatoires pour continuer."
       }
     },
     "business": {

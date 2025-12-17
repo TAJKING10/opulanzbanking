@@ -1451,5 +1451,73 @@
         }
       }
     }
+  },
+  "servicesPage": {
+    "hero": {
+      "title": "Services Financiers Complets pour Votre Succès",
+      "subtitle": "De la banque au conseil en investissement, découvrez notre gamme complète de services financiers conçus pour aider les particuliers et les entreprises à prospérer au Luxembourg et au-delà.",
+      "primaryCta": "Ouvrir un Compte",
+      "secondaryCta": "Explorer les Services"
+    },
+    "servicesSection": {
+      "overline": "Nos Services",
+      "title": "Tout Ce Dont Vous Avez Besoin Sous Un Seul Toit",
+      "description": "Explorez notre gamme complète de services financiers conçus pour soutenir vos objectifs personnels et professionnels."
+    },
+    "featuresSection": {
+      "overline": "Pourquoi Opulanz",
+      "title": "Votre Partenaire Financier de Confiance",
+      "description": "Nous fournissons des solutions financières complètes avec l'expertise, la sécurité et le service personnalisé que vous méritez.",
+      "expertFinancial": {
+        "title": "Services Financiers Experts",
+        "description": "Services professionnels de comptabilité, tenue de livres et gestion financière adaptés à votre entreprise."
+      },
+      "taxOptimization": {
+        "title": "Optimisation Fiscale",
+        "description": "Services de planification fiscale stratégique et de conseil pour minimiser votre charge fiscale tout en assurant la conformité."
+      },
+      "investmentManagement": {
+        "title": "Gestion des Investissements",
+        "description": "Stratégies d'investissement personnalisées et gestion de patrimoine pour vous aider à atteindre vos objectifs financiers."
+      },
+      "insuranceSolutions": {
+        "title": "Solutions d'Assurance",
+        "description": "Produits d'assurance vie complets pour protéger ce qui compte le plus pour vous et votre famille."
+      },
+      "companyFormation": {
+        "title": "Formation d'Entreprise",
+        "description": "Soutien complet pour établir votre entreprise au Luxembourg avec des conseils juridiques et réglementaires."
+      },
+      "bankingServices": {
+        "title": "Services Bancaires",
+        "description": "Solutions bancaires numériques modernes avec comptes multidevises et capacités de paiement internationales."
+      }
+    },
+    "whyChooseUs": {
+      "title": "Pourquoi Choisir Opulanz ?",
+      "paragraph1": "Opulanz réunit le meilleur de l'expertise bancaire traditionnelle et de l'innovation fintech moderne. En tant qu'institution financière entièrement réglementée avec présence au Luxembourg et en France, nous offrons la sécurité et la fiabilité dont vous avez besoin, combinées à la flexibilité et à l'innovation que vous souhaitez.",
+      "paragraph2": "Que vous soyez un particulier à la recherche de services bancaires et d'investissement, ou une entreprise recherchant des solutions financières complètes, nous avons l'expertise et les services pour soutenir votre succès.",
+      "cta": "Commencer Aujourd'hui",
+      "reasons": {
+        "regulated": "Réglementé par l'ACPR et l'AMF pour votre tranquillité d'esprit",
+        "expertise": "Plus de 25 ans d'expertise combinée dans les services financiers",
+        "personalized": "Service personnalisé par des gestionnaires de compte dédiés",
+        "competitive": "Tarifs compétitifs et structure de frais transparente",
+        "multilingual": "Assistance multilingue en anglais et en français",
+        "digital": "Plateformes numériques de pointe pour un accès 24h/24 et 7j/7",
+        "comprehensive": "Suite complète de services sous un seul toit"
+      }
+    },
+    "regulatorySection": {
+      "overline": "Fiable & Réglementé",
+      "title": "Votre Sécurité Est Notre Priorité",
+      "description": "Nous sommes réglementés par les principales autorités financières européennes, garantissant les plus hauts standards de sécurité et de conformité."
+    },
+    "ctaSection": {
+      "title": "Prêt à Découvrir l'Excellence Bancaire ?",
+      "description": "Rejoignez des milliers de clients satisfaits qui font confiance à Opulanz pour leurs besoins financiers. Ouvrez votre compte aujourd'hui et découvrez la différence.",
+      "openAccount": "Ouvrir un Compte",
+      "contactUs": "Nous Contacter"
+    }
   }
 }

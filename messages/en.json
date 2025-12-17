@@ -1464,5 +1464,73 @@
         }
       }
     }
+  },
+  "servicesPage": {
+    "hero": {
+      "title": "Complete Financial Services for Your Success",
+      "subtitle": "From banking to investment advisory, discover our comprehensive range of financial services designed to help individuals and businesses thrive in Luxembourg and beyond.",
+      "primaryCta": "Open an Account",
+      "secondaryCta": "Explore Services"
+    },
+    "servicesSection": {
+      "overline": "Our Services",
+      "title": "Everything You Need Under One Roof",
+      "description": "Explore our comprehensive range of financial services designed to support your personal and business goals."
+    },
+    "featuresSection": {
+      "overline": "Why Opulanz",
+      "title": "Your Trusted Financial Partner",
+      "description": "We provide comprehensive financial solutions with the expertise, security, and personalized service you deserve.",
+      "expertFinancial": {
+        "title": "Expert Financial Services",
+        "description": "Professional accounting, bookkeeping, and financial management services tailored to your business."
+      },
+      "taxOptimization": {
+        "title": "Tax Optimization",
+        "description": "Strategic tax planning and advisory services to minimize your tax burden while ensuring compliance."
+      },
+      "investmentManagement": {
+        "title": "Investment Management",
+        "description": "Personalized investment strategies and wealth management to help you achieve your financial goals."
+      },
+      "insuranceSolutions": {
+        "title": "Insurance Solutions",
+        "description": "Comprehensive life insurance products to protect what matters most to you and your family."
+      },
+      "companyFormation": {
+        "title": "Company Formation",
+        "description": "Complete support for establishing your business in Luxembourg with legal and regulatory guidance."
+      },
+      "bankingServices": {
+        "title": "Banking Services",
+        "description": "Modern digital banking solutions with multi-currency accounts and international payment capabilities."
+      }
+    },
+    "whyChooseUs": {
+      "title": "Why Choose Opulanz?",
+      "paragraph1": "Opulanz brings together the best of traditional banking expertise and modern fintech innovation. As a fully regulated financial institution with presence in Luxembourg and France, we offer the security and reliability you need, combined with the flexibility and innovation you want.",
+      "paragraph2": "Whether you're an individual looking for banking and investment services, or a business seeking comprehensive financial solutions, we have the expertise and services to support your success.",
+      "cta": "Get Started Today",
+      "reasons": {
+        "regulated": "Regulated by ACPR and AMF for your peace of mind",
+        "expertise": "Over 25 years of combined expertise in financial services",
+        "personalized": "Personalized service from dedicated account managers",
+        "competitive": "Competitive rates and transparent fee structure",
+        "multilingual": "Multi-lingual support in English and French",
+        "digital": "Cutting-edge digital platforms for 24/7 access",
+        "comprehensive": "Comprehensive suite of services under one roof"
+      }
+    },
+    "regulatorySection": {
+      "overline": "Trusted & Regulated",
+      "title": "Your Security is Our Priority",
+      "description": "We are regulated by leading European financial authorities, ensuring the highest standards of security and compliance."
+    },
+    "ctaSection": {
+      "title": "Ready to Experience Banking Excellence?",
+      "description": "Join thousands of satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
+      "openAccount": "Open an Account",
+      "contactUs": "Contact Us"
+    }
   }
 }

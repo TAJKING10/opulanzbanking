@@ -10,25 +10,29 @@ variables:
   - group: frontend-env-vars
 
 steps:
+  # Set Node version
   - task: NodeTool@0
     inputs:
       versionSpec: '22.x'
     displayName: 'Use Node.js 22'
 
+  # Install and build Next.js locally
   - script: |
       npm ci
       npm run build
     displayName: 'Build frontend'
 
+  # Prepare deploy folder WITHOUT node_modules
   - script: |
+      rm -rf build_output
       mkdir build_output
       cp -R .next build_output/
       cp -R public build_output/
       cp package.json build_output/
       cp package-lock.json build_output/
-      touch build_output/.skipOryxBuild
     displayName: 'Prepare deploy folder'
 
+  # Package artifacts
   - task: ArchiveFiles@2
     inputs:
       rootFolderOrFile: 'build_output'
@@ -38,11 +42,12 @@ steps:
       replaceExistingArchive: true
     displayName: 'Archive deploy files'
 
+  # Deploy
   - task: AzureWebApp@1
     inputs:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-frontend'
       package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
-      enableCustomDeployment: true
-      removeAdditionalFilesFlag: true
+      enableCustomDeployment: false        # let Oryx decide
+      removeAdditionalFilesFlag: true      # delete old files in wwwroot
     displayName: 'Deploy to App Service'

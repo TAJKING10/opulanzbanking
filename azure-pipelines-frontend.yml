@@ -1,53 +1,80 @@
 trigger:
   branches:
     include:
-      - main
+      - main  # <-- updated to main branch
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: frontend-env-vars
+- group: frontend-env-vars
 
 steps:
-  # Set Node version
+# ------------------------------
+# 1️⃣ Deletes old artifacts before build
+# ------------------------------
+  - script: |
+      rm -rf .next
+      rm -rf out
+      rm -rf build_output
+    displayName: 'Clean previous build artifacts'
+
+# ------------------------------
+# 2️⃣ Install Node.js
+# ------------------------------
   - task: NodeTool@0
     inputs:
       versionSpec: '22.x'
     displayName: 'Use Node.js 22'
 
-  # Install and build Next.js locally
+# ------------------------------
+# 3️⃣ Install dependencies (CI)
+# ------------------------------
   - script: |
       npm ci
-      npm run build
-    displayName: 'Build frontend'
+    displayName: 'Install dependencies'
 
-  # Prepare deploy folder WITHOUT node_modules
+# ------------------------------
+# 4️⃣ Build Next.js project
+# ------------------------------
   - script: |
-      rm -rf build_output
-      mkdir build_output
-      cp -R .next build_output/
-      cp -R public build_output/
-      cp package.json build_output/
-      cp package-lock.json build_output/
-    displayName: 'Prepare deploy folder'
+      npm run build
+    displayName: 'Build Next.js'
 
-  # Package artifacts
+# ------------------------------
+# 5️⃣ Create artifact ZIP WITHOUT node_modules
+# ------------------------------
   - task: ArchiveFiles@2
+    displayName: 'Archive build output for deployment'
     inputs:
-      rootFolderOrFile: 'build_output'
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
       replaceExistingArchive: true
-    displayName: 'Archive deploy files'
+      exclude: |
+        **/node_modules/**
+        **/node_modules
+        node_modules
+        node_modules/**
+        build_output/**
+        .git/**
+        .next/cache/**
 
-  # Deploy
+# ------------------------------
+# 6️⃣ Publish artifact
+# ------------------------------
+  - publish: $(Build.ArtifactStagingDirectory)/app.zip
+    artifact: drop
+    displayName: 'Publish Artifact'
+
+# ------------------------------
+# 7️⃣ Deploy to Azure App Service
+# Oryx will take over runtime
+# ------------------------------
   - task: AzureWebApp@1
     inputs:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-frontend'
-      package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
-      enableCustomDeployment: false        # let Oryx decide
-      removeAdditionalFilesFlag: true      # delete old files in wwwroot
-    displayName: 'Deploy to App Service'
+      package: '$(Pipeline.Workspace)/drop/app.zip'
+    displayName: 'Deploy to Azure App Service'

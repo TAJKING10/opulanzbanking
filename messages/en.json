@@ -1487,27 +1487,29 @@
           "uploaded": "✓ Uploaded"
         },
         "review": {
-          "title": "Review & Consent",
-          "subtitle": "Please review your information and provide consent",
+          "title": "Review & Consents",
+          "subtitle": "Please review your information and provide your consent",
           "summaryTitle": "Application Summary",
-          "personalInfo": "Personal Information",
-          "accountPreferences": "Account Preferences",
-          "documents": "Documents",
-          "consentsTitle": "Required Consents",
-          "dataProcessing": "I consent to data processing for KYC/AML purposes",
-          "termsAndConditions": "I agree to the Terms and Conditions",
-          "privacyPolicy": "I acknowledge the Privacy Policy"
+          "name": "Name",
+          "email": "Email",
+          "mobile": "Mobile",
+          "accountType": "Account Type",
+          "preferredJurisdictions": "Preferred Jurisdictions",
+          "dataProcessingConsent": "I consent to Opulanz processing my data for the purpose of introducing me to licensed banking partners.",
+          "dataSharingConsent": "I authorize Opulanz to share my information with partner banks/EMIs solely for account onboarding.",
+          "marketingOptIn": "Keep me informed about Opulanz services (optional)",
+          "consentRequired": "This consent is required"
         },
         "submission": {
-          "title": "Application Submitted",
-          "subtitle": "Thank you for your application",
-          "message": "Your application has been submitted successfully. You will receive a confirmation email shortly.",
-          "nextSteps": "What happens next:",
-          "step1": "Review by partner bank (24-72 hours)",
-          "step2": "KYC verification (1-3 days)",
-          "step3": "Account activation (1-2 days)",
-          "referenceNumber": "Reference Number",
-          "returnHome": "Return to Home"
+          "title": "Application Submitted Successfully!",
+          "message": "Thank you for submitting your personal account application. Our team will review your information and contact you within 24-72 hours.",
+          "applicationNumberLabel": "Your Application Number",
+          "saveNumberMessage": "Please save this number for your records",
+          "nextStepsTitle": "What happens next?",
+          "nextStep1": "Our compliance team will review your application",
+          "nextStep2": "We'll match you with the most suitable Opulanz partner bank",
+          "nextStep3": "You'll receive an email with next steps within 24-72 hours",
+          "backToHomepage": "Back to Homepage"
         }
       }
     },

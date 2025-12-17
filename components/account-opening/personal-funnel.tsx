@@ -1192,44 +1192,44 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                Review & Consents
+                {tReview("title")}
               </h2>
               <p className="text-brand-grayMed">
-                Please review your information and provide your consent
+                {tReview("subtitle")}
               </p>
             </div>
 
             {/* Summary */}
             <div className="space-y-4 p-6 bg-gray-50 rounded-lg">
-              <h3 className="font-semibold text-brand-dark">Application Summary</h3>
+              <h3 className="font-semibold text-brand-dark">{tReview("summaryTitle")}</h3>
 
               <div className="grid gap-4 text-sm">
                 <div>
-                  <p className="text-brand-grayMed">Name</p>
+                  <p className="text-brand-grayMed">{tReview("name")}</p>
                   <p className="font-medium text-brand-dark">
                     {formData.identity?.firstName} {formData.identity?.lastName}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">Email</p>
+                  <p className="text-brand-grayMed">{tReview("email")}</p>
                   <p className="font-medium text-brand-dark">{formData.identity?.email}</p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">Mobile</p>
+                  <p className="text-brand-grayMed">{tReview("mobile")}</p>
                   <p className="font-medium text-brand-dark">{formData.identity?.mobile}</p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">Account Type</p>
+                  <p className="text-brand-grayMed">{tReview("accountType")}</p>
                   <p className="font-medium text-brand-dark capitalize">
                     {formData.intent?.accountType?.replace("_", " ")}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">Preferred Jurisdictions</p>
+                  <p className="text-brand-grayMed">{tReview("preferredJurisdictions")}</p>
                   <p className="font-medium text-brand-dark capitalize">
                     {formData.intent?.preferredJurisdictions?.join(", ").replace(/_/g, " ")}
                   </p>
@@ -1246,7 +1246,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                   onCheckedChange={(checked) => step5Form.setValue("dataProcessing", !!checked)}
                 />
                 <Label htmlFor="dataProcessing" className="font-normal cursor-pointer leading-tight">
-                  <span className="text-red-500">*</span> I consent to Opulanz processing my data for the purpose of introducing me to licensed banking partners.
+                  <span className="text-red-500">*</span> {tReview("dataProcessingConsent")}
                 </Label>
               </div>
               {step5Form.formState.errors.dataProcessing && (
@@ -1262,7 +1262,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                   onCheckedChange={(checked) => step5Form.setValue("dataSharing", !!checked)}
                 />
                 <Label htmlFor="dataSharing" className="font-normal cursor-pointer leading-tight">
-                  <span className="text-red-500">*</span> I authorize Opulanz to share my information with partner banks/EMIs solely for account onboarding.
+                  <span className="text-red-500">*</span> {tReview("dataSharingConsent")}
                 </Label>
               </div>
               {step5Form.formState.errors.dataSharing && (
@@ -1278,7 +1278,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                   onCheckedChange={(checked) => step5Form.setValue("marketingOptIn", !!checked)}
                 />
                 <Label htmlFor="marketingOptIn" className="font-normal cursor-pointer leading-tight">
-                  Keep me informed about Opulanz services (optional)
+                  {tReview("marketingOptIn")}
                 </Label>
               </div>
             </form>
@@ -1294,39 +1294,39 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div>
               <h2 className="text-3xl font-bold text-brand-dark mb-4">
-                Application Submitted Successfully!
+                {tSubmission("title")}
               </h2>
               <p className="text-lg text-brand-grayMed max-w-2xl mx-auto mb-6">
-                Thank you for submitting your personal account application. Our team will review your information and contact you within 24-72 hours.
+                {tSubmission("message")}
               </p>
             </div>
 
             <div className="p-8 bg-gradient-to-br from-brand-goldLight/20 to-brand-gold/10 rounded-2xl border-2 border-brand-gold/30 max-w-md mx-auto">
               <p className="text-sm text-brand-grayMed mb-3 font-semibold uppercase tracking-wide">
-                Your Application Number
+                {tSubmission("applicationNumberLabel")}
               </p>
               <div className="text-3xl font-bold text-brand-dark mb-2 font-mono tracking-tight">
                 {applicationId}
               </div>
               <p className="text-sm text-brand-grayMed">
-                Please save this number for your records
+                {tSubmission("saveNumberMessage")}
               </p>
             </div>
 
             <div className="p-6 bg-blue-50 rounded-lg border border-blue-200 max-w-2xl mx-auto text-left">
-              <h3 className="font-semibold text-brand-dark mb-3">What happens next?</h3>
+              <h3 className="font-semibold text-brand-dark mb-3">{tSubmission("nextStepsTitle")}</h3>
               <ul className="space-y-2 text-sm text-brand-grayMed">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>Our compliance team will review your application</span>
+                  <span>{tSubmission("nextStep1")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>We'll match you with the most suitable Opulanz partner bank</span>
+                  <span>{tSubmission("nextStep2")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>You'll receive an email with next steps within 24-72 hours</span>
+                  <span>{tSubmission("nextStep3")}</span>
                 </li>
               </ul>
             </div>
@@ -1334,7 +1334,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button variant="outline" size="lg" asChild>
                 <a href={`/${locale}`}>
-                  Back to Homepage
+                  {tSubmission("backToHomepage")}
                 </a>
               </Button>
               <Button variant="outline" size="lg" onClick={onSwitchMode}>

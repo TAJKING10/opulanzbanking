@@ -1474,27 +1474,29 @@
           "uploaded": "✓ Téléchargé"
         },
         "review": {
-          "title": "Révision et Consentement",
+          "title": "Révision et Consentements",
           "subtitle": "Veuillez vérifier vos informations et donner votre consentement",
           "summaryTitle": "Résumé de la demande",
-          "personalInfo": "Informations personnelles",
-          "accountPreferences": "Préférences du compte",
-          "documents": "Documents",
-          "consentsTitle": "Consentements requis",
-          "dataProcessing": "Je consens au traitement des données à des fins KYC/LBA",
-          "termsAndConditions": "J'accepte les Conditions Générales",
-          "privacyPolicy": "Je reconnais la Politique de Confidentialité"
+          "name": "Nom",
+          "email": "E-mail",
+          "mobile": "Mobile",
+          "accountType": "Type de compte",
+          "preferredJurisdictions": "Juridictions préférées",
+          "dataProcessingConsent": "Je consens à ce qu'Opulanz traite mes données dans le but de me présenter à des partenaires bancaires agréés.",
+          "dataSharingConsent": "J'autorise Opulanz à partager mes informations avec les banques/EMI partenaires uniquement pour l'ouverture de compte.",
+          "marketingOptIn": "Tenez-moi informé des services Opulanz (optionnel)",
+          "consentRequired": "Ce consentement est requis"
         },
         "submission": {
-          "title": "Demande Soumise",
-          "subtitle": "Merci pour votre demande",
-          "message": "Votre demande a été soumise avec succès. Vous recevrez un e-mail de confirmation sous peu.",
-          "nextSteps": "Quelle est la suite :",
-          "step1": "Examen par la banque partenaire (24-72 heures)",
-          "step2": "Vérification KYC (1-3 jours)",
-          "step3": "Activation du compte (1-2 jours)",
-          "referenceNumber": "Numéro de référence",
-          "returnHome": "Retour à l'accueil"
+          "title": "Demande Soumise avec Succès !",
+          "message": "Merci d'avoir soumis votre demande de compte personnel. Notre équipe examinera vos informations et vous contactera dans les 24 à 72 heures.",
+          "applicationNumberLabel": "Votre Numéro de Demande",
+          "saveNumberMessage": "Veuillez conserver ce numéro pour vos dossiers",
+          "nextStepsTitle": "Quelle est la suite ?",
+          "nextStep1": "Notre équipe de conformité examinera votre demande",
+          "nextStep2": "Nous vous mettrons en relation avec la banque partenaire Opulanz la plus appropriée",
+          "nextStep3": "Vous recevrez un e-mail avec les prochaines étapes dans les 24 à 72 heures",
+          "backToHomepage": "Retour à la Page d'Accueil"
         }
       }
     },

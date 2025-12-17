@@ -10,15 +10,18 @@ variables:
   - group: frontend-env-vars
 
 steps:
+# 1️⃣ Use Node.js 20
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
+# 2️⃣ Install ALL deps (dev + prod)
 - script: |
     npm ci
-  displayName: 'Install dependencies'
+  displayName: 'Install all dependencies'
 
+# 3️⃣ Build Next.js
 - script: |
     npm run build
   displayName: 'Build Next.js'
@@ -33,6 +36,12 @@ steps:
     NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
     NODE_ENV: "production"
 
+# 4️⃣ Prune devDependencies
+- script: |
+    npm ci --omit=dev
+  displayName: 'Remove dev dependencies'
+
+# 5️⃣ Archive correct files for Azure
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '.'
@@ -43,10 +52,14 @@ steps:
     include: |
       .next/**
       public/**
+      node_modules/**
       package.json
       package-lock.json
+      app/**
+      components/**
+      lib/**
 
-
+# 6️⃣ Deploy to Azure App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'

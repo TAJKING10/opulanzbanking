@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - main
+      - main   # Only build/deploy main
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -10,17 +10,16 @@ variables:
   - group: frontend-env-vars   # Make sure all NEXT_PUBLIC_* variables exist here
 
 steps:
-
 # 1️⃣ Use Node.js
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 2️⃣ Install dependencies (dev + prod)
+# 2️⃣ Install all dependencies (dev + prod)
 - script: |
     npm ci --prefer-offline --no-audit --no-fund
-  displayName: 'Install all dependencies'
+  displayName: 'Install dependencies'
 
 # 3️⃣ Build Next.js
 - script: |
@@ -35,13 +34,14 @@ steps:
     NEXT_PUBLIC_ENABLE_ANALYTICS: $(NEXT_PUBLIC_ENABLE_ANALYTICS)
     NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
     NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
+    NODE_ENV: 'production'
 
-# 4️⃣ Install only production dependencies for runtime
+# 4️⃣ Optional: prune devDependencies after build for smaller deployment
 - script: |
-    npm install --production
-  displayName: 'Install production dependencies'
+    npm prune --production
+  displayName: 'Prune devDependencies'
 
-# 5️⃣ Prepare artifact (build + production node_modules + config + public)
+# 5️⃣ Prepare artifact (include .next + node_modules + package.json)
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '.'
@@ -54,9 +54,9 @@ steps:
       node_modules/**
       package.json
       package-lock.json
-      tsconfig.json
-      next.config.js
-      public/**
+      components/**
+      app/**
+      lib/**
 
 # 6️⃣ Deploy to Azure App Service
 - task: AzureWebApp@1

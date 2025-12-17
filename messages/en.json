@@ -1434,7 +1434,18 @@
           "taxResidencyPlaceholder": "Luxembourg",
           "taxId": "Tax ID (Optional)",
           "taxIdPlaceholder": "1234567890",
-          "required": "*"
+          "required": "*",
+          "errors": {
+            "firstNameRequired": "First name is required",
+            "lastNameRequired": "Last name is required",
+            "invalidEmail": "Invalid email address",
+            "countryCodeRequired": "Required",
+            "invalidPhone": "Invalid phone number",
+            "countryRequired": "Country is required",
+            "taxResidencyRequired": "Tax residency is required",
+            "dateOfBirthRequired": "Date of birth is required",
+            "nationalityRequired": "Nationality is required"
+          }
         },
         "intent": {
           "title": "Account Intent & Preferences",

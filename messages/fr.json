@@ -1330,6 +1330,77 @@
         "phonePlaceholder": "+352 123 456 789",
         "required": "*",
         "validationError": "Veuillez compléter tous les champs obligatoires pour continuer."
+      },
+      "personalFunnel": {
+        "welcome": {
+          "title": "Ouvrez Votre Compte Personnel",
+          "subtitle": "Répondez à quelques questions rapides pour que nous puissions vous mettre en relation avec une banque partenaire Opulanz agréée.",
+          "timeline": {
+            "title": "Calendrier de la Demande",
+            "step1": {
+              "title": "Soumettre la Demande (10 minutes)",
+              "description": "Remplir le formulaire en ligne avec vos informations"
+            },
+            "step2": {
+              "title": "Examen du Partenaire (24-72 heures)",
+              "description": "La banque partenaire examine votre demande"
+            },
+            "step3": {
+              "title": "Vérification KYC (1-3 jours)",
+              "description": "Vérification d'identité et des documents"
+            },
+            "step4": {
+              "title": "Activation du Compte (1-2 jours)",
+              "description": "Recevoir l'IBAN et les identifiants d'accès"
+            },
+            "totalTime": "⏱️ Temps Total : Environ 5-7 jours ouvrables"
+          },
+          "eligibility": {
+            "title": "Conditions d'Éligibilité",
+            "requirement1": "18 ans ou plus",
+            "requirement2": "Pièce d'identité ou passeport valide délivré par le gouvernement",
+            "requirement3": "Justificatif de domicile (facture de services publics, relevé bancaire)",
+            "requirement4": "Résident UE/EEE ou permis de séjour valide",
+            "requirement5": "Numéro d'identification fiscale (NIF)"
+          },
+          "documents": {
+            "title": "Documents Requis",
+            "document1": "Carte d'identité ou passeport valide (scan couleur)",
+            "document2": "Justificatif de domicile (daté de moins de 3 mois)",
+            "document3": "Justificatif de revenus (fiches de paie ou déclarations fiscales)",
+            "document4": "Déclaration d'origine des fonds"
+          },
+          "howItWorks": {
+            "title": "Comment Ça Marche",
+            "smartMatching": {
+              "title": "Correspondance Intelligente :",
+              "description": "En fonction de vos préférences de juridiction, nous acheminons automatiquement votre demande vers la banque partenaire Opulanz la plus appropriée."
+            },
+            "warmReferral": {
+              "title": "Référence Privilégiée :",
+              "description": "Votre demande comprend un code de parrainage signé sécurisé, garantissant un traitement prioritaire et des conditions préférentielles."
+            },
+            "dataSecurity": {
+              "title": "Sécurité des Données :",
+              "description": "Toutes les informations sont cryptées et transmises en toute sécurité. Nous respectons le RGPD et la réglementation bancaire luxembourgeoise."
+            },
+            "noCommitment": {
+              "title": "Sans Engagement :",
+              "description": "La soumission de cette demande ne vous oblige pas à ouvrir un compte. Vous pouvez examiner les conditions finales avant d'accepter."
+            }
+          },
+          "features": {
+            "title": "Ce Que Vous Obtiendrez",
+            "feature1": "Compte IBAN multi-devises",
+            "feature2": "Virements SEPA et SWIFT",
+            "feature3": "Carte de débit (Mastercard/Visa)",
+            "feature4": "Banque mobile et en ligne",
+            "feature5": "Support client 24/7",
+            "feature6": "Protection réglementée UE"
+          },
+          "startButton": "Commencer la Demande Personnelle",
+          "disclaimer": "En continuant, vous acceptez nos Conditions d'Utilisation et notre Politique de Confidentialité"
+        }
       }
     },
     "business": {

@@ -12,15 +12,14 @@ variables:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '18.x'
-    displayName: 'Use Node.js 18'
+      versionSpec: '24.x'
+    displayName: 'Use Node.js 24'
 
   - script: |
-      npm install --no-audit --no-fund
+      npm ci
       npm run build
-      npm run export
-    displayName: 'Build Next.js'
-    
+      npm prune --production
+    displayName: 'Build and prune'
     env:
       NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
       NEXT_PUBLIC_APP_NAME: $(NEXT_PUBLIC_APP_NAME)
@@ -31,16 +30,28 @@ steps:
       NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
       NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
 
+  - script: |
+      mkdir build_output
+      cp -R .next build_output/
+      cp -R public build_output/
+      cp -R node_modules build_output/
+      cp package.json build_output/
+      cp package-lock.json build_output/
+      touch build_output/.skipOryxBuild
+    displayName: 'Prepare deploy folder'
+
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: 'out'
+      rootFolderOrFile: 'build_output'
       includeRootFolder: false
       archiveType: 'zip'
       archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
       replaceExistingArchive: true
+    displayName: 'Archive deploy files'
 
   - task: AzureWebApp@1
     inputs:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-frontend'
       package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+    displayName: 'Deploy to App Service'

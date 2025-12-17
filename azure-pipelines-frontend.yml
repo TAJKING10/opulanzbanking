@@ -32,7 +32,7 @@ steps:
 
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: 'out'
+      rootFolderOrFile: '.'
       includeRootFolder: false
       archiveType: 'zip'
       archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'

@@ -47,7 +47,6 @@ steps:
       .next/**
       package.json
       package-lock.json
-      node_modules/**
 
 # 5️⃣ Deploy to Azure App Service
 - task: AzureWebApp@1

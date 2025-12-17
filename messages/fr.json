@@ -1421,7 +1421,18 @@
           "taxResidencyPlaceholder": "Luxembourg",
           "taxId": "Numéro d'identification fiscale (Optionnel)",
           "taxIdPlaceholder": "1234567890",
-          "required": "*"
+          "required": "*",
+          "errors": {
+            "firstNameRequired": "Le prénom est requis",
+            "lastNameRequired": "Le nom de famille est requis",
+            "invalidEmail": "Adresse e-mail invalide",
+            "countryCodeRequired": "Requis",
+            "invalidPhone": "Numéro de téléphone invalide",
+            "countryRequired": "Le pays est requis",
+            "taxResidencyRequired": "La résidence fiscale est requise",
+            "dateOfBirthRequired": "La date de naissance est requise",
+            "nationalityRequired": "La nationalité est requise"
+          }
         },
         "intent": {
           "title": "Objectif du Compte et Préférences",

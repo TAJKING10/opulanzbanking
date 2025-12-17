@@ -235,16 +235,16 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
   // Step 2: Identity & Contact
   const step2Schema = z.object({
-    firstName: z.string().min(1, "First name is required"),
-    lastName: z.string().min(1, "Last name is required"),
-    email: z.string().email("Invalid email address"),
-    countryCode: z.string().min(1, "Country code is required"),
-    mobile: z.string().min(6, "Invalid phone number"),
-    countryOfResidence: z.string().min(1, "Country is required"),
-    taxCountry: z.string().min(1, "Tax residency is required"),
+    firstName: z.string().min(1, tIdentity("errors.firstNameRequired")),
+    lastName: z.string().min(1, tIdentity("errors.lastNameRequired")),
+    email: z.string().email(tIdentity("errors.invalidEmail")),
+    countryCode: z.string().min(1, tIdentity("errors.countryCodeRequired")),
+    mobile: z.string().min(6, tIdentity("errors.invalidPhone")),
+    countryOfResidence: z.string().min(1, tIdentity("errors.countryRequired")),
+    taxCountry: z.string().min(1, tIdentity("errors.taxResidencyRequired")),
     taxId: z.string().optional(),
-    dateOfBirth: z.string().min(1, "Date of birth is required"),
-    nationality: z.string().min(1, "Nationality is required"),
+    dateOfBirth: z.string().min(1, tIdentity("errors.dateOfBirthRequired")),
+    nationality: z.string().min(1, tIdentity("errors.nationalityRequired")),
   });
 
   const step2Form = useForm({

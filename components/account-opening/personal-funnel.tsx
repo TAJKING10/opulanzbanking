@@ -206,7 +206,12 @@ interface PersonalFunnelProps {
 }
 
 export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
-  const t = useTranslations("accountOpening.personal.personalFunnel.welcome");
+  const tWelcome = useTranslations("accountOpening.personal.personalFunnel.welcome");
+  const tIdentity = useTranslations("accountOpening.personal.personalFunnel.identity");
+  const tIntent = useTranslations("accountOpening.personal.personalFunnel.intent");
+  const tEligibility = useTranslations("accountOpening.personal.personalFunnel.eligibility");
+  const tReview = useTranslations("accountOpening.personal.personalFunnel.review");
+  const tSubmission = useTranslations("accountOpening.personal.personalFunnel.submission");
   const [currentStep, setCurrentStep] = React.useState(1);
   const [formData, setFormData] = React.useState<Partial<PersonalApplication>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -435,10 +440,10 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <div className="space-y-8">
             <div className="text-center space-y-4">
               <h2 className="text-3xl font-bold text-brand-dark">
-                {t("title")}
+                {tWelcome("title")}
               </h2>
               <p className="text-lg text-brand-grayMed max-w-2xl mx-auto">
-                {t("subtitle")}
+                {tWelcome("subtitle")}
               </p>
             </div>
 
@@ -446,41 +451,41 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             <div className="bg-brand-goldLight/10 rounded-xl p-6 border border-brand-gold/20">
               <h3 className="text-xl font-bold text-brand-dark mb-4 flex items-center gap-2">
                 <Clock className="h-5 w-5 text-brand-gold" />
-                {t("timeline.title")}
+                {tWelcome("timeline.title")}
               </h3>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">1</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">{t("timeline.step1.title")}</p>
-                    <p className="text-sm text-brand-grayMed">{t("timeline.step1.description")}</p>
+                    <p className="font-semibold text-brand-dark">{tWelcome("timeline.step1.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{tWelcome("timeline.step1.description")}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">2</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">{t("timeline.step2.title")}</p>
-                    <p className="text-sm text-brand-grayMed">{t("timeline.step2.description")}</p>
+                    <p className="font-semibold text-brand-dark">{tWelcome("timeline.step2.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{tWelcome("timeline.step2.description")}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">3</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">{t("timeline.step3.title")}</p>
-                    <p className="text-sm text-brand-grayMed">{t("timeline.step3.description")}</p>
+                    <p className="font-semibold text-brand-dark">{tWelcome("timeline.step3.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{tWelcome("timeline.step3.description")}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">4</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">{t("timeline.step4.title")}</p>
-                    <p className="text-sm text-brand-grayMed">{t("timeline.step4.description")}</p>
+                    <p className="font-semibold text-brand-dark">{tWelcome("timeline.step4.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{tWelcome("timeline.step4.description")}</p>
                   </div>
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-brand-gold/20">
                 <p className="text-sm font-semibold text-brand-dark">
-                  {t("timeline.totalTime")}
+                  {tWelcome("timeline.totalTime")}
                 </p>
               </div>
             </div>
@@ -490,28 +495,28 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               <div className="border border-brand-grayLight rounded-xl p-6">
                 <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-brand-gold" />
-                  {t("eligibility.title")}
+                  {tWelcome("eligibility.title")}
                 </h3>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">{t("eligibility.requirement1")}</span>
+                    <span className="text-brand-dark">{tWelcome("eligibility.requirement1")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">{t("eligibility.requirement2")}</span>
+                    <span className="text-brand-dark">{tWelcome("eligibility.requirement2")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">{t("eligibility.requirement3")}</span>
+                    <span className="text-brand-dark">{tWelcome("eligibility.requirement3")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">{t("eligibility.requirement4")}</span>
+                    <span className="text-brand-dark">{tWelcome("eligibility.requirement4")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">{t("eligibility.requirement5")}</span>
+                    <span className="text-brand-dark">{tWelcome("eligibility.requirement5")}</span>
                   </li>
                 </ul>
               </div>
@@ -519,24 +524,24 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               <div className="border border-brand-grayLight rounded-xl p-6">
                 <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
                   <FileText className="h-5 w-5 text-brand-gold" />
-                  {t("documents.title")}
+                  {tWelcome("documents.title")}
                 </h3>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">{t("documents.document1")}</span>
+                    <span className="text-brand-dark">{tWelcome("documents.document1")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">{t("documents.document2")}</span>
+                    <span className="text-brand-dark">{tWelcome("documents.document2")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">{t("documents.document3")}</span>
+                    <span className="text-brand-dark">{tWelcome("documents.document3")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">{t("documents.document4")}</span>
+                    <span className="text-brand-dark">{tWelcome("documents.document4")}</span>
                   </li>
                 </ul>
               </div>
@@ -544,61 +549,61 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             {/* How It Works */}
             <div className="bg-gray-50 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-brand-dark mb-4">{t("howItWorks.title")}</h3>
+              <h3 className="text-lg font-bold text-brand-dark mb-4">{tWelcome("howItWorks.title")}</h3>
               <div className="space-y-4 text-sm text-brand-grayMed">
                 <p>
-                  <strong className="text-brand-dark">{t("howItWorks.smartMatching.title")}</strong> {t("howItWorks.smartMatching.description")}
+                  <strong className="text-brand-dark">{tWelcome("howItWorks.smartMatching.title")}</strong> {tWelcome("howItWorks.smartMatching.description")}
                 </p>
                 <p>
-                  <strong className="text-brand-dark">{t("howItWorks.warmReferral.title")}</strong> {t("howItWorks.warmReferral.description")}
+                  <strong className="text-brand-dark">{tWelcome("howItWorks.warmReferral.title")}</strong> {tWelcome("howItWorks.warmReferral.description")}
                 </p>
                 <p>
-                  <strong className="text-brand-dark">{t("howItWorks.dataSecurity.title")}</strong> {t("howItWorks.dataSecurity.description")}
+                  <strong className="text-brand-dark">{tWelcome("howItWorks.dataSecurity.title")}</strong> {tWelcome("howItWorks.dataSecurity.description")}
                 </p>
                 <p>
-                  <strong className="text-brand-dark">{t("howItWorks.noCommitment.title")}</strong> {t("howItWorks.noCommitment.description")}
+                  <strong className="text-brand-dark">{tWelcome("howItWorks.noCommitment.title")}</strong> {tWelcome("howItWorks.noCommitment.description")}
                 </p>
               </div>
             </div>
 
             {/* Account Features */}
             <div className="border-2 border-brand-gold/30 rounded-xl p-6 bg-gradient-to-br from-brand-goldLight/5 to-transparent">
-              <h3 className="text-lg font-bold text-brand-dark mb-4">{t("features.title")}</h3>
+              <h3 className="text-lg font-bold text-brand-dark mb-4">{tWelcome("features.title")}</h3>
               <div className="grid sm:grid-cols-2 gap-3 text-sm">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">{t("features.feature1")}</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature1")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">{t("features.feature2")}</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature2")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">{t("features.feature3")}</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature3")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">{t("features.feature4")}</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature4")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">{t("features.feature5")}</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature5")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">{t("features.feature6")}</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature6")}</span>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button size="lg" onClick={handleNext}>
-                {t("startButton")}
+                {tWelcome("startButton")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-xs text-center text-brand-grayMed">
-                {t("disclaimer")}
+                {tWelcome("disclaimer")}
               </p>
             </div>
           </div>
@@ -609,22 +614,22 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <form className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                Identity & Contact Information
+                {tIdentity("title")}
               </h2>
               <p className="text-brand-grayMed">
-                Please provide your personal details
+                {tIdentity("subtitle")}
               </p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="firstName">
-                  First Name <span className="text-red-500">*</span>
+                  {tIdentity("firstName")} <span className="text-red-500">{tIdentity("required")}</span>
                 </Label>
                 <Input
                   id="firstName"
                   {...step2Form.register("firstName")}
-                  placeholder="John"
+                  placeholder={tIdentity("firstNamePlaceholder")}
                 />
                 {step2Form.formState.errors.firstName && (
                   <p className="text-sm text-red-500">
@@ -635,12 +640,12 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
               <div className="space-y-2">
                 <Label htmlFor="lastName">
-                  Last Name <span className="text-red-500">*</span>
+                  {tIdentity("lastName")} <span className="text-red-500">{tIdentity("required")}</span>
                 </Label>
                 <Input
                   id="lastName"
                   {...step2Form.register("lastName")}
-                  placeholder="Doe"
+                  placeholder={tIdentity("lastNamePlaceholder")}
                 />
                 {step2Form.formState.errors.lastName && (
                   <p className="text-sm text-red-500">
@@ -652,13 +657,13 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="email">
-                Email <span className="text-red-500">*</span>
+                {tIdentity("email")} <span className="text-red-500">{tIdentity("required")}</span>
               </Label>
               <Input
                 id="email"
                 type="email"
                 {...step2Form.register("email")}
-                placeholder="john.doe@example.com"
+                placeholder={tIdentity("emailPlaceholder")}
               />
               {step2Form.formState.errors.email && (
                 <p className="text-sm text-red-500">
@@ -669,7 +674,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="mobile">
-                Mobile Phone <span className="text-red-500">*</span>
+                {tIdentity("mobile")} <span className="text-red-500">{tIdentity("required")}</span>
               </Label>
               <div className="relative">
                 <div className="flex items-center border border-input rounded-md bg-background h-10 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
@@ -704,7 +709,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     id="mobile"
                     type="tel"
                     {...step2Form.register("mobile")}
-                    placeholder="123456789"
+                    placeholder={tIdentity("mobilePlaceholder")}
                     className="flex-1 h-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-3 shadow-none"
                   />
                 </div>
@@ -719,7 +724,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="dateOfBirth">
-                  Date of Birth <span className="text-red-500">*</span>
+                  {tIdentity("dateOfBirth")} <span className="text-red-500">{tIdentity("required")}</span>
                 </Label>
                 <Input
                   id="dateOfBirth"
@@ -735,14 +740,14 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
               <div className="space-y-2">
                 <Label htmlFor="nationality">
-                  Nationality <span className="text-red-500">*</span>
+                  {tIdentity("nationality")} <span className="text-red-500">{tIdentity("required")}</span>
                 </Label>
                 <Select
                   value={step2Form.watch("nationality") || ""}
                   onValueChange={(value) => step2Form.setValue("nationality", value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select nationality" />
+                    <SelectValue placeholder={tIdentity("nationalityPlaceholder")} />
                   </SelectTrigger>
                   <SelectContent className="max-h-[300px]">
                     {COUNTRIES.map((country) => (
@@ -762,12 +767,12 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="countryOfResidence">
-                Country of Residence <span className="text-red-500">*</span>
+                {tIdentity("countryOfResidence")} <span className="text-red-500">{tIdentity("required")}</span>
               </Label>
               <Input
                 id="countryOfResidence"
                 {...step2Form.register("countryOfResidence")}
-                placeholder="Luxembourg"
+                placeholder={tIdentity("countryOfResidencePlaceholder")}
               />
               {step2Form.formState.errors.countryOfResidence && (
                 <p className="text-sm text-red-500">
@@ -779,12 +784,12 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="taxCountry">
-                  Tax Residency <span className="text-red-500">*</span>
+                  {tIdentity("taxResidency")} <span className="text-red-500">{tIdentity("required")}</span>
                 </Label>
                 <Input
                   id="taxCountry"
                   {...step2Form.register("taxCountry" as any)}
-                  placeholder="Luxembourg"
+                  placeholder={tIdentity("taxResidencyPlaceholder")}
                 />
                 {(step2Form.formState.errors as any).taxCountry && (
                   <p className="text-sm text-red-500">
@@ -794,11 +799,11 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="taxId">Tax ID (Optional)</Label>
+                <Label htmlFor="taxId">{tIdentity("taxId")}</Label>
                 <Input
                   id="taxId"
                   {...step2Form.register("taxId" as any)}
-                  placeholder="1234567890"
+                  placeholder={tIdentity("taxIdPlaceholder")}
                 />
               </div>
             </div>

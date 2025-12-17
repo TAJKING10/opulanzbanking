@@ -16,10 +16,10 @@ steps:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 2️⃣ Install ALL deps (dev + prod)
+# 2️⃣ Install all dependencies
 - script: |
     npm ci
-  displayName: 'Install all dependencies'
+  displayName: 'Install dependencies'
 
 # 3️⃣ Build Next.js
 - script: |
@@ -36,12 +36,7 @@ steps:
     NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
     NODE_ENV: "production"
 
-# 4️⃣ Prune devDependencies
-- script: |
-    npm ci --omit=dev
-  displayName: 'Remove dev dependencies'
-
-# 5️⃣ Archive correct files for Azure
+# 4️⃣ Archive ALL runtime assets
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '.'
@@ -55,13 +50,17 @@ steps:
       node_modules/**
       package.json
       package-lock.json
+      next.config.js
+      postcss.config.js
       app/**
       components/**
       lib/**
 
-# 6️⃣ Deploy to Azure App Service
+# 5️⃣ Deploy to Azure App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'
     appName: 'rg-opulanz-frontend'
     package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+    enableCustomDeployment: true
+    deploymentMethod: zipDeploy

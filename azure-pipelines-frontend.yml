@@ -18,7 +18,7 @@ steps:
   - script: |
       npm ci
       npm run build
-      npm prune --production
+      
     displayName: 'Build and prune'
     env:
       NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)

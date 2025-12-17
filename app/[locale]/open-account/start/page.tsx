@@ -1,21 +1,26 @@
 "use client";
 
 import * as React from "react";
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { AccountFunnelWrapper } from "@/components/account-opening/account-funnel-wrapper";
 import type { AccountMode } from "@/types/account-opening";
 
 function AccountOpeningContent({ locale }: { locale: string }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const mode = (searchParams.get("mode") as AccountMode) || "personal";
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <AccountFunnelWrapper initialMode={mode} locale={locale} />
-    </div>
-  );
+  useEffect(() => {
+    // Redirect to the appropriate account opening page based on mode
+    if (mode === "personal") {
+      router.replace(`/${locale}/open-account/personal`);
+    } else if (mode === "business") {
+      router.replace(`/${locale}/open-account/business`);
+    }
+  }, [mode, locale, router]);
+
+  return null;
 }
 
 function LoadingFallback() {

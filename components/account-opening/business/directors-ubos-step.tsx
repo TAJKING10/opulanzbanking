@@ -15,17 +15,17 @@ interface DirectorsUBOsData {
   isDirectorsStepValid?: boolean;
 }
 
-interface DirectorsUBOsStepProps extends StepProps<DirectorsUBOsData> {}
+interface DirectorsUBOsStepProps extends StepProps<DirectorsUBOsData> { }
 
 type Person = DirectorOrUBO;
 
 export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepProps) {
   const directors = usePersonList<Person>(
-    data.directors?.length > 0 ? data.directors : [{ id: "1", firstName: "", lastName: "", email: "" }]
+    (data?.directors && data.directors.length > 0) ? data.directors : [{ id: "1", firstName: "", lastName: "", email: "" }]
   );
-  
+
   const ubos = usePersonList<Person>(
-    data.ubos?.length > 0
+    (data?.ubos && data.ubos.length > 0)
       ? data.ubos
       : [{ id: "1", firstName: "", lastName: "", email: "", ownership: "" }]
   );
@@ -95,7 +95,7 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
             <div key={director.id} className="rounded-lg border border-brand-grayLight bg-gray-50 p-4">
               <div className="mb-3 flex items-center justify-between">
                 <h4 className="font-semibold text-brand-dark">Director {index + 1}</h4>
-                {directors.length > 1 && (
+                {directors.items.length > 1 && (
                   <Button
                     type="button"
                     onClick={() => removeDirector(director.id)}

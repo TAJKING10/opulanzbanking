@@ -7,7 +7,7 @@ import { CreditCard, Landmark } from "lucide-react";
 import { WelcomeStepProps } from "@/shared/types/step-props";
 
 export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
-  const [mode, setMode] = React.useState(data.mode || "");
+  const [mode, setMode] = React.useState<string>((data?.mode as string) || "");
 
   const handleModeChange = (value: string) => {
     setMode(value);
@@ -31,11 +31,10 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
 
           <RadioGroup value={mode} onValueChange={handleModeChange} className="space-y-4">
             <div
-              className={`relative flex cursor-pointer items-start space-x-4 rounded-lg border-2 p-6 transition-all ${
-                mode === "current"
-                  ? "border-brand-gold bg-brand-gold/5"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
+              className={`relative flex cursor-pointer items-start space-x-4 rounded-lg border-2 p-6 transition-all ${mode === "current"
+                ? "border-brand-gold bg-brand-gold/5"
+                : "border-gray-200 hover:border-gray-300"
+                }`}
               onClick={() => handleModeChange("current")}
             >
               <RadioGroupItem value="current" id="current" className="mt-1" />
@@ -57,11 +56,10 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
             </div>
 
             <div
-              className={`relative flex cursor-pointer items-start space-x-4 rounded-lg border-2 p-6 transition-all ${
-                mode === "private"
-                  ? "border-brand-gold bg-brand-gold/5"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
+              className={`relative flex cursor-pointer items-start space-x-4 rounded-lg border-2 p-6 transition-all ${mode === "private"
+                ? "border-brand-gold bg-brand-gold/5"
+                : "border-gray-200 hover:border-gray-300"
+                }`}
               onClick={() => handleModeChange("private")}
             >
               <RadioGroupItem value="private" id="private" className="mt-1" />

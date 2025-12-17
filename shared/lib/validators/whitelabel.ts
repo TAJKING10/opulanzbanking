@@ -2,7 +2,6 @@ import { z } from 'zod';
 import { commonPersonFields, addressFields, consentFields, businessActivityFields, fileFields, pepField } from './common-fields';
 
 // SSR-safe File validator
-// SSR-safe File validator
 const fileType = z.custom<File>((val) => {
   return typeof File !== 'undefined' && val instanceof File;
 }, 'Must be a file');

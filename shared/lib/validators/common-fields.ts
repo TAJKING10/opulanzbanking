@@ -120,12 +120,19 @@ export const businessActivityFields = {
 };
 
 /**
+ * SSR-safe File validator
+ */
+const ssrSafeFile = z.custom<File>((val) => {
+  return typeof File !== "undefined" && val instanceof File;
+}, "Must be a file");
+
+/**
  * File upload validation
  */
 export const fileFields = {
-  singleFile: z.array(z.instanceof(File)).min(1, "File is required"),
-  optionalFile: z.array(z.instanceof(File)).optional(),
-  multipleFiles: z.array(z.instanceof(File)).min(1, "At least one file required"),
+  singleFile: z.array(ssrSafeFile).min(1, "File is required"),
+  optionalFile: z.array(ssrSafeFile).optional(),
+  multipleFiles: z.array(ssrSafeFile).min(1, "At least one file required"),
 };
 
 /**

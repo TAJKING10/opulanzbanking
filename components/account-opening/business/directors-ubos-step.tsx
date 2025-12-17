@@ -22,10 +22,10 @@ interface Person {
 
 export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepProps) {
   const [directors, setDirectors] = React.useState<Person[]>(
-    data.directors?.length > 0 ? data.directors : [{ id: "1", firstName: "", lastName: "", email: "" }]
+    (data?.directors && data.directors.length > 0) ? data.directors : [{ id: "1", firstName: "", lastName: "", email: "" }]
   );
   const [ubos, setUbos] = React.useState<Person[]>(
-    data.ubos?.length > 0
+    (data?.ubos && data.ubos.length > 0)
       ? data.ubos
       : [{ id: "1", firstName: "", lastName: "", email: "", ownership: "" }]
   );

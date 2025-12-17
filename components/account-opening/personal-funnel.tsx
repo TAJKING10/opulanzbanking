@@ -815,15 +815,15 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <form className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                Account Intent & Preferences
+                {tIntent("title")}
               </h2>
               <p className="text-brand-grayMed">
-                Tell us about your banking needs
+                {tIntent("subtitle")}
               </p>
             </div>
 
             <div className="space-y-4">
-              <Label>Account Type <span className="text-red-500">*</span></Label>
+              <Label>{tIntent("accountType")} <span className="text-red-500">{tIntent("required")}</span></Label>
               <RadioGroup
                 defaultValue={step3Form.getValues("accountType")}
                 onValueChange={(value) => step3Form.setValue("accountType", value as AccountType)}
@@ -831,20 +831,20 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="current" id="current" />
                   <Label htmlFor="current" className="font-normal cursor-pointer">
-                    Current Account (daily banking)
+                    {tIntent("currentAccount")}
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="private_banking" id="private_banking" />
                   <Label htmlFor="private_banking" className="font-normal cursor-pointer">
-                    Private Banking / Investment Account
+                    {tIntent("privateBanking")}
                   </Label>
                 </div>
               </RadioGroup>
             </div>
 
             <div className="space-y-4">
-              <Label>Preferred Jurisdictions <span className="text-red-500">*</span></Label>
+              <Label>{tIntent("jurisdictions")} <span className="text-red-500">{tIntent("required")}</span></Label>
               <div className="grid grid-cols-2 gap-4">
                 {["Luxembourg", "France", "Finland", "Other EEA"].map((jur) => (
                   <div key={jur} className="flex items-center space-x-2">
@@ -870,7 +870,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             </div>
 
             <div className="space-y-4">
-              <Label>Preferred Currencies <span className="text-red-500">*</span></Label>
+              <Label>{tIntent("currencies")} <span className="text-red-500">{tIntent("required")}</span></Label>
               <div className="grid grid-cols-2 gap-4">
                 {["EUR", "USD", "GBP", "Other"].map((curr) => (
                   <div key={curr} className="flex items-center space-x-2">
@@ -896,7 +896,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div className="space-y-4">
               <Label>
-                Estimated Monthly Incoming Transfers: €
+                {tIntent("estimatedMonthlyIncoming")}: €
                 {step3Form.watch("estimatedMonthlyIncoming")?.toLocaleString()}
               </Label>
               <Slider
@@ -910,39 +910,39 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="sourceOfFunds">
-                Source of Funds <span className="text-red-500">*</span>
+                {tIntent("sourceOfFunds")} <span className="text-red-500">{tIntent("required")}</span>
               </Label>
               <Select
                 value={step3Form.watch("sourceOfFunds")}
                 onValueChange={(value) => step3Form.setValue("sourceOfFunds", value as SourceOfFunds)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select source" />
+                  <SelectValue placeholder={tIntent("sourceOfFundsPlaceholder")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="salary">Salary</SelectItem>
-                  <SelectItem value="dividends">Dividends</SelectItem>
-                  <SelectItem value="business_income">Business Income</SelectItem>
-                  <SelectItem value="asset_sale">Asset Sale</SelectItem>
-                  <SelectItem value="savings">Savings</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="salary">{tIntent("sourceOptions.salary")}</SelectItem>
+                  <SelectItem value="dividends">{tIntent("sourceOptions.dividends")}</SelectItem>
+                  <SelectItem value="business_income">{tIntent("sourceOptions.businessIncome")}</SelectItem>
+                  <SelectItem value="asset_sale">{tIntent("sourceOptions.assetSale")}</SelectItem>
+                  <SelectItem value="savings">{tIntent("sourceOptions.savings")}</SelectItem>
+                  <SelectItem value="other">{tIntent("sourceOptions.other")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {step3Form.watch("sourceOfFunds") === "other" && (
               <div className="space-y-2">
-                <Label htmlFor="sourceOfFundsDetails">Please provide details</Label>
+                <Label htmlFor="sourceOfFundsDetails">{tIntent("sourceOfFundsDetails")}</Label>
                 <Input
                   id="sourceOfFundsDetails"
                   {...step3Form.register("sourceOfFundsDetails")}
-                  placeholder="Describe your source of funds"
+                  placeholder={tIntent("sourceOfFundsDetailsPlaceholder")}
                 />
               </div>
             )}
 
             <div className="space-y-4">
-              <Label>PEP / Sanctions Awareness</Label>
+              <Label>{tIntent("pepLabel")}</Label>
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="isPEP"
@@ -950,7 +950,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                   onCheckedChange={(checked) => step3Form.setValue("isPEP", !!checked)}
                 />
                 <Label htmlFor="isPEP" className="font-normal cursor-pointer">
-                  I am a Politically Exposed Person (PEP) or subject to sanctions
+                  {tIntent("pepCheckbox")}
                 </Label>
               </div>
             </div>
@@ -962,10 +962,10 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                Eligibility & Required Documents
+                {tEligibility("title")}
               </h2>
               <p className="text-brand-grayMed">
-                Based on your selections, you will need the following documents
+                {tEligibility("subtitle")}
               </p>
             </div>
 
@@ -975,8 +975,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <div className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="font-medium text-brand-dark">Valid ID or Passport</p>
-                    <p className="text-sm text-brand-grayMed">Government-issued photo ID</p>
+                    <p className="font-medium text-brand-dark">{tEligibility("validId")}</p>
+                    <p className="text-sm text-brand-grayMed">{tEligibility("validIdDescription")}</p>
                   </div>
                 </div>
                 <div className="pl-8">
@@ -995,7 +995,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {uploadedDocuments.some(d => d.category === "id_document") ? "✓ Uploaded" : "Upload ID"}
+                    {uploadedDocuments.some(d => d.category === "id_document") ? tEligibility("uploaded") : tEligibility("uploadId")}
                   </Button>
                 </div>
               </div>
@@ -1005,8 +1005,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <div className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="font-medium text-brand-dark">Proof of Address</p>
-                    <p className="text-sm text-brand-grayMed">Utility bill or bank statement (less than 3 months old)</p>
+                    <p className="font-medium text-brand-dark">{tEligibility("proofOfAddress")}</p>
+                    <p className="text-sm text-brand-grayMed">{tEligibility("proofOfAddressDescription")}</p>
                   </div>
                 </div>
                 <div className="pl-8">
@@ -1025,7 +1025,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {uploadedDocuments.some(d => d.category === "proof_of_address") ? "✓ Uploaded" : "Upload Proof"}
+                    {uploadedDocuments.some(d => d.category === "proof_of_address") ? tEligibility("uploaded") : tEligibility("uploadProof")}
                   </Button>
                 </div>
               </div>
@@ -1035,8 +1035,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <div className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="font-medium text-brand-dark">Tax Identification Number</p>
-                    <p className="text-sm text-brand-grayMed">If applicable in your jurisdiction</p>
+                    <p className="font-medium text-brand-dark">{tEligibility("taxIdDocument")}</p>
+                    <p className="text-sm text-brand-grayMed">{tEligibility("taxIdDocumentDescription")}</p>
                   </div>
                 </div>
                 <div className="pl-8">
@@ -1055,7 +1055,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {uploadedDocuments.some(d => d.category === "tax_id_document") ? "✓ Uploaded" : "Upload Tax ID"}
+                    {uploadedDocuments.some(d => d.category === "tax_id_document") ? tEligibility("uploaded") : tEligibility("uploadTaxId")}
                   </Button>
                 </div>
               </div>

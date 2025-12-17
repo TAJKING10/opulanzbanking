@@ -42,12 +42,9 @@ steps:
     replaceExistingArchive: true
     include: |
       .next/**
-      node_modules/**
+      public/**
       package.json
       package-lock.json
-      components/**
-      app/**
-      lib/**
 
 - task: AzureWebApp@1
   inputs:

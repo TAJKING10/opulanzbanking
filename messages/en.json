@@ -1306,6 +1306,29 @@
           "label": "Submit",
           "description": "Final step"
         }
+      },
+      "welcomeStep": {
+        "title": "Welcome to Opulanz",
+        "subtitle": "Let's get started with opening your personal bank account. This should take about 10 minutes.",
+        "accountTypeQuestion": "What type of account are you opening?",
+        "accountTypes": {
+          "current": {
+            "title": "Current / Everyday Account",
+            "description": "Standard personal banking for daily transactions, payments, and savings. Suitable for residents and non-residents."
+          },
+          "private": {
+            "title": "Private Banking",
+            "description": "Wealth management and private banking services for high-net-worth individuals. Minimum deposit typically required."
+          }
+        },
+        "whatHappensNext": "What happens next?",
+        "timeline": {
+          "step1": "We'll collect your personal information",
+          "step2": "Verify your identity and contact details",
+          "step3": "Match you with Opulanz Partner Bank",
+          "step4": "Complete the account opening process"
+        },
+        "continueButton": "Continue"
       }
     },
     "business": {

@@ -6,6 +6,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -205,6 +206,7 @@ interface PersonalFunnelProps {
 }
 
 export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
+  const t = useTranslations("accountOpening.personal.personalFunnel.welcome");
   const [currentStep, setCurrentStep] = React.useState(1);
   const [formData, setFormData] = React.useState<Partial<PersonalApplication>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -433,10 +435,10 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <div className="space-y-8">
             <div className="text-center space-y-4">
               <h2 className="text-3xl font-bold text-brand-dark">
-                Open Your Personal Account
+                {t("title")}
               </h2>
               <p className="text-lg text-brand-grayMed max-w-2xl mx-auto">
-                Answer a few quick questions so we can match you with a licensed Opulanz partner bank.
+                {t("subtitle")}
               </p>
             </div>
 
@@ -444,41 +446,41 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             <div className="bg-brand-goldLight/10 rounded-xl p-6 border border-brand-gold/20">
               <h3 className="text-xl font-bold text-brand-dark mb-4 flex items-center gap-2">
                 <Clock className="h-5 w-5 text-brand-gold" />
-                Application Timeline
+                {t("timeline.title")}
               </h3>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">1</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">Submit Application (10 minutes)</p>
-                    <p className="text-sm text-brand-grayMed">Complete online form with your details</p>
+                    <p className="font-semibold text-brand-dark">{t("timeline.step1.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{t("timeline.step1.description")}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">2</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">Partner Review (24-72 hours)</p>
-                    <p className="text-sm text-brand-grayMed">Partner bank reviews your application</p>
+                    <p className="font-semibold text-brand-dark">{t("timeline.step2.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{t("timeline.step2.description")}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">3</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">KYC Verification (1-3 days)</p>
-                    <p className="text-sm text-brand-grayMed">Identity and document verification</p>
+                    <p className="font-semibold text-brand-dark">{t("timeline.step3.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{t("timeline.step3.description")}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">4</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">Account Activation (1-2 days)</p>
-                    <p className="text-sm text-brand-grayMed">Receive IBAN and access credentials</p>
+                    <p className="font-semibold text-brand-dark">{t("timeline.step4.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{t("timeline.step4.description")}</p>
                   </div>
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-brand-gold/20">
                 <p className="text-sm font-semibold text-brand-dark">
-                  ⏱️ Total Time: Approximately 5-7 business days
+                  {t("timeline.totalTime")}
                 </p>
               </div>
             </div>
@@ -488,28 +490,28 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               <div className="border border-brand-grayLight rounded-xl p-6">
                 <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-brand-gold" />
-                  Eligibility Requirements
+                  {t("eligibility.title")}
                 </h3>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">18 years or older</span>
+                    <span className="text-brand-dark">{t("eligibility.requirement1")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">Valid government-issued ID or passport</span>
+                    <span className="text-brand-dark">{t("eligibility.requirement2")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">Proof of address (utility bill, bank statement)</span>
+                    <span className="text-brand-dark">{t("eligibility.requirement3")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">EU/EEA resident or valid residence permit</span>
+                    <span className="text-brand-dark">{t("eligibility.requirement4")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">Tax identification number (TIN)</span>
+                    <span className="text-brand-dark">{t("eligibility.requirement5")}</span>
                   </li>
                 </ul>
               </div>
@@ -517,24 +519,24 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               <div className="border border-brand-grayLight rounded-xl p-6">
                 <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
                   <FileText className="h-5 w-5 text-brand-gold" />
-                  Required Documents
+                  {t("documents.title")}
                 </h3>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">Valid ID card or passport (color scan)</span>
+                    <span className="text-brand-dark">{t("documents.document1")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">Proof of address (dated within 3 months)</span>
+                    <span className="text-brand-dark">{t("documents.document2")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">Proof of income (payslips or tax returns)</span>
+                    <span className="text-brand-dark">{t("documents.document3")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">Source of funds declaration</span>
+                    <span className="text-brand-dark">{t("documents.document4")}</span>
                   </li>
                 </ul>
               </div>
@@ -542,61 +544,61 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             {/* How It Works */}
             <div className="bg-gray-50 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-brand-dark mb-4">How It Works</h3>
+              <h3 className="text-lg font-bold text-brand-dark mb-4">{t("howItWorks.title")}</h3>
               <div className="space-y-4 text-sm text-brand-grayMed">
                 <p>
-                  <strong className="text-brand-dark">Smart Matching:</strong> Based on your jurisdiction preferences, we automatically route your application to the most suitable Opulanz partner bank.
+                  <strong className="text-brand-dark">{t("howItWorks.smartMatching.title")}</strong> {t("howItWorks.smartMatching.description")}
                 </p>
                 <p>
-                  <strong className="text-brand-dark">Warm Referral:</strong> Your application includes a secure signed referral code, ensuring priority processing and preferential terms.
+                  <strong className="text-brand-dark">{t("howItWorks.warmReferral.title")}</strong> {t("howItWorks.warmReferral.description")}
                 </p>
                 <p>
-                  <strong className="text-brand-dark">Data Security:</strong> All information is encrypted and transmitted securely. We comply with GDPR and Luxembourg banking regulations.
+                  <strong className="text-brand-dark">{t("howItWorks.dataSecurity.title")}</strong> {t("howItWorks.dataSecurity.description")}
                 </p>
                 <p>
-                  <strong className="text-brand-dark">No Commitment:</strong> Submitting this application does not obligate you to open an account. You can review final terms before accepting.
+                  <strong className="text-brand-dark">{t("howItWorks.noCommitment.title")}</strong> {t("howItWorks.noCommitment.description")}
                 </p>
               </div>
             </div>
 
             {/* Account Features */}
             <div className="border-2 border-brand-gold/30 rounded-xl p-6 bg-gradient-to-br from-brand-goldLight/5 to-transparent">
-              <h3 className="text-lg font-bold text-brand-dark mb-4">What You'll Get</h3>
+              <h3 className="text-lg font-bold text-brand-dark mb-4">{t("features.title")}</h3>
               <div className="grid sm:grid-cols-2 gap-3 text-sm">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">Multi-currency IBAN account</span>
+                  <span className="text-brand-dark">{t("features.feature1")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">SEPA & SWIFT transfers</span>
+                  <span className="text-brand-dark">{t("features.feature2")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">Debit card (Mastercard/Visa)</span>
+                  <span className="text-brand-dark">{t("features.feature3")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">Mobile & online banking</span>
+                  <span className="text-brand-dark">{t("features.feature4")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">24/7 customer support</span>
+                  <span className="text-brand-dark">{t("features.feature5")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">EU-regulated protection</span>
+                  <span className="text-brand-dark">{t("features.feature6")}</span>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button size="lg" onClick={handleNext}>
-                Start Personal Application
+                {t("startButton")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-xs text-center text-brand-grayMed">
-                By continuing, you agree to our Terms of Service and Privacy Policy
+                {t("disclaimer")}
               </p>
             </div>
           </div>

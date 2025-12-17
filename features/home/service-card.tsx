@@ -16,6 +16,7 @@ interface ServiceCardProps {
   href: string;
   ctaLabel?: string;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export function ServiceCard({
@@ -25,12 +26,14 @@ export function ServiceCard({
   href,
   ctaLabel = "Learn More",
   className,
+  style,
 }: ServiceCardProps) {
   return (
     <motion.div
       whileHover={{ y: -8 }}
       transition={{ duration: 0.3 }}
       className={cn("h-full", className)}
+      style={style}
     >
       <Card className="card-hover group h-full overflow-hidden border-none">
         <div className="relative aspect-[16/10] w-full overflow-hidden">

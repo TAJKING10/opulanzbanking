@@ -1,49 +1,53 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: frontend-env-vars
+
+steps:
+# 1️⃣ Use Node 20
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# Install all dependencies (dev + prod)
-- script: npm ci
-  displayName: 'Install all dependencies'
+# 2️⃣ Install all dependencies including devDependencies (needed for Next.js build)
+- script: |
+    npm install
+  displayName: 'Install full dependencies (including devDependencies)'
 
-# Build Next.js (needs dev deps)
-- script: npm run build
-  displayName: 'Build Next.js'
-  env:
-    NODE_ENV: "production"
-    NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
-    NEXT_PUBLIC_APP_NAME: $(NEXT_PUBLIC_APP_NAME)
-    NEXT_PUBLIC_APP_URL: $(NEXT_PUBLIC_APP_URL)
-    NEXT_PUBLIC_PAYPAL_CLIENT_ID: $(NEXT_PUBLIC_PAYPAL_CLIENT_ID)
-    NEXT_PUBLIC_PAYPAL_CURRENCY: $(NEXT_PUBLIC_PAYPAL_CURRENCY)
-    NEXT_PUBLIC_ENABLE_ANALYTICS: $(NEXT_PUBLIC_ENABLE_ANALYTICS)
-    NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
-    NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
-
-# Archive app including node_modules
+# 3️⃣ Zip all source files (without node_modules) for Oryx build
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '.'
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
     replaceExistingArchive: true
     include: |
-      .next/**
-      public/**
-      node_modules/**
       app/**
       components/**
       lib/**
-      next.config.js
+      public/**
       package.json
       package-lock.json
       tsconfig.json
+      next.config.js
+      postcss.config.js
+      tailwind.config.js
+      i18n/**
 
-# Deploy
+  displayName: 'Archive source code'
+
+# 4️⃣ Deploy ZIP to App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'
     appName: 'rg-opulanz-frontend'
     package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+  displayName: 'Deploy to App Service'

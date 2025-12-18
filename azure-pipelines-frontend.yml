@@ -10,41 +10,47 @@ variables:
   - group: frontend-env-vars
 
 steps:
-# 1️⃣ Use Node 20
+# 1️⃣ Use Node.js 20
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 2️⃣ Install all dependencies including devDependencies (needed for Next.js build)
-- script: |
-    npm install
-  displayName: 'Install full dependencies (including devDependencies)'
+# 2️⃣ Install all dependencies including devDependencies
+- script: npm install
+  displayName: 'Install all dependencies'
 
-# 3️⃣ Zip all source files (without node_modules) for Oryx build
+# 3️⃣ Build Next.js in CI
+- script: |
+    npm run build
+  displayName: 'Build Next.js'
+
+# 4️⃣ Prepare deployment folder
+- script: |
+    mkdir build_output
+    cp -R .next build_output/
+    cp -R public build_output/
+    cp -R node_modules build_output/
+    cp package.json build_output/
+    cp package-lock.json build_output/
+    cp tsconfig.json build_output/
+    cp next.config.js build_output/
+    cp postcss.config.js build_output/
+    cp tailwind.config.js build_output/
+    cp -R i18n build_output/ || true
+  displayName: 'Prepare deploy folder'
+
+# 5️⃣ Archive deployment folder
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    rootFolderOrFile: 'build_output'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
     replaceExistingArchive: true
-    include: |
-      app/**
-      components/**
-      lib/**
-      public/**
-      package.json
-      package-lock.json
-      tsconfig.json
-      next.config.js
-      postcss.config.js
-      tailwind.config.js
-      i18n/**
+  displayName: 'Archive deploy files'
 
-  displayName: 'Archive source code'
-
-# 4️⃣ Deploy ZIP to App Service
+# 6️⃣ Deploy ZIP to App Service (skip Oryx)
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'

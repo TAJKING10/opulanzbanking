@@ -15,11 +15,11 @@ steps:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 1️⃣ Install deps
+# Install deps
 - script: npm ci
   displayName: 'Install dependencies'
 
-# 2️⃣ Build Next.js
+# Build
 - script: npm run build
   displayName: 'Build Next.js'
   env:
@@ -33,7 +33,7 @@ steps:
     NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
     NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
 
-# 3️⃣ Package only what Azure needs
+# Package including everything except node_modules
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '.'
@@ -44,11 +44,15 @@ steps:
     include: |
       .next/**
       public/**
+      app/**
+      components/**
+      lib/**
+      middleware.ts
+      next.config.js
       package.json
       package-lock.json
-      next.config.js
 
-# 4️⃣ Deploy ZIP
+# Deploy
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'

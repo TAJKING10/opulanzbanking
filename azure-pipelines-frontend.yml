@@ -15,14 +15,12 @@ steps:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 1️⃣ Install all deps (dev + prod)
-- script: |
-    npm ci
+# 1️⃣ Install deps
+- script: npm ci
   displayName: 'Install dependencies'
 
 # 2️⃣ Build Next.js
-- script: |
-    npm run build
+- script: npm run build
   displayName: 'Build Next.js'
   env:
     NODE_ENV: "production"
@@ -35,12 +33,7 @@ steps:
     NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
     NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
 
-# 3️⃣ Remove dev deps to reduce ZIP size
-- script: |
-    npm ci --omit=dev
-  displayName: 'Install production deps'
-
-# 4️⃣ Archive full app (important!)
+# 3️⃣ Package only what Azure needs
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '.'
@@ -50,16 +43,12 @@ steps:
     replaceExistingArchive: true
     include: |
       .next/**
-      node_modules/**
       public/**
-      app/**
-      components/**
-      lib/**
-      styles/**
       package.json
       package-lock.json
+      next.config.js
 
-# 5️⃣ Deploy ZIP package to Azure
+# 4️⃣ Deploy ZIP
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'

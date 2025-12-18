@@ -6,14 +6,22 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  - group: frontend-env-vars
+
 steps:
-# 1️⃣ Use Node 20 (same as App Service runtime)
+# 1️⃣ Use Node 20
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 2️⃣ No build — zip raw source code only
+# 2️⃣ Install all dependencies including devDependencies (needed for Next.js build)
+- script: |
+    npm install
+  displayName: 'Install full dependencies (including devDependencies)'
+
+# 3️⃣ Zip all source files (without node_modules) for Oryx build
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.SourcesDirectory)'
@@ -21,9 +29,22 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
     replaceExistingArchive: true
-  displayName: 'Zip Source Code'
+    include: |
+      app/**
+      components/**
+      lib/**
+      public/**
+      package.json
+      package-lock.json
+      tsconfig.json
+      next.config.js
+      postcss.config.js
+      tailwind.config.js
+      i18n/**
 
-# 3️⃣ Deploy ZIP to App Service
+  displayName: 'Archive source code'
+
+# 4️⃣ Deploy ZIP to App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'

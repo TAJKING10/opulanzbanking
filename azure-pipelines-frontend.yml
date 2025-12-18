@@ -15,11 +15,11 @@ steps:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# Install deps
+# 1️⃣ Install full dependencies
 - script: npm ci
   displayName: 'Install dependencies'
 
-# Build
+# 2️⃣ Build Next.js
 - script: npm run build
   displayName: 'Build Next.js'
   env:
@@ -33,11 +33,10 @@ steps:
     NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
     NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
 
-# Reinstall production-only dependencies (creates node_modules for runtime)
-- script: npm ci --omit=dev
-  displayName: 'Reinstall production dependencies'
+# ❗ REMOVE THIS STEP — causes empty node_modules
+# - script: npm ci --omit=dev
 
-# Archive app + node_modules + build output
+# 3️⃣ Package including node_modules
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '.'
@@ -56,7 +55,7 @@ steps:
       package.json
       package-lock.json
 
-# Deploy
+# 4️⃣ Deploy ZIP
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'

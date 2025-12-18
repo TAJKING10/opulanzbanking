@@ -16,16 +16,15 @@ steps:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 2️⃣ Install dependencies only if you want to run lint/type-check in CI
+# 2️⃣ Install dependencies for lint/type-check only
 - script: npm ci
   displayName: 'Install dependencies'
 
 # 3️⃣ Prepare deployment folder (source code + package files)
 - script: |
     mkdir build_output
-    cp -R * build_output/
-    # Remove any existing build folder just in case
-    rm -rf build_output/.next || true
+    # Copy all files including hidden ones, excluding node_modules and .next
+    rsync -av --exclude 'node_modules' --exclude '.next' --exclude '.git' ./ build_output/
   displayName: 'Prepare deploy folder'
 
 # 4️⃣ Archive deployment folder

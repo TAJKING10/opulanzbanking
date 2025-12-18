@@ -6,58 +6,27 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  - group: frontend-env-vars
-
 steps:
+# 1️⃣ Use Node 20 (same as App Service runtime)
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 1️⃣ Install full dependencies
-- script: npm ci
-  displayName: 'Install dependencies'
-
-# 2️⃣ Build Next.js
-- script: npm run build
-  displayName: 'Build Next.js'
-  env:
-    NODE_ENV: "production"
-    NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
-    NEXT_PUBLIC_APP_NAME: $(NEXT_PUBLIC_APP_NAME)
-    NEXT_PUBLIC_APP_URL: $(NEXT_PUBLIC_APP_URL)
-    NEXT_PUBLIC_PAYPAL_CLIENT_ID: $(NEXT_PUBLIC_PAYPAL_CLIENT_ID)
-    NEXT_PUBLIC_PAYPAL_CURRENCY: $(NEXT_PUBLIC_PAYPAL_CURRENCY)
-    NEXT_PUBLIC_ENABLE_ANALYTICS: $(NEXT_PUBLIC_ENABLE_ANALYTICS)
-    NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
-    NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
-
-# ❗ REMOVE THIS STEP — causes empty node_modules
-# - script: npm ci --omit=dev
-
-# 3️⃣ Package including node_modules
+# 2️⃣ No build — zip raw source code only
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '.'
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
     replaceExistingArchive: true
-    include: |
-      .next/**
-      public/**
-      node_modules/**
-      app/**
-      components/**
-      lib/**
-      next.config.js
-      package.json
-      package-lock.json
+  displayName: 'Zip Source Code'
 
-# 4️⃣ Deploy ZIP
+# 3️⃣ Deploy ZIP to App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'
     appName: 'rg-opulanz-frontend'
     package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+  displayName: 'Deploy to App Service'

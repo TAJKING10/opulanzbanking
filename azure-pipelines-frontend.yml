@@ -16,31 +16,19 @@ steps:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 2️⃣ Install all dependencies including devDependencies
-- script: npm install
-  displayName: 'Install all dependencies'
+# 2️⃣ Install dependencies only if you want to run lint/type-check in CI
+- script: npm ci
+  displayName: 'Install dependencies'
 
-# 3️⃣ Build Next.js in CI
-- script: |
-    npm run build
-  displayName: 'Build Next.js'
-
-# 4️⃣ Prepare deployment folder
+# 3️⃣ Prepare deployment folder (source code + package files)
 - script: |
     mkdir build_output
-    cp -R .next build_output/
-    cp -R public build_output/
-    cp -R node_modules build_output/
-    cp package.json build_output/
-    cp package-lock.json build_output/
-    cp tsconfig.json build_output/
-    cp next.config.js build_output/
-    cp postcss.config.js build_output/
-    cp tailwind.config.js build_output/
-    cp -R i18n build_output/ || true
+    cp -R * build_output/
+    # Remove any existing build folder just in case
+    rm -rf build_output/.next || true
   displayName: 'Prepare deploy folder'
 
-# 5️⃣ Archive deployment folder
+# 4️⃣ Archive deployment folder
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: 'build_output'
@@ -50,7 +38,7 @@ steps:
     replaceExistingArchive: true
   displayName: 'Archive deploy files'
 
-# 6️⃣ Deploy ZIP to App Service (skip Oryx)
+# 5️⃣ Deploy ZIP to App Service (let App Service build)
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'

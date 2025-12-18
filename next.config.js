@@ -4,7 +4,7 @@ const withNextIntl = require('next-intl/plugin')();
 const nextConfig = {
   // Only use static export for production builds, not dev server
   ...(process.env.NODE_ENV === 'production' && {
-    output: 'export',
+    //output: 'export',
     basePath: '/opulanzbanking',
     assetPrefix: '/opulanzbanking/',
   }),

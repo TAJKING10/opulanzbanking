@@ -33,7 +33,11 @@ steps:
     NEXT_PUBLIC_ENABLE_DEBUG: $(NEXT_PUBLIC_ENABLE_DEBUG)
     NEXT_PUBLIC_ENVIRONMENT: $(NEXT_PUBLIC_ENVIRONMENT)
 
-# Package including everything except node_modules
+# Reinstall production-only dependencies (creates node_modules for runtime)
+- script: npm ci --omit=dev
+  displayName: 'Reinstall production dependencies'
+
+# Archive app + node_modules + build output
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '.'
@@ -44,10 +48,10 @@ steps:
     include: |
       .next/**
       public/**
+      node_modules/**
       app/**
       components/**
       lib/**
-      middleware.ts
       next.config.js
       package.json
       package-lock.json

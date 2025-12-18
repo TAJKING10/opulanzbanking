@@ -44,7 +44,6 @@ steps:
       .next/**
       public/**
       package.json
-      package-lock.json
 
 - task: AzureWebApp@1
   inputs:

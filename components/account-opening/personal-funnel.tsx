@@ -249,7 +249,10 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
   const step2Form = useForm({
     resolver: zodResolver(step2Schema),
-    defaultValues: formData.identity || {},
+    defaultValues: {
+      countryCode: "+352", // Default to Luxembourg
+      ...(formData.identity || {}),
+    },
   });
 
   // Step 3: Intent

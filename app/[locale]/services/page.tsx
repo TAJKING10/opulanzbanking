@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 
 export default function ServicesPage({ params: { locale } }: { params: { locale: string } }) {
   const t = useTranslations();
+  const tPage = useTranslations("servicesPage");
 
   const services = [
     {
@@ -54,57 +55,57 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
   const features = [
     {
       icon: Calculator,
-      title: "Expert Financial Services",
-      description: "Professional accounting, bookkeeping, and financial management services tailored to your business.",
+      title: tPage("featuresSection.expertFinancial.title"),
+      description: tPage("featuresSection.expertFinancial.description"),
     },
     {
       icon: Scale,
-      title: "Tax Optimization",
-      description: "Strategic tax planning and advisory services to minimize your tax burden while ensuring compliance.",
+      title: tPage("featuresSection.taxOptimization.title"),
+      description: tPage("featuresSection.taxOptimization.description"),
     },
     {
       icon: TrendingUp,
-      title: "Investment Management",
-      description: "Personalized investment strategies and wealth management to help you achieve your financial goals.",
+      title: tPage("featuresSection.investmentManagement.title"),
+      description: tPage("featuresSection.investmentManagement.description"),
     },
     {
       icon: Heart,
-      title: "Insurance Solutions",
-      description: "Comprehensive life insurance products to protect what matters most to you and your family.",
+      title: tPage("featuresSection.insuranceSolutions.title"),
+      description: tPage("featuresSection.insuranceSolutions.description"),
     },
     {
       icon: Building2,
-      title: "Company Formation",
-      description: "Complete support for establishing your business in Luxembourg with legal and regulatory guidance.",
+      title: tPage("featuresSection.companyFormation.title"),
+      description: tPage("featuresSection.companyFormation.description"),
     },
     {
       icon: CreditCard,
-      title: "Banking Services",
-      description: "Modern digital banking solutions with multi-currency accounts and international payment capabilities.",
+      title: tPage("featuresSection.bankingServices.title"),
+      description: tPage("featuresSection.bankingServices.description"),
     },
   ];
 
   const whyChooseUs = [
-    "Regulated by ACPR and AMF for your peace of mind",
-    "Over 25 years of combined expertise in financial services",
-    "Personalized service from dedicated account managers",
-    "Competitive rates and transparent fee structure",
-    "Multi-lingual support in English and French",
-    "Cutting-edge digital platforms for 24/7 access",
-    "Comprehensive suite of services under one roof",
+    tPage("whyChooseUs.reasons.regulated"),
+    tPage("whyChooseUs.reasons.expertise"),
+    tPage("whyChooseUs.reasons.personalized"),
+    tPage("whyChooseUs.reasons.competitive"),
+    tPage("whyChooseUs.reasons.multilingual"),
+    tPage("whyChooseUs.reasons.digital"),
+    tPage("whyChooseUs.reasons.comprehensive"),
   ];
 
   return (
     <>
       <Hero
-        title="Complete Financial Services for Your Success"
-        subtitle="From banking to investment advisory, discover our comprehensive range of financial services designed to help individuals and businesses thrive in Luxembourg and beyond."
+        title={tPage("hero.title")}
+        subtitle={tPage("hero.subtitle")}
         primaryCta={{
-          label: "Open an Account",
+          label: tPage("hero.primaryCta"),
           href: `/${locale}/open-account`,
         }}
         secondaryCta={{
-          label: "Explore Services",
+          label: tPage("hero.secondaryCta"),
           href: "#services",
         }}
       />
@@ -113,9 +114,9 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
       <section id="services" className="bg-white py-20 md:py-28">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline="Our Services"
-            title="Everything You Need Under One Roof"
-            description="Explore our comprehensive range of financial services designed to support your personal and business goals."
+            overline={tPage("servicesSection.overline")}
+            title={tPage("servicesSection.title")}
+            description={tPage("servicesSection.description")}
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
@@ -129,9 +130,9 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
       <section className="bg-gray-50 py-20 md:py-28">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline="Why Opulanz"
-            title="Your Trusted Financial Partner"
-            description="We provide comprehensive financial solutions with the expertise, security, and personalized service you deserve."
+            overline={tPage("featuresSection.overline")}
+            title={tPage("featuresSection.title")}
+            description={tPage("featuresSection.description")}
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature) => {
@@ -160,23 +161,20 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
               <h2 className="mb-6 text-3xl font-bold text-brand-dark md:text-4xl">
-                Why Choose Opulanz?
+                {tPage("whyChooseUs.title")}
               </h2>
               <p className="mb-8 text-lg text-brand-grayMed">
-                Opulanz brings together the best of traditional banking expertise and modern fintech innovation.
-                As a fully regulated financial institution with presence in Luxembourg and France, we offer the
-                security and reliability you need, combined with the flexibility and innovation you want.
+                {tPage("whyChooseUs.paragraph1")}
               </p>
               <p className="mb-8 text-lg text-brand-grayMed">
-                Whether you're an individual looking for banking and investment services, or a business seeking
-                comprehensive financial solutions, we have the expertise and services to support your success.
+                {tPage("whyChooseUs.paragraph2")}
               </p>
               <Button
                 asChild
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <a href={`/${locale}/open-account`}>Get Started Today</a>
+                <a href={`/${locale}/open-account`}>{tPage("whyChooseUs.cta")}</a>
               </Button>
             </div>
             <div className="space-y-4">
@@ -195,9 +193,9 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
       <section className="bg-gray-50 py-20 md:py-28">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline="Trusted & Regulated"
-            title="Your Security is Our Priority"
-            description="We are regulated by leading European financial authorities, ensuring the highest standards of security and compliance."
+            overline={tPage("regulatorySection.overline")}
+            title={tPage("regulatorySection.title")}
+            description={tPage("regulatorySection.description")}
           />
           <div className="grid gap-8 md:grid-cols-2">
             <Card className="border-none bg-white shadow-sm">
@@ -226,24 +224,23 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
       <section className="hero-gradient py-20 md:py-28">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            Ready to Experience Banking Excellence?
+            {tPage("ctaSection.title")}
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            Join thousands of satisfied clients who trust Opulanz for their financial needs.
-            Open your account today and discover the difference.
+            {tPage("ctaSection.description")}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
               href={`/${locale}/open-account`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
-              Open an Account
+              {tPage("ctaSection.openAccount")}
             </a>
             <a
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
-              Contact Us
+              {tPage("ctaSection.contactUs")}
             </a>
           </div>
         </div>

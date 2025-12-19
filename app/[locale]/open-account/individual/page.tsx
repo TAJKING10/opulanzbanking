@@ -24,6 +24,7 @@ type ApplicationStatus = "form" | "submitted" | "approved" | "declined";
 
 export default function IndividualAccountPage() {
   const t = useTranslations();
+  const tAccount = useTranslations("accountOpening.individual");
   const [status, setStatus] = React.useState<ApplicationStatus>("form");
   const [iban, setIban] = React.useState<string>("");
   const [selectedPhoneCode, setSelectedPhoneCode] = React.useState<string>("+33");
@@ -171,7 +172,7 @@ export default function IndividualAccountPage() {
                 {t("whitelabel.approved")}
               </h1>
               <p className="mb-8 text-lg text-brand-grayMed">
-                {t("whitelabel.approvedMessage")}
+                {tAccount("approved.message")}
               </p>
 
               <div className="mb-8 rounded-xl bg-brand-grayLight/50 p-6">
@@ -189,20 +190,20 @@ export default function IndividualAccountPage() {
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
                     <span>
-                      Download our mobile app or access web banking
+                      {tAccount("approved.nextSteps.mobileApp")}
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Set up your account security (2FA, PIN)</span>
+                    <span>{tAccount("approved.nextSteps.security")}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Request your debit card</span>
+                    <span>{tAccount("approved.nextSteps.debitCard")}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Fund your account via transfer</span>
+                    <span>{tAccount("approved.nextSteps.fundAccount")}</span>
                   </li>
                 </ul>
               </div>
@@ -210,10 +211,10 @@ export default function IndividualAccountPage() {
               <div className="mt-10 flex flex-col gap-4">
                 <div className="flex gap-4">
                   <Button variant="primary" size="lg" className="flex-1">
-                    Go to Dashboard
+                    {tAccount("approved.buttons.dashboard")}
                   </Button>
                   <Button variant="outline" size="lg" className="flex-1">
-                    Download App
+                    {tAccount("approved.buttons.downloadApp")}
                   </Button>
                 </div>
                 <Button
@@ -222,7 +223,7 @@ export default function IndividualAccountPage() {
                   onClick={startNewApplication}
                   className="w-full text-brand-grayMed hover:text-brand-dark"
                 >
-                  Start New Application
+                  {tAccount("approved.buttons.startNew")}
                 </Button>
               </div>
             </CardContent>
@@ -245,7 +246,7 @@ export default function IndividualAccountPage() {
                 {t("whitelabel.applicationSubmitted")}
               </h1>
               <p className="mb-8 text-lg text-brand-grayMed">
-                {t("whitelabel.decisionPending")}
+                {tAccount("submitted.message")}
               </p>
               <StatusChip status="submitted" />
             </CardContent>
@@ -259,15 +260,15 @@ export default function IndividualAccountPage() {
     <div className="min-h-screen bg-brand-off py-20">
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading
-          title={t("whitelabel.kycTitle")}
-          description="Complete your identity verification to open your account"
+          title={tAccount("title")}
+          description={tAccount("description")}
           align="center"
           className="mb-12"
         />
 
         <Card className="border-none shadow-elevated">
           <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
+            <CardTitle>{tAccount("form.personalInfo")}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -275,7 +276,7 @@ export default function IndividualAccountPage() {
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="indv_firstName">
-                    First Name<span className="text-red-600">*</span>
+                    {tAccount("form.firstName")}<span className="text-red-600">*</span>
                   </Label>
                   <Input id="indv_firstName" {...register("firstName")} />
                   {errors.firstName && (
@@ -287,7 +288,7 @@ export default function IndividualAccountPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="indv_lastName">
-                    Last Name<span className="text-red-600">*</span>
+                    {tAccount("form.lastName")}<span className="text-red-600">*</span>
                   </Label>
                   <Input id="indv_lastName" {...register("lastName")} />
                   {errors.lastName && (
@@ -299,7 +300,7 @@ export default function IndividualAccountPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="indv_dateOfBirth">
-                    Date of Birth<span className="text-red-600">*</span>
+                    {tAccount("form.dateOfBirth")}<span className="text-red-600">*</span>
                   </Label>
                   <Input
                     id="indv_dateOfBirth"
@@ -315,14 +316,14 @@ export default function IndividualAccountPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="indv_nationality">
-                    Nationality<span className="text-red-600">*</span>
+                    {tAccount("form.nationality")}<span className="text-red-600">*</span>
                   </Label>
                   <select
                     id="indv_nationality"
                     {...register("nationality")}
                     className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                   >
-                    <option value="">Select nationality</option>
+                    <option value="">{tAccount("form.selectNationality")}</option>
                     {COUNTRIES.map((country) => (
                       <option key={country.code} value={country.code}>
                         {country.name}
@@ -338,7 +339,7 @@ export default function IndividualAccountPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="indv_phoneNumber">
-                    Phone Number<span className="text-red-600">*</span>
+                    {tAccount("form.phoneNumber")}<span className="text-red-600">*</span>
                   </Label>
                   <div className="relative">
                     <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-2 z-10">
@@ -409,10 +410,10 @@ export default function IndividualAccountPage() {
 
               {/* Address */}
               <div className="space-y-6">
-                <h3 className="text-lg font-bold text-brand-dark">Address</h3>
+                <h3 className="text-lg font-bold text-brand-dark">{tAccount("form.address")}</h3>
                 <div className="space-y-2">
                   <Label htmlFor="indv_address">
-                    Street Address<span className="text-red-600">*</span>
+                    {tAccount("form.streetAddress")}<span className="text-red-600">*</span>
                   </Label>
                   <Input id="indv_address" {...register("address")} />
                   {errors.address && (
@@ -425,7 +426,7 @@ export default function IndividualAccountPage() {
                 <div className="grid gap-6 md:grid-cols-3">
                   <div className="space-y-2">
                     <Label htmlFor="indv_city">
-                      City<span className="text-red-600">*</span>
+                      {tAccount("form.city")}<span className="text-red-600">*</span>
                     </Label>
                     <Input id="indv_city" {...register("city")} />
                     {errors.city && (
@@ -437,7 +438,7 @@ export default function IndividualAccountPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="indv_postalCode">
-                      Postal Code<span className="text-red-600">*</span>
+                      {tAccount("form.postalCode")}<span className="text-red-600">*</span>
                     </Label>
                     <Input id="indv_postalCode" {...register("postalCode")} />
                     {errors.postalCode && (
@@ -449,14 +450,14 @@ export default function IndividualAccountPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="indv_country">
-                      Country<span className="text-red-600">*</span>
+                      {tAccount("form.country")}<span className="text-red-600">*</span>
                     </Label>
                     <select
                       id="indv_country"
                       {...register("country")}
                       className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                     >
-                      <option value="">Select country</option>
+                      <option value="">{tAccount("form.selectCountry")}</option>
                       {COUNTRIES.map((country) => (
                         <option key={country.code} value={country.code}>
                           {country.name}
@@ -475,11 +476,10 @@ export default function IndividualAccountPage() {
               {/* Document Uploads */}
               <div className="space-y-6">
                 <h3 className="text-lg font-bold text-brand-dark">
-                  Document Verification
+                  {tAccount("form.documentVerification")}
                 </h3>
                 <p className="text-sm text-brand-grayMed">
-                  Please upload clear photos or scans of the following documents
-                  (max 15MB each)
+                  {tAccount("form.documentDescription")}
                 </p>
 
                 <div className="space-y-2">
@@ -514,12 +514,12 @@ export default function IndividualAccountPage() {
               {/* Activity Information */}
               <div className="space-y-6">
                 <h3 className="text-lg font-bold text-brand-dark">
-                  Activity Information
+                  {tAccount("form.activityInfo")}
                 </h3>
 
                 <div className="space-y-2">
                   <Label htmlFor="indv_isPEP">
-                    Are you a Politically Exposed Person (PEP)?
+                    {tAccount("form.isPEP")}
                   </Label>
                   <div className="flex items-center gap-4">
                     <label className="flex items-center gap-2">
@@ -531,7 +531,7 @@ export default function IndividualAccountPage() {
                         onChange={() => setValue("isPEP", false)}
                         className="h-4 w-4 text-brand-gold focus:ring-brand-gold"
                       />
-                      <span className="text-sm">No</span>
+                      <span className="text-sm">{tAccount("form.no")}</span>
                     </label>
                     <label className="flex items-center gap-2">
                       <input
@@ -542,21 +542,21 @@ export default function IndividualAccountPage() {
                         onChange={() => setValue("isPEP", true)}
                         className="h-4 w-4 text-brand-gold focus:ring-brand-gold"
                       />
-                      <span className="text-sm">Yes</span>
+                      <span className="text-sm">{tAccount("form.yes")}</span>
                     </label>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="indv_expectedMonthlyVolume">
-                    Expected Monthly Volume<span className="text-red-600">*</span>
+                    {tAccount("form.expectedMonthlyVolume")}<span className="text-red-600">*</span>
                   </Label>
                   <select
                     id="indv_expectedMonthlyVolume"
                     {...register("expectedMonthlyVolume")}
                     className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                   >
-                    <option value="">Select range</option>
+                    <option value="">{tAccount("form.selectRange")}</option>
                     <option value="0-5k">€0 - €5,000</option>
                     <option value="5k-20k">€5,000 - €20,000</option>
                     <option value="20k-50k">€20,000 - €50,000</option>
@@ -571,14 +571,14 @@ export default function IndividualAccountPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="indv_sourceOfFunds">
-                    Source of Funds<span className="text-red-600">*</span>
+                    {tAccount("form.sourceOfFunds")}<span className="text-red-600">*</span>
                   </Label>
                   <textarea
                     id="indv_sourceOfFunds"
                     {...register("sourceOfFunds")}
                     rows={4}
                     className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-                    placeholder="Please describe the origin of your funds..."
+                    placeholder={tAccount("form.sourceOfFundsPlaceholder")}
                   />
                   {errors.sourceOfFunds && (
                     <p className="text-xs text-red-600">
@@ -590,14 +590,14 @@ export default function IndividualAccountPage() {
 
               {/* Consents */}
               <div className="space-y-4 rounded-xl bg-brand-grayLight/30 p-6">
-                <h3 className="font-bold text-brand-dark">Consents</h3>
+                <h3 className="font-bold text-brand-dark">{tAccount("form.consents")}</h3>
                 <ConsentCheckbox
                   id="indv_consentKYC"
                   checked={consentKYC}
                   onCheckedChange={(checked) =>
                     setValue("consentKYC", checked as boolean)
                   }
-                  label="I consent to identity verification and compliance checks as required by law"
+                  label={tAccount("form.consentKYC")}
                   required
                   error={errors.consentKYC?.message}
                 />
@@ -607,12 +607,12 @@ export default function IndividualAccountPage() {
                   onCheckedChange={(checked) =>
                     setValue("consentTerms", checked as boolean)
                   }
-                  label="I agree to Opulanz"
+                  label={tAccount("form.consentTerms")}
                   required
                   error={errors.consentTerms?.message}
                   links={[
-                    { text: "Terms & Conditions", href: "/legal/terms" },
-                    { text: "Privacy Policy", href: "/legal/privacy" },
+                    { text: tAccount("form.termsLink"), href: "/legal/terms" },
+                    { text: tAccount("form.privacyLink"), href: "/legal/privacy" },
                   ]}
                 />
               </div>

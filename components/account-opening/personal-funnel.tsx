@@ -306,15 +306,15 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
       if (isValid) {
         const values = step2Form.getValues();
         const identity: PersonalIdentity = {
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          countryCode: values.countryCode,
-          mobile: values.mobile,
-          countryOfResidence: values.countryOfResidence,
-          taxResidencies: [{ country: (values as any).taxCountry, tin: (values as any).taxId }],
-          dateOfBirth: values.dateOfBirth,
-          nationality: values.nationality,
+          firstName: values.firstName || "",
+          lastName: values.lastName || "",
+          email: values.email || "",
+          countryCode: values.countryCode || "",
+          mobile: values.mobile || "",
+          countryOfResidence: values.countryOfResidence || "",
+          taxResidencies: [{ country: (values as any).taxCountry || "", tin: (values as any).taxId || "" }],
+          dateOfBirth: values.dateOfBirth || "",
+          nationality: values.nationality || "",
         };
         setFormData((prev) => ({ ...prev, identity }));
       }

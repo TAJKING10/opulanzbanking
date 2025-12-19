@@ -80,11 +80,11 @@ export function CompanyBasicsStep({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleContinue = () => {
-    if (validate()) {
-      onNext();
-    }
-  };
+  // Check validation whenever data changes
+  React.useEffect(() => {
+    const isValid = validate();
+    onUpdate({ isStep1Valid: isValid });
+  }, [data.companyType, data.companyTypeOther, data.countryOfIncorporation, data.dateOfIncorporation, data.shareCapitalAmount, data.legalName]);
 
   return (
     <div className="space-y-6">
@@ -271,15 +271,6 @@ export function CompanyBasicsStep({
             If you don't have a VAT number yet, leave blank
           </p>
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleContinue}
-          className="rounded-lg bg-brand-gold px-6 py-3 font-semibold text-white transition-all hover:bg-brand-goldDark"
-        >
-          Continue
-        </button>
       </div>
     </div>
   );

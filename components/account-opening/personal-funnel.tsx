@@ -6,6 +6,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -37,15 +38,6 @@ import type {
   AccountType,
 } from "@/types/account-opening";
 // Removed: import { generateReferralRouting, saveReferralEntry, getPartnerDisplayName, getPartnerExplanation } from "@/lib/referral-routing";
-
-const STEPS: Step[] = [
-  { id: "welcome", label: "Welcome", shortLabel: "Welcome" },
-  { id: "identity", label: "Identity & Contact", shortLabel: "Identity" },
-  { id: "intent", label: "Account Intent", shortLabel: "Intent" },
-  { id: "eligibility", label: "Eligibility", shortLabel: "Eligibility" },
-  { id: "review", label: "Review & Consents", shortLabel: "Review" },
-  { id: "submission", label: "Submission", shortLabel: "Submit" },
-];
 
 const COUNTRY_CODES = [
   { code: "+93", country: "Afghanistan", flag: "🇦🇫" },
@@ -205,6 +197,23 @@ interface PersonalFunnelProps {
 }
 
 export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
+  const tSteps = useTranslations("accountOpening.personal.personalFunnel.steps");
+  const tWelcome = useTranslations("accountOpening.personal.personalFunnel.welcome");
+  const tIdentity = useTranslations("accountOpening.personal.personalFunnel.identity");
+  const tIntent = useTranslations("accountOpening.personal.personalFunnel.intent");
+  const tEligibility = useTranslations("accountOpening.personal.personalFunnel.eligibility");
+  const tReview = useTranslations("accountOpening.personal.personalFunnel.review");
+  const tSubmission = useTranslations("accountOpening.personal.personalFunnel.submission");
+
+  const STEPS: Step[] = [
+    { id: "welcome", label: tSteps("welcome.label"), shortLabel: tSteps("welcome.shortLabel") },
+    { id: "identity", label: tSteps("identity.label"), shortLabel: tSteps("identity.shortLabel") },
+    { id: "intent", label: tSteps("intent.label"), shortLabel: tSteps("intent.shortLabel") },
+    { id: "eligibility", label: tSteps("eligibility.label"), shortLabel: tSteps("eligibility.shortLabel") },
+    { id: "review", label: tSteps("review.label"), shortLabel: tSteps("review.shortLabel") },
+    { id: "submission", label: tSteps("submission.label"), shortLabel: tSteps("submission.shortLabel") },
+  ];
+
   const [currentStep, setCurrentStep] = React.useState(1);
   const [formData, setFormData] = React.useState<Partial<PersonalApplication>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -228,21 +237,24 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
   // Step 2: Identity & Contact
   const step2Schema = z.object({
-    firstName: z.string().min(1, "First name is required"),
-    lastName: z.string().min(1, "Last name is required"),
-    email: z.string().email("Invalid email address"),
-    countryCode: z.string().min(1, "Country code is required"),
-    mobile: z.string().min(6, "Invalid phone number"),
-    countryOfResidence: z.string().min(1, "Country is required"),
-    taxCountry: z.string().min(1, "Tax residency is required"),
+    firstName: z.string().min(1, tIdentity("errors.firstNameRequired")),
+    lastName: z.string().min(1, tIdentity("errors.lastNameRequired")),
+    email: z.string().email(tIdentity("errors.invalidEmail")),
+    countryCode: z.string().min(1, tIdentity("errors.countryCodeRequired")),
+    mobile: z.string().min(6, tIdentity("errors.invalidPhone")),
+    countryOfResidence: z.string().min(1, tIdentity("errors.countryRequired")),
+    taxCountry: z.string().min(1, tIdentity("errors.taxResidencyRequired")),
     taxId: z.string().optional(),
-    dateOfBirth: z.string().min(1, "Date of birth is required"),
-    nationality: z.string().min(1, "Nationality is required"),
+    dateOfBirth: z.string().min(1, tIdentity("errors.dateOfBirthRequired")),
+    nationality: z.string().min(1, tIdentity("errors.nationalityRequired")),
   });
 
   const step2Form = useForm({
     resolver: zodResolver(step2Schema),
-    defaultValues: formData.identity || {},
+    defaultValues: {
+      countryCode: "+352", // Default to Luxembourg
+      ...(formData.identity || {}),
+    },
   });
 
   // Step 3: Intent
@@ -433,10 +445,10 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <div className="space-y-8">
             <div className="text-center space-y-4">
               <h2 className="text-3xl font-bold text-brand-dark">
-                Open Your Personal Account
+                {tWelcome("title")}
               </h2>
               <p className="text-lg text-brand-grayMed max-w-2xl mx-auto">
-                Answer a few quick questions so we can match you with a licensed Opulanz partner bank.
+                {tWelcome("subtitle")}
               </p>
             </div>
 
@@ -444,41 +456,41 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             <div className="bg-brand-goldLight/10 rounded-xl p-6 border border-brand-gold/20">
               <h3 className="text-xl font-bold text-brand-dark mb-4 flex items-center gap-2">
                 <Clock className="h-5 w-5 text-brand-gold" />
-                Application Timeline
+                {tWelcome("timeline.title")}
               </h3>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">1</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">Submit Application (10 minutes)</p>
-                    <p className="text-sm text-brand-grayMed">Complete online form with your details</p>
+                    <p className="font-semibold text-brand-dark">{tWelcome("timeline.step1.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{tWelcome("timeline.step1.description")}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">2</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">Partner Review (24-72 hours)</p>
-                    <p className="text-sm text-brand-grayMed">Partner bank reviews your application</p>
+                    <p className="font-semibold text-brand-dark">{tWelcome("timeline.step2.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{tWelcome("timeline.step2.description")}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">3</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">KYC Verification (1-3 days)</p>
-                    <p className="text-sm text-brand-grayMed">Identity and document verification</p>
+                    <p className="font-semibold text-brand-dark">{tWelcome("timeline.step3.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{tWelcome("timeline.step3.description")}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-sm font-bold">4</div>
                   <div>
-                    <p className="font-semibold text-brand-dark">Account Activation (1-2 days)</p>
-                    <p className="text-sm text-brand-grayMed">Receive IBAN and access credentials</p>
+                    <p className="font-semibold text-brand-dark">{tWelcome("timeline.step4.title")}</p>
+                    <p className="text-sm text-brand-grayMed">{tWelcome("timeline.step4.description")}</p>
                   </div>
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-brand-gold/20">
                 <p className="text-sm font-semibold text-brand-dark">
-                  ⏱️ Total Time: Approximately 5-7 business days
+                  {tWelcome("timeline.totalTime")}
                 </p>
               </div>
             </div>
@@ -488,28 +500,28 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               <div className="border border-brand-grayLight rounded-xl p-6">
                 <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-brand-gold" />
-                  Eligibility Requirements
+                  {tWelcome("eligibility.title")}
                 </h3>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">18 years or older</span>
+                    <span className="text-brand-dark">{tWelcome("eligibility.requirement1")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">Valid government-issued ID or passport</span>
+                    <span className="text-brand-dark">{tWelcome("eligibility.requirement2")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">Proof of address (utility bill, bank statement)</span>
+                    <span className="text-brand-dark">{tWelcome("eligibility.requirement3")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">EU/EEA resident or valid residence permit</span>
+                    <span className="text-brand-dark">{tWelcome("eligibility.requirement4")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">✓</span>
-                    <span className="text-brand-dark">Tax identification number (TIN)</span>
+                    <span className="text-brand-dark">{tWelcome("eligibility.requirement5")}</span>
                   </li>
                 </ul>
               </div>
@@ -517,24 +529,24 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               <div className="border border-brand-grayLight rounded-xl p-6">
                 <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
                   <FileText className="h-5 w-5 text-brand-gold" />
-                  Required Documents
+                  {tWelcome("documents.title")}
                 </h3>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">Valid ID card or passport (color scan)</span>
+                    <span className="text-brand-dark">{tWelcome("documents.document1")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">Proof of address (dated within 3 months)</span>
+                    <span className="text-brand-dark">{tWelcome("documents.document2")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">Proof of income (payslips or tax returns)</span>
+                    <span className="text-brand-dark">{tWelcome("documents.document3")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold mt-0.5">•</span>
-                    <span className="text-brand-dark">Source of funds declaration</span>
+                    <span className="text-brand-dark">{tWelcome("documents.document4")}</span>
                   </li>
                 </ul>
               </div>
@@ -542,61 +554,61 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             {/* How It Works */}
             <div className="bg-gray-50 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-brand-dark mb-4">How It Works</h3>
+              <h3 className="text-lg font-bold text-brand-dark mb-4">{tWelcome("howItWorks.title")}</h3>
               <div className="space-y-4 text-sm text-brand-grayMed">
                 <p>
-                  <strong className="text-brand-dark">Smart Matching:</strong> Based on your jurisdiction preferences, we automatically route your application to the most suitable Opulanz partner bank.
+                  <strong className="text-brand-dark">{tWelcome("howItWorks.smartMatching.title")}</strong> {tWelcome("howItWorks.smartMatching.description")}
                 </p>
                 <p>
-                  <strong className="text-brand-dark">Warm Referral:</strong> Your application includes a secure signed referral code, ensuring priority processing and preferential terms.
+                  <strong className="text-brand-dark">{tWelcome("howItWorks.warmReferral.title")}</strong> {tWelcome("howItWorks.warmReferral.description")}
                 </p>
                 <p>
-                  <strong className="text-brand-dark">Data Security:</strong> All information is encrypted and transmitted securely. We comply with GDPR and Luxembourg banking regulations.
+                  <strong className="text-brand-dark">{tWelcome("howItWorks.dataSecurity.title")}</strong> {tWelcome("howItWorks.dataSecurity.description")}
                 </p>
                 <p>
-                  <strong className="text-brand-dark">No Commitment:</strong> Submitting this application does not obligate you to open an account. You can review final terms before accepting.
+                  <strong className="text-brand-dark">{tWelcome("howItWorks.noCommitment.title")}</strong> {tWelcome("howItWorks.noCommitment.description")}
                 </p>
               </div>
             </div>
 
             {/* Account Features */}
             <div className="border-2 border-brand-gold/30 rounded-xl p-6 bg-gradient-to-br from-brand-goldLight/5 to-transparent">
-              <h3 className="text-lg font-bold text-brand-dark mb-4">What You'll Get</h3>
+              <h3 className="text-lg font-bold text-brand-dark mb-4">{tWelcome("features.title")}</h3>
               <div className="grid sm:grid-cols-2 gap-3 text-sm">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">Multi-currency IBAN account</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature1")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">SEPA & SWIFT transfers</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature2")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">Debit card (Mastercard/Visa)</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature3")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">Mobile & online banking</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature4")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">24/7 customer support</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature5")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                  <span className="text-brand-dark">EU-regulated protection</span>
+                  <span className="text-brand-dark">{tWelcome("features.feature6")}</span>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button size="lg" onClick={handleNext}>
-                Start Personal Application
+                {tWelcome("startButton")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-xs text-center text-brand-grayMed">
-                By continuing, you agree to our Terms of Service and Privacy Policy
+                {tWelcome("disclaimer")}
               </p>
             </div>
           </div>
@@ -607,22 +619,22 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <form className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                Identity & Contact Information
+                {tIdentity("title")}
               </h2>
               <p className="text-brand-grayMed">
-                Please provide your personal details
+                {tIdentity("subtitle")}
               </p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="firstName">
-                  First Name <span className="text-red-500">*</span>
+                  {tIdentity("firstName")} <span className="text-red-500">{tIdentity("required")}</span>
                 </Label>
                 <Input
                   id="firstName"
                   {...step2Form.register("firstName")}
-                  placeholder="John"
+                  placeholder={tIdentity("firstNamePlaceholder")}
                 />
                 {step2Form.formState.errors.firstName && (
                   <p className="text-sm text-red-500">
@@ -633,12 +645,12 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
               <div className="space-y-2">
                 <Label htmlFor="lastName">
-                  Last Name <span className="text-red-500">*</span>
+                  {tIdentity("lastName")} <span className="text-red-500">{tIdentity("required")}</span>
                 </Label>
                 <Input
                   id="lastName"
                   {...step2Form.register("lastName")}
-                  placeholder="Doe"
+                  placeholder={tIdentity("lastNamePlaceholder")}
                 />
                 {step2Form.formState.errors.lastName && (
                   <p className="text-sm text-red-500">
@@ -650,13 +662,13 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="email">
-                Email <span className="text-red-500">*</span>
+                {tIdentity("email")} <span className="text-red-500">{tIdentity("required")}</span>
               </Label>
               <Input
                 id="email"
                 type="email"
                 {...step2Form.register("email")}
-                placeholder="john.doe@example.com"
+                placeholder={tIdentity("emailPlaceholder")}
               />
               {step2Form.formState.errors.email && (
                 <p className="text-sm text-red-500">
@@ -667,7 +679,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="mobile">
-                Mobile Phone <span className="text-red-500">*</span>
+                {tIdentity("mobile")} <span className="text-red-500">{tIdentity("required")}</span>
               </Label>
               <div className="relative">
                 <div className="flex items-center border border-input rounded-md bg-background h-10 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
@@ -702,7 +714,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     id="mobile"
                     type="tel"
                     {...step2Form.register("mobile")}
-                    placeholder="123456789"
+                    placeholder={tIdentity("mobilePlaceholder")}
                     className="flex-1 h-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-3 shadow-none"
                   />
                 </div>
@@ -717,7 +729,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="dateOfBirth">
-                  Date of Birth <span className="text-red-500">*</span>
+                  {tIdentity("dateOfBirth")} <span className="text-red-500">{tIdentity("required")}</span>
                 </Label>
                 <Input
                   id="dateOfBirth"
@@ -733,14 +745,14 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
               <div className="space-y-2">
                 <Label htmlFor="nationality">
-                  Nationality <span className="text-red-500">*</span>
+                  {tIdentity("nationality")} <span className="text-red-500">{tIdentity("required")}</span>
                 </Label>
                 <Select
                   value={step2Form.watch("nationality") || ""}
                   onValueChange={(value) => step2Form.setValue("nationality", value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select nationality" />
+                    <SelectValue placeholder={tIdentity("nationalityPlaceholder")} />
                   </SelectTrigger>
                   <SelectContent className="max-h-[300px]">
                     {COUNTRIES.map((country) => (
@@ -760,12 +772,12 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="countryOfResidence">
-                Country of Residence <span className="text-red-500">*</span>
+                {tIdentity("countryOfResidence")} <span className="text-red-500">{tIdentity("required")}</span>
               </Label>
               <Input
                 id="countryOfResidence"
                 {...step2Form.register("countryOfResidence")}
-                placeholder="Luxembourg"
+                placeholder={tIdentity("countryOfResidencePlaceholder")}
               />
               {step2Form.formState.errors.countryOfResidence && (
                 <p className="text-sm text-red-500">
@@ -777,12 +789,12 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="taxCountry">
-                  Tax Residency <span className="text-red-500">*</span>
+                  {tIdentity("taxResidency")} <span className="text-red-500">{tIdentity("required")}</span>
                 </Label>
                 <Input
                   id="taxCountry"
                   {...step2Form.register("taxCountry" as any)}
-                  placeholder="Luxembourg"
+                  placeholder={tIdentity("taxResidencyPlaceholder")}
                 />
                 {(step2Form.formState.errors as any).taxCountry && (
                   <p className="text-sm text-red-500">
@@ -792,11 +804,11 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="taxId">Tax ID (Optional)</Label>
+                <Label htmlFor="taxId">{tIdentity("taxId")}</Label>
                 <Input
                   id="taxId"
                   {...step2Form.register("taxId" as any)}
-                  placeholder="1234567890"
+                  placeholder={tIdentity("taxIdPlaceholder")}
                 />
               </div>
             </div>
@@ -808,15 +820,15 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <form className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                Account Intent & Preferences
+                {tIntent("title")}
               </h2>
               <p className="text-brand-grayMed">
-                Tell us about your banking needs
+                {tIntent("subtitle")}
               </p>
             </div>
 
             <div className="space-y-4">
-              <Label>Account Type <span className="text-red-500">*</span></Label>
+              <Label>{tIntent("accountType")} <span className="text-red-500">{tIntent("required")}</span></Label>
               <RadioGroup
                 defaultValue={step3Form.getValues("accountType")}
                 onValueChange={(value) => step3Form.setValue("accountType", value as AccountType)}
@@ -824,20 +836,20 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="current" id="current" />
                   <Label htmlFor="current" className="font-normal cursor-pointer">
-                    Current Account (daily banking)
+                    {tIntent("currentAccount")}
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="private_banking" id="private_banking" />
                   <Label htmlFor="private_banking" className="font-normal cursor-pointer">
-                    Private Banking / Investment Account
+                    {tIntent("privateBanking")}
                   </Label>
                 </div>
               </RadioGroup>
             </div>
 
             <div className="space-y-4">
-              <Label>Preferred Jurisdictions <span className="text-red-500">*</span></Label>
+              <Label>{tIntent("jurisdictions")} <span className="text-red-500">{tIntent("required")}</span></Label>
               <div className="grid grid-cols-2 gap-4">
                 {["Luxembourg", "France", "Finland", "Other EEA"].map((jur) => (
                   <div key={jur} className="flex items-center space-x-2">
@@ -863,7 +875,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             </div>
 
             <div className="space-y-4">
-              <Label>Preferred Currencies <span className="text-red-500">*</span></Label>
+              <Label>{tIntent("currencies")} <span className="text-red-500">{tIntent("required")}</span></Label>
               <div className="grid grid-cols-2 gap-4">
                 {["EUR", "USD", "GBP", "Other"].map((curr) => (
                   <div key={curr} className="flex items-center space-x-2">
@@ -889,7 +901,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div className="space-y-4">
               <Label>
-                Estimated Monthly Incoming Transfers: €
+                {tIntent("estimatedMonthlyIncoming")}: €
                 {step3Form.watch("estimatedMonthlyIncoming")?.toLocaleString()}
               </Label>
               <Slider
@@ -903,39 +915,39 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="sourceOfFunds">
-                Source of Funds <span className="text-red-500">*</span>
+                {tIntent("sourceOfFunds")} <span className="text-red-500">{tIntent("required")}</span>
               </Label>
               <Select
                 value={step3Form.watch("sourceOfFunds")}
                 onValueChange={(value) => step3Form.setValue("sourceOfFunds", value as SourceOfFunds)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select source" />
+                  <SelectValue placeholder={tIntent("sourceOfFundsPlaceholder")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="salary">Salary</SelectItem>
-                  <SelectItem value="dividends">Dividends</SelectItem>
-                  <SelectItem value="business_income">Business Income</SelectItem>
-                  <SelectItem value="asset_sale">Asset Sale</SelectItem>
-                  <SelectItem value="savings">Savings</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="salary">{tIntent("sourceOptions.salary")}</SelectItem>
+                  <SelectItem value="dividends">{tIntent("sourceOptions.dividends")}</SelectItem>
+                  <SelectItem value="business_income">{tIntent("sourceOptions.businessIncome")}</SelectItem>
+                  <SelectItem value="asset_sale">{tIntent("sourceOptions.assetSale")}</SelectItem>
+                  <SelectItem value="savings">{tIntent("sourceOptions.savings")}</SelectItem>
+                  <SelectItem value="other">{tIntent("sourceOptions.other")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {step3Form.watch("sourceOfFunds") === "other" && (
               <div className="space-y-2">
-                <Label htmlFor="sourceOfFundsDetails">Please provide details</Label>
+                <Label htmlFor="sourceOfFundsDetails">{tIntent("sourceOfFundsDetails")}</Label>
                 <Input
                   id="sourceOfFundsDetails"
                   {...step3Form.register("sourceOfFundsDetails")}
-                  placeholder="Describe your source of funds"
+                  placeholder={tIntent("sourceOfFundsDetailsPlaceholder")}
                 />
               </div>
             )}
 
             <div className="space-y-4">
-              <Label>PEP / Sanctions Awareness</Label>
+              <Label>{tIntent("pepLabel")}</Label>
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="isPEP"
@@ -943,7 +955,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                   onCheckedChange={(checked) => step3Form.setValue("isPEP", !!checked)}
                 />
                 <Label htmlFor="isPEP" className="font-normal cursor-pointer">
-                  I am a Politically Exposed Person (PEP) or subject to sanctions
+                  {tIntent("pepCheckbox")}
                 </Label>
               </div>
             </div>
@@ -955,10 +967,10 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                Eligibility & Required Documents
+                {tEligibility("title")}
               </h2>
               <p className="text-brand-grayMed">
-                Based on your selections, you will need the following documents
+                {tEligibility("subtitle")}
               </p>
             </div>
 
@@ -968,8 +980,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <div className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="font-medium text-brand-dark">Valid ID or Passport</p>
-                    <p className="text-sm text-brand-grayMed">Government-issued photo ID</p>
+                    <p className="font-medium text-brand-dark">{tEligibility("validId")}</p>
+                    <p className="text-sm text-brand-grayMed">{tEligibility("validIdDescription")}</p>
                   </div>
                 </div>
                 <div className="pl-8">
@@ -988,7 +1000,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {uploadedDocuments.some(d => d.category === "id_document") ? "✓ Uploaded" : "Upload ID"}
+                    {uploadedDocuments.some(d => d.category === "id_document") ? tEligibility("uploaded") : tEligibility("uploadId")}
                   </Button>
                 </div>
               </div>
@@ -998,8 +1010,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <div className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="font-medium text-brand-dark">Proof of Address</p>
-                    <p className="text-sm text-brand-grayMed">Utility bill or bank statement (less than 3 months old)</p>
+                    <p className="font-medium text-brand-dark">{tEligibility("proofOfAddress")}</p>
+                    <p className="text-sm text-brand-grayMed">{tEligibility("proofOfAddressDescription")}</p>
                   </div>
                 </div>
                 <div className="pl-8">
@@ -1018,7 +1030,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {uploadedDocuments.some(d => d.category === "proof_of_address") ? "✓ Uploaded" : "Upload Proof"}
+                    {uploadedDocuments.some(d => d.category === "proof_of_address") ? tEligibility("uploaded") : tEligibility("uploadProof")}
                   </Button>
                 </div>
               </div>
@@ -1028,8 +1040,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <div className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="font-medium text-brand-dark">Tax Identification Number</p>
-                    <p className="text-sm text-brand-grayMed">If applicable in your jurisdiction</p>
+                    <p className="font-medium text-brand-dark">{tEligibility("taxIdDocument")}</p>
+                    <p className="text-sm text-brand-grayMed">{tEligibility("taxIdDocumentDescription")}</p>
                   </div>
                 </div>
                 <div className="pl-8">
@@ -1048,7 +1060,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {uploadedDocuments.some(d => d.category === "tax_id_document") ? "✓ Uploaded" : "Upload Tax ID"}
+                    {uploadedDocuments.some(d => d.category === "tax_id_document") ? tEligibility("uploaded") : tEligibility("uploadTaxId")}
                   </Button>
                 </div>
               </div>
@@ -1185,44 +1197,44 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                Review & Consents
+                {tReview("title")}
               </h2>
               <p className="text-brand-grayMed">
-                Please review your information and provide your consent
+                {tReview("subtitle")}
               </p>
             </div>
 
             {/* Summary */}
             <div className="space-y-4 p-6 bg-gray-50 rounded-lg">
-              <h3 className="font-semibold text-brand-dark">Application Summary</h3>
+              <h3 className="font-semibold text-brand-dark">{tReview("summaryTitle")}</h3>
 
               <div className="grid gap-4 text-sm">
                 <div>
-                  <p className="text-brand-grayMed">Name</p>
+                  <p className="text-brand-grayMed">{tReview("name")}</p>
                   <p className="font-medium text-brand-dark">
                     {formData.identity?.firstName} {formData.identity?.lastName}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">Email</p>
+                  <p className="text-brand-grayMed">{tReview("email")}</p>
                   <p className="font-medium text-brand-dark">{formData.identity?.email}</p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">Mobile</p>
+                  <p className="text-brand-grayMed">{tReview("mobile")}</p>
                   <p className="font-medium text-brand-dark">{formData.identity?.mobile}</p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">Account Type</p>
+                  <p className="text-brand-grayMed">{tReview("accountType")}</p>
                   <p className="font-medium text-brand-dark capitalize">
                     {formData.intent?.accountType?.replace("_", " ")}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">Preferred Jurisdictions</p>
+                  <p className="text-brand-grayMed">{tReview("preferredJurisdictions")}</p>
                   <p className="font-medium text-brand-dark capitalize">
                     {formData.intent?.preferredJurisdictions?.join(", ").replace(/_/g, " ")}
                   </p>
@@ -1239,7 +1251,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                   onCheckedChange={(checked) => step5Form.setValue("dataProcessing", !!checked)}
                 />
                 <Label htmlFor="dataProcessing" className="font-normal cursor-pointer leading-tight">
-                  <span className="text-red-500">*</span> I consent to Opulanz processing my data for the purpose of introducing me to licensed banking partners.
+                  <span className="text-red-500">*</span> {tReview("dataProcessingConsent")}
                 </Label>
               </div>
               {step5Form.formState.errors.dataProcessing && (
@@ -1255,7 +1267,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                   onCheckedChange={(checked) => step5Form.setValue("dataSharing", !!checked)}
                 />
                 <Label htmlFor="dataSharing" className="font-normal cursor-pointer leading-tight">
-                  <span className="text-red-500">*</span> I authorize Opulanz to share my information with partner banks/EMIs solely for account onboarding.
+                  <span className="text-red-500">*</span> {tReview("dataSharingConsent")}
                 </Label>
               </div>
               {step5Form.formState.errors.dataSharing && (
@@ -1271,7 +1283,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                   onCheckedChange={(checked) => step5Form.setValue("marketingOptIn", !!checked)}
                 />
                 <Label htmlFor="marketingOptIn" className="font-normal cursor-pointer leading-tight">
-                  Keep me informed about Opulanz services (optional)
+                  {tReview("marketingOptIn")}
                 </Label>
               </div>
             </form>
@@ -1287,39 +1299,39 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
 
             <div>
               <h2 className="text-3xl font-bold text-brand-dark mb-4">
-                Application Submitted Successfully!
+                {tSubmission("title")}
               </h2>
               <p className="text-lg text-brand-grayMed max-w-2xl mx-auto mb-6">
-                Thank you for submitting your personal account application. Our team will review your information and contact you within 24-72 hours.
+                {tSubmission("message")}
               </p>
             </div>
 
             <div className="p-8 bg-gradient-to-br from-brand-goldLight/20 to-brand-gold/10 rounded-2xl border-2 border-brand-gold/30 max-w-md mx-auto">
               <p className="text-sm text-brand-grayMed mb-3 font-semibold uppercase tracking-wide">
-                Your Application Number
+                {tSubmission("applicationNumberLabel")}
               </p>
               <div className="text-3xl font-bold text-brand-dark mb-2 font-mono tracking-tight">
                 {applicationId}
               </div>
               <p className="text-sm text-brand-grayMed">
-                Please save this number for your records
+                {tSubmission("saveNumberMessage")}
               </p>
             </div>
 
             <div className="p-6 bg-blue-50 rounded-lg border border-blue-200 max-w-2xl mx-auto text-left">
-              <h3 className="font-semibold text-brand-dark mb-3">What happens next?</h3>
+              <h3 className="font-semibold text-brand-dark mb-3">{tSubmission("nextStepsTitle")}</h3>
               <ul className="space-y-2 text-sm text-brand-grayMed">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>Our compliance team will review your application</span>
+                  <span>{tSubmission("nextStep1")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>We'll match you with the most suitable Opulanz partner bank</span>
+                  <span>{tSubmission("nextStep2")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>You'll receive an email with next steps within 24-72 hours</span>
+                  <span>{tSubmission("nextStep3")}</span>
                 </li>
               </ul>
             </div>
@@ -1327,7 +1339,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button variant="outline" size="lg" asChild>
                 <a href={`/${locale}`}>
-                  Back to Homepage
+                  {tSubmission("backToHomepage")}
                 </a>
               </Button>
               <Button variant="outline" size="lg" onClick={onSwitchMode}>

@@ -23,6 +23,7 @@ type ApplicationStatus = "form" | "submitted" | "approved" | "declined";
 
 export default function CompanyAccountPage() {
   const t = useTranslations();
+  const tAccount = useTranslations("accountOpening.company");
   const [status, setStatus] = React.useState<ApplicationStatus>("form");
   const [iban, setIban] = React.useState<string>("");
 
@@ -177,7 +178,7 @@ export default function CompanyAccountPage() {
                 {t("whitelabel.approved")}
               </h1>
               <p className="mb-8 text-lg text-brand-grayMed">
-                Your business account has been successfully approved!
+                {tAccount("approved.message")}
               </p>
 
               <div className="mb-8 rounded-xl bg-brand-grayLight/50 p-6">
@@ -251,7 +252,7 @@ export default function CompanyAccountPage() {
                 {t("whitelabel.applicationSubmitted")}
               </h1>
               <p className="mb-8 text-lg text-brand-grayMed">
-                Your business account application is being reviewed. You will receive a decision within 2-3 business days.
+                {tAccount("submitted.message")}
               </p>
               <StatusChip status="submitted" />
             </CardContent>
@@ -265,15 +266,15 @@ export default function CompanyAccountPage() {
     <div className="min-h-screen bg-brand-off py-20">
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading
-          title={t("whitelabel.kybTitle")}
-          description="Complete your business verification to open your company account"
+          title={tAccount("title")}
+          description={tAccount("description")}
           align="center"
           className="mb-12"
         />
 
         <Card className="border-none shadow-elevated">
           <CardHeader>
-            <CardTitle>Company Information</CardTitle>
+            <CardTitle>{tAccount("form.companyInfo")}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">

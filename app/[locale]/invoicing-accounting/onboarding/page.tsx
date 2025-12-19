@@ -292,6 +292,26 @@ export default function AccountingOnboardingPage() {
     }
   };
 
+  // Check if current step is valid
+  const canProceed = () => {
+    switch (currentStep) {
+      case 1:
+        return formData.isStep1Valid === true;
+      case 2:
+        return formData.isStep2Valid === true;
+      case 3:
+        return formData.isStep3Valid === true;
+      case 4:
+        return formData.isStep4Valid === true;
+      case 5:
+        return formData.isStep5Valid === true;
+      case 6:
+        return false; // No next button on last step
+      default:
+        return false;
+    }
+  };
+
   return (
     <AccountOpeningLayout
       title="Accounting & Bookkeeping Onboarding"
@@ -301,7 +321,7 @@ export default function AccountingOnboardingPage() {
       onStepChange={handleStepChange}
       onNext={handleNext}
       onBack={handleBack}
-      canGoNext={currentStep < ACCOUNTING_STEPS.length}
+      canGoNext={canProceed()}
       canGoBack={currentStep > 1}
       isLoading={isLoading}
       hideNavigation={currentStep === ACCOUNTING_STEPS.length}

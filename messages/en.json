@@ -1345,6 +1345,32 @@
         "validationError": "Please complete all required fields to continue."
       },
       "personalFunnel": {
+        "steps": {
+          "welcome": {
+            "label": "Welcome",
+            "shortLabel": "Welcome"
+          },
+          "identity": {
+            "label": "Identity & Contact",
+            "shortLabel": "Identity"
+          },
+          "intent": {
+            "label": "Account Intent",
+            "shortLabel": "Intent"
+          },
+          "eligibility": {
+            "label": "Eligibility",
+            "shortLabel": "Eligibility"
+          },
+          "review": {
+            "label": "Review & Consents",
+            "shortLabel": "Review"
+          },
+          "submission": {
+            "label": "Submission",
+            "shortLabel": "Submit"
+          }
+        },
         "welcome": {
           "title": "Open Your Personal Account",
           "subtitle": "Answer a few quick questions so we can match you with a licensed Opulanz partner bank.",

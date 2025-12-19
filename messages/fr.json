@@ -1332,6 +1332,32 @@
         "validationError": "Veuillez compléter tous les champs obligatoires pour continuer."
       },
       "personalFunnel": {
+        "steps": {
+          "welcome": {
+            "label": "Bienvenue",
+            "shortLabel": "Bienvenue"
+          },
+          "identity": {
+            "label": "Identité et Coordonnées",
+            "shortLabel": "Identité"
+          },
+          "intent": {
+            "label": "Objectif du Compte",
+            "shortLabel": "Objectif"
+          },
+          "eligibility": {
+            "label": "Éligibilité",
+            "shortLabel": "Éligibilité"
+          },
+          "review": {
+            "label": "Révision et Consentements",
+            "shortLabel": "Révision"
+          },
+          "submission": {
+            "label": "Soumission",
+            "shortLabel": "Soumettre"
+          }
+        },
         "welcome": {
           "title": "Ouvrez Votre Compte Personnel",
           "subtitle": "Répondez à quelques questions rapides pour que nous puissions vous mettre en relation avec une banque partenaire Opulanz agréée.",

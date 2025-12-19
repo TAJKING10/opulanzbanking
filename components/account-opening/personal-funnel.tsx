@@ -39,15 +39,6 @@ import type {
 } from "@/types/account-opening";
 // Removed: import { generateReferralRouting, saveReferralEntry, getPartnerDisplayName, getPartnerExplanation } from "@/lib/referral-routing";
 
-const STEPS: Step[] = [
-  { id: "welcome", label: "Welcome", shortLabel: "Welcome" },
-  { id: "identity", label: "Identity & Contact", shortLabel: "Identity" },
-  { id: "intent", label: "Account Intent", shortLabel: "Intent" },
-  { id: "eligibility", label: "Eligibility", shortLabel: "Eligibility" },
-  { id: "review", label: "Review & Consents", shortLabel: "Review" },
-  { id: "submission", label: "Submission", shortLabel: "Submit" },
-];
-
 const COUNTRY_CODES = [
   { code: "+93", country: "Afghanistan", flag: "🇦🇫" },
   { code: "+355", country: "Albania", flag: "🇦🇱" },
@@ -206,12 +197,23 @@ interface PersonalFunnelProps {
 }
 
 export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
+  const tSteps = useTranslations("accountOpening.personal.personalFunnel.steps");
   const tWelcome = useTranslations("accountOpening.personal.personalFunnel.welcome");
   const tIdentity = useTranslations("accountOpening.personal.personalFunnel.identity");
   const tIntent = useTranslations("accountOpening.personal.personalFunnel.intent");
   const tEligibility = useTranslations("accountOpening.personal.personalFunnel.eligibility");
   const tReview = useTranslations("accountOpening.personal.personalFunnel.review");
   const tSubmission = useTranslations("accountOpening.personal.personalFunnel.submission");
+
+  const STEPS: Step[] = [
+    { id: "welcome", label: tSteps("welcome.label"), shortLabel: tSteps("welcome.shortLabel") },
+    { id: "identity", label: tSteps("identity.label"), shortLabel: tSteps("identity.shortLabel") },
+    { id: "intent", label: tSteps("intent.label"), shortLabel: tSteps("intent.shortLabel") },
+    { id: "eligibility", label: tSteps("eligibility.label"), shortLabel: tSteps("eligibility.shortLabel") },
+    { id: "review", label: tSteps("review.label"), shortLabel: tSteps("review.shortLabel") },
+    { id: "submission", label: tSteps("submission.label"), shortLabel: tSteps("submission.shortLabel") },
+  ];
+
   const [currentStep, setCurrentStep] = React.useState(1);
   const [formData, setFormData] = React.useState<Partial<PersonalApplication>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);

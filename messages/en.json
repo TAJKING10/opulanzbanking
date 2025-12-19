@@ -1575,6 +1575,249 @@
           "label": "Submit",
           "description": "Final step"
         }
+      },
+      "welcomeStep": {
+        "title": "Welcome to Business Banking",
+        "subtitle": "Let's get started with opening your business bank account. This process should take about 15-20 minutes.",
+        "businessAccountOpening": {
+          "title": "Business Account Opening",
+          "description": "Whether you have an existing company or want to start a new one, we'll guide you through the process of opening a business bank account with Opulanz Partner Bank."
+        },
+        "whatYouNeed": {
+          "title": "What you'll need:",
+          "item1": "Company registration documents (if existing company)",
+          "item2": "Information about directors and beneficial owners (UBOs)",
+          "item3": "Identity documents for all directors and UBOs",
+          "item4": "Proof of business address",
+          "item5": "Company formation details (if starting a new company)"
+        },
+        "processingTime": {
+          "title": "Processing Time",
+          "description": "Business account applications typically take 5-10 business days to review. We may contact you for additional information during the review process."
+        },
+        "startApplication": "Start Application"
+      },
+      "companyStatusStep": {
+        "title": "Company Status",
+        "subtitle": "Tell us about your company so we can provide the right banking solution.",
+        "question": "Do you have an existing company or want to start a new one?",
+        "existing": {
+          "title": "Existing Company",
+          "description": "I already have a registered company and need a bank account for it."
+        },
+        "new": {
+          "title": "New Company",
+          "description": "I want to start a new company and need help with company formation and banking."
+        },
+        "companyDetails": "Company Details",
+        "companyName": "Company Name",
+        "companyNamePlaceholder": "Enter your company name",
+        "registrationNumber": "Company Registration Number",
+        "registrationNumberPlaceholder": "e.g., B123456",
+        "required": "*",
+        "companyFormationService": {
+          "title": "Company Formation Service",
+          "description": "We'll help you form your company in your chosen jurisdiction and open a bank account simultaneously. This streamlined process saves time and ensures everything is set up correctly."
+        }
+      },
+      "jurisdictionStep": {
+        "titleExisting": "Intended Jurisdiction",
+        "titleNew": "Intended Jurisdiction",
+        "subtitleExisting": "Where is your company registered?",
+        "subtitleNew": "Where would you like to form your company?",
+        "selectJurisdiction": "Select Jurisdiction",
+        "selectJurisdictionPlaceholder": "Choose a jurisdiction",
+        "required": "*",
+        "jurisdictions": {
+          "luxembourg": "Luxembourg",
+          "france": "France",
+          "finland": "Finland",
+          "belgium": "Belgium",
+          "germany": "Germany",
+          "netherlands": "Netherlands",
+          "spain": "Spain",
+          "italy": "Italy",
+          "portugal": "Portugal",
+          "austria": "Austria",
+          "other": "Other EU Country"
+        },
+        "helperText": "This determines which banking partner and regulatory framework will apply",
+        "jurisdictionInfo": {
+          "title": "Jurisdiction Information",
+          "luxembourg": "Luxembourg: Premier financial center with favorable tax regime for holding companies. Corporate tax rate: ~24%. Minimum share capital: €12,000 for S.à r.l. (limited liability company)",
+          "france": "France: Large economy with access to EU market. Corporate tax rate: ~25%. Minimum share capital: €1 for SAS/SARL (most common structures)",
+          "finland": "Finland: Stable Nordic economy with strong digital infrastructure. Corporate tax rate: 20%. Minimum share capital: €2,500 for Oy (limited company)",
+          "general": "We'll match you with Opulanz Partner Bank that serves companies in your selected jurisdiction. Specific requirements and timelines will be provided after application review."
+        },
+        "formationTimeline": {
+          "title": "Company Formation Timeline",
+          "description": "Company formation in {jurisdiction} typically takes 2-4 weeks. We'll guide you through the entire process and help you open your bank account simultaneously."
+        }
+      },
+      "directorsUbosStep": {
+        "title": "Directors & Beneficial Owners",
+        "subtitle": "Provide information about company directors and ultimate beneficial owners (UBOs).",
+        "companyDirectors": "Company Directors",
+        "addDirector": "Add Director",
+        "director": "Director",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "firstNamePlaceholder": "First name",
+        "lastNamePlaceholder": "Last name",
+        "emailPlaceholder": "email@example.com",
+        "required": "*",
+        "ubos": "Ultimate Beneficial Owners (UBOs)",
+        "ubosDescription": "Individuals who own 25% or more of the company",
+        "addUBO": "Add UBO",
+        "ubo": "UBO",
+        "ownershipPercent": "Ownership %",
+        "ownershipPlaceholder": "e.g., 50",
+        "whyWeNeedThis": {
+          "title": "Why we need this information",
+          "description": "Banks are required by law (KYC/AML regulations) to know who controls the company. This helps prevent financial crime and ensures transparency."
+        }
+      },
+      "companyFormationStep": {
+        "title": "Company Formation Details",
+        "subtitle": "Provide information for forming your new company in {jurisdiction}.",
+        "companyFormationService": {
+          "title": "Company Formation Service",
+          "description": "We'll handle the entire company formation process including registration, drafting articles of association, and setting up your corporate structure."
+        },
+        "proposedCompanyName": "Proposed Company Name",
+        "proposedCompanyNamePlaceholder": "Enter your proposed company name",
+        "proposedCompanyNameHelper": "We'll check availability and suggest alternatives if needed",
+        "businessActivity": "Business Activity / Description",
+        "businessActivityPlaceholder": "Describe your business activities (e.g., software development, consulting, e-commerce)",
+        "shareCapital": "Initial Share Capital",
+        "shareCapitalPlaceholder": "e.g., €12,000",
+        "shareCapitalHelper": "Minimum requirements vary by jurisdiction",
+        "shareCapitalRequirements": {
+          "luxembourg": "(Luxembourg: €12,000 for S.à r.l.)",
+          "france": "(France: €1 for SAS/SARL)",
+          "finland": "(Finland: €2,500 for Oy)"
+        },
+        "required": "*",
+        "whatsIncluded": {
+          "title": "What's Included",
+          "item1": "Company name reservation and registration",
+          "item2": "Articles of association preparation",
+          "item3": "Company registration with authorities",
+          "item4": "Tax registration",
+          "item5": "Bank account opening",
+          "item6": "Registered office address (if needed)"
+        },
+        "formationTimeline": {
+          "title": "Formation Timeline",
+          "description": "The company formation process typically takes 2-4 weeks. We'll keep you updated at each stage and coordinate the bank account opening to minimize delays."
+        }
+      },
+      "documentsStep": {
+        "title": "Business Documents",
+        "subtitle": "Upload the required business and identity documents for verification and compliance.",
+        "requiredDocuments": "Required Documents",
+        "documents": {
+          "registration": "Company Registration Certificate",
+          "articles": "Articles of Association / Statutes",
+          "uboRegister": "UBO Register / Shareholder Register",
+          "directorsId": "Directors' Identity Documents",
+          "ubosId": "UBOs' Identity Documents",
+          "proofOfAddress": "Proof of Business Address"
+        },
+        "upload": "Upload",
+        "uploaded": "Uploaded: {filename}",
+        "remove": "Remove",
+        "uploadLater": "I'll upload documents later via my dashboard",
+        "uploadLaterDescription": "You can submit your application now and upload documents later. We'll send you a secure link to your dashboard where you can complete the document upload.",
+        "fileRequirements": {
+          "title": "File Requirements",
+          "formats": "Accepted formats: PDF, JPG, PNG",
+          "maxSize": "Maximum file size: 5MB per document",
+          "quality": "Documents must be clear and legible",
+          "validity": "All documents must be valid (not expired)"
+        },
+        "validationError": "Please upload all required documents or select 'I'll upload documents later' to continue.",
+        "errors": {
+          "invalidFormat": "Please upload a PDF, JPG, or PNG file",
+          "fileTooLarge": "File size must be less than 5MB"
+        }
+      },
+      "reviewConsentsStep": {
+        "title": "Review & Consents",
+        "subtitle": "Please review your information and provide the necessary consents to proceed.",
+        "applicationSummary": "Application Summary",
+        "fullName": "Full Name",
+        "email": "Email",
+        "phone": "Phone",
+        "residence": "Residence",
+        "accountType": "Account Type",
+        "documents": "Documents",
+        "verified": "Verified",
+        "europeanResident": "European Resident - {country}",
+        "nonResident": "Non-resident",
+        "accountTypes": {
+          "current": "Current / Everyday Account",
+          "privateBanking": "Private Banking"
+        },
+        "documentsStatus": {
+          "uploaded": "{count} documents uploaded",
+          "uploadLater": "To be uploaded later"
+        },
+        "requiredConsents": "Required Consents",
+        "processingConsent": {
+          "title": "Processing for Bank Introduction",
+          "description": "I consent to Opulanz processing my personal data for the purpose of introducing me to Opulanz Partner Bank for account opening. This is required to proceed."
+        },
+        "dataSharingConsent": {
+          "title": "Data Sharing with Partner Banks",
+          "description": "I consent to Opulanz sharing my application data with partner banks and EMIs for the purpose of account opening and compliance checks. This is required to proceed."
+        },
+        "marketingConsent": {
+          "title": "Marketing Communications (Optional)",
+          "description": "I would like to receive updates, offers, and news from Opulanz about banking products and services. You can unsubscribe at any time."
+        },
+        "required": "*",
+        "dataRights": {
+          "title": "Your Data Rights",
+          "description": "Under GDPR, you have the right to access, rectify, erase, or port your data. You can also object to processing and withdraw consent at any time. See our Privacy Policy for details."
+        },
+        "validationError": "Both required consents must be accepted to continue with your application."
+      },
+      "submissionStep": {
+        "title": "Application Submitted!",
+        "subtitle": "Your application has been successfully submitted to Opulanz Partner Bank.",
+        "applicationReference": "Your Application Reference",
+        "saveReference": "Save this reference number for tracking your application",
+        "whatHappensNext": "What Happens Next?",
+        "steps": {
+          "emailConfirmation": {
+            "title": "Email Confirmation",
+            "description": "We've sent a confirmation email to {email} with your application details and reference number."
+          },
+          "bankReview": {
+            "title": "Bank Review",
+            "description": "Opulanz Partner Bank will review your application and verify your documents. This typically takes 2-5 business days."
+          },
+          "accountActivation": {
+            "title": "Account Activation",
+            "description": "Once approved, the bank will contact you directly to complete the account activation and provide your account details."
+          }
+        },
+        "documentUploadPending": "Document Upload Pending",
+        "documentUploadPendingDescription": "You still need to upload your documents. We'll send you a secure link to your dashboard within 24 hours.",
+        "quickActions": {
+          "title": "Quick Actions",
+          "checkEmail": "Check Your Email",
+          "emailSent": "Confirmation sent to {email}",
+          "expectedTimeline": "Expected Timeline",
+          "timelineDescription": "2-5 business days for review"
+        },
+        "returnToHomepage": "Return to Homepage",
+        "contactSupport": "Contact Support",
+        "supportInfo": "Need help? Our support team is available Monday-Friday, 9:00-18:00 CET. Email us at support@opulanz.com",
+        "submitting": "Submitting Your Application",
+        "submittingDescription": "Please wait while we process your application..."
       }
     },
     "individual": {

@@ -1562,6 +1562,249 @@
           "label": "Soumettre",
           "description": "Dernière étape"
         }
+      },
+      "welcomeStep": {
+        "title": "Bienvenue dans la Banque d'Affaires",
+        "subtitle": "Commençons par l'ouverture de votre compte bancaire professionnel. Ce processus devrait prendre environ 15-20 minutes.",
+        "businessAccountOpening": {
+          "title": "Ouverture de Compte Professionnel",
+          "description": "Que vous ayez une entreprise existante ou que vous souhaitiez en créer une nouvelle, nous vous guiderons dans le processus d'ouverture d'un compte bancaire professionnel avec Opulanz Partner Bank."
+        },
+        "whatYouNeed": {
+          "title": "Ce dont vous aurez besoin :",
+          "item1": "Documents d'enregistrement de l'entreprise (si entreprise existante)",
+          "item2": "Informations sur les administrateurs et bénéficiaires effectifs (UBOs)",
+          "item3": "Documents d'identité pour tous les administrateurs et UBOs",
+          "item4": "Justificatif d'adresse professionnelle",
+          "item5": "Détails de constitution de l'entreprise (si création d'une nouvelle entreprise)"
+        },
+        "processingTime": {
+          "title": "Délai de Traitement",
+          "description": "Les demandes de comptes professionnels prennent généralement 5 à 10 jours ouvrables pour examen. Nous pouvons vous contacter pour des informations supplémentaires pendant le processus d'examen."
+        },
+        "startApplication": "Démarrer la Demande"
+      },
+      "companyStatusStep": {
+        "title": "Statut de l'Entreprise",
+        "subtitle": "Parlez-nous de votre entreprise afin que nous puissions fournir la solution bancaire adaptée.",
+        "question": "Avez-vous une entreprise existante ou souhaitez-vous en créer une nouvelle ?",
+        "existing": {
+          "title": "Entreprise Existante",
+          "description": "J'ai déjà une entreprise enregistrée et j'ai besoin d'un compte bancaire pour celle-ci."
+        },
+        "new": {
+          "title": "Nouvelle Entreprise",
+          "description": "Je veux créer une nouvelle entreprise et j'ai besoin d'aide pour la constitution et les services bancaires."
+        },
+        "companyDetails": "Détails de l'Entreprise",
+        "companyName": "Nom de l'Entreprise",
+        "companyNamePlaceholder": "Entrez le nom de votre entreprise",
+        "registrationNumber": "Numéro d'Enregistrement de l'Entreprise",
+        "registrationNumberPlaceholder": "par ex., B123456",
+        "required": "*",
+        "companyFormationService": {
+          "title": "Service de Constitution d'Entreprise",
+          "description": "Nous vous aiderons à constituer votre entreprise dans la juridiction de votre choix et à ouvrir un compte bancaire simultanément. Ce processus rationalisé fait gagner du temps et garantit que tout est correctement configuré."
+        }
+      },
+      "jurisdictionStep": {
+        "titleExisting": "Juridiction Prévue",
+        "titleNew": "Juridiction Prévue",
+        "subtitleExisting": "Où votre entreprise est-elle enregistrée ?",
+        "subtitleNew": "Où souhaitez-vous constituer votre entreprise ?",
+        "selectJurisdiction": "Sélectionner une Juridiction",
+        "selectJurisdictionPlaceholder": "Choisir une juridiction",
+        "required": "*",
+        "jurisdictions": {
+          "luxembourg": "Luxembourg",
+          "france": "France",
+          "finland": "Finlande",
+          "belgium": "Belgique",
+          "germany": "Allemagne",
+          "netherlands": "Pays-Bas",
+          "spain": "Espagne",
+          "italy": "Italie",
+          "portugal": "Portugal",
+          "austria": "Autriche",
+          "other": "Autre Pays de l'UE"
+        },
+        "helperText": "Cela détermine quel partenaire bancaire et quel cadre réglementaire s'appliqueront",
+        "jurisdictionInfo": {
+          "title": "Informations sur la Juridiction",
+          "luxembourg": "Luxembourg : Centre financier de premier plan avec un régime fiscal favorable pour les sociétés holding. Taux d'imposition des sociétés : ~24 %. Capital social minimum : 12 000 € pour S.à r.l. (société à responsabilité limitée)",
+          "france": "France : Grande économie avec accès au marché de l'UE. Taux d'imposition des sociétés : ~25 %. Capital social minimum : 1 € pour SAS/SARL (structures les plus courantes)",
+          "finland": "Finlande : Économie nordique stable avec une infrastructure numérique solide. Taux d'imposition des sociétés : 20 %. Capital social minimum : 2 500 € pour Oy (société à responsabilité limitée)",
+          "general": "Nous vous mettrons en relation avec Opulanz Partner Bank qui dessert les entreprises dans votre juridiction sélectionnée. Les exigences spécifiques et les délais seront fournis après l'examen de la demande."
+        },
+        "formationTimeline": {
+          "title": "Calendrier de Constitution",
+          "description": "La constitution d'une entreprise en {jurisdiction} prend généralement 2 à 4 semaines. Nous vous guiderons tout au long du processus et vous aiderons à ouvrir votre compte bancaire simultanément."
+        }
+      },
+      "directorsUbosStep": {
+        "title": "Administrateurs et Bénéficiaires Effectifs",
+        "subtitle": "Fournissez des informations sur les administrateurs de l'entreprise et les bénéficiaires effectifs ultimes (UBOs).",
+        "companyDirectors": "Administrateurs de l'Entreprise",
+        "addDirector": "Ajouter un Administrateur",
+        "director": "Administrateur",
+        "firstName": "Prénom",
+        "lastName": "Nom de Famille",
+        "email": "E-mail",
+        "firstNamePlaceholder": "Prénom",
+        "lastNamePlaceholder": "Nom de famille",
+        "emailPlaceholder": "email@exemple.com",
+        "required": "*",
+        "ubos": "Bénéficiaires Effectifs Ultimes (UBOs)",
+        "ubosDescription": "Personnes possédant 25 % ou plus de l'entreprise",
+        "addUBO": "Ajouter un UBO",
+        "ubo": "UBO",
+        "ownershipPercent": "% de Propriété",
+        "ownershipPlaceholder": "par ex., 50",
+        "whyWeNeedThis": {
+          "title": "Pourquoi nous avons besoin de ces informations",
+          "description": "Les banques sont tenues par la loi (réglementations KYC/AML) de savoir qui contrôle l'entreprise. Cela aide à prévenir les crimes financiers et assure la transparence."
+        }
+      },
+      "companyFormationStep": {
+        "title": "Détails de Constitution de l'Entreprise",
+        "subtitle": "Fournissez des informations pour constituer votre nouvelle entreprise en {jurisdiction}.",
+        "companyFormationService": {
+          "title": "Service de Constitution d'Entreprise",
+          "description": "Nous gérerons l'ensemble du processus de constitution de l'entreprise, y compris l'enregistrement, la rédaction des statuts et la mise en place de votre structure d'entreprise."
+        },
+        "proposedCompanyName": "Nom d'Entreprise Proposé",
+        "proposedCompanyNamePlaceholder": "Entrez le nom d'entreprise proposé",
+        "proposedCompanyNameHelper": "Nous vérifierons la disponibilité et suggérerons des alternatives si nécessaire",
+        "businessActivity": "Activité Commerciale / Description",
+        "businessActivityPlaceholder": "Décrivez vos activités commerciales (par ex., développement de logiciels, conseil, commerce électronique)",
+        "shareCapital": "Capital Social Initial",
+        "shareCapitalPlaceholder": "par ex., 12 000 €",
+        "shareCapitalHelper": "Les exigences minimales varient selon la juridiction",
+        "shareCapitalRequirements": {
+          "luxembourg": "(Luxembourg : 12 000 € pour S.à r.l.)",
+          "france": "(France : 1 € pour SAS/SARL)",
+          "finland": "(Finlande : 2 500 € pour Oy)"
+        },
+        "required": "*",
+        "whatsIncluded": {
+          "title": "Ce qui est Inclus",
+          "item1": "Réservation et enregistrement du nom de l'entreprise",
+          "item2": "Préparation des statuts",
+          "item3": "Enregistrement de l'entreprise auprès des autorités",
+          "item4": "Enregistrement fiscal",
+          "item5": "Ouverture de compte bancaire",
+          "item6": "Adresse de siège social (si nécessaire)"
+        },
+        "formationTimeline": {
+          "title": "Calendrier de Constitution",
+          "description": "Le processus de constitution de l'entreprise prend généralement 2 à 4 semaines. Nous vous tiendrons informé à chaque étape et coordonnerons l'ouverture du compte bancaire pour minimiser les délais."
+        }
+      },
+      "documentsStep": {
+        "title": "Documents Professionnels",
+        "subtitle": "Téléchargez les documents professionnels et d'identité requis pour vérification et conformité.",
+        "requiredDocuments": "Documents Requis",
+        "documents": {
+          "registration": "Certificat d'Enregistrement de l'Entreprise",
+          "articles": "Statuts / Actes Constitutifs",
+          "uboRegister": "Registre UBO / Registre des Actionnaires",
+          "directorsId": "Documents d'Identité des Administrateurs",
+          "ubosId": "Documents d'Identité des UBOs",
+          "proofOfAddress": "Justificatif d'Adresse Professionnelle"
+        },
+        "upload": "Télécharger",
+        "uploaded": "Téléchargé : {filename}",
+        "remove": "Supprimer",
+        "uploadLater": "Je téléchargerai les documents plus tard via mon tableau de bord",
+        "uploadLaterDescription": "Vous pouvez soumettre votre demande maintenant et télécharger les documents plus tard. Nous vous enverrons un lien sécurisé vers votre tableau de bord où vous pourrez compléter le téléchargement des documents.",
+        "fileRequirements": {
+          "title": "Exigences de Fichier",
+          "formats": "Formats acceptés : PDF, JPG, PNG",
+          "maxSize": "Taille maximale du fichier : 5 Mo par document",
+          "quality": "Les documents doivent être clairs et lisibles",
+          "validity": "Tous les documents doivent être valides (non expirés)"
+        },
+        "validationError": "Veuillez télécharger tous les documents requis ou sélectionner 'Je téléchargerai les documents plus tard' pour continuer.",
+        "errors": {
+          "invalidFormat": "Veuillez télécharger un fichier PDF, JPG ou PNG",
+          "fileTooLarge": "La taille du fichier doit être inférieure à 5 Mo"
+        }
+      },
+      "reviewConsentsStep": {
+        "title": "Révision et Consentements",
+        "subtitle": "Veuillez vérifier vos informations et fournir les consentements nécessaires pour continuer.",
+        "applicationSummary": "Résumé de la Demande",
+        "fullName": "Nom Complet",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "residence": "Résidence",
+        "accountType": "Type de Compte",
+        "documents": "Documents",
+        "verified": "Vérifié",
+        "europeanResident": "Résident Européen - {country}",
+        "nonResident": "Non-résident",
+        "accountTypes": {
+          "current": "Compte Courant / Quotidien",
+          "privateBanking": "Banque Privée"
+        },
+        "documentsStatus": {
+          "uploaded": "{count} documents téléchargés",
+          "uploadLater": "À télécharger ultérieurement"
+        },
+        "requiredConsents": "Consentements Requis",
+        "processingConsent": {
+          "title": "Traitement pour Introduction Bancaire",
+          "description": "Je consens à ce qu'Opulanz traite mes données personnelles dans le but de me présenter à Opulanz Partner Bank pour l'ouverture de compte. Ceci est requis pour continuer."
+        },
+        "dataSharingConsent": {
+          "title": "Partage de Données avec les Banques Partenaires",
+          "description": "Je consens à ce qu'Opulanz partage les données de ma demande avec les banques et EMI partenaires dans le but d'ouvrir un compte et d'effectuer des vérifications de conformité. Ceci est requis pour continuer."
+        },
+        "marketingConsent": {
+          "title": "Communications Marketing (Optionnel)",
+          "description": "Je souhaite recevoir des mises à jour, des offres et des actualités d'Opulanz concernant les produits et services bancaires. Vous pouvez vous désabonner à tout moment."
+        },
+        "required": "*",
+        "dataRights": {
+          "title": "Vos Droits sur les Données",
+          "description": "En vertu du RGPD, vous avez le droit d'accéder, de rectifier, d'effacer ou de porter vos données. Vous pouvez également vous opposer au traitement et retirer votre consentement à tout moment. Consultez notre Politique de Confidentialité pour plus de détails."
+        },
+        "validationError": "Les deux consentements requis doivent être acceptés pour continuer votre demande."
+      },
+      "submissionStep": {
+        "title": "Demande Soumise !",
+        "subtitle": "Votre demande a été soumise avec succès à Opulanz Partner Bank.",
+        "applicationReference": "Votre Référence de Demande",
+        "saveReference": "Enregistrez ce numéro de référence pour suivre votre demande",
+        "whatHappensNext": "Que se Passe-t-il Ensuite ?",
+        "steps": {
+          "emailConfirmation": {
+            "title": "Confirmation par E-mail",
+            "description": "Nous avons envoyé un e-mail de confirmation à {email} avec les détails de votre demande et le numéro de référence."
+          },
+          "bankReview": {
+            "title": "Examen Bancaire",
+            "description": "Opulanz Partner Bank examinera votre demande et vérifiera vos documents. Cela prend généralement 2 à 5 jours ouvrables."
+          },
+          "accountActivation": {
+            "title": "Activation du Compte",
+            "description": "Une fois approuvé, la banque vous contactera directement pour terminer l'activation du compte et fournir les détails de votre compte."
+          }
+        },
+        "documentUploadPending": "Téléchargement de Documents en Attente",
+        "documentUploadPendingDescription": "Vous devez encore télécharger vos documents. Nous vous enverrons un lien sécurisé vers votre tableau de bord dans les 24 heures.",
+        "quickActions": {
+          "title": "Actions Rapides",
+          "checkEmail": "Vérifiez Votre E-mail",
+          "emailSent": "Confirmation envoyée à {email}",
+          "expectedTimeline": "Calendrier Prévu",
+          "timelineDescription": "2 à 5 jours ouvrables pour examen"
+        },
+        "returnToHomepage": "Retour à la Page d'Accueil",
+        "contactSupport": "Contacter le Support",
+        "supportInfo": "Besoin d'aide ? Notre équipe de support est disponible du lundi au vendredi, de 9h00 à 18h00 CET. Envoyez-nous un e-mail à support@opulanz.com",
+        "submitting": "Soumission de Votre Demande",
+        "submittingDescription": "Veuillez patienter pendant que nous traitons votre demande..."
       }
     },
     "individual": {

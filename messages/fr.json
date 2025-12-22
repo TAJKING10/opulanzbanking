@@ -995,6 +995,38 @@
         "legalNameRequired": "Le nom légal est requis"
       }
     },
+    "contactsAddresses": {
+      "title": "Contacts et Adresses",
+      "subtitle": "Fournissez les adresses de votre société et les informations de contact clés.",
+      "registeredAddress": "Adresse du Siège Social",
+      "operatingAddress": "Adresse d'Exploitation",
+      "sameAsRegistered": "L'adresse d'exploitation est la même que l'adresse du siège social",
+      "primaryContact": "Contact Principal",
+      "accountingContact": "Contact Comptable",
+      "addAccountingContact": "Ajouter un contact comptable séparé",
+      "fields": {
+        "street": "Adresse de Rue",
+        "city": "Ville",
+        "postal": "Code Postal",
+        "country": "Pays",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "role": "Fonction",
+        "email": "E-mail",
+        "phone": "Téléphone"
+      },
+      "placeholders": {
+        "street": "123 Rue Principale",
+        "city": "Luxembourg",
+        "postal": "L-1234",
+        "country": "Sélectionner le pays",
+        "firstName": "Jean",
+        "lastName": "Dupont",
+        "role": "Sélectionner la fonction",
+        "email": "jean@exemple.com",
+        "phone": "+352 123 456 789"
+      }
+    },
     "features": {
       "invoicing": {
         "title": "Facturation Professionnelle",

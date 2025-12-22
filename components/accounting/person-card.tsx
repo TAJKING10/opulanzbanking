@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -41,6 +42,8 @@ export function PersonCard({
   required = false,
   errors = {},
 }: PersonCardProps) {
+  const t = useTranslations();
+
   const updateField = (field: keyof Person, value: string) => {
     onChange({ ...person, [field]: value });
   };
@@ -54,40 +57,32 @@ export function PersonCard({
       <div className="space-y-3">
         <div className="grid gap-3 md:grid-cols-2">
           <div>
-            <Label className="text-sm text-brand-dark">First Name</Label>
+            <Label className="text-sm text-brand-dark">{t('accounting.contactsAddresses.fields.firstName')}</Label>
             <Input
               value={person.firstName}
               onChange={(e) => updateField("firstName", e.target.value)}
-              placeholder="John"
-              className={errors.firstName ? "border-red-500" : ""}
+              placeholder={t('accounting.contactsAddresses.placeholders.firstName')}
             />
-            {errors.firstName && (
-              <p className="mt-1 text-xs text-red-500">{errors.firstName}</p>
-            )}
           </div>
 
           <div>
-            <Label className="text-sm text-brand-dark">Last Name</Label>
+            <Label className="text-sm text-brand-dark">{t('accounting.contactsAddresses.fields.lastName')}</Label>
             <Input
               value={person.lastName}
               onChange={(e) => updateField("lastName", e.target.value)}
-              placeholder="Doe"
-              className={errors.lastName ? "border-red-500" : ""}
+              placeholder={t('accounting.contactsAddresses.placeholders.lastName')}
             />
-            {errors.lastName && (
-              <p className="mt-1 text-xs text-red-500">{errors.lastName}</p>
-            )}
           </div>
         </div>
 
         <div>
-          <Label className="text-sm text-brand-dark">Role</Label>
+          <Label className="text-sm text-brand-dark">{t('accounting.contactsAddresses.fields.role')}</Label>
           <Select
             value={person.role}
             onValueChange={(value) => updateField("role", value)}
           >
-            <SelectTrigger className={errors.role ? "border-red-500" : ""}>
-              <SelectValue placeholder="Select role" />
+            <SelectTrigger>
+              <SelectValue placeholder={t('accounting.contactsAddresses.placeholders.role')} />
             </SelectTrigger>
             <SelectContent>
               {ROLES.map((role) => (
@@ -97,37 +92,26 @@ export function PersonCard({
               ))}
             </SelectContent>
           </Select>
-          {errors.role && (
-            <p className="mt-1 text-xs text-red-500">{errors.role}</p>
-          )}
         </div>
 
         <div>
-          <Label className="text-sm text-brand-dark">Email</Label>
+          <Label className="text-sm text-brand-dark">{t('accounting.contactsAddresses.fields.email')}</Label>
           <Input
             type="email"
             value={person.email}
             onChange={(e) => updateField("email", e.target.value)}
-            placeholder="john@example.com"
-            className={errors.email ? "border-red-500" : ""}
+            placeholder={t('accounting.contactsAddresses.placeholders.email')}
           />
-          {errors.email && (
-            <p className="mt-1 text-xs text-red-500">{errors.email}</p>
-          )}
         </div>
 
         <div>
-          <Label className="text-sm text-brand-dark">Phone</Label>
+          <Label className="text-sm text-brand-dark">{t('accounting.contactsAddresses.fields.phone')}</Label>
           <Input
             type="tel"
             value={person.phone}
             onChange={(e) => updateField("phone", e.target.value)}
-            placeholder="+352 123 456 789"
-            className={errors.phone ? "border-red-500" : ""}
+            placeholder={t('accounting.contactsAddresses.placeholders.phone')}
           />
-          {errors.phone && (
-            <p className="mt-1 text-xs text-red-500">{errors.phone}</p>
-          )}
         </div>
       </div>
     </div>

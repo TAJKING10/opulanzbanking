@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ interface Person {
 }
 
 export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepProps) {
+  const t = useTranslations("accountOpening.business.directorsUbosStep");
   const [directors, setDirectors] = React.useState<Person[]>(
     data.directors?.length > 0 ? data.directors : [{ id: "1", firstName: "", lastName: "", email: "" }]
   );
@@ -74,9 +76,9 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Directors & Beneficial Owners</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          Provide information about company directors and ultimate beneficial owners (UBOs).
+          {t("subtitle")}
         </p>
       </div>
 
@@ -86,18 +88,18 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
           <div className="flex items-center justify-between">
             <h3 className="flex items-center gap-2 text-lg font-semibold text-brand-dark">
               <Users className="h-5 w-5 text-brand-gold" />
-              Company Directors
+              {t("companyDirectors")}
             </h3>
             <Button type="button" onClick={addDirector} variant="outline" size="sm">
               <Plus className="mr-2 h-4 w-4" />
-              Add Director
+              {t("addDirector")}
             </Button>
           </div>
 
           {directors.map((director, index) => (
             <div key={director.id} className="rounded-lg border border-brand-grayLight bg-gray-50 p-4">
               <div className="mb-3 flex items-center justify-between">
-                <h4 className="font-semibold text-brand-dark">Director {index + 1}</h4>
+                <h4 className="font-semibold text-brand-dark">{t("director")} {index + 1}</h4>
                 {directors.length > 1 && (
                   <Button
                     type="button"
@@ -112,28 +114,28 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>First Name *</Label>
+                  <Label>{t("firstName")} {t("required")}</Label>
                   <Input
                     value={director.firstName}
                     onChange={(e) => updateDirector(director.id, "firstName", e.target.value)}
-                    placeholder="First name"
+                    placeholder={t("firstNamePlaceholder")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Last Name *</Label>
+                  <Label>{t("lastName")} {t("required")}</Label>
                   <Input
                     value={director.lastName}
                     onChange={(e) => updateDirector(director.id, "lastName", e.target.value)}
-                    placeholder="Last name"
+                    placeholder={t("lastNamePlaceholder")}
                   />
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label>Email *</Label>
+                  <Label>{t("email")} {t("required")}</Label>
                   <Input
                     type="email"
                     value={director.email}
                     onChange={(e) => updateDirector(director.id, "email", e.target.value)}
-                    placeholder="email@example.com"
+                    placeholder={t("emailPlaceholder")}
                   />
                 </div>
               </div>
@@ -147,22 +149,22 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
             <div>
               <h3 className="flex items-center gap-2 text-lg font-semibold text-brand-dark">
                 <Users className="h-5 w-5 text-brand-gold" />
-                Ultimate Beneficial Owners (UBOs)
+                {t("ubos")}
               </h3>
               <p className="mt-1 text-sm text-brand-grayMed">
-                Individuals who own 25% or more of the company
+                {t("ubosDescription")}
               </p>
             </div>
             <Button type="button" onClick={addUBO} variant="outline" size="sm">
               <Plus className="mr-2 h-4 w-4" />
-              Add UBO
+              {t("addUBO")}
             </Button>
           </div>
 
           {ubos.map((ubo, index) => (
             <div key={ubo.id} className="rounded-lg border border-brand-grayLight bg-gray-50 p-4">
               <div className="mb-3 flex items-center justify-between">
-                <h4 className="font-semibold text-brand-dark">UBO {index + 1}</h4>
+                <h4 className="font-semibold text-brand-dark">{t("ubo")} {index + 1}</h4>
                 {ubos.length > 1 && (
                   <Button type="button" onClick={() => removeUBO(ubo.id)} variant="ghost" size="sm">
                     <X className="h-4 w-4" />
@@ -172,39 +174,39 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>First Name *</Label>
+                  <Label>{t("firstName")} {t("required")}</Label>
                   <Input
                     value={ubo.firstName}
                     onChange={(e) => updateUBO(ubo.id, "firstName", e.target.value)}
-                    placeholder="First name"
+                    placeholder={t("firstNamePlaceholder")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Last Name *</Label>
+                  <Label>{t("lastName")} {t("required")}</Label>
                   <Input
                     value={ubo.lastName}
                     onChange={(e) => updateUBO(ubo.id, "lastName", e.target.value)}
-                    placeholder="Last name"
+                    placeholder={t("lastNamePlaceholder")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Email *</Label>
+                  <Label>{t("email")} {t("required")}</Label>
                   <Input
                     type="email"
                     value={ubo.email}
                     onChange={(e) => updateUBO(ubo.id, "email", e.target.value)}
-                    placeholder="email@example.com"
+                    placeholder={t("emailPlaceholder")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Ownership % *</Label>
+                  <Label>{t("ownershipPercent")} {t("required")}</Label>
                   <Input
                     type="number"
                     min="25"
                     max="100"
                     value={ubo.ownership}
                     onChange={(e) => updateUBO(ubo.id, "ownership", e.target.value)}
-                    placeholder="e.g., 50"
+                    placeholder={t("ownershipPlaceholder")}
                   />
                 </div>
               </div>
@@ -213,10 +215,9 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
         </div>
 
         <div className="rounded-lg bg-blue-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-blue-900">Why we need this information</h4>
+          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("whyWeNeedThis.title")}</h4>
           <p className="text-sm text-blue-800">
-            Banks are required by law (KYC/AML regulations) to know who controls the company. This helps
-            prevent financial crime and ensures transparency.
+            {t("whyWeNeedThis.description")}
           </p>
         </div>
       </div>

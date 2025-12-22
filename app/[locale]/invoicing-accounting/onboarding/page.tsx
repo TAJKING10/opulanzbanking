@@ -314,8 +314,8 @@ export default function AccountingOnboardingPage() {
 
   return (
     <AccountOpeningLayout
-      title="Accounting & Bookkeeping Onboarding"
-      description="Complete your application in 6 simple steps"
+      title={t('accounting.onboarding.title')}
+      description={t('accounting.onboarding.subtitle')}
       steps={ACCOUNTING_STEPS}
       currentStep={currentStep}
       onStepChange={handleStepChange}

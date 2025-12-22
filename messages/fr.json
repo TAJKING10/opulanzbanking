@@ -1028,6 +1028,24 @@
         "phone": "+352 123 456 789"
       }
     },
+    "activityScale": {
+      "title": "Activité et Échelle",
+      "subtitle": "Aidez-nous à comprendre votre activité commerciale et votre échelle financière.",
+      "fields": {
+        "businessActivity": "Activité Commerciale",
+        "turnoverLastFY": "Chiffre d'Affaires Annuel (Dernier EF)",
+        "turnoverCurrentFY": "Chiffre d'Affaires Projeté (EF Actuel)",
+        "employees": "Nombre d'Employés (ETP)"
+      },
+      "placeholders": {
+        "businessActivity": "Sélectionner l'activité commerciale"
+      },
+      "hints": {
+        "turnoverLastFY": "Utilisez votre dernier exercice fiscal approuvé pour le chiffre d'affaires",
+        "turnoverCurrentFY": "Chiffre d'affaires attendu pour l'exercice fiscal en cours",
+        "employees": "Équivalent temps plein des employés"
+      }
+    },
     "features": {
       "invoicing": {
         "title": "Facturation Professionnelle",

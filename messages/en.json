@@ -987,6 +987,7 @@
       },
       "placeholders": {
         "companyType": "Select company type",
+        "companyTypeOther": "Enter company type",
         "country": "Select country",
         "date": "mm/dd/yyyy",
         "legalName": "Company Legal Name S.A.",

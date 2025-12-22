@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -14,11 +15,22 @@ interface CompanyFormationStepProps {
 }
 
 export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormationStepProps) {
+  const t = useTranslations("accountOpening.business.companyFormationStep");
   const [proposedName, setProposedName] = React.useState(data.proposedCompanyName || "");
   const [businessActivity, setBusinessActivity] = React.useState(data.businessActivity || "");
   const [shareCapital, setShareCapital] = React.useState(data.shareCapital || "");
 
   const isFormationStepValid = proposedName && businessActivity && shareCapital;
+
+  // Get jurisdiction name for subtitle and helper text
+  const getJurisdictionName = () => {
+    const jurisdictionMap: { [key: string]: string } = {
+      LU: "Luxembourg",
+      FR: "France",
+      FI: "Finland"
+    };
+    return jurisdictionMap[data.jurisdiction] || data.jurisdiction;
+  };
 
   // Update parent with validation status
   React.useEffect(() => {
@@ -34,9 +46,9 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Company Formation Details</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          Provide information for forming your new company in {data.jurisdiction === "LU" ? "Luxembourg" : data.jurisdiction === "FR" ? "France" : data.jurisdiction === "FI" ? "Finland" : "your chosen jurisdiction"}.
+          {t("subtitle", { jurisdiction: getJurisdictionName() })}
         </p>
       </div>
 
@@ -45,77 +57,75 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
           <div className="flex items-start gap-4">
             <Building2 className="h-8 w-8 flex-shrink-0 text-brand-gold" />
             <div>
-              <h3 className="mb-2 text-lg font-semibold text-brand-dark">Company Formation Service</h3>
+              <h3 className="mb-2 text-lg font-semibold text-brand-dark">{t("companyFormationService.title")}</h3>
               <p className="text-sm text-brand-grayMed">
-                We'll handle the entire company formation process including registration,
-                drafting articles of association, and setting up your corporate structure.
+                {t("companyFormationService.description")}
               </p>
             </div>
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="proposedName">Proposed Company Name *</Label>
+          <Label htmlFor="proposedName">{t("proposedCompanyName")} {t("required")}</Label>
           <Input
             id="proposedName"
             type="text"
             value={proposedName}
             onChange={(e) => setProposedName(e.target.value)}
-            placeholder="Enter your proposed company name"
+            placeholder={t("proposedCompanyNamePlaceholder")}
           />
           <p className="text-xs text-brand-grayMed">
-            We'll check availability and suggest alternatives if needed
+            {t("proposedCompanyNameHelper")}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="businessActivity">Business Activity / Description *</Label>
+          <Label htmlFor="businessActivity">{t("businessActivity")} {t("required")}</Label>
           <Textarea
             id="businessActivity"
             value={businessActivity}
             onChange={(e) => setBusinessActivity(e.target.value)}
-            placeholder="Describe your business activities (e.g., software development, consulting, e-commerce)"
+            placeholder={t("businessActivityPlaceholder")}
             rows={4}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="shareCapital">Initial Share Capital *</Label>
+          <Label htmlFor="shareCapital">{t("shareCapital")} {t("required")}</Label>
           <Input
             id="shareCapital"
             type="text"
             value={shareCapital}
             onChange={(e) => setShareCapital(e.target.value)}
-            placeholder="e.g., €12,000"
+            placeholder={t("shareCapitalPlaceholder")}
           />
           <p className="text-xs text-brand-grayMed">
-            Minimum requirements vary by jurisdiction
-            {data.jurisdiction === "LU" && " (Luxembourg: €12,000 for S.à r.l.)"}
-            {data.jurisdiction === "FR" && " (France: €1 for SAS/SARL)"}
-            {data.jurisdiction === "FI" && " (Finland: €2,500 for Oy)"}
+            {t("shareCapitalHelper")}
+            {data.jurisdiction === "LU" && ` ${t("shareCapitalRequirements.luxembourg")}`}
+            {data.jurisdiction === "FR" && ` ${t("shareCapitalRequirements.france")}`}
+            {data.jurisdiction === "FI" && ` ${t("shareCapitalRequirements.finland")}`}
           </p>
         </div>
 
         <div className="rounded-lg bg-amber-50 p-4">
           <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-amber-900">
             <FileText className="h-4 w-4" />
-            What's Included
+            {t("whatsIncluded.title")}
           </h4>
           <ul className="space-y-1 text-sm text-amber-800">
-            <li>• Company name reservation and registration</li>
-            <li>• Articles of association preparation</li>
-            <li>• Company registration with authorities</li>
-            <li>• Tax registration</li>
-            <li>• Bank account opening</li>
-            <li>• Registered office address (if needed)</li>
+            <li>• {t("whatsIncluded.item1")}</li>
+            <li>• {t("whatsIncluded.item2")}</li>
+            <li>• {t("whatsIncluded.item3")}</li>
+            <li>• {t("whatsIncluded.item4")}</li>
+            <li>• {t("whatsIncluded.item5")}</li>
+            <li>• {t("whatsIncluded.item6")}</li>
           </ul>
         </div>
 
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-blue-900">Formation Timeline</h4>
+          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("formationTimeline.title")}</h4>
           <p className="text-sm text-blue-800">
-            The company formation process typically takes 2-4 weeks. We'll keep you updated at
-            each stage and coordinate the bank account opening to minimize delays.
+            {t("formationTimeline.description")}
           </p>
         </div>
       </div>

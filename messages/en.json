@@ -1008,6 +1008,38 @@
         "legalNameRequired": "Legal name is required"
       }
     },
+    "contactsAddresses": {
+      "title": "Contacts & Addresses",
+      "subtitle": "Provide your company addresses and key contact information.",
+      "registeredAddress": "Registered Address",
+      "operatingAddress": "Operating Address",
+      "sameAsRegistered": "Operating address same as registered address",
+      "primaryContact": "Primary Contact",
+      "accountingContact": "Accounting Contact",
+      "addAccountingContact": "Add a separate accounting contact",
+      "fields": {
+        "street": "Street Address",
+        "city": "City",
+        "postal": "Postal Code",
+        "country": "Country",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "role": "Role",
+        "email": "Email",
+        "phone": "Phone"
+      },
+      "placeholders": {
+        "street": "123 Main Street",
+        "city": "Luxembourg",
+        "postal": "L-1234",
+        "country": "Select country",
+        "firstName": "John",
+        "lastName": "Doe",
+        "role": "Select role",
+        "email": "john@example.com",
+        "phone": "+352 123 456 789"
+      }
+    },
     "features": {
       "invoicing": {
         "title": "Professional Invoicing",

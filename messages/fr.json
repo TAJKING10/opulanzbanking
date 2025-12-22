@@ -974,6 +974,7 @@
       },
       "placeholders": {
         "companyType": "Sélectionner le type de société",
+        "companyTypeOther": "Saisir le type de société",
         "country": "Sélectionner le pays",
         "date": "jj/mm/aaaa",
         "legalName": "Nom Légal de la Société S.A.",

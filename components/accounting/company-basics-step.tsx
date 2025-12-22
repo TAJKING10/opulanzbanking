@@ -109,12 +109,12 @@ export function CompanyBasicsStep({
         {data.companyType === "other" && (
           <div>
             <Label className="text-sm font-medium text-brand-dark">
-              Specify Company Type <span className="text-red-500">*</span>
+              {t('accounting.companyBasics.fields.companyTypeOther')} <span className="text-red-500">*</span>
             </Label>
             <Input
               value={data.companyTypeOther || ""}
               onChange={(e) => updateField("companyTypeOther", e.target.value)}
-              placeholder="Enter company type"
+              placeholder={t('accounting.companyBasics.placeholders.companyTypeOther')}
               maxLength={80}
             />
           </div>
@@ -123,7 +123,7 @@ export function CompanyBasicsStep({
         {/* Country of Incorporation */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Country of Incorporation <span className="text-red-500">*</span>
+            {t('accounting.companyBasics.fields.countryOfIncorporation')} <span className="text-red-500">*</span>
           </Label>
           <Select
             value={data.countryOfIncorporation || ""}
@@ -132,7 +132,7 @@ export function CompanyBasicsStep({
             }
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select country" />
+              <SelectValue placeholder={t('accounting.companyBasics.placeholders.country')} />
             </SelectTrigger>
             <SelectContent>
               {COUNTRIES.map((country) => (
@@ -147,19 +147,20 @@ export function CompanyBasicsStep({
         {/* Date of Incorporation */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Date of Incorporation <span className="text-red-500">*</span>
+            {t('accounting.companyBasics.fields.dateOfIncorporation')} <span className="text-red-500">*</span>
           </Label>
           <Input
             type="date"
             value={data.dateOfIncorporation || ""}
             onChange={(e) => updateField("dateOfIncorporation", e.target.value)}
             max={new Date().toISOString().split("T")[0]}
+            placeholder={t('accounting.companyBasics.placeholders.date')}
           />
         </div>
 
         {/* Share Capital */}
         <CurrencyAmount
-          label="Share Capital"
+          label={t('accounting.companyBasics.fields.shareCapital')}
           amount={data.shareCapitalAmount || 0}
           currency={data.shareCapitalCurrency || "EUR"}
           onAmountChange={(amount) =>
@@ -174,57 +175,57 @@ export function CompanyBasicsStep({
         {/* Legal Name */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Registered Name (Legal) <span className="text-red-500">*</span>
+            {t('accounting.companyBasics.fields.legalName')} <span className="text-red-500">*</span>
           </Label>
           <Input
             value={data.legalName || ""}
             onChange={(e) => updateField("legalName", e.target.value)}
-            placeholder="Company Legal Name S.A."
+            placeholder={t('accounting.companyBasics.placeholders.legalName')}
           />
         </div>
 
         {/* Trade Name */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Trade Name (Optional)
+            {t('accounting.companyBasics.fields.tradeName')}
           </Label>
           <Input
             value={data.tradeName || ""}
             onChange={(e) => updateField("tradeName", e.target.value)}
-            placeholder="Trading as..."
+            placeholder={t('accounting.companyBasics.placeholders.tradeName')}
           />
           <p className="mt-1 text-xs text-brand-grayMed">
-            If different from legal name
+            {t('accounting.companyBasics.hints.tradeName')}
           </p>
         </div>
 
         {/* Registration Number */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Registration Number (Optional)
+            {t('accounting.companyBasics.fields.registrationNumber')}
           </Label>
           <Input
             value={data.registrationNumber || ""}
             onChange={(e) => updateField("registrationNumber", e.target.value)}
-            placeholder="RCS B123456"
+            placeholder={t('accounting.companyBasics.placeholders.registrationNumber')}
           />
           <p className="mt-1 text-xs text-brand-grayMed">
-            Company registration or RCS number
+            {t('accounting.companyBasics.hints.registrationNumber')}
           </p>
         </div>
 
         {/* VAT Number */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            VAT Number (Optional)
+            {t('accounting.companyBasics.fields.vatNumber')}
           </Label>
           <Input
             value={data.vatNumber || ""}
             onChange={(e) => updateField("vatNumber", e.target.value)}
-            placeholder="LU12345678"
+            placeholder={t('accounting.companyBasics.placeholders.vatNumber')}
           />
           <p className="mt-1 text-xs text-brand-grayMed">
-            If you don't have a VAT number yet, leave blank
+            {t('accounting.companyBasics.hints.vatNumber')}
           </p>
         </div>
       </div>

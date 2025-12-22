@@ -48,41 +48,26 @@ export function CompanyBasicsStep({
   onNext,
 }: CompanyBasicsStepProps) {
   const t = useTranslations();
-  const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const updateField = (field: string, value: any) => {
     onUpdate({ [field]: value });
-    // Clear error when field is updated
-    if (errors[field]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[field];
-        return newErrors;
-      });
-    }
   };
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
+  const checkValidity = () => {
+    // Check if all required fields are filled without setting errors
+    if (!data.companyType) return false;
+    if (data.companyType === "other" && !data.companyTypeOther) return false;
+    if (!data.countryOfIncorporation) return false;
+    if (!data.dateOfIncorporation) return false;
+    if (!data.shareCapitalAmount || data.shareCapitalAmount <= 0) return false;
+    if (!data.legalName) return false;
 
-    if (!data.companyType) newErrors.companyType = t('accounting.companyBasics.errors.companyTypeRequired');
-    if (data.companyType === "other" && !data.companyTypeOther)
-      newErrors.companyTypeOther = t('accounting.companyBasics.errors.specifyRequired');
-    if (!data.countryOfIncorporation)
-      newErrors.countryOfIncorporation = t('accounting.companyBasics.errors.countryRequired');
-    if (!data.dateOfIncorporation)
-      newErrors.dateOfIncorporation = t('accounting.companyBasics.errors.dateRequired');
-    if (!data.shareCapitalAmount || data.shareCapitalAmount <= 0)
-      newErrors.shareCapitalAmount = t('accounting.companyBasics.errors.shareCapitalRequired');
-    if (!data.legalName) newErrors.legalName = t('accounting.companyBasics.errors.legalNameRequired');
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return true;
   };
 
-  // Check validation whenever data changes
+  // Check validation whenever data changes (without showing errors)
   React.useEffect(() => {
-    const isValid = validate();
+    const isValid = checkValidity();
     onUpdate({ isStep1Valid: isValid });
   }, [data.companyType, data.companyTypeOther, data.countryOfIncorporation, data.dateOfIncorporation, data.shareCapitalAmount, data.legalName]);
 
@@ -107,9 +92,7 @@ export function CompanyBasicsStep({
             value={data.companyType || ""}
             onValueChange={(value) => updateField("companyType", value)}
           >
-            <SelectTrigger
-              className={errors.companyType ? "border-red-500" : ""}
-            >
+            <SelectTrigger>
               <SelectValue placeholder={t('accounting.companyBasics.placeholders.companyType')} />
             </SelectTrigger>
             <SelectContent>
@@ -120,9 +103,6 @@ export function CompanyBasicsStep({
               ))}
             </SelectContent>
           </Select>
-          {errors.companyType && (
-            <p className="mt-1 text-xs text-red-500">{errors.companyType}</p>
-          )}
         </div>
 
         {/* Other Company Type */}
@@ -136,13 +116,7 @@ export function CompanyBasicsStep({
               onChange={(e) => updateField("companyTypeOther", e.target.value)}
               placeholder="Enter company type"
               maxLength={80}
-              className={errors.companyTypeOther ? "border-red-500" : ""}
             />
-            {errors.companyTypeOther && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.companyTypeOther}
-              </p>
-            )}
           </div>
         )}
 
@@ -157,9 +131,7 @@ export function CompanyBasicsStep({
               updateField("countryOfIncorporation", value)
             }
           >
-            <SelectTrigger
-              className={errors.countryOfIncorporation ? "border-red-500" : ""}
-            >
+            <SelectTrigger>
               <SelectValue placeholder="Select country" />
             </SelectTrigger>
             <SelectContent>
@@ -170,11 +142,6 @@ export function CompanyBasicsStep({
               ))}
             </SelectContent>
           </Select>
-          {errors.countryOfIncorporation && (
-            <p className="mt-1 text-xs text-red-500">
-              {errors.countryOfIncorporation}
-            </p>
-          )}
         </div>
 
         {/* Date of Incorporation */}
@@ -187,13 +154,7 @@ export function CompanyBasicsStep({
             value={data.dateOfIncorporation || ""}
             onChange={(e) => updateField("dateOfIncorporation", e.target.value)}
             max={new Date().toISOString().split("T")[0]}
-            className={errors.dateOfIncorporation ? "border-red-500" : ""}
           />
-          {errors.dateOfIncorporation && (
-            <p className="mt-1 text-xs text-red-500">
-              {errors.dateOfIncorporation}
-            </p>
-          )}
         </div>
 
         {/* Share Capital */}
@@ -208,7 +169,6 @@ export function CompanyBasicsStep({
             updateField("shareCapitalCurrency", currency)
           }
           required
-          error={errors.shareCapitalAmount}
         />
 
         {/* Legal Name */}
@@ -220,11 +180,7 @@ export function CompanyBasicsStep({
             value={data.legalName || ""}
             onChange={(e) => updateField("legalName", e.target.value)}
             placeholder="Company Legal Name S.A."
-            className={errors.legalName ? "border-red-500" : ""}
           />
-          {errors.legalName && (
-            <p className="mt-1 text-xs text-red-500">{errors.legalName}</p>
-          )}
         </div>
 
         {/* Trade Name */}

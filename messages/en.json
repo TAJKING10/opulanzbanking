@@ -1041,6 +1041,24 @@
         "phone": "+352 123 456 789"
       }
     },
+    "activityScale": {
+      "title": "Activity & Scale",
+      "subtitle": "Help us understand your business activity and financial scale.",
+      "fields": {
+        "businessActivity": "Business Activity",
+        "turnoverLastFY": "Annual Turnover (Last FY)",
+        "turnoverCurrentFY": "Projected Turnover (Current FY)",
+        "employees": "Number of Employees (FTE)"
+      },
+      "placeholders": {
+        "businessActivity": "Select business activity"
+      },
+      "hints": {
+        "turnoverLastFY": "Use your last approved financial year for turnover",
+        "turnoverCurrentFY": "Expected turnover for the current financial year",
+        "employees": "Full-time equivalent employees"
+      }
+    },
     "features": {
       "invoicing": {
         "title": "Professional Invoicing",

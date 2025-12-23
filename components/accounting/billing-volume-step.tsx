@@ -109,11 +109,11 @@ export function BillingVolumeStep({
             type="number"
             min="0"
             step="1"
-            value={data.salesInvoicesMonth || ""}
+            value={data.salesInvoicesMonth === undefined || data.salesInvoicesMonth === 0 ? "" : data.salesInvoicesMonth}
             onChange={(e) =>
-              updateField("salesInvoicesMonth", parseInt(e.target.value) || 0)
+              updateField("salesInvoicesMonth", e.target.value === "" ? undefined : parseInt(e.target.value))
             }
-            placeholder="0"
+            placeholder=""
           />
           <p className="mt-1 text-xs text-brand-grayMed">
             {t('accounting.billingVolume.hints.salesInvoices')}
@@ -129,14 +129,14 @@ export function BillingVolumeStep({
             type="number"
             min="0"
             step="1"
-            value={data.purchaseInvoicesMonth || ""}
+            value={data.purchaseInvoicesMonth === undefined || data.purchaseInvoicesMonth === 0 ? "" : data.purchaseInvoicesMonth}
             onChange={(e) =>
               updateField(
                 "purchaseInvoicesMonth",
-                parseInt(e.target.value) || 0
+                e.target.value === "" ? undefined : parseInt(e.target.value)
               )
             }
-            placeholder="0"
+            placeholder=""
           />
           <p className="mt-1 text-xs text-brand-grayMed">
             {t('accounting.billingVolume.hints.purchaseInvoices')}
@@ -168,11 +168,11 @@ export function BillingVolumeStep({
                 type="number"
                 min="1"
                 step="1"
-                value={data.payrollEmployees || ""}
+                value={data.payrollEmployees === undefined || data.payrollEmployees === 0 ? "" : data.payrollEmployees}
                 onChange={(e) =>
-                  updateField("payrollEmployees", parseInt(e.target.value) || 0)
+                  updateField("payrollEmployees", e.target.value === "" ? undefined : parseInt(e.target.value))
                 }
-                placeholder="1"
+                placeholder=""
               />
             </div>
           )}

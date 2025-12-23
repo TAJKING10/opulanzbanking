@@ -40,19 +40,21 @@ export function CurrencyAmount({
   helpText,
 }: CurrencyAmountProps) {
   const [displayValue, setDisplayValue] = React.useState(
-    amount ? amount.toLocaleString("en-US") : ""
+    amount && amount !== 0 ? amount.toLocaleString("en-US") : ""
   );
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/[^0-9.]/g, "");
-    const num = parseFloat(raw) || 0;
+    const num = raw === "" ? 0 : parseFloat(raw);
     setDisplayValue(raw);
     onAmountChange(num);
   };
 
   const handleBlur = () => {
-    if (amount) {
+    if (amount && amount !== 0) {
       setDisplayValue(amount.toLocaleString("en-US"));
+    } else {
+      setDisplayValue("");
     }
   };
 
@@ -68,8 +70,8 @@ export function CurrencyAmount({
             value={displayValue}
             onChange={handleAmountChange}
             onBlur={handleBlur}
-            onFocus={() => setDisplayValue(amount.toString() || "")}
-            placeholder="0.00"
+            onFocus={() => setDisplayValue(amount && amount !== 0 ? amount.toString() : "")}
+            placeholder=""
             className={error ? "border-red-500" : ""}
           />
         </div>

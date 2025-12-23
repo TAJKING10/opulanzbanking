@@ -133,11 +133,11 @@ export function ActivityScaleStep({
             type="number"
             min="0"
             step="1"
-            value={data.employeesFTE || ""}
+            value={data.employeesFTE === undefined || data.employeesFTE === 0 ? "" : data.employeesFTE}
             onChange={(e) =>
-              updateField("employeesFTE", parseInt(e.target.value) || 0)
+              updateField("employeesFTE", e.target.value === "" ? undefined : parseInt(e.target.value))
             }
-            placeholder="0"
+            placeholder=""
           />
           <p className="mt-1 text-xs text-brand-grayMed">
             {t('accounting.activityScale.hints.employees')}

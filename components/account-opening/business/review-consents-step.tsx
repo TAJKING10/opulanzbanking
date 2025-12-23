@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -13,6 +14,7 @@ interface BusinessReviewConsentsStepProps {
 }
 
 export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessReviewConsentsStepProps) {
+  const t = useTranslations("accountOpening.business.reviewConsentsStep");
   const [consents, setConsents] = React.useState({
     processing: data.consents?.processing || false,
     dataSharing: data.consents?.dataSharing || false,
@@ -44,22 +46,22 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Review & Consents</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          Please review your information and provide the necessary consents to proceed.
+          {t("subtitle")}
         </p>
       </div>
 
       <div className="space-y-6">
         {/* Review Summary */}
         <div className="rounded-lg border border-brand-grayLight bg-white p-6">
-          <h3 className="mb-4 text-lg font-semibold text-brand-dark">Application Summary</h3>
+          <h3 className="mb-4 text-lg font-semibold text-brand-dark">{t("applicationSummary")}</h3>
 
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <User className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Full Name</p>
+                <p className="text-sm font-medium text-brand-dark">{t("fullName")}</p>
                 <p className="text-sm text-brand-grayMed">
                   {data.firstName} {data.lastName}
                 </p>
@@ -69,12 +71,12 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             <div className="flex items-start gap-3">
               <Mail className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Email</p>
+                <p className="text-sm font-medium text-brand-dark">{t("email")}</p>
                 <p className="text-sm text-brand-grayMed">{data.email}</p>
                 {data.emailVerified && (
                   <span className="inline-flex items-center gap-1 text-xs text-green-600">
                     <CheckCircle className="h-3 w-3" />
-                    Verified
+                    {t("verified")}
                   </span>
                 )}
               </div>
@@ -83,12 +85,12 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             <div className="flex items-start gap-3">
               <Phone className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Phone</p>
+                <p className="text-sm font-medium text-brand-dark">{t("phone")}</p>
                 <p className="text-sm text-brand-grayMed">{data.phone}</p>
                 {data.phoneVerified && (
                   <span className="inline-flex items-center gap-1 text-xs text-green-600">
                     <CheckCircle className="h-3 w-3" />
-                    Verified
+                    {t("verified")}
                   </span>
                 )}
               </div>
@@ -97,11 +99,11 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             <div className="flex items-start gap-3">
               <MapPin className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Residence</p>
+                <p className="text-sm font-medium text-brand-dark">{t("residence")}</p>
                 <p className="text-sm text-brand-grayMed">
                   {data.residence === "resident-europe"
-                    ? `European Resident - ${data.country}`
-                    : "Non-resident"}
+                    ? t("europeanResident", { country: data.country })
+                    : t("nonResident")}
                 </p>
               </div>
             </div>
@@ -109,9 +111,9 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             <div className="flex items-start gap-3">
               <FileText className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Account Type</p>
+                <p className="text-sm font-medium text-brand-dark">{t("accountType")}</p>
                 <p className="text-sm text-brand-grayMed">
-                  {data.mode === "current" ? "Current / Everyday Account" : "Private Banking"}
+                  {data.mode === "current" ? t("accountTypes.current") : t("accountTypes.privateBanking")}
                 </p>
               </div>
             </div>
@@ -119,11 +121,11 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             <div className="flex items-start gap-3">
               <FileText className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Documents</p>
+                <p className="text-sm font-medium text-brand-dark">{t("documents")}</p>
                 <p className="text-sm text-brand-grayMed">
                   {data.uploadLater
-                    ? "To be uploaded later"
-                    : `${data.documents?.length || 0} documents uploaded`}
+                    ? t("documentsStatus.uploadLater")
+                    : t("documentsStatus.uploaded", { count: data.documents?.length || 0 })}
                 </p>
               </div>
             </div>
@@ -132,7 +134,7 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
 
         {/* Required Consents */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-brand-dark">Required Consents</h3>
+          <h3 className="text-lg font-semibold text-brand-dark">{t("requiredConsents")}</h3>
 
           <div className="space-y-4">
             {/* Processing Consent */}
@@ -152,11 +154,10 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
                 />
                 <div className="flex-1">
                   <Label htmlFor="consent-processing" className="cursor-pointer font-semibold text-brand-dark">
-                    Processing for Bank Introduction *
+                    {t("processingConsent.title")} {t("required")}
                   </Label>
                   <p className="mt-1 text-sm text-brand-grayMed">
-                    I consent to Opulanz processing my personal data for the purpose of introducing
-                    me to Opulanz Partner Bank for account opening. This is required to proceed.
+                    {t("processingConsent.description")}
                   </p>
                 </div>
               </div>
@@ -179,11 +180,10 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
                 />
                 <div className="flex-1">
                   <Label htmlFor="consent-sharing" className="cursor-pointer font-semibold text-brand-dark">
-                    Data Sharing with Partner Banks *
+                    {t("dataSharingConsent.title")} {t("required")}
                   </Label>
                   <p className="mt-1 text-sm text-brand-grayMed">
-                    I consent to Opulanz sharing my application data with partner banks and EMIs
-                    for the purpose of account opening and compliance checks. This is required to proceed.
+                    {t("dataSharingConsent.description")}
                   </p>
                 </div>
               </div>
@@ -206,11 +206,10 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
                 />
                 <div className="flex-1">
                   <Label htmlFor="consent-marketing" className="cursor-pointer font-semibold text-brand-dark">
-                    Marketing Communications (Optional)
+                    {t("marketingConsent.title")}
                   </Label>
                   <p className="mt-1 text-sm text-brand-grayMed">
-                    I would like to receive updates, offers, and news from Opulanz about banking
-                    products and services. You can unsubscribe at any time.
+                    {t("marketingConsent.description")}
                   </p>
                 </div>
               </div>
@@ -220,14 +219,9 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
 
         {/* GDPR Notice */}
         <div className="rounded-lg bg-blue-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-blue-900">Your Data Rights</h4>
+          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("dataRights.title")}</h4>
           <p className="text-sm text-blue-800">
-            Under GDPR, you have the right to access, rectify, erase, or port your data. You can
-            also object to processing and withdraw consent at any time. See our{" "}
-            <a href="/legal/privacy" className="underline">
-              Privacy Policy
-            </a>{" "}
-            for details.
+            {t("dataRights.description")}
           </p>
         </div>
 
@@ -235,7 +229,7 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
           <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-600" />
             <div className="text-sm text-red-900">
-              Both required consents must be accepted to continue with your application.
+              {t("validationError")}
             </div>
           </div>
         )}

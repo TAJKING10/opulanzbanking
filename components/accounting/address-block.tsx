@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -44,6 +45,8 @@ export function AddressBlock({
   required = false,
   errors = {},
 }: AddressBlockProps) {
+  const t = useTranslations();
+
   const updateField = (field: keyof Address, value: string) => {
     onChange({ ...address, [field]: value });
   };
@@ -56,54 +59,42 @@ export function AddressBlock({
 
       <div className="space-y-3">
         <div>
-          <Label className="text-sm text-brand-dark">Street Address</Label>
+          <Label className="text-sm text-brand-dark">{t('accounting.contactsAddresses.fields.street')}</Label>
           <Input
             value={address.street}
             onChange={(e) => updateField("street", e.target.value)}
-            placeholder="123 Main Street"
-            className={errors.street ? "border-red-500" : ""}
+            placeholder={t('accounting.contactsAddresses.placeholders.street')}
           />
-          {errors.street && (
-            <p className="mt-1 text-xs text-red-500">{errors.street}</p>
-          )}
         </div>
 
         <div className="grid gap-3 md:grid-cols-2">
           <div>
-            <Label className="text-sm text-brand-dark">City</Label>
+            <Label className="text-sm text-brand-dark">{t('accounting.contactsAddresses.fields.city')}</Label>
             <Input
               value={address.city}
               onChange={(e) => updateField("city", e.target.value)}
-              placeholder="Luxembourg"
-              className={errors.city ? "border-red-500" : ""}
+              placeholder={t('accounting.contactsAddresses.placeholders.city')}
             />
-            {errors.city && (
-              <p className="mt-1 text-xs text-red-500">{errors.city}</p>
-            )}
           </div>
 
           <div>
-            <Label className="text-sm text-brand-dark">Postal Code</Label>
+            <Label className="text-sm text-brand-dark">{t('accounting.contactsAddresses.fields.postal')}</Label>
             <Input
               value={address.postal}
               onChange={(e) => updateField("postal", e.target.value)}
-              placeholder="L-1234"
-              className={errors.postal ? "border-red-500" : ""}
+              placeholder={t('accounting.contactsAddresses.placeholders.postal')}
             />
-            {errors.postal && (
-              <p className="mt-1 text-xs text-red-500">{errors.postal}</p>
-            )}
           </div>
         </div>
 
         <div>
-          <Label className="text-sm text-brand-dark">Country</Label>
+          <Label className="text-sm text-brand-dark">{t('accounting.contactsAddresses.fields.country')}</Label>
           <Select
             value={address.country}
             onValueChange={(value) => updateField("country", value)}
           >
-            <SelectTrigger className={errors.country ? "border-red-500" : ""}>
-              <SelectValue placeholder="Select country" />
+            <SelectTrigger>
+              <SelectValue placeholder={t('accounting.contactsAddresses.placeholders.country')} />
             </SelectTrigger>
             <SelectContent>
               {COUNTRIES.map((country) => (
@@ -113,9 +104,6 @@ export function AddressBlock({
               ))}
             </SelectContent>
           </Select>
-          {errors.country && (
-            <p className="mt-1 text-xs text-red-500">{errors.country}</p>
-          )}
         </div>
       </div>
     </div>

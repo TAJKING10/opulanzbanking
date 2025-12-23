@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -25,6 +26,7 @@ export function BillingVolumeStep({
   onUpdate,
   onNext,
 }: BillingVolumeStepProps) {
+  const t = useTranslations();
   const [payrollNeeded, setPayrollNeeded] = React.useState(
     data.payrollNeeded || false
   );
@@ -34,17 +36,9 @@ export function BillingVolumeStep({
   const [selectedCurrencies, setSelectedCurrencies] = React.useState<string[]>(
     data.multiCurrencies || []
   );
-  const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const updateField = (field: string, value: any) => {
     onUpdate({ [field]: value });
-    if (errors[field]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[field];
-        return newErrors;
-      });
-    }
   };
 
   const handlePayrollChange = (checked: boolean) => {
@@ -72,49 +66,36 @@ export function BillingVolumeStep({
     onUpdate({ multiCurrencies: newCurrencies });
   };
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
+  const checkValidity = () => {
+    if (data.salesInvoicesMonth === undefined || data.salesInvoicesMonth < 0) return false;
+    if (data.purchaseInvoicesMonth === undefined || data.purchaseInvoicesMonth < 0) return false;
+    if (payrollNeeded && (!data.payrollEmployees || data.payrollEmployees < 1)) return false;
+    if (multiCurrency && selectedCurrencies.length === 0) return false;
 
-    if (
-      data.salesInvoicesMonth === undefined ||
-      data.salesInvoicesMonth < 0
-    )
-      newErrors.salesInvoicesMonth =
-        "Average monthly sales invoices is required";
-    if (
-      data.purchaseInvoicesMonth === undefined ||
-      data.purchaseInvoicesMonth < 0
-    )
-      newErrors.purchaseInvoicesMonth =
-        "Average monthly purchase invoices is required";
-    if (
-      payrollNeeded &&
-      (!data.payrollEmployees || data.payrollEmployees < 1)
-    )
-      newErrors.payrollEmployees =
-        "Number of employees on payroll must be at least 1";
-    if (multiCurrency && selectedCurrencies.length === 0)
-      newErrors.multiCurrencies = "Please select at least one currency";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return true;
   };
 
-  const handleContinue = () => {
-    if (validate()) {
-      onNext();
-    }
-  };
+  // Check validation whenever data changes
+  React.useEffect(() => {
+    const isValid = checkValidity();
+    onUpdate({ isStep4Valid: isValid });
+  }, [
+    data.salesInvoicesMonth,
+    data.purchaseInvoicesMonth,
+    data.payrollEmployees,
+    payrollNeeded,
+    multiCurrency,
+    selectedCurrencies,
+  ]);
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">
-          Billing Volume
+          {t('accounting.billingVolume.title')}
         </h2>
         <p className="text-brand-grayMed">
-          Help us understand your transaction volume to recommend the right
-          accounting package.
+          {t('accounting.billingVolume.subtitle')}
         </p>
       </div>
 
@@ -122,7 +103,7 @@ export function BillingVolumeStep({
         {/* Average Monthly Sales Invoices */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Avg. Monthly Sales Invoices <span className="text-red-500">*</span>
+            {t('accounting.billingVolume.fields.salesInvoices')} <span className="text-red-500">*</span>
           </Label>
           <Input
             type="number"
@@ -133,23 +114,16 @@ export function BillingVolumeStep({
               updateField("salesInvoicesMonth", parseInt(e.target.value) || 0)
             }
             placeholder="0"
-            className={errors.salesInvoicesMonth ? "border-red-500" : ""}
           />
-          {errors.salesInvoicesMonth && (
-            <p className="mt-1 text-xs text-red-500">
-              {errors.salesInvoicesMonth}
-            </p>
-          )}
           <p className="mt-1 text-xs text-brand-grayMed">
-            Number of outgoing invoices per month
+            {t('accounting.billingVolume.hints.salesInvoices')}
           </p>
         </div>
 
         {/* Average Monthly Purchase Invoices */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Avg. Monthly Purchase Invoices{" "}
-            <span className="text-red-500">*</span>
+            {t('accounting.billingVolume.fields.purchaseInvoices')} <span className="text-red-500">*</span>
           </Label>
           <Input
             type="number"
@@ -163,15 +137,9 @@ export function BillingVolumeStep({
               )
             }
             placeholder="0"
-            className={errors.purchaseInvoicesMonth ? "border-red-500" : ""}
           />
-          {errors.purchaseInvoicesMonth && (
-            <p className="mt-1 text-xs text-red-500">
-              {errors.purchaseInvoicesMonth}
-            </p>
-          )}
           <p className="mt-1 text-xs text-brand-grayMed">
-            Number of incoming invoices per month
+            {t('accounting.billingVolume.hints.purchaseInvoices')}
           </p>
         </div>
 
@@ -187,15 +155,14 @@ export function BillingVolumeStep({
               htmlFor="payrollNeeded"
               className="cursor-pointer text-sm font-medium text-brand-dark"
             >
-              Payroll processing needed?
+              {t('accounting.billingVolume.fields.payrollNeeded')}
             </Label>
           </div>
 
           {payrollNeeded && (
             <div>
               <Label className="text-sm font-medium text-brand-dark">
-                Number of Employees on Payroll{" "}
-                <span className="text-red-500">*</span>
+                {t('accounting.billingVolume.fields.payrollEmployees')} <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="number"
@@ -206,13 +173,7 @@ export function BillingVolumeStep({
                   updateField("payrollEmployees", parseInt(e.target.value) || 0)
                 }
                 placeholder="1"
-                className={errors.payrollEmployees ? "border-red-500" : ""}
               />
-              {errors.payrollEmployees && (
-                <p className="mt-1 text-xs text-red-500">
-                  {errors.payrollEmployees}
-                </p>
-              )}
             </div>
           )}
         </div>
@@ -229,14 +190,14 @@ export function BillingVolumeStep({
               htmlFor="multiCurrency"
               className="cursor-pointer text-sm font-medium text-brand-dark"
             >
-              Multi-currency bookkeeping needed?
+              {t('accounting.billingVolume.fields.multiCurrency')}
             </Label>
           </div>
 
           {multiCurrency && (
             <div>
               <Label className="text-sm font-medium text-brand-dark">
-                Select Currencies <span className="text-red-500">*</span>
+                {t('accounting.billingVolume.fields.selectCurrencies')} <span className="text-red-500">*</span>
               </Label>
               <div className="mt-2 grid grid-cols-3 gap-2 md:grid-cols-6">
                 {CURRENCIES.map((currency) => (
@@ -262,23 +223,9 @@ export function BillingVolumeStep({
                   </div>
                 ))}
               </div>
-              {errors.multiCurrencies && (
-                <p className="mt-1 text-xs text-red-500">
-                  {errors.multiCurrencies}
-                </p>
-              )}
             </div>
           )}
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleContinue}
-          className="rounded-lg bg-brand-gold px-6 py-3 font-semibold text-white transition-all hover:bg-brand-goldDark"
-        >
-          Continue
-        </button>
       </div>
     </div>
   );

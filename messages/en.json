@@ -1059,6 +1059,22 @@
         "employees": "Full-time equivalent employees"
       }
     },
+    "billingVolume": {
+      "title": "Billing Volume",
+      "subtitle": "Help us understand your transaction volume to recommend the right accounting package.",
+      "fields": {
+        "salesInvoices": "Avg. Monthly Sales Invoices",
+        "purchaseInvoices": "Avg. Monthly Purchase Invoices",
+        "payrollNeeded": "Payroll processing needed?",
+        "payrollEmployees": "Number of Employees on Payroll",
+        "multiCurrency": "Multi-currency bookkeeping needed?",
+        "selectCurrencies": "Select Currencies"
+      },
+      "hints": {
+        "salesInvoices": "Number of outgoing invoices per month",
+        "purchaseInvoices": "Number of incoming invoices per month"
+      }
+    },
     "features": {
       "invoicing": {
         "title": "Professional Invoicing",

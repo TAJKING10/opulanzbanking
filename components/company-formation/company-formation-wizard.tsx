@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useTranslations } from "next-intl";
 import {
   Building2,
   CheckCircle,
@@ -27,6 +28,7 @@ interface CompanyFormationWizardProps {
 }
 
 export function CompanyFormationWizard({ initialFormType, onBack }: CompanyFormationWizardProps) {
+  const t = useTranslations('companyFormation.wizard');
   const [currentStep, setCurrentStep] = React.useState(1);
   const [dossier, setDossier] = React.useState<Partial<CompanyFormationDossier>>({
     formType: initialFormType,
@@ -97,13 +99,13 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
             className="mb-4"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to selection
+            {t('backToSelection')}
           </Button>
           <h1 className="mb-2 text-3xl font-bold text-brand-dark">
-            Company Formation Wizard
+            {t('wizardTitle')}
           </h1>
           <p className="text-brand-grayMed">
-            Forming a {dossier.formType} in Luxembourg
+            {t('forming')} {dossier.formType} {t('inLuxembourg')}
           </p>
         </div>
 
@@ -169,16 +171,16 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
                 onClick={handleBack}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
+                {t('../../common.back')}
               </Button>
               <div className="flex gap-4">
-                <Button variant="ghost">Save & Resume Later</Button>
+                <Button variant="ghost">{t('saveResume')}</Button>
                 {currentStep < WIZARD_STEPS.length ? (
                   <Button
                     variant="primary"
                     onClick={handleNext}
                   >
-                    Next
+                    {t('../../common.next')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 ) : null}
@@ -193,12 +195,15 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
 
 // Step 1: Company Type (already selected, just show confirmation)
 function Step1CompanyType({ dossier, updateDossier }: StepProps) {
+  const t = useTranslations('companyFormation');
+  const tw = useTranslations('companyFormation.wizard');
+
   const formTypes = [
-    { value: "SARL" as const, name: "SARL", desc: "Private Limited Company" },
-    { value: "SARL-S" as const, name: "SARL-S", desc: "Simplified Private Limited Company" },
-    { value: "SA" as const, name: "SA", desc: "Public Limited Company" },
-    { value: "SCSp" as const, name: "SCSp", desc: "Special Limited Partnership" },
-    { value: "SOLE" as const, name: "Sole Proprietor", desc: "Individual Enterprise" },
+    { value: "SARL" as const, name: "SARL", desc: t('forms.sarl.fullName') },
+    { value: "SARL-S" as const, name: "SARL-S", desc: t('forms.sarls.fullName') },
+    { value: "SA" as const, name: "SA", desc: t('forms.sa.fullName') },
+    { value: "SCSp" as const, name: "SCSp", desc: t('forms.scsp.fullName') },
+    { value: "SOLE" as const, name: t('forms.soleProprietor'), desc: t('forms.soleProprietor') },
   ];
 
   const currentFormType = formTypes.find(f => f.value === dossier.formType);
@@ -207,7 +212,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
   return (
     <div className="space-y-6">
       <div className="rounded-xl bg-brand-goldLight/20 p-6">
-        <h3 className="mb-4 text-lg font-bold text-brand-dark">Selected Company Type</h3>
+        <h3 className="mb-4 text-lg font-bold text-brand-dark">{tw('selectedCompanyType')}</h3>
         <div className="flex items-start gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-gold text-white">
             <Building2 className="h-6 w-6" />
@@ -220,19 +225,19 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
       </div>
 
       <div className="space-y-4">
-        <h4 className="font-bold text-brand-dark">Requirements for {dossier.formType}</h4>
+        <h4 className="font-bold text-brand-dark">{tw('requirementsFor')} {dossier.formType}</h4>
         <ul className="space-y-2">
           <li className="flex items-start gap-2">
             <CheckCircle className="h-5 w-5 text-brand-gold flex-shrink-0 mt-0.5" />
             <span className="text-brand-dark">
-              Minimum capital: {rules.minCapital === 0 ? "No minimum" : `€${rules.minCapital.toLocaleString()}`}
+              {tw('minimumCapital')} {rules.minCapital === 0 ? tw('noMinimum') : `€${rules.minCapital.toLocaleString()}`}
             </span>
           </li>
           {rules.maxCapital !== Infinity && (
             <li className="flex items-start gap-2">
               <CheckCircle className="h-5 w-5 text-brand-gold flex-shrink-0 mt-0.5" />
               <span className="text-brand-dark">
-                Maximum capital: €{rules.maxCapital.toLocaleString()}
+                {tw('maximumCapital')} €{rules.maxCapital.toLocaleString()}
               </span>
             </li>
           )}
@@ -240,7 +245,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
             <li className="flex items-start gap-2">
               <CheckCircle className="h-5 w-5 text-brand-gold flex-shrink-0 mt-0.5" />
               <span className="text-brand-dark">
-                Requires {(rules as any).minDirectors} or more directors
+                {tw('requiresDirectors', { count: (rules as any).minDirectors })}
               </span>
             </li>
           )}
@@ -248,7 +253,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
             <li className="flex items-start gap-2">
               <CheckCircle className="h-5 w-5 text-brand-gold flex-shrink-0 mt-0.5" />
               <span className="text-brand-dark">
-                Requires {(rules as any).minManagers} or more managers
+                {tw('requiresManagers', { count: (rules as any).minManagers })}
               </span>
             </li>
           )}
@@ -257,7 +262,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
 
       <div className="rounded-xl bg-blue-50 p-4">
         <p className="text-sm text-blue-900">
-          <strong>Note:</strong> You can change the company type by going back to the selection page.
+          <strong>{tw('noteTitle')}</strong> {tw('noteChangeType')}
         </p>
       </div>
     </div>

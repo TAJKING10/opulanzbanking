@@ -13,7 +13,8 @@
     "save": "Save",
     "loading": "Loading...",
     "error": "An error occurred",
-    "required": "Required"
+    "required": "Required",
+    "and": "and"
   },
   "nav": {
     "home": "Home",
@@ -233,6 +234,22 @@
         "title": "Full Service",
         "description": "From notary coordination to RCS registration, we handle everything for you."
       }
+    },
+    "wizard": {
+      "backToSelection": "Back to selection",
+      "wizardTitle": "Company Formation Wizard",
+      "forming": "Forming a",
+      "inLuxembourg": "in Luxembourg",
+      "selectedCompanyType": "Selected Company Type",
+      "requirementsFor": "Requirements for",
+      "minimumCapital": "Minimum capital:",
+      "maximumCapital": "Maximum capital:",
+      "noMinimum": "No minimum",
+      "requiresDirectors": "Requires {count} or more directors",
+      "requiresManagers": "Requires {count} or more managers",
+      "noteTitle": "Note:",
+      "noteChangeType": "You can change the company type by going back to the selection page.",
+      "saveResume": "Save & Resume Later"
     }
   },
   "services": {
@@ -1094,6 +1111,44 @@
         "title": "Note:",
         "text": "You can skip document uploads for now and provide them later. However, submitting documents now will speed up your onboarding process."
       }
+    },
+    "review": {
+      "title": "Review & Submit",
+      "subtitle": "Please review your information before submitting your accounting onboarding request.",
+      "summary": "Application Summary",
+      "sections": {
+        "company": "Company",
+        "activity": "Business Activity",
+        "teamSize": "Team Size",
+        "contact": "Primary Contact",
+        "volume": "Monthly Volume",
+        "documents": "Documents"
+      },
+      "incorporated": "Incorporated",
+      "lastFY": "Last FY Turnover",
+      "projected": "Projected",
+      "fteEmployees": "FTE employees",
+      "sales": "Sales",
+      "purchases": "Purchases",
+      "invoices": "invoices",
+      "payroll": "Payroll",
+      "employees": "employees",
+      "multiCurrency": "Multi-currency",
+      "documentsUploaded": "document(s) uploaded",
+      "consent": {
+        "title": "Required Consent",
+        "label": "I agree to data processing for bookkeeping onboarding *",
+        "text": "I consent to Opulanz processing my data for bookkeeping onboarding purposes. This includes sharing information with our accounting partners. See our",
+        "privacyPolicy": "Privacy Policy",
+        "termsOfService": "Terms of Service",
+        "required": "You must accept the consent to submit your application."
+      },
+      "gdpr": {
+        "title": "Your Data Rights",
+        "text": "Under GDPR, you have the right to access, rectify, erase, or port your data. You can also object to processing and withdraw consent at any time."
+      },
+      "submit": "Confirm & Send",
+      "acceptConsent": "Accept Consent to Continue"
     },
     "features": {
       "invoicing": {

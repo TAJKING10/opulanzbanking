@@ -233,6 +233,22 @@
         "title": "Service Complet",
         "description": "De la coordination notariale à l'enregistrement au RCS, nous gérons tout pour vous."
       }
+    },
+    "wizard": {
+      "backToSelection": "Retour à la sélection",
+      "wizardTitle": "Assistant de Création de Société",
+      "forming": "Création d'une",
+      "inLuxembourg": "au Luxembourg",
+      "selectedCompanyType": "Type de Société Sélectionné",
+      "requirementsFor": "Exigences pour",
+      "minimumCapital": "Capital minimum :",
+      "maximumCapital": "Capital maximum :",
+      "noMinimum": "Aucun minimum",
+      "requiresDirectors": "Nécessite {count} administrateur(s) ou plus",
+      "requiresManagers": "Nécessite {count} gérant(s) ou plus",
+      "noteTitle": "Remarque :",
+      "noteChangeType": "Vous pouvez modifier le type de société en revenant à la page de sélection.",
+      "saveResume": "Sauvegarder et Reprendre Plus Tard"
     }
   },
   "services": {

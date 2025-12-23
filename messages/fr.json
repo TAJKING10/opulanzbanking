@@ -1082,6 +1082,44 @@
         "text": "Vous pouvez ignorer le téléchargement de documents pour l'instant et les fournir ultérieurement. Cependant, soumettre les documents maintenant accélérera votre processus d'intégration."
       }
     },
+    "review": {
+      "title": "Révision et Soumission",
+      "subtitle": "Veuillez examiner vos informations avant de soumettre votre demande d'intégration comptable.",
+      "summary": "Résumé de la Demande",
+      "sections": {
+        "company": "Entreprise",
+        "activity": "Activité Commerciale",
+        "teamSize": "Taille de l'Équipe",
+        "contact": "Contact Principal",
+        "volume": "Volume Mensuel",
+        "documents": "Documents"
+      },
+      "incorporated": "Constituée",
+      "lastFY": "Dernier EF",
+      "projected": "Projeté",
+      "fteEmployees": "employés ETP",
+      "sales": "Ventes",
+      "purchases": "Achats",
+      "invoices": "factures",
+      "payroll": "Paie",
+      "employees": "employés",
+      "multiCurrency": "Multi-devises",
+      "documentsUploaded": "documents téléchargés",
+      "consent": {
+        "title": "Consentement",
+        "label": "J'accepte le traitement des données pour l'intégration comptable *",
+        "text": "Je consens à ce qu'Opulanz traite mes données à des fins d'intégration des services comptables et de facturation. Cela inclut le stockage des informations de l'entreprise, les coordonnées et les documents téléchargés. En savoir plus dans notre",
+        "privacyPolicy": "Politique de Confidentialité",
+        "termsOfService": "Conditions d'Utilisation",
+        "required": "Vous devez accepter le traitement des données pour continuer."
+      },
+      "gdpr": {
+        "title": "Vos Droits en matière de Données",
+        "text": "Conformément au RGPD, vous avez le droit d'accéder, de rectifier ou de supprimer vos données personnelles à tout moment. Contactez privacy@opulanz.com pour toute demande relative aux données."
+      },
+      "submit": "Soumettre la Demande",
+      "acceptConsent": "Accepter le Consentement pour Continuer"
+    },
     "features": {
       "invoicing": {
         "title": "Facturation Professionnelle",

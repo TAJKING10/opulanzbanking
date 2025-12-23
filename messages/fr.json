@@ -1046,6 +1046,22 @@
         "employees": "Équivalent temps plein des employés"
       }
     },
+    "billingVolume": {
+      "title": "Volume de Facturation",
+      "subtitle": "Aidez-nous à comprendre votre volume de transactions pour recommander le bon package comptable.",
+      "fields": {
+        "salesInvoices": "Moy. Factures de Vente Mensuelles",
+        "purchaseInvoices": "Moy. Factures d'Achat Mensuelles",
+        "payrollNeeded": "Traitement de la paie nécessaire ?",
+        "payrollEmployees": "Nombre d'Employés sur la Paie",
+        "multiCurrency": "Comptabilité multi-devises nécessaire ?",
+        "selectCurrencies": "Sélectionner les Devises"
+      },
+      "hints": {
+        "salesInvoices": "Nombre de factures sortantes par mois",
+        "purchaseInvoices": "Nombre de factures entrantes par mois"
+      }
+    },
     "features": {
       "invoicing": {
         "title": "Facturation Professionnelle",

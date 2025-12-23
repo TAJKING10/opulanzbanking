@@ -186,12 +186,43 @@ export default function ConfirmationPage({ params: { locale } }: { params: { loc
       border-top: 2px solid #e5e7eb;
       padding-top: 20px;
     }
+    .print-instructions {
+      background: #eff6ff;
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 30px 0;
+      text-align: center;
+    }
+    .print-button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .print-button:hover {
+      background: #2563eb;
+    }
     @media print {
       body { padding: 20px; }
+      .print-instructions { display: none; }
     }
   </style>
 </head>
 <body>
+  <div class="print-instructions">
+    <h3 style="color: #1e40af; margin-top: 0;">📄 Save as PDF Instructions</h3>
+    <p style="color: #1e3a8a; margin: 10px 0;">
+      To save this receipt as a PDF, click the button below and select "Save as PDF" as your printer destination.
+    </p>
+    <button class="print-button" onclick="window.print()">🖨️ Print / Save as PDF</button>
+  </div>
+
   <div class="header">
     <div class="logo">OPULANZ BANKING</div>
     <div>Luxembourg Financial Services</div>
@@ -293,7 +324,7 @@ export default function ConfirmationPage({ params: { locale } }: { params: { loc
 </html>
     `;
 
-    // Create blob and download as HTML (can be saved as PDF using browser print)
+    // Create blob and download as HTML file
     const blob = new Blob([receiptHTML], { type: "text/html" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -302,17 +333,11 @@ export default function ConfirmationPage({ params: { locale } }: { params: { loc
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
 
-    // Auto-open print dialog after a short delay
+    // Clean up the blob URL
     setTimeout(() => {
-      const printWindow = window.open(url);
-      if (printWindow) {
-        printWindow.onload = () => {
-          printWindow.print();
-        };
-      }
-    }, 500);
+      window.URL.revokeObjectURL(url);
+    }, 100);
   };
 
   const handleAddToCalendar = () => {

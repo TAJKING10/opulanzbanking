@@ -1075,6 +1075,26 @@
         "purchaseInvoices": "Number of incoming invoices per month"
       }
     },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Upload your company documents. These are optional at this stage and can be provided later.",
+      "types": {
+        "incorporation": "Certificate of Incorporation",
+        "articles": "Articles of Association / Statuts",
+        "vat": "VAT Certificate",
+        "directorId": "ID/Passport of Director(s)"
+      },
+      "hints": {
+        "incorporation": "Official document confirming company registration",
+        "articles": "Company articles or statuts document",
+        "vat": "VAT registration certificate (if applicable)",
+        "directorId": "ID or passport of directors and shareholders over 25%"
+      },
+      "note": {
+        "title": "Note:",
+        "text": "You can skip document uploads for now and provide them later. However, submitting documents now will speed up your onboarding process."
+      }
+    },
     "features": {
       "invoicing": {
         "title": "Professional Invoicing",

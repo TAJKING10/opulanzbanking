@@ -1062,6 +1062,26 @@
         "purchaseInvoices": "Nombre de factures entrantes par mois"
       }
     },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Téléchargez vos documents d'entreprise. Ceux-ci sont facultatifs à ce stade et peuvent être fournis ultérieurement.",
+      "types": {
+        "incorporation": "Certificat de Constitution",
+        "articles": "Statuts / Articles d'Association",
+        "vat": "Certificat de TVA",
+        "directorId": "Pièce d'Identité/Passeport du(des) Directeur(s)"
+      },
+      "hints": {
+        "incorporation": "Document officiel confirmant l'enregistrement de la société",
+        "articles": "Document des statuts ou articles de la société",
+        "vat": "Certificat d'enregistrement TVA (si applicable)",
+        "directorId": "Pièce d'identité ou passeport des directeurs et actionnaires à plus de 25%"
+      },
+      "note": {
+        "title": "Remarque :",
+        "text": "Vous pouvez ignorer le téléchargement de documents pour l'instant et les fournir ultérieurement. Cependant, soumettre les documents maintenant accélérera votre processus d'intégration."
+      }
+    },
     "features": {
       "invoicing": {
         "title": "Facturation Professionnelle",

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
+import Script from "next/script";
 import {
   Briefcase,
   Upload,
@@ -21,6 +22,13 @@ import {
   CompanyFormationDossier,
   UploadedFile,
 } from "@/types/company-formation";
+
+// Extend Window interface for PayPal
+declare global {
+  interface Window {
+    paypal?: any;
+  }
+}
 
 type StepProps = {
   dossier: Partial<CompanyFormationDossier>;
@@ -413,8 +421,10 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [isPaymentComplete, setIsPaymentComplete] = React.useState(dossier.paymentStatus === "PAID");
   const [isProcessing, setIsProcessing] = React.useState(false);
+  const [isPayPalLoaded, setIsPayPalLoaded] = React.useState(false);
+  const [paypalOrderId, setPaypalOrderId] = React.useState("");
 
-  const setupFee = 1500; // Demo amount
+  const setupFee = 1500; // €1500 setup fee
 
   React.useEffect(() => {
     updateDossier({
@@ -423,14 +433,38 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
     });
   }, [termsAccepted, privacyAccepted, accuracyConfirmed]);
 
-  const handlePayment = async () => {
-    setIsProcessing(true);
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setIsProcessing(false);
-    setIsPaymentComplete(true);
-    updateDossier({ paymentStatus: "PAID" });
-  };
+  // Initialize PayPal buttons when payment section is shown
+  React.useEffect(() => {
+    if (!isPaymentComplete && isPayPalLoaded && window.paypal) {
+      window.paypal.Buttons({
+        createOrder: function(data: any, actions: any) {
+          return actions.order.create({
+            purchase_units: [{
+              description: `Company Formation - ${dossier.formType?.toUpperCase()} - ${dossier.proposedNames?.[0] || 'Company'}`,
+              amount: {
+                currency_code: 'EUR',
+                value: setupFee.toFixed(2)
+              }
+            }]
+          });
+        },
+        onApprove: async function(data: any, actions: any) {
+          const order = await actions.order.capture();
+          setPaypalOrderId(order.id);
+          setIsPaymentComplete(true);
+          updateDossier({
+            paymentStatus: "PAID",
+            paypalOrderId: order.id,
+            paypalPaymentDetails: order
+          });
+        },
+        onError: function(err: any) {
+          console.error('PayPal error:', err);
+          alert('Payment failed. Please try again or contact support.');
+        }
+      }).render('#paypal-button-container');
+    }
+  }, [isPayPalLoaded, isPaymentComplete, setupFee]);
 
   const handleSubmit = async () => {
     if (!termsAccepted || !privacyAccepted || !accuracyConfirmed) {
@@ -477,6 +511,8 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
         },
       };
 
+      console.log("📤 Submitting to backend:", applicationPayload);
+
       const response = await fetch("http://localhost:5000/api/applications", {
         method: "POST",
         headers: {
@@ -485,8 +521,12 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
         body: JSON.stringify(applicationPayload),
       });
 
+      console.log("📥 Response status:", response.status, response.statusText);
+
       if (!response.ok) {
-        throw new Error("Failed to submit application");
+        const errorData = await response.text();
+        console.error("❌ Backend error:", errorData);
+        throw new Error(`Server responded with ${response.status}: ${errorData}`);
       }
 
       const result = await response.json();
@@ -502,10 +542,15 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
       console.log("🏢 Company Formation Dossier Submitted:", finalDossier);
 
       setIsSubmitted(true);
-    } catch (error) {
-      console.error("Error submitting company formation:", error);
+    } catch (error: any) {
+      console.error("❌ Error submitting company formation:", error);
+      console.error("Error details:", {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
       alert(
-        "Failed to submit company formation. Please try again or contact support."
+        `Failed to submit company formation.\n\nError: ${error.message}\n\nPlease check the console for details or contact support.`
       );
     } finally {
       setIsProcessing(false);
@@ -587,39 +632,53 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
 
       {/* Payment */}
       {!isPaymentComplete && (
-        <div className="rounded-xl border-2 border-brand-gold p-6">
-          <h3 className="mb-4 text-lg font-bold text-brand-dark">Setup Fee Payment</h3>
-          <div className="mb-4 flex items-center justify-between rounded-xl bg-brand-goldLight/20 p-4">
-            <span className="font-semibold text-brand-dark">Opulanz Setup Fee</span>
-            <span className="text-2xl font-bold text-brand-gold">€{setupFee}</span>
-          </div>
-          <p className="mb-4 text-sm text-brand-grayMed">
-            This covers our administrative and coordination services. Notary and registration fees are separate and will be communicated by the notary.
-          </p>
-          <Button
-            onClick={handlePayment}
-            disabled={isProcessing}
-            className="w-full"
-            size="lg"
-          >
-            {isProcessing ? (
-              <>Processing...</>
-            ) : (
-              <>
-                <CreditCard className="mr-2 h-5 w-5" />
-                Pay Setup Fee (Demo)
-              </>
+        <>
+          <Script
+            src={`https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test'}&currency=EUR`}
+            onLoad={() => setIsPayPalLoaded(true)}
+          />
+          <div className="rounded-xl border-2 border-brand-gold p-6">
+            <h3 className="mb-4 text-lg font-bold text-brand-dark">Setup Fee Payment</h3>
+            <div className="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-sm text-blue-900">
+                <strong>Secure Payment:</strong> Your payment is processed securely through PayPal.
+                You don't need a PayPal account - you can pay with credit/debit card.
+              </p>
+            </div>
+            <div className="mb-4 flex items-center justify-between rounded-xl bg-brand-goldLight/20 p-4">
+              <span className="font-semibold text-brand-dark">Opulanz Setup Fee</span>
+              <span className="text-2xl font-bold text-brand-gold">€{setupFee.toFixed(2)}</span>
+            </div>
+            <p className="mb-6 text-sm text-brand-grayMed">
+              This covers our administrative and coordination services. Notary and registration fees are separate and will be communicated by the notary.
+            </p>
+
+            <div id="paypal-button-container" className="mb-4"></div>
+
+            {!isPayPalLoaded && (
+              <div className="text-center py-8">
+                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-brand-gold border-r-transparent"></div>
+                <p className="mt-4 text-brand-grayMed">Loading payment options...</p>
+              </div>
             )}
-          </Button>
-        </div>
+          </div>
+        </>
       )}
 
       {isPaymentComplete && (
-        <div className="rounded-xl bg-green-50 p-4">
-          <div className="flex items-center gap-2 text-green-700">
+        <div className="rounded-xl bg-green-50 p-4 border border-green-200">
+          <div className="flex items-center gap-2 text-green-700 mb-2">
             <CheckCircle className="h-5 w-5" />
-            <span className="font-semibold">Payment complete</span>
+            <span className="font-semibold">Payment Complete</span>
           </div>
+          {paypalOrderId && (
+            <p className="text-sm text-green-800">
+              PayPal Order ID: <span className="font-mono font-semibold">{paypalOrderId}</span>
+            </p>
+          )}
+          <p className="text-sm text-green-800 mt-1">
+            Setup fee of €{setupFee.toFixed(2)} has been paid successfully.
+          </p>
         </div>
       )}
 

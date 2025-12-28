@@ -587,10 +587,10 @@ export default function ConfirmationPage({ params: { locale } }: { params: { loc
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 variant="outline"
-                onClick={() => router.push(`/${locale}/tax-advisory`)}
+                onClick={() => router.push(`/${locale}/life-insurance`)}
                 className="border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
               >
-                Back to Tax Advisory
+                Back to Life Insurance
               </Button>
               <Button
                 variant="outline"

@@ -224,9 +224,24 @@ export default function AccountingOnboardingPage() {
       // Clear saved progress
       localStorage.removeItem("accounting-onboarding-progress");
 
-      // Redirect to success page or show confirmation
-      alert(`Application submitted successfully! Reference: ${appId}\n\nWe'll be in touch soon.`);
-      router.push(`/${locale}/invoicing-accounting`);
+      // Store application data in sessionStorage for confirmation page
+      const confirmationData = {
+        applicationId: appId,
+        legalName: formData.legalName,
+        tradeName: formData.tradeName,
+        email: formData.primaryContact?.email,
+        primaryContactName: `${formData.primaryContact?.firstName || ''} ${formData.primaryContact?.lastName || ''}`.trim(),
+        primaryContactPhone: formData.primaryContact?.phone,
+        companyType: formData.companyType,
+        registrationNumber: formData.registrationNumber,
+        vatNumber: formData.vatNumber,
+        submittedAt: new Date().toISOString(),
+      };
+
+      sessionStorage.setItem('accounting-application', JSON.stringify(confirmationData));
+
+      // Redirect to professional confirmation page
+      router.push(`/${locale}/invoicing-accounting/confirmation?ref=${appId}`);
     } catch (error) {
       console.error("Submission error:", error);
       alert("An error occurred. Please try again.");

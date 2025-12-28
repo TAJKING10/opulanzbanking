@@ -444,7 +444,7 @@ export default function LifeInsuranceBookingPage({ params: { locale } }: { param
 
             <div
               className="calendly-inline-widget"
-              data-url={`https://calendly.com/opulanz-banking/life-insurance?hide_event_type_details=1&primary_color=b59354&name=${encodeURIComponent(bookingData.firstName + ' ' + bookingData.lastName)}&email=${encodeURIComponent(bookingData.email)}`}
+              data-url={`https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=b59354&name=${encodeURIComponent(bookingData.firstName + ' ' + bookingData.lastName)}&email=${encodeURIComponent(bookingData.email)}`}
               style={{ minWidth: "320px", height: "700px" }}
             />
 

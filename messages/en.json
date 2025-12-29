@@ -249,7 +249,23 @@
       "requiresManagers": "Requires {count} or more managers",
       "noteTitle": "Note:",
       "noteChangeType": "You can change the company type by going back to the selection page.",
-      "saveResume": "Save & Resume Later"
+      "saveResume": "Save & Resume Later",
+      "step2": {
+        "proposedLegalName": "Proposed Legal Name",
+        "proposedLegalNamePlaceholder": "e.g., Acme Luxembourg S.à r.l.",
+        "proposedLegalNameHint": "Include the legal form suffix (S.à r.l., S.A., etc.)",
+        "alternateName": "Alternate Name (Optional)",
+        "alternateNamePlaceholder": "e.g., Acme Lux S.à r.l.",
+        "alternateNameHint": "In case your first choice is not available",
+        "companyPurpose": "Company Purpose / Activities",
+        "companyPurposePlaceholder": "Describe the main business activities and purpose of the company...",
+        "registeredOffice": "Registered Office Address (Luxembourg)",
+        "registeredOfficePlaceholder": "Street address, postal code, city, Luxembourg",
+        "registeredOfficeHint": "Or select domiciliation service in Step 6",
+        "companyDuration": "Company Duration",
+        "companyDurationPlaceholder": "unlimited",
+        "companyDurationHint": "Most companies choose \"unlimited\""
+      }
     }
   },
   "services": {

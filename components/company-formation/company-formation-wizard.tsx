@@ -272,6 +272,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
 
 // Step 2: General Info
 function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
+  const t = useTranslations('companyFormation.wizard.step2');
   const [primaryName, setPrimaryName] = React.useState(dossier.proposedNames?.[0] || "");
   const [alternateName, setAlternateName] = React.useState(dossier.proposedNames?.[1] || "");
   const [purpose, setPurpose] = React.useState(dossier.purpose || "");
@@ -292,37 +293,37 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
     <div className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="primaryName">
-          Proposed Legal Name <span className="text-red-500">*</span>
+          {t('proposedLegalName')} <span className="text-red-500">*</span>
         </Label>
         <Input
           id="primaryName"
           value={primaryName}
           onChange={(e) => setPrimaryName(e.target.value)}
-          placeholder="e.g., Acme Luxembourg S.à r.l."
+          placeholder={t('proposedLegalNamePlaceholder')}
         />
         <p className="text-xs text-brand-grayMed">
-          Include the legal form suffix (S.à r.l., S.A., etc.)
+          {t('proposedLegalNameHint')}
         </p>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="alternateName">
-          Alternate Name (Optional)
+          {t('alternateName')}
         </Label>
         <Input
           id="alternateName"
           value={alternateName}
           onChange={(e) => setAlternateName(e.target.value)}
-          placeholder="e.g., Acme Lux S.à r.l."
+          placeholder={t('alternateNamePlaceholder')}
         />
         <p className="text-xs text-brand-grayMed">
-          In case your first choice is not available
+          {t('alternateNameHint')}
         </p>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="purpose">
-          Company Purpose / Activities <span className="text-red-500">*</span>
+          {t('companyPurpose')} <span className="text-red-500">*</span>
         </Label>
         <textarea
           id="purpose"
@@ -330,13 +331,13 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
           onChange={(e) => setPurpose(e.target.value)}
           rows={5}
           className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-          placeholder="Describe the main business activities and purpose of the company..."
+          placeholder={t('companyPurposePlaceholder')}
         />
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="registeredOffice">
-          Registered Office Address (Luxembourg) <span className="text-red-500">*</span>
+          {t('registeredOffice')} <span className="text-red-500">*</span>
         </Label>
         <textarea
           id="registeredOffice"
@@ -344,25 +345,25 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
           onChange={(e) => setRegisteredOffice(e.target.value)}
           rows={3}
           className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-          placeholder="Street address, postal code, city, Luxembourg"
+          placeholder={t('registeredOfficePlaceholder')}
         />
         <p className="text-xs text-brand-grayMed">
-          Or select domiciliation service in Step 6
+          {t('registeredOfficeHint')}
         </p>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="duration">
-          Company Duration
+          {t('companyDuration')}
         </Label>
         <Input
           id="duration"
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
-          placeholder="unlimited"
+          placeholder={t('companyDurationPlaceholder')}
         />
         <p className="text-xs text-brand-grayMed">
-          Most companies choose "unlimited"
+          {t('companyDurationHint')}
         </p>
       </div>
     </div>

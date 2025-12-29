@@ -248,7 +248,23 @@
       "requiresManagers": "Nécessite {count} gérant(s) ou plus",
       "noteTitle": "Remarque :",
       "noteChangeType": "Vous pouvez modifier le type de société en revenant à la page de sélection.",
-      "saveResume": "Sauvegarder et Reprendre Plus Tard"
+      "saveResume": "Sauvegarder et Reprendre Plus Tard",
+      "step2": {
+        "proposedLegalName": "Nom Juridique Proposé",
+        "proposedLegalNamePlaceholder": "ex : Acme Luxembourg S.à r.l.",
+        "proposedLegalNameHint": "Incluez le suffixe de la forme juridique (S.à r.l., S.A., etc.)",
+        "alternateName": "Nom Alternatif (Optionnel)",
+        "alternateNamePlaceholder": "ex : Acme Lux S.à r.l.",
+        "alternateNameHint": "Au cas où votre premier choix ne serait pas disponible",
+        "companyPurpose": "Objet Social / Activités",
+        "companyPurposePlaceholder": "Décrivez les principales activités commerciales et l'objet de la société...",
+        "registeredOffice": "Adresse du Siège Social (Luxembourg)",
+        "registeredOfficePlaceholder": "Adresse, code postal, ville, Luxembourg",
+        "registeredOfficeHint": "Ou sélectionnez le service de domiciliation à l'étape 6",
+        "companyDuration": "Durée de la Société",
+        "companyDurationPlaceholder": "illimitée",
+        "companyDurationHint": "La plupart des sociétés choisissent \"illimitée\""
+      }
     }
   },
   "services": {

@@ -250,6 +250,16 @@
       "noteTitle": "Note:",
       "noteChangeType": "You can change the company type by going back to the selection page.",
       "saveResume": "Save & Resume Later",
+      "stepLabels": {
+        "companyType": "Company Type",
+        "generalInfo": "General Info",
+        "people": "People",
+        "capital": "Capital",
+        "activity": "Activity",
+        "notaryDomiciliation": "Notary & Domiciliation",
+        "documents": "Documents",
+        "reviewSubmit": "Review & Submit"
+      },
       "step2": {
         "proposedLegalName": "Proposed Legal Name",
         "proposedLegalNamePlaceholder": "e.g., Acme Luxembourg S.à r.l.",

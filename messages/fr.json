@@ -249,6 +249,16 @@
       "noteTitle": "Remarque :",
       "noteChangeType": "Vous pouvez modifier le type de société en revenant à la page de sélection.",
       "saveResume": "Sauvegarder et Reprendre Plus Tard",
+      "stepLabels": {
+        "companyType": "Type de Société",
+        "generalInfo": "Infos Générales",
+        "people": "Personnes",
+        "capital": "Capital",
+        "activity": "Activité",
+        "notaryDomiciliation": "Notaire & Domiciliation",
+        "documents": "Documents",
+        "reviewSubmit": "Révision et Soumission"
+      },
       "step2": {
         "proposedLegalName": "Nom Juridique Proposé",
         "proposedLegalNamePlaceholder": "ex : Acme Luxembourg S.à r.l.",

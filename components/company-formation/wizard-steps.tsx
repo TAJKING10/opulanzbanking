@@ -379,7 +379,7 @@ function PersonCard({ person, showPep, onEdit, onDelete }: {
 // Step 4: Capital & Contributions
 export function Step4Capital({ dossier, updateDossier }: StepProps) {
   const t = useTranslations('companyFormation.wizard.step4');
-  const [capitalAmount, setCapitalAmount] = React.useState(dossier.capitalAmount || 0);
+  const [capitalAmount, setCapitalAmount] = React.useState(dossier.capitalAmount);
   const [paidUpPercent, setPaidUpPercent] = React.useState(dossier.capitalPaidUpPercent || 100);
   const [contributions, setContributions] = React.useState<Contribution[]>(dossier.contributions || []);
 
@@ -398,7 +398,7 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
       id: uuidv4(),
       type: "CASH",
       description: "",
-      amount: 0,
+      amount: undefined as any,
     };
     setContributions([...contributions, newContribution]);
   };
@@ -411,9 +411,9 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
     setContributions(contributions.filter(c => c.id !== id));
   };
 
-  const totalContributions = contributions.reduce((sum, c) => sum + c.amount, 0);
-  const isValid = capitalAmount >= rules.minCapital &&
-    (rules.maxCapital === Infinity || capitalAmount <= rules.maxCapital);
+  const totalContributions = contributions.reduce((sum, c) => sum + (c.amount || 0), 0);
+  const isValid = (capitalAmount || 0) >= rules.minCapital &&
+    (rules.maxCapital === Infinity || (capitalAmount || 0) <= rules.maxCapital);
 
   return (
     <div className="space-y-6">
@@ -426,8 +426,8 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
           type="number"
           min={rules.minCapital}
           max={rules.maxCapital !== Infinity ? rules.maxCapital : undefined}
-          value={capitalAmount}
-          onChange={(e) => setCapitalAmount(parseFloat(e.target.value) || 0)}
+          value={capitalAmount === undefined || capitalAmount === 0 ? "" : capitalAmount}
+          onChange={(e) => setCapitalAmount(e.target.value === "" ? undefined : parseFloat(e.target.value))}
         />
         <p className="text-xs text-brand-grayMed">
           {rules.minCapital === 0 ? t('noMinimumRequired') : t('minimumCapital', { amount: rules.minCapital.toLocaleString() })}
@@ -491,8 +491,8 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
                     <Label>{t('contributionAmount')}</Label>
                     <Input
                       type="number"
-                      value={contribution.amount}
-                      onChange={(e) => updateContribution(contribution.id, { amount: parseFloat(e.target.value) || 0 })}
+                      value={contribution.amount === undefined || contribution.amount === 0 ? "" : contribution.amount}
+                      onChange={(e) => updateContribution(contribution.id, { amount: e.target.value === "" ? undefined : parseFloat(e.target.value) })}
                     />
                   </div>
                   <div className="flex items-end">

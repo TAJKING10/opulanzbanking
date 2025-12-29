@@ -29,6 +29,7 @@ interface CompanyFormationWizardProps {
 
 export function CompanyFormationWizard({ initialFormType, onBack }: CompanyFormationWizardProps) {
   const t = useTranslations('companyFormation.wizard');
+  const tCommon = useTranslations('common');
   const [currentStep, setCurrentStep] = React.useState(1);
   const [dossier, setDossier] = React.useState<Partial<CompanyFormationDossier>>({
     formType: initialFormType,
@@ -171,7 +172,7 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
                 onClick={handleBack}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                {t('../../common.back')}
+                {tCommon('back')}
               </Button>
               <div className="flex gap-4">
                 <Button variant="ghost">{t('saveResume')}</Button>
@@ -180,7 +181,7 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
                     variant="primary"
                     onClick={handleNext}
                   >
-                    {t('../../common.next')}
+                    {tCommon('next')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 ) : null}

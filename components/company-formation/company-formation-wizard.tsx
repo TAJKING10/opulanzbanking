@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useTranslations } from "next-intl";
 import {
   Building2,
   CheckCircle,
@@ -27,7 +28,21 @@ interface CompanyFormationWizardProps {
 }
 
 export function CompanyFormationWizard({ initialFormType, onBack }: CompanyFormationWizardProps) {
+  const t = useTranslations('companyFormation.wizard');
+  const tCommon = useTranslations('common');
+  const tStepLabels = useTranslations('companyFormation.wizard.stepLabels');
   const [currentStep, setCurrentStep] = React.useState(1);
+
+  const stepLabels = [
+    tStepLabels('companyType'),
+    tStepLabels('generalInfo'),
+    tStepLabels('people'),
+    tStepLabels('capital'),
+    tStepLabels('activity'),
+    tStepLabels('notaryDomiciliation'),
+    tStepLabels('documents'),
+    tStepLabels('reviewSubmit'),
+  ];
   const [dossier, setDossier] = React.useState<Partial<CompanyFormationDossier>>({
     formType: initialFormType,
     country: "LU",
@@ -68,7 +83,7 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
   }, [dossier]);
 
   const handleNext = () => {
-    if (currentStep < WIZARD_STEPS.length) {
+    if (currentStep < stepLabels.length) {
       setDossier(prev => ({ ...prev, updatedAt: new Date().toISOString() }));
       setCurrentStep(currentStep + 1);
     }
@@ -97,24 +112,24 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
             className="mb-4"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to selection
+            {t('backToSelection')}
           </Button>
           <h1 className="mb-2 text-3xl font-bold text-brand-dark">
-            Company Formation Wizard
+            {t('wizardTitle')}
           </h1>
           <p className="text-brand-grayMed">
-            Forming a {dossier.formType} in Luxembourg
+            {t('forming')} {dossier.formType} {t('inLuxembourg')}
           </p>
         </div>
 
         {/* Progress Stepper */}
         <div className="mb-12">
           <div className="flex items-center justify-between">
-            {WIZARD_STEPS.map((step, index) => {
+            {stepLabels.map((step, index) => {
               const stepNumber = index + 1;
               const isActive = currentStep === stepNumber;
               const isCompleted = currentStep > stepNumber;
-              const isLast = index === WIZARD_STEPS.length - 1;
+              const isLast = index === stepLabels.length - 1;
 
               return (
                 <React.Fragment key={step}>
@@ -150,7 +165,7 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
         {/* Step Content */}
         <Card className="border-none shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl">{WIZARD_STEPS[currentStep - 1]}</CardTitle>
+            <CardTitle className="text-2xl">{stepLabels[currentStep - 1]}</CardTitle>
           </CardHeader>
           <CardContent>
             {currentStep === 1 && <Step1CompanyType dossier={dossier} updateDossier={updateDossier} />}
@@ -169,16 +184,16 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
                 onClick={handleBack}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
+                {tCommon('back')}
               </Button>
               <div className="flex gap-4">
-                <Button variant="ghost">Save & Resume Later</Button>
-                {currentStep < WIZARD_STEPS.length ? (
+                <Button variant="ghost">{t('saveResume')}</Button>
+                {currentStep < stepLabels.length ? (
                   <Button
                     variant="primary"
                     onClick={handleNext}
                   >
-                    Next
+                    {tCommon('next')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 ) : null}
@@ -193,12 +208,15 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
 
 // Step 1: Company Type (already selected, just show confirmation)
 function Step1CompanyType({ dossier, updateDossier }: StepProps) {
+  const t = useTranslations('companyFormation');
+  const tw = useTranslations('companyFormation.wizard');
+
   const formTypes = [
-    { value: "SARL" as const, name: "SARL", desc: "Private Limited Company" },
-    { value: "SARL-S" as const, name: "SARL-S", desc: "Simplified Private Limited Company" },
-    { value: "SA" as const, name: "SA", desc: "Public Limited Company" },
-    { value: "SCSp" as const, name: "SCSp", desc: "Special Limited Partnership" },
-    { value: "SOLE" as const, name: "Sole Proprietor", desc: "Individual Enterprise" },
+    { value: "SARL" as const, name: "SARL", desc: t('forms.sarl.fullName') },
+    { value: "SARL-S" as const, name: "SARL-S", desc: t('forms.sarls.fullName') },
+    { value: "SA" as const, name: "SA", desc: t('forms.sa.fullName') },
+    { value: "SCSp" as const, name: "SCSp", desc: t('forms.scsp.fullName') },
+    { value: "SOLE" as const, name: t('forms.soleProprietor'), desc: t('forms.soleProprietor') },
   ];
 
   const currentFormType = formTypes.find(f => f.value === dossier.formType);
@@ -207,7 +225,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
   return (
     <div className="space-y-6">
       <div className="rounded-xl bg-brand-goldLight/20 p-6">
-        <h3 className="mb-4 text-lg font-bold text-brand-dark">Selected Company Type</h3>
+        <h3 className="mb-4 text-lg font-bold text-brand-dark">{tw('selectedCompanyType')}</h3>
         <div className="flex items-start gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-gold text-white">
             <Building2 className="h-6 w-6" />
@@ -220,19 +238,19 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
       </div>
 
       <div className="space-y-4">
-        <h4 className="font-bold text-brand-dark">Requirements for {dossier.formType}</h4>
+        <h4 className="font-bold text-brand-dark">{tw('requirementsFor')} {dossier.formType}</h4>
         <ul className="space-y-2">
           <li className="flex items-start gap-2">
             <CheckCircle className="h-5 w-5 text-brand-gold flex-shrink-0 mt-0.5" />
             <span className="text-brand-dark">
-              Minimum capital: {rules.minCapital === 0 ? "No minimum" : `€${rules.minCapital.toLocaleString()}`}
+              {tw('minimumCapital')} {rules.minCapital === 0 ? tw('noMinimum') : `€${rules.minCapital.toLocaleString()}`}
             </span>
           </li>
           {rules.maxCapital !== Infinity && (
             <li className="flex items-start gap-2">
               <CheckCircle className="h-5 w-5 text-brand-gold flex-shrink-0 mt-0.5" />
               <span className="text-brand-dark">
-                Maximum capital: €{rules.maxCapital.toLocaleString()}
+                {tw('maximumCapital')} €{rules.maxCapital.toLocaleString()}
               </span>
             </li>
           )}
@@ -240,7 +258,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
             <li className="flex items-start gap-2">
               <CheckCircle className="h-5 w-5 text-brand-gold flex-shrink-0 mt-0.5" />
               <span className="text-brand-dark">
-                Requires {(rules as any).minDirectors} or more directors
+                {tw('requiresDirectors', { count: (rules as any).minDirectors })}
               </span>
             </li>
           )}
@@ -248,7 +266,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
             <li className="flex items-start gap-2">
               <CheckCircle className="h-5 w-5 text-brand-gold flex-shrink-0 mt-0.5" />
               <span className="text-brand-dark">
-                Requires {(rules as any).minManagers} or more managers
+                {tw('requiresManagers', { count: (rules as any).minManagers })}
               </span>
             </li>
           )}
@@ -257,7 +275,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
 
       <div className="rounded-xl bg-blue-50 p-4">
         <p className="text-sm text-blue-900">
-          <strong>Note:</strong> You can change the company type by going back to the selection page.
+          <strong>{tw('noteTitle')}</strong> {tw('noteChangeType')}
         </p>
       </div>
     </div>
@@ -266,6 +284,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
 
 // Step 2: General Info
 function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
+  const t = useTranslations('companyFormation.wizard.step2');
   const [primaryName, setPrimaryName] = React.useState(dossier.proposedNames?.[0] || "");
   const [alternateName, setAlternateName] = React.useState(dossier.proposedNames?.[1] || "");
   const [purpose, setPurpose] = React.useState(dossier.purpose || "");
@@ -286,37 +305,37 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
     <div className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="primaryName">
-          Proposed Legal Name <span className="text-red-500">*</span>
+          {t('proposedLegalName')} <span className="text-red-500">*</span>
         </Label>
         <Input
           id="primaryName"
           value={primaryName}
           onChange={(e) => setPrimaryName(e.target.value)}
-          placeholder="e.g., Acme Luxembourg S.à r.l."
+          placeholder={t('proposedLegalNamePlaceholder')}
         />
         <p className="text-xs text-brand-grayMed">
-          Include the legal form suffix (S.à r.l., S.A., etc.)
+          {t('proposedLegalNameHint')}
         </p>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="alternateName">
-          Alternate Name (Optional)
+          {t('alternateName')}
         </Label>
         <Input
           id="alternateName"
           value={alternateName}
           onChange={(e) => setAlternateName(e.target.value)}
-          placeholder="e.g., Acme Lux S.à r.l."
+          placeholder={t('alternateNamePlaceholder')}
         />
         <p className="text-xs text-brand-grayMed">
-          In case your first choice is not available
+          {t('alternateNameHint')}
         </p>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="purpose">
-          Company Purpose / Activities <span className="text-red-500">*</span>
+          {t('companyPurpose')} <span className="text-red-500">*</span>
         </Label>
         <textarea
           id="purpose"
@@ -324,13 +343,13 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
           onChange={(e) => setPurpose(e.target.value)}
           rows={5}
           className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-          placeholder="Describe the main business activities and purpose of the company..."
+          placeholder={t('companyPurposePlaceholder')}
         />
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="registeredOffice">
-          Registered Office Address (Luxembourg) <span className="text-red-500">*</span>
+          {t('registeredOffice')} <span className="text-red-500">*</span>
         </Label>
         <textarea
           id="registeredOffice"
@@ -338,25 +357,25 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
           onChange={(e) => setRegisteredOffice(e.target.value)}
           rows={3}
           className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-          placeholder="Street address, postal code, city, Luxembourg"
+          placeholder={t('registeredOfficePlaceholder')}
         />
         <p className="text-xs text-brand-grayMed">
-          Or select domiciliation service in Step 6
+          {t('registeredOfficeHint')}
         </p>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="duration">
-          Company Duration
+          {t('companyDuration')}
         </Label>
         <Input
           id="duration"
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
-          placeholder="unlimited"
+          placeholder={t('companyDurationPlaceholder')}
         />
         <p className="text-xs text-brand-grayMed">
-          Most companies choose "unlimited"
+          {t('companyDurationHint')}
         </p>
       </div>
     </div>

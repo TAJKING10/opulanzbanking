@@ -85,7 +85,7 @@ export function ClientTypeStep() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent"
-                placeholder="{tContact('emailPlaceholder')}"
+                placeholder={tContact('emailPlaceholder')}
               />
             </div>
 
@@ -99,7 +99,7 @@ export function ClientTypeStep() {
                 onChange={(e) => setMobile(e.target.value)}
                 required
                 className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent"
-                placeholder="{tContact('mobilePlaceholder')}"
+                placeholder={tContact('mobilePlaceholder')}
               />
             </div>
 

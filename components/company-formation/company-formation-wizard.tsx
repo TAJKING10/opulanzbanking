@@ -30,7 +30,19 @@ interface CompanyFormationWizardProps {
 export function CompanyFormationWizard({ initialFormType, onBack }: CompanyFormationWizardProps) {
   const t = useTranslations('companyFormation.wizard');
   const tCommon = useTranslations('common');
+  const tStepLabels = useTranslations('companyFormation.wizard.stepLabels');
   const [currentStep, setCurrentStep] = React.useState(1);
+
+  const stepLabels = [
+    tStepLabels('companyType'),
+    tStepLabels('generalInfo'),
+    tStepLabels('people'),
+    tStepLabels('capital'),
+    tStepLabels('activity'),
+    tStepLabels('notaryDomiciliation'),
+    tStepLabels('documents'),
+    tStepLabels('reviewSubmit'),
+  ];
   const [dossier, setDossier] = React.useState<Partial<CompanyFormationDossier>>({
     formType: initialFormType,
     country: "LU",
@@ -71,7 +83,7 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
   }, [dossier]);
 
   const handleNext = () => {
-    if (currentStep < WIZARD_STEPS.length) {
+    if (currentStep < stepLabels.length) {
       setDossier(prev => ({ ...prev, updatedAt: new Date().toISOString() }));
       setCurrentStep(currentStep + 1);
     }
@@ -113,11 +125,11 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
         {/* Progress Stepper */}
         <div className="mb-12">
           <div className="flex items-center justify-between">
-            {WIZARD_STEPS.map((step, index) => {
+            {stepLabels.map((step, index) => {
               const stepNumber = index + 1;
               const isActive = currentStep === stepNumber;
               const isCompleted = currentStep > stepNumber;
-              const isLast = index === WIZARD_STEPS.length - 1;
+              const isLast = index === stepLabels.length - 1;
 
               return (
                 <React.Fragment key={step}>
@@ -153,7 +165,7 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
         {/* Step Content */}
         <Card className="border-none shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl">{WIZARD_STEPS[currentStep - 1]}</CardTitle>
+            <CardTitle className="text-2xl">{stepLabels[currentStep - 1]}</CardTitle>
           </CardHeader>
           <CardContent>
             {currentStep === 1 && <Step1CompanyType dossier={dossier} updateDossier={updateDossier} />}
@@ -176,7 +188,7 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
               </Button>
               <div className="flex gap-4">
                 <Button variant="ghost">{t('saveResume')}</Button>
-                {currentStep < WIZARD_STEPS.length ? (
+                {currentStep < stepLabels.length ? (
                   <Button
                     variant="primary"
                     onClick={handleNext}

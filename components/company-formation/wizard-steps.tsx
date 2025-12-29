@@ -524,7 +524,7 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
               {totalContributions !== capitalAmount && (
                 <p className="text-sm text-yellow-700 mt-1">
                   <AlertCircle className="inline h-4 w-4 mr-1" />
-                  {t('contributionsMismatch', { amount: capitalAmount.toLocaleString() })}
+                  {t('contributionsMismatch', { amount: (capitalAmount || 0).toLocaleString() })}
                 </p>
               )}
             </div>

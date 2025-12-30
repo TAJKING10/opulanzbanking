@@ -933,18 +933,171 @@
     },
     "company": {
       "title": "Company Client Information",
-      "subtitle": "Please provide all required information below. All sections must be completed.",
-      "sections": {
-        "company": "Company Identity",
-        "address": "Registered Address",
-        "representatives": "Legal Representatives",
-        "ubo": "UBO Information",
-        "fatca": "FATCA & CRS Information",
-        "financial": "Financial Information",
-        "origin": "Origin of Funds",
-        "investmentProfile": "Investment Profile",
-        "mission": "Mission Type & Initial Investment",
-        "consents": "Consents & Authorizations"
+      "subtitle": "Please provide all required information about your company. All sections must be completed.",
+      "sectionTitles": {
+        "companyIdentity": "1. Company Identity",
+        "representatives": "2. Authorized Representatives & Beneficial Owners",
+        "financial": "3. Financial Information",
+        "origin": "4. Origin of Funds",
+        "investment": "5. Investment Profile",
+        "mission": "6. Service Type & Initial Investment",
+        "consents": "7. Consents & Authorizations"
+      },
+      "subsections": {
+        "registeredAddress": "Registered Address",
+        "mainContact": "Main Contact / Legal Representative",
+        "ubo": "Ultimate Beneficial Owner (UBO)",
+        "fatcaCrs": "FATCA & CRS Information",
+        "investmentKnowledge": "Investment Knowledge & Experience",
+        "investmentObjectives": "Investment Objectives"
+      },
+      "fields": {
+        "legalName": "Legal Name",
+        "tradingName": "Trading Name",
+        "legalForm": "Legal Form",
+        "dateOfIncorporation": "Date of Incorporation",
+        "registrationNumber": "Registration Number",
+        "registrationCountry": "Registration Country",
+        "taxIdentificationNumber": "Tax Identification Number",
+        "numberOfEmployees": "Number of Employees",
+        "industrySector": "Industry/Sector",
+        "website": "Website",
+        "addressLine1": "Address Line 1",
+        "addressLine2": "Address Line 2",
+        "city": "City",
+        "postalCode": "Postal Code",
+        "country": "Country",
+        "title": "Title",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "position": "Position",
+        "dateOfBirth": "Date of Birth",
+        "nationality": "Nationality",
+        "email": "Email",
+        "mobile": "Mobile",
+        "uboFullName": "UBO Full Name",
+        "ownershipPercentage": "Ownership Percentage (%)",
+        "taxResidentCountries": "Tax Resident Countries",
+        "annualRevenue": "Annual Revenue (EUR)",
+        "totalAssets": "Total Assets (EUR)",
+        "primarySourceOfRevenue": "Primary Source of Revenue",
+        "primaryOriginOfFunds": "Primary Origin of Funds",
+        "additionalDetails": "Additional Details",
+        "investmentExperience": "Investment Experience",
+        "riskTolerance": "Risk Tolerance",
+        "investmentHorizon": "Investment Horizon",
+        "primaryObjective": "Primary Objective",
+        "expectedAnnualReturn": "Expected Annual Return (%)",
+        "maxAcceptableLoss": "Max Acceptable Loss (%)",
+        "typeOfService": "Type of Service",
+        "initialInvestmentAmount": "Initial Investment Amount (EUR)"
+      },
+      "placeholders": {
+        "tradingName": "If different from legal name",
+        "registrationNumber": "e.g., SIREN, Company Number",
+        "industrySector": "e.g., Technology, Finance, Retail",
+        "website": "https://",
+        "position": "e.g., CEO, Managing Director",
+        "taxResidentCountries": "Separate multiple countries with commas",
+        "annualRevenue": "e.g., 1000000",
+        "originDetails": "Provide additional context about the origin of investment funds",
+        "expectedReturn": "e.g., 6.0",
+        "maxLoss": "e.g., 15.0",
+        "initialInvestment": "e.g., 100000"
+      },
+      "options": {
+        "legalForm": {
+          "select": "Select legal form",
+          "sarl": "SARL",
+          "sas": "SAS",
+          "sa": "SA",
+          "sci": "SCI",
+          "gmbh": "GmbH",
+          "ltd": "Ltd",
+          "llc": "LLC",
+          "other": "Other"
+        },
+        "title": {
+          "select": "Select",
+          "mr": "Mr.",
+          "mrs": "Mrs.",
+          "ms": "Ms.",
+          "dr": "Dr."
+        },
+        "sourceOfRevenue": {
+          "select": "Select source",
+          "products": "Product Sales",
+          "services": "Services",
+          "trading": "Trading",
+          "investments": "Investments",
+          "realEstate": "Real Estate",
+          "other": "Other"
+        },
+        "originOfFunds": {
+          "select": "Select origin",
+          "retainedEarnings": "Retained Earnings",
+          "shareholderContributions": "Shareholder Contributions",
+          "businessOperations": "Business Operations",
+          "saleOfAssets": "Sale of Assets",
+          "financing": "Debt/Equity Financing",
+          "other": "Other"
+        },
+        "investmentExperience": {
+          "beginner": "Limited (Less than 2 years)",
+          "intermediate": "Moderate (2-5 years)",
+          "advanced": "Substantial (5-10 years)",
+          "expert": "Extensive (More than 10 years)"
+        },
+        "riskTolerance": {
+          "conservative": "Conservative - Preserve capital",
+          "moderate": "Moderate - Balanced growth",
+          "aggressive": "Aggressive - Maximum growth"
+        },
+        "investmentHorizon": {
+          "select": "Select horizon",
+          "short": "Short-term (Less than 3 years)",
+          "medium": "Medium-term (3-7 years)",
+          "long": "Long-term (More than 7 years)"
+        },
+        "investmentObjective": {
+          "select": "Select objective",
+          "capitalPreservation": "Capital Preservation",
+          "incomeGeneration": "Income Generation",
+          "capitalGrowth": "Capital Growth",
+          "balanced": "Balanced"
+        },
+        "missionType": {
+          "advisory": "Investment Advisory (Conseil)",
+          "management": "Portfolio Management (Gestion sous mandat)"
+        }
+      },
+      "helpers": {
+        "uboDescription": "Individual(s) who ultimately own or control more than 25% of the company",
+        "usPersonCheckbox": "The company or any UBO is a US person for tax purposes",
+        "advisoryHelper": "We provide recommendations, you make the final decisions",
+        "managementHelper": "We manage your portfolio with discretionary authority",
+        "minimumInvestment": "Minimum for corporate clients: €50,000"
+      },
+      "consents": {
+        "dataProcessing": {
+          "label": "Data Processing",
+          "text": "I consent on behalf of the company to the processing of personal and company data in accordance with GDPR and French data protection laws"
+        },
+        "kycCompliance": {
+          "label": "KYC/AML Compliance",
+          "text": "I authorize Opulanz to perform necessary KYC/AML checks on the company and its representatives, and share information with regulatory authorities if required"
+        },
+        "electronicSignature": {
+          "label": "Electronic Signature",
+          "text": "I agree on behalf of the company to sign documents electronically via DocuSign and accept that electronic signatures have the same legal validity as handwritten signatures"
+        },
+        "marketingCommunications": {
+          "label": "Marketing Communications",
+          "text": "I agree to receive marketing communications about Opulanz services and products (optional)"
+        }
+      },
+      "navigation": {
+        "continueToReview": "Continue to Review"
       }
     },
     "review": {

@@ -8,6 +8,17 @@ import { Menu, X, Globe, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+/**
+ * Header Component
+ *
+ * Main navigation header for the Opulanz Banking Platform.
+ * Features:
+ * - Responsive design with mobile menu
+ * - Multi-language support (EN/FR)
+ * - Services dropdown menu
+ * - Sticky header with scroll effects
+ * - Brand logo and navigation links
+ */
 interface HeaderProps {
   locale: string;
 }

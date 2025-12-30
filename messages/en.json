@@ -16,6 +16,26 @@
     "required": "Required",
     "and": "and"
   },
+  "login": {
+    "tagline": "Professional digital banking",
+    "title": "Welcome Back",
+    "subtitle": "Sign in to access your account",
+    "email": "Email",
+    "emailPlaceholder": "your.email@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign In",
+    "or": "Or",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithMicrosoft": "Continue with Microsoft",
+    "noAccount": "Don't have an account?",
+    "openAccount": "Open an account",
+    "needHelp": "Need help?",
+    "contactSupport": "Contact Support",
+    "secureConnection": "Your connection is secure and encrypted"
+  },
   "nav": {
     "home": "Home",
     "about": "About",

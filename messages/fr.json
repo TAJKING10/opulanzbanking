@@ -547,6 +547,321 @@
       "description": "Planifiez une consultation avec nos experts fiscaux pour découvrir comment nous pouvons vous aider à réduire votre charge fiscale tout en restant pleinement conforme.",
       "schedule": "Planifier une consultation",
       "contact": "Nous contacter"
+    },
+    "internationalTax": {
+      "hero": {
+        "title": "Fiscalité internationale",
+        "subtitle": "Conseils d'experts sur les questions fiscales transfrontalières et les prix de transfert"
+      },
+      "pricing": {
+        "price": "250 €",
+        "description": "Tarif fixe pour le service de fiscalité internationale",
+        "duration": "Consultation de 60 minutes avec un conseiller fiscal expert",
+        "bookNow": "Réservez votre consultation maintenant"
+      },
+      "calendar": {
+        "title": "Réservez votre consultation en fiscalité internationale",
+        "subtitle": "Planifiez votre consultation de 60 minutes - {price} €",
+        "consultation60": "Consultation de 60 minutes",
+        "consultationDesc": "Séance de consultation professionnelle avec notre conseiller fiscal expert",
+        "feeLabel": "{price} € Tarif",
+        "feeDesc": "Prix fixe pour le service de fiscalité internationale",
+        "expertService": "Service expert",
+        "expertDesc": "Fiscalité transfrontalière et expertise en prix de transfert"
+      },
+      "payment": {
+        "timeSlotReserved": "Créneau réservé !",
+        "completePayment": "Effectuez votre paiement pour confirmer votre réservation",
+        "appointmentDetails": "Détails de votre rendez-vous",
+        "name": "Nom :",
+        "email": "E-mail :",
+        "date": "Date :",
+        "time": "Heure :",
+        "duration": "Durée :",
+        "minutes60": "60 minutes",
+        "serviceTitle": "Fiscalité internationale",
+        "serviceDesc": "Conseils d'experts sur les questions fiscales transfrontalières et les prix de transfert",
+        "serviceFeeExcl": "Frais de service (HT) :",
+        "vat17": "TVA (17 %) :",
+        "totalIncl": "Total (TTC) :",
+        "completeYourPayment": "Effectuez votre paiement",
+        "oneTimePayment": "Paiement unique pour une consultation de 60 minutes",
+        "testingCard": "Test :",
+        "testingCardDesc": "Utilisez la carte {code} (Expiration : 12/2030, CVV : 123)",
+        "paymentSuccessful": "Paiement réussi !",
+        "processing": "Traitement en cours...",
+        "continueToConfirmation": "Continuer vers la confirmation"
+      },
+      "confirmation": {
+        "title": "Paiement confirmé !",
+        "subtitle": "Merci pour votre paiement. Votre rendez-vous est maintenant confirmé.",
+        "confirmedAppointment": "Rendez-vous confirmé",
+        "service": "Service :",
+        "whatsNext": "Et maintenant ?",
+        "checkEmail": "✓ Consultez votre e-mail ({email}) pour le lien de réunion et l'invitation au calendrier",
+        "prepareDocuments": "✓ Préparez vos documents fiscaux et vos questions",
+        "joinConference": "✓ Rejoignez la visioconférence à l'heure prévue",
+        "teamNotified": "✓ Notre équipe a été informée et sera prête pour votre consultation",
+        "returnToHome": "Retour à l'accueil"
+      },
+      "features": {
+        "title": "Ce qui est inclus",
+        "feature1": "Conseils d'experts sur les questions fiscales transfrontalières",
+        "feature2": "Analyse et documentation des prix de transfert",
+        "feature3": "Optimisation des conventions de double imposition",
+        "feature4": "Conseils sur la structuration fiscale internationale",
+        "feature5": "Planification des transactions transfrontalières",
+        "feature6": "Conformité dans plusieurs juridictions"
+      },
+      "benefits": {
+        "overline": "POURQUOI NOUS CHOISIR",
+        "title": "Avantages d'un conseil fiscal international professionnel",
+        "benefit1": "Minimiser l'exposition fiscale internationale",
+        "benefit2": "Naviguer dans les réglementations transfrontalières complexes",
+        "benefit3": "Optimiser les structures fiscales mondiales",
+        "benefit4": "Connaissance experte du droit fiscal européen et international"
+      },
+      "details": {
+        "overline": "DÉTAILS DU SERVICE",
+        "title": "Expertise en fiscalité internationale",
+        "description1": "Naviguez dans les complexités de la fiscalité transfrontalière avec nos conseils d'experts. Nous sommes spécialisés dans la structuration fiscale internationale, les prix de transfert et l'optimisation des traités.",
+        "description2": "Notre équipe possède une vaste expérience des réglementations fiscales européennes et mondiales, garantissant que vos opérations internationales sont fiscalement efficaces et conformes."
+      },
+      "cta": {
+        "title": "Prêt à optimiser votre fiscalité internationale ?",
+        "description": "Réservez votre consultation maintenant et laissez nos experts vous aider à naviguer dans la fiscalité transfrontalière.",
+        "bookConsultation": "Réserver une consultation - {price} €",
+        "backToTaxAdvisory": "Retour au conseil fiscal"
+      }
+    },
+    "corporateTax": {
+      "hero": {
+        "title": "Fiscalité des entreprises",
+        "subtitle": "Services fiscaux complets et planification pour les entreprises"
+      },
+      "pricing": {
+        "price": "150 €",
+        "description": "Tarif fixe pour le service de fiscalité des entreprises",
+        "duration": "Consultation de 60 minutes avec un conseiller fiscal expert",
+        "bookNow": "Réservez votre consultation maintenant"
+      },
+      "calendar": {
+        "title": "Réservez votre consultation en fiscalité des entreprises",
+        "subtitle": "Planifiez votre consultation de 60 minutes - {price} €",
+        "consultation60": "Consultation de 60 minutes",
+        "consultationDesc": "Séance de consultation professionnelle avec notre conseiller fiscal expert",
+        "feeLabel": "{price} € Tarif",
+        "feeDesc": "Prix fixe pour le service de fiscalité des entreprises",
+        "expertService": "Service expert",
+        "expertDesc": "Planification fiscale des entreprises et conformité"
+      },
+      "payment": {
+        "serviceTitle": "Fiscalité des entreprises",
+        "serviceDesc": "Services fiscaux complets et planification pour les entreprises"
+      },
+      "features": {
+        "title": "Ce qui est inclus",
+        "feature1": "Services fiscaux complets et planification pour les entreprises",
+        "feature2": "Conseils sur la restructuration fiscalement efficace des entreprises",
+        "feature3": "Diligence raisonnable fiscale en matière de fusions-acquisitions et conseils",
+        "feature4": "Conseil et conformité en matière de TVA",
+        "feature5": "Stratégies d'optimisation fiscale des entreprises",
+        "feature6": "Implications fiscales des transactions commerciales"
+      },
+      "benefits": {
+        "title": "Avantages d'un conseil fiscal d'entreprise professionnel",
+        "benefit1": "Optimiser la structure fiscale de l'entreprise",
+        "benefit2": "Conseils d'experts sur des questions fiscales complexes",
+        "benefit3": "Assurer la conformité aux réglementations",
+        "benefit4": "Expertise professionnelle pour les entreprises"
+      },
+      "details": {
+        "overline": "DÉTAILS DU SERVICE",
+        "title": "Services fiscaux pour les entreprises",
+        "description1": "Notre équipe d'experts fournit des services complets de planification fiscale et de conformité pour optimiser la position fiscale de votre entreprise.",
+        "description2": "De la restructuration aux conseils fiscaux en matière de fusions-acquisitions, nous veillons à ce que vos transactions d'entreprise soient fiscalement efficaces et conformes."
+      },
+      "cta": {
+        "title": "Prêt à optimiser votre fiscalité d'entreprise ?",
+        "description": "Réservez votre consultation maintenant et laissez nos experts vous aider dans la planification fiscale de votre entreprise."
+      }
+    },
+    "taxCompliance": {
+      "hero": {
+        "title": "Conformité fiscale",
+        "subtitle": "Assurer une conformité continue aux lois et réglementations fiscales"
+      },
+      "pricing": {
+        "price": "250 €",
+        "description": "Tarif fixe pour le service de conformité fiscale",
+        "bookNow": "Réservez votre consultation maintenant"
+      },
+      "calendar": {
+        "title": "Réservez votre consultation en conformité fiscale",
+        "subtitle": "Planifiez votre consultation de 60 minutes - {price} €",
+        "consultation60": "Consultation de 60 minutes",
+        "consultationDesc": "Séance de consultation professionnelle",
+        "feeLabel": "{price} € Tarif",
+        "feeDesc": "Prix fixe pour la conformité fiscale",
+        "expertService": "Service expert",
+        "expertDesc": "Surveillance de la conformité et conseils"
+      },
+      "payment": {
+        "serviceTitle": "Conformité fiscale",
+        "serviceDesc": "Conformité continue aux lois et réglementations fiscales"
+      },
+      "confirmation": {
+        "subtitle": "Votre rendez-vous est confirmé. E-mails de confirmation envoyés !",
+        "confirmationEmailSent": "✓ E-mail de confirmation envoyé à {email}",
+        "teamNotifiedEmail": "✓ Notre équipe à opulanz.banking@gmail.com a été informée",
+        "checkEmailLink": "✓ Consultez votre e-mail pour le lien Google Meet de Calendly",
+        "prepareQuestions": "✓ Préparez vos questions et documents de conformité",
+        "downloadReceipt": "Télécharger le reçu"
+      },
+      "features": {
+        "title": "Ce qui est inclus",
+        "feature1": "Assurer une conformité continue aux lois et réglementations fiscales",
+        "feature2": "Surveillance régulière des changements réglementaires",
+        "feature3": "Conseils et orientation proactifs en matière de conformité",
+        "feature4": "Correspondance et représentation auprès des autorités fiscales",
+        "feature5": "Examens de conformité et vérifications de santé",
+        "feature6": "Mises à jour sur les changements de lois fiscales au Luxembourg et dans l'UE"
+      },
+      "benefits": {
+        "title": "Avantages",
+        "benefit1": "Rester conforme aux réglementations en évolution",
+        "benefit2": "Éviter les pénalités et les problèmes juridiques",
+        "benefit3": "Tranquillité d'esprit grâce à une surveillance experte",
+        "benefit4": "Gestion proactive des risques"
+      },
+      "details": {
+        "title": "Services de conformité fiscale",
+        "description": "Restez conforme aux réglementations fiscales en évolution grâce à notre surveillance proactive et nos conseils d'experts."
+      },
+      "cta": {
+        "title": "Prêt à assurer la conformité ?",
+        "description": "Réservez votre consultation maintenant.",
+        "bookButton": "Réserver - {price} €"
+      }
+    },
+    "taxReturnPreparation": {
+      "hero": {
+        "title": "Préparation de déclarations fiscales",
+        "subtitle": "Préparation et dépôt professionnels de déclarations fiscales d'entreprise et individuelles"
+      },
+      "pricing": {
+        "price": "299 €",
+        "description": "Tarif fixe pour le service de préparation de déclarations fiscales"
+      },
+      "calendar": {
+        "title": "Réservez votre préparation de déclaration fiscale",
+        "subtitle": "Planifiez votre consultation de 60 minutes - {price} €",
+        "feeDesc": "Prix fixe pour le service de préparation de déclarations fiscales",
+        "expertDesc": "Préparation et dépôt professionnels de déclarations fiscales"
+      },
+      "payment": {
+        "serviceTitle": "Préparation de déclarations fiscales",
+        "serviceDesc": "Préparation et dépôt professionnels de déclarations fiscales d'entreprise et individuelles"
+      },
+      "features": {
+        "feature1": "Préparation professionnelle de déclarations fiscales d'entreprise et individuelles",
+        "feature2": "Dépôt dans plusieurs juridictions",
+        "feature3": "Exactitude et conformité garanties",
+        "feature4": "Examen expert de toute la documentation",
+        "feature5": "Soumission en temps opportun aux autorités fiscales",
+        "feature6": "Assistance pour les questions et la correspondance fiscales"
+      },
+      "benefits": {
+        "title": "Avantages de la préparation professionnelle de déclarations fiscales",
+        "benefit1": "Gagner du temps et réduire le stress",
+        "benefit2": "Assurer la conformité aux réglementations fiscales",
+        "benefit3": "Maximiser les déductions et crédits éligibles",
+        "benefit4": "Expertise professionnelle à des tarifs abordables"
+      },
+      "details": {
+        "title": "Services professionnels de déclarations fiscales",
+        "description1": "Laissez nos professionnels fiscaux expérimentés gérer la complexité de la préparation de déclarations fiscales. Nous garantissons l'exactitude, la conformité et un dépôt en temps opportun dans plusieurs juridictions.",
+        "description2": "Que vous soyez un contribuable individuel ou une entité commerciale, notre service complet couvre tous les aspects de la préparation de déclarations fiscales, de l'examen de la documentation à la soumission finale."
+      },
+      "cta": {
+        "title": "Prêt à déposer votre déclaration fiscale ?",
+        "description": "Réservez votre consultation maintenant et laissez nos experts gérer professionnellement la préparation de votre déclaration fiscale."
+      }
+    },
+    "personalTaxAdvisory": {
+      "hero": {
+        "title": "Conseil fiscal personnel",
+        "subtitle": "Conseils fiscaux personnalisés pour les particuliers fortunés"
+      },
+      "pricing": {
+        "price": "100 €",
+        "description": "Tarif fixe pour le conseil fiscal personnel"
+      },
+      "calendar": {
+        "title": "Réservez votre conseil fiscal personnel",
+        "subtitle": "Planifiez votre consultation de 60 minutes - {price} €",
+        "consultationDesc": "Séance de consultation personnelle",
+        "feeDesc": "Prix fixe pour le conseil fiscal personnel",
+        "expertDesc": "Conseils fiscaux personnalisés"
+      },
+      "payment": {
+        "serviceTitle": "Conseil fiscal personnel",
+        "serviceDesc": "Conseils fiscaux personnalisés pour les particuliers"
+      },
+      "confirmation": {
+        "prepareDocuments": "✓ Préparez vos questions et documents fiscaux personnels"
+      },
+      "features": {
+        "feature1": "Conseils fiscaux personnalisés pour les particuliers fortunés",
+        "feature2": "Planification fiscale et conformité pour les expatriés",
+        "feature3": "Optimisation de l'impôt sur le revenu des particuliers",
+        "feature4": "Planification fiscale du patrimoine et de la succession",
+        "feature5": "Stratégies d'investissement fiscalement efficaces",
+        "feature6": "Conseils fiscaux sur la relocalisation et la résidence"
+      },
+      "benefits": {
+        "benefit1": "Optimiser la position fiscale personnelle",
+        "benefit2": "Conseils d'experts pour les situations complexes",
+        "benefit3": "Tranquillité d'esprit grâce à des conseils professionnels",
+        "benefit4": "Solutions adaptées à vos besoins"
+      },
+      "details": {
+        "title": "Conseil fiscal personnel",
+        "description": "Obtenez des conseils fiscaux personnalisés adaptés à votre situation et à vos objectifs uniques."
+      },
+      "cta": {
+        "title": "Prêt pour des conseils fiscaux personnalisés ?",
+        "description": "Réservez votre consultation maintenant."
+      }
+    },
+    "taxAdvisoryBooking": {
+      "calendar": {
+        "title": "Planifiez votre consultation en conseil fiscal",
+        "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes"
+      },
+      "serviceSelection": {
+        "overline": "ÉTAPE 2 SUR 3",
+        "title": "Sélectionnez votre service de conseil fiscal",
+        "description": "Choisissez le service qui correspond le mieux à vos besoins",
+        "confirmed": "Consultation planifiée !",
+        "selectService": "Maintenant, veuillez sélectionner le service dont vous avez besoin",
+        "selectButton": "Sélectionner le service"
+      },
+      "payment": {
+        "overline": "ÉTAPE 3 SUR 3",
+        "title": "Effectuez votre paiement",
+        "subtitle": "Dernière étape pour confirmer votre consultation",
+        "paymentDetails": "Détails du paiement",
+        "orderSummary": "Récapitulatif de la commande",
+        "paymentMethod": "Mode de paiement",
+        "paymentInfo": "Pour finaliser votre réservation, veuillez procéder au paiement en utilisant l'une des méthodes ci-dessous.",
+        "payCard": "Payer par carte de crédit/débit",
+        "payBank": "Payer par virement bancaire",
+        "payPaypal": "Payer avec PayPal",
+        "reservationNote": "Votre créneau de consultation est réservé pendant 15 minutes. Veuillez effectuer le paiement pour confirmer votre réservation.",
+        "backToSelection": "Retour à la sélection du service",
+        "cancelBooking": "Annuler la réservation"
+      }
     }
   },
   "legal": {

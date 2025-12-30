@@ -97,6 +97,8 @@ export interface CompanyFormationDossier {
   userRef: string;
   paymentStatus: PaymentStatus;
   setupFeeAmount?: number;
+  paypalOrderId?: string;
+  paypalPaymentDetails?: any;
 }
 
 /**

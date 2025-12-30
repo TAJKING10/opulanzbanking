@@ -6,6 +6,8 @@ import { CheckCircle, Building2, Mail, User, FileText, Download, ArrowRight, Cal
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = 'force-dynamic';
+
 export default function AccountingConfirmationPage({ params: { locale } }: { params: { locale: string } }) {
   const router = useRouter();
   const searchParams = useSearchParams();

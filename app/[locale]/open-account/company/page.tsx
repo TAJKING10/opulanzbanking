@@ -196,20 +196,20 @@ export default function CompanyAccountPage() {
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
                     <span>
-                      Set up multi-user access for your team
+                      {tAccount("approved.nextSteps.multiUser")}
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Configure accounting integration</span>
+                    <span>{tAccount("approved.nextSteps.accounting")}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Order corporate debit cards</span>
+                    <span>{tAccount("approved.nextSteps.corporateCards")}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Fund your account via transfer</span>
+                    <span>{tAccount("approved.nextSteps.fundAccount")}</span>
                   </li>
                 </ul>
               </div>
@@ -217,10 +217,10 @@ export default function CompanyAccountPage() {
               <div className="mt-10 flex flex-col gap-4">
                 <div className="flex gap-4">
                   <Button variant="primary" size="lg" className="flex-1">
-                    Go to Dashboard
+                    {tAccount("approved.buttons.dashboard")}
                   </Button>
                   <Button variant="outline" size="lg" className="flex-1">
-                    Download App
+                    {tAccount("approved.buttons.downloadApp")}
                   </Button>
                 </div>
                 <Button
@@ -229,7 +229,7 @@ export default function CompanyAccountPage() {
                   onClick={startNewApplication}
                   className="w-full text-brand-grayMed hover:text-brand-dark"
                 >
-                  Start New Application
+                  {tAccount("approved.buttons.startNew")}
                 </Button>
               </div>
             </CardContent>

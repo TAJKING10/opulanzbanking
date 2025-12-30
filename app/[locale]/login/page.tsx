@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
   const locale = useLocale();
+  const t = useTranslations('login');
   const [showPassword, setShowPassword] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -34,15 +35,15 @@ export default function LoginPage() {
             OPULANZ
           </Link>
           <p className="mt-2 text-sm text-brand-grayMed">
-            Professional digital banking
+            {t('tagline')}
           </p>
         </div>
 
         <Card className="border-none shadow-elevated">
           <CardHeader>
-            <CardTitle className="text-center text-2xl">Welcome Back</CardTitle>
+            <CardTitle className="text-center text-2xl">{t('title')}</CardTitle>
             <p className="text-center text-sm text-brand-grayMed">
-              Sign in to access your account
+              {t('subtitle')}
             </p>
           </CardHeader>
           <CardContent>
@@ -50,7 +51,7 @@ export default function LoginPage() {
               {/* Email Field */}
               <div className="space-y-2">
                 <Label htmlFor="email">
-                  Email <span className="text-red-600">*</span>
+                  {t('email')} <span className="text-red-600">*</span>
                 </Label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 -translate-y-1/2">
@@ -59,7 +60,7 @@ export default function LoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="your.email@example.com"
+                    placeholder={t('emailPlaceholder')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10"
@@ -71,7 +72,7 @@ export default function LoginPage() {
               {/* Password Field */}
               <div className="space-y-2">
                 <Label htmlFor="password">
-                  Password <span className="text-red-600">*</span>
+                  {t('password')} <span className="text-red-600">*</span>
                 </Label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 -translate-y-1/2">
@@ -80,7 +81,7 @@ export default function LoginPage() {
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
+                    placeholder={t('passwordPlaceholder')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 pr-10"
@@ -111,20 +112,20 @@ export default function LoginPage() {
                     className="h-4 w-4 rounded border-brand-grayLight text-brand-gold focus:ring-2 focus:ring-brand-gold"
                   />
                   <Label htmlFor="rememberMe" className="text-sm font-normal cursor-pointer">
-                    Remember me
+                    {t('rememberMe')}
                   </Label>
                 </div>
                 <Link
                   href={`/${locale}/forgot-password`}
                   className="text-sm text-brand-gold hover:text-brand-goldDark transition-colors"
                 >
-                  Forgot password?
+                  {t('forgotPassword')}
                 </Link>
               </div>
 
               {/* Submit Button */}
               <Button type="submit" variant="primary" size="lg" className="w-full">
-                Sign In
+                {t('signIn')}
               </Button>
 
               {/* Divider */}
@@ -133,7 +134,7 @@ export default function LoginPage() {
                   <div className="w-full border-t border-brand-grayLight"></div>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-brand-grayMed">Or</span>
+                  <span className="bg-white px-2 text-brand-grayMed">{t('or')}</span>
                 </div>
               </div>
 
@@ -163,7 +164,7 @@ export default function LoginPage() {
                       d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                     />
                   </svg>
-                  Continue with Google
+                  {t('continueWithGoogle')}
                 </Button>
 
                 <Button
@@ -178,7 +179,7 @@ export default function LoginPage() {
                     <path fill="#7fba00" d="M1 13h10v10H1z" />
                     <path fill="#ffb900" d="M13 13h10v10H13z" />
                   </svg>
-                  Continue with Microsoft
+                  {t('continueWithMicrosoft')}
                 </Button>
               </div>
             </form>
@@ -186,12 +187,12 @@ export default function LoginPage() {
             {/* Sign Up Link */}
             <div className="mt-6 text-center">
               <p className="text-sm text-brand-grayMed">
-                Don't have an account?{" "}
+                {t('noAccount')}{" "}
                 <Link
                   href={`/${locale}/open-account`}
                   className="font-semibold text-brand-gold hover:text-brand-goldDark transition-colors"
                 >
-                  Open an account
+                  {t('openAccount')}
                 </Link>
               </p>
             </div>
@@ -201,12 +202,12 @@ export default function LoginPage() {
         {/* Help Text */}
         <div className="mt-8 text-center">
           <p className="text-xs text-brand-grayMed">
-            Need help?{" "}
+            {t('needHelp')}{" "}
             <Link
               href={`/${locale}/support`}
               className="text-brand-gold hover:text-brand-goldDark transition-colors"
             >
-              Contact Support
+              {t('contactSupport')}
             </Link>
           </p>
         </div>
@@ -215,7 +216,7 @@ export default function LoginPage() {
         <div className="mt-4 rounded-xl bg-accent-beige/30 p-4">
           <p className="text-xs text-center text-brand-grayMed">
             <Lock className="inline h-3 w-3 mr-1" />
-            Your connection is secure and encrypted
+            {t('secureConnection')}
           </p>
         </div>
       </div>

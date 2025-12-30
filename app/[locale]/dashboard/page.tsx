@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { StatusChip } from "@/components/status-chip";
 import { Timeline, type TimelineItem } from "@/components/timeline";
 import { SectionHeading } from "@/components/section-heading";
+import { useTranslations } from "next-intl";
 
 export default function DashboardPage() {
+  const t = useTranslations('dashboard');
   const accountBalance = "45,234.50";
   const currency = "EUR";
 
@@ -64,19 +66,19 @@ export default function DashboardPage() {
   ];
 
   const quickActions = [
-    { label: "Open New Account", href: "/open-account", icon: Plus },
-    { label: "Form Company", href: "/company-formation", icon: FileText },
-    { label: "Book Advisory", href: "/tax-advisory", icon: TrendingUp },
-    { label: "View Statements", href: "/dashboard/statements", icon: FileText },
+    { label: t('actions.openNewAccount'), href: "/open-account", icon: Plus },
+    { label: t('actions.formCompany'), href: "/company-formation", icon: FileText },
+    { label: t('actions.bookAdvisory'), href: "/tax-advisory", icon: TrendingUp },
+    { label: t('actions.viewStatements'), href: "/dashboard/statements", icon: FileText },
   ];
 
   return (
     <div className="min-h-screen bg-brand-off py-20">
       <div className="container mx-auto max-w-7xl px-6">
         <div className="mb-12">
-          <h1 className="mb-2 text-3xl font-bold text-brand-dark">Dashboard</h1>
+          <h1 className="mb-2 text-3xl font-bold text-brand-dark">{t('title')}</h1>
           <p className="text-brand-grayMed">
-            Welcome back! Here's your account overview.
+            {t('subtitle')}
           </p>
         </div>
 
@@ -86,7 +88,7 @@ export default function DashboardPage() {
             <CardContent className="p-8">
               <div className="flex items-start justify-between">
                 <div className="text-white">
-                  <p className="mb-2 text-sm opacity-90">Total Balance</p>
+                  <p className="mb-2 text-sm opacity-90">{t('totalBalance')}</p>
                   <p className="mb-6 text-4xl font-bold">
                     {currency} {accountBalance}
                   </p>
@@ -97,14 +99,14 @@ export default function DashboardPage() {
                       className="bg-white text-brand-dark hover:bg-brand-off"
                     >
                       <Plus className="mr-2 h-4 w-4" />
-                      Add Funds
+                      {t('addFunds')}
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="border border-white/30 text-white hover:bg-white/10"
                     >
-                      Transfer
+                      {t('transfer')}
                     </Button>
                   </div>
                 </div>
@@ -120,7 +122,7 @@ export default function DashboardPage() {
             {/* Quick Actions */}
             <div>
               <h2 className="mb-4 text-xl font-bold text-brand-dark">
-                Quick Actions
+                {t('quickActions')}
               </h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 {quickActions.map((action) => {
@@ -148,10 +150,10 @@ export default function DashboardPage() {
             <div>
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-xl font-bold text-brand-dark">
-                  Recent Transactions
+                  {t('recentTransactions')}
                 </h2>
                 <Button variant="link" className="text-brand-gold">
-                  View All
+                  {t('viewAll')}
                 </Button>
               </div>
               <Card className="border-brand-grayLight">
@@ -210,7 +212,7 @@ export default function DashboardPage() {
             {/* Application Status */}
             <div>
               <h2 className="mb-4 text-xl font-bold text-brand-dark">
-                Application Status
+                {t('applicationStatus')}
               </h2>
               <Card className="border-brand-grayLight">
                 <CardContent className="p-6">
@@ -222,19 +224,19 @@ export default function DashboardPage() {
             {/* Services */}
             <div>
               <h2 className="mb-4 text-xl font-bold text-brand-dark">
-                Our Services
+                {t('ourServices')}
               </h2>
               <Card className="border-brand-grayLight">
                 <CardContent className="space-y-4 p-6">
                   <div>
                     <h4 className="mb-2 font-semibold text-brand-dark">
-                      Need Help?
+                      {t('needHelp')}
                     </h4>
                     <p className="mb-4 text-sm text-brand-grayMed">
-                      Book a consultation with our advisory team
+                      {t('bookConsultationDescription')}
                     </p>
                     <Button variant="outline" size="sm" className="w-full">
-                      Book Consultation
+                      {t('bookConsultation')}
                     </Button>
                   </div>
                 </CardContent>

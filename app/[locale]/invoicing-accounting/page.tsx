@@ -142,7 +142,7 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
-              Contact Sales
+              {t('accounting.cta.contactSales')}
             </Link>
           </div>
         </div>

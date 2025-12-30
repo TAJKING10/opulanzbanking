@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Script from "next/script";
 
+export const dynamic = 'force-dynamic';
+
 interface BookingData {
   // Customer info
   firstName: string;

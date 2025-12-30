@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+
+export const dynamic = 'force-dynamic';
 import { FileCheck, Globe, Briefcase, Shield, UserCheck, CheckCircle, ArrowRight, ArrowLeft, User, Mail, Phone } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

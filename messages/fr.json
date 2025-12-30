@@ -931,7 +931,172 @@
     },
     "company": {
       "title": "Informations Client Entreprise",
-      "subtitle": "Veuillez fournir toutes les informations requises ci-dessous. Toutes les sections doivent être complétées."
+      "subtitle": "Veuillez fournir toutes les informations requises concernant votre entreprise. Toutes les sections doivent être complétées.",
+      "sectionTitles": {
+        "companyIdentity": "1. Identité de l'Entreprise",
+        "representatives": "2. Représentants Autorisés & Bénéficiaires Effectifs",
+        "financial": "3. Informations Financières",
+        "origin": "4. Origine des Fonds",
+        "investment": "5. Profil d'Investissement",
+        "mission": "6. Type de Service & Investissement Initial",
+        "consents": "7. Consentements & Autorisations"
+      },
+      "subsections": {
+        "registeredAddress": "Adresse du Siège Social",
+        "mainContact": "Contact Principal / Représentant Légal",
+        "ubo": "Bénéficiaire Effectif Final (UBO)",
+        "fatcaCrs": "Informations FATCA & CRS",
+        "investmentKnowledge": "Connaissances & Expérience en Investissement",
+        "investmentObjectives": "Objectifs d'Investissement"
+      },
+      "fields": {
+        "legalName": "Raison Sociale",
+        "tradingName": "Nom Commercial",
+        "legalForm": "Forme Juridique",
+        "dateOfIncorporation": "Date de Constitution",
+        "registrationNumber": "Numéro d'Immatriculation",
+        "registrationCountry": "Pays d'Immatriculation",
+        "taxIdentificationNumber": "Numéro d'Identification Fiscale",
+        "numberOfEmployees": "Nombre d'Employés",
+        "industrySector": "Secteur d'Activité",
+        "website": "Site Web",
+        "addressLine1": "Adresse Ligne 1",
+        "addressLine2": "Adresse Ligne 2",
+        "city": "Ville",
+        "postalCode": "Code Postal",
+        "country": "Pays",
+        "title": "Civilité",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "position": "Fonction",
+        "dateOfBirth": "Date de Naissance",
+        "nationality": "Nationalité",
+        "email": "Email",
+        "mobile": "Mobile",
+        "uboFullName": "Nom Complet du Bénéficiaire Effectif",
+        "ownershipPercentage": "Pourcentage de Détention (%)",
+        "taxResidentCountries": "Pays de Résidence Fiscale",
+        "annualRevenue": "Chiffre d'Affaires Annuel (EUR)",
+        "totalAssets": "Total des Actifs (EUR)",
+        "primarySourceOfRevenue": "Source Principale de Revenus",
+        "primaryOriginOfFunds": "Origine Principale des Fonds",
+        "additionalDetails": "Détails Complémentaires",
+        "investmentExperience": "Expérience en Investissement",
+        "riskTolerance": "Tolérance au Risque",
+        "investmentHorizon": "Horizon d'Investissement",
+        "primaryObjective": "Objectif Principal",
+        "expectedAnnualReturn": "Rendement Annuel Attendu (%)",
+        "maxAcceptableLoss": "Perte Maximale Acceptable (%)",
+        "typeOfService": "Type de Service",
+        "initialInvestmentAmount": "Montant de l'Investissement Initial (EUR)"
+      },
+      "placeholders": {
+        "tradingName": "Si différent de la raison sociale",
+        "registrationNumber": "ex : SIREN, Numéro d'entreprise",
+        "industrySector": "ex : Technologie, Finance, Commerce",
+        "website": "https://",
+        "position": "ex : PDG, Directeur Général",
+        "taxResidentCountries": "Séparez les pays multiples par des virgules",
+        "annualRevenue": "ex : 1000000",
+        "originDetails": "Fournissez des informations supplémentaires sur l'origine des fonds d'investissement",
+        "expectedReturn": "ex : 6.0",
+        "maxLoss": "ex : 15.0",
+        "initialInvestment": "ex : 100000"
+      },
+      "options": {
+        "legalForm": {
+          "select": "Sélectionner la forme juridique",
+          "sarl": "SARL",
+          "sas": "SAS",
+          "sa": "SA",
+          "sci": "SCI",
+          "gmbh": "GmbH",
+          "ltd": "Ltd",
+          "llc": "LLC",
+          "other": "Autre"
+        },
+        "title": {
+          "select": "Sélectionner",
+          "mr": "M.",
+          "mrs": "Mme",
+          "ms": "Mlle",
+          "dr": "Dr."
+        },
+        "sourceOfRevenue": {
+          "select": "Sélectionner la source",
+          "products": "Vente de Produits",
+          "services": "Services",
+          "trading": "Négoce",
+          "investments": "Investissements",
+          "realEstate": "Immobilier",
+          "other": "Autre"
+        },
+        "originOfFunds": {
+          "select": "Sélectionner l'origine",
+          "retainedEarnings": "Bénéfices Non Distribués",
+          "shareholderContributions": "Apports des Actionnaires",
+          "businessOperations": "Opérations Commerciales",
+          "saleOfAssets": "Vente d'Actifs",
+          "financing": "Financement par Dette/Capital",
+          "other": "Autre"
+        },
+        "investmentExperience": {
+          "beginner": "Limitée (Moins de 2 ans)",
+          "intermediate": "Modérée (2-5 ans)",
+          "advanced": "Substantielle (5-10 ans)",
+          "expert": "Extensive (Plus de 10 ans)"
+        },
+        "riskTolerance": {
+          "conservative": "Prudent - Préserver le capital",
+          "moderate": "Modéré - Croissance équilibrée",
+          "aggressive": "Dynamique - Croissance maximale"
+        },
+        "investmentHorizon": {
+          "select": "Sélectionner l'horizon",
+          "short": "Court terme (Moins de 3 ans)",
+          "medium": "Moyen terme (3-7 ans)",
+          "long": "Long terme (Plus de 7 ans)"
+        },
+        "investmentObjective": {
+          "select": "Sélectionner l'objectif",
+          "capitalPreservation": "Préservation du Capital",
+          "incomeGeneration": "Génération de Revenus",
+          "capitalGrowth": "Croissance du Capital",
+          "balanced": "Équilibré"
+        },
+        "missionType": {
+          "advisory": "Conseil en Investissement (Conseil)",
+          "management": "Gestion de Portefeuille (Gestion sous mandat)"
+        }
+      },
+      "helpers": {
+        "uboDescription": "Personne(s) physique(s) qui détiennent ou contrôlent en dernier ressort plus de 25% de la société",
+        "usPersonCheckbox": "L'entreprise ou tout bénéficiaire effectif est une personne américaine à des fins fiscales",
+        "advisoryHelper": "Nous fournissons des recommandations, vous prenez les décisions finales",
+        "managementHelper": "Nous gérons votre portefeuille avec pouvoir discrétionnaire",
+        "minimumInvestment": "Minimum pour les clients professionnels : 50 000 €"
+      },
+      "consents": {
+        "dataProcessing": {
+          "label": "Traitement des Données",
+          "text": "Je consens au nom de l'entreprise au traitement des données personnelles et de l'entreprise conformément au RGPD et aux lois françaises sur la protection des données"
+        },
+        "kycCompliance": {
+          "label": "Conformité KYC/LCB",
+          "text": "J'autorise Opulanz à effectuer les vérifications KYC/LCB nécessaires sur l'entreprise et ses représentants, et à partager les informations avec les autorités réglementaires si nécessaire"
+        },
+        "electronicSignature": {
+          "label": "Signature Électronique",
+          "text": "J'accepte au nom de l'entreprise de signer des documents électroniquement via DocuSign et reconnais que les signatures électroniques ont la même valeur juridique que les signatures manuscrites"
+        },
+        "marketingCommunications": {
+          "label": "Communications Marketing",
+          "text": "J'accepte de recevoir des communications marketing concernant les services et produits Opulanz (optionnel)"
+        }
+      },
+      "navigation": {
+        "continueToReview": "Continuer vers la Vérification"
+      }
     },
     "review": {
       "title": "Vérification & Confirmation",

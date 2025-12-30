@@ -7,11 +7,13 @@ import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 import { useState, useEffect, useRef } from "react";
 import emailjs from '@emailjs/browser';
 
 export default function PersonalTaxAdvisoryPage({ params: { locale } }: { params: { locale: string } }) {
+  const t = useTranslations('taxAdvisory.personalTaxAdvisory');  const tCommon = useTranslations('taxAdvisory.internationalTax');
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -36,7 +38,7 @@ export default function PersonalTaxAdvisoryPage({ params: { locale } }: { params
 OPULANZ BANKING - PAYMENT RECEIPT
 ==================================================
 
-Service: Personal Tax Advisory
+Service: ${t('hero.title')}
 Date: ${new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
 Time: ${new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
 Duration: 60 minutes
@@ -76,7 +78,7 @@ Contact: opulanz.banking@gmail.com
     const templateParams = {
       to_email: bookingData.inviteeEmail,
       to_name: bookingData.inviteeName,
-      service_name: 'Personal Tax Advisory',
+      service_name: t('hero.title'),
       appointment_date: new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
       appointment_time: new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
       order_id: bookingData.paymentDetails.orderId,
@@ -162,7 +164,7 @@ Contact: opulanz.banking@gmail.com
           style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', height: 50 },
           createOrder: function(data: any, actions: any) {
             return actions.order.create({
-              purchase_units: [{ description: 'Personal Tax Advisory - 60 minutes', amount: { currency_code: 'EUR', value: totalPrice.toFixed(2) } }]
+              purchase_units: [{ description: t('payment.serviceTitle') + ' - 60 minutes', amount: { currency_code: 'EUR', value: totalPrice.toFixed(2) } }]
             });
           },
           onApprove: function(data: any, actions: any) {
@@ -202,7 +204,7 @@ Contact: opulanz.banking@gmail.com
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           full_name: bookingData.inviteeName, email: bookingData.inviteeEmail, calendly_id: bookingData.eventUri,
-          calendly_event_uri: bookingData.eventUri, meeting_type: 'Personal Tax Advisory', status: 'confirmed',
+          calendly_event_uri: bookingData.eventUri, meeting_type: t('hero.title'), status: 'confirmed',
           start_time: bookingData.eventStartTime, end_time: bookingData.eventEndTime,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, location: 'Video Conference',
           notes: `Paid consultation - €${totalPrice}`
@@ -217,7 +219,7 @@ Contact: opulanz.banking@gmail.com
           customerEmail: bookingData.inviteeEmail,
           appointmentDate: startDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
           appointmentTime: startDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-          meetingType: 'Personal Tax Advisory',
+          meetingType: t('hero.title'),
           price: totalPrice,
           calendlyLink: bookingData.eventUri
         })
@@ -236,19 +238,19 @@ Contact: opulanz.banking@gmail.com
   };
 
   const features = [
-    "Personalized tax advice for high-net-worth individuals",
-    "Expatriate tax planning and compliance",
-    "Personal income tax optimization",
-    "Wealth and estate tax planning",
-    "Tax-efficient investment strategies",
-    "Relocation and residency tax advice",
+    t('features.feature1'),
+    t('features.feature2'),
+    t('features.feature3'),
+    t('features.feature4'),
+    t('features.feature5'),
+    t('features.feature6'),
   ];
 
   const benefits = [
-    "Optimize personal tax position",
-    "Expert guidance for complex situations",
-    "Peace of mind with professional advice",
-    "Tailored solutions for your needs",
+    t('benefits.benefit1'),
+    t('benefits.benefit2'),
+    t('benefits.benefit3'),
+    t('benefits.benefit4'),
   ];
 
   if (step === 'confirmation' && bookingData) {
@@ -329,8 +331,8 @@ Contact: opulanz.banking@gmail.com
                 <div className="flex items-start gap-4 mb-6">
                   <div className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-brand-gold/10"><UserCheck className="h-6 w-6 text-brand-gold" /></div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-brand-dark mb-2">Personal Tax Advisory</h3>
-                    <p className="text-sm text-brand-grayMed mb-2">Personalized tax advice for individuals</p>
+                    <h3 className="text-xl font-bold text-brand-dark mb-2">{t('payment.serviceTitle')}</h3>
+                    <p className="text-sm text-brand-grayMed mb-2">{t('payment.serviceDesc')}</p>
                     <p className="text-sm text-brand-grayMed">Duration: 60 minutes</p>
                   </div>
                 </div>
@@ -375,17 +377,17 @@ Contact: opulanz.banking@gmail.com
         <section className="hero-gradient py-16 md:py-20">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">Book Your Personal Tax Advisory</h1>
-              <p className="text-lg text-white/90">Schedule your 60-minute consultation - €{totalPrice}</p>
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">{t('calendar.title')}</h1>
+              <p className="text-lg text-white/90">{t('calendar.subtitle', { price: totalPrice })}</p>
             </div>
           </div>
         </section>
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-5xl px-6">
             <div className="grid gap-8 md:grid-cols-3 mb-8">
-              <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><Clock className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">60-Minute Consultation</h3><p className="text-sm text-brand-grayMed">Personal consultation session</p></div>
-              <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><Euro className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">€{totalPrice} Fee</h3><p className="text-sm text-brand-grayMed">Fixed price for personal tax advisory</p></div>
-              <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><UserCheck className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Service</h3><p className="text-sm text-brand-grayMed">Personalized tax advice</p></div>
+              <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><Clock className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">{t('calendar.consultation60')}</h3><p className="text-sm text-brand-grayMed">{t('calendar.consultationDesc')}</p></div>
+              <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><Euro className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">{t('calendar.feeLabel', { price: totalPrice })}</h3><p className="text-sm text-brand-grayMed">{t('calendar.feeDesc')}</p></div>
+              <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><UserCheck className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">{t('calendar.expertService')}</h3><p className="text-sm text-brand-grayMed">{t('calendar.expertDesc')}</p></div>
             </div>
             <div className="calendly-inline-widget" data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a" style={{ minWidth: '320px', height: '700px' }} />
           </div>
@@ -395,15 +397,15 @@ Contact: opulanz.banking@gmail.com
 
   return (
     <>
-      <Hero title="Personal Tax Advisory" subtitle="Personalized tax advice for high-net-worth individuals" />
+      <Hero title={t('hero.title')} subtitle={t('hero.subtitle')} />
       <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20 overflow-hidden">
         <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <div className="text-center mb-8">
             <div className="relative">
               <div className="relative mb-6 rounded-2xl bg-white p-8 shadow-2xl border-2 border-brand-gold/20">
-                <h3 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-brand-goldDark">€{totalPrice}</h3>
-                <p className="text-lg text-brand-grayMed my-6">Fixed fee for personal tax advisory</p>
-                <Button onClick={() => setStep('calendar')} size="lg" className="bg-gradient-to-r from-brand-gold to-brand-goldDark text-white min-w-64 h-14 text-lg">Book Your Consultation Now</Button>
+                <h3 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-brand-goldDark">{t('pricing.price')}</h3>
+                <p className="text-lg text-brand-grayMed my-6">{t('pricing.description')}</p>
+                <Button onClick={() => setStep('calendar')} size="lg" className="bg-gradient-to-r from-brand-gold to-brand-goldDark text-white min-w-64 h-14 text-lg">{t('pricing.bookNow')}</Button>
               </div>
             </div>
           </div>
@@ -413,11 +415,11 @@ Contact: opulanz.banking@gmail.com
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
-              <SectionHeading overline="SERVICE DETAILS" title="Personal Tax Advisory" align="left" className="mb-8" />
-              <p className="mb-6 text-lg text-brand-grayMed">Get personalized tax advice tailored to your unique situation and goals.</p>
+              <SectionHeading overline="SERVICE DETAILS" title={t('details.title')} align="left" className="mb-8" />
+              <p className="mb-6 text-lg text-brand-grayMed">{t('details.description')}</p>
             </div>
             <div>
-              <h3 className="mb-6 text-xl font-bold text-brand-dark">What's Included</h3>
+              <h3 className="mb-6 text-xl font-bold text-brand-dark">{t('features.title')}</h3>
               <div className="space-y-4">{features.map((feature) => (<div key={feature} className="flex items-start gap-3 p-4 rounded-xl bg-white/60"><CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" /><p className="text-brand-dark">{feature}</p></div>))}</div>
             </div>
           </div>
@@ -431,8 +433,8 @@ Contact: opulanz.banking@gmail.com
       </section>
       <section className="hero-gradient py-20">
         <div className="container mx-auto max-w-4xl px-6 text-center">
-          <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl">Ready for Personalized Tax Advice?</h2>
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-white/90">Book your consultation now.</p>
+          <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl">{t('cta.title')}</h2>
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-white/90">{t('cta.description')}</p>
           <div className="flex flex-col items-center gap-4 sm:flex-row justify-center">
             <Button onClick={() => setStep('calendar')} size="lg" className="bg-white text-brand-dark hover:bg-gray-50 min-w-48">Book - €{totalPrice}</Button>
             <Button asChild variant="outline" size="lg" className="border-2 border-white bg-transparent text-white hover:bg-white/10 min-w-48"><Link href={`/${locale}/tax-advisory`}>Back to Tax Advisory</Link></Button>

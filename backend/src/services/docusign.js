@@ -85,15 +85,19 @@ class DocuSignService {
       routingOrder: '1'
     });
 
-    const signHere = docusign.SignHere.constructFromObject({
-      documentId: '1',
-      pageNumber: '1',
-      xPosition: '100',
-      yPosition: '700'
+    // Create signature fields for ALL documents (on last page of each)
+    const signHereTabs = documents.map((doc, index) => {
+      return docusign.SignHere.constructFromObject({
+        documentId: String(index + 1),
+        pageNumber: '1', // First page of each document
+        xPosition: '100',
+        yPosition: '650',
+        tabLabel: `Signature Document ${index + 1}`
+      });
     });
 
     docuSigner.tabs = docusign.Tabs.constructFromObject({
-      signHereTabs: [signHere]
+      signHereTabs: signHereTabs
     });
 
     envelope.recipients = docusign.Recipients.constructFromObject({

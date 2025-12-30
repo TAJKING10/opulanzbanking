@@ -13,7 +13,28 @@
     "save": "Enregistrer",
     "loading": "Chargement...",
     "error": "Une erreur s'est produite",
-    "required": "Requis"
+    "required": "Requis",
+    "and": "et"
+  },
+  "login": {
+    "tagline": "Banque numérique professionnelle",
+    "title": "Bon Retour",
+    "subtitle": "Connectez-vous pour accéder à votre compte",
+    "email": "E-mail",
+    "emailPlaceholder": "votre.email@exemple.com",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié ?",
+    "signIn": "Se connecter",
+    "or": "Ou",
+    "continueWithGoogle": "Continuer avec Google",
+    "continueWithMicrosoft": "Continuer avec Microsoft",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "openAccount": "Ouvrir un compte",
+    "needHelp": "Besoin d'aide ?",
+    "contactSupport": "Contacter l'assistance",
+    "secureConnection": "Votre connexion est sécurisée et chiffrée"
   },
   "nav": {
     "home": "Accueil",

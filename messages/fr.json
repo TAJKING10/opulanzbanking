@@ -553,7 +553,74 @@
     "regulated": "Réglementé par ACPR & AMF (FR)",
     "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
     "mifid": "Services d'investissement soumis aux réglementations MiFID II",
-    "idd": "Distribution d'assurance soumise aux exigences IDD"
+    "idd": "Distribution d'assurance soumise aux exigences IDD",
+    "terms": {
+      "heroTitle": "Informations légales",
+      "heroSubtitle": "Conditions générales",
+      "companyIdentification": {
+        "title": "Identification de l'entreprise",
+        "companyName": "Raison sociale",
+        "capital": "Capital",
+        "address": "Adresse",
+        "phone": "Téléphone",
+        "email": "E-mail",
+        "website": "Site web",
+        "siret": "SIRET",
+        "ape": "APE",
+        "vatNumber": "Numéro de TVA",
+        "registration": "Immatriculation",
+        "companyNameValue": "Advensys Insurance Finance SARL",
+        "capitalValue": "20 000 EUR",
+        "addressValue": "66 avenue des Champs Elysées, 75008 Paris",
+        "phoneValue": "+33 6 98 21 44 46",
+        "emailValue": "contact@advensys-in-finance.com",
+        "websiteValue": "www.advensys-in-finance.com",
+        "siretValue": "89511129200010",
+        "apeValue": "6622Z",
+        "vatNumberValue": "FR50895111292",
+        "registrationValue": "Société immatriculée au Tribunal de Commerce de Paris sous le numéro 895111292"
+      },
+      "servicesProvided": {
+        "title": "Services fournis",
+        "investment": "Services de conseil en investissement",
+        "insurance": "Services de courtage en assurance",
+        "banking": "Services d'intermédiation bancaire"
+      },
+      "professionalInsurance": {
+        "title": "Assurance responsabilité civile professionnelle",
+        "description": "L'assurance responsabilité civile professionnelle couvrant nos activités est souscrite auprès d'AXA France."
+      },
+      "contactInfo": {
+        "title": "Informations de contact",
+        "name": "Nom",
+        "nameValue": "Irfan Abdul"
+      },
+      "intellectualProperty": {
+        "title": "Propriété intellectuelle",
+        "trademark": "Le nom et le logo \"Advensys In-Finance\" sont des marques déposées de la société \"Advensys Insurance Finance\".",
+        "ownership": "Le site web www.advensys-in-finance.com est la propriété de \"Advensys Insurance Finance Sarl\"."
+      },
+      "generalConditions": {
+        "title": "Conditions générales d'utilisation",
+        "acceptance": "En accédant à ce site web, vous acceptez de vous conformer aux présentes conditions générales d'utilisation.",
+        "disclaimer": "La société décline toute responsabilité pour les dommages résultant de l'utilisation de ce site web.",
+        "modifications": "Ces conditions générales peuvent être modifiées à tout moment sans préavis.",
+        "jurisdiction": "Tout litige relatif à l'utilisation de ce site web est soumis au droit français et à la juridiction des tribunaux français."
+      },
+      "designHosting": {
+        "title": "Conception et hébergement",
+        "design": "Conception",
+        "development": "Développement",
+        "hosting": "Hébergement",
+        "designValue": "Advensys Insurance Finance S.A.R.L. – 66 Avenue des Champs Elysées, F-75008 Paris – SIRET : 89511129200010",
+        "developmentValue": "Advensys Insurance Finance S.A.R.L. – 66 Avenue des Champs Elysées, F-75008 Paris – SIRET : 89511129200010",
+        "hostingValue": "OVH SAS – 2 rue Kellermann – 59100 Roubaix – France – SIRET : 424 761 419 00045"
+      },
+      "footer": {
+        "disclaimer": "Toutes les informations fournies sont susceptibles d'être modifiées sans préavis. Veuillez vérifier les conditions générales en vigueur.",
+        "lastUpdated": "Dernière mise à jour : janvier 2025"
+      }
+    }
   },
   "footer": {
     "sections": {
@@ -658,6 +725,8 @@
     }
   },
   "kyc": {
+    "title": "Intégration du client",
+    "description": "Complétez votre profil client pour la conformité réglementaire (KYC)",
     "subtitle": "Complétez votre vérification d'identité pour ouvrir votre compte",
     "sections": {
       "personalInfo": "Informations personnelles",
@@ -1546,7 +1615,8 @@
     },
     "cta": {
       "title": "Prêt à Rationaliser Vos Finances ?",
-      "subtitle": "Rejoignez des milliers d'entreprises qui nous font confiance pour leurs besoins en comptabilité et facturation. Commencez aujourd'hui et découvrez la différence."
+      "subtitle": "Rejoignez des milliers d'entreprises qui nous font confiance pour leurs besoins en comptabilité et facturation. Commencez aujourd'hui et découvrez la différence.",
+      "contactSales": "Contacter les ventes"
     },
     "sections": {
       "ourServices": "Nos Services",
@@ -2503,6 +2573,27 @@
       "description": "Rejoignez des milliers de clients satisfaits qui font confiance à Opulanz pour leurs besoins financiers. Ouvrez votre compte aujourd'hui et découvrez la différence.",
       "openAccount": "Ouvrir un Compte",
       "contactUs": "Nous Contacter"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "subtitle": "Bienvenue ! Voici un aperçu de votre compte.",
+    "totalBalance": "Solde total",
+    "addFunds": "Ajouter des fonds",
+    "transfer": "Virement",
+    "quickActions": "Actions rapides",
+    "recentTransactions": "Transactions récentes",
+    "viewAll": "Tout voir",
+    "applicationStatus": "Statut des demandes",
+    "ourServices": "Nos services",
+    "needHelp": "Besoin d'aide ?",
+    "bookConsultation": "Réserver une consultation",
+    "bookConsultationDescription": "Réservez une consultation avec notre équipe de conseil",
+    "actions": {
+      "openNewAccount": "Ouvrir un nouveau compte",
+      "formCompany": "Créer une société",
+      "bookAdvisory": "Réserver conseil",
+      "viewStatements": "Voir les relevés"
     }
   }
 }

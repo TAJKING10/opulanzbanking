@@ -553,7 +553,74 @@
     "regulated": "Regulated by ACPR & AMF (FR)",
     "disclaimer": "Opulanz is a digital banking platform. Banking services provided by licensed partners.",
     "mifid": "Investment services subject to MiFID II regulations",
-    "idd": "Insurance distribution subject to IDD requirements"
+    "idd": "Insurance distribution subject to IDD requirements",
+    "terms": {
+      "heroTitle": "Legal Information",
+      "heroSubtitle": "Terms and Conditions",
+      "companyIdentification": {
+        "title": "Company Identification",
+        "companyName": "Company Name",
+        "capital": "Capital",
+        "address": "Address",
+        "phone": "Phone",
+        "email": "Email",
+        "website": "Website",
+        "siret": "SIRET",
+        "ape": "APE",
+        "vatNumber": "VAT Number",
+        "registration": "Registration",
+        "companyNameValue": "Advensys Insurance Finance SARL",
+        "capitalValue": "20,000 EUR",
+        "addressValue": "66 avenue des Champs Elysées, 75008 Paris",
+        "phoneValue": "+33 6 98 21 44 46",
+        "emailValue": "contact@advensys-in-finance.com",
+        "websiteValue": "www.advensys-in-finance.com",
+        "siretValue": "89511129200010",
+        "apeValue": "6622Z",
+        "vatNumberValue": "FR50895111292",
+        "registrationValue": "Company registered with the Paris Commercial Court under number 895111292"
+      },
+      "servicesProvided": {
+        "title": "Services Provided",
+        "investment": "Investment Advisory Services",
+        "insurance": "Insurance Brokerage Services",
+        "banking": "Banking Intermediation Services"
+      },
+      "professionalInsurance": {
+        "title": "Professional Civil Liability Insurance",
+        "description": "Professional civil liability insurance covering our activities is held with AXA France."
+      },
+      "contactInfo": {
+        "title": "Contact Information",
+        "name": "Name",
+        "nameValue": "Irfan Abdul"
+      },
+      "intellectualProperty": {
+        "title": "Intellectual Property",
+        "trademark": "The name and logo \"Advensys In-Finance\" are registered trademarks of the company \"Advensys Insurance Finance\".",
+        "ownership": "The website www.advensys-in-finance.com is the property of \"Advensys Insurance Finance Sarl\"."
+      },
+      "generalConditions": {
+        "title": "General Conditions of Use",
+        "acceptance": "By accessing this website, you agree to comply with these terms and conditions of use.",
+        "disclaimer": "The company disclaims any responsibility for damages resulting from the use of this website.",
+        "modifications": "These terms and conditions may be modified at any time without prior notice.",
+        "jurisdiction": "Any dispute relating to the use of this website is subject to French law and the jurisdiction of French courts."
+      },
+      "designHosting": {
+        "title": "Design and Hosting",
+        "design": "Design",
+        "development": "Development",
+        "hosting": "Hosting",
+        "designValue": "Advensys Insurance Finance S.A.R.L. – 66 Avenue des Champs Elysées, F-75008 Paris – SIRET: 89511129200010",
+        "developmentValue": "Advensys Insurance Finance S.A.R.L. – 66 Avenue des Champs Elysées, F-75008 Paris – SIRET: 89511129200010",
+        "hostingValue": "OVH SAS – 2 rue Kellermann – 59100 Roubaix – France – SIRET: 424 761 419 00045"
+      },
+      "footer": {
+        "disclaimer": "All information provided is subject to change without notice. Please verify current terms and conditions.",
+        "lastUpdated": "Last updated: January 2025"
+      }
+    }
   },
   "footer": {
     "sections": {
@@ -658,6 +725,8 @@
     }
   },
   "kyc": {
+    "title": "Client Onboarding",
+    "description": "Complete your client profile for regulatory compliance (KYC)",
     "subtitle": "Complete your identity verification to open your account",
     "sections": {
       "personalInfo": "Personal Information",
@@ -1547,7 +1616,8 @@
     },
     "cta": {
       "title": "Ready to Streamline Your Finances?",
-      "subtitle": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference."
+      "subtitle": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
+      "contactSales": "Contact Sales"
     },
     "sections": {
       "ourServices": "Our Services",
@@ -2504,6 +2574,27 @@
       "description": "Join thousands of satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
       "openAccount": "Open an Account",
       "contactUs": "Contact Us"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Welcome back! Here's your account overview.",
+    "totalBalance": "Total Balance",
+    "addFunds": "Add Funds",
+    "transfer": "Transfer",
+    "quickActions": "Quick Actions",
+    "recentTransactions": "Recent Transactions",
+    "viewAll": "View All",
+    "applicationStatus": "Application Status",
+    "ourServices": "Our Services",
+    "needHelp": "Need Help?",
+    "bookConsultation": "Book Consultation",
+    "bookConsultationDescription": "Book a consultation with our advisory team",
+    "actions": {
+      "openNewAccount": "Open New Account",
+      "formCompany": "Form Company",
+      "bookAdvisory": "Book Advisory",
+      "viewStatements": "View Statements"
     }
   }
 }

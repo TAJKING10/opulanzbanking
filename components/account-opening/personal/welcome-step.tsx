@@ -13,10 +13,10 @@ interface WelcomeStepProps {
 }
 
 export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
-  const [mode, setMode] = React.useState<string>((data?.mode as string) || "");
   const t = useTranslations("accountOpening.personal.welcomeStep");
-  const [mode, setMode] = React.useState(data.mode || "");
-
+  const [mode, setMode] = React.useState<string>(
+    data?.mode ?? ""
+  );
   const handleModeChange = (value: string) => {
     setMode(value);
     onUpdate({ mode: value });

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 export const dynamic = 'force-dynamic';
 
-export default function ConfirmationPage({ params: { locale } }: { params: { locale: string } }) {
+export default function ConfirmationClient({ params: { locale } }: { params: { locale: string } }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 

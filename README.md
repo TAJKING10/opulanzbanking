@@ -9,7 +9,7 @@ Opulanz is a complete, production-ready digital banking platform UI built with N
 ## Features
 
 ### Core Banking Services
-- **Lot 0.1**: Warm Referral Flow - Prequalification and partner matching
+- **Lot 0.1**: Warm Referral Flow - Prequalification and Partner Matching
 - **Lot 0.2**: Whitelabel Account Opening - Full KYC/KYB with document upload
 - **Lot 1**: Company Formation - Luxembourg entity creation wizard (SARL, SA, SCSp)
 - **Lot 2**: Accounting & Invoicing integration

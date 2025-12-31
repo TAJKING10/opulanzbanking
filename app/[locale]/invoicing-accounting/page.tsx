@@ -15,44 +15,37 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
   const features = [
     {
       icon: FileText,
-      title: "Professional Invoicing",
-      description: "Create and send professional invoices with automated payment reminders and tracking.",
+      title: t('accounting.features.invoicing.title'),
+      description: t('accounting.features.invoicing.description'),
     },
     {
       icon: Calculator,
-      title: "Bookkeeping Services",
-      description: "Comprehensive bookkeeping services to keep your financial records accurate and up-to-date.",
+      title: t('accounting.features.bookkeeping.title'),
+      description: t('accounting.features.bookkeeping.description'),
     },
     {
       icon: PieChart,
-      title: "Financial Reporting",
-      description: "Detailed financial reports and insights to help you make informed business decisions.",
+      title: t('accounting.features.reporting.title'),
+      description: t('accounting.features.reporting.description'),
     },
     {
       icon: Users,
-      title: "Payroll Management",
-      description: "Efficient payroll processing with automated tax calculations and compliance.",
+      title: t('accounting.features.payroll.title'),
+      description: t('accounting.features.payroll.description'),
     },
     {
       icon: Shield,
-      title: "Compliance & Audit",
-      description: "Ensure compliance with local regulations and prepare for audits with confidence.",
+      title: t('accounting.features.compliance.title'),
+      description: t('accounting.features.compliance.description'),
     },
     {
       icon: TrendingUp,
-      title: "Financial Planning",
-      description: "Strategic financial planning and analysis to support your business growth.",
+      title: t('accounting.features.planning.title'),
+      description: t('accounting.features.planning.description'),
     },
   ];
 
-  const benefits = [
-    "Save time with automated invoicing and bookkeeping",
-    "Reduce errors with professional accounting expertise",
-    "Stay compliant with local tax regulations",
-    "Get real-time insights into your financial health",
-    "Focus on growing your business while we handle the numbers",
-    "Secure cloud-based access to your financial data anytime",
-  ];
+  const benefits = t.raw('accounting.benefits.list') as string[];
 
   return (
     <>
@@ -60,11 +53,11 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
         title={t('services.accounting.title')}
         subtitle={t('services.accounting.description')}
         primaryCta={{
-          label: "Get Started",
+          label: t('common.getStarted'),
           href: `/${locale}/invoicing-accounting/onboarding`,
         }}
         secondaryCta={{
-          label: "Learn More",
+          label: t('common.learnMore'),
           href: "#features",
         }}
       />
@@ -73,9 +66,9 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
       <section id="features" className="bg-white py-20 md:py-28">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline="Our Services"
-            title="Complete Accounting Solutions for Your Business"
-            description="From invoicing to financial reporting, we provide comprehensive accounting services tailored to your business needs."
+            overline={t('accounting.sections.ourServices')}
+            title={t('accounting.sections.completeSolutions')}
+            description={t('accounting.sections.solutionsDesc')}
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature) => {
@@ -104,19 +97,17 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
               <h2 className="mb-6 text-3xl font-bold text-brand-dark md:text-4xl">
-                Why Choose Our Accounting Services?
+                {t('accounting.benefits.title')}
               </h2>
               <p className="mb-8 text-lg text-brand-grayMed">
-                We combine cutting-edge technology with expert financial knowledge to deliver accounting
-                services that help your business thrive. Our team of certified accountants ensures accuracy,
-                compliance, and strategic insights for your financial success.
+                {t('accounting.benefits.subtitle')}
               </p>
               <Button
                 asChild
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <Link href={`/${locale}/invoicing-accounting/onboarding`}>Get Started</Link>
+                <Link href={`/${locale}/invoicing-accounting/onboarding`}>{t('common.getStarted')}</Link>
               </Button>
             </div>
             <div className="space-y-4">
@@ -135,24 +126,23 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
       <section className="hero-gradient py-20 md:py-28">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            Ready to Streamline Your Finances?
+            {t('accounting.cta.title')}
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            Join thousands of businesses that trust us with their accounting and invoicing needs.
-            Get started today and experience the difference.
+            {t('accounting.cta.subtitle')}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href={`/${locale}/invoicing-accounting/onboarding`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
-              Get Started
+              {t('common.getStarted')}
             </Link>
             <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
-              Contact Sales
+              {t('accounting.cta.contactSales')}
             </Link>
           </div>
         </div>

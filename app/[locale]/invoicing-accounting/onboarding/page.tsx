@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
 import { Step } from "@/components/account-opening/stepper";
 
@@ -13,19 +14,20 @@ import { BillingVolumeStep } from "@/components/accounting/billing-volume-step";
 import { DocumentsStep } from "@/components/accounting/documents-step";
 import { ReviewSubmitStep } from "@/components/accounting/review-submit-step";
 
-const ACCOUNTING_STEPS: Step[] = [
-  { id: 1, label: "Company", description: "Basic details" },
-  { id: 2, label: "Activity", description: "Business & scale" },
-  { id: 3, label: "Contacts", description: "Addresses & people" },
-  { id: 4, label: "Volume", description: "Billing info" },
-  { id: 5, label: "Documents", description: "Optional uploads" },
-  { id: 6, label: "Review", description: "Confirm & submit" },
-];
-
 export default function AccountingOnboardingPage() {
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string;
+  const t = useTranslations();
+
+  const ACCOUNTING_STEPS: Step[] = [
+    { id: 1, label: t('accounting.steps.company.label'), description: t('accounting.steps.company.description') },
+    { id: 2, label: t('accounting.steps.activity.label'), description: t('accounting.steps.activity.description') },
+    { id: 3, label: t('accounting.steps.contacts.label'), description: t('accounting.steps.contacts.description') },
+    { id: 4, label: t('accounting.steps.volume.label'), description: t('accounting.steps.volume.description') },
+    { id: 5, label: t('accounting.steps.documents.label'), description: t('accounting.steps.documents.description') },
+    { id: 6, label: t('accounting.steps.review.label'), description: t('accounting.steps.review.description') },
+  ];
 
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -138,18 +140,110 @@ export default function AccountingOnboardingPage() {
     setIsLoading(true);
 
     try {
-      // In a real app, submit to backend API
+      const appId = `OPL-ACC-${Date.now()}`;
+
       console.log("Submitting accounting onboarding:", formData);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Prepare payload for Azure backend
+      const applicationPayload = {
+        type: "accounting",
+        status: "submitted",
+        payload: {
+          // Company Basics
+          companyType: formData.companyType,
+          companyTypeOther: formData.companyTypeOther,
+          countryOfIncorporation: formData.countryOfIncorporation,
+          dateOfIncorporation: formData.dateOfIncorporation,
+          shareCapital: {
+            amount: formData.shareCapitalAmount,
+            currency: formData.shareCapitalCurrency
+          },
+          legalName: formData.legalName,
+          tradeName: formData.tradeName,
+          registrationNumber: formData.registrationNumber,
+          vatNumber: formData.vatNumber,
+
+          // Activity & Scale
+          businessActivity: formData.businessActivity,
+          turnoverLastFY: {
+            amount: formData.turnoverLastFYAmount,
+            currency: formData.turnoverLastFYCurrency
+          },
+          turnoverCurrentFY: {
+            amount: formData.turnoverCurrentFYAmount,
+            currency: formData.turnoverCurrentFYCurrency
+          },
+          employeesFTE: formData.employeesFTE,
+
+          // Contacts & Addresses
+          registeredAddress: formData.registeredAddress,
+          operatingAddress: formData.operatingAddress,
+          sameAsRegistered: formData.sameAsRegistered,
+          primaryContact: formData.primaryContact,
+          accountingContact: formData.accountingContact,
+          hasAccountingContact: formData.hasAccountingContact,
+
+          // Billing Volume
+          salesInvoicesMonth: formData.salesInvoicesMonth,
+          purchaseInvoicesMonth: formData.purchaseInvoicesMonth,
+          payrollNeeded: formData.payrollNeeded,
+          payrollEmployees: formData.payrollEmployees,
+          multiCurrencyEnabled: formData.multiCurrencyEnabled,
+          multiCurrencies: formData.multiCurrencies,
+
+          // Documents
+          documents: formData.documents?.map((doc: any) => ({
+            name: doc.name,
+            type: doc.type,
+            size: doc.size
+          })) || [],
+
+          // Consent
+          consent: formData.consent,
+
+          // Metadata
+          applicationId: appId,
+          submittedAt: new Date().toISOString(),
+        }
+      };
+
+      // Submit to Azure backend API
+      const response = await fetch('http://localhost:5000/api/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(applicationPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit accounting onboarding to backend');
+      }
+
+      const result = await response.json();
+      console.log("Accounting onboarding saved to Azure database:", result);
 
       // Clear saved progress
       localStorage.removeItem("accounting-onboarding-progress");
 
-      // Redirect to success page or show confirmation
-      alert("Application submitted successfully! We'll be in touch soon.");
-      router.push(`/${locale}/invoicing-accounting`);
+      // Store application data in sessionStorage for confirmation page
+      const confirmationData = {
+        applicationId: appId,
+        legalName: formData.legalName,
+        tradeName: formData.tradeName,
+        email: formData.primaryContact?.email,
+        primaryContactName: `${formData.primaryContact?.firstName || ''} ${formData.primaryContact?.lastName || ''}`.trim(),
+        primaryContactPhone: formData.primaryContact?.phone,
+        companyType: formData.companyType,
+        registrationNumber: formData.registrationNumber,
+        vatNumber: formData.vatNumber,
+        submittedAt: new Date().toISOString(),
+      };
+
+      sessionStorage.setItem('accounting-application', JSON.stringify(confirmationData));
+
+      // Redirect to professional confirmation page
+      router.push(`/${locale}/invoicing-accounting/confirmation?ref=${appId}`);
     } catch (error) {
       console.error("Submission error:", error);
       alert("An error occurred. Please try again.");
@@ -213,18 +307,39 @@ export default function AccountingOnboardingPage() {
     }
   };
 
+  // Check if current step is valid
+  const canProceed = () => {
+    switch (currentStep) {
+      case 1:
+        return formData.isStep1Valid === true;
+      case 2:
+        return formData.isStep2Valid === true;
+      case 3:
+        return formData.isStep3Valid === true;
+      case 4:
+        return formData.isStep4Valid === true;
+      case 5:
+        return formData.isStep5Valid === true;
+      case 6:
+        return false; // No next button on last step
+      default:
+        return false;
+    }
+  };
+
   return (
     <AccountOpeningLayout
-      title="Accounting & Bookkeeping Onboarding"
-      description="Complete your application in 6 simple steps"
+      title={t('accounting.onboarding.title')}
+      description={t('accounting.onboarding.subtitle')}
       steps={ACCOUNTING_STEPS}
       currentStep={currentStep}
       onStepChange={handleStepChange}
       onNext={handleNext}
       onBack={handleBack}
-      canGoNext={currentStep < ACCOUNTING_STEPS.length}
+      canGoNext={canProceed()}
       canGoBack={currentStep > 1}
       isLoading={isLoading}
+      hideNavigation={currentStep === ACCOUNTING_STEPS.length}
     >
       {renderStep()}
     </AccountOpeningLayout>

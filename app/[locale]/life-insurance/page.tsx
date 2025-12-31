@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { Heart, Shield, Users, TrendingUp, CheckCircle, FileText, DollarSign, Briefcase, Clock } from "lucide-react";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -10,29 +11,49 @@ import { Button } from "@/components/ui/button";
 export default function LifeInsurancePage({ params: { locale } }: { params: { locale: string } }) {
   const products = [
     {
+      id: "term-life-insurance",
       icon: Clock,
       title: "Term Life Insurance",
       description: "10, 20, or 30-year term options with level premiums for affordable protection during your most critical years.",
+      price: "€199",
+      priceValue: 199,
+      href: `/${locale}/life-insurance/booking?service=term-life-insurance`,
     },
     {
+      id: "whole-life-insurance",
       icon: Heart,
       title: "Whole Life Insurance",
       description: "Lifetime coverage with cash value accumulation that provides permanent protection and financial growth.",
+      price: "€349",
+      priceValue: 349,
+      href: `/${locale}/life-insurance/booking?service=whole-life-insurance`,
     },
     {
+      id: "universal-life-insurance",
       icon: TrendingUp,
       title: "Universal Life Insurance",
       description: "Flexible premiums and adjustable death benefits that adapt to your changing financial situation.",
+      price: "€299",
+      priceValue: 299,
+      href: `/${locale}/life-insurance/booking?service=universal-life-insurance`,
     },
     {
+      id: "variable-life-insurance",
       icon: DollarSign,
       title: "Variable Life Insurance",
       description: "Investment-linked cash value growth that allows you to potentially increase your policy's value over time.",
+      price: "€399",
+      priceValue: 399,
+      href: `/${locale}/life-insurance/booking?service=variable-life-insurance`,
     },
     {
+      id: "group-life-insurance",
       icon: Briefcase,
       title: "Group Life Insurance",
       description: "Employer-sponsored life insurance plans that provide coverage at competitive group rates.",
+      price: "€149",
+      priceValue: 149,
+      href: `/${locale}/life-insurance/booking?service=group-life-insurance`,
     },
   ];
 
@@ -51,11 +72,11 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
         subtitle="As your trusted insurance broker, we connect you with comprehensive life insurance solutions to financially protect your loved ones"
         primaryCta={{
           label: "Get a Quote",
-          href: `/${locale}/life-insurance/schedule`,
+          href: `/${locale}/life-insurance/booking`,
         }}
         secondaryCta={{
-          label: "Learn More",
-          href: "#overview",
+          label: "Our Services",
+          href: "#products",
         }}
       />
 
@@ -140,28 +161,34 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
             {products.map((product, idx) => {
               const Icon = product.icon;
               return (
-                <div key={product.title} className="group relative">
-                  {/* 3D shadow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2"></div>
-                  <Card className="relative border-none shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:-translate-y-1 bg-white/80 backdrop-blur-sm">
-                    <CardHeader className="space-y-4">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="relative">
-                          {/* Glowing effect behind icon */}
-                          <div className="absolute inset-0 bg-gradient-to-br from-brand-gold to-brand-goldDark rounded-xl blur-md opacity-50 group-hover:opacity-75 transition-opacity"></div>
-                          <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-brand-gold to-brand-goldDark shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                            <Icon className="h-7 w-7 text-white" />
+                <Link key={product.id} href={product.href}>
+                  <div className="group relative h-full">
+                    {/* 3D shadow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2"></div>
+                    <Card className="relative border-none shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:-translate-y-1 h-full cursor-pointer bg-white/80 backdrop-blur-sm">
+                      <CardHeader className="space-y-4">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="relative">
+                            {/* Glowing effect behind icon */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-brand-gold to-brand-goldDark rounded-xl blur-md opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                            <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-brand-gold to-brand-goldDark shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                              <Icon className="h-7 w-7 text-white" />
+                            </div>
                           </div>
+                          <span className="text-xs font-bold text-brand-gold/40 bg-brand-gold/10 px-2 py-1 rounded-full">0{idx + 1}</span>
                         </div>
-                        <span className="text-xs font-bold text-brand-gold/40 bg-brand-gold/10 px-2 py-1 rounded-full">0{idx + 1}</span>
-                      </div>
-                      <CardTitle className="text-lg group-hover:text-brand-gold transition-colors">{product.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-brand-grayMed leading-relaxed">{product.description}</p>
-                    </CardContent>
-                  </Card>
-                </div>
+                        <CardTitle className="text-lg group-hover:text-brand-gold transition-colors">{product.title}</CardTitle>
+                        <div className="mt-2">
+                          <span className="text-2xl font-bold text-brand-gold group-hover:scale-105 inline-block transition-transform">{product.price}</span>
+                          <span className="text-sm text-brand-grayMed ml-2">consultation</span>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-brand-grayMed leading-relaxed">{product.description}</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </Link>
               );
             })}
           </div>
@@ -286,16 +313,16 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
 
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a
-                href={`/${locale}/life-insurance/schedule`}
+                href={`/${locale}/life-insurance/booking`}
                 className="inline-flex h-14 min-w-56 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-lg transition-all hover:bg-gray-50 hover:scale-105"
               >
                 Get Free Quote
               </a>
               <a
-                href={`/${locale}/life-insurance/schedule`}
+                href={`/${locale}/life-insurance/booking`}
                 className="inline-flex h-14 min-w-56 items-center justify-center rounded-2xl border-2 border-white bg-white/10 px-8 text-base font-semibold text-white transition-all hover:bg-white/20"
               >
-                Talk to an Advisor
+                Book Consultation
               </a>
             </div>
           </div>

@@ -23,13 +23,21 @@ type ApplicationStatus = "form" | "submitted" | "approved" | "declined";
 
 export default function CompanyAccountPage() {
   const t = useTranslations();
+  const tAccount = useTranslations("accountOpening.company");
   const [status, setStatus] = React.useState<ApplicationStatus>("form");
   const [iban, setIban] = React.useState<string>("");
+
+  // Reset status when component mounts to ensure fresh start
+  React.useEffect(() => {
+    // Clear any persisted state on mount
+    setStatus("form");
+  }, []);
 
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<WhitelabelKYBFormData>({
     resolver: zodResolver(whitelabelKYBSchema),
@@ -43,17 +51,118 @@ export default function CompanyAccountPage() {
     },
   });
 
-  const onSubmit = async (data: WhitelabelKYBFormData) => {
-    // Simulate API submission
-    console.log("Submitting KYB data:", data);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+  // Function to reset everything for a new application
+  const startNewApplication = () => {
+    setStatus("form");
+    setIban("");
+    reset();
+  };
 
-    // Simulate approval for demo
-    setStatus("submitted");
-    setTimeout(() => {
-      setStatus("approved");
-      setIban("LU28 0019 4006 4475 0001");
-    }, 3000);
+  const onSubmit = async (data: WhitelabelKYBFormData) => {
+    try {
+      console.log("Submitting KYB data:", data);
+
+      // Prepare the payload for the backend
+      const applicationPayload = {
+        type: "company",
+        status: "submitted",
+        payload: {
+          // Company Information
+          companyName: data.companyName,
+          registrationNumber: data.registrationNumber,
+          dateOfIncorporation: data.dateOfIncorporation,
+          legalForm: data.legalForm,
+
+          // Company Address
+          companyAddress: data.companyAddress,
+          companyCity: data.companyCity,
+          companyPostalCode: data.companyPostalCode,
+          companyCountry: data.companyCountry,
+
+          // Business Activity
+          businessActivity: data.businessActivity,
+          activityCountries: data.activityCountries,
+          expectedMonthlyVolume: data.expectedMonthlyVolume,
+
+          // Consents
+          consentKYB: data.consentKYB,
+          consentTerms: data.consentTerms,
+
+          // Metadata
+          submittedAt: new Date().toISOString(),
+        }
+      };
+
+      // Submit application to backend API
+      const applicationResponse = await fetch('http://localhost:5000/api/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(applicationPayload),
+      });
+
+      if (!applicationResponse.ok) {
+        throw new Error('Failed to submit application');
+      }
+
+      const applicationResult = await applicationResponse.json();
+      console.log("Application submitted successfully:", applicationResult);
+
+      // Also create a company record
+      const companyPayload = {
+        name: data.companyName,
+        registration_number: data.registrationNumber,
+        country: data.companyCountry,
+        legal_form: data.legalForm,
+        incorporation_date: data.dateOfIncorporation,
+        registered_address: {
+          street: data.companyAddress,
+          city: data.companyCity,
+          zip: data.companyPostalCode,
+          country: data.companyCountry,
+        },
+      };
+
+      const companyResponse = await fetch('http://localhost:5000/api/companies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(companyPayload),
+      });
+
+      if (!companyResponse.ok) {
+        console.warn('Failed to create company record, but application was saved');
+      } else {
+        const companyResult = await companyResponse.json();
+        console.log("Company record created:", companyResult);
+      }
+
+      // TODO: Handle document uploads separately
+      // For now, we'll store document file names in the console
+      if (data.statutes && data.statutes.length > 0) {
+        console.log("Statutes to upload:", data.statutes[0].name);
+      }
+      if (data.registerExtract && data.registerExtract.length > 0) {
+        console.log("Register Extract to upload:", data.registerExtract[0].name);
+      }
+      if (data.uboDeclaration && data.uboDeclaration.length > 0) {
+        console.log("UBO Declaration to upload:", data.uboDeclaration[0].name);
+      }
+
+      // Show submitted status
+      setStatus("submitted");
+
+      // Simulate approval for demo (in production, this would be done by admin)
+      setTimeout(() => {
+        setStatus("approved");
+        setIban("LU28 0019 4006 4475 0001");
+      }, 3000);
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      alert("Failed to submit application. Please try again.");
+    }
   };
 
   if (status === "approved") {
@@ -69,7 +178,7 @@ export default function CompanyAccountPage() {
                 {t("whitelabel.approved")}
               </h1>
               <p className="mb-8 text-lg text-brand-grayMed">
-                Your business account has been successfully approved!
+                {tAccount("approved.message")}
               </p>
 
               <div className="mb-8 rounded-xl bg-brand-grayLight/50 p-6">
@@ -87,30 +196,40 @@ export default function CompanyAccountPage() {
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
                     <span>
-                      Set up multi-user access for your team
+                      {tAccount("approved.nextSteps.multiUser")}
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Configure accounting integration</span>
+                    <span>{tAccount("approved.nextSteps.accounting")}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Order corporate debit cards</span>
+                    <span>{tAccount("approved.nextSteps.corporateCards")}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Fund your account via transfer</span>
+                    <span>{tAccount("approved.nextSteps.fundAccount")}</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="mt-10 flex gap-4">
-                <Button variant="primary" size="lg" className="flex-1">
-                  Go to Dashboard
-                </Button>
-                <Button variant="outline" size="lg" className="flex-1">
-                  Download App
+              <div className="mt-10 flex flex-col gap-4">
+                <div className="flex gap-4">
+                  <Button variant="primary" size="lg" className="flex-1">
+                    {tAccount("approved.buttons.dashboard")}
+                  </Button>
+                  <Button variant="outline" size="lg" className="flex-1">
+                    {tAccount("approved.buttons.downloadApp")}
+                  </Button>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  onClick={startNewApplication}
+                  className="w-full text-brand-grayMed hover:text-brand-dark"
+                >
+                  {tAccount("approved.buttons.startNew")}
                 </Button>
               </div>
             </CardContent>
@@ -133,7 +252,7 @@ export default function CompanyAccountPage() {
                 {t("whitelabel.applicationSubmitted")}
               </h1>
               <p className="mb-8 text-lg text-brand-grayMed">
-                Your business account application is being reviewed. You will receive a decision within 2-3 business days.
+                {tAccount("submitted.message")}
               </p>
               <StatusChip status="submitted" />
             </CardContent>
@@ -147,15 +266,15 @@ export default function CompanyAccountPage() {
     <div className="min-h-screen bg-brand-off py-20">
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading
-          title={t("whitelabel.kybTitle")}
-          description="Complete your business verification to open your company account"
+          title={tAccount("title")}
+          description={tAccount("description")}
           align="center"
           className="mb-12"
         />
 
         <Card className="border-none shadow-elevated">
           <CardHeader>
-            <CardTitle>Company Information</CardTitle>
+            <CardTitle>{tAccount("form.companyInfo")}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">

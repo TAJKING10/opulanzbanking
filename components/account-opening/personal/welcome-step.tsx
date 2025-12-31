@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { CreditCard, Landmark } from "lucide-react";
@@ -13,6 +14,8 @@ interface WelcomeStepProps {
 
 export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
   const [mode, setMode] = React.useState<string>((data?.mode as string) || "");
+  const t = useTranslations("accountOpening.personal.welcomeStep");
+  const [mode, setMode] = React.useState(data.mode || "");
 
   const handleModeChange = (value: string) => {
     setMode(value);
@@ -22,16 +25,16 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Welcome to Opulanz</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          Let's get started with opening your personal bank account. This should take about 10 minutes.
+          {t("subtitle")}
         </p>
       </div>
 
       <div className="space-y-6">
         <div>
           <h3 className="mb-4 text-lg font-semibold text-brand-dark">
-            What type of account are you opening?
+            {t("accountTypeQuestion")}
           </h3>
 
           <RadioGroup value={mode} onValueChange={handleModeChange} className="space-y-4">
@@ -50,12 +53,11 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
                     htmlFor="current"
                     className="text-base font-semibold text-brand-dark cursor-pointer"
                   >
-                    Current / Everyday Account
+                    {t("accountTypes.current.title")}
                   </Label>
                 </div>
                 <p className="mt-2 text-sm text-brand-grayMed">
-                  Standard personal banking for daily transactions, payments, and savings.
-                  Suitable for residents and non-residents.
+                  {t("accountTypes.current.description")}
                 </p>
               </div>
             </div>
@@ -75,12 +77,11 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
                     htmlFor="private"
                     className="text-base font-semibold text-brand-dark cursor-pointer"
                   >
-                    Private Banking
+                    {t("accountTypes.private.title")}
                   </Label>
                 </div>
                 <p className="mt-2 text-sm text-brand-grayMed">
-                  Wealth management and private banking services for high-net-worth individuals.
-                  Minimum deposit typically required.
+                  {t("accountTypes.private.description")}
                 </p>
               </div>
             </div>
@@ -88,12 +89,12 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
         </div>
 
         <div className="rounded-lg bg-blue-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-blue-900">What happens next?</h4>
+          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("whatHappensNext")}</h4>
           <ul className="space-y-1 text-sm text-blue-800">
-            <li>• We'll collect your personal information</li>
-            <li>• Verify your identity and contact details</li>
-            <li>• Match you with Opulanz Partner Bank</li>
-            <li>• Complete the account opening process</li>
+            <li>• {t("timeline.step1")}</li>
+            <li>• {t("timeline.step2")}</li>
+            <li>• {t("timeline.step3")}</li>
+            <li>• {t("timeline.step4")}</li>
           </ul>
         </div>
       </div>

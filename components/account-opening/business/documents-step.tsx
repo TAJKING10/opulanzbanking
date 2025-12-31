@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -21,40 +22,41 @@ interface BusinessDocumentsStepProps {
 }
 
 export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocumentsStepProps) {
+  const t = useTranslations("accountOpening.business.documentsStep");
   const [documents, setDocuments] = React.useState<Document[]>([
     {
       id: "company-registration",
-      name: "Company Registration Certificate",
+      name: t("documents.registration"),
       required: data.companyStatus === "existing",
       uploaded: false,
     },
     {
       id: "articles",
-      name: "Articles of Association / Statutes",
+      name: t("documents.articles"),
       required: data.companyStatus === "existing",
       uploaded: false,
     },
     {
       id: "ubo-register",
-      name: "UBO Register / Shareholder Register",
+      name: t("documents.uboRegister"),
       required: true,
       uploaded: false,
     },
     {
       id: "director-ids",
-      name: "Directors' Identity Documents",
+      name: t("documents.directorsId"),
       required: true,
       uploaded: false,
     },
     {
       id: "ubo-ids",
-      name: "UBOs' Identity Documents",
+      name: t("documents.ubosId"),
       required: true,
       uploaded: false,
     },
     {
       id: "business-address",
-      name: "Proof of Business Address",
+      name: t("documents.proofOfAddress"),
       required: true,
       uploaded: false,
     },
@@ -68,13 +70,13 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
       // Validate file type (PDF, JPG, PNG)
       const validTypes = ["application/pdf", "image/jpeg", "image/png"];
       if (!validTypes.includes(file.type)) {
-        alert("Please upload a PDF, JPG, or PNG file");
+        alert(t("errors.invalidFormat"));
         return;
       }
 
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert("File size must be less than 5MB");
+        alert(t("errors.fileTooLarge"));
         return;
       }
 
@@ -111,16 +113,16 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Business Documents</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          Upload the required business and identity documents for verification and compliance.
+          {t("subtitle")}
         </p>
       </div>
 
       <div className="space-y-6">
         {/* Document Checklist */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-brand-dark">Required Documents</h3>
+          <h3 className="text-lg font-semibold text-brand-dark">{t("requiredDocuments")}</h3>
 
           {documents.map((document) => (
             <div
@@ -148,7 +150,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
                       </p>
                       {document.uploaded && document.file && (
                         <p className="mt-1 text-sm text-green-700">
-                          Uploaded: {document.file.name}
+                          {t("uploaded", { filename: document.file.name })}
                         </p>
                       )}
                     </div>
@@ -165,7 +167,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
                         className="pointer-events-none"
                       >
                         <Upload className="mr-2 h-4 w-4" />
-                        Upload
+                        {t("upload")}
                       </Button>
                       <input
                         id={`file-${document.id}`}
@@ -191,7 +193,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
                       }
                     >
                       <XCircle className="mr-2 h-4 w-4" />
-                      Remove
+                      {t("remove")}
                     </Button>
                   )}
                 </div>
@@ -211,11 +213,10 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
             />
             <div className="flex-1">
               <Label htmlFor="upload-later" className="cursor-pointer font-semibold text-blue-900">
-                I'll upload documents later via my dashboard
+                {t("uploadLater")}
               </Label>
               <p className="mt-1 text-sm text-blue-800">
-                You can submit your application now and upload documents later. We'll send you
-                a secure link to your dashboard where you can complete the document upload.
+                {t("uploadLaterDescription")}
               </p>
             </div>
           </div>
@@ -223,12 +224,12 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
 
         {/* File Requirements */}
         <div className="rounded-lg bg-gray-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-brand-dark">File Requirements</h4>
+          <h4 className="mb-2 text-sm font-semibold text-brand-dark">{t("fileRequirements.title")}</h4>
           <ul className="space-y-1 text-sm text-brand-grayMed">
-            <li>• Accepted formats: PDF, JPG, PNG</li>
-            <li>• Maximum file size: 5MB per document</li>
-            <li>• Documents must be clear and legible</li>
-            <li>• All documents must be valid (not expired)</li>
+            <li>• {t("fileRequirements.formats")}</li>
+            <li>• {t("fileRequirements.maxSize")}</li>
+            <li>• {t("fileRequirements.quality")}</li>
+            <li>• {t("fileRequirements.validity")}</li>
           </ul>
         </div>
 
@@ -236,7 +237,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
           <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-amber-600" />
             <div className="text-sm text-amber-900">
-              Please upload all required documents or select "I'll upload documents later" to continue.
+              {t("validationError")}
             </div>
           </div>
         )}

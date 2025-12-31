@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -46,52 +47,38 @@ export function CompanyBasicsStep({
   onUpdate,
   onNext,
 }: CompanyBasicsStepProps) {
-  const [errors, setErrors] = React.useState<Record<string, string>>({});
+  const t = useTranslations();
 
   const updateField = (field: string, value: any) => {
     onUpdate({ [field]: value });
-    // Clear error when field is updated
-    if (errors[field]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[field];
-        return newErrors;
-      });
-    }
   };
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
+  const checkValidity = () => {
+    // Check if all required fields are filled without setting errors
+    if (!data.companyType) return false;
+    if (data.companyType === "other" && !data.companyTypeOther) return false;
+    if (!data.countryOfIncorporation) return false;
+    if (!data.dateOfIncorporation) return false;
+    if (!data.shareCapitalAmount || data.shareCapitalAmount <= 0) return false;
+    if (!data.legalName) return false;
 
-    if (!data.companyType) newErrors.companyType = "Company type is required";
-    if (data.companyType === "other" && !data.companyTypeOther)
-      newErrors.companyTypeOther = "Please specify company type";
-    if (!data.countryOfIncorporation)
-      newErrors.countryOfIncorporation = "Country is required";
-    if (!data.dateOfIncorporation)
-      newErrors.dateOfIncorporation = "Date is required";
-    if (!data.shareCapitalAmount || data.shareCapitalAmount <= 0)
-      newErrors.shareCapitalAmount = "Share capital must be greater than 0";
-    if (!data.legalName) newErrors.legalName = "Legal name is required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return true;
   };
 
-  const handleContinue = () => {
-    if (validate()) {
-      onNext();
-    }
-  };
+  // Check validation whenever data changes (without showing errors)
+  React.useEffect(() => {
+    const isValid = checkValidity();
+    onUpdate({ isStep1Valid: isValid });
+  }, [data.companyType, data.companyTypeOther, data.countryOfIncorporation, data.dateOfIncorporation, data.shareCapitalAmount, data.legalName]);
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">
-          Company Basics
+          {t('accounting.companyBasics.title')}
         </h2>
         <p className="text-brand-grayMed">
-          Tell us about your company's legal structure and registration details.
+          {t('accounting.companyBasics.subtitle')}
         </p>
       </div>
 
@@ -99,16 +86,14 @@ export function CompanyBasicsStep({
         {/* Company Type */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Company Type <span className="text-red-500">*</span>
+            {t('accounting.companyBasics.fields.companyType')} <span className="text-red-500">*</span>
           </Label>
           <Select
             value={data.companyType || ""}
             onValueChange={(value) => updateField("companyType", value)}
           >
-            <SelectTrigger
-              className={errors.companyType ? "border-red-500" : ""}
-            >
-              <SelectValue placeholder="Select company type" />
+            <SelectTrigger>
+              <SelectValue placeholder={t('accounting.companyBasics.placeholders.companyType')} />
             </SelectTrigger>
             <SelectContent>
               {COMPANY_TYPES.map((type) => (
@@ -118,36 +103,27 @@ export function CompanyBasicsStep({
               ))}
             </SelectContent>
           </Select>
-          {errors.companyType && (
-            <p className="mt-1 text-xs text-red-500">{errors.companyType}</p>
-          )}
         </div>
 
         {/* Other Company Type */}
         {data.companyType === "other" && (
           <div>
             <Label className="text-sm font-medium text-brand-dark">
-              Specify Company Type <span className="text-red-500">*</span>
+              {t('accounting.companyBasics.fields.companyTypeOther')} <span className="text-red-500">*</span>
             </Label>
             <Input
               value={data.companyTypeOther || ""}
               onChange={(e) => updateField("companyTypeOther", e.target.value)}
-              placeholder="Enter company type"
+              placeholder={t('accounting.companyBasics.placeholders.companyTypeOther')}
               maxLength={80}
-              className={errors.companyTypeOther ? "border-red-500" : ""}
             />
-            {errors.companyTypeOther && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.companyTypeOther}
-              </p>
-            )}
           </div>
         )}
 
         {/* Country of Incorporation */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Country of Incorporation <span className="text-red-500">*</span>
+            {t('accounting.companyBasics.fields.countryOfIncorporation')} <span className="text-red-500">*</span>
           </Label>
           <Select
             value={data.countryOfIncorporation || ""}
@@ -155,10 +131,8 @@ export function CompanyBasicsStep({
               updateField("countryOfIncorporation", value)
             }
           >
-            <SelectTrigger
-              className={errors.countryOfIncorporation ? "border-red-500" : ""}
-            >
-              <SelectValue placeholder="Select country" />
+            <SelectTrigger>
+              <SelectValue placeholder={t('accounting.companyBasics.placeholders.country')} />
             </SelectTrigger>
             <SelectContent>
               {COUNTRIES.map((country) => (
@@ -168,35 +142,25 @@ export function CompanyBasicsStep({
               ))}
             </SelectContent>
           </Select>
-          {errors.countryOfIncorporation && (
-            <p className="mt-1 text-xs text-red-500">
-              {errors.countryOfIncorporation}
-            </p>
-          )}
         </div>
 
         {/* Date of Incorporation */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Date of Incorporation <span className="text-red-500">*</span>
+            {t('accounting.companyBasics.fields.dateOfIncorporation')} <span className="text-red-500">*</span>
           </Label>
           <Input
             type="date"
             value={data.dateOfIncorporation || ""}
             onChange={(e) => updateField("dateOfIncorporation", e.target.value)}
             max={new Date().toISOString().split("T")[0]}
-            className={errors.dateOfIncorporation ? "border-red-500" : ""}
+            placeholder={t('accounting.companyBasics.placeholders.date')}
           />
-          {errors.dateOfIncorporation && (
-            <p className="mt-1 text-xs text-red-500">
-              {errors.dateOfIncorporation}
-            </p>
-          )}
         </div>
 
         {/* Share Capital */}
         <CurrencyAmount
-          label="Share Capital"
+          label={t('accounting.companyBasics.fields.shareCapital')}
           amount={data.shareCapitalAmount || 0}
           currency={data.shareCapitalCurrency || "EUR"}
           onAmountChange={(amount) =>
@@ -206,78 +170,64 @@ export function CompanyBasicsStep({
             updateField("shareCapitalCurrency", currency)
           }
           required
-          error={errors.shareCapitalAmount}
         />
 
         {/* Legal Name */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Registered Name (Legal) <span className="text-red-500">*</span>
+            {t('accounting.companyBasics.fields.legalName')} <span className="text-red-500">*</span>
           </Label>
           <Input
             value={data.legalName || ""}
             onChange={(e) => updateField("legalName", e.target.value)}
-            placeholder="Company Legal Name S.A."
-            className={errors.legalName ? "border-red-500" : ""}
+            placeholder={t('accounting.companyBasics.placeholders.legalName')}
           />
-          {errors.legalName && (
-            <p className="mt-1 text-xs text-red-500">{errors.legalName}</p>
-          )}
         </div>
 
         {/* Trade Name */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Trade Name (Optional)
+            {t('accounting.companyBasics.fields.tradeName')}
           </Label>
           <Input
             value={data.tradeName || ""}
             onChange={(e) => updateField("tradeName", e.target.value)}
-            placeholder="Trading as..."
+            placeholder={t('accounting.companyBasics.placeholders.tradeName')}
           />
           <p className="mt-1 text-xs text-brand-grayMed">
-            If different from legal name
+            {t('accounting.companyBasics.hints.tradeName')}
           </p>
         </div>
 
         {/* Registration Number */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            Registration Number (Optional)
+            {t('accounting.companyBasics.fields.registrationNumber')}
           </Label>
           <Input
             value={data.registrationNumber || ""}
             onChange={(e) => updateField("registrationNumber", e.target.value)}
-            placeholder="RCS B123456"
+            placeholder={t('accounting.companyBasics.placeholders.registrationNumber')}
           />
           <p className="mt-1 text-xs text-brand-grayMed">
-            Company registration or RCS number
+            {t('accounting.companyBasics.hints.registrationNumber')}
           </p>
         </div>
 
         {/* VAT Number */}
         <div>
           <Label className="text-sm font-medium text-brand-dark">
-            VAT Number (Optional)
+            {t('accounting.companyBasics.fields.vatNumber')}
           </Label>
           <Input
             value={data.vatNumber || ""}
             onChange={(e) => updateField("vatNumber", e.target.value)}
-            placeholder="LU12345678"
+            placeholder={t('accounting.companyBasics.placeholders.vatNumber')}
           />
           <p className="mt-1 text-xs text-brand-grayMed">
-            If you don't have a VAT number yet, leave blank
+            {t('accounting.companyBasics.hints.vatNumber')}
           </p>
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleContinue}
-          className="rounded-lg bg-brand-gold px-6 py-3 font-semibold text-white transition-all hover:bg-brand-goldDark"
-        >
-          Continue
-        </button>
       </div>
     </div>
   );

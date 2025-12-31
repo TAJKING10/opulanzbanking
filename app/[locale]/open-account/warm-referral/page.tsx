@@ -22,6 +22,7 @@ type Step = "form" | "handoff" | "thank-you";
 
 export default function WarmReferralPage() {
   const t = useTranslations();
+  const tHandoff = useTranslations("accountOpening.warmReferral.handoff");
   const [step, setStep] = React.useState<Step>("form");
   const [partner, setPartner] = React.useState<string>("");
 
@@ -102,7 +103,7 @@ export default function WarmReferralPage() {
       <div className="min-h-screen bg-brand-off py-20">
         <div className="container mx-auto max-w-3xl px-6">
           <SectionHeading
-            title={t("warmReferral.handoffTitle")}
+            title={tHandoff("title")}
             align="center"
             className="mb-12"
           />
@@ -115,7 +116,7 @@ export default function WarmReferralPage() {
               <CardContent className="p-12">
                 <div className="mb-8 rounded-xl bg-accent-beige/30 p-6">
                   <p className="text-center text-lg text-brand-dark">
-                    {t("warmReferral.handoffDescription", { partner })}
+                    {tHandoff("description", { partner })}
                   </p>
                 </div>
                 <div className="space-y-6">
@@ -125,11 +126,10 @@ export default function WarmReferralPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-brand-dark">
-                        Secure Handoff
+                        {tHandoff("step1.title")}
                       </h3>
                       <p className="text-sm text-brand-grayMed">
-                        Your information will be securely transferred to{" "}
-                        {partner}
+                        {tHandoff("step1.description", { partner })}
                       </p>
                     </div>
                   </div>
@@ -139,10 +139,10 @@ export default function WarmReferralPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-brand-dark">
-                        Complete Application
+                        {tHandoff("step2.title")}
                       </h3>
                       <p className="text-sm text-brand-grayMed">
-                        Follow {partner}'s process to complete your application
+                        {tHandoff("step2.description", { partner })}
                       </p>
                     </div>
                   </div>
@@ -152,10 +152,10 @@ export default function WarmReferralPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-brand-dark">
-                        Opulanz Support
+                        {tHandoff("step3.title")}
                       </h3>
                       <p className="text-sm text-brand-grayMed">
-                        We remain your point of contact for any questions
+                        {tHandoff("step3.description")}
                       </p>
                     </div>
                   </div>

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
 import { Step } from "@/components/account-opening/stepper";
 
@@ -15,21 +16,22 @@ import { BusinessDocumentsStep } from "@/components/account-opening/business/doc
 import { BusinessReviewConsentsStep } from "@/components/account-opening/business/review-consents-step";
 import { BusinessSubmissionStep } from "@/components/account-opening/business/submission-step";
 
-const BUSINESS_ACCOUNT_STEPS: Step[] = [
-  { id: 1, label: "Welcome", description: "Get started" },
-  { id: 2, label: "Company", description: "Status" },
-  { id: 3, label: "Jurisdiction", description: "Location" },
-  { id: 4, label: "Directors", description: "UBOs" },
-  { id: 5, label: "Formation", description: "If new" },
-  { id: 6, label: "Documents", description: "Verification" },
-  { id: 7, label: "Review", description: "Confirm" },
-  { id: 8, label: "Submit", description: "Final step" },
-];
-
 export default function BusinessAccountPage() {
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string;
+  const t = useTranslations("accountOpening.business");
+
+  const BUSINESS_ACCOUNT_STEPS: Step[] = [
+    { id: 1, label: t("steps.welcome.label"), description: t("steps.welcome.description") },
+    { id: 2, label: t("steps.company.label"), description: t("steps.company.description") },
+    { id: 3, label: t("steps.jurisdiction.label"), description: t("steps.jurisdiction.description") },
+    { id: 4, label: t("steps.directors.label"), description: t("steps.directors.description") },
+    { id: 5, label: t("steps.formation.label"), description: t("steps.formation.description") },
+    { id: 6, label: t("steps.documents.label"), description: t("steps.documents.description") },
+    { id: 7, label: t("steps.review.label"), description: t("steps.review.description") },
+    { id: 8, label: t("steps.submit.label"), description: t("steps.submit.description") },
+  ];
 
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -131,7 +133,19 @@ export default function BusinessAccountPage() {
     if (currentStep === 5) {
       // Company Formation step - check if details are filled (only for new companies)
       if (formData.companyStatus === "new") {
-        return formData.isFormationStepValid === true;
+        // Fallback validation in case flag isn't set
+        const hasAllFields =
+          formData.proposedCompanyName?.trim() &&
+          formData.businessActivity?.trim() &&
+          formData.shareCapital;
+
+        console.log("Step 5 validation check:", {
+          formData,
+          hasAllFields,
+          isFormationStepValid: formData.isFormationStepValid
+        });
+
+        return formData.isFormationStepValid === true || hasAllFields;
       }
       return true; // Skip for existing companies
     }
@@ -219,8 +233,8 @@ export default function BusinessAccountPage() {
 
   return (
     <AccountOpeningLayout
-      title="Open a Business Account"
-      description="Complete your business banking application"
+      title={t("title")}
+      description={t("description")}
       steps={BUSINESS_ACCOUNT_STEPS}
       currentStep={currentStep}
       onStepChange={handleStepChange}

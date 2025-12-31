@@ -27,6 +27,7 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -35,6 +36,9 @@ jobs:
         run: NODE_ENV=production npm run build
         env:
           NODE_ENV: production
+
+      - name: Fix locale routes
+        run: node scripts/fix-locale-routes.js
 
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll

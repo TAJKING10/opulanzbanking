@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { DocUpload, UploadedDocument } from "./doc-upload";
 
 interface DocumentsStepProps {
@@ -14,6 +15,7 @@ export function DocumentsStep({
   onUpdate,
   onNext,
 }: DocumentsStepProps) {
+  const t = useTranslations();
   const [documents, setDocuments] = React.useState<UploadedDocument[]>(
     data.documents || []
   );
@@ -48,62 +50,59 @@ export function DocumentsStep({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Documents</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t('accounting.documents.title')}</h2>
         <p className="text-brand-grayMed">
-          Upload your company documents. These are optional at this stage and
-          can be provided later.
+          {t('accounting.documents.subtitle')}
         </p>
       </div>
 
       <div className="space-y-4">
         {/* Certificate of Incorporation */}
         <DocUpload
-          label="Certificate of Incorporation"
+          label={t('accounting.documents.types.incorporation')}
           documentType="incorporation_certificate"
           uploadedDoc={getDocument("incorporation_certificate")}
           onUpload={(doc) =>
             handleDocumentUpload("incorporation_certificate", doc)
           }
           onRemove={() => handleDocumentRemove("incorporation_certificate")}
-          helpText="Official document confirming company registration"
+          helpText={t('accounting.documents.hints.incorporation')}
         />
 
         {/* Articles / Statuts */}
         <DocUpload
-          label="Articles of Association / Statuts"
+          label={t('accounting.documents.types.articles')}
           documentType="articles"
           uploadedDoc={getDocument("articles")}
           onUpload={(doc) => handleDocumentUpload("articles", doc)}
           onRemove={() => handleDocumentRemove("articles")}
-          helpText="Company articles or statuts document"
+          helpText={t('accounting.documents.hints.articles')}
         />
 
         {/* VAT Certificate */}
         <DocUpload
-          label="VAT Certificate"
+          label={t('accounting.documents.types.vat')}
           documentType="vat_certificate"
           uploadedDoc={getDocument("vat_certificate")}
           onUpload={(doc) => handleDocumentUpload("vat_certificate", doc)}
           onRemove={() => handleDocumentRemove("vat_certificate")}
-          helpText="VAT registration certificate (if applicable)"
+          helpText={t('accounting.documents.hints.vat')}
         />
 
         {/* ID/Passport of Director */}
         <DocUpload
-          label="ID/Passport of Director(s)"
+          label={t('accounting.documents.types.directorId')}
           documentType="director_id"
           uploadedDoc={getDocument("director_id")}
           onUpload={(doc) => handleDocumentUpload("director_id", doc)}
           onRemove={() => handleDocumentRemove("director_id")}
-          helpText="ID or passport of directors and shareholders over 25%"
+          helpText={t('accounting.documents.hints.directorId')}
         />
       </div>
 
       <div className="rounded-lg bg-blue-50 p-4">
         <p className="text-sm text-blue-900">
-          <strong>Note:</strong> You can skip document uploads for now and
-          provide them later. However, submitting documents now will speed up
-          your onboarding process.
+          <strong>{t('accounting.documents.note.title')}</strong> {t('accounting.documents.note.text')}
         </p>
       </div>
 
@@ -112,7 +111,7 @@ export function DocumentsStep({
           onClick={handleContinue}
           className="rounded-lg bg-brand-gold px-6 py-3 font-semibold text-white transition-all hover:bg-brand-goldDark"
         >
-          Continue
+          {t('common.continue')}
         </button>
       </div>
     </div>

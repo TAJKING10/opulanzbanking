@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { AddressBlock, Address } from "./address-block";
@@ -17,13 +18,13 @@ export function ContactsAddressesStep({
   onUpdate,
   onNext,
 }: ContactsAddressesStepProps) {
+  const t = useTranslations();
   const [sameAsRegistered, setSameAsRegistered] = React.useState(
     data.sameAsRegistered || false
   );
   const [hasAccountingContact, setHasAccountingContact] = React.useState(
     data.hasAccountingContact || false
   );
-  const [errors, setErrors] = React.useState<Record<string, any>>({});
 
   const updateField = (field: string, value: any) => {
     onUpdate({ [field]: value });
@@ -42,98 +43,57 @@ export function ContactsAddressesStep({
     onUpdate({ hasAccountingContact: checked });
   };
 
-  const validate = () => {
-    const newErrors: Record<string, any> = {};
+  const checkValidity = () => {
+    // Check registered address
+    if (!data.registeredAddress?.street) return false;
+    if (!data.registeredAddress?.city) return false;
+    if (!data.registeredAddress?.postal) return false;
+    if (!data.registeredAddress?.country) return false;
 
-    // Validate registered address
-    if (!data.registeredAddress?.street)
-      newErrors.registeredAddress = { street: "Street is required" };
-    if (!data.registeredAddress?.city)
-      newErrors.registeredAddress = {
-        ...newErrors.registeredAddress,
-        city: "City is required",
-      };
-    if (!data.registeredAddress?.postal)
-      newErrors.registeredAddress = {
-        ...newErrors.registeredAddress,
-        postal: "Postal code is required",
-      };
-    if (!data.registeredAddress?.country)
-      newErrors.registeredAddress = {
-        ...newErrors.registeredAddress,
-        country: "Country is required",
-      };
-
-    // Validate operating address if different
+    // Check operating address if different
     if (!sameAsRegistered) {
-      if (!data.operatingAddress?.street)
-        newErrors.operatingAddress = { street: "Street is required" };
-      if (!data.operatingAddress?.city)
-        newErrors.operatingAddress = {
-          ...newErrors.operatingAddress,
-          city: "City is required",
-        };
-      if (!data.operatingAddress?.postal)
-        newErrors.operatingAddress = {
-          ...newErrors.operatingAddress,
-          postal: "Postal code is required",
-        };
-      if (!data.operatingAddress?.country)
-        newErrors.operatingAddress = {
-          ...newErrors.operatingAddress,
-          country: "Country is required",
-        };
+      if (!data.operatingAddress?.street) return false;
+      if (!data.operatingAddress?.city) return false;
+      if (!data.operatingAddress?.postal) return false;
+      if (!data.operatingAddress?.country) return false;
     }
 
-    // Validate primary contact
-    if (!data.primaryContact?.firstName)
-      newErrors.primaryContact = { firstName: "First name is required" };
-    if (!data.primaryContact?.lastName)
-      newErrors.primaryContact = {
-        ...newErrors.primaryContact,
-        lastName: "Last name is required",
-      };
-    if (!data.primaryContact?.role)
-      newErrors.primaryContact = {
-        ...newErrors.primaryContact,
-        role: "Role is required",
-      };
-    if (!data.primaryContact?.email)
-      newErrors.primaryContact = {
-        ...newErrors.primaryContact,
-        email: "Email is required",
-      };
-    if (!data.primaryContact?.phone)
-      newErrors.primaryContact = {
-        ...newErrors.primaryContact,
-        phone: "Phone is required",
-      };
+    // Check primary contact
+    if (!data.primaryContact?.firstName) return false;
+    if (!data.primaryContact?.lastName) return false;
+    if (!data.primaryContact?.role) return false;
+    if (!data.primaryContact?.email) return false;
+    if (!data.primaryContact?.phone) return false;
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return true;
   };
 
-  const handleContinue = () => {
-    if (validate()) {
-      onNext();
-    }
-  };
+  // Check validation whenever data changes
+  React.useEffect(() => {
+    const isValid = checkValidity();
+    onUpdate({ isStep3Valid: isValid });
+  }, [
+    data.registeredAddress,
+    data.operatingAddress,
+    data.primaryContact,
+    sameAsRegistered,
+  ]);
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">
-          Contacts & Addresses
+          {t('accounting.contactsAddresses.title')}
         </h2>
         <p className="text-brand-grayMed">
-          Provide your company addresses and key contact information.
+          {t('accounting.contactsAddresses.subtitle')}
         </p>
       </div>
 
       <div className="space-y-6">
         {/* Registered Address */}
         <AddressBlock
-          label="Registered Address"
+          label={t('accounting.contactsAddresses.registeredAddress')}
           address={
             data.registeredAddress || {
               street: "",
@@ -144,7 +104,6 @@ export function ContactsAddressesStep({
           }
           onChange={(address) => updateField("registeredAddress", address)}
           required
-          errors={errors.registeredAddress}
         />
 
         {/* Operating Address */}
@@ -159,13 +118,13 @@ export function ContactsAddressesStep({
               htmlFor="sameAsRegistered"
               className="cursor-pointer text-sm font-medium text-brand-dark"
             >
-              Operating address same as registered address
+              {t('accounting.contactsAddresses.sameAsRegistered')}
             </Label>
           </div>
 
           {!sameAsRegistered && (
             <AddressBlock
-              label="Operating Address"
+              label={t('accounting.contactsAddresses.operatingAddress')}
               address={
                 data.operatingAddress || {
                   street: "",
@@ -176,14 +135,13 @@ export function ContactsAddressesStep({
               }
               onChange={(address) => updateField("operatingAddress", address)}
               required
-              errors={errors.operatingAddress}
             />
           )}
         </div>
 
         {/* Primary Contact */}
         <PersonCard
-          label="Primary Contact"
+          label={t('accounting.contactsAddresses.primaryContact')}
           person={
             data.primaryContact || {
               firstName: "",
@@ -195,7 +153,6 @@ export function ContactsAddressesStep({
           }
           onChange={(person) => updateField("primaryContact", person)}
           required
-          errors={errors.primaryContact}
         />
 
         {/* Accounting Contact */}
@@ -210,13 +167,13 @@ export function ContactsAddressesStep({
               htmlFor="hasAccountingContact"
               className="cursor-pointer text-sm font-medium text-brand-dark"
             >
-              Add a separate accounting contact
+              {t('accounting.contactsAddresses.addAccountingContact')}
             </Label>
           </div>
 
           {hasAccountingContact && (
             <PersonCard
-              label="Accounting Contact"
+              label={t('accounting.contactsAddresses.accountingContact')}
               person={
                 data.accountingContact || {
                   firstName: "",
@@ -230,15 +187,6 @@ export function ContactsAddressesStep({
             />
           )}
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleContinue}
-          className="rounded-lg bg-brand-gold px-6 py-3 font-semibold text-white transition-all hover:bg-brand-goldDark"
-        >
-          Continue
-        </button>
       </div>
     </div>
   );

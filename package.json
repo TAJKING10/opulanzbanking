@@ -3,17 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start -p $PORT",
-    "lint": "next lint"
-    "build": "next build && npm run postbuild",
-    "postbuild": "node scripts/fix-locale-routes.js",
-    "start": "next start",
-    "export": "next build",
-    "lint": "next lint",
-    "type-check": "tsc --noEmit"
-  },
+   "dev": "next dev",
+   "build": "next build && npm run postbuild",
+   "postbuild": "node scripts/fix-locale-routes.js",
+   "start": "next start -p $PORT",
+   "export": "next build",
+   "lint": "next lint",
+   "type-check": "tsc --noEmit"
+}
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@hookform/resolvers": "^3.3.4",

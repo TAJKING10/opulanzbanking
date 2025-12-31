@@ -32,7 +32,7 @@ interface BookingData {
   paymentStatus?: string;
 }
 
-export default function BookingPage({ params: { locale } }: { params: { locale: string } }) {
+export default function BookingClient({ params: { locale } }: { params: { locale: string } }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [step, setStep] = React.useState<"info" | "calendly" | "service-selection" | "summary" | "payment">("info");

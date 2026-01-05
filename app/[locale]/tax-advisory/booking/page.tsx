@@ -8,6 +8,7 @@ import { FileCheck, Globe, Briefcase, Shield, UserCheck, CheckCircle, ArrowRight
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Script from "next/script";
@@ -33,6 +34,8 @@ interface BookingData {
 }
 
 export default function BookingPage({ params: { locale } }: { params: { locale: string } }) {
+  const t = useTranslations('taxAdvisory.taxAdvisoryBooking');
+  const tCommon = useTranslations('taxAdvisory.internationalTax');
   const router = useRouter();
   const searchParams = useSearchParams();
   const [step, setStep] = React.useState<"info" | "calendly" | "service-selection" | "summary" | "payment">("info");
@@ -45,40 +48,46 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
   const [errors, setErrors] = React.useState<Partial<BookingData>>({});
   const [isPayPalLoaded, setIsPayPalLoaded] = React.useState(false);
 
+  const tInternational = useTranslations('taxAdvisory.internationalTax');
+  const tCorporate = useTranslations('taxAdvisory.corporateTax');
+  const tCompliance = useTranslations('taxAdvisory.taxCompliance');
+  const tPersonal = useTranslations('taxAdvisory.personalTaxAdvisory');
+  const tReturn = useTranslations('taxAdvisory.taxReturnPreparation');
+
   const services = [
     {
       id: "tax-return-preparation",
       icon: FileCheck,
-      title: "Tax Return Preparation",
-      description: "Professional preparation and filing of corporate and individual tax returns",
+      title: tReturn('hero.title'),
+      description: tReturn('hero.subtitle'),
       price: 299,
     },
     {
       id: "international-tax",
       icon: Globe,
-      title: "International Tax",
-      description: "Expert guidance on cross-border tax matters and transfer pricing",
+      title: tInternational('hero.title'),
+      description: tInternational('hero.subtitle'),
       price: 250,
     },
     {
       id: "corporate-tax",
       icon: Briefcase,
-      title: "Corporate Tax",
-      description: "Comprehensive corporate tax services including M&A and VAT consulting",
+      title: tCorporate('hero.title'),
+      description: tCorporate('hero.subtitle'),
       price: 150,
     },
     {
       id: "tax-compliance",
       icon: Shield,
-      title: "Tax Compliance",
-      description: "Ongoing compliance with tax laws and regulations",
+      title: tCompliance('hero.title'),
+      description: tCompliance('hero.subtitle'),
       price: 250,
     },
     {
       id: "personal-tax-advisory",
       icon: UserCheck,
-      title: "Personal Tax Advisory",
-      description: "Personalized tax advice for high-net-worth individuals and expatriates",
+      title: tPersonal('hero.title'),
+      description: tPersonal('hero.subtitle'),
       price: 100,
     },
   ];
@@ -414,10 +423,14 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+<<<<<<< HEAD
+                {t('calendar.title')}
+=======
                 Schedule Your Consultation
+>>>>>>> origin/main
               </h1>
               <p className="text-lg text-white/90">
-                Choose a convenient time for your 60-minute consultation
+                {t('calendar.subtitle')}
               </p>
             </div>
           </div>
@@ -477,10 +490,17 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
                 <CheckCircle className="h-10 w-10 text-white" />
               </div>
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+<<<<<<< HEAD
+                {t('serviceSelection.confirmed')}
+              </h1>
+              <p className="text-lg text-white/90">
+                {t('serviceSelection.selectService')}
+=======
                 Appointment Scheduled!
               </h1>
               <p className="text-lg text-white/90">
                 Now, select which service you need assistance with
+>>>>>>> origin/main
               </p>
             </div>
           </div>
@@ -489,9 +509,15 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-7xl px-6">
             <SectionHeading
+<<<<<<< HEAD
+              overline={t('serviceSelection.overline')}
+              title={t('serviceSelection.title')}
+              description={t('serviceSelection.description')}
+=======
               overline="STEP 3 OF 4"
               title="Select Your Tax Advisory Service"
               description="Choose the service that best matches your needs"
+>>>>>>> origin/main
               align="center"
               className="mb-12"
             />
@@ -517,7 +543,7 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
                     <CardContent>
                       <p className="text-sm text-brand-grayMed mb-4">{service.description}</p>
                       <Button className="w-full bg-brand-gold text-white hover:bg-brand-goldDark">
-                        Select Service
+                        {t('serviceSelection.selectButton')}
                       </Button>
                     </CardContent>
                   </Card>
@@ -540,10 +566,17 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+<<<<<<< HEAD
+                {t('payment.title')}
+              </h1>
+              <p className="text-lg text-white/90">
+                {t('payment.subtitle')}
+=======
                 Review Your Booking
               </h1>
               <p className="text-lg text-white/90">
                 Please review your details before proceeding to payment
+>>>>>>> origin/main
               </p>
             </div>
           </div>
@@ -552,8 +585,13 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-3xl px-6">
             <SectionHeading
+<<<<<<< HEAD
+              overline={t('payment.overline')}
+              title={t('payment.paymentDetails')}
+=======
               overline="STEP 4 OF 4"
               title="Booking Summary"
+>>>>>>> origin/main
               align="center"
               className="mb-12"
             />
@@ -608,6 +646,25 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
             {/* Service & Payment */}
             <Card className="border-2 border-brand-grayLight mb-8">
               <CardHeader className="bg-brand-goldLight/10">
+<<<<<<< HEAD
+                <CardTitle className="text-2xl">{t('payment.orderSummary')}</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    {(() => {
+                      const Icon = selectedServiceData.icon;
+                      return (
+                        <div className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-brand-gold/10">
+                          <Icon className="h-6 w-6 text-brand-gold" />
+                        </div>
+                      );
+                    })()}
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-brand-dark">{selectedServiceData.title}</h3>
+                      <p className="text-sm text-brand-grayMed mt-1">{selectedServiceData.description}</p>
+                      <p className="text-sm text-brand-grayMed mt-2">{tCommon('payment.duration')} {tCommon('payment.minutes60')}</p>
+=======
                 <CardTitle className="text-2xl">Service & Payment</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
@@ -626,25 +683,31 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
                         <h3 className="text-xl font-bold text-brand-dark">{selectedService.title}</h3>
                         <p className="text-sm text-brand-grayMed mt-1">{selectedService.description}</p>
                       </div>
+>>>>>>> origin/main
                     </div>
                   )}
 
                   <div className="border-t border-brand-grayLight pt-4 mt-4">
                     <div className="flex justify-between items-center text-lg mb-2">
+<<<<<<< HEAD
+                      <span className="text-brand-grayMed">{tCommon('payment.serviceFeeExcl')}</span>
+                      <span className="font-semibold text-brand-dark">€{(selectedServiceData.price / 1.17).toFixed(2)}</span>
+=======
                       <span className="text-brand-grayMed">Service Fee (excl. VAT):</span>
                       <span className="font-semibold text-brand-dark">
                         €{((bookingData.servicePrice || 0) / 1.17).toFixed(2)}
                       </span>
+>>>>>>> origin/main
                     </div>
                     <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">VAT (17%):</span>
+                      <span className="text-brand-grayMed">{tCommon('payment.vat17')}</span>
                       <span className="font-semibold text-brand-dark">
                         €{((bookingData.servicePrice || 0) - ((bookingData.servicePrice || 0) / 1.17)).toFixed(2)}
                       </span>
                     </div>
                     <div className="border-t border-brand-grayLight pt-4 mt-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-brand-dark">Total (incl. VAT):</span>
+                        <span className="text-xl font-bold text-brand-dark">{tCommon('payment.totalIncl')}</span>
                         <span className="text-3xl font-bold text-brand-gold">
                           €{(bookingData.servicePrice || 0).toFixed(2)}
                         </span>
@@ -737,6 +800,39 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
             </div>
 
             <Card className="border-2 border-brand-grayLight mb-8">
+<<<<<<< HEAD
+              <CardHeader>
+                <CardTitle>{t('payment.paymentMethod')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-brand-grayMed mb-6">
+                  {t('payment.paymentInfo')}
+                </p>
+
+                <div className="space-y-4">
+                  <Button className="w-full bg-brand-gold text-white hover:bg-brand-goldDark h-14 text-lg">
+                    {t('payment.payCard')}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10 h-14 text-lg"
+                  >
+                    {t('payment.payBank')}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full border-2 border-brand-grayMed text-brand-grayMed hover:bg-gray-50 h-14 text-lg"
+                  >
+                    {t('payment.payPaypal')}
+                  </Button>
+                </div>
+
+                <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-900">
+                    {t('payment.reservationNote')}
+                  </p>
+                </div>
+=======
               <CardHeader className="bg-brand-goldLight/10">
                 <CardTitle className="text-2xl">Payment Summary</CardTitle>
               </CardHeader>
@@ -764,6 +860,7 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
                     <p className="mt-4 text-brand-grayMed">Loading payment options...</p>
                   </div>
                 )}
+>>>>>>> origin/main
               </CardContent>
             </Card>
 
@@ -773,15 +870,19 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
                 onClick={() => setStep("summary")}
                 className="flex-1 border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
               >
+<<<<<<< HEAD
+                {t('payment.backToSelection')}
+=======
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Summary
+>>>>>>> origin/main
               </Button>
               <Button
                 variant="outline"
                 onClick={() => router.push(`/${locale}/tax-advisory`)}
                 className="flex-1"
               >
-                Cancel Booking
+                {t('payment.cancelBooking')}
               </Button>
             </div>
           </div>

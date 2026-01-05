@@ -581,8 +581,8 @@ Contact: opulanz.banking@gmail.com
   return (
     <>
       <Hero
-        title="Tax Return Preparation"
-        subtitle="Professional preparation and filing of corporate and individual tax returns"
+        title={t('hero.title')}
+        subtitle={t('hero.subtitle')}
       />
 
       {/* Booking Section - At Top */}
@@ -602,7 +602,7 @@ Contact: opulanz.banking@gmail.com
                   </div>
                 </div>
                 <p className="text-lg text-brand-grayMed mb-6">{t('pricing.description')}</p>
-                <p className="text-sm text-brand-grayMed mb-6">60-minute consultation with expert tax advisor</p>
+                <p className="text-sm text-brand-grayMed mb-6">{t('pricing.duration')}</p>
                 <Button
                   onClick={() => setStep('calendar')}
                   size="lg"
@@ -627,18 +627,16 @@ Contact: opulanz.banking@gmail.com
               <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/20 to-transparent rounded-2xl blur-xl transform translate-x-4 translate-y-4"></div>
               <div className="relative bg-white rounded-2xl shadow-2xl p-8 border border-brand-grayLight/50 backdrop-blur-sm hover:shadow-3xl transition-shadow duration-300">
                 <SectionHeading
-                  overline="SERVICE DETAILS"
+                  overline={t('details.overline')}
                   title={t('details.title')}
                   align="left"
                   className="mb-8"
                 />
                 <p className="mb-6 text-lg text-brand-grayMed">
-                  Let our experienced tax professionals handle the complexity of tax return preparation.
-                  We ensure accuracy, compliance, and timely filing across multiple jurisdictions.
+                  {t('details.description1')}
                 </p>
                 <p className="mb-8 text-brand-grayMed">
-                  Whether you're an individual taxpayer or a business entity, our comprehensive service
-                  covers all aspects of tax return preparation, from documentation review to final submission.
+                  {t('details.description2')}
                 </p>
               </div>
             </div>
@@ -672,8 +670,8 @@ Contact: opulanz.banking@gmail.com
 
         <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <SectionHeading
-            overline="WHY CHOOSE US"
-            title="Benefits of Professional Tax Return Preparation"
+            overline={t('benefits.overline')}
+            title={t('benefits.title')}
             align="center"
             className="mb-12"
           />
@@ -704,10 +702,10 @@ Contact: opulanz.banking@gmail.com
       <section className="hero-gradient py-20 md:py-28">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            Ready to File Your Tax Return?
+            {t('cta.title')}
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            Book your consultation now and let our experts handle your tax return preparation professionally.
+            {t('cta.description')}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button
@@ -715,7 +713,7 @@ Contact: opulanz.banking@gmail.com
               size="lg"
               className="bg-white text-brand-dark hover:bg-gray-50 min-w-48"
             >
-              Book Consultation - €{totalPrice}
+              {t('cta.bookConsultation')}
             </Button>
             <Button
               asChild
@@ -723,7 +721,7 @@ Contact: opulanz.banking@gmail.com
               size="lg"
               className="border-2 border-white bg-transparent text-white hover:bg-white/10 min-w-48"
             >
-              <Link href={`/${locale}/tax-advisory`}>Back to Tax Advisory</Link>
+              <Link href={`/${locale}/tax-advisory`}>{t('cta.backToTaxAdvisory')}</Link>
             </Button>
           </div>
         </div>

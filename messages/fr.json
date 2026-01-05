@@ -673,7 +673,8 @@
         "benefit1": "Optimiser la structure fiscale de l'entreprise",
         "benefit2": "Conseils d'experts sur des questions fiscales complexes",
         "benefit3": "Assurer la conformité aux réglementations",
-        "benefit4": "Expertise professionnelle pour les entreprises"
+        "benefit4": "Expertise professionnelle pour les entreprises",
+        "overline": "Avantages"
       },
       "details": {
         "overline": "DÉTAILS DU SERVICE",
@@ -683,7 +684,9 @@
       },
       "cta": {
         "title": "Prêt à optimiser votre fiscalité d'entreprise ?",
-        "description": "Réservez votre consultation maintenant et laissez nos experts vous aider dans la planification fiscale de votre entreprise."
+        "description": "Réservez votre consultation maintenant et laissez nos experts vous aider dans la planification fiscale de votre entreprise.",
+        "bookConsultation": "Réserver une consultation - €{price}",
+        "backToTaxAdvisory": "Retour au conseil fiscal"
       }
     },
     "taxCompliance": {
@@ -728,6 +731,7 @@
         "feature6": "Mises à jour sur les changements de lois fiscales au Luxembourg et dans l'UE"
       },
       "benefits": {
+        "overline": "Avantages",
         "title": "Avantages",
         "benefit1": "Rester conforme aux réglementations en évolution",
         "benefit2": "Éviter les pénalités et les problèmes juridiques",
@@ -735,13 +739,15 @@
         "benefit4": "Gestion proactive des risques"
       },
       "details": {
+        "overline": "Détails du service",
         "title": "Services de conformité fiscale",
         "description": "Restez conforme aux réglementations fiscales en évolution grâce à notre surveillance proactive et nos conseils d'experts."
       },
       "cta": {
         "title": "Prêt à assurer la conformité ?",
         "description": "Réservez votre consultation maintenant.",
-        "bookButton": "Réserver - {price} €"
+        "bookButton": "Réserver - {price} €",
+        "backToTaxAdvisory": "Retour au conseil fiscal"
       }
     },
     "taxReturnPreparation": {
@@ -751,7 +757,9 @@
       },
       "pricing": {
         "price": "299 €",
-        "description": "Tarif fixe pour le service de préparation de déclarations fiscales"
+        "description": "Tarif fixe pour le service de préparation de déclarations fiscales",
+        "duration": "Consultation de 60 minutes avec un conseiller fiscal expert",
+        "bookNow": "Réservez votre consultation maintenant"
       },
       "calendar": {
         "title": "Réservez votre préparation de déclaration fiscale",
@@ -764,6 +772,7 @@
         "serviceDesc": "Préparation et dépôt professionnels de déclarations fiscales d'entreprise et individuelles"
       },
       "features": {
+        "title": "Ce qui est inclus",
         "feature1": "Préparation professionnelle de déclarations fiscales d'entreprise et individuelles",
         "feature2": "Dépôt dans plusieurs juridictions",
         "feature3": "Exactitude et conformité garanties",
@@ -772,6 +781,7 @@
         "feature6": "Assistance pour les questions et la correspondance fiscales"
       },
       "benefits": {
+        "overline": "Avantages",
         "title": "Avantages de la préparation professionnelle de déclarations fiscales",
         "benefit1": "Gagner du temps et réduire le stress",
         "benefit2": "Assurer la conformité aux réglementations fiscales",
@@ -779,13 +789,16 @@
         "benefit4": "Expertise professionnelle à des tarifs abordables"
       },
       "details": {
+        "overline": "Détails du service",
         "title": "Services professionnels de déclarations fiscales",
         "description1": "Laissez nos professionnels fiscaux expérimentés gérer la complexité de la préparation de déclarations fiscales. Nous garantissons l'exactitude, la conformité et un dépôt en temps opportun dans plusieurs juridictions.",
         "description2": "Que vous soyez un contribuable individuel ou une entité commerciale, notre service complet couvre tous les aspects de la préparation de déclarations fiscales, de l'examen de la documentation à la soumission finale."
       },
       "cta": {
         "title": "Prêt à déposer votre déclaration fiscale ?",
-        "description": "Réservez votre consultation maintenant et laissez nos experts gérer professionnellement la préparation de votre déclaration fiscale."
+        "description": "Réservez votre consultation maintenant et laissez nos experts gérer professionnellement la préparation de votre déclaration fiscale.",
+        "bookConsultation": "Réserver une consultation - €{price}",
+        "backToTaxAdvisory": "Retour au conseil fiscal"
       }
     },
     "personalTaxAdvisory": {
@@ -795,7 +808,8 @@
       },
       "pricing": {
         "price": "100 €",
-        "description": "Tarif fixe pour le conseil fiscal personnel"
+        "description": "Tarif fixe pour le conseil fiscal personnel",
+        "bookNow": "Réserver maintenant"
       },
       "calendar": {
         "title": "Réservez votre conseil fiscal personnel",
@@ -812,6 +826,7 @@
         "prepareDocuments": "✓ Préparez vos questions et documents fiscaux personnels"
       },
       "features": {
+        "title": "Ce qui est inclus",
         "feature1": "Conseils fiscaux personnalisés pour les particuliers fortunés",
         "feature2": "Planification fiscale et conformité pour les expatriés",
         "feature3": "Optimisation de l'impôt sur le revenu des particuliers",
@@ -820,18 +835,23 @@
         "feature6": "Conseils fiscaux sur la relocalisation et la résidence"
       },
       "benefits": {
+        "overline": "Avantages",
+        "title": "Pourquoi choisir nos conseils fiscaux personnalisés ?",
         "benefit1": "Optimiser la position fiscale personnelle",
         "benefit2": "Conseils d'experts pour les situations complexes",
         "benefit3": "Tranquillité d'esprit grâce à des conseils professionnels",
         "benefit4": "Solutions adaptées à vos besoins"
       },
       "details": {
+        "overline": "Détails du service",
         "title": "Conseil fiscal personnel",
         "description": "Obtenez des conseils fiscaux personnalisés adaptés à votre situation et à vos objectifs uniques."
       },
       "cta": {
         "title": "Prêt pour des conseils fiscaux personnalisés ?",
-        "description": "Réservez votre consultation maintenant."
+        "description": "Réservez votre consultation maintenant.",
+        "bookButton": "Réserver une consultation - €{price}",
+        "backToTaxAdvisory": "Retour au conseil fiscal"
       }
     },
     "taxAdvisoryBooking": {
@@ -1100,35 +1120,23 @@
   },
   "dashboard": {
     "title": "Tableau de bord",
-    "welcome": "Bienvenue ! Voici un aperçu de votre compte.",
-    "balance": {
-      "label": "Solde total"
-    },
-    "buttons": {
-      "addFunds": "Ajouter des fonds",
-      "transfer": "Virement"
-    },
-    "quickActions": {
-      "title": "Actions rapides",
-      "items": {
-        "openAccount": "Ouvrir un nouveau compte",
-        "formCompany": "Créer une société",
-        "bookAdvisory": "Réserver un conseil",
-        "viewStatements": "Voir les relevés"
-      }
-    },
-    "transactions": {
-      "title": "Transactions récentes",
-      "viewAll": "Voir tout"
-    },
-    "applications": {
-      "title": "État des demandes"
-    },
-    "services": {
-      "title": "Nos services",
-      "needHelp": "Besoin d'aide ?",
-      "description": "Réservez une consultation avec notre équipe de conseil",
-      "button": "Réserver une consultation"
+    "subtitle": "Bienvenue ! Voici un aperçu de votre compte.",
+    "totalBalance": "Solde total",
+    "addFunds": "Ajouter des fonds",
+    "transfer": "Virement",
+    "quickActions": "Actions rapides",
+    "recentTransactions": "Transactions récentes",
+    "viewAll": "Tout voir",
+    "applicationStatus": "Statut des demandes",
+    "ourServices": "Nos services",
+    "needHelp": "Besoin d'aide ?",
+    "bookConsultation": "Réserver une consultation",
+    "bookConsultationDescription": "Réservez une consultation avec notre équipe de conseil",
+    "actions": {
+      "openNewAccount": "Ouvrir un nouveau compte",
+      "formCompany": "Créer une société",
+      "bookAdvisory": "Réserver conseil",
+      "viewStatements": "Voir les relevés"
     }
   },
   "compliance": {
@@ -2888,27 +2896,6 @@
       "description": "Rejoignez des milliers de clients satisfaits qui font confiance à Opulanz pour leurs besoins financiers. Ouvrez votre compte aujourd'hui et découvrez la différence.",
       "openAccount": "Ouvrir un Compte",
       "contactUs": "Nous Contacter"
-    }
-  },
-  "dashboard": {
-    "title": "Tableau de bord",
-    "subtitle": "Bienvenue ! Voici un aperçu de votre compte.",
-    "totalBalance": "Solde total",
-    "addFunds": "Ajouter des fonds",
-    "transfer": "Virement",
-    "quickActions": "Actions rapides",
-    "recentTransactions": "Transactions récentes",
-    "viewAll": "Tout voir",
-    "applicationStatus": "Statut des demandes",
-    "ourServices": "Nos services",
-    "needHelp": "Besoin d'aide ?",
-    "bookConsultation": "Réserver une consultation",
-    "bookConsultationDescription": "Réservez une consultation avec notre équipe de conseil",
-    "actions": {
-      "openNewAccount": "Ouvrir un nouveau compte",
-      "formCompany": "Créer une société",
-      "bookAdvisory": "Réserver conseil",
-      "viewStatements": "Voir les relevés"
     }
   }
 }

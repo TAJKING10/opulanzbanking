@@ -673,7 +673,8 @@
         "benefit1": "Optimize corporate tax structure",
         "benefit2": "Expert guidance on complex tax matters",
         "benefit3": "Ensure compliance with regulations",
-        "benefit4": "Professional expertise for businesses"
+        "benefit4": "Professional expertise for businesses",
+        "overline": "Benefits"
       },
       "details": {
         "overline": "SERVICE DETAILS",
@@ -683,7 +684,9 @@
       },
       "cta": {
         "title": "Ready to Optimize Your Corporate Tax?",
-        "description": "Book your consultation now and let our experts help you with corporate tax planning."
+        "description": "Book your consultation now and let our experts help you with corporate tax planning.",
+        "bookConsultation": "Book Consultation - €{price}",
+        "backToTaxAdvisory": "Back to Tax Advisory"
       }
     },
     "taxCompliance": {
@@ -728,6 +731,7 @@
         "feature6": "Updates on Luxembourg and EU tax law changes"
       },
       "benefits": {
+        "overline": "Benefits",
         "title": "Benefits",
         "benefit1": "Stay compliant with evolving regulations",
         "benefit2": "Avoid penalties and legal issues",
@@ -735,13 +739,15 @@
         "benefit4": "Proactive risk management"
       },
       "details": {
+        "overline": "Service Details",
         "title": "Tax Compliance Services",
         "description": "Stay compliant with evolving tax regulations through our proactive monitoring and expert guidance."
       },
       "cta": {
         "title": "Ready to Ensure Compliance?",
         "description": "Book your consultation now.",
-        "bookButton": "Book - €{price}"
+        "bookButton": "Book - €{price}",
+        "backToTaxAdvisory": "Back to Tax Advisory"
       }
     },
     "taxReturnPreparation": {
@@ -751,7 +757,9 @@
       },
       "pricing": {
         "price": "€299",
-        "description": "Fixed fee for tax return preparation service"
+        "description": "Fixed fee for tax return preparation service",
+        "duration": "60-minute consultation with expert tax advisor",
+        "bookNow": "Book Your Consultation Now"
       },
       "calendar": {
         "title": "Book Your Tax Return Preparation",
@@ -764,6 +772,7 @@
         "serviceDesc": "Professional preparation and filing of corporate and individual tax returns"
       },
       "features": {
+        "title": "What's Included",
         "feature1": "Professional preparation of corporate and individual tax returns",
         "feature2": "Filing across multiple jurisdictions",
         "feature3": "Accuracy and compliance guaranteed",
@@ -772,6 +781,7 @@
         "feature6": "Support for tax queries and correspondence"
       },
       "benefits": {
+        "overline": "Benefits",
         "title": "Benefits of Professional Tax Return Preparation",
         "benefit1": "Save time and reduce stress",
         "benefit2": "Ensure compliance with tax regulations",
@@ -779,13 +789,16 @@
         "benefit4": "Professional expertise at affordable rates"
       },
       "details": {
+        "overline": "Service Details",
         "title": "Professional Tax Return Services",
         "description1": "Let our experienced tax professionals handle the complexity of tax return preparation. We ensure accuracy, compliance, and timely filing across multiple jurisdictions.",
         "description2": "Whether you're an individual taxpayer or a business entity, our comprehensive service covers all aspects of tax return preparation, from documentation review to final submission."
       },
       "cta": {
         "title": "Ready to File Your Tax Return?",
-        "description": "Book your consultation now and let our experts handle your tax return preparation professionally."
+        "description": "Book your consultation now and let our experts handle your tax return preparation professionally.",
+        "bookConsultation": "Book Consultation - €{price}",
+        "backToTaxAdvisory": "Back to Tax Advisory"
       }
     },
     "personalTaxAdvisory": {
@@ -795,7 +808,8 @@
       },
       "pricing": {
         "price": "€100",
-        "description": "Fixed fee for personal tax advisory"
+        "description": "Fixed fee for personal tax advisory",
+        "bookNow": "Book Now"
       },
       "calendar": {
         "title": "Book Your Personal Tax Advisory",
@@ -812,6 +826,7 @@
         "prepareDocuments": "✓ Prepare your personal tax questions and documents"
       },
       "features": {
+        "title": "What's Included",
         "feature1": "Personalized tax advice for high-net-worth individuals",
         "feature2": "Expatriate tax planning and compliance",
         "feature3": "Personal income tax optimization",
@@ -820,18 +835,23 @@
         "feature6": "Relocation and residency tax advice"
       },
       "benefits": {
+        "overline": "Benefits",
+        "title": "Why Choose Our Personal Tax Advisory?",
         "benefit1": "Optimize personal tax position",
         "benefit2": "Expert guidance for complex situations",
         "benefit3": "Peace of mind with professional advice",
         "benefit4": "Tailored solutions for your needs"
       },
       "details": {
+        "overline": "Service Details",
         "title": "Personal Tax Advisory",
         "description": "Get personalized tax advice tailored to your unique situation and goals."
       },
       "cta": {
         "title": "Ready for Personalized Tax Advice?",
-        "description": "Book your consultation now."
+        "description": "Book your consultation now.",
+        "bookButton": "Book Consultation - €{price}",
+        "backToTaxAdvisory": "Back to Tax Advisory"
       }
     },
     "taxAdvisoryBooking": {
@@ -1100,35 +1120,23 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome back! Here's your account overview.",
-    "balance": {
-      "label": "Total Balance"
-    },
-    "buttons": {
-      "addFunds": "Add Funds",
-      "transfer": "Transfer"
-    },
-    "quickActions": {
-      "title": "Quick Actions",
-      "items": {
-        "openAccount": "Open New Account",
-        "formCompany": "Form Company",
-        "bookAdvisory": "Book Advisory",
-        "viewStatements": "View Statements"
-      }
-    },
-    "transactions": {
-      "title": "Recent Transactions",
-      "viewAll": "View All"
-    },
-    "applications": {
-      "title": "Application Status"
-    },
-    "services": {
-      "title": "Our Services",
-      "needHelp": "Need Help?",
-      "description": "Book a consultation with our advisory team",
-      "button": "Book Consultation"
+    "subtitle": "Welcome back! Here's your account overview.",
+    "totalBalance": "Total Balance",
+    "addFunds": "Add Funds",
+    "transfer": "Transfer",
+    "quickActions": "Quick Actions",
+    "recentTransactions": "Recent Transactions",
+    "viewAll": "View All",
+    "applicationStatus": "Application Status",
+    "ourServices": "Our Services",
+    "needHelp": "Need Help?",
+    "bookConsultation": "Book Consultation",
+    "bookConsultationDescription": "Book a consultation with our advisory team",
+    "actions": {
+      "openNewAccount": "Open New Account",
+      "formCompany": "Form Company",
+      "bookAdvisory": "Book Advisory",
+      "viewStatements": "View Statements"
     }
   },
   "compliance": {
@@ -2889,27 +2897,6 @@
       "description": "Join thousands of satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
       "openAccount": "Open an Account",
       "contactUs": "Contact Us"
-    }
-  },
-  "dashboard": {
-    "title": "Dashboard",
-    "subtitle": "Welcome back! Here's your account overview.",
-    "totalBalance": "Total Balance",
-    "addFunds": "Add Funds",
-    "transfer": "Transfer",
-    "quickActions": "Quick Actions",
-    "recentTransactions": "Recent Transactions",
-    "viewAll": "View All",
-    "applicationStatus": "Application Status",
-    "ourServices": "Our Services",
-    "needHelp": "Need Help?",
-    "bookConsultation": "Book Consultation",
-    "bookConsultationDescription": "Book a consultation with our advisory team",
-    "actions": {
-      "openNewAccount": "Open New Account",
-      "formCompany": "Form Company",
-      "bookAdvisory": "Book Advisory",
-      "viewStatements": "View Statements"
     }
   }
 }

@@ -630,7 +630,7 @@
       "cta": {
         "title": "Ready to Optimize Your International Tax?",
         "description": "Book your consultation now and let our experts help you navigate cross-border taxation.",
-        "bookConsultation": "Book Consultation - €{price}",
+        "bookConsultation": "Book Consultation",
         "backToTaxAdvisory": "Back to Tax Advisory"
       }
     },
@@ -685,7 +685,7 @@
       "cta": {
         "title": "Ready to Optimize Your Corporate Tax?",
         "description": "Book your consultation now and let our experts help you with corporate tax planning.",
-        "bookConsultation": "Book Consultation - €{price}",
+        "bookConsultation": "Book Consultation",
         "backToTaxAdvisory": "Back to Tax Advisory"
       }
     },
@@ -797,7 +797,7 @@
       "cta": {
         "title": "Ready to File Your Tax Return?",
         "description": "Book your consultation now and let our experts handle your tax return preparation professionally.",
-        "bookConsultation": "Book Consultation - €{price}",
+        "bookConsultation": "Book Consultation",
         "backToTaxAdvisory": "Back to Tax Advisory"
       }
     },
@@ -850,7 +850,7 @@
       "cta": {
         "title": "Ready for Personalized Tax Advice?",
         "description": "Book your consultation now.",
-        "bookButton": "Book Consultation - €{price}",
+        "bookButton": "Book Consultation",
         "backToTaxAdvisory": "Back to Tax Advisory"
       }
     },

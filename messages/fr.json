@@ -630,7 +630,7 @@
       "cta": {
         "title": "Prêt à optimiser votre fiscalité internationale ?",
         "description": "Réservez votre consultation maintenant et laissez nos experts vous aider à naviguer dans la fiscalité transfrontalière.",
-        "bookConsultation": "Réserver une consultation - {price} €",
+        "bookConsultation": "Réserver une consultation",
         "backToTaxAdvisory": "Retour au conseil fiscal"
       }
     },
@@ -685,7 +685,7 @@
       "cta": {
         "title": "Prêt à optimiser votre fiscalité d'entreprise ?",
         "description": "Réservez votre consultation maintenant et laissez nos experts vous aider dans la planification fiscale de votre entreprise.",
-        "bookConsultation": "Réserver une consultation - €{price}",
+        "bookConsultation": "Réserver une consultation",
         "backToTaxAdvisory": "Retour au conseil fiscal"
       }
     },
@@ -797,7 +797,7 @@
       "cta": {
         "title": "Prêt à déposer votre déclaration fiscale ?",
         "description": "Réservez votre consultation maintenant et laissez nos experts gérer professionnellement la préparation de votre déclaration fiscale.",
-        "bookConsultation": "Réserver une consultation - €{price}",
+        "bookConsultation": "Réserver une consultation",
         "backToTaxAdvisory": "Retour au conseil fiscal"
       }
     },
@@ -850,7 +850,7 @@
       "cta": {
         "title": "Prêt pour des conseils fiscaux personnalisés ?",
         "description": "Réservez votre consultation maintenant.",
-        "bookButton": "Réserver une consultation - €{price}",
+        "bookButton": "Réserver une consultation",
         "backToTaxAdvisory": "Retour au conseil fiscal"
       }
     },

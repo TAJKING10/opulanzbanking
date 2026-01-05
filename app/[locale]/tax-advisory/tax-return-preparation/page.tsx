@@ -7,11 +7,13 @@ import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 import { useState, useEffect, useRef } from "react";
 import emailjs from '@emailjs/browser';
 
 export default function TaxReturnPreparationPage({ params: { locale } }: { params: { locale: string } }) {
+  const t = useTranslations('taxAdvisory.taxReturnPreparation');  const tCommon = useTranslations('taxAdvisory.internationalTax');
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -64,7 +66,7 @@ export default function TaxReturnPreparationPage({ params: { locale } }: { param
 OPULANZ BANKING - PAYMENT RECEIPT
 ==================================================
 
-Service: Tax Return Preparation
+Service: ${t('hero.title')}
 Date: ${new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
 Time: ${new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
 Duration: 60 minutes
@@ -104,7 +106,7 @@ Contact: opulanz.banking@gmail.com
     const templateParams = {
       to_email: bookingData.inviteeEmail,
       to_name: bookingData.inviteeName,
-      service_name: 'Tax Return Preparation',
+      service_name: t('hero.title'),
       appointment_date: new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
       appointment_time: new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
       order_id: bookingData.paymentDetails.orderId,
@@ -225,7 +227,7 @@ Contact: opulanz.banking@gmail.com
           createOrder: function(data: any, actions: any) {
             return actions.order.create({
               purchase_units: [{
-                description: 'Tax Return Preparation - 60 minutes',
+                description: t('payment.serviceTitle') + ' - 60 minutes',
                 amount: {
                   currency_code: 'EUR',
                   value: totalPrice.toFixed(2)
@@ -270,7 +272,7 @@ Contact: opulanz.banking@gmail.com
           email: bookingData.inviteeEmail,
           calendly_id: bookingData.eventUri,
           calendly_event_uri: bookingData.eventUri,
-          meeting_type: 'Tax Return Preparation',
+          meeting_type: t('hero.title'),
           status: 'confirmed',
           start_time: bookingData.eventStartTime,
           end_time: bookingData.eventEndTime,
@@ -308,19 +310,19 @@ Contact: opulanz.banking@gmail.com
   };
 
   const features = [
-    "Professional preparation of corporate and individual tax returns",
-    "Filing across multiple jurisdictions",
-    "Accuracy and compliance guaranteed",
-    "Expert review of all documentation",
-    "Timely submission to tax authorities",
-    "Support for tax queries and correspondence",
+    t('features.feature1'),
+    t('features.feature2'),
+    t('features.feature3'),
+    t('features.feature4'),
+    t('features.feature5'),
+    t('features.feature6'),
   ];
 
   const benefits = [
-    "Save time and reduce stress",
-    "Ensure compliance with tax regulations",
-    "Maximize eligible deductions and credits",
-    "Professional expertise at affordable rates",
+    t('benefits.benefit1'),
+    t('benefits.benefit2'),
+    t('benefits.benefit3'),
+    t('benefits.benefit4'),
   ];
 
   // Step 3: Confirmation
@@ -541,8 +543,8 @@ Contact: opulanz.banking@gmail.com
                     <FileCheck className="h-6 w-6 text-brand-gold" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-brand-dark mb-2">Tax Return Preparation</h3>
-                    <p className="text-sm text-brand-grayMed mb-2">Professional preparation and filing of corporate and individual tax returns</p>
+                    <h3 className="text-xl font-bold text-brand-dark mb-2">{t('payment.serviceTitle')}</h3>
+                    <p className="text-sm text-brand-grayMed mb-2">{t('payment.serviceDesc')}</p>
                     <p className="text-sm text-brand-grayMed">Duration: 60 minutes</p>
                   </div>
                 </div>
@@ -629,7 +631,7 @@ Contact: opulanz.banking@gmail.com
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Book Your Tax Return Preparation
+                {t('calendar.title')}
               </h1>
               <p className="text-lg text-white/90">
                 Schedule your 60-minute consultation - €{totalPrice}
@@ -645,7 +647,7 @@ Contact: opulanz.banking@gmail.com
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
                   <Clock className="h-6 w-6 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-brand-dark">60-Minute Consultation</h3>
+                <h3 className="mb-2 text-lg font-bold text-brand-dark">{t('calendar.consultation60')}</h3>
                 <p className="text-sm text-brand-grayMed">
                   Professional consultation session with our expert tax advisor
                 </p>
@@ -655,7 +657,7 @@ Contact: opulanz.banking@gmail.com
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
                   <Euro className="h-6 w-6 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-brand-dark">€{totalPrice} Fee</h3>
+                <h3 className="mb-2 text-lg font-bold text-brand-dark">{t('calendar.feeLabel', { price: totalPrice })}</h3>
                 <p className="text-sm text-brand-grayMed">
                   Fixed price for tax return preparation service
                 </p>
@@ -665,7 +667,7 @@ Contact: opulanz.banking@gmail.com
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
                   <FileCheck className="h-6 w-6 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Service</h3>
+                <h3 className="mb-2 text-lg font-bold text-brand-dark">{t('calendar.expertService')}</h3>
                 <p className="text-sm text-brand-grayMed">
                   Professional tax return preparation and filing
                 </p>
@@ -688,8 +690,8 @@ Contact: opulanz.banking@gmail.com
   return (
     <>
       <Hero
-        title="Tax Return Preparation"
-        subtitle="Professional preparation and filing of corporate and individual tax returns"
+        title={t('hero.title')}
+        subtitle={t('hero.subtitle')}
       />
 
       {/* Booking Section - At Top */}
@@ -705,17 +707,17 @@ Contact: opulanz.banking@gmail.com
                 <div className="flex items-center justify-center gap-3 mb-4">
                   <div className="relative">
                     <div className="absolute inset-0 bg-brand-gold rounded-full blur-xl opacity-40"></div>
-                    <h3 className="relative text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-brand-goldDark">€{totalPrice}</h3>
+                    <h3 className="relative text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-brand-goldDark">{t('pricing.price')}</h3>
                   </div>
                 </div>
-                <p className="text-lg text-brand-grayMed mb-6">Fixed fee for tax return preparation service</p>
-                <p className="text-sm text-brand-grayMed mb-6">60-minute consultation with expert tax advisor</p>
+                <p className="text-lg text-brand-grayMed mb-6">{t('pricing.description')}</p>
+                <p className="text-sm text-brand-grayMed mb-6">{t('pricing.duration')}</p>
                 <Button
                   onClick={() => setStep('calendar')}
                   size="lg"
                   className="relative bg-gradient-to-r from-brand-gold to-brand-goldDark text-white hover:from-brand-goldDark hover:to-brand-gold w-full sm:w-auto min-w-64 h-14 text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                 >
-                  <span className="relative z-10">Book Your Consultation Now</span>
+                  <span className="relative z-10">{t('pricing.bookNow')}</span>
                   <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-2xl"></div>
                 </Button>
               </div>
@@ -734,24 +736,22 @@ Contact: opulanz.banking@gmail.com
               <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/20 to-transparent rounded-2xl blur-xl transform translate-x-4 translate-y-4"></div>
               <div className="relative bg-white rounded-2xl shadow-2xl p-8 border border-brand-grayLight/50 backdrop-blur-sm hover:shadow-3xl transition-shadow duration-300">
                 <SectionHeading
-                  overline="SERVICE DETAILS"
-                  title="Professional Tax Return Services"
+                  overline={t('details.overline')}
+                  title={t('details.title')}
                   align="left"
                   className="mb-8"
                 />
                 <p className="mb-6 text-lg text-brand-grayMed">
-                  Let our experienced tax professionals handle the complexity of tax return preparation.
-                  We ensure accuracy, compliance, and timely filing across multiple jurisdictions.
+                  {t('details.description1')}
                 </p>
                 <p className="mb-8 text-brand-grayMed">
-                  Whether you're an individual taxpayer or a business entity, our comprehensive service
-                  covers all aspects of tax return preparation, from documentation review to final submission.
+                  {t('details.description2')}
                 </p>
               </div>
             </div>
 
             <div>
-              <h3 className="mb-6 text-xl font-bold text-brand-dark">What's Included</h3>
+              <h3 className="mb-6 text-xl font-bold text-brand-dark">{t('features.title')}</h3>
               <div className="space-y-4">
                 {features.map((feature, index) => (
                   <div
@@ -779,8 +779,8 @@ Contact: opulanz.banking@gmail.com
 
         <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <SectionHeading
-            overline="WHY CHOOSE US"
-            title="Benefits of Professional Tax Return Preparation"
+            overline={t('benefits.overline')}
+            title={t('benefits.title')}
             align="center"
             className="mb-12"
           />
@@ -811,10 +811,10 @@ Contact: opulanz.banking@gmail.com
       <section className="hero-gradient py-20 md:py-28">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            Ready to File Your Tax Return?
+            {t('cta.title')}
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            Book your consultation now and let our experts handle your tax return preparation professionally.
+            {t('cta.description')}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button
@@ -822,7 +822,7 @@ Contact: opulanz.banking@gmail.com
               size="lg"
               className="bg-white text-brand-dark hover:bg-gray-50 min-w-48"
             >
-              Book Consultation - €{totalPrice}
+              {t('cta.bookConsultation')}
             </Button>
             <Button
               asChild
@@ -830,7 +830,7 @@ Contact: opulanz.banking@gmail.com
               size="lg"
               className="border-2 border-white bg-transparent text-white hover:bg-white/10 min-w-48"
             >
-              <Link href={`/${locale}/tax-advisory`}>Back to Tax Advisory</Link>
+              <Link href={`/${locale}/tax-advisory`}>{t('cta.backToTaxAdvisory')}</Link>
             </Button>
           </div>
         </div>

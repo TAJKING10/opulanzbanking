@@ -547,6 +547,321 @@
       "description": "Schedule a consultation with our tax experts to discover how we can help you reduce your tax burden while staying fully compliant.",
       "schedule": "Schedule Consultation",
       "contact": "Contact Us"
+    },
+    "internationalTax": {
+      "hero": {
+        "title": "International Tax",
+        "subtitle": "Expert guidance on cross-border tax matters and transfer pricing"
+      },
+      "pricing": {
+        "price": "€250",
+        "description": "Fixed fee for international tax service",
+        "duration": "60-minute consultation with expert tax advisor",
+        "bookNow": "Book Your Consultation Now"
+      },
+      "calendar": {
+        "title": "Book Your International Tax Consultation",
+        "subtitle": "Schedule your 60-minute consultation - €{price}",
+        "consultation60": "60-Minute Consultation",
+        "consultationDesc": "Professional consultation session with our expert tax advisor",
+        "feeLabel": "€{price} Fee",
+        "feeDesc": "Fixed price for international tax service",
+        "expertService": "Expert Service",
+        "expertDesc": "Cross-border tax and transfer pricing expertise"
+      },
+      "payment": {
+        "timeSlotReserved": "Time Slot Reserved!",
+        "completePayment": "Complete your payment to confirm your booking",
+        "appointmentDetails": "Your Appointment Details",
+        "name": "Name:",
+        "email": "Email:",
+        "date": "Date:",
+        "time": "Time:",
+        "duration": "Duration:",
+        "minutes60": "60 minutes",
+        "serviceTitle": "International Tax",
+        "serviceDesc": "Expert guidance on cross-border tax matters and transfer pricing",
+        "serviceFeeExcl": "Service Fee (excl. VAT):",
+        "vat17": "VAT (17%):",
+        "totalIncl": "Total (incl. VAT):",
+        "completeYourPayment": "Complete Your Payment",
+        "oneTimePayment": "One-time payment for 60-minute consultation",
+        "testingCard": "Testing:",
+        "testingCardDesc": "Use card {code} (Expiry: 12/2030, CVV: 123)",
+        "paymentSuccessful": "Payment Successful!",
+        "processing": "Processing...",
+        "continueToConfirmation": "Continue to Confirmation"
+      },
+      "confirmation": {
+        "title": "Payment Confirmed!",
+        "subtitle": "Thank you for your payment. Your appointment is now confirmed.",
+        "confirmedAppointment": "Confirmed Appointment",
+        "service": "Service:",
+        "whatsNext": "What's Next?",
+        "checkEmail": "✓ Check your email ({email}) for the meeting link and calendar invite",
+        "prepareDocuments": "✓ Prepare your tax documents and questions",
+        "joinConference": "✓ Join the video conference at your scheduled time",
+        "teamNotified": "✓ Our team has been notified and will be ready for your consultation",
+        "returnToHome": "Return to Home"
+      },
+      "features": {
+        "title": "What's Included",
+        "feature1": "Expert guidance on cross-border tax matters",
+        "feature2": "Transfer pricing analysis and documentation",
+        "feature3": "Double taxation treaty optimization",
+        "feature4": "International tax structuring advice",
+        "feature5": "Cross-border transaction planning",
+        "feature6": "Compliance with multiple jurisdictions"
+      },
+      "benefits": {
+        "overline": "WHY CHOOSE US",
+        "title": "Benefits of Professional International Tax Advice",
+        "benefit1": "Minimize international tax exposure",
+        "benefit2": "Navigate complex cross-border regulations",
+        "benefit3": "Optimize global tax structures",
+        "benefit4": "Expert knowledge of EU and international tax law"
+      },
+      "details": {
+        "overline": "SERVICE DETAILS",
+        "title": "International Tax Expertise",
+        "description1": "Navigate the complexities of cross-border taxation with our expert guidance. We specialize in international tax structuring, transfer pricing, and treaty optimization.",
+        "description2": "Our team has extensive experience with EU and global tax regulations, ensuring your international operations are tax-efficient and compliant."
+      },
+      "cta": {
+        "title": "Ready to Optimize Your International Tax?",
+        "description": "Book your consultation now and let our experts help you navigate cross-border taxation.",
+        "bookConsultation": "Book Consultation - €{price}",
+        "backToTaxAdvisory": "Back to Tax Advisory"
+      }
+    },
+    "corporateTax": {
+      "hero": {
+        "title": "Corporate Tax",
+        "subtitle": "Comprehensive corporate tax services and planning"
+      },
+      "pricing": {
+        "price": "€150",
+        "description": "Fixed fee for corporate tax service",
+        "duration": "60-minute consultation with expert tax advisor",
+        "bookNow": "Book Your Consultation Now"
+      },
+      "calendar": {
+        "title": "Book Your Corporate Tax Consultation",
+        "subtitle": "Schedule your 60-minute consultation - €{price}",
+        "consultation60": "60-Minute Consultation",
+        "consultationDesc": "Professional consultation session with our expert tax advisor",
+        "feeLabel": "€{price} Fee",
+        "feeDesc": "Fixed price for corporate tax service",
+        "expertService": "Expert Service",
+        "expertDesc": "Corporate tax planning and compliance"
+      },
+      "payment": {
+        "serviceTitle": "Corporate Tax",
+        "serviceDesc": "Comprehensive corporate tax services and planning"
+      },
+      "features": {
+        "title": "What's Included",
+        "feature1": "Comprehensive corporate tax services and planning",
+        "feature2": "Tax-efficient corporate restructuring advice",
+        "feature3": "M&A tax due diligence and advice",
+        "feature4": "VAT consulting and compliance",
+        "feature5": "Corporate tax optimization strategies",
+        "feature6": "Tax implications of business transactions"
+      },
+      "benefits": {
+        "title": "Benefits of Professional Corporate Tax Advice",
+        "benefit1": "Optimize corporate tax structure",
+        "benefit2": "Expert guidance on complex tax matters",
+        "benefit3": "Ensure compliance with regulations",
+        "benefit4": "Professional expertise for businesses"
+      },
+      "details": {
+        "overline": "SERVICE DETAILS",
+        "title": "Corporate Tax Services",
+        "description1": "Our expert team provides comprehensive corporate tax planning and compliance services to optimize your business's tax position.",
+        "description2": "From restructuring to M&A tax advice, we ensure your corporate transactions are tax-efficient and compliant."
+      },
+      "cta": {
+        "title": "Ready to Optimize Your Corporate Tax?",
+        "description": "Book your consultation now and let our experts help you with corporate tax planning."
+      }
+    },
+    "taxCompliance": {
+      "hero": {
+        "title": "Tax Compliance",
+        "subtitle": "Ensure ongoing compliance with tax laws and regulations"
+      },
+      "pricing": {
+        "price": "€250",
+        "description": "Fixed fee for tax compliance service",
+        "bookNow": "Book Your Consultation Now"
+      },
+      "calendar": {
+        "title": "Book Your Tax Compliance Consultation",
+        "subtitle": "Schedule your 60-minute consultation - €{price}",
+        "consultation60": "60-Minute Consultation",
+        "consultationDesc": "Professional consultation session",
+        "feeLabel": "€{price} Fee",
+        "feeDesc": "Fixed price for tax compliance",
+        "expertService": "Expert Service",
+        "expertDesc": "Compliance monitoring and advice"
+      },
+      "payment": {
+        "serviceTitle": "Tax Compliance",
+        "serviceDesc": "Ongoing compliance with tax laws and regulations"
+      },
+      "confirmation": {
+        "subtitle": "Your appointment is confirmed. Confirmation emails sent!",
+        "confirmationEmailSent": "✓ Confirmation email sent to {email}",
+        "teamNotifiedEmail": "✓ Our team at opulanz.banking@gmail.com has been notified",
+        "checkEmailLink": "✓ Check your email for the Google Meet link from Calendly",
+        "prepareQuestions": "✓ Prepare your compliance questions and documents",
+        "downloadReceipt": "Download Receipt"
+      },
+      "features": {
+        "title": "What's Included",
+        "feature1": "Ensure ongoing compliance with tax laws and regulations",
+        "feature2": "Regular monitoring of regulatory changes",
+        "feature3": "Proactive compliance advice and guidance",
+        "feature4": "Tax authority correspondence and representation",
+        "feature5": "Compliance reviews and health checks",
+        "feature6": "Updates on Luxembourg and EU tax law changes"
+      },
+      "benefits": {
+        "title": "Benefits",
+        "benefit1": "Stay compliant with evolving regulations",
+        "benefit2": "Avoid penalties and legal issues",
+        "benefit3": "Peace of mind with expert monitoring",
+        "benefit4": "Proactive risk management"
+      },
+      "details": {
+        "title": "Tax Compliance Services",
+        "description": "Stay compliant with evolving tax regulations through our proactive monitoring and expert guidance."
+      },
+      "cta": {
+        "title": "Ready to Ensure Compliance?",
+        "description": "Book your consultation now.",
+        "bookButton": "Book - €{price}"
+      }
+    },
+    "taxReturnPreparation": {
+      "hero": {
+        "title": "Tax Return Preparation",
+        "subtitle": "Professional preparation and filing of corporate and individual tax returns"
+      },
+      "pricing": {
+        "price": "€299",
+        "description": "Fixed fee for tax return preparation service"
+      },
+      "calendar": {
+        "title": "Book Your Tax Return Preparation",
+        "subtitle": "Schedule your 60-minute consultation - €{price}",
+        "feeDesc": "Fixed price for tax return preparation service",
+        "expertDesc": "Professional tax return preparation and filing"
+      },
+      "payment": {
+        "serviceTitle": "Tax Return Preparation",
+        "serviceDesc": "Professional preparation and filing of corporate and individual tax returns"
+      },
+      "features": {
+        "feature1": "Professional preparation of corporate and individual tax returns",
+        "feature2": "Filing across multiple jurisdictions",
+        "feature3": "Accuracy and compliance guaranteed",
+        "feature4": "Expert review of all documentation",
+        "feature5": "Timely submission to tax authorities",
+        "feature6": "Support for tax queries and correspondence"
+      },
+      "benefits": {
+        "title": "Benefits of Professional Tax Return Preparation",
+        "benefit1": "Save time and reduce stress",
+        "benefit2": "Ensure compliance with tax regulations",
+        "benefit3": "Maximize eligible deductions and credits",
+        "benefit4": "Professional expertise at affordable rates"
+      },
+      "details": {
+        "title": "Professional Tax Return Services",
+        "description1": "Let our experienced tax professionals handle the complexity of tax return preparation. We ensure accuracy, compliance, and timely filing across multiple jurisdictions.",
+        "description2": "Whether you're an individual taxpayer or a business entity, our comprehensive service covers all aspects of tax return preparation, from documentation review to final submission."
+      },
+      "cta": {
+        "title": "Ready to File Your Tax Return?",
+        "description": "Book your consultation now and let our experts handle your tax return preparation professionally."
+      }
+    },
+    "personalTaxAdvisory": {
+      "hero": {
+        "title": "Personal Tax Advisory",
+        "subtitle": "Personalized tax advice for high-net-worth individuals"
+      },
+      "pricing": {
+        "price": "€100",
+        "description": "Fixed fee for personal tax advisory"
+      },
+      "calendar": {
+        "title": "Book Your Personal Tax Advisory",
+        "subtitle": "Schedule your 60-minute consultation - €{price}",
+        "consultationDesc": "Personal consultation session",
+        "feeDesc": "Fixed price for personal tax advisory",
+        "expertDesc": "Personalized tax advice"
+      },
+      "payment": {
+        "serviceTitle": "Personal Tax Advisory",
+        "serviceDesc": "Personalized tax advice for individuals"
+      },
+      "confirmation": {
+        "prepareDocuments": "✓ Prepare your personal tax questions and documents"
+      },
+      "features": {
+        "feature1": "Personalized tax advice for high-net-worth individuals",
+        "feature2": "Expatriate tax planning and compliance",
+        "feature3": "Personal income tax optimization",
+        "feature4": "Wealth and estate tax planning",
+        "feature5": "Tax-efficient investment strategies",
+        "feature6": "Relocation and residency tax advice"
+      },
+      "benefits": {
+        "benefit1": "Optimize personal tax position",
+        "benefit2": "Expert guidance for complex situations",
+        "benefit3": "Peace of mind with professional advice",
+        "benefit4": "Tailored solutions for your needs"
+      },
+      "details": {
+        "title": "Personal Tax Advisory",
+        "description": "Get personalized tax advice tailored to your unique situation and goals."
+      },
+      "cta": {
+        "title": "Ready for Personalized Tax Advice?",
+        "description": "Book your consultation now."
+      }
+    },
+    "taxAdvisoryBooking": {
+      "calendar": {
+        "title": "Schedule Your Tax Advisory Consultation",
+        "subtitle": "Choose a convenient time for your 60-minute consultation"
+      },
+      "serviceSelection": {
+        "overline": "STEP 2 OF 3",
+        "title": "Select Your Tax Advisory Service",
+        "description": "Choose the service that best matches your needs",
+        "confirmed": "Consultation Scheduled!",
+        "selectService": "Now, please select which service you need assistance with",
+        "selectButton": "Select Service"
+      },
+      "payment": {
+        "overline": "STEP 3 OF 3",
+        "title": "Complete Your Payment",
+        "subtitle": "Final step to confirm your consultation",
+        "paymentDetails": "Payment Details",
+        "orderSummary": "Order Summary",
+        "paymentMethod": "Payment Method",
+        "paymentInfo": "To complete your booking, please proceed with the payment using one of the methods below.",
+        "payCard": "Pay with Credit/Debit Card",
+        "payBank": "Pay with Bank Transfer",
+        "payPaypal": "Pay with PayPal",
+        "reservationNote": "Your consultation slot is reserved for 15 minutes. Please complete the payment to confirm your booking.",
+        "backToSelection": "Back to Service Selection",
+        "cancelBooking": "Cancel Booking"
+      }
     }
   },
   "legal": {

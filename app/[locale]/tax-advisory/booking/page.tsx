@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 
 export default function BookingPage({ params: { locale } }: { params: { locale: string } }) {
   const t = useTranslations('taxAdvisory.taxAdvisoryBooking');
+  const tCommon = useTranslations('taxAdvisory.internationalTax');
   const router = useRouter();
   const [selectedService, setSelectedService] = React.useState<string | null>(null);
   const [step, setStep] = React.useState<"calendly" | "service-selection" | "payment">("calendly");
@@ -36,40 +37,46 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
     };
   }, []);
 
+  const tInternational = useTranslations('taxAdvisory.internationalTax');
+  const tCorporate = useTranslations('taxAdvisory.corporateTax');
+  const tCompliance = useTranslations('taxAdvisory.taxCompliance');
+  const tPersonal = useTranslations('taxAdvisory.personalTaxAdvisory');
+  const tReturn = useTranslations('taxAdvisory.taxReturnPreparation');
+
   const services = [
     {
       id: "tax-return-preparation",
       icon: FileCheck,
-      title: "Tax Return Preparation",
-      description: "Professional preparation and filing of corporate and individual tax returns",
+      title: tReturn('hero.title'),
+      description: tReturn('hero.subtitle'),
       price: 299,
     },
     {
       id: "international-tax",
       icon: Globe,
-      title: "International Tax",
-      description: "Expert guidance on cross-border tax matters and transfer pricing",
+      title: tInternational('hero.title'),
+      description: tInternational('hero.subtitle'),
       price: 250,
     },
     {
       id: "corporate-tax",
       icon: Briefcase,
-      title: "Corporate Tax",
-      description: "Comprehensive corporate tax services including M&A and VAT consulting",
+      title: tCorporate('hero.title'),
+      description: tCorporate('hero.subtitle'),
       price: 150,
     },
     {
       id: "tax-compliance",
       icon: Shield,
-      title: "Tax Compliance",
-      description: "Ongoing compliance with tax laws and regulations",
+      title: tCompliance('hero.title'),
+      description: tCompliance('hero.subtitle'),
       price: 250,
     },
     {
       id: "personal-tax-advisory",
       icon: UserCheck,
-      title: "Personal Tax Advisory",
-      description: "Personalized tax advice for high-net-worth individuals and expatriates",
+      title: tPersonal('hero.title'),
+      description: tPersonal('hero.subtitle'),
       price: 100,
     },
   ];
@@ -132,9 +139,9 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-7xl px-6">
             <SectionHeading
-              overline="{t('serviceSelection.overline')}"
-              title="{t('serviceSelection.title')}"
-              description="{t('serviceSelection.description')}"
+              overline={t('serviceSelection.overline')}
+              title={t('serviceSelection.title')}
+              description={t('serviceSelection.description')}
               align="center"
               className="mb-12"
             />
@@ -192,8 +199,8 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-3xl px-6">
             <SectionHeading
-              overline="{t('payment.overline')}"
-              title="{t('payment.paymentDetails')}"
+              overline={t('payment.overline')}
+              title={t('payment.paymentDetails')}
               align="center"
               className="mb-12"
             />
@@ -216,24 +223,24 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-brand-dark">{selectedServiceData.title}</h3>
                       <p className="text-sm text-brand-grayMed mt-1">{selectedServiceData.description}</p>
-                      <p className="text-sm text-brand-grayMed mt-2">Duration: 60 minutes</p>
+                      <p className="text-sm text-brand-grayMed mt-2">{tCommon('payment.duration')} {tCommon('payment.minutes60')}</p>
                     </div>
                   </div>
 
                   <div className="border-t border-brand-grayLight pt-4 mt-4">
                     <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">Service Fee (excl. VAT):</span>
+                      <span className="text-brand-grayMed">{tCommon('payment.serviceFeeExcl')}</span>
                       <span className="font-semibold text-brand-dark">€{(selectedServiceData.price / 1.17).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">VAT (17%):</span>
+                      <span className="text-brand-grayMed">{tCommon('payment.vat17')}</span>
                       <span className="font-semibold text-brand-dark">
                         €{(selectedServiceData.price - (selectedServiceData.price / 1.17)).toFixed(2)}
                       </span>
                     </div>
                     <div className="border-t border-brand-grayLight pt-4 mt-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-brand-dark">Total (incl. VAT):</span>
+                        <span className="text-xl font-bold text-brand-dark">{tCommon('payment.totalIncl')}</span>
                         <span className="text-3xl font-bold text-brand-gold">
                           €{selectedServiceData.price.toFixed(2)}
                         </span>
@@ -273,8 +280,7 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
 
                 <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                   <p className="text-sm text-blue-900">
-                    <strong>Note:</strong> Your consultation slot is reserved for 15 minutes. Please complete
-                    the payment to confirm your booking.
+                    {t('payment.reservationNote')}
                   </p>
                 </div>
               </CardContent>

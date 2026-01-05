@@ -5,10 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle, Calendar, Clock, Mail, User, FileText, Download, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { SearchParamsWrapper } from "@/components/search-params-wrapper";
 
+// Force dynamic rendering to avoid prerendering issues with useSearchParams
 export const dynamic = 'force-dynamic';
 
-export default function ConfirmationPage({ params: { locale } }: { params: { locale: string } }) {
+function ConfirmationPageContent({ locale }: { locale: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -617,5 +619,13 @@ export default function ConfirmationPage({ params: { locale } }: { params: { loc
         </div>
       </section>
     </>
+  );
+}
+
+export default function ConfirmationPage({ params: { locale } }: { params: { locale: string } }) {
+  return (
+    <SearchParamsWrapper>
+      <ConfirmationPageContent locale={locale} />
+    </SearchParamsWrapper>
   );
 }

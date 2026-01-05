@@ -9,7 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Script from "next/script";
+import { SearchParamsWrapper } from "@/components/search-params-wrapper";
 
+// Force dynamic rendering to avoid prerendering issues with useSearchParams
 export const dynamic = 'force-dynamic';
 
 interface BookingData {
@@ -32,7 +34,7 @@ interface BookingData {
   paymentStatus?: string;
 }
 
-export default function LifeInsuranceBookingPage({ params: { locale } }: { params: { locale: string } }) {
+function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [step, setStep] = React.useState<"info" | "calendly" | "service-selection" | "summary" | "payment">("info");
@@ -792,6 +794,14 @@ export default function LifeInsuranceBookingPage({ params: { locale } }: { param
   }
 
   return null;
+}
+
+export default function LifeInsuranceBookingPage({ params: { locale } }: { params: { locale: string } }) {
+  return (
+    <SearchParamsWrapper>
+      <LifeInsuranceBookingPageContent locale={locale} />
+    </SearchParamsWrapper>
+  );
 }
 
 // Extend Window interface for PayPal

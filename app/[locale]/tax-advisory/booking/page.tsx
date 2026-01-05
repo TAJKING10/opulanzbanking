@@ -2,8 +2,6 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
-export const dynamic = 'force-dynamic';
 import { FileCheck, Globe, Briefcase, Shield, UserCheck, CheckCircle, ArrowRight, ArrowLeft, User, Mail, Phone } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,6 +10,10 @@ import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Script from "next/script";
+import { SearchParamsWrapper } from "@/components/search-params-wrapper";
+
+// Force dynamic rendering to avoid prerendering issues with useSearchParams
+export const dynamic = 'force-dynamic';
 
 interface BookingData {
   // Customer info
@@ -33,7 +35,7 @@ interface BookingData {
   paymentStatus?: string;
 }
 
-export default function BookingPage({ params: { locale } }: { params: { locale: string } }) {
+function TaxAdvisoryBookingPageContent({ locale }: { locale: string }) {
   const t = useTranslations('taxAdvisory.taxAdvisoryBooking');
   const tCommon = useTranslations('taxAdvisory.internationalTax');
   const router = useRouter();
@@ -801,6 +803,14 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
   }
 
   return null;
+}
+
+export default function BookingPage({ params: { locale } }: { params: { locale: string } }) {
+  return (
+    <SearchParamsWrapper>
+      <TaxAdvisoryBookingPageContent locale={locale} />
+    </SearchParamsWrapper>
+  );
 }
 
 // Extend Window interface for PayPal

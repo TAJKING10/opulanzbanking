@@ -14,50 +14,60 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
 
   const services = [
     {
+      id: "tax-return-preparation",
       icon: FileCheck,
-      title: t('taxAdvisory.services.taxReturn.title'),
-      description: t('taxAdvisory.services.taxReturn.description'),
-      href: `/${locale}/tax-advisory/tax-return-preparation`,
+      title: "Tax Return Preparation",
+      description: "Professional preparation and filing of corporate and individual tax returns across multiple jurisdictions.",
+      href: `/${locale}/tax-advisory/booking?service=tax-return-preparation`,
       price: "€299",
+      priceValue: 299,
     },
     {
+      id: "international-tax",
       icon: Globe,
-      title: t('taxAdvisory.services.international.title'),
-      description: t('taxAdvisory.services.international.description'),
-      href: `/${locale}/tax-advisory/international-tax`,
+      title: "International Tax",
+      description: "Expert guidance on cross-border tax matters, transfer pricing, and double taxation treaties.",
+      href: `/${locale}/tax-advisory/booking?service=international-tax`,
       price: "€250",
+      priceValue: 250,
     },
     {
+      id: "corporate-tax",
       icon: Briefcase,
-      title: t('taxAdvisory.services.corporate.title'),
-      description: t('taxAdvisory.services.corporate.description'),
-      href: `/${locale}/tax-advisory/corporate-tax`,
+      title: "Corporate Tax",
+      description: "Comprehensive corporate tax services including restructuring, M&A tax advice, and VAT consulting.",
+      href: `/${locale}/tax-advisory/booking?service=corporate-tax`,
       price: "€150",
+      priceValue: 150,
     },
     {
+      id: "tax-compliance",
       icon: Shield,
-      title: t('taxAdvisory.services.compliance.title'),
-      description: t('taxAdvisory.services.compliance.description'),
-      href: `/${locale}/tax-advisory/tax-compliance`,
+      title: "Tax Compliance",
+      description: "Ensure ongoing compliance with changing tax laws and regulations in Luxembourg and beyond.",
+      href: `/${locale}/tax-advisory/booking?service=tax-compliance`,
       price: "€250",
+      priceValue: 250,
     },
     {
+      id: "personal-tax-advisory",
       icon: UserCheck,
-      title: t('taxAdvisory.services.personal.title'),
-      description: t('taxAdvisory.services.personal.description'),
-      href: `/${locale}/tax-advisory/personal-tax-advisory`,
+      title: "Personal Tax Advisory",
+      description: "Personalized tax advice for high-net-worth individuals and expatriates.",
+      href: `/${locale}/tax-advisory/booking?service=personal-tax-advisory`,
       price: "€100",
+      priceValue: 100,
     },
   ];
 
   const benefits = [
-    t('taxAdvisory.benefits.1'),
-    t('taxAdvisory.benefits.2'),
-    t('taxAdvisory.benefits.3'),
-    t('taxAdvisory.benefits.4'),
-    t('taxAdvisory.benefits.5'),
-    t('taxAdvisory.benefits.6'),
-    t('taxAdvisory.benefits.7'),
+    "Reduce tax burden through strategic planning",
+    "Stay compliant with complex tax regulations",
+    "Expert knowledge of Luxembourg and EU tax law",
+    "Proactive advice on tax-efficient structures",
+    "Support during tax audits and disputes",
+    "Regular updates on tax law changes",
+    "Multi-jurisdictional tax expertise",
   ];
 
   return (
@@ -66,11 +76,11 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
         title={t('services.tax.title')}
         subtitle={t('services.tax.description')}
         primaryCta={{
-          label: t('taxAdvisory.hero.primaryCta'),
+          label: "Schedule Consultation",
           href: `/${locale}/tax-advisory/booking`,
         }}
         secondaryCta={{
-          label: t('taxAdvisory.hero.secondaryCta'),
+          label: "Our Services",
           href: "#services",
         }}
       />
@@ -84,9 +94,9 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
 
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <SectionHeading
-            overline={t('taxAdvisory.services.overline')}
-            title={t('taxAdvisory.services.title')}
-            description={t('taxAdvisory.services.description')}
+            overline="Tax Services"
+            title="Expert Tax Advisory for Businesses & Individuals"
+            description="Navigate complex tax regulations with confidence. Our experienced tax advisors provide strategic guidance to optimize your tax position."
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => {
@@ -130,10 +140,13 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
               <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/20 to-transparent rounded-2xl blur-xl transform translate-x-4 translate-y-4"></div>
               <div className="relative bg-white rounded-2xl shadow-2xl p-8 border border-brand-grayLight/50 backdrop-blur-sm hover:shadow-3xl transition-shadow duration-300">
                 <h2 className="mb-6 text-3xl font-bold text-brand-dark md:text-4xl">
-                  {t('taxAdvisory.whyChoose.title')}
+                  Trusted Tax Experts in Luxembourg
                 </h2>
                 <p className="mb-8 text-lg text-brand-grayMed">
-                  {t('taxAdvisory.whyChoose.description')}
+                  With decades of combined experience and deep knowledge of Luxembourg and international tax law,
+                  our team of certified tax advisors delivers practical, actionable advice that protects your
+                  interests and optimizes your tax position. We stay ahead of regulatory changes to keep you
+                  compliant and competitive.
                 </p>
               </div>
             </div>
@@ -164,9 +177,9 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
 
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <SectionHeading
-            overline={t('taxAdvisory.expertise.overline')}
-            title={t('taxAdvisory.expertise.title')}
-            description={t('taxAdvisory.expertise.description')}
+            overline="Our Expertise"
+            title="Comprehensive Tax Coverage"
+            description="From local compliance to international tax structures, we cover all aspects of tax advisory."
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
@@ -177,8 +190,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
                 </div>
               </div>
-              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('taxAdvisory.expertise.optimization.title')}</h3>
-              <p className="text-sm text-brand-grayMed">{t('taxAdvisory.expertise.optimization.description')}</p>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">Tax Optimization</h3>
+              <p className="text-sm text-brand-grayMed">Minimize tax burden legally and ethically</p>
             </div>
             <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <div className="relative inline-block mb-4">
@@ -188,8 +201,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
                 </div>
               </div>
-              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('taxAdvisory.expertise.compliance.title')}</h3>
-              <p className="text-sm text-brand-grayMed">{t('taxAdvisory.expertise.compliance.description')}</p>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">Compliance</h3>
+              <p className="text-sm text-brand-grayMed">Full adherence to tax regulations</p>
             </div>
             <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <div className="relative inline-block mb-4">
@@ -199,8 +212,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
                 </div>
               </div>
-              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('taxAdvisory.expertise.international.title')}</h3>
-              <p className="text-sm text-brand-grayMed">{t('taxAdvisory.expertise.international.description')}</p>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">International</h3>
+              <p className="text-sm text-brand-grayMed">Cross-border tax expertise</p>
             </div>
             <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <div className="relative inline-block mb-4">
@@ -210,8 +223,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
                 </div>
               </div>
-              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('taxAdvisory.expertise.personal.title')}</h3>
-              <p className="text-sm text-brand-grayMed">{t('taxAdvisory.expertise.personal.description')}</p>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">Personal Service</h3>
+              <p className="text-sm text-brand-grayMed">Dedicated tax advisors for your needs</p>
             </div>
           </div>
         </div>
@@ -221,23 +234,24 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       <section className="hero-gradient py-20 md:py-28">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            {t('taxAdvisory.cta.title')}
+            Let's Optimize Your Tax Strategy
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            {t('taxAdvisory.cta.description')}
+            Schedule a consultation with our tax experts to discover how we can help you reduce
+            your tax burden while staying fully compliant.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href={`/${locale}/tax-advisory/booking`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
-              {t('taxAdvisory.cta.schedule')}
+              Schedule Consultation
             </Link>
             <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
-              {t('taxAdvisory.cta.contact')}
+              Contact Us
             </Link>
           </div>
         </div>

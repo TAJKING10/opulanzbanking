@@ -54,7 +54,9 @@
       "WebFetch(domain:api.narvi.com)",
       "Bash(psql:*)",
       "Bash(tee:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(timeout:*)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

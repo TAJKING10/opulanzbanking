@@ -20,6 +20,8 @@ const companyRoutes = require('./routes/companies');
 const appointmentRoutes = require('./routes/appointments');
 const notificationRoutes = require('./routes/notifications');
 const kycRoutes = require('./routes/kyc');
+const taxAdvisoryBookingsRoutes = require('./routes/tax-advisory-bookings');
+const lifeInsuranceBookingsRoutes = require('./routes/life-insurance-bookings');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -52,6 +54,8 @@ app.use('/api/companies', companyRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/kyc', kycRoutes);
+app.use('/api/tax-advisory-bookings', taxAdvisoryBookingsRoutes); // Tax advisory service bookings
+app.use('/api/life-insurance-bookings', lifeInsuranceBookingsRoutes); // Life insurance service bookings
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -147,11 +151,13 @@ const startServer = async () => {
       console.log(`🏥 Health check: http://localhost:${PORT}/health`);
       console.log('');
       console.log('📚 Available API Endpoints:');
-      console.log(`   👥 Users:        http://localhost:${PORT}/api/users`);
-      console.log(`   📋 Applications: http://localhost:${PORT}/api/applications`);
-      console.log(`   📄 Documents:    http://localhost:${PORT}/api/documents`);
-      console.log(`   🏢 Companies:    http://localhost:${PORT}/api/companies`);
-      console.log(`   📅 Appointments: http://localhost:${PORT}/api/appointments`);
+      console.log(`   👥 Users:           http://localhost:${PORT}/api/users`);
+      console.log(`   📋 Applications:    http://localhost:${PORT}/api/applications`);
+      console.log(`   📄 Documents:       http://localhost:${PORT}/api/documents`);
+      console.log(`   🏢 Companies:       http://localhost:${PORT}/api/companies`);
+      console.log(`   📅 Appointments:    http://localhost:${PORT}/api/appointments`);
+      console.log(`   💼 Tax Advisory:    http://localhost:${PORT}/api/tax-advisory-bookings`);
+      console.log(`   🛡️  Life Insurance:  http://localhost:${PORT}/api/life-insurance-bookings`);
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       console.log('');
     });

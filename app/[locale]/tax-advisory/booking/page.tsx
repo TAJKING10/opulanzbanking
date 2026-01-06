@@ -157,21 +157,21 @@ function TaxAdvisoryBookingPageContent({ locale }: { locale: string }) {
     const newErrors: Partial<BookingData> = {};
 
     if (!bookingData.firstName.trim()) {
-      newErrors.firstName = "First name is required";
+      newErrors.firstName = t('customerInfo.errors.firstNameRequired');
     }
 
     if (!bookingData.lastName.trim()) {
-      newErrors.lastName = "Last name is required";
+      newErrors.lastName = t('customerInfo.errors.lastNameRequired');
     }
 
     if (!bookingData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t('customerInfo.errors.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bookingData.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = t('customerInfo.errors.emailInvalid');
     }
 
     if (!bookingData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
+      newErrors.phone = t('customerInfo.errors.phoneRequired');
     }
 
     setErrors(newErrors);
@@ -295,10 +295,10 @@ function TaxAdvisoryBookingPageContent({ locale }: { locale: string }) {
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Book Your Tax Advisory Consultation
+                {t('customerInfo.title')}
               </h1>
               <p className="text-lg text-white/90">
-                Let's start by collecting your contact information
+                {t('customerInfo.subtitle')}
               </p>
             </div>
           </div>
@@ -307,9 +307,9 @@ function TaxAdvisoryBookingPageContent({ locale }: { locale: string }) {
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-2xl px-6">
             <SectionHeading
-              overline="STEP 1 OF 4"
-              title="Your Contact Information"
-              description="We'll use this information to send you booking confirmation and meeting details"
+              overline={t('customerInfo.overline')}
+              title={t('customerInfo.heading')}
+              description={t('customerInfo.description')}
               align="center"
               className="mb-12"
             />
@@ -319,13 +319,13 @@ function TaxAdvisoryBookingPageContent({ locale }: { locale: string }) {
                 <form onSubmit={handleCustomerInfoSubmit} className="space-y-6">
                   <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name *</Label>
+                      <Label htmlFor="firstName">{t('customerInfo.firstName')}</Label>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                         <Input
                           id="firstName"
                           type="text"
-                          placeholder="John"
+                          placeholder={t('customerInfo.firstNamePlaceholder')}
                           className="pl-10"
                           value={bookingData.firstName}
                           onChange={(e) => setBookingData(prev => ({ ...prev, firstName: e.target.value }))}
@@ -337,13 +337,13 @@ function TaxAdvisoryBookingPageContent({ locale }: { locale: string }) {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name *</Label>
+                      <Label htmlFor="lastName">{t('customerInfo.lastName')}</Label>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                         <Input
                           id="lastName"
                           type="text"
-                          placeholder="Doe"
+                          placeholder={t('customerInfo.lastNamePlaceholder')}
                           className="pl-10"
                           value={bookingData.lastName}
                           onChange={(e) => setBookingData(prev => ({ ...prev, lastName: e.target.value }))}
@@ -356,13 +356,13 @@ function TaxAdvisoryBookingPageContent({ locale }: { locale: string }) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
+                    <Label htmlFor="email">{t('customerInfo.email')}</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                       <Input
                         id="email"
                         type="email"
-                        placeholder="john.doe@example.com"
+                        placeholder={t('customerInfo.emailPlaceholder')}
                         className="pl-10"
                         value={bookingData.email}
                         onChange={(e) => setBookingData(prev => ({ ...prev, email: e.target.value }))}
@@ -374,13 +374,13 @@ function TaxAdvisoryBookingPageContent({ locale }: { locale: string }) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Label htmlFor="phone">{t('customerInfo.phone')}</Label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                       <Input
                         id="phone"
                         type="tel"
-                        placeholder="+352 123 456 789"
+                        placeholder={t('customerInfo.phonePlaceholder')}
                         className="pl-10"
                         value={bookingData.phone}
                         onChange={(e) => setBookingData(prev => ({ ...prev, phone: e.target.value }))}
@@ -393,7 +393,7 @@ function TaxAdvisoryBookingPageContent({ locale }: { locale: string }) {
 
                   <div className="pt-4">
                     <Button type="submit" className="w-full bg-brand-gold text-white hover:bg-brand-goldDark h-12 text-lg">
-                      Continue to Schedule
+                      {t('customerInfo.continue')}
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </div>
@@ -408,7 +408,7 @@ function TaxAdvisoryBookingPageContent({ locale }: { locale: string }) {
                 className="text-brand-grayMed hover:text-brand-gold"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Tax Advisory
+                {t('customerInfo.backToTaxAdvisory')}
               </Button>
             </div>
           </div>

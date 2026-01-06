@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Script from "next/script";
 import { SearchParamsWrapper } from "@/components/search-params-wrapper";
+import { useTranslations } from "next-intl";
 
 // Force dynamic rendering to avoid prerendering issues with useSearchParams
 export const dynamic = 'force-dynamic';
@@ -37,6 +38,7 @@ interface BookingData {
 function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations('lifeInsuranceBooking');
   const [step, setStep] = React.useState<"info" | "calendly" | "service-selection" | "summary" | "payment">("info");
   const [bookingData, setBookingData] = React.useState<BookingData>({
     firstName: "",
@@ -51,36 +53,36 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
     {
       id: "term-life-insurance",
       icon: Clock,
-      title: "Term Life Insurance",
-      description: "Affordable protection for 10, 20, or 30 years with level premiums",
+      title: t('services.termLife.title'),
+      description: t('services.termLife.description'),
       price: 199,
     },
     {
       id: "whole-life-insurance",
       icon: Heart,
-      title: "Whole Life Insurance",
-      description: "Lifetime coverage with cash value accumulation and guaranteed benefits",
+      title: t('services.wholeLife.title'),
+      description: t('services.wholeLife.description'),
       price: 349,
     },
     {
       id: "universal-life-insurance",
       icon: TrendingUp,
-      title: "Universal Life Insurance",
-      description: "Flexible premiums and adjustable death benefits that adapt to your needs",
+      title: t('services.universalLife.title'),
+      description: t('services.universalLife.description'),
       price: 299,
     },
     {
       id: "variable-life-insurance",
       icon: DollarSign,
-      title: "Variable Life Insurance",
-      description: "Investment-linked cash value growth with market-based potential returns",
+      title: t('services.variableLife.title'),
+      description: t('services.variableLife.description'),
       price: 399,
     },
     {
       id: "group-life-insurance",
       icon: Briefcase,
-      title: "Group Life Insurance",
-      description: "Employer-sponsored coverage at competitive group rates",
+      title: t('services.groupLife.title'),
+      description: t('services.groupLife.description'),
       price: 149,
     },
   ];
@@ -148,21 +150,21 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
     const newErrors: Partial<BookingData> = {};
 
     if (!bookingData.firstName.trim()) {
-      newErrors.firstName = "First name is required";
+      newErrors.firstName = t('customerInfo.errors.firstNameRequired');
     }
 
     if (!bookingData.lastName.trim()) {
-      newErrors.lastName = "Last name is required";
+      newErrors.lastName = t('customerInfo.errors.lastNameRequired');
     }
 
     if (!bookingData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t('customerInfo.errors.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bookingData.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = t('customerInfo.errors.emailInvalid');
     }
 
     if (!bookingData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
+      newErrors.phone = t('customerInfo.errors.phoneRequired');
     }
 
     setErrors(newErrors);
@@ -286,10 +288,10 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Book Your Life Insurance Consultation
+                {t('customerInfo.title')}
               </h1>
               <p className="text-lg text-white/90">
-                Let's start by collecting your contact information
+                {t('customerInfo.subtitle')}
               </p>
             </div>
           </div>
@@ -298,9 +300,9 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-2xl px-6">
             <SectionHeading
-              overline="STEP 1 OF 4"
-              title="Your Contact Information"
-              description="We'll use this information to send you booking confirmation and meeting details"
+              overline={t('customerInfo.overline')}
+              title={t('customerInfo.heading')}
+              description={t('customerInfo.description')}
               align="center"
               className="mb-12"
             />
@@ -310,13 +312,13 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                 <form onSubmit={handleCustomerInfoSubmit} className="space-y-6">
                   <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name *</Label>
+                      <Label htmlFor="firstName">{t('customerInfo.firstName')}</Label>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                         <Input
                           id="firstName"
                           type="text"
-                          placeholder="John"
+                          placeholder={t('customerInfo.firstNamePlaceholder')}
                           className="pl-10"
                           value={bookingData.firstName}
                           onChange={(e) => setBookingData(prev => ({ ...prev, firstName: e.target.value }))}
@@ -328,13 +330,13 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name *</Label>
+                      <Label htmlFor="lastName">{t('customerInfo.lastName')}</Label>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                         <Input
                           id="lastName"
                           type="text"
-                          placeholder="Doe"
+                          placeholder={t('customerInfo.lastNamePlaceholder')}
                           className="pl-10"
                           value={bookingData.lastName}
                           onChange={(e) => setBookingData(prev => ({ ...prev, lastName: e.target.value }))}
@@ -347,13 +349,13 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
+                    <Label htmlFor="email">{t('customerInfo.email')}</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                       <Input
                         id="email"
                         type="email"
-                        placeholder="john.doe@example.com"
+                        placeholder={t('customerInfo.emailPlaceholder')}
                         className="pl-10"
                         value={bookingData.email}
                         onChange={(e) => setBookingData(prev => ({ ...prev, email: e.target.value }))}
@@ -365,13 +367,13 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Label htmlFor="phone">{t('customerInfo.phone')}</Label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                       <Input
                         id="phone"
                         type="tel"
-                        placeholder="+352 123 456 789"
+                        placeholder={t('customerInfo.phonePlaceholder')}
                         className="pl-10"
                         value={bookingData.phone}
                         onChange={(e) => setBookingData(prev => ({ ...prev, phone: e.target.value }))}
@@ -384,7 +386,7 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
 
                   <div className="pt-4">
                     <Button type="submit" className="w-full bg-brand-gold text-white hover:bg-brand-goldDark h-12 text-lg">
-                      Continue to Schedule
+                      {t('customerInfo.continue')}
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </div>
@@ -399,7 +401,7 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                 className="text-brand-grayMed hover:text-brand-gold"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Life Insurance
+                {t('customerInfo.backToLifeInsurance')}
               </Button>
             </div>
           </div>
@@ -416,10 +418,10 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Schedule Your Consultation
+                {t('calendar.title')}
               </h1>
               <p className="text-lg text-white/90">
-                Choose a convenient time for your 60-minute consultation
+                {t('calendar.subtitle')}
               </p>
             </div>
           </div>
@@ -428,9 +430,9 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-5xl px-6">
             <SectionHeading
-              overline="STEP 2 OF 4"
-              title="Select Date & Time"
-              description={`Booking for: ${bookingData.firstName} ${bookingData.lastName} (${bookingData.email})`}
+              overline={t('calendar.overline')}
+              title={t('calendar.heading')}
+              description={`${t('calendar.bookingFor')} ${bookingData.firstName} ${bookingData.lastName} (${bookingData.email})`}
               align="center"
               className="mb-8"
             />
@@ -440,7 +442,7 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                 <div className="flex items-center justify-center gap-3">
                   <CheckCircle className="h-5 w-5 text-brand-gold" />
                   <p className="text-brand-dark font-semibold">
-                    Selected Service: {bookingData.serviceTitle} (€{bookingData.servicePrice})
+                    {t('calendar.selectedService')} {bookingData.serviceTitle} (€{bookingData.servicePrice})
                   </p>
                 </div>
               </div>
@@ -459,7 +461,7 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                 className="border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Contact Info
+                {t('calendar.backToContactInfo')}
               </Button>
             </div>
           </div>
@@ -479,10 +481,10 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                 <CheckCircle className="h-10 w-10 text-white" />
               </div>
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Appointment Scheduled!
+                {t('serviceSelection.title')}
               </h1>
               <p className="text-lg text-white/90">
-                Now, select which life insurance service you need
+                {t('serviceSelection.subtitle')}
               </p>
             </div>
           </div>
@@ -491,9 +493,9 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-7xl px-6">
             <SectionHeading
-              overline="STEP 3 OF 4"
-              title="Select Your Life Insurance Service"
-              description="Choose the insurance product that best matches your protection needs"
+              overline={t('serviceSelection.overline')}
+              title={t('serviceSelection.heading')}
+              description={t('serviceSelection.description')}
               align="center"
               className="mb-12"
             />
@@ -514,13 +516,13 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                       <CardTitle className="text-xl">{service.title}</CardTitle>
                       <div className="mt-2">
                         <span className="text-2xl font-bold text-brand-gold">€{service.price}</span>
-                        <span className="text-sm text-brand-grayMed ml-2">consultation fee</span>
+                        <span className="text-sm text-brand-grayMed ml-2">{t('serviceSelection.consultationFee')}</span>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-brand-grayMed mb-4">{service.description}</p>
                       <Button className="w-full bg-brand-gold text-white hover:bg-brand-goldDark">
-                        Select Service
+                        {t('serviceSelection.selectService')}
                       </Button>
                     </CardContent>
                   </Card>
@@ -543,10 +545,10 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Review Your Booking
+                {t('summary.title')}
               </h1>
               <p className="text-lg text-white/90">
-                Please review your details before proceeding to payment
+                {t('summary.subtitle')}
               </p>
             </div>
           </div>
@@ -555,8 +557,8 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-3xl px-6">
             <SectionHeading
-              overline="STEP 4 OF 4"
-              title="Booking Summary"
+              overline={t('summary.overline')}
+              title={t('summary.heading')}
               align="center"
               className="mb-12"
             />
@@ -564,20 +566,20 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
             {/* Contact Information */}
             <Card className="border-2 border-brand-grayLight mb-6">
               <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-xl">Contact Information</CardTitle>
+                <CardTitle className="text-xl">{t('summary.contactInfo')}</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Name</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t('summary.name')}</p>
                     <p className="font-semibold text-brand-dark">{bookingData.firstName} {bookingData.lastName}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Email</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t('summary.email')}</p>
                     <p className="font-semibold text-brand-dark break-all">{bookingData.email}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Phone</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t('summary.phone')}</p>
                     <p className="font-semibold text-brand-dark">{bookingData.phone}</p>
                   </div>
                 </div>
@@ -587,22 +589,22 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
             {/* Appointment Details */}
             <Card className="border-2 border-brand-grayLight mb-6">
               <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-xl">Appointment Details</CardTitle>
+                <CardTitle className="text-xl">{t('summary.appointmentDetails')}</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="space-y-3">
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Appointment Confirmation</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t('summary.appointmentConfirmation')}</p>
                     <p className="font-semibold text-brand-dark">
-                      Scheduled via Calendly
+                      {t('summary.scheduledViaCalendly')}
                     </p>
                     <p className="text-sm text-brand-grayMed mt-1">
-                      You will receive appointment date and time details via email from Calendly
+                      {t('summary.emailNotification')}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Duration</p>
-                    <p className="font-semibold text-brand-dark">60 minutes</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t('summary.duration')}</p>
+                    <p className="font-semibold text-brand-dark">{t('summary.minutes')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -611,7 +613,7 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
             {/* Service & Payment */}
             <Card className="border-2 border-brand-grayLight mb-8">
               <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-2xl">Service & Payment</CardTitle>
+                <CardTitle className="text-2xl">{t('summary.serviceAndPayment')}</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="space-y-4">
@@ -634,20 +636,20 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
 
                   <div className="border-t border-brand-grayLight pt-4 mt-4">
                     <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">Consultation Fee (excl. VAT):</span>
+                      <span className="text-brand-grayMed">{t('summary.consultationFeeExclVat')}</span>
                       <span className="font-semibold text-brand-dark">
                         €{((bookingData.servicePrice || 0) / 1.17).toFixed(2)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">VAT (17%):</span>
+                      <span className="text-brand-grayMed">{t('summary.vat')}</span>
                       <span className="font-semibold text-brand-dark">
                         €{((bookingData.servicePrice || 0) - ((bookingData.servicePrice || 0) / 1.17)).toFixed(2)}
                       </span>
                     </div>
                     <div className="border-t border-brand-grayLight pt-4 mt-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-brand-dark">Total (incl. VAT):</span>
+                        <span className="text-xl font-bold text-brand-dark">{t('summary.totalAmount')}</span>
                         <span className="text-3xl font-bold text-brand-gold">
                           €{(bookingData.servicePrice || 0).toFixed(2)}
                         </span>
@@ -665,13 +667,13 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                 className="flex-1 border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Change Service
+                {t('summary.changeService')}
               </Button>
               <Button
                 onClick={handleProceedToPayment}
                 className="flex-1 bg-brand-gold text-white hover:bg-brand-goldDark h-12 text-lg"
               >
-                Proceed to Payment
+                {t('summary.proceedToPayment')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>

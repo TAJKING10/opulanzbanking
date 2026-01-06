@@ -2215,6 +2215,104 @@
       "secondaryButton": "Parler à un Conseiller"
     }
   },
+  "lifeInsuranceBooking": {
+    "services": {
+      "termLife": {
+        "title": "Assurance Vie Temporaire",
+        "description": "Protection abordable pour 10, 20 ou 30 ans avec des primes nivelées"
+      },
+      "wholeLife": {
+        "title": "Assurance Vie Entière",
+        "description": "Couverture à vie avec accumulation de valeur de rachat et prestations garanties"
+      },
+      "universalLife": {
+        "title": "Assurance Vie Universelle",
+        "description": "Primes flexibles et prestations de décès ajustables qui s'adaptent à vos besoins"
+      },
+      "variableLife": {
+        "title": "Assurance Vie Variable",
+        "description": "Croissance de la valeur de rachat liée aux investissements avec rendements potentiels basés sur le marché"
+      },
+      "groupLife": {
+        "title": "Assurance Vie Collective",
+        "description": "Couverture parrainée par l'employeur à des tarifs de groupe compétitifs"
+      }
+    },
+    "customerInfo": {
+      "title": "Réservez votre consultation en assurance vie",
+      "subtitle": "Commençons par collecter vos informations de contact",
+      "overline": "ÉTAPE 1 SUR 4",
+      "heading": "Vos informations de contact",
+      "description": "Nous utiliserons ces informations pour vous envoyer la confirmation de réservation et les détails de la réunion",
+      "firstName": "Prénom *",
+      "firstNamePlaceholder": "Jean",
+      "lastName": "Nom *",
+      "lastNamePlaceholder": "Dupont",
+      "email": "Adresse e-mail *",
+      "emailPlaceholder": "jean.dupont@exemple.com",
+      "phone": "Numéro de téléphone *",
+      "phonePlaceholder": "+352 123 456 789",
+      "continue": "Continuer vers la planification",
+      "backToLifeInsurance": "Retour à l'assurance vie",
+      "errors": {
+        "firstNameRequired": "Le prénom est requis",
+        "lastNameRequired": "Le nom est requis",
+        "emailRequired": "L'e-mail est requis",
+        "emailInvalid": "Veuillez entrer un e-mail valide",
+        "phoneRequired": "Le numéro de téléphone est requis"
+      }
+    },
+    "calendar": {
+      "title": "Planifiez votre consultation",
+      "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes",
+      "overline": "ÉTAPE 2 SUR 4",
+      "heading": "Sélectionner la date et l'heure",
+      "bookingFor": "Réservation pour :",
+      "selectedService": "Service sélectionné :",
+      "backToContactInfo": "Retour aux informations de contact"
+    },
+    "serviceSelection": {
+      "overline": "ÉTAPE 3 SUR 4",
+      "title": "Rendez-vous planifié !",
+      "subtitle": "Maintenant, sélectionnez le service d'assurance vie dont vous avez besoin",
+      "heading": "Sélectionnez votre service d'assurance vie",
+      "description": "Choisissez le produit d'assurance qui correspond le mieux à vos besoins de protection",
+      "consultationFee": "frais de consultation",
+      "selectService": "Sélectionner le service"
+    },
+    "summary": {
+      "overline": "ÉTAPE 4 SUR 4",
+      "title": "Vérifiez votre réservation",
+      "subtitle": "Veuillez vérifier vos informations avant de procéder au paiement",
+      "heading": "Résumé de la réservation",
+      "contactInfo": "Informations de contact",
+      "name": "Nom",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "appointmentDetails": "Détails du rendez-vous",
+      "appointmentConfirmation": "Confirmation de rendez-vous",
+      "scheduledViaCalendly": "Planifié via Calendly",
+      "emailNotification": "Vous recevrez les détails de la date et de l'heure du rendez-vous par e-mail de Calendly",
+      "duration": "Durée",
+      "minutes": "60 minutes",
+      "serviceAndPayment": "Service et paiement",
+      "consultationFeeExclVat": "Frais de consultation (hors TVA) :",
+      "vat": "TVA (17%) :",
+      "totalAmount": "Montant total :",
+      "proceedToPayment": "Procéder au paiement",
+      "backToServices": "Retour aux services",
+      "changeService": "Modifier le service"
+    },
+    "payment": {
+      "overline": "PAIEMENT",
+      "title": "Complétez votre paiement",
+      "subtitle": "Paiement sécurisé pour votre consultation en assurance vie",
+      "heading": "Informations de paiement",
+      "description": "Votre paiement est sécurisé et traité via PayPal",
+      "loading": "Chargement du paiement PayPal...",
+      "backToSummary": "Retour au résumé"
+    }
+  },
   "accountOpening": {
     "start": {
       "loading": "Chargement..."

@@ -855,20 +855,68 @@
       }
     },
     "taxAdvisoryBooking": {
+      "customerInfo": {
+        "title": "Book Your Tax Advisory Consultation",
+        "subtitle": "Let's start by collecting your contact information",
+        "overline": "STEP 1 OF 4",
+        "heading": "Your Contact Information",
+        "description": "We'll use this information to send you booking confirmation and meeting details",
+        "firstName": "First Name *",
+        "firstNamePlaceholder": "John",
+        "lastName": "Last Name *",
+        "lastNamePlaceholder": "Doe",
+        "email": "Email Address *",
+        "emailPlaceholder": "john.doe@example.com",
+        "phone": "Phone Number *",
+        "phonePlaceholder": "+352 123 456 789",
+        "continue": "Continue to Schedule",
+        "backToTaxAdvisory": "Back to Tax Advisory",
+        "errors": {
+          "firstNameRequired": "First name is required",
+          "lastNameRequired": "Last name is required",
+          "emailRequired": "Email is required",
+          "emailInvalid": "Please enter a valid email",
+          "phoneRequired": "Phone number is required"
+        }
+      },
       "calendar": {
         "title": "Schedule Your Tax Advisory Consultation",
-        "subtitle": "Choose a convenient time for your 60-minute consultation"
+        "subtitle": "Choose a convenient time for your 60-minute consultation",
+        "overline": "STEP 2 OF 4",
+        "heading": "Choose Your Time",
+        "description": "Select a date and time for your 60-minute consultation"
       },
       "serviceSelection": {
-        "overline": "STEP 2 OF 3",
+        "overline": "STEP 3 OF 4",
         "title": "Select Your Tax Advisory Service",
         "description": "Choose the service that best matches your needs",
         "confirmed": "Consultation Scheduled!",
         "selectService": "Now, please select which service you need assistance with",
         "selectButton": "Select Service"
       },
+      "summary": {
+        "overline": "STEP 4 OF 4",
+        "title": "Review Your Information",
+        "description": "Please verify all information is correct before proceeding to payment",
+        "customerInfo": "Customer Information",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "appointmentDetails": "Appointment Details",
+        "service": "Service",
+        "dateTime": "Date & Time",
+        "duration": "Duration",
+        "minutes": "60 minutes",
+        "pricing": "Pricing",
+        "serviceFee": "Service Fee",
+        "total": "Total",
+        "proceedToPayment": "Proceed to Payment",
+        "backToServiceSelection": "Back to Service Selection",
+        "edit": "Edit",
+        "editInfo": "Edit Information"
+      },
       "payment": {
-        "overline": "STEP 3 OF 3",
+        "overline": "PAYMENT",
         "title": "Complete Your Payment",
         "subtitle": "Final step to confirm your consultation",
         "paymentDetails": "Payment Details",
@@ -879,8 +927,10 @@
         "payBank": "Pay with Bank Transfer",
         "payPaypal": "Pay with PayPal",
         "reservationNote": "Your consultation slot is reserved for 15 minutes. Please complete the payment to confirm your booking.",
-        "backToSelection": "Back to Service Selection",
-        "cancelBooking": "Cancel Booking"
+        "backToSummary": "Back to Summary",
+        "cancelBooking": "Cancel Booking",
+        "processing": "Processing...",
+        "testMode": "Test mode: Use card 4111 1111 1111 1111"
       }
     }
   },

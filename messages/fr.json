@@ -855,20 +855,68 @@
       }
     },
     "taxAdvisoryBooking": {
+      "customerInfo": {
+        "title": "Réservez votre consultation en conseil fiscal",
+        "subtitle": "Commençons par collecter vos informations de contact",
+        "overline": "ÉTAPE 1 SUR 4",
+        "heading": "Vos informations de contact",
+        "description": "Nous utiliserons ces informations pour vous envoyer la confirmation de réservation et les détails de la réunion",
+        "firstName": "Prénom *",
+        "firstNamePlaceholder": "Jean",
+        "lastName": "Nom *",
+        "lastNamePlaceholder": "Dupont",
+        "email": "Adresse e-mail *",
+        "emailPlaceholder": "jean.dupont@exemple.com",
+        "phone": "Numéro de téléphone *",
+        "phonePlaceholder": "+352 123 456 789",
+        "continue": "Continuer vers la planification",
+        "backToTaxAdvisory": "Retour au conseil fiscal",
+        "errors": {
+          "firstNameRequired": "Le prénom est requis",
+          "lastNameRequired": "Le nom est requis",
+          "emailRequired": "L'e-mail est requis",
+          "emailInvalid": "Veuillez entrer un e-mail valide",
+          "phoneRequired": "Le numéro de téléphone est requis"
+        }
+      },
       "calendar": {
         "title": "Planifiez votre consultation en conseil fiscal",
-        "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes"
+        "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes",
+        "overline": "ÉTAPE 2 SUR 4",
+        "heading": "Choisissez votre horaire",
+        "description": "Sélectionnez une date et une heure pour votre consultation de 60 minutes"
       },
       "serviceSelection": {
-        "overline": "ÉTAPE 2 SUR 3",
+        "overline": "ÉTAPE 3 SUR 4",
         "title": "Sélectionnez votre service de conseil fiscal",
         "description": "Choisissez le service qui correspond le mieux à vos besoins",
         "confirmed": "Consultation planifiée !",
         "selectService": "Maintenant, veuillez sélectionner le service dont vous avez besoin",
         "selectButton": "Sélectionner le service"
       },
+      "summary": {
+        "overline": "ÉTAPE 4 SUR 4",
+        "title": "Vérifiez vos informations",
+        "description": "Veuillez vérifier que toutes les informations sont correctes avant de procéder au paiement",
+        "customerInfo": "Informations client",
+        "name": "Nom",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "appointmentDetails": "Détails du rendez-vous",
+        "service": "Service",
+        "dateTime": "Date et heure",
+        "duration": "Durée",
+        "minutes": "60 minutes",
+        "pricing": "Tarification",
+        "serviceFee": "Frais de service",
+        "total": "Total",
+        "proceedToPayment": "Procéder au paiement",
+        "backToServiceSelection": "Retour à la sélection du service",
+        "edit": "Modifier",
+        "editInfo": "Modifier les informations"
+      },
       "payment": {
-        "overline": "ÉTAPE 3 SUR 3",
+        "overline": "PAIEMENT",
         "title": "Effectuez votre paiement",
         "subtitle": "Dernière étape pour confirmer votre consultation",
         "paymentDetails": "Détails du paiement",
@@ -879,8 +927,10 @@
         "payBank": "Payer par virement bancaire",
         "payPaypal": "Payer avec PayPal",
         "reservationNote": "Votre créneau de consultation est réservé pendant 15 minutes. Veuillez effectuer le paiement pour confirmer votre réservation.",
-        "backToSelection": "Retour à la sélection du service",
-        "cancelBooking": "Annuler la réservation"
+        "backToSummary": "Retour au récapitulatif",
+        "cancelBooking": "Annuler la réservation",
+        "processing": "Traitement en cours...",
+        "testMode": "Mode test : utilisez la carte 4111 1111 1111 1111"
       }
     }
   },

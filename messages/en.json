@@ -2216,6 +2216,104 @@
       "secondaryButton": "Talk to an Advisor"
     }
   },
+  "lifeInsuranceBooking": {
+    "services": {
+      "termLife": {
+        "title": "Term Life Insurance",
+        "description": "Affordable protection for 10, 20, or 30 years with level premiums"
+      },
+      "wholeLife": {
+        "title": "Whole Life Insurance",
+        "description": "Lifetime coverage with cash value accumulation and guaranteed benefits"
+      },
+      "universalLife": {
+        "title": "Universal Life Insurance",
+        "description": "Flexible premiums and adjustable death benefits that adapt to your needs"
+      },
+      "variableLife": {
+        "title": "Variable Life Insurance",
+        "description": "Investment-linked cash value growth with market-based potential returns"
+      },
+      "groupLife": {
+        "title": "Group Life Insurance",
+        "description": "Employer-sponsored coverage at competitive group rates"
+      }
+    },
+    "customerInfo": {
+      "title": "Book Your Life Insurance Consultation",
+      "subtitle": "Let's start by collecting your contact information",
+      "overline": "STEP 1 OF 4",
+      "heading": "Your Contact Information",
+      "description": "We'll use this information to send you booking confirmation and meeting details",
+      "firstName": "First Name *",
+      "firstNamePlaceholder": "John",
+      "lastName": "Last Name *",
+      "lastNamePlaceholder": "Doe",
+      "email": "Email Address *",
+      "emailPlaceholder": "john.doe@example.com",
+      "phone": "Phone Number *",
+      "phonePlaceholder": "+352 123 456 789",
+      "continue": "Continue to Schedule",
+      "backToLifeInsurance": "Back to Life Insurance",
+      "errors": {
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email",
+        "phoneRequired": "Phone number is required"
+      }
+    },
+    "calendar": {
+      "title": "Schedule Your Consultation",
+      "subtitle": "Choose a convenient time for your 60-minute consultation",
+      "overline": "STEP 2 OF 4",
+      "heading": "Select Date & Time",
+      "bookingFor": "Booking for:",
+      "selectedService": "Selected Service:",
+      "backToContactInfo": "Back to Contact Info"
+    },
+    "serviceSelection": {
+      "overline": "STEP 3 OF 4",
+      "title": "Appointment Scheduled!",
+      "subtitle": "Now, select which life insurance service you need",
+      "heading": "Select Your Life Insurance Service",
+      "description": "Choose the insurance product that best matches your protection needs",
+      "consultationFee": "consultation fee",
+      "selectService": "Select Service"
+    },
+    "summary": {
+      "overline": "STEP 4 OF 4",
+      "title": "Review Your Booking",
+      "subtitle": "Please review your details before proceeding to payment",
+      "heading": "Booking Summary",
+      "contactInfo": "Contact Information",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "appointmentDetails": "Appointment Details",
+      "appointmentConfirmation": "Appointment Confirmation",
+      "scheduledViaCalendly": "Scheduled via Calendly",
+      "emailNotification": "You will receive appointment date and time details via email from Calendly",
+      "duration": "Duration",
+      "minutes": "60 minutes",
+      "serviceAndPayment": "Service & Payment",
+      "consultationFeeExclVat": "Consultation Fee (excl. VAT):",
+      "vat": "VAT (17%):",
+      "totalAmount": "Total Amount:",
+      "proceedToPayment": "Proceed to Payment",
+      "backToServices": "Back to Services",
+      "changeService": "Change Service"
+    },
+    "payment": {
+      "overline": "PAYMENT",
+      "title": "Complete Your Payment",
+      "subtitle": "Secure payment for your life insurance consultation",
+      "heading": "Payment Information",
+      "description": "Your payment is secure and processed through PayPal",
+      "loading": "Loading PayPal payment...",
+      "backToSummary": "Back to Summary"
+    }
+  },
   "accountOpening": {
     "start": {
       "loading": "Loading..."

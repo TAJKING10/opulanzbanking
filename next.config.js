@@ -2,10 +2,14 @@ const withNextIntl = require('next-intl/plugin')();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Note: Static export (output: 'export') is disabled because we have dynamic pages
-  // that use useSearchParams() and need server-side rendering or client-side routing
-  // If you need static export, consider removing booking/confirmation pages or
-  // implementing them with different patterns
+  // Static export enabled for GitHub Pages deployment
+  // Note: Dynamic pages (booking/confirmation) with useSearchParams() will be skipped
+  // These pages require a server or client-side navigation and won't work on static GitHub Pages
+  ...(process.env.NODE_ENV === 'production' && {
+    output: 'export',
+    basePath: '/opulanzbanking',
+    assetPrefix: '/opulanzbanking/',
+  }),
   images: {
     unoptimized: true,
     remotePatterns: [

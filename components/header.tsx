@@ -157,7 +157,10 @@ export function Header({ locale }: HeaderProps) {
                 segments[0] = newLocale;
                 const newPath = '/' + segments.join('/');
                 const basePath = process.env.NODE_ENV === 'production' ? '/opulanzbanking' : '';
-                window.location.href = basePath + newPath;
+                // Preserve query parameters and hash
+                const search = window.location.search;
+                const hash = window.location.hash;
+                window.location.href = basePath + newPath + search + hash;
               }}
               className="cursor-pointer border-none bg-transparent text-sm font-semibold text-brand-dark transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold rounded-md"
             >
@@ -263,7 +266,10 @@ export function Header({ locale }: HeaderProps) {
                   segments[0] = newLocale;
                   const newPath = '/' + segments.join('/');
                   const basePath = process.env.NODE_ENV === 'production' ? '/opulanzbanking' : '';
-                  window.location.href = basePath + newPath;
+                  // Preserve query parameters and hash
+                  const search = window.location.search;
+                  const hash = window.location.hash;
+                  window.location.href = basePath + newPath + search + hash;
                 }}
                 className="flex-1 rounded-lg border border-brand-grayLight bg-white px-4 py-3 text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold"
               >

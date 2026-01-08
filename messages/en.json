@@ -1855,6 +1855,10 @@
         "role": "Select role",
         "email": "john@example.com",
         "phone": "+352 123 456 789"
+      },
+      "errors": {
+        "invalidEmail": "Please enter a valid email address (e.g., user@example.com)",
+        "invalidPhone": "Please enter a valid phone number (e.g., +352 123 456 789)"
       }
     },
     "activityScale": {

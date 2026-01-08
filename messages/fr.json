@@ -1854,6 +1854,10 @@
         "role": "Sélectionner la fonction",
         "email": "jean@exemple.com",
         "phone": "+352 123 456 789"
+      },
+      "errors": {
+        "invalidEmail": "Veuillez entrer une adresse e-mail valide (par ex., utilisateur@exemple.com)",
+        "invalidPhone": "Veuillez entrer un numéro de téléphone valide (par ex., +352 123 456 789)"
       }
     },
     "activityScale": {

@@ -147,9 +147,17 @@ export function Header({ locale }: HeaderProps) {
               value={locale}
               onChange={(e) => {
                 const newLocale = e.target.value;
-                const path = pathname.replace(`/${locale}`, `/${newLocale}`);
+                // Remove the base path if in production, then switch locale
+                let path = pathname;
+                if (process.env.NODE_ENV === 'production') {
+                  path = path.replace('/opulanzbanking', '');
+                }
+                // Replace the locale segment (first segment after /)
+                const segments = path.split('/').filter(Boolean);
+                segments[0] = newLocale;
+                const newPath = '/' + segments.join('/');
                 const basePath = process.env.NODE_ENV === 'production' ? '/opulanzbanking' : '';
-                window.location.href = basePath + path;
+                window.location.href = basePath + newPath;
               }}
               className="cursor-pointer border-none bg-transparent text-sm font-semibold text-brand-dark transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold rounded-md"
             >
@@ -245,9 +253,17 @@ export function Header({ locale }: HeaderProps) {
                 value={locale}
                 onChange={(e) => {
                   const newLocale = e.target.value;
-                  const path = pathname.replace(`/${locale}`, `/${newLocale}`);
+                  // Remove the base path if in production, then switch locale
+                  let path = pathname;
+                  if (process.env.NODE_ENV === 'production') {
+                    path = path.replace('/opulanzbanking', '');
+                  }
+                  // Replace the locale segment (first segment after /)
+                  const segments = path.split('/').filter(Boolean);
+                  segments[0] = newLocale;
+                  const newPath = '/' + segments.join('/');
                   const basePath = process.env.NODE_ENV === 'production' ? '/opulanzbanking' : '';
-                  window.location.href = basePath + path;
+                  window.location.href = basePath + newPath;
                 }}
                 className="flex-1 rounded-lg border border-brand-grayLight bg-white px-4 py-3 text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold"
               >

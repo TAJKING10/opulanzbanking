@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
    "dev": "next dev",
-   "build": "next build && npm run postbuild",
-   "postbuild": "node scripts/fix-locale-routes.js",
-   "start": "next start -p $PORT",
-   "export": "next build",
+   "build": "next build",
+   "start": "next start",
+   "export": "next export",
    "lint": "next lint",
-   "type-check": "tsc --noEmit"
+   "type-check": "tsc --noEmit",
+   "build:github": "next build && node scripts/fix-locale-routes.js"
 },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

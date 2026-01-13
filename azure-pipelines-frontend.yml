@@ -23,8 +23,24 @@ steps:
 # 3️⃣ Prepare deployment folder (source code + package files)
 - script: |
     mkdir build_output
-    # Copy all files including hidden ones, excluding node_modules and .next
-    rsync -av --exclude 'node_modules' --exclude '.next' --exclude '.git' ./ build_output/
+    # Copy all files including hidden ones, excluding unnecessary files
+    rsync -av \
+      --exclude 'node_modules' \
+      --exclude '.next' \
+      --exclude '.git' \
+      --exclude '.github' \
+      --exclude 'out' \
+      --exclude 'build' \
+      --exclude '.env.local' \
+      --exclude '.env.*.local' \
+      --exclude '*.log' \
+      --exclude '.DS_Store' \
+      --exclude 'Thumbs.db' \
+      --exclude 'backend/node_modules' \
+      --exclude 'backend/.next' \
+      ./ build_output/
+    echo "✅ Files prepared for deployment"
+    ls -la build_output/
   displayName: 'Prepare deploy folder'
 
 # 4️⃣ Archive deployment folder

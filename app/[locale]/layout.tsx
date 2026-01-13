@@ -1,9 +1,10 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
-import { unstable_setRequestLocale } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { Poppins } from 'next/font/google';
 import { Header } from '@/components/header';
 import { Footer } from '@/shared/components/footer';
+import { routing } from '@/i18n/routing';
+import { generateSEOMetadata } from './metadata';
 import '@/app/globals.css';
 
 const poppins = Poppins({
@@ -12,14 +13,20 @@ const poppins = Poppins({
   display: 'swap',
 });
 
-export const metadata = {
-  title: 'Opulanz - Professional Digital Banking',
-  description:
-    'Trusted digital banking, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg.',
-};
-
 export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'fr' }];
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return generateSEOMetadata({
+    locale,
+    pathname: '',
+  });
 }
 
 export default async function LocaleLayout({
@@ -30,11 +37,30 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  unstable_setRequestLocale(locale);
+
+  // Enable static rendering
+  setRequestLocale(locale);
+
   const messages = await getMessages();
 
   return (
     <html lang={locale} className={poppins.className}>
+      <head>
+        {/* Additional hreflang tags for better SEO */}
+        {routing.locales.map((loc) => (
+          <link
+            key={loc}
+            rel="alternate"
+            hrefLang={loc}
+            href={`${process.env.NEXT_PUBLIC_BASE_URL || ''}/${loc}`}
+          />
+        ))}
+        <link
+          rel="alternate"
+          hrefLang="x-default"
+          href={`${process.env.NEXT_PUBLIC_BASE_URL || ''}/en`}
+        />
+      </head>
       <body className="flex min-h-screen flex-col">
         <NextIntlClientProvider messages={messages}>
           <Header locale={locale} />

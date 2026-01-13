@@ -56,7 +56,9 @@
       "Bash(tee:*)",
       "Bash(cp:*)",
       "Bash(timeout:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(ls:*)",
+      "Bash(ping:*)"
     ],
     "deny": [],
     "ask": []

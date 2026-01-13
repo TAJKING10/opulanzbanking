@@ -58,7 +58,8 @@
       "Bash(timeout:*)",
       "Bash(test:*)",
       "Bash(ls:*)",
-      "Bash(ping:*)"
+      "Bash(ping:*)",
+      "Bash(git status:*)"
     ],
     "deny": [],
     "ask": []

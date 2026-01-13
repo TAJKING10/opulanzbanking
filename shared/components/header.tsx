@@ -59,7 +59,7 @@ export function Header({ locale }: HeaderProps) {
           className="flex items-center gap-3 transition-opacity hover:opacity-80"
         >
           <img
-            src={`${process.env.NODE_ENV === 'production' ? '/opulanzbanking' : ''}/images/opulanz-logo.png`}
+            src="/images/opulanz-logo.png"
             alt="Opulanz Logo"
             width={60}
             height={60}
@@ -146,8 +146,7 @@ export function Header({ locale }: HeaderProps) {
               onChange={(e) => {
                 const newLocale = e.target.value;
                 const path = pathname.replace(`/${locale}`, `/${newLocale}`);
-                const basePath = process.env.NODE_ENV === 'production' ? '/opulanzbanking' : '';
-                window.location.href = basePath + path;
+                window.location.href = path;
               }}
               className="cursor-pointer border-none bg-transparent text-sm font-semibold text-brand-dark transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold rounded-md"
             >
@@ -244,8 +243,7 @@ export function Header({ locale }: HeaderProps) {
                 onChange={(e) => {
                   const newLocale = e.target.value;
                   const path = pathname.replace(`/${locale}`, `/${newLocale}`);
-                  const basePath = process.env.NODE_ENV === 'production' ? '/opulanzbanking' : '';
-                  window.location.href = basePath + path;
+                  window.location.href = path;
                 }}
                 className="flex-1 rounded-lg border border-brand-grayLight bg-white px-4 py-3 text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold"
               >

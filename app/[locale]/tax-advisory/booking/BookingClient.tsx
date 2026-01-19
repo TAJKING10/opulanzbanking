@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export const dynamic = 'force-dynamic';
 import { FileCheck, Globe, Briefcase, Shield, UserCheck, CheckCircle, ArrowRight, ArrowLeft, User, Mail, Phone } from "lucide-react";
@@ -35,6 +36,7 @@ interface BookingData {
 export default function BookingClient({ params: { locale } }: { params: { locale: string } }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations("taxAdvisory.booking");
   const [step, setStep] = React.useState<"info" | "calendly" | "service-selection" | "summary" | "payment">("info");
   const [bookingData, setBookingData] = React.useState<BookingData>({
     firstName: "",
@@ -49,36 +51,36 @@ export default function BookingClient({ params: { locale } }: { params: { locale
     {
       id: "tax-return-preparation",
       icon: FileCheck,
-      title: "Tax Return Preparation",
-      description: "Professional preparation and filing of corporate and individual tax returns",
+      title: t("services.taxReturnPreparation.title"),
+      description: t("services.taxReturnPreparation.description"),
       price: 299,
     },
     {
       id: "international-tax",
       icon: Globe,
-      title: "International Tax",
-      description: "Expert guidance on cross-border tax matters and transfer pricing",
+      title: t("services.internationalTax.title"),
+      description: t("services.internationalTax.description"),
       price: 250,
     },
     {
       id: "corporate-tax",
       icon: Briefcase,
-      title: "Corporate Tax",
-      description: "Comprehensive corporate tax services including M&A and VAT consulting",
+      title: t("services.corporateTax.title"),
+      description: t("services.corporateTax.description"),
       price: 150,
     },
     {
       id: "tax-compliance",
       icon: Shield,
-      title: "Tax Compliance",
-      description: "Ongoing compliance with tax laws and regulations",
+      title: t("services.taxCompliance.title"),
+      description: t("services.taxCompliance.description"),
       price: 250,
     },
     {
       id: "personal-tax-advisory",
       icon: UserCheck,
-      title: "Personal Tax Advisory",
-      description: "Personalized tax advice for high-net-worth individuals and expatriates",
+      title: t("services.personalTaxAdvisory.title"),
+      description: t("services.personalTaxAdvisory.description"),
       price: 100,
     },
   ];
@@ -146,21 +148,21 @@ export default function BookingClient({ params: { locale } }: { params: { locale
     const newErrors: Partial<BookingData> = {};
 
     if (!bookingData.firstName.trim()) {
-      newErrors.firstName = "First name is required";
+      newErrors.firstName = t("validation.firstNameRequired");
     }
 
     if (!bookingData.lastName.trim()) {
-      newErrors.lastName = "Last name is required";
+      newErrors.lastName = t("validation.lastNameRequired");
     }
 
     if (!bookingData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t("validation.emailRequired");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bookingData.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = t("validation.emailInvalid");
     }
 
     if (!bookingData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
+      newErrors.phone = t("validation.phoneRequired");
     }
 
     setErrors(newErrors);
@@ -272,7 +274,7 @@ export default function BookingClient({ params: { locale } }: { params: { locale
       router.push(`/${locale}/tax-advisory/confirmation?confirmation=${confirmationNumber}`);
     } catch (error) {
       console.error('Error saving booking:', error);
-      alert('Payment successful, but there was an error saving your booking. Please contact support with your payment confirmation.');
+      alert(t("payment.paymentSuccessError"));
     }
   };
 
@@ -284,10 +286,10 @@ export default function BookingClient({ params: { locale } }: { params: { locale
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Book Your Tax Advisory Consultation
+                {t("step1.heroTitle")}
               </h1>
               <p className="text-lg text-white/90">
-                Let's start by collecting your contact information
+                {t("step1.heroSubtitle")}
               </p>
             </div>
           </div>
@@ -296,9 +298,9 @@ export default function BookingClient({ params: { locale } }: { params: { locale
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-2xl px-6">
             <SectionHeading
-              overline="STEP 1 OF 4"
-              title="Your Contact Information"
-              description="We'll use this information to send you booking confirmation and meeting details"
+              overline={t("step1.overline")}
+              title={t("step1.title")}
+              description={t("step1.description")}
               align="center"
               className="mb-12"
             />
@@ -308,13 +310,13 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                 <form onSubmit={handleCustomerInfoSubmit} className="space-y-6">
                   <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name *</Label>
+                      <Label htmlFor="firstName">{t("step1.firstName")} {t("step1.required")}</Label>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                         <Input
                           id="firstName"
                           type="text"
-                          placeholder="John"
+                          placeholder={t("step1.firstNamePlaceholder")}
                           className="pl-10"
                           value={bookingData.firstName}
                           onChange={(e) => setBookingData(prev => ({ ...prev, firstName: e.target.value }))}
@@ -326,13 +328,13 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name *</Label>
+                      <Label htmlFor="lastName">{t("step1.lastName")} {t("step1.required")}</Label>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                         <Input
                           id="lastName"
                           type="text"
-                          placeholder="Doe"
+                          placeholder={t("step1.lastNamePlaceholder")}
                           className="pl-10"
                           value={bookingData.lastName}
                           onChange={(e) => setBookingData(prev => ({ ...prev, lastName: e.target.value }))}
@@ -345,13 +347,13 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
+                    <Label htmlFor="email">{t("step1.email")} {t("step1.required")}</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                       <Input
                         id="email"
                         type="email"
-                        placeholder="john.doe@example.com"
+                        placeholder={t("step1.emailPlaceholder")}
                         className="pl-10"
                         value={bookingData.email}
                         onChange={(e) => setBookingData(prev => ({ ...prev, email: e.target.value }))}
@@ -363,13 +365,13 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Label htmlFor="phone">{t("step1.phone")} {t("step1.required")}</Label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
                       <Input
                         id="phone"
                         type="tel"
-                        placeholder="+352 123 456 789"
+                        placeholder={t("step1.phonePlaceholder")}
                         className="pl-10"
                         value={bookingData.phone}
                         onChange={(e) => setBookingData(prev => ({ ...prev, phone: e.target.value }))}
@@ -382,7 +384,7 @@ export default function BookingClient({ params: { locale } }: { params: { locale
 
                   <div className="pt-4">
                     <Button type="submit" className="w-full bg-brand-gold text-white hover:bg-brand-goldDark h-12 text-lg">
-                      Continue to Schedule
+                      {t("step1.continue")}
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </div>
@@ -397,7 +399,7 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                 className="text-brand-grayMed hover:text-brand-gold"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Tax Advisory
+                {t("step1.backToTaxAdvisory")}
               </Button>
             </div>
           </div>
@@ -414,10 +416,10 @@ export default function BookingClient({ params: { locale } }: { params: { locale
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Schedule Your Consultation
+                {t("step2.heroTitle")}
               </h1>
               <p className="text-lg text-white/90">
-                Choose a convenient time for your 60-minute consultation
+                {t("step2.heroSubtitle")}
               </p>
             </div>
           </div>
@@ -426,9 +428,9 @@ export default function BookingClient({ params: { locale } }: { params: { locale
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-5xl px-6">
             <SectionHeading
-              overline="STEP 2 OF 4"
-              title="Select Date & Time"
-              description={`Booking for: ${bookingData.firstName} ${bookingData.lastName} (${bookingData.email})`}
+              overline={t("step2.overline")}
+              title={t("step2.title")}
+              description={`${bookingData.firstName} ${bookingData.lastName} (${bookingData.email})`}
               align="center"
               className="mb-8"
             />
@@ -438,7 +440,7 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                 <div className="flex items-center justify-center gap-3">
                   <CheckCircle className="h-5 w-5 text-brand-gold" />
                   <p className="text-brand-dark font-semibold">
-                    Selected Service: {bookingData.serviceTitle} (€{bookingData.servicePrice})
+                    {bookingData.serviceTitle} (€{bookingData.servicePrice})
                   </p>
                 </div>
               </div>
@@ -457,7 +459,7 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                 className="border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Contact Info
+                {t("step2.backToContactInfo")}
               </Button>
             </div>
           </div>
@@ -477,10 +479,10 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                 <CheckCircle className="h-10 w-10 text-white" />
               </div>
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Appointment Scheduled!
+                {t("step3.heroTitle")}
               </h1>
               <p className="text-lg text-white/90">
-                Now, select which service you need assistance with
+                {t("step3.heroSubtitle")}
               </p>
             </div>
           </div>
@@ -489,9 +491,9 @@ export default function BookingClient({ params: { locale } }: { params: { locale
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-7xl px-6">
             <SectionHeading
-              overline="STEP 3 OF 4"
-              title="Select Your Tax Advisory Service"
-              description="Choose the service that best matches your needs"
+              overline={t("step3.overline")}
+              title={t("step3.title")}
+              description={t("step3.description")}
               align="center"
               className="mb-12"
             />
@@ -517,7 +519,7 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                     <CardContent>
                       <p className="text-sm text-brand-grayMed mb-4">{service.description}</p>
                       <Button className="w-full bg-brand-gold text-white hover:bg-brand-goldDark">
-                        Select Service
+                        {t("step3.selectService")}
                       </Button>
                     </CardContent>
                   </Card>
@@ -540,10 +542,10 @@ export default function BookingClient({ params: { locale } }: { params: { locale
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Review Your Booking
+                {t("step4.heroTitle")}
               </h1>
               <p className="text-lg text-white/90">
-                Please review your details before proceeding to payment
+                {t("step4.heroSubtitle")}
               </p>
             </div>
           </div>
@@ -552,8 +554,8 @@ export default function BookingClient({ params: { locale } }: { params: { locale
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-3xl px-6">
             <SectionHeading
-              overline="STEP 4 OF 4"
-              title="Booking Summary"
+              overline={t("step4.overline")}
+              title={t("step4.title")}
               align="center"
               className="mb-12"
             />
@@ -561,20 +563,20 @@ export default function BookingClient({ params: { locale } }: { params: { locale
             {/* Contact Information */}
             <Card className="border-2 border-brand-grayLight mb-6">
               <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-xl">Contact Information</CardTitle>
+                <CardTitle className="text-xl">{t("step4.contactInfo")}</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Name</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("step4.name")}</p>
                     <p className="font-semibold text-brand-dark">{bookingData.firstName} {bookingData.lastName}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Email</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("step4.email")}</p>
                     <p className="font-semibold text-brand-dark break-all">{bookingData.email}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Phone</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("step4.phone")}</p>
                     <p className="font-semibold text-brand-dark">{bookingData.phone}</p>
                   </div>
                 </div>
@@ -584,22 +586,22 @@ export default function BookingClient({ params: { locale } }: { params: { locale
             {/* Appointment Details */}
             <Card className="border-2 border-brand-grayLight mb-6">
               <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-xl">Appointment Details</CardTitle>
+                <CardTitle className="text-xl">{t("step4.appointmentDetails")}</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="space-y-3">
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Appointment Confirmation</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("step4.appointmentConfirmation")}</p>
                     <p className="font-semibold text-brand-dark">
-                      Scheduled via Calendly
+                      {t("step4.scheduledViaCalendly")}
                     </p>
                     <p className="text-sm text-brand-grayMed mt-1">
-                      You will receive appointment date and time details via email from Calendly
+                      {t("step4.calendlyEmailNotice")}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Duration</p>
-                    <p className="font-semibold text-brand-dark">60 minutes</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("step4.duration")}</p>
+                    <p className="font-semibold text-brand-dark">60 {t("step4.minutes")}</p>
                   </div>
                 </div>
               </CardContent>
@@ -608,7 +610,7 @@ export default function BookingClient({ params: { locale } }: { params: { locale
             {/* Service & Payment */}
             <Card className="border-2 border-brand-grayLight mb-8">
               <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-2xl">Service & Payment</CardTitle>
+                <CardTitle className="text-2xl">{t("step4.servicePayment")}</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="space-y-4">
@@ -631,20 +633,20 @@ export default function BookingClient({ params: { locale } }: { params: { locale
 
                   <div className="border-t border-brand-grayLight pt-4 mt-4">
                     <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">Service Fee (excl. VAT):</span>
+                      <span className="text-brand-grayMed">{t("step4.serviceFeeExclVAT")}</span>
                       <span className="font-semibold text-brand-dark">
                         €{((bookingData.servicePrice || 0) / 1.17).toFixed(2)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">VAT (17%):</span>
+                      <span className="text-brand-grayMed">{t("step4.vat")}</span>
                       <span className="font-semibold text-brand-dark">
                         €{((bookingData.servicePrice || 0) - ((bookingData.servicePrice || 0) / 1.17)).toFixed(2)}
                       </span>
                     </div>
                     <div className="border-t border-brand-grayLight pt-4 mt-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-brand-dark">Total (incl. VAT):</span>
+                        <span className="text-xl font-bold text-brand-dark">{t("step4.totalInclVAT")}</span>
                         <span className="text-3xl font-bold text-brand-gold">
                           €{(bookingData.servicePrice || 0).toFixed(2)}
                         </span>
@@ -662,13 +664,13 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                 className="flex-1 border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Change Service
+                {t("step4.changeService")}
               </Button>
               <Button
                 onClick={handleProceedToPayment}
                 className="flex-1 bg-brand-gold text-white hover:bg-brand-goldDark h-12 text-lg"
               >
-                Proceed to Payment
+                {t("step4.proceedToPayment")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -707,7 +709,7 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                 },
                 onError: function(err: any) {
                   console.error('PayPal error:', err);
-                  alert('Payment failed. Please try again or contact support.');
+                  alert(t("payment.paymentFailed"));
                 }
               }).render('#paypal-button-container');
             }
@@ -718,10 +720,10 @@ export default function BookingClient({ params: { locale } }: { params: { locale
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Complete Your Payment
+                {t("payment.heroTitle")}
               </h1>
               <p className="text-lg text-white/90">
-                Secure payment powered by PayPal
+                {t("payment.heroSubtitle")}
               </p>
             </div>
           </div>
@@ -731,27 +733,26 @@ export default function BookingClient({ params: { locale } }: { params: { locale
           <div className="container mx-auto max-w-3xl px-6">
             <div className="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
               <p className="text-sm text-blue-900">
-                <strong>Secure Payment:</strong> Your payment is processed securely through PayPal.
-                You don't need a PayPal account - you can pay with credit/debit card.
+                {t("payment.securePaymentNotice")}
               </p>
             </div>
 
             <Card className="border-2 border-brand-grayLight mb-8">
               <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-2xl">Payment Summary</CardTitle>
+                <CardTitle className="text-2xl">{t("payment.paymentSummary")}</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">
-                    <span className="text-brand-grayMed">Service:</span>
+                    <span className="text-brand-grayMed">{t("payment.service")}</span>
                     <span className="font-semibold text-brand-dark">{bookingData.serviceTitle}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-brand-grayMed">Client:</span>
+                    <span className="text-brand-grayMed">{t("payment.client")}</span>
                     <span className="font-semibold text-brand-dark">{bookingData.firstName} {bookingData.lastName}</span>
                   </div>
                   <div className="flex justify-between text-xl font-bold border-t pt-3">
-                    <span className="text-brand-dark">Total:</span>
+                    <span className="text-brand-dark">{t("payment.total")}</span>
                     <span className="text-brand-gold">€{(bookingData.servicePrice || 0).toFixed(2)}</span>
                   </div>
                 </div>
@@ -761,7 +762,7 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                 {!isPayPalLoaded && (
                   <div className="text-center py-8">
                     <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-brand-gold border-r-transparent"></div>
-                    <p className="mt-4 text-brand-grayMed">Loading payment options...</p>
+                    <p className="mt-4 text-brand-grayMed">{t("payment.loadingPaymentOptions")}</p>
                   </div>
                 )}
               </CardContent>
@@ -774,14 +775,14 @@ export default function BookingClient({ params: { locale } }: { params: { locale
                 className="flex-1 border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Summary
+                {t("payment.backToSummary")}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => router.push(`/${locale}/tax-advisory`)}
                 className="flex-1"
               >
-                Cancel Booking
+                {t("payment.cancelBooking")}
               </Button>
             </div>
           </div>

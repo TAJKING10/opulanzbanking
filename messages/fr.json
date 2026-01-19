@@ -547,6 +547,186 @@
       "description": "Planifiez une consultation avec nos experts fiscaux pour découvrir comment nous pouvons vous aider à réduire votre charge fiscale tout en restant pleinement conforme.",
       "schedule": "Planifier une consultation",
       "contact": "Nous contacter"
+    },
+    "booking": {
+      "step1": {
+        "heroTitle": "Réservez votre consultation en conseil fiscal",
+        "heroSubtitle": "Commençons par recueillir vos coordonnées",
+        "overline": "ÉTAPE 1 SUR 4",
+        "title": "Vos coordonnées",
+        "description": "Nous utiliserons ces informations pour vous envoyer la confirmation de réservation et les détails de la réunion",
+        "firstName": "Prénom",
+        "firstNamePlaceholder": "Jean",
+        "lastName": "Nom",
+        "lastNamePlaceholder": "Dupont",
+        "email": "Adresse e-mail",
+        "emailPlaceholder": "jean.dupont@exemple.com",
+        "phone": "Numéro de téléphone",
+        "phonePlaceholder": "+352 123 456 789",
+        "continue": "Continuer vers la planification",
+        "backToTaxAdvisory": "Retour au conseil fiscal",
+        "required": "*"
+      },
+      "step2": {
+        "heroTitle": "Planifiez votre consultation",
+        "heroSubtitle": "Choisissez un horaire convenable pour votre consultation de 60 minutes",
+        "overline": "ÉTAPE 2 SUR 4",
+        "title": "Sélectionnez la date et l'heure",
+        "description": "Réservation pour : {name} ({email})",
+        "selectedService": "Service sélectionné : {service} ({price}€)",
+        "backToContactInfo": "Retour aux coordonnées"
+      },
+      "step3": {
+        "heroTitle": "Rendez-vous planifié !",
+        "heroSubtitle": "Maintenant, sélectionnez le service dont vous avez besoin",
+        "overline": "ÉTAPE 3 SUR 4",
+        "title": "Sélectionnez votre service de conseil fiscal",
+        "description": "Choisissez le service qui correspond le mieux à vos besoins",
+        "selectService": "Sélectionner le service"
+      },
+      "step4": {
+        "heroTitle": "Vérifiez votre réservation",
+        "heroSubtitle": "Veuillez vérifier vos informations avant de procéder au paiement",
+        "overline": "ÉTAPE 4 SUR 4",
+        "title": "Récapitulatif de la réservation",
+        "contactInfo": "Coordonnées",
+        "name": "Nom",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "appointmentDetails": "Détails du rendez-vous",
+        "appointmentConfirmation": "Confirmation du rendez-vous",
+        "scheduledViaCalendly": "Planifié via Calendly",
+        "calendlyEmailNotice": "Vous recevrez les détails de la date et de l'heure du rendez-vous par e-mail de Calendly",
+        "duration": "Durée",
+        "minutes": "minutes",
+        "servicePayment": "Service et paiement",
+        "serviceFeeExclVAT": "Frais de service (HT) :",
+        "vat": "TVA (17%) :",
+        "totalInclVAT": "Total (TTC) :",
+        "changeService": "Changer de service",
+        "proceedToPayment": "Procéder au paiement"
+      },
+      "payment": {
+        "heroTitle": "Finalisez votre paiement",
+        "heroSubtitle": "Paiement sécurisé via PayPal",
+        "securePaymentNotice": "Paiement sécurisé : Votre paiement est traité de manière sécurisée via PayPal. Vous n'avez pas besoin d'un compte PayPal - vous pouvez payer par carte de crédit/débit.",
+        "paymentSummary": "Récapitulatif du paiement",
+        "service": "Service :",
+        "client": "Client :",
+        "total": "Total :",
+        "loadingPaymentOptions": "Chargement des options de paiement...",
+        "backToSummary": "Retour au récapitulatif",
+        "cancelBooking": "Annuler la réservation",
+        "paymentFailed": "Paiement échoué. Veuillez réessayer ou contacter l'assistance.",
+        "paymentSuccessError": "Paiement réussi, mais une erreur s'est produite lors de l'enregistrement de votre réservation. Veuillez contacter l'assistance avec votre confirmation de paiement."
+      },
+      "services": {
+        "taxReturnPreparation": {
+          "title": "Préparation de déclaration fiscale",
+          "description": "Préparation et dépôt professionnels de déclarations fiscales d'entreprise et individuelles"
+        },
+        "internationalTax": {
+          "title": "Fiscalité internationale",
+          "description": "Conseils d'experts sur les questions fiscales transfrontalières et les prix de transfert"
+        },
+        "corporateTax": {
+          "title": "Fiscalité des entreprises",
+          "description": "Services fiscaux complets pour les entreprises, y compris les conseils en fusions-acquisitions et TVA"
+        },
+        "taxCompliance": {
+          "title": "Conformité fiscale",
+          "description": "Conformité continue avec les lois et réglementations fiscales"
+        },
+        "personalTaxAdvisory": {
+          "title": "Conseil fiscal personnel",
+          "description": "Conseils fiscaux personnalisés pour les particuliers fortunés et les expatriés"
+        }
+      },
+      "validation": {
+        "firstNameRequired": "Le prénom est requis",
+        "lastNameRequired": "Le nom est requis",
+        "emailRequired": "L'e-mail est requis",
+        "emailInvalid": "Veuillez entrer un e-mail valide",
+        "phoneRequired": "Le numéro de téléphone est requis"
+      }
+    },
+    "confirmation": {
+      "heroTitle": "Réservation confirmée !",
+      "heroSubtitle": "Votre consultation en conseil fiscal a été réservée avec succès",
+      "confirmationLabel": "Confirmation :",
+      "emailSent": {
+        "title": "E-mail de confirmation envoyé",
+        "description": "Un e-mail de confirmation avec tous les détails a été envoyé à {email}. Veuillez vérifier votre boîte de réception et le dossier spam."
+      },
+      "appointmentDetails": "Détails de votre rendez-vous",
+      "clientName": "Nom du client",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "date": "Date",
+      "time": "Heure",
+      "duration": "Durée : {minutes} minutes",
+      "scheduledViaCalendly": "Rendez-vous planifié via Calendly",
+      "checkEmailForDetails": "Vérifiez votre e-mail pour les détails du rendez-vous",
+      "calendlyConfirmationNotice": "Vous recevrez un e-mail de confirmation de Calendly avec la date, l'heure et le lien Google Meet de votre rendez-vous.",
+      "serviceDetails": "Détails du service",
+      "consultation": "Consultation de {minutes} minutes",
+      "inclVAT": "TTC",
+      "addToCalendar": "Ajouter au calendrier",
+      "downloadPDFReceipt": "Télécharger le reçu PDF",
+      "whatHappensNext": {
+        "title": "Et maintenant ?",
+        "step1": {
+          "title": "Vérifiez votre e-mail",
+          "description": "Vous recevrez un e-mail de confirmation avec une invitation au calendrier et un lien de réunion"
+        },
+        "step2": {
+          "title": "Préparez votre consultation",
+          "description": "Rassemblez les documents pertinents et préparez les questions que vous souhaitez aborder"
+        },
+        "step3": {
+          "title": "Rejoignez la réunion",
+          "description": "Cliquez sur le lien de réunion dans votre e-mail à l'heure prévue"
+        },
+        "step4": {
+          "title": "Recevez votre plan d'action",
+          "description": "Après la consultation, vous recevrez un résumé et les prochaines étapes recommandées"
+        }
+      },
+      "rescheduleQuestion": "Besoin de reprogrammer ou avez des questions ?",
+      "backToTaxAdvisory": "Retour au conseil fiscal",
+      "goToDashboard": "Aller au tableau de bord",
+      "supportContact": "Des questions sur votre réservation ? Contactez-nous à",
+      "receipt": {
+        "title": "REÇU DE PAIEMENT",
+        "confirmationNumber": "Numéro de confirmation :",
+        "appointmentDetails": "DÉTAILS DU RENDEZ-VOUS",
+        "clientName": "Nom du client :",
+        "email": "E-mail :",
+        "phone": "Téléphone :",
+        "appointmentDate": "Date du rendez-vous :",
+        "appointmentTime": "Heure du rendez-vous :",
+        "appointment": "Rendez-vous :",
+        "scheduledViaCalendlyCheck": "Planifié via Calendly - Vérifiez votre e-mail pour les détails",
+        "duration": "Durée :",
+        "serviceDetails": "DÉTAILS DU SERVICE",
+        "service": "Service :",
+        "serviceFeeExclVAT": "Frais de service (HT) :",
+        "vat": "TVA (17%) :",
+        "totalInclVAT": "TOTAL (TTC) :",
+        "paymentInformation": "INFORMATIONS DE PAIEMENT",
+        "paymentMethod": "Mode de paiement :",
+        "paypalTransactionId": "ID de transaction PayPal :",
+        "paymentDate": "Date de paiement :",
+        "paymentStatus": "Statut du paiement :",
+        "paypalAccount": "Compte PayPal :",
+        "thankYou": "Merci d'avoir choisi Opulanz Banking !",
+        "contactSupport": "Pour toute question concernant votre réservation, veuillez nous contacter à :",
+        "officialReceipt": "Ceci est un reçu de paiement officiel d'Opulanz Banking.",
+        "keepReceipt": "Veuillez conserver ce reçu pour vos dossiers.",
+        "saveAsPDF": "Instructions pour sauvegarder en PDF",
+        "saveAsPDFInstructions": "Pour sauvegarder ce reçu en PDF, cliquez sur le bouton ci-dessous et sélectionnez \"Enregistrer au format PDF\" comme destination d'impression.",
+        "printSaveAsPDF": "Imprimer / Sauvegarder en PDF"
+      }
     }
   },
   "legal": {

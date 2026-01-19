@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { CheckCircle, Calendar, Clock, Mail, User, FileText, Download, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ export const dynamic = 'force-dynamic';
 export default function ConfirmationClient({ params: { locale } }: { params: { locale: string } }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations("taxAdvisory.confirmation");
 
   // Get booking details from session storage (primary) or URL params (fallback)
   const bookingData = React.useMemo(() => {
@@ -367,15 +369,15 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
               <CheckCircle className="h-12 w-12 text-white" />
             </div>
             <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-              Booking Confirmed!
+              {t("heroTitle")}
             </h1>
             <p className="mb-6 text-lg text-white/90 md:text-xl">
-              Your tax advisory consultation has been successfully booked
+              {t("heroSubtitle")}
             </p>
             <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-6 py-3 backdrop-blur-sm">
               <FileText className="h-5 w-5 text-white" />
               <span className="font-mono text-sm font-semibold text-white">
-                Confirmation: {confirmationNumber}
+                {t("confirmationLabel")} {confirmationNumber}
               </span>
             </div>
           </div>
@@ -391,12 +393,10 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
               <Mail className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-green-900 mb-1">
-                  Confirmation email sent
+                  {t("emailSent.title")}
                 </h3>
                 <p className="text-sm text-green-800">
-                  A confirmation email with all the details has been sent to{" "}
-                  <span className="font-semibold">{bookingData.email || "your email address"}</span>.
-                  Please check your inbox and spam folder.
+                  {t("emailSent.description", { email: bookingData.email || "your email address" })}
                 </p>
               </div>
             </div>
@@ -405,7 +405,7 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
           {/* Appointment Details Card */}
           <Card className="border-2 border-brand-grayLight mb-8">
             <CardHeader className="bg-brand-goldLight/10">
-              <CardTitle className="text-2xl">Your Appointment Details</CardTitle>
+              <CardTitle className="text-2xl">{t("appointmentDetails")}</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid gap-6 md:grid-cols-2">
@@ -414,7 +414,7 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                     <User className="h-6 w-6 text-brand-gold" />
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Client Name</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("clientName")}</p>
                     <p className="font-semibold text-brand-dark">
                       {bookingData.name || "Guest"}
                     </p>
@@ -426,7 +426,7 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                     <Mail className="h-6 w-6 text-brand-gold" />
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Email</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("email")}</p>
                     <p className="font-semibold text-brand-dark break-all">
                       {bookingData.email || "Not provided"}
                     </p>
@@ -439,7 +439,7 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                       <User className="h-6 w-6 text-brand-gold" />
                     </div>
                     <div>
-                      <p className="text-sm text-brand-grayMed mb-1">Phone</p>
+                      <p className="text-sm text-brand-grayMed mb-1">{t("phone")}</p>
                       <p className="font-semibold text-brand-dark">
                         {bookingData.phone}
                       </p>
@@ -454,7 +454,7 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                         <Calendar className="h-6 w-6 text-brand-gold" />
                       </div>
                       <div>
-                        <p className="text-sm text-brand-grayMed mb-1">Date</p>
+                        <p className="text-sm text-brand-grayMed mb-1">{t("date")}</p>
                         <p className="font-semibold text-brand-dark">{formattedDate}</p>
                       </div>
                     </div>
@@ -464,11 +464,11 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                         <Clock className="h-6 w-6 text-brand-gold" />
                       </div>
                       <div>
-                        <p className="text-sm text-brand-grayMed mb-1">Time</p>
+                        <p className="text-sm text-brand-grayMed mb-1">{t("time")}</p>
                         <p className="font-semibold text-brand-dark">
                           {formattedTime}
                         </p>
-                        <p className="text-sm text-brand-grayMed">Duration: 60 minutes</p>
+                        <p className="text-sm text-brand-grayMed">{t("duration", { minutes: 60 })}</p>
                       </div>
                     </div>
                   </>
@@ -478,13 +478,13 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                       <Calendar className="h-6 w-6 text-blue-600" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-brand-grayMed mb-1">Appointment Scheduled via Calendly</p>
-                      <p className="font-semibold text-brand-dark">Check your email for appointment details</p>
+                      <p className="text-sm text-brand-grayMed mb-1">{t("scheduledViaCalendly")}</p>
+                      <p className="font-semibold text-brand-dark">{t("checkEmailForDetails")}</p>
                       <p className="text-sm text-blue-600 mt-2">
-                        You will receive a confirmation email from Calendly with your appointment date, time, and Google Meet link.
+                        {t("calendlyConfirmationNotice")}
                       </p>
                       <p className="text-sm text-brand-grayMed mt-1">
-                        Duration: 60 minutes
+                        {t("duration", { minutes: 60 })}
                       </p>
                     </div>
                   </div>
@@ -492,15 +492,15 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
               </div>
 
               <div className="mt-6 pt-6 border-t border-brand-grayLight">
-                <h4 className="font-semibold text-brand-dark mb-3">Service Details</h4>
+                <h4 className="font-semibold text-brand-dark mb-3">{t("serviceDetails")}</h4>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-semibold text-brand-dark">{bookingData.serviceTitle}</p>
-                    <p className="text-sm text-brand-grayMed">60-minute consultation</p>
+                    <p className="text-sm text-brand-grayMed">{t("consultation", { minutes: 60 })}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-2xl font-bold text-brand-gold">€{bookingData.price}.00</p>
-                    <p className="text-xs text-brand-grayMed">incl. VAT</p>
+                    <p className="text-xs text-brand-grayMed">{t("inclVAT")}</p>
                   </div>
                 </div>
               </div>
@@ -514,7 +514,7 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
               className="h-14 bg-brand-gold text-white hover:bg-brand-goldDark"
             >
               <Calendar className="mr-2 h-5 w-5" />
-              Add to Calendar
+              {t("addToCalendar")}
             </Button>
             <Button
               onClick={handleDownloadReceipt}
@@ -522,14 +522,14 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
               className="h-14 border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
             >
               <Download className="mr-2 h-5 w-5" />
-              Download PDF Receipt
+              {t("downloadPDFReceipt")}
             </Button>
           </div>
 
           {/* Next Steps Card */}
           <Card className="border-2 border-blue-200 bg-blue-50">
             <CardHeader>
-              <CardTitle className="text-xl text-blue-900">What happens next?</CardTitle>
+              <CardTitle className="text-xl text-blue-900">{t("whatHappensNext.title")}</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
@@ -538,9 +538,9 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                     1
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-900">Check your email</p>
+                    <p className="font-semibold text-blue-900">{t("whatHappensNext.step1.title")}</p>
                     <p className="text-sm text-blue-800">
-                      You'll receive a confirmation email with a calendar invite and meeting link
+                      {t("whatHappensNext.step1.description")}
                     </p>
                   </div>
                 </li>
@@ -549,9 +549,9 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                     2
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-900">Prepare for your consultation</p>
+                    <p className="font-semibold text-blue-900">{t("whatHappensNext.step2.title")}</p>
                     <p className="text-sm text-blue-800">
-                      Gather relevant documents and prepare questions you'd like to discuss
+                      {t("whatHappensNext.step2.description")}
                     </p>
                   </div>
                 </li>
@@ -560,9 +560,9 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                     3
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-900">Join the meeting</p>
+                    <p className="font-semibold text-blue-900">{t("whatHappensNext.step3.title")}</p>
                     <p className="text-sm text-blue-800">
-                      Click the meeting link in your email at the scheduled time
+                      {t("whatHappensNext.step3.description")}
                     </p>
                   </div>
                 </li>
@@ -571,9 +571,9 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                     4
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-900">Receive your action plan</p>
+                    <p className="font-semibold text-blue-900">{t("whatHappensNext.step4.title")}</p>
                     <p className="text-sm text-blue-800">
-                      After the consultation, you'll receive a summary and recommended next steps
+                      {t("whatHappensNext.step4.description")}
                     </p>
                   </div>
                 </li>
@@ -584,7 +584,7 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
           {/* Additional Resources */}
           <div className="mt-8 text-center">
             <p className="text-brand-grayMed mb-4">
-              Need to reschedule or have questions?
+              {t("rescheduleQuestion")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -592,14 +592,14 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                 onClick={() => router.push(`/${locale}/tax-advisory`)}
                 className="border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
               >
-                Back to Tax Advisory
+                {t("backToTaxAdvisory")}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => router.push(`/${locale}/dashboard`)}
                 className="border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
               >
-                Go to Dashboard
+                {t("goToDashboard")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -608,7 +608,7 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
           {/* Support Contact */}
           <div className="mt-12 text-center border-t border-brand-grayLight pt-8">
             <p className="text-sm text-brand-grayMed">
-              Questions about your booking? Contact us at{" "}
+              {t("supportContact")}{" "}
               <a href="mailto:support@opulanzbanking.com" className="text-brand-gold hover:underline font-semibold">
                 support@opulanzbanking.com
               </a>

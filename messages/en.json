@@ -547,6 +547,186 @@
       "description": "Schedule a consultation with our tax experts to discover how we can help you reduce your tax burden while staying fully compliant.",
       "schedule": "Schedule Consultation",
       "contact": "Contact Us"
+    },
+    "booking": {
+      "step1": {
+        "heroTitle": "Book Your Tax Advisory Consultation",
+        "heroSubtitle": "Let's start by collecting your contact information",
+        "overline": "STEP 1 OF 4",
+        "title": "Your Contact Information",
+        "description": "We'll use this information to send you booking confirmation and meeting details",
+        "firstName": "First Name",
+        "firstNamePlaceholder": "John",
+        "lastName": "Last Name",
+        "lastNamePlaceholder": "Doe",
+        "email": "Email Address",
+        "emailPlaceholder": "john.doe@example.com",
+        "phone": "Phone Number",
+        "phonePlaceholder": "+352 123 456 789",
+        "continue": "Continue to Schedule",
+        "backToTaxAdvisory": "Back to Tax Advisory",
+        "required": "*"
+      },
+      "step2": {
+        "heroTitle": "Schedule Your Consultation",
+        "heroSubtitle": "Choose a convenient time for your 60-minute consultation",
+        "overline": "STEP 2 OF 4",
+        "title": "Select Date & Time",
+        "description": "Booking for: {name} ({email})",
+        "selectedService": "Selected Service: {service} (€{price})",
+        "backToContactInfo": "Back to Contact Info"
+      },
+      "step3": {
+        "heroTitle": "Appointment Scheduled!",
+        "heroSubtitle": "Now, select which service you need assistance with",
+        "overline": "STEP 3 OF 4",
+        "title": "Select Your Tax Advisory Service",
+        "description": "Choose the service that best matches your needs",
+        "selectService": "Select Service"
+      },
+      "step4": {
+        "heroTitle": "Review Your Booking",
+        "heroSubtitle": "Please review your details before proceeding to payment",
+        "overline": "STEP 4 OF 4",
+        "title": "Booking Summary",
+        "contactInfo": "Contact Information",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "appointmentDetails": "Appointment Details",
+        "appointmentConfirmation": "Appointment Confirmation",
+        "scheduledViaCalendly": "Scheduled via Calendly",
+        "calendlyEmailNotice": "You will receive appointment date and time details via email from Calendly",
+        "duration": "Duration",
+        "minutes": "minutes",
+        "servicePayment": "Service & Payment",
+        "serviceFeeExclVAT": "Service Fee (excl. VAT):",
+        "vat": "VAT (17%):",
+        "totalInclVAT": "Total (incl. VAT):",
+        "changeService": "Change Service",
+        "proceedToPayment": "Proceed to Payment"
+      },
+      "payment": {
+        "heroTitle": "Complete Your Payment",
+        "heroSubtitle": "Secure payment powered by PayPal",
+        "securePaymentNotice": "Secure Payment: Your payment is processed securely through PayPal. You don't need a PayPal account - you can pay with credit/debit card.",
+        "paymentSummary": "Payment Summary",
+        "service": "Service:",
+        "client": "Client:",
+        "total": "Total:",
+        "loadingPaymentOptions": "Loading payment options...",
+        "backToSummary": "Back to Summary",
+        "cancelBooking": "Cancel Booking",
+        "paymentFailed": "Payment failed. Please try again or contact support.",
+        "paymentSuccessError": "Payment successful, but there was an error saving your booking. Please contact support with your payment confirmation."
+      },
+      "services": {
+        "taxReturnPreparation": {
+          "title": "Tax Return Preparation",
+          "description": "Professional preparation and filing of corporate and individual tax returns"
+        },
+        "internationalTax": {
+          "title": "International Tax",
+          "description": "Expert guidance on cross-border tax matters and transfer pricing"
+        },
+        "corporateTax": {
+          "title": "Corporate Tax",
+          "description": "Comprehensive corporate tax services including M&A and VAT consulting"
+        },
+        "taxCompliance": {
+          "title": "Tax Compliance",
+          "description": "Ongoing compliance with tax laws and regulations"
+        },
+        "personalTaxAdvisory": {
+          "title": "Personal Tax Advisory",
+          "description": "Personalized tax advice for high-net-worth individuals and expatriates"
+        }
+      },
+      "validation": {
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email",
+        "phoneRequired": "Phone number is required"
+      }
+    },
+    "confirmation": {
+      "heroTitle": "Booking Confirmed!",
+      "heroSubtitle": "Your tax advisory consultation has been successfully booked",
+      "confirmationLabel": "Confirmation:",
+      "emailSent": {
+        "title": "Confirmation email sent",
+        "description": "A confirmation email with all the details has been sent to {email}. Please check your inbox and spam folder."
+      },
+      "appointmentDetails": "Your Appointment Details",
+      "clientName": "Client Name",
+      "email": "Email",
+      "phone": "Phone",
+      "date": "Date",
+      "time": "Time",
+      "duration": "Duration: {minutes} minutes",
+      "scheduledViaCalendly": "Appointment Scheduled via Calendly",
+      "checkEmailForDetails": "Check your email for appointment details",
+      "calendlyConfirmationNotice": "You will receive a confirmation email from Calendly with your appointment date, time, and Google Meet link.",
+      "serviceDetails": "Service Details",
+      "consultation": "{minutes}-minute consultation",
+      "inclVAT": "incl. VAT",
+      "addToCalendar": "Add to Calendar",
+      "downloadPDFReceipt": "Download PDF Receipt",
+      "whatHappensNext": {
+        "title": "What happens next?",
+        "step1": {
+          "title": "Check your email",
+          "description": "You'll receive a confirmation email with a calendar invite and meeting link"
+        },
+        "step2": {
+          "title": "Prepare for your consultation",
+          "description": "Gather relevant documents and prepare questions you'd like to discuss"
+        },
+        "step3": {
+          "title": "Join the meeting",
+          "description": "Click the meeting link in your email at the scheduled time"
+        },
+        "step4": {
+          "title": "Receive your action plan",
+          "description": "After the consultation, you'll receive a summary and recommended next steps"
+        }
+      },
+      "rescheduleQuestion": "Need to reschedule or have questions?",
+      "backToTaxAdvisory": "Back to Tax Advisory",
+      "goToDashboard": "Go to Dashboard",
+      "supportContact": "Questions about your booking? Contact us at",
+      "receipt": {
+        "title": "PAYMENT RECEIPT",
+        "confirmationNumber": "Confirmation Number:",
+        "appointmentDetails": "APPOINTMENT DETAILS",
+        "clientName": "Client Name:",
+        "email": "Email:",
+        "phone": "Phone:",
+        "appointmentDate": "Appointment Date:",
+        "appointmentTime": "Appointment Time:",
+        "appointment": "Appointment:",
+        "scheduledViaCalendlyCheck": "Scheduled via Calendly - Check your email for details",
+        "duration": "Duration:",
+        "serviceDetails": "SERVICE DETAILS",
+        "service": "Service:",
+        "serviceFeeExclVAT": "Service Fee (excl. VAT):",
+        "vat": "VAT (17%):",
+        "totalInclVAT": "TOTAL (incl. VAT):",
+        "paymentInformation": "PAYMENT INFORMATION",
+        "paymentMethod": "Payment Method:",
+        "paypalTransactionId": "PayPal Transaction ID:",
+        "paymentDate": "Payment Date:",
+        "paymentStatus": "Payment Status:",
+        "paypalAccount": "PayPal Account:",
+        "thankYou": "Thank you for choosing Opulanz Banking!",
+        "contactSupport": "For questions about your booking, please contact us at:",
+        "officialReceipt": "This is an official payment receipt from Opulanz Banking.",
+        "keepReceipt": "Please keep this receipt for your records.",
+        "saveAsPDF": "Save as PDF Instructions",
+        "saveAsPDFInstructions": "To save this receipt as a PDF, click the button below and select \"Save as PDF\" as your printer destination.",
+        "printSaveAsPDF": "Print / Save as PDF"
+      }
     }
   },
   "legal": {

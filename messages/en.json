@@ -2021,6 +2021,145 @@
       },
       "primaryButton": "Get Free Quote",
       "secondaryButton": "Talk to an Advisor"
+    },
+    "booking": {
+      "step1": {
+        "heroTitle": "Book Your Life Insurance Consultation",
+        "heroSubtitle": "Let's start by collecting your contact information",
+        "overline": "STEP 1 OF 4",
+        "title": "Your Contact Information",
+        "description": "We'll use this information to send you booking confirmation and meeting details"
+      },
+      "step2": {
+        "heroTitle": "Schedule Your Consultation",
+        "heroSubtitle": "Choose a convenient time for your 60-minute consultation",
+        "overline": "STEP 2 OF 4",
+        "title": "Select Date & Time",
+        "bookingFor": "Booking for",
+        "selectedService": "Selected Service",
+        "backButton": "Back to Contact Info"
+      },
+      "step3": {
+        "heroTitle": "Appointment Scheduled!",
+        "heroSubtitle": "Now, select which life insurance service you need",
+        "overline": "STEP 3 OF 4",
+        "title": "Select Your Life Insurance Service",
+        "description": "Choose the insurance product that best matches your protection needs",
+        "consultationFee": "consultation fee",
+        "selectService": "Select Service"
+      },
+      "step4": {
+        "heroTitle": "Review Your Booking",
+        "heroSubtitle": "Please review your details before proceeding to payment",
+        "overline": "STEP 4 OF 4",
+        "title": "Booking Summary",
+        "contactInfo": "Contact Information",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "appointmentDetails": "Appointment Details",
+        "appointmentConfirmation": "Appointment Confirmation",
+        "scheduledViaCalendly": "Scheduled via Calendly",
+        "appointmentEmailNote": "You will receive appointment date and time details via email from Calendly",
+        "duration": "Duration",
+        "minutes": "60 minutes",
+        "servicePayment": "Service & Payment",
+        "consultationFeeExclVat": "Consultation Fee (excl. VAT)",
+        "vat": "VAT (17%)",
+        "totalInclVat": "Total (incl. VAT)",
+        "changeService": "Change Service",
+        "proceedToPayment": "Proceed to Payment"
+      },
+      "payment": {
+        "heroTitle": "Complete Your Payment",
+        "heroSubtitle": "Secure payment powered by PayPal",
+        "securePaymentNote": "Your payment is processed securely through PayPal. You don't need a PayPal account - you can pay with credit/debit card.",
+        "paymentSummary": "Payment Summary",
+        "service": "Service",
+        "client": "Client",
+        "total": "Total",
+        "loadingPayment": "Loading payment options...",
+        "backToSummary": "Back to Summary",
+        "cancelBooking": "Cancel Booking",
+        "paymentFailed": "Payment failed. Please try again or contact support.",
+        "paymentSuccessError": "Payment successful, but there was an error saving your booking. Please contact support with your payment confirmation."
+      },
+      "form": {
+        "firstName": "First Name",
+        "firstNamePlaceholder": "John",
+        "lastName": "Last Name",
+        "lastNamePlaceholder": "Doe",
+        "email": "Email Address",
+        "emailPlaceholder": "john.doe@example.com",
+        "phone": "Phone Number",
+        "phonePlaceholder": "+352 123 456 789",
+        "continueToSchedule": "Continue to Schedule",
+        "backToLifeInsurance": "Back to Life Insurance"
+      },
+      "services": {
+        "termLife": {
+          "title": "Term Life Insurance",
+          "description": "Affordable protection for 10, 20, or 30 years with level premiums"
+        },
+        "wholeLife": {
+          "title": "Whole Life Insurance",
+          "description": "Lifetime coverage with cash value accumulation and guaranteed benefits"
+        },
+        "universalLife": {
+          "title": "Universal Life Insurance",
+          "description": "Flexible premiums and adjustable death benefits that adapt to your needs"
+        },
+        "variableLife": {
+          "title": "Variable Life Insurance",
+          "description": "Investment-linked cash value growth with market-based potential returns"
+        },
+        "groupLife": {
+          "title": "Group Life Insurance",
+          "description": "Employer-sponsored coverage at competitive group rates"
+        }
+      },
+      "validation": {
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email",
+        "phoneRequired": "Phone number is required"
+      }
+    },
+    "confirmation": {
+      "heroTitle": "Booking Confirmed!",
+      "heroSubtitle": "Thank you for choosing Opulanz life insurance brokerage services",
+      "confirmationNumber": "Confirmation Number",
+      "emailSent": {
+        "title": "Confirmation Email Sent",
+        "description": "We've sent a confirmation email to"
+      },
+      "appointmentDetails": "Appointment Details",
+      "scheduledDateTime": "Scheduled Date & Time",
+      "checkCalendlyEmail": "Please check your Calendly email for exact details",
+      "duration": "Duration",
+      "minutes": "60 minutes",
+      "format": "Format",
+      "videoCall": "Video Call (link sent via email)",
+      "serviceBooked": "Service Booked",
+      "amountPaid": "Amount Paid",
+      "paymentMethod": "Payment Method",
+      "paypal": "PayPal",
+      "nextSteps": {
+        "title": "Next Steps",
+        "step1": "Check your email for the Calendly meeting link",
+        "step2": "Prepare any relevant insurance documents or questions",
+        "step3": "Join the video call at the scheduled time",
+        "step4": "Receive your personalized insurance plan after consultation"
+      },
+      "buttons": {
+        "addToCalendar": "Add to Calendar",
+        "backToHome": "Back to Home"
+      },
+      "support": {
+        "title": "Need Help?",
+        "description": "If you have any questions or need to reschedule, please contact our support team."
+      }
     }
   },
   "accountOpening": {

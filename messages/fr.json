@@ -2020,6 +2020,145 @@
       },
       "primaryButton": "Obtenir un Devis Gratuit",
       "secondaryButton": "Parler à un Conseiller"
+    },
+    "booking": {
+      "step1": {
+        "heroTitle": "Réservez Votre Consultation Assurance Vie",
+        "heroSubtitle": "Commençons par collecter vos coordonnées",
+        "overline": "ÉTAPE 1 SUR 4",
+        "title": "Vos Coordonnées",
+        "description": "Nous utiliserons ces informations pour vous envoyer la confirmation de réservation et les détails de la réunion"
+      },
+      "step2": {
+        "heroTitle": "Planifiez Votre Consultation",
+        "heroSubtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes",
+        "overline": "ÉTAPE 2 SUR 4",
+        "title": "Sélectionnez Date et Heure",
+        "bookingFor": "Réservation pour",
+        "selectedService": "Service Sélectionné",
+        "backButton": "Retour aux Coordonnées"
+      },
+      "step3": {
+        "heroTitle": "Rendez-vous Programmé !",
+        "heroSubtitle": "Maintenant, sélectionnez le service d'assurance vie dont vous avez besoin",
+        "overline": "ÉTAPE 3 SUR 4",
+        "title": "Sélectionnez Votre Service d'Assurance Vie",
+        "description": "Choisissez le produit d'assurance qui correspond le mieux à vos besoins de protection",
+        "consultationFee": "frais de consultation",
+        "selectService": "Sélectionner le Service"
+      },
+      "step4": {
+        "heroTitle": "Vérifiez Votre Réservation",
+        "heroSubtitle": "Veuillez vérifier vos informations avant de procéder au paiement",
+        "overline": "ÉTAPE 4 SUR 4",
+        "title": "Récapitulatif de la Réservation",
+        "contactInfo": "Coordonnées",
+        "name": "Nom",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "appointmentDetails": "Détails du Rendez-vous",
+        "appointmentConfirmation": "Confirmation du Rendez-vous",
+        "scheduledViaCalendly": "Programmé via Calendly",
+        "appointmentEmailNote": "Vous recevrez les détails de la date et l'heure du rendez-vous par e-mail de Calendly",
+        "duration": "Durée",
+        "minutes": "60 minutes",
+        "servicePayment": "Service et Paiement",
+        "consultationFeeExclVat": "Frais de Consultation (HT)",
+        "vat": "TVA (17%)",
+        "totalInclVat": "Total (TTC)",
+        "changeService": "Changer de Service",
+        "proceedToPayment": "Procéder au Paiement"
+      },
+      "payment": {
+        "heroTitle": "Finalisez Votre Paiement",
+        "heroSubtitle": "Paiement sécurisé par PayPal",
+        "securePaymentNote": "Votre paiement est traité de manière sécurisée via PayPal. Vous n'avez pas besoin d'un compte PayPal - vous pouvez payer par carte de crédit/débit.",
+        "paymentSummary": "Récapitulatif du Paiement",
+        "service": "Service",
+        "client": "Client",
+        "total": "Total",
+        "loadingPayment": "Chargement des options de paiement...",
+        "backToSummary": "Retour au Récapitulatif",
+        "cancelBooking": "Annuler la Réservation",
+        "paymentFailed": "Échec du paiement. Veuillez réessayer ou contacter le support.",
+        "paymentSuccessError": "Paiement réussi, mais une erreur s'est produite lors de l'enregistrement de votre réservation. Veuillez contacter le support avec votre confirmation de paiement."
+      },
+      "form": {
+        "firstName": "Prénom",
+        "firstNamePlaceholder": "Jean",
+        "lastName": "Nom",
+        "lastNamePlaceholder": "Dupont",
+        "email": "Adresse E-mail",
+        "emailPlaceholder": "jean.dupont@exemple.com",
+        "phone": "Numéro de Téléphone",
+        "phonePlaceholder": "+352 123 456 789",
+        "continueToSchedule": "Continuer vers la Planification",
+        "backToLifeInsurance": "Retour à l'Assurance Vie"
+      },
+      "services": {
+        "termLife": {
+          "title": "Assurance Vie Temporaire",
+          "description": "Protection abordable pour 10, 20 ou 30 ans avec des primes nivelées"
+        },
+        "wholeLife": {
+          "title": "Assurance Vie Entière",
+          "description": "Couverture à vie avec accumulation de valeur de rachat et prestations garanties"
+        },
+        "universalLife": {
+          "title": "Assurance Vie Universelle",
+          "description": "Primes flexibles et prestations de décès ajustables qui s'adaptent à vos besoins"
+        },
+        "variableLife": {
+          "title": "Assurance Vie Variable",
+          "description": "Croissance de la valeur de rachat liée aux investissements avec des rendements potentiels basés sur le marché"
+        },
+        "groupLife": {
+          "title": "Assurance Vie Collective",
+          "description": "Couverture parrainée par l'employeur à des tarifs de groupe compétitifs"
+        }
+      },
+      "validation": {
+        "firstNameRequired": "Le prénom est requis",
+        "lastNameRequired": "Le nom est requis",
+        "emailRequired": "L'adresse e-mail est requise",
+        "emailInvalid": "Veuillez entrer une adresse e-mail valide",
+        "phoneRequired": "Le numéro de téléphone est requis"
+      }
+    },
+    "confirmation": {
+      "heroTitle": "Réservation Confirmée !",
+      "heroSubtitle": "Merci d'avoir choisi les services de courtage en assurance vie d'Opulanz",
+      "confirmationNumber": "Numéro de Confirmation",
+      "emailSent": {
+        "title": "E-mail de Confirmation Envoyé",
+        "description": "Nous avons envoyé un e-mail de confirmation à"
+      },
+      "appointmentDetails": "Détails du Rendez-vous",
+      "scheduledDateTime": "Date et Heure Programmées",
+      "checkCalendlyEmail": "Veuillez vérifier votre e-mail de Calendly pour les détails exacts",
+      "duration": "Durée",
+      "minutes": "60 minutes",
+      "format": "Format",
+      "videoCall": "Appel Vidéo (lien envoyé par e-mail)",
+      "serviceBooked": "Service Réservé",
+      "amountPaid": "Montant Payé",
+      "paymentMethod": "Mode de Paiement",
+      "paypal": "PayPal",
+      "nextSteps": {
+        "title": "Prochaines Étapes",
+        "step1": "Vérifiez votre e-mail pour le lien de réunion Calendly",
+        "step2": "Préparez tous les documents ou questions d'assurance pertinents",
+        "step3": "Rejoignez l'appel vidéo à l'heure prévue",
+        "step4": "Recevez votre plan d'assurance personnalisé après la consultation"
+      },
+      "buttons": {
+        "addToCalendar": "Ajouter au Calendrier",
+        "backToHome": "Retour à l'Accueil"
+      },
+      "support": {
+        "title": "Besoin d'aide ?",
+        "description": "Si vous avez des questions ou devez reprogrammer, veuillez contacter notre équipe de support."
+      }
     }
   },
   "accountOpening": {

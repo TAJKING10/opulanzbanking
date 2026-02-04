@@ -10,61 +10,98 @@ import { Button } from "@/components/ui/button";
 export default function SpvDashboardPage() {
   const t = useTranslations();
   const locale = useLocale();
+  const [profile, setProfile] = React.useState<string>("existing");
 
-  const stats = [
-    {
-      label: t("spvInvestment.portal.dashboard.totalInvested"),
-      value: "€150,000",
-      icon: DollarSign,
-      change: "+€50,000 this quarter",
-    },
-    {
-      label: t("spvInvestment.portal.dashboard.activeSpvs"),
-      value: "2",
-      icon: Building2,
-      change: "Luxembourg, Sweden",
-    },
-    {
-      label: t("spvInvestment.portal.dashboard.estimatedReturn"),
-      value: "7.8%",
-      icon: TrendingUp,
-      change: "Target annual return",
-    },
-    {
-      label: t("spvInvestment.portal.dashboard.documentsAvailable"),
-      value: "12",
-      icon: FileText,
-      change: "3 new this month",
-    },
-  ];
+  React.useEffect(() => {
+    const stored = sessionStorage.getItem("spv-portal-profile");
+    if (stored) setProfile(stored);
+  }, []);
 
-  const recentActivity = [
-    {
-      date: "2025-01-28",
-      description: "Investment confirmed — Luxembourg City Premium Residence SPV",
-      type: "success",
-    },
-    {
-      date: "2025-01-15",
-      description: "Subscription agreement signed — Riga Commercial Centre SPV",
-      type: "success",
-    },
-    {
-      date: "2025-01-10",
-      description: "Q4 2024 Performance Report available for download",
-      type: "info",
-    },
-    {
-      date: "2024-12-20",
-      description: "Annual tax certificate 2024 uploaded",
-      type: "info",
-    },
-    {
-      date: "2024-12-01",
-      description: "Bank transfer received — €50,000 allocated to Luxembourg SPV",
-      type: "success",
-    },
-  ];
+  const isNew = profile === "new";
+
+  const stats = isNew
+    ? [
+        {
+          label: t("spvInvestment.portal.dashboard.totalInvested"),
+          value: "€0",
+          icon: DollarSign,
+          change: "No investments yet",
+        },
+        {
+          label: t("spvInvestment.portal.dashboard.activeSpvs"),
+          value: "0",
+          icon: Building2,
+          change: "Browse offerings to get started",
+        },
+        {
+          label: t("spvInvestment.portal.dashboard.estimatedReturn"),
+          value: "—",
+          icon: TrendingUp,
+          change: "Invest to see projected returns",
+        },
+        {
+          label: t("spvInvestment.portal.dashboard.documentsAvailable"),
+          value: "0",
+          icon: FileText,
+          change: "Documents will appear here",
+        },
+      ]
+    : [
+        {
+          label: t("spvInvestment.portal.dashboard.totalInvested"),
+          value: "€150,000",
+          icon: DollarSign,
+          change: "+€50,000 this quarter",
+        },
+        {
+          label: t("spvInvestment.portal.dashboard.activeSpvs"),
+          value: "2",
+          icon: Building2,
+          change: "Luxembourg, Sweden",
+        },
+        {
+          label: t("spvInvestment.portal.dashboard.estimatedReturn"),
+          value: "7.8%",
+          icon: TrendingUp,
+          change: "Target annual return",
+        },
+        {
+          label: t("spvInvestment.portal.dashboard.documentsAvailable"),
+          value: "12",
+          icon: FileText,
+          change: "3 new this month",
+        },
+      ];
+
+  const recentActivity = isNew
+    ? []
+    : [
+        {
+          date: "2025-01-28",
+          description: "Investment confirmed — Luxembourg City Premium Residence",
+          type: "success",
+        },
+        {
+          date: "2025-01-15",
+          description: "Subscription agreement signed — Riga Commercial Centre",
+          type: "success",
+        },
+        {
+          date: "2025-01-10",
+          description: "Q4 2024 Performance Report available for download",
+          type: "info",
+        },
+        {
+          date: "2024-12-20",
+          description: "Annual tax certificate 2024 uploaded",
+          type: "info",
+        },
+        {
+          date: "2024-12-01",
+          description: "Bank transfer received — €50,000 allocated to Luxembourg project",
+          type: "success",
+        },
+      ];
 
   const typeIcon = (type: string) => {
     switch (type) {

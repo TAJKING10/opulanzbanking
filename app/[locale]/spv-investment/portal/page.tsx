@@ -10,7 +10,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const VALID_ACCESS_CODE = "OPULANZ-SPV-2025";
+const VALID_ACCESS_CODES: Record<string, string> = {
+  "OPULANZ-INV-2025": "existing",
+  "OPULANZ-INV-NEW-2025": "new",
+};
 
 export default function SpvPortalLoginPage() {
   const locale = useLocale();
@@ -35,9 +38,11 @@ export default function SpvPortalLoginPage() {
 
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    if (accessCode.trim() === VALID_ACCESS_CODE) {
+    const profile = VALID_ACCESS_CODES[accessCode.trim()];
+    if (profile) {
       sessionStorage.setItem("spv-portal-access", "granted");
       sessionStorage.setItem("spv-portal-timestamp", Date.now().toString());
+      sessionStorage.setItem("spv-portal-profile", profile);
       router.push(`/${locale}/spv-investment/portal/dashboard`);
     } else {
       setError(t("spvInvestment.portal.login.error"));

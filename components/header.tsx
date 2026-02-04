@@ -25,6 +25,7 @@ const services = [
   { name: "Investment Advisory", href: "/investment-advisory" },
   { name: "Life Insurance", href: "/life-insurance" },
   { name: "Accounting & Invoicing", href: "/invoicing-accounting" },
+  { name: "SPV Investment", href: "/spv-investment" },
 ];
 
 export function Header({ locale }: HeaderProps) {

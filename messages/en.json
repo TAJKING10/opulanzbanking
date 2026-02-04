@@ -131,6 +131,10 @@
     "mortgage": {
       "title": "Mortgage Services",
       "description": "Home financing solutions in Luxembourg"
+    },
+    "spvInvestment": {
+      "title": "SPV Investment",
+      "description": "Exclusive real estate investment opportunities through Special Purpose Vehicles"
     }
   },
   "legal": {
@@ -152,7 +156,8 @@
         "companyFormation": "Company Formation",
         "accounting": "Accounting & Invoicing",
         "tax": "Tax Advisory",
-        "investment": "Investment Advisory"
+        "investment": "Investment Advisory",
+        "spvInvestment": "SPV Investment"
       },
       "products": {
         "lifeInsurance": "Life Insurance",
@@ -435,5 +440,201 @@
   "metadata": {
     "title": "Opulanz - Professional Digital Banking",
     "description": "Trusted digital banking, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg."
+  },
+  "spvInvestment": {
+    "landing": {
+      "heroTitle": "SPV Real Estate Investment",
+      "heroSubtitle": "Structured investment opportunities in European real estate through Special Purpose Vehicles, available exclusively to qualified investors.",
+      "whatIsSpv": {
+        "overline": "About SPV Investment",
+        "title": "Structured Investment Through Special Purpose Vehicles",
+        "description": "A Special Purpose Vehicle (SPV) is a dedicated legal entity created for a specific investment purpose. It enables investors to participate in carefully selected real estate opportunities with clear legal separation and professional asset management.",
+        "benefits": {
+          "protection": {
+            "title": "Asset Protection",
+            "description": "Legal separation of assets within a dedicated entity for enhanced investor protection."
+          },
+          "governance": {
+            "title": "Professional Governance",
+            "description": "Expert management, oversight, and regulatory compliance throughout the investment lifecycle."
+          },
+          "transparency": {
+            "title": "Full Transparency",
+            "description": "Comprehensive reporting, documentation, and clear visibility into your investment at all times."
+          },
+          "exit": {
+            "title": "Defined Exit Strategy",
+            "description": "Structured maturity terms and predefined exit options as set out in contractual documentation."
+          }
+        }
+      },
+      "howItWorks": {
+        "overline": "How It Works",
+        "title": "A Private, Invitation-Based Process",
+        "description": "Our SPV investment opportunities are available exclusively through a private, invitation-based process to ensure regulatory compliance and investor suitability.",
+        "steps": {
+          "contact": {
+            "title": "Initial Contact",
+            "description": "Reach out to our advisory team to express your interest in SPV investment opportunities."
+          },
+          "qualification": {
+            "title": "Qualification Review",
+            "description": "Our team reviews your investor profile, conducts suitability assessments, and completes KYC/AML verification."
+          },
+          "access": {
+            "title": "Portal Access",
+            "description": "Qualified investors receive secure portal credentials to view available SPV offerings and documentation."
+          },
+          "investment": {
+            "title": "Investment & Monitoring",
+            "description": "Select opportunities, complete documentation, execute via bank transfer, and track your investment over time."
+          }
+        }
+      },
+      "cta": {
+        "title": "Interested in SPV Investment Opportunities?",
+        "description": "Contact our advisory team to learn more about current and upcoming SPV real estate investment opportunities. Access is available by invitation only.",
+        "contactButton": "Contact Our Team",
+        "portalAccess": "Investor Portal"
+      },
+      "contactForm": {
+        "title": "Request Information",
+        "description": "Provide your details and our team will be in touch to discuss SPV investment opportunities.",
+        "fullName": "Full Name",
+        "email": "Email Address",
+        "phone": "Phone Number (optional)",
+        "investorType": "Investor Type",
+        "investorTypes": {
+          "institutional": "Institutional Investor",
+          "professional": "Professional Investor",
+          "private": "Private Investor"
+        },
+        "message": "Message",
+        "messagePlaceholder": "Please describe your investment interests and objectives...",
+        "submit": "Submit Request",
+        "success": "Thank you for your interest. A member of our team will contact you shortly.",
+        "disclaimer": "This page is provided for informational purposes only and does not constitute a public offer, solicitation, or investment advice. Access to detailed investment information is available exclusively through restricted, invitation-based access following appropriate investor verification."
+      }
+    },
+    "portal": {
+      "login": {
+        "title": "Investor Portal",
+        "subtitle": "Enter your access code to view SPV investment opportunities",
+        "accessCode": "Access Code",
+        "accessCodePlaceholder": "Enter your access code",
+        "signIn": "Access Portal",
+        "error": "Invalid access code. Please contact your advisor for assistance.",
+        "help": "Need access? Contact your Opulanz advisor or reach out to our team.",
+        "contactSupport": "Contact Support",
+        "securityNotice": "This portal is restricted to authorised investors only"
+      },
+      "nav": {
+        "dashboard": "Dashboard",
+        "offerings": "Offerings",
+        "documents": "Documents",
+        "logout": "Sign Out"
+      },
+      "dashboard": {
+        "title": "Investor Dashboard",
+        "welcome": "Welcome to your SPV Investment Portal",
+        "summary": "Investment Summary",
+        "totalInvested": "Total Invested",
+        "activeSpvs": "Active SPVs",
+        "estimatedReturn": "Est. Annual Return",
+        "documentsAvailable": "Documents",
+        "recentActivity": "Recent Activity",
+        "noActivity": "No recent activity to display.",
+        "quickActions": {
+          "title": "Quick Actions",
+          "viewOfferings": "View Offerings",
+          "downloadDocuments": "Download Documents",
+          "contactAdvisor": "Contact Advisor"
+        }
+      },
+      "offerings": {
+        "title": "SPV Investment Offerings",
+        "subtitle": "Browse current investment opportunities",
+        "status": {
+          "open": "Open for Investment",
+          "closing": "Closing Soon",
+          "closed": "Fully Subscribed",
+          "coming": "Coming Soon"
+        },
+        "filters": {
+          "all": "All",
+          "open": "Open",
+          "closing": "Closing Soon"
+        },
+        "card": {
+          "location": "Location",
+          "type": "Property Type",
+          "size": "Size",
+          "minimumInvestment": "Min. Investment",
+          "targetReturn": "Target Return",
+          "term": "Term",
+          "viewDetails": "View Details"
+        },
+        "noOfferings": "No offerings match your current filters."
+      },
+      "offeringDetail": {
+        "backToOfferings": "Back to Offerings",
+        "overview": "Overview",
+        "investmentTerms": "Investment Terms",
+        "propertyDetails": "Property Details",
+        "location": "Location",
+        "propertyType": "Property Type",
+        "totalSize": "Total Size",
+        "yearBuilt": "Year Built",
+        "status": "Status",
+        "features": "Key Features",
+        "description": "Description",
+        "financials": {
+          "title": "Financial Overview",
+          "totalValue": "Total Property Value",
+          "spvShares": "SPV Shares Available",
+          "minimumInvestment": "Minimum Investment",
+          "targetReturn": "Target Annual Return",
+          "investmentTerm": "Investment Term",
+          "distributionFrequency": "Distribution Frequency"
+        },
+        "bankTransfer": {
+          "title": "Bank Transfer Instructions",
+          "description": "To participate in this SPV offering, please transfer your investment amount to the following account:",
+          "bankName": "Bank Name",
+          "iban": "IBAN",
+          "bic": "BIC/SWIFT",
+          "reference": "Payment Reference",
+          "copied": "Copied!",
+          "important": "Important: Please include the payment reference to ensure your investment is correctly allocated to this SPV."
+        },
+        "documents": {
+          "title": "Related Documents",
+          "prospectus": "Investment Prospectus",
+          "agreement": "Subscription Agreement",
+          "termSheet": "Term Sheet"
+        },
+        "disclaimer": "This information is provided to authorised investors only and does not constitute investment advice. Past performance is not indicative of future results. All investments carry risk, including the potential loss of capital."
+      },
+      "documents": {
+        "title": "Document Centre",
+        "subtitle": "Access and download your SPV investment documents",
+        "search": "Search documents...",
+        "categories": {
+          "all": "All",
+          "agreements": "Agreements",
+          "reports": "Reports",
+          "tax": "Tax Documents",
+          "legal": "Legal Documents"
+        },
+        "table": {
+          "name": "Document Name",
+          "category": "Category",
+          "date": "Date",
+          "size": "Size",
+          "download": "Download"
+        },
+        "noDocuments": "No documents match your search criteria."
+      }
+    }
   }
 }

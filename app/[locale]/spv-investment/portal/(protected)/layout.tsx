@@ -42,6 +42,7 @@ export default function SpvPortalProtectedLayout({
   const handleLogout = () => {
     sessionStorage.removeItem("spv-portal-access");
     sessionStorage.removeItem("spv-portal-timestamp");
+    sessionStorage.removeItem("spv-portal-profile");
     router.push(`/${locale}/spv-investment/portal`);
   };
 

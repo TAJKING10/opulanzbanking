@@ -26,7 +26,7 @@ export default function SpvInvestmentPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("SPV info request:", formData);
+    console.log("Investment info request:", formData);
     setIsSubmitted(true);
   };
 

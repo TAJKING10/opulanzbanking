@@ -133,8 +133,8 @@
       "description": "Solutions de financement immobilier au Luxembourg"
     },
     "spvInvestment": {
-      "title": "Investissement SPV",
-      "description": "Opportunités d'investissement immobilier exclusives via des Sociétés à Objet Spécifique"
+      "title": "Investissement",
+      "description": "Opportunités exclusives de crowdfunding immobilier sur les marchés européens"
     }
   },
   "legal": {
@@ -157,7 +157,7 @@
         "accounting": "Comptabilité et facturation",
         "tax": "Conseil fiscal",
         "investment": "Conseil en investissement",
-        "spvInvestment": "Investissement SPV"
+        "spvInvestment": "Investissement"
       },
       "products": {
         "lifeInsurance": "Assurance-vie",
@@ -444,23 +444,23 @@
   "spvInvestment": {
     "landing": {
       "heroTitle": "Investissement Immobilier SPV",
-      "heroSubtitle": "Opportunités d'investissement structurées dans l'immobilier européen via des Sociétés à Objet Spécifique, réservées exclusivement aux investisseurs qualifiés.",
+      "heroSubtitle": "Accédez à des opportunités immobilières européennes soigneusement sélectionnées via des structures de Special Purpose Vehicle (SPV) gérées professionnellement, réservées exclusivement aux investisseurs qualifiés.",
       "whatIsSpv": {
         "overline": "À propos de l'investissement SPV",
-        "title": "Investissement Structuré via des Sociétés à Objet Spécifique",
-        "description": "Une Société à Objet Spécifique (SPV) est une entité juridique dédiée créée dans un objectif d'investissement précis. Elle permet aux investisseurs de participer à des opportunités immobilières soigneusement sélectionnées avec une séparation juridique claire et une gestion professionnelle des actifs.",
+        "title": "Qu'est-ce qu'un SPV ?",
+        "description": "Un Special Purpose Vehicle (SPV) est une entité juridique dédiée créée spécifiquement pour détenir et gérer un actif immobilier. Chaque SPV isole l'investissement, offrant une séparation juridique claire, une gouvernance professionnelle et un reporting transparent pour les investisseurs.",
         "benefits": {
           "protection": {
             "title": "Protection des Actifs",
-            "description": "Séparation juridique des actifs au sein d'une entité dédiée pour une protection renforcée des investisseurs."
+            "description": "Chaque SPV isole l'actif immobilier, protégeant les investisseurs des responsabilités non liées."
           },
           "governance": {
             "title": "Gouvernance Professionnelle",
-            "description": "Gestion experte, surveillance et conformité réglementaire tout au long du cycle de vie de l'investissement."
+            "description": "Gestion experte, conformité réglementaire et surveillance fiduciaire tout au long du cycle de vie du SPV."
           },
           "transparency": {
             "title": "Transparence Totale",
-            "description": "Rapports complets, documentation détaillée et visibilité claire sur votre investissement à tout moment."
+            "description": "Rapports trimestriels détaillés, états financiers audités et visibilité complète sur les opérations et performances du SPV."
           },
           "exit": {
             "title": "Stratégie de Sortie Définie",
@@ -475,7 +475,7 @@
         "steps": {
           "contact": {
             "title": "Prise de Contact",
-            "description": "Contactez notre équipe de conseil pour exprimer votre intérêt pour les opportunités d'investissement SPV."
+            "description": "Contactez notre équipe de conseil pour exprimer votre intérêt pour les opportunités d'investissement SPV immobilier."
           },
           "qualification": {
             "title": "Examen de Qualification",
@@ -483,7 +483,7 @@
           },
           "access": {
             "title": "Accès au Portail",
-            "description": "Les investisseurs qualifiés reçoivent des identifiants sécurisés pour accéder aux offres SPV disponibles et à la documentation."
+            "description": "Les investisseurs qualifiés reçoivent des identifiants sécurisés pour accéder aux offres de crowdfunding disponibles et à la documentation."
           },
           "investment": {
             "title": "Investissement et Suivi",
@@ -492,14 +492,14 @@
         }
       },
       "cta": {
-        "title": "Intéressé par les opportunités d'investissement SPV ?",
-        "description": "Contactez notre équipe de conseil pour en savoir plus sur les opportunités d'investissement immobilier SPV actuelles et à venir. L'accès est disponible uniquement sur invitation.",
+        "title": "Intéressé par les opportunités de crowdfunding ?",
+        "description": "Contactez notre équipe de conseil pour en savoir plus sur les opportunités de crowdfunding immobilier actuelles et à venir. L'accès est disponible uniquement sur invitation.",
         "contactButton": "Contacter notre équipe",
         "portalAccess": "Portail Investisseur"
       },
       "contactForm": {
         "title": "Demande d'informations",
-        "description": "Laissez vos coordonnées et notre équipe vous contactera pour discuter des opportunités d'investissement SPV.",
+        "description": "Laissez vos coordonnées et notre équipe vous contactera pour discuter des opportunités de crowdfunding.",
         "fullName": "Nom complet",
         "email": "Adresse e-mail",
         "phone": "Numéro de téléphone (facultatif)",
@@ -519,7 +519,7 @@
     "portal": {
       "login": {
         "title": "Portail Investisseur",
-        "subtitle": "Entrez votre code d'accès pour consulter les opportunités d'investissement SPV",
+        "subtitle": "Entrez votre code d'accès pour consulter les opportunités d'investissement",
         "accessCode": "Code d'accès",
         "accessCodePlaceholder": "Entrez votre code d'accès",
         "signIn": "Accéder au portail",
@@ -536,10 +536,10 @@
       },
       "dashboard": {
         "title": "Tableau de bord Investisseur",
-        "welcome": "Bienvenue sur votre Portail d'Investissement SPV",
+        "welcome": "Bienvenue sur votre Portail d'Investissement",
         "summary": "Résumé des investissements",
         "totalInvested": "Total investi",
-        "activeSpvs": "SPV actifs",
+        "activeSpvs": "Projets actifs",
         "estimatedReturn": "Rendement annuel est.",
         "documentsAvailable": "Documents",
         "recentActivity": "Activité récente",
@@ -552,7 +552,7 @@
         }
       },
       "offerings": {
-        "title": "Offres d'investissement SPV",
+        "title": "Offres d'investissement",
         "subtitle": "Parcourir les opportunités d'investissement actuelles",
         "status": {
           "open": "Ouvert à l'investissement",
@@ -591,7 +591,7 @@
         "financials": {
           "title": "Aperçu financier",
           "totalValue": "Valeur totale du bien",
-          "spvShares": "Parts SPV disponibles",
+          "shares": "Parts disponibles",
           "minimumInvestment": "Investissement minimum",
           "targetReturn": "Rendement annuel cible",
           "investmentTerm": "Durée de l'investissement",
@@ -599,13 +599,13 @@
         },
         "bankTransfer": {
           "title": "Instructions de virement bancaire",
-          "description": "Pour participer à cette offre SPV, veuillez transférer le montant de votre investissement au compte suivant :",
+          "description": "Pour participer à cette offre, veuillez transférer le montant de votre investissement au compte suivant :",
           "bankName": "Nom de la banque",
           "iban": "IBAN",
           "bic": "BIC/SWIFT",
           "reference": "Référence de paiement",
           "copied": "Copié !",
-          "important": "Important : Veuillez inclure la référence de paiement pour garantir que votre investissement soit correctement attribué à ce SPV."
+          "important": "Important : Veuillez inclure la référence de paiement pour garantir que votre investissement soit correctement attribué à ce projet."
         },
         "documents": {
           "title": "Documents associés",
@@ -617,7 +617,7 @@
       },
       "documents": {
         "title": "Centre de documents",
-        "subtitle": "Accédez et téléchargez vos documents d'investissement SPV",
+        "subtitle": "Accédez et téléchargez vos documents d'investissement",
         "search": "Rechercher des documents...",
         "categories": {
           "all": "Tous",

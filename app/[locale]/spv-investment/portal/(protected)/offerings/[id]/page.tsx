@@ -23,7 +23,7 @@ const offeringsData: Record<string, {
   images: string[];
   financials: {
     totalValue: string;
-    spvShares: string;
+    shares: string;
     minimumInvestment: string;
     targetReturn: string;
     investmentTerm: string;
@@ -44,7 +44,7 @@ const offeringsData: Record<string, {
     size: "2,400 m²",
     yearBuilt: "2022",
     status: "open",
-    description: "This SPV holds a premium residential property located in the heart of Luxembourg City. The development comprises 12 luxury apartment units with high-quality finishes, situated in a sought-after neighbourhood with excellent transport links, proximity to the financial district, and strong rental demand. The property benefits from stable occupancy rates and delivers consistent rental income to SPV investors. The investment structure provides clear legal separation of assets, professional property management, and transparent quarterly reporting.",
+    description: "This project comprises a premium residential property located in the heart of Luxembourg City. The development includes 12 luxury apartment units with high-quality finishes, situated in a sought-after neighbourhood with excellent transport links, proximity to the financial district, and strong rental demand. The property benefits from stable occupancy rates and delivers consistent rental income to investors. The investment structure provides clear legal separation of assets, professional property management, and transparent quarterly reporting.",
     features: [
       "Prime city-centre location with excellent transport links",
       "12 fully furnished luxury residential units",
@@ -63,7 +63,7 @@ const offeringsData: Record<string, {
     ],
     financials: {
       totalValue: "€3,200,000",
-      spvShares: "40 shares",
+      shares: "40 shares",
       minimumInvestment: "€50,000",
       targetReturn: "7–9% p.a.",
       investmentTerm: "5 years",
@@ -73,7 +73,7 @@ const offeringsData: Record<string, {
       bankName: "Banque de Luxembourg",
       iban: "LU12 3456 7890 1234 5678",
       bic: "BLLLLULL",
-      reference: "SPV-LUX-RES-01",
+      reference: "INV-LUX-RES-01",
     },
   },
   "spv-riga-commercial-02": {
@@ -84,7 +84,7 @@ const offeringsData: Record<string, {
     size: "4,800 m²",
     yearBuilt: "2019",
     status: "closing",
-    description: "This SPV holds a strategically located mixed-use commercial property in Riga's central business district. The property features retail space on the ground floor and modern office space across four upper floors, attracting quality tenants with long-term lease agreements. The investment benefits from Latvia's growing economy and competitive rental yields in the Baltic region.",
+    description: "This project comprises a strategically located mixed-use commercial property in Riga's central business district. The property features retail space on the ground floor and modern office space across four upper floors, attracting quality tenants with long-term lease agreements. The investment benefits from Latvia's growing economy and competitive rental yields in the Baltic region.",
     features: [
       "Central business district location",
       "Multi-tenant commercial property",
@@ -103,7 +103,7 @@ const offeringsData: Record<string, {
     ],
     financials: {
       totalValue: "€5,600,000",
-      spvShares: "80 shares",
+      shares: "80 shares",
       minimumInvestment: "€25,000",
       targetReturn: "8–11% p.a.",
       investmentTerm: "7 years",
@@ -113,7 +113,7 @@ const offeringsData: Record<string, {
       bankName: "Banque de Luxembourg",
       iban: "LU98 7654 3210 9876 5432",
       bic: "BLLLLULL",
-      reference: "SPV-RIG-COM-02",
+      reference: "INV-RIG-COM-02",
     },
   },
   "spv-stockholm-dev-03": {
@@ -124,7 +124,7 @@ const offeringsData: Record<string, {
     size: "6,200 m²",
     yearBuilt: "2026 (est.)",
     status: "coming",
-    description: "This SPV will hold a new-build waterfront residential development in Stockholm. The project includes 24 sustainably designed apartments with panoramic water views, targeting the premium Scandinavian residential market. Pre-sales have been strong, with a significant portion of units already reserved prior to construction completion.",
+    description: "This project comprises a new-build waterfront residential development in Stockholm, including 24 sustainably designed apartments with panoramic water views, targeting the premium Scandinavian residential market. Pre-sales have been strong, with a significant portion of units already reserved prior to construction completion.",
     features: [
       "Premium waterfront location in Stockholm",
       "24 residential units with panoramic views",
@@ -143,7 +143,7 @@ const offeringsData: Record<string, {
     ],
     financials: {
       totalValue: "€8,400,000",
-      spvShares: "60 shares",
+      shares: "60 shares",
       minimumInvestment: "€100,000",
       targetReturn: "9–12% p.a.",
       investmentTerm: "4 years",
@@ -153,7 +153,7 @@ const offeringsData: Record<string, {
       bankName: "Banque de Luxembourg",
       iban: "LU55 1122 3344 5566 7788",
       bic: "BLLLLULL",
-      reference: "SPV-STO-DEV-03",
+      reference: "INV-STO-DEV-03",
     },
   },
   "spv-lux-office-04": {
@@ -164,7 +164,7 @@ const offeringsData: Record<string, {
     size: "3,600 m²",
     yearBuilt: "2018",
     status: "closed",
-    description: "This SPV holds a Grade A office complex in Luxembourg's Kirchberg district, home to major EU institutions and international banks. The property is fully leased under a triple-net arrangement to institutional tenants, providing highly predictable income with minimal landlord obligations.",
+    description: "This project comprises a Grade A office complex in Luxembourg's Kirchberg district, home to major EU institutions and international banks. The property is fully leased under a triple-net arrangement to institutional tenants, providing highly predictable income with minimal landlord obligations.",
     features: [
       "Kirchberg financial and institutional district",
       "Grade A office specification",
@@ -183,7 +183,7 @@ const offeringsData: Record<string, {
     ],
     financials: {
       totalValue: "€4,800,000",
-      spvShares: "48 shares",
+      shares: "48 shares",
       minimumInvestment: "€75,000",
       targetReturn: "6–8% p.a.",
       investmentTerm: "6 years",
@@ -193,7 +193,7 @@ const offeringsData: Record<string, {
       bankName: "Banque de Luxembourg",
       iban: "LU77 9988 7766 5544 3322",
       bic: "BLLLLULL",
-      reference: "SPV-LUX-OFF-04",
+      reference: "INV-LUX-OFF-04",
     },
   },
 };

@@ -133,7 +133,7 @@
       "description": "Home financing solutions in Luxembourg"
     },
     "spvInvestment": {
-      "title": "SPV Investment",
+      "title": "Investment",
       "description": "Exclusive real estate investment opportunities through Special Purpose Vehicles"
     }
   },
@@ -157,7 +157,7 @@
         "accounting": "Accounting & Invoicing",
         "tax": "Tax Advisory",
         "investment": "Investment Advisory",
-        "spvInvestment": "SPV Investment"
+        "spvInvestment": "Investment"
       },
       "products": {
         "lifeInsurance": "Life Insurance",
@@ -443,24 +443,24 @@
   },
   "spvInvestment": {
     "landing": {
-      "heroTitle": "SPV Real Estate Investment",
-      "heroSubtitle": "Structured investment opportunities in European real estate through Special Purpose Vehicles, available exclusively to qualified investors.",
+      "heroTitle": "Real Estate SPV Investment",
+      "heroSubtitle": "Access carefully selected European real estate opportunities through professionally managed Special Purpose Vehicle (SPV) structures, available exclusively to qualified investors.",
       "whatIsSpv": {
         "overline": "About SPV Investment",
-        "title": "Structured Investment Through Special Purpose Vehicles",
-        "description": "A Special Purpose Vehicle (SPV) is a dedicated legal entity created for a specific investment purpose. It enables investors to participate in carefully selected real estate opportunities with clear legal separation and professional asset management.",
+        "title": "What is an SPV?",
+        "description": "A Special Purpose Vehicle (SPV) is a dedicated legal entity created specifically to hold and manage a real estate asset. Each SPV isolates the investment, providing clear legal separation, professional governance, and transparent reporting for investors.",
         "benefits": {
           "protection": {
             "title": "Asset Protection",
-            "description": "Legal separation of assets within a dedicated entity for enhanced investor protection."
+            "description": "Each SPV isolates the property asset, shielding investors from unrelated liabilities."
           },
           "governance": {
             "title": "Professional Governance",
-            "description": "Expert management, oversight, and regulatory compliance throughout the investment lifecycle."
+            "description": "Expert management, regulatory compliance, and fiduciary oversight throughout the SPV lifecycle."
           },
           "transparency": {
             "title": "Full Transparency",
-            "description": "Comprehensive reporting, documentation, and clear visibility into your investment at all times."
+            "description": "Detailed quarterly reports, audited financials, and full visibility into SPV operations and performance."
           },
           "exit": {
             "title": "Defined Exit Strategy",
@@ -475,7 +475,7 @@
         "steps": {
           "contact": {
             "title": "Initial Contact",
-            "description": "Reach out to our advisory team to express your interest in SPV investment opportunities."
+            "description": "Reach out to our advisory team to express your interest in real estate SPV investment opportunities."
           },
           "qualification": {
             "title": "Qualification Review",
@@ -493,7 +493,7 @@
       },
       "cta": {
         "title": "Interested in SPV Investment Opportunities?",
-        "description": "Contact our advisory team to learn more about current and upcoming SPV real estate investment opportunities. Access is available by invitation only.",
+        "description": "Contact our advisory team to learn more about current and upcoming real estate SPV investment opportunities. Access is available by invitation only.",
         "contactButton": "Contact Our Team",
         "portalAccess": "Investor Portal"
       },
@@ -519,7 +519,7 @@
     "portal": {
       "login": {
         "title": "Investor Portal",
-        "subtitle": "Enter your access code to view SPV investment opportunities",
+        "subtitle": "Enter your access code to view investment opportunities",
         "accessCode": "Access Code",
         "accessCodePlaceholder": "Enter your access code",
         "signIn": "Access Portal",
@@ -552,8 +552,8 @@
         }
       },
       "offerings": {
-        "title": "SPV Investment Offerings",
-        "subtitle": "Browse current investment opportunities",
+        "title": "SPV Offerings",
+        "subtitle": "Browse current SPV investment opportunities",
         "status": {
           "open": "Open for Investment",
           "closing": "Closing Soon",
@@ -599,7 +599,7 @@
         },
         "bankTransfer": {
           "title": "Bank Transfer Instructions",
-          "description": "To participate in this SPV offering, please transfer your investment amount to the following account:",
+          "description": "To participate in this offering, please transfer your investment amount to the following account:",
           "bankName": "Bank Name",
           "iban": "IBAN",
           "bic": "BIC/SWIFT",
@@ -617,7 +617,7 @@
       },
       "documents": {
         "title": "Document Centre",
-        "subtitle": "Access and download your SPV investment documents",
+        "subtitle": "Access and download your investment documents",
         "search": "Search documents...",
         "categories": {
           "all": "All",

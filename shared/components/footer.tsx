@@ -70,6 +70,14 @@ export function Footer({ locale }: FooterProps) {
                   {t("footer.links.services.investment")}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href={`/${locale}/spv-investment`}
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
+                >
+                  {t("footer.links.services.spvInvestment")}
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -48,6 +48,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       image: 'https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800&h=500&fit=crop',
       href: `/${locale}/life-insurance`,
     },
+    {
+      title: t('services.spvInvestment.title'),
+      description: t('services.spvInvestment.description'),
+      image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=500&fit=crop',
+      href: `/${locale}/spv-investment`,
+    },
   ];
 
   return (

@@ -3,6 +3,16 @@
 
 // ============ TYPES ============
 
+export interface Document {
+  id: string;
+  name: string;
+  type: "id" | "contract" | "kyc" | "prospectus" | "legal" | "financial" | "other";
+  fileName: string;
+  fileSize: string;
+  uploadedAt: string;
+  url?: string; // For demo purposes, can store base64 or URL
+}
+
 export interface Customer {
   id: string;
   accessCode: string;
@@ -14,6 +24,7 @@ export interface Customer {
   createdAt: string;
   lastAccess?: string;
   status: "active" | "inactive";
+  documents?: Document[];
 }
 
 export interface OfferingFinancials {
@@ -45,13 +56,28 @@ export interface Offering {
   images: string[];
   financials: OfferingFinancials;
   bankTransfer: OfferingBankTransfer;
+  documents?: Document[];
 }
 
 export interface ActivityLog {
   id: string;
-  type: "customer_login" | "customer_created" | "customer_updated" | "customer_deleted" | "offering_created" | "offering_updated" | "offering_deleted";
+  type: "customer_login" | "customer_created" | "customer_updated" | "customer_deleted" | "offering_created" | "offering_updated" | "offering_deleted" | "admin_login" | "admin_created" | "admin_updated" | "admin_deleted" | "password_reset";
   description: string;
   timestamp: string;
+  adminId?: string; // Track which admin performed the action
+  adminName?: string;
+}
+
+export interface AdminProfile {
+  id: string;
+  name: string;
+  email: string;
+  accessCode: string;
+  role: "primary" | "admin";
+  status: "active" | "inactive";
+  createdAt: string;
+  lastLogin?: string;
+  createdBy?: string; // ID of the admin who created this profile
 }
 
 // ============ STORAGE KEYS ============
@@ -60,6 +86,8 @@ const STORAGE_KEYS = {
   customers: "spv-customers",
   offerings: "spv-offerings",
   activityLog: "spv-activity-log",
+  admins: "spv-admins",
+  currentAdmin: "spv-current-admin",
   initialized: "spv-data-initialized",
 };
 
@@ -88,6 +116,19 @@ const SEED_CUSTOMERS: Customer[] = [
     profile: "new",
     createdAt: "2025-01-10T09:00:00Z",
     status: "active",
+  },
+];
+
+const SEED_ADMINS: AdminProfile[] = [
+  {
+    id: "admin-primary",
+    name: "Primary Administrator",
+    email: "admin@opulanz.com",
+    accessCode: "OPULANZ-ADMIN-2025",
+    role: "primary",
+    status: "active",
+    createdAt: "2024-01-01T00:00:00Z",
+    lastLogin: "2025-02-05T10:00:00Z",
   },
 ];
 
@@ -264,8 +305,19 @@ export function initializeData(): void {
 
   localStorage.setItem(STORAGE_KEYS.customers, JSON.stringify(SEED_CUSTOMERS));
   localStorage.setItem(STORAGE_KEYS.offerings, JSON.stringify(SEED_OFFERINGS));
+  localStorage.setItem(STORAGE_KEYS.admins, JSON.stringify(SEED_ADMINS));
   localStorage.setItem(STORAGE_KEYS.activityLog, JSON.stringify([]));
   localStorage.setItem(STORAGE_KEYS.initialized, "true");
+}
+
+// Ensure admins are initialized (for existing users who already have data)
+export function ensureAdminsInitialized(): void {
+  if (typeof window === "undefined") return;
+
+  const admins = localStorage.getItem(STORAGE_KEYS.admins);
+  if (!admins) {
+    localStorage.setItem(STORAGE_KEYS.admins, JSON.stringify(SEED_ADMINS));
+  }
 }
 
 // ============ CUSTOMER FUNCTIONS ============
@@ -405,25 +457,213 @@ export function getActivityLog(): ActivityLog[] {
 export function addActivityLog(type: ActivityLog["type"], description: string): void {
   if (typeof window === "undefined") return;
 
+  // Automatically include current admin info if available
+  const currentAdmin = getCurrentAdmin();
+
   const logs = getActivityLog();
   const newLog: ActivityLog = {
     id: `log-${Date.now()}`,
     type,
     description,
     timestamp: new Date().toISOString(),
+    adminId: currentAdmin?.id,
+    adminName: currentAdmin?.name,
   };
 
-  // Keep only the last 50 logs
-  const updatedLogs = [newLog, ...logs].slice(0, 50);
+  // Keep only the last 100 logs
+  const updatedLogs = [newLog, ...logs].slice(0, 100);
   localStorage.setItem(STORAGE_KEYS.activityLog, JSON.stringify(updatedLogs));
 }
 
-// ============ ADMIN AUTH ============
+// ============ ADMIN PROFILE FUNCTIONS ============
 
-const ADMIN_ACCESS_CODE = "OPULANZ-ADMIN-2025";
+export function getAdmins(): AdminProfile[] {
+  if (typeof window === "undefined") return [];
+  initializeData();
+  ensureAdminsInitialized();
+  const data = localStorage.getItem(STORAGE_KEYS.admins);
+  return data ? JSON.parse(data) : [];
+}
+
+export function getAdminById(id: string): AdminProfile | undefined {
+  const admins = getAdmins();
+  return admins.find((a) => a.id === id);
+}
+
+export function getAdminByAccessCode(code: string): AdminProfile | undefined {
+  const admins = getAdmins();
+  return admins.find((a) => a.accessCode === code && a.status === "active");
+}
+
+export function getPrimaryAdmin(): AdminProfile | undefined {
+  const admins = getAdmins();
+  return admins.find((a) => a.role === "primary");
+}
 
 export function validateAdminCode(code: string): boolean {
-  return code === ADMIN_ACCESS_CODE;
+  const admin = getAdminByAccessCode(code);
+  return !!admin;
+}
+
+export function loginAdmin(code: string): AdminProfile | undefined {
+  const admin = getAdminByAccessCode(code);
+  if (admin) {
+    // Update last login
+    updateAdmin(admin.id, { lastLogin: new Date().toISOString() });
+    // Set current admin in session
+    sessionStorage.setItem(STORAGE_KEYS.currentAdmin, JSON.stringify(admin));
+    addActivityLogWithAdmin("admin_login", `Admin "${admin.name}" logged in`, admin.id, admin.name);
+    return admin;
+  }
+  return undefined;
+}
+
+export function getCurrentAdmin(): AdminProfile | null {
+  if (typeof window === "undefined") return null;
+  const data = sessionStorage.getItem(STORAGE_KEYS.currentAdmin);
+  return data ? JSON.parse(data) : null;
+}
+
+export function logoutAdmin(): void {
+  if (typeof window === "undefined") return;
+  sessionStorage.removeItem(STORAGE_KEYS.currentAdmin);
+  sessionStorage.removeItem("spv-admin-access");
+  sessionStorage.removeItem("spv-admin-expiry");
+}
+
+export function createAdmin(admin: Omit<AdminProfile, "id" | "createdAt">): AdminProfile | { error: string } {
+  const currentAdmin = getCurrentAdmin();
+  if (!currentAdmin || currentAdmin.role !== "primary") {
+    return { error: "Only primary admin can create new admin profiles" };
+  }
+
+  // Check if access code already exists
+  const existingAdmin = getAdminByAccessCode(admin.accessCode);
+  if (existingAdmin) {
+    return { error: "Access code already exists" };
+  }
+
+  const admins = getAdmins();
+  const newAdmin: AdminProfile = {
+    ...admin,
+    id: `admin-${Date.now()}`,
+    createdAt: new Date().toISOString(),
+    createdBy: currentAdmin.id,
+  };
+  admins.push(newAdmin);
+  localStorage.setItem(STORAGE_KEYS.admins, JSON.stringify(admins));
+  addActivityLogWithAdmin("admin_created", `Admin "${newAdmin.name}" created by "${currentAdmin.name}"`, currentAdmin.id, currentAdmin.name);
+  return newAdmin;
+}
+
+export function updateAdmin(id: string, updates: Partial<AdminProfile>): AdminProfile | undefined {
+  const admins = getAdmins();
+  const index = admins.findIndex((a) => a.id === id);
+  if (index === -1) return undefined;
+
+  // Prevent changing primary admin role to regular admin
+  if (admins[index].role === "primary" && updates.role === "admin") {
+    return undefined;
+  }
+
+  admins[index] = { ...admins[index], ...updates };
+  localStorage.setItem(STORAGE_KEYS.admins, JSON.stringify(admins));
+
+  // Update session if updating current admin
+  const currentAdmin = getCurrentAdmin();
+  if (currentAdmin && currentAdmin.id === id) {
+    sessionStorage.setItem(STORAGE_KEYS.currentAdmin, JSON.stringify(admins[index]));
+  }
+
+  if (currentAdmin) {
+    addActivityLogWithAdmin("admin_updated", `Admin "${admins[index].name}" updated`, currentAdmin.id, currentAdmin.name);
+  }
+  return admins[index];
+}
+
+export function deleteAdmin(id: string): boolean | { error: string } {
+  const currentAdmin = getCurrentAdmin();
+  if (!currentAdmin || currentAdmin.role !== "primary") {
+    return { error: "Only primary admin can delete admin profiles" };
+  }
+
+  const admins = getAdmins();
+  const admin = admins.find((a) => a.id === id);
+
+  // Prevent deleting primary admin
+  if (admin?.role === "primary") {
+    return { error: "Cannot delete primary admin" };
+  }
+
+  // Prevent deleting self
+  if (currentAdmin.id === id) {
+    return { error: "Cannot delete your own profile" };
+  }
+
+  const filtered = admins.filter((a) => a.id !== id);
+  if (filtered.length === admins.length) return false;
+
+  localStorage.setItem(STORAGE_KEYS.admins, JSON.stringify(filtered));
+  if (admin) {
+    addActivityLogWithAdmin("admin_deleted", `Admin "${admin.name}" deleted by "${currentAdmin.name}"`, currentAdmin.id, currentAdmin.name);
+  }
+  return true;
+}
+
+export function resetAdminPassword(id: string): string | { error: string } {
+  const currentAdmin = getCurrentAdmin();
+  if (!currentAdmin || currentAdmin.role !== "primary") {
+    return { error: "Only primary admin can reset passwords" };
+  }
+
+  const admins = getAdmins();
+  const admin = admins.find((a) => a.id === id);
+  if (!admin) {
+    return { error: "Admin not found" };
+  }
+
+  // Generate new access code
+  const newCode = generateAdminAccessCode();
+  const index = admins.findIndex((a) => a.id === id);
+  admins[index] = { ...admins[index], accessCode: newCode };
+  localStorage.setItem(STORAGE_KEYS.admins, JSON.stringify(admins));
+
+  addActivityLogWithAdmin("password_reset", `Password reset for admin "${admin.name}" by "${currentAdmin.name}"`, currentAdmin.id, currentAdmin.name);
+  return newCode;
+}
+
+export function generateAdminAccessCode(): string {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "OPULANZ-ADM-";
+  for (let i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+// Activity log with admin tracking
+export function addActivityLogWithAdmin(type: ActivityLog["type"], description: string, adminId?: string, adminName?: string): void {
+  if (typeof window === "undefined") return;
+
+  const logs = getActivityLog();
+  const newLog: ActivityLog = {
+    id: `log-${Date.now()}`,
+    type,
+    description,
+    timestamp: new Date().toISOString(),
+    adminId,
+    adminName,
+  };
+
+  // Keep only the last 100 logs
+  const updatedLogs = [newLog, ...logs].slice(0, 100);
+  localStorage.setItem(STORAGE_KEYS.activityLog, JSON.stringify(updatedLogs));
+}
+
+// Get activity logs filtered by admin
+export function getActivityLogByAdmin(adminId: string): ActivityLog[] {
+  const logs = getActivityLog();
+  return logs.filter((log) => log.adminId === adminId);
 }
 
 // ============ STATS ============
@@ -438,4 +678,118 @@ export function getStats() {
     totalOfferings: offerings.length,
     openOfferings: offerings.filter((o) => o.status === "open" || o.status === "closing").length,
   };
+}
+
+// ============ DOCUMENT FUNCTIONS ============
+
+export function generateDocumentId(): string {
+  return `doc-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+}
+
+export function formatFileSize(bytes: number): string {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+}
+
+// Customer Document Functions
+export function addCustomerDocument(customerId: string, doc: Omit<Document, "id" | "uploadedAt">): Document | undefined {
+  const customers = getCustomers();
+  const index = customers.findIndex((c) => c.id === customerId);
+  if (index === -1) return undefined;
+
+  const newDoc: Document = {
+    ...doc,
+    id: generateDocumentId(),
+    uploadedAt: new Date().toISOString(),
+  };
+
+  if (!customers[index].documents) {
+    customers[index].documents = [];
+  }
+  customers[index].documents!.push(newDoc);
+  localStorage.setItem(STORAGE_KEYS.customers, JSON.stringify(customers));
+  addActivityLog("customer_updated", `Document "${newDoc.name}" added to customer "${customers[index].name}"`);
+  return newDoc;
+}
+
+export function updateCustomerDocument(customerId: string, docId: string, updates: Partial<Document>): Document | undefined {
+  const customers = getCustomers();
+  const custIndex = customers.findIndex((c) => c.id === customerId);
+  if (custIndex === -1 || !customers[custIndex].documents) return undefined;
+
+  const docIndex = customers[custIndex].documents!.findIndex((d) => d.id === docId);
+  if (docIndex === -1) return undefined;
+
+  customers[custIndex].documents![docIndex] = { ...customers[custIndex].documents![docIndex], ...updates };
+  localStorage.setItem(STORAGE_KEYS.customers, JSON.stringify(customers));
+  addActivityLog("customer_updated", `Document updated for customer "${customers[custIndex].name}"`);
+  return customers[custIndex].documents![docIndex];
+}
+
+export function deleteCustomerDocument(customerId: string, docId: string): boolean {
+  const customers = getCustomers();
+  const custIndex = customers.findIndex((c) => c.id === customerId);
+  if (custIndex === -1 || !customers[custIndex].documents) return false;
+
+  const docIndex = customers[custIndex].documents!.findIndex((d) => d.id === docId);
+  if (docIndex === -1) return false;
+
+  const docName = customers[custIndex].documents![docIndex].name;
+  customers[custIndex].documents!.splice(docIndex, 1);
+  localStorage.setItem(STORAGE_KEYS.customers, JSON.stringify(customers));
+  addActivityLog("customer_updated", `Document "${docName}" removed from customer "${customers[custIndex].name}"`);
+  return true;
+}
+
+// Offering Document Functions
+export function addOfferingDocument(offeringId: string, doc: Omit<Document, "id" | "uploadedAt">): Document | undefined {
+  const offerings = getOfferings();
+  const index = offerings.findIndex((o) => o.id === offeringId);
+  if (index === -1) return undefined;
+
+  const newDoc: Document = {
+    ...doc,
+    id: generateDocumentId(),
+    uploadedAt: new Date().toISOString(),
+  };
+
+  if (!offerings[index].documents) {
+    offerings[index].documents = [];
+  }
+  offerings[index].documents!.push(newDoc);
+  localStorage.setItem(STORAGE_KEYS.offerings, JSON.stringify(offerings));
+  addActivityLog("offering_updated", `Document "${newDoc.name}" added to property "${offerings[index].title}"`);
+  return newDoc;
+}
+
+export function updateOfferingDocument(offeringId: string, docId: string, updates: Partial<Document>): Document | undefined {
+  const offerings = getOfferings();
+  const offIndex = offerings.findIndex((o) => o.id === offeringId);
+  if (offIndex === -1 || !offerings[offIndex].documents) return undefined;
+
+  const docIndex = offerings[offIndex].documents!.findIndex((d) => d.id === docId);
+  if (docIndex === -1) return undefined;
+
+  offerings[offIndex].documents![docIndex] = { ...offerings[offIndex].documents![docIndex], ...updates };
+  localStorage.setItem(STORAGE_KEYS.offerings, JSON.stringify(offerings));
+  addActivityLog("offering_updated", `Document updated for property "${offerings[offIndex].title}"`);
+  return offerings[offIndex].documents![docIndex];
+}
+
+export function deleteOfferingDocument(offeringId: string, docId: string): boolean {
+  const offerings = getOfferings();
+  const offIndex = offerings.findIndex((o) => o.id === offeringId);
+  if (offIndex === -1 || !offerings[offIndex].documents) return false;
+
+  const docIndex = offerings[offIndex].documents!.findIndex((d) => d.id === docId);
+  if (docIndex === -1) return false;
+
+  const docName = offerings[offIndex].documents![docIndex].name;
+  offerings[offIndex].documents!.splice(docIndex, 1);
+  localStorage.setItem(STORAGE_KEYS.offerings, JSON.stringify(offerings));
+  addActivityLog("offering_updated", `Document "${docName}" removed from property "${offerings[offIndex].title}"`);
+  return true;
 }

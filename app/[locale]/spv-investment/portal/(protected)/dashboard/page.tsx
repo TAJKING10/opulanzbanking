@@ -78,7 +78,7 @@ export default function SpvDashboardPage() {
     : [
         {
           date: "2025-01-28",
-          description: "Investment confirmed — Luxembourg City Premium Residence",
+          description: "SPV investment confirmed — Luxembourg City Premium Residence",
           type: "success",
         },
         {
@@ -98,7 +98,7 @@ export default function SpvDashboardPage() {
         },
         {
           date: "2024-12-01",
-          description: "Bank transfer received — €50,000 allocated to Luxembourg project",
+          description: "Bank transfer received — €50,000 allocated to Luxembourg SPV",
           type: "success",
         },
       ];

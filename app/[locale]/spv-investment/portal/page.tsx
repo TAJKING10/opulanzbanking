@@ -9,11 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-const VALID_ACCESS_CODES: Record<string, string> = {
-  "OPULANZ-INV-2025": "existing",
-  "OPULANZ-INV-NEW-2025": "new",
-};
+import { getCustomerByAccessCode, updateCustomerLastAccess } from "@/lib/spv-data";
 
 export default function SpvPortalLoginPage() {
   const locale = useLocale();
@@ -38,11 +34,12 @@ export default function SpvPortalLoginPage() {
 
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    const profile = VALID_ACCESS_CODES[accessCode.trim()];
-    if (profile) {
+    const customer = getCustomerByAccessCode(accessCode.trim());
+    if (customer) {
+      updateCustomerLastAccess(accessCode.trim());
       sessionStorage.setItem("spv-portal-access", "granted");
       sessionStorage.setItem("spv-portal-timestamp", Date.now().toString());
-      sessionStorage.setItem("spv-portal-profile", profile);
+      sessionStorage.setItem("spv-portal-profile", customer.profile);
       router.push(`/${locale}/spv-investment/portal/dashboard`);
     } else {
       setError(t("spvInvestment.portal.login.error"));

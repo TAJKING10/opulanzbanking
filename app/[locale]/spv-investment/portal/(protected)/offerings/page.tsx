@@ -7,67 +7,9 @@ import { useLocale, useTranslations } from "next-intl";
 import { MapPin, Building2, Maximize2, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { getOfferings, type Offering } from "@/lib/spv-data";
 
-const offerings = [
-  {
-    id: "spv-lux-residence-01",
-    title: "Luxembourg City Premium Residence",
-    location: "Luxembourg City, Luxembourg",
-    propertyType: "Residential — Luxury Apartments",
-    size: "2,400 m²",
-    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=500&fit=crop",
-    status: "open" as const,
-    minimumInvestment: "€50,000",
-    targetReturn: "7–9%",
-    term: "5 years",
-    features: ["Prime city-centre location", "12 residential units", "Fully managed"],
-    description: "Premium residential development in the heart of Luxembourg City, offering stable rental income and capital appreciation potential.",
-  },
-  {
-    id: "spv-riga-commercial-02",
-    title: "Riga Commercial Centre",
-    location: "Riga, Latvia",
-    propertyType: "Commercial — Mixed Use",
-    size: "4,800 m²",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=500&fit=crop",
-    status: "closing" as const,
-    minimumInvestment: "€25,000",
-    targetReturn: "8–11%",
-    term: "7 years",
-    features: ["High-traffic business district", "Multi-tenant commercial", "Long-term leases in place"],
-    description: "Strategic mixed-use commercial property in Riga's business district with established tenancy agreements.",
-  },
-  {
-    id: "spv-stockholm-dev-03",
-    title: "Stockholm Waterfront Development",
-    location: "Stockholm, Sweden",
-    propertyType: "Residential — New Development",
-    size: "6,200 m²",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=500&fit=crop",
-    status: "coming" as const,
-    minimumInvestment: "€100,000",
-    targetReturn: "9–12%",
-    term: "4 years",
-    features: ["Waterfront location", "Sustainable construction", "Pre-sold units"],
-    description: "New waterfront residential development in Stockholm with strong pre-sales and sustainable design certification.",
-  },
-  {
-    id: "spv-lux-office-04",
-    title: "Kirchberg Office Complex",
-    location: "Kirchberg, Luxembourg",
-    propertyType: "Commercial — Office",
-    size: "3,600 m²",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=500&fit=crop",
-    status: "closed" as const,
-    minimumInvestment: "€75,000",
-    targetReturn: "6–8%",
-    term: "6 years",
-    features: ["EU institution district", "Grade A office space", "Triple-net lease"],
-    description: "Grade A office complex in Luxembourg's Kirchberg financial district, fully leased to institutional tenants.",
-  },
-];
-
-const statusConfig = {
+const statusConfig: Record<string, { color: string; label: string }> = {
   open: { color: "bg-green-100 text-green-800", label: "open" },
   closing: { color: "bg-amber-100 text-amber-800", label: "closing" },
   closed: { color: "bg-gray-100 text-gray-600", label: "closed" },
@@ -78,6 +20,11 @@ export default function SpvOfferingsPage() {
   const t = useTranslations();
   const locale = useLocale();
   const [activeFilter, setActiveFilter] = React.useState("all");
+  const [offerings, setOfferings] = React.useState<Offering[]>([]);
+
+  React.useEffect(() => {
+    setOfferings(getOfferings());
+  }, []);
 
   const filters = [
     { key: "all", label: t("spvInvestment.portal.offerings.filters.all") },
@@ -132,7 +79,7 @@ export default function SpvOfferingsPage() {
         ) : (
           <div className="grid gap-8 md:grid-cols-2">
             {filteredOfferings.map((offering) => {
-              const config = statusConfig[offering.status];
+              const config = statusConfig[offering.status] || statusConfig.open;
               return (
                 <Card
                   key={offering.id}
@@ -141,7 +88,7 @@ export default function SpvOfferingsPage() {
                   {/* Image */}
                   <div className="relative aspect-[16/10] w-full overflow-hidden">
                     <Image
-                      src={offering.image}
+                      src={offering.images[0] || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=500&fit=crop"}
                       alt={offering.title}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -179,15 +126,15 @@ export default function SpvOfferingsPage() {
                       <div className="grid grid-cols-3 gap-4 text-center">
                         <div>
                           <p className="text-xs text-brand-grayMed">{t("spvInvestment.portal.offerings.card.minimumInvestment")}</p>
-                          <p className="mt-0.5 text-sm font-bold text-brand-dark">{offering.minimumInvestment}</p>
+                          <p className="mt-0.5 text-sm font-bold text-brand-dark">{offering.financials.minimumInvestment}</p>
                         </div>
                         <div>
                           <p className="text-xs text-brand-grayMed">{t("spvInvestment.portal.offerings.card.targetReturn")}</p>
-                          <p className="mt-0.5 text-sm font-bold text-brand-dark">{offering.targetReturn}</p>
+                          <p className="mt-0.5 text-sm font-bold text-brand-dark">{offering.financials.targetReturn}</p>
                         </div>
                         <div>
                           <p className="text-xs text-brand-grayMed">{t("spvInvestment.portal.offerings.card.term")}</p>
-                          <p className="mt-0.5 text-sm font-bold text-brand-dark">{offering.term}</p>
+                          <p className="mt-0.5 text-sm font-bold text-brand-dark">{offering.financials.investmentTerm}</p>
                         </div>
                       </div>
                     </div>

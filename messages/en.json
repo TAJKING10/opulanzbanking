@@ -635,6 +635,201 @@
         },
         "noDocuments": "No documents match your search criteria."
       }
+    },
+    "admin": {
+      "title": "Admin Portal",
+      "login": {
+        "title": "Admin Portal",
+        "subtitle": "Enter your administrator access code",
+        "accessCode": "Admin Access Code",
+        "accessCodePlaceholder": "Enter admin code",
+        "signIn": "Access Admin Portal",
+        "error": "Invalid admin code. Please check your credentials.",
+        "backToSite": "Back to main site",
+        "securityNotice": "Authorised administrators only"
+      },
+      "nav": {
+        "dashboard": "Dashboard",
+        "customers": "Customers",
+        "properties": "Properties",
+        "logout": "Sign Out"
+      },
+      "dashboard": {
+        "title": "Admin Dashboard",
+        "subtitle": "Manage customers and property offerings",
+        "totalCustomers": "Total Customers",
+        "activeCustomers": "Active Customers",
+        "totalProperties": "Total Properties",
+        "openProperties": "Open Properties",
+        "recentActivity": "Recent Activity",
+        "noActivity": "No recent activity to display.",
+        "quickActions": "Quick Actions",
+        "addCustomer": "Add Customer",
+        "addProperty": "Add Property",
+        "viewCustomers": "View Customers",
+        "viewProperties": "View Properties"
+      },
+      "customers": {
+        "title": "Customer Management",
+        "subtitle": "Manage investor access and credentials",
+        "addCustomer": "Add Customer",
+        "searchPlaceholder": "Search customers...",
+        "filters": {
+          "all": "All",
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "table": {
+          "name": "Name",
+          "email": "Email",
+          "accessCode": "Access Code",
+          "type": "Type",
+          "profile": "Profile",
+          "status": "Status",
+          "lastAccess": "Last Access",
+          "actions": "Actions"
+        },
+        "noCustomers": "No customers found.",
+        "form": {
+          "title": "Customer Details",
+          "editTitle": "Edit Customer",
+          "createTitle": "New Customer",
+          "name": "Full Name",
+          "namePlaceholder": "Enter full name",
+          "email": "Email Address",
+          "emailPlaceholder": "Enter email address",
+          "phone": "Phone Number",
+          "phonePlaceholder": "Enter phone number (optional)",
+          "investorType": "Investor Type",
+          "investorTypes": {
+            "institutional": "Institutional",
+            "professional": "Professional",
+            "private": "Private"
+          },
+          "profile": "Investor Profile",
+          "profiles": {
+            "existing": "Existing Investor",
+            "new": "New Investor"
+          },
+          "status": "Status",
+          "statuses": {
+            "active": "Active",
+            "inactive": "Inactive"
+          },
+          "accessCode": "Access Code",
+          "regenerateCode": "Regenerate",
+          "copyCode": "Copy"
+        },
+        "deleteConfirm": {
+          "title": "Delete Customer",
+          "message": "Are you sure you want to delete this customer? This action cannot be undone."
+        },
+        "types": {
+          "institutional": "Institutional",
+          "professional": "Professional",
+          "private": "Private"
+        },
+        "profiles": {
+          "existing": "Existing",
+          "new": "New"
+        },
+        "statuses": {
+          "active": "Active",
+          "inactive": "Inactive"
+        }
+      },
+      "properties": {
+        "title": "Property Management",
+        "subtitle": "Manage SPV investment offerings",
+        "addProperty": "Add Property",
+        "filters": {
+          "all": "All",
+          "open": "Open",
+          "closing": "Closing",
+          "closed": "Closed",
+          "coming": "Coming Soon"
+        },
+        "noProperties": "No properties found.",
+        "form": {
+          "title": "Property Details",
+          "editTitle": "Edit Property",
+          "createTitle": "New Property",
+          "basicInfo": "Basic Information",
+          "propertyTitle": "Property Title",
+          "titlePlaceholder": "Enter property title",
+          "location": "Location",
+          "locationPlaceholder": "e.g., Paris 16th, France",
+          "propertyType": "Property Type",
+          "typePlaceholder": "e.g., Residential Apartment",
+          "size": "Size",
+          "sizePlaceholder": "e.g., 185 sqm",
+          "yearBuilt": "Year Built",
+          "yearPlaceholder": "e.g., 2019",
+          "status": "Status",
+          "statuses": {
+            "open": "Open for Investment",
+            "closing": "Closing Soon",
+            "closed": "Fully Subscribed",
+            "coming": "Coming Soon"
+          },
+          "description": "Description",
+          "descriptionPlaceholder": "Enter property description...",
+          "features": "Features",
+          "featuresHelp": "List property features, one per line",
+          "addFeature": "Add Feature",
+          "featurePlaceholder": "Enter feature",
+          "images": "Image URLs",
+          "imagesHelp": "Add image URLs for the property",
+          "addImage": "Add Image",
+          "imagePlaceholder": "https://...",
+          "financials": "Financial Details",
+          "totalValue": "Total Property Value",
+          "totalValuePlaceholder": "e.g., €2,500,000",
+          "spvShares": "SPV Shares Available",
+          "spvSharesPlaceholder": "e.g., 100 shares",
+          "minimumInvestment": "Minimum Investment",
+          "minimumPlaceholder": "e.g., €25,000",
+          "targetReturn": "Target Return",
+          "returnPlaceholder": "e.g., 6-8% p.a.",
+          "investmentTerm": "Investment Term",
+          "termPlaceholder": "e.g., 5 years",
+          "distributionFrequency": "Distribution Frequency",
+          "frequencyPlaceholder": "e.g., Quarterly",
+          "bankTransfer": "Bank Transfer Details",
+          "bankName": "Bank Name",
+          "bankNamePlaceholder": "e.g., Banque Internationale à Luxembourg",
+          "iban": "IBAN",
+          "ibanPlaceholder": "e.g., LU00 0000 0000 0000 0000",
+          "bic": "BIC/SWIFT",
+          "bicPlaceholder": "e.g., BILLLULL",
+          "reference": "Payment Reference",
+          "referencePlaceholder": "e.g., SPV-PARIS-001"
+        },
+        "deleteConfirm": {
+          "title": "Delete Property",
+          "message": "Are you sure you want to delete this property? This action cannot be undone."
+        }
+      },
+      "common": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "create": "Create",
+        "edit": "Edit",
+        "delete": "Delete",
+        "confirm": "Confirm",
+        "close": "Close",
+        "search": "Search",
+        "filter": "Filter",
+        "actions": "Actions",
+        "loading": "Loading...",
+        "saving": "Saving...",
+        "deleting": "Deleting...",
+        "success": "Success",
+        "error": "Error",
+        "never": "Never",
+        "back": "Back",
+        "backToList": "Back to list"
+      }
     }
   }
 }

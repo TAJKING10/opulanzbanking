@@ -134,7 +134,7 @@
     },
     "spvInvestment": {
       "title": "Investissement",
-      "description": "Opportunités exclusives de crowdfunding immobilier sur les marchés européens"
+      "description": "Opportunités exclusives d'investissement immobilier via des Special Purpose Vehicles"
     }
   },
   "legal": {
@@ -483,7 +483,7 @@
           },
           "access": {
             "title": "Accès au Portail",
-            "description": "Les investisseurs qualifiés reçoivent des identifiants sécurisés pour accéder aux offres de crowdfunding disponibles et à la documentation."
+            "description": "Les investisseurs qualifiés reçoivent des identifiants sécurisés pour accéder aux offres SPV disponibles et à la documentation."
           },
           "investment": {
             "title": "Investissement et Suivi",
@@ -492,14 +492,14 @@
         }
       },
       "cta": {
-        "title": "Intéressé par les opportunités de crowdfunding ?",
-        "description": "Contactez notre équipe de conseil pour en savoir plus sur les opportunités de crowdfunding immobilier actuelles et à venir. L'accès est disponible uniquement sur invitation.",
+        "title": "Intéressé par les opportunités d'investissement SPV ?",
+        "description": "Contactez notre équipe de conseil pour en savoir plus sur les opportunités d'investissement SPV immobilier actuelles et à venir. L'accès est disponible uniquement sur invitation.",
         "contactButton": "Contacter notre équipe",
         "portalAccess": "Portail Investisseur"
       },
       "contactForm": {
         "title": "Demande d'informations",
-        "description": "Laissez vos coordonnées et notre équipe vous contactera pour discuter des opportunités de crowdfunding.",
+        "description": "Laissez vos coordonnées et notre équipe vous contactera pour discuter des opportunités d'investissement SPV.",
         "fullName": "Nom complet",
         "email": "Adresse e-mail",
         "phone": "Numéro de téléphone (facultatif)",
@@ -519,7 +519,7 @@
     "portal": {
       "login": {
         "title": "Portail Investisseur",
-        "subtitle": "Entrez votre code d'accès pour consulter les opportunités d'investissement",
+        "subtitle": "Entrez votre code d'accès pour consulter les opportunités d'investissement SPV",
         "accessCode": "Code d'accès",
         "accessCodePlaceholder": "Entrez votre code d'accès",
         "signIn": "Accéder au portail",
@@ -536,10 +536,10 @@
       },
       "dashboard": {
         "title": "Tableau de bord Investisseur",
-        "welcome": "Bienvenue sur votre Portail d'Investissement",
+        "welcome": "Bienvenue sur votre Portail d'Investissement SPV",
         "summary": "Résumé des investissements",
         "totalInvested": "Total investi",
-        "activeSpvs": "Projets actifs",
+        "activeSpvs": "SPV actifs",
         "estimatedReturn": "Rendement annuel est.",
         "documentsAvailable": "Documents",
         "recentActivity": "Activité récente",
@@ -552,8 +552,8 @@
         }
       },
       "offerings": {
-        "title": "Offres d'investissement",
-        "subtitle": "Parcourir les opportunités d'investissement actuelles",
+        "title": "Offres SPV",
+        "subtitle": "Parcourir les opportunités d'investissement SPV actuelles",
         "status": {
           "open": "Ouvert à l'investissement",
           "closing": "Clôture prochaine",
@@ -591,7 +591,7 @@
         "financials": {
           "title": "Aperçu financier",
           "totalValue": "Valeur totale du bien",
-          "shares": "Parts disponibles",
+          "spvShares": "Parts SPV disponibles",
           "minimumInvestment": "Investissement minimum",
           "targetReturn": "Rendement annuel cible",
           "investmentTerm": "Durée de l'investissement",
@@ -605,7 +605,7 @@
           "bic": "BIC/SWIFT",
           "reference": "Référence de paiement",
           "copied": "Copié !",
-          "important": "Important : Veuillez inclure la référence de paiement pour garantir que votre investissement soit correctement attribué à ce projet."
+          "important": "Important : Veuillez inclure la référence de paiement pour garantir que votre investissement soit correctement attribué à ce SPV."
         },
         "documents": {
           "title": "Documents associés",
@@ -634,6 +634,201 @@
           "download": "Télécharger"
         },
         "noDocuments": "Aucun document ne correspond à vos critères de recherche."
+      }
+    },
+    "admin": {
+      "title": "Portail Admin",
+      "login": {
+        "title": "Portail Admin",
+        "subtitle": "Entrez votre code d'accès administrateur",
+        "accessCode": "Code d'accès Admin",
+        "accessCodePlaceholder": "Entrez le code admin",
+        "signIn": "Accéder au portail Admin",
+        "error": "Code admin invalide. Veuillez vérifier vos identifiants.",
+        "backToSite": "Retour au site principal",
+        "securityNotice": "Réservé aux administrateurs autorisés"
+      },
+      "nav": {
+        "dashboard": "Tableau de bord",
+        "customers": "Clients",
+        "properties": "Propriétés",
+        "logout": "Déconnexion"
+      },
+      "dashboard": {
+        "title": "Tableau de bord Admin",
+        "subtitle": "Gérer les clients et les offres immobilières",
+        "totalCustomers": "Total Clients",
+        "activeCustomers": "Clients Actifs",
+        "totalProperties": "Total Propriétés",
+        "openProperties": "Propriétés Ouvertes",
+        "recentActivity": "Activité Récente",
+        "noActivity": "Aucune activité récente à afficher.",
+        "quickActions": "Actions Rapides",
+        "addCustomer": "Ajouter un Client",
+        "addProperty": "Ajouter une Propriété",
+        "viewCustomers": "Voir les Clients",
+        "viewProperties": "Voir les Propriétés"
+      },
+      "customers": {
+        "title": "Gestion des Clients",
+        "subtitle": "Gérer les accès et identifiants des investisseurs",
+        "addCustomer": "Ajouter un Client",
+        "searchPlaceholder": "Rechercher des clients...",
+        "filters": {
+          "all": "Tous",
+          "active": "Actifs",
+          "inactive": "Inactifs"
+        },
+        "table": {
+          "name": "Nom",
+          "email": "E-mail",
+          "accessCode": "Code d'accès",
+          "type": "Type",
+          "profile": "Profil",
+          "status": "Statut",
+          "lastAccess": "Dernier accès",
+          "actions": "Actions"
+        },
+        "noCustomers": "Aucun client trouvé.",
+        "form": {
+          "title": "Détails du Client",
+          "editTitle": "Modifier le Client",
+          "createTitle": "Nouveau Client",
+          "name": "Nom Complet",
+          "namePlaceholder": "Entrez le nom complet",
+          "email": "Adresse E-mail",
+          "emailPlaceholder": "Entrez l'adresse e-mail",
+          "phone": "Numéro de Téléphone",
+          "phonePlaceholder": "Entrez le numéro (facultatif)",
+          "investorType": "Type d'Investisseur",
+          "investorTypes": {
+            "institutional": "Institutionnel",
+            "professional": "Professionnel",
+            "private": "Privé"
+          },
+          "profile": "Profil Investisseur",
+          "profiles": {
+            "existing": "Investisseur Existant",
+            "new": "Nouvel Investisseur"
+          },
+          "status": "Statut",
+          "statuses": {
+            "active": "Actif",
+            "inactive": "Inactif"
+          },
+          "accessCode": "Code d'Accès",
+          "regenerateCode": "Régénérer",
+          "copyCode": "Copier"
+        },
+        "deleteConfirm": {
+          "title": "Supprimer le Client",
+          "message": "Êtes-vous sûr de vouloir supprimer ce client ? Cette action est irréversible."
+        },
+        "types": {
+          "institutional": "Institutionnel",
+          "professional": "Professionnel",
+          "private": "Privé"
+        },
+        "profiles": {
+          "existing": "Existant",
+          "new": "Nouveau"
+        },
+        "statuses": {
+          "active": "Actif",
+          "inactive": "Inactif"
+        }
+      },
+      "properties": {
+        "title": "Gestion des Propriétés",
+        "subtitle": "Gérer les offres d'investissement SPV",
+        "addProperty": "Ajouter une Propriété",
+        "filters": {
+          "all": "Toutes",
+          "open": "Ouvertes",
+          "closing": "Clôture prochaine",
+          "closed": "Fermées",
+          "coming": "Prochainement"
+        },
+        "noProperties": "Aucune propriété trouvée.",
+        "form": {
+          "title": "Détails de la Propriété",
+          "editTitle": "Modifier la Propriété",
+          "createTitle": "Nouvelle Propriété",
+          "basicInfo": "Informations de Base",
+          "propertyTitle": "Titre de la Propriété",
+          "titlePlaceholder": "Entrez le titre de la propriété",
+          "location": "Emplacement",
+          "locationPlaceholder": "ex: Paris 16e, France",
+          "propertyType": "Type de Bien",
+          "typePlaceholder": "ex: Appartement Résidentiel",
+          "size": "Surface",
+          "sizePlaceholder": "ex: 185 m²",
+          "yearBuilt": "Année de Construction",
+          "yearPlaceholder": "ex: 2019",
+          "status": "Statut",
+          "statuses": {
+            "open": "Ouvert à l'investissement",
+            "closing": "Clôture prochaine",
+            "closed": "Entièrement souscrit",
+            "coming": "Prochainement"
+          },
+          "description": "Description",
+          "descriptionPlaceholder": "Entrez la description de la propriété...",
+          "features": "Caractéristiques",
+          "featuresHelp": "Listez les caractéristiques, une par ligne",
+          "addFeature": "Ajouter une Caractéristique",
+          "featurePlaceholder": "Entrez une caractéristique",
+          "images": "URLs des Images",
+          "imagesHelp": "Ajoutez les URLs des images de la propriété",
+          "addImage": "Ajouter une Image",
+          "imagePlaceholder": "https://...",
+          "financials": "Détails Financiers",
+          "totalValue": "Valeur Totale du Bien",
+          "totalValuePlaceholder": "ex: 2 500 000 €",
+          "spvShares": "Parts SPV Disponibles",
+          "spvSharesPlaceholder": "ex: 100 parts",
+          "minimumInvestment": "Investissement Minimum",
+          "minimumPlaceholder": "ex: 25 000 €",
+          "targetReturn": "Rendement Cible",
+          "returnPlaceholder": "ex: 6-8% p.a.",
+          "investmentTerm": "Durée d'Investissement",
+          "termPlaceholder": "ex: 5 ans",
+          "distributionFrequency": "Fréquence de Distribution",
+          "frequencyPlaceholder": "ex: Trimestrielle",
+          "bankTransfer": "Coordonnées Bancaires",
+          "bankName": "Nom de la Banque",
+          "bankNamePlaceholder": "ex: Banque Internationale à Luxembourg",
+          "iban": "IBAN",
+          "ibanPlaceholder": "ex: LU00 0000 0000 0000 0000",
+          "bic": "BIC/SWIFT",
+          "bicPlaceholder": "ex: BILLLULL",
+          "reference": "Référence de Paiement",
+          "referencePlaceholder": "ex: SPV-PARIS-001"
+        },
+        "deleteConfirm": {
+          "title": "Supprimer la Propriété",
+          "message": "Êtes-vous sûr de vouloir supprimer cette propriété ? Cette action est irréversible."
+        }
+      },
+      "common": {
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "create": "Créer",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "confirm": "Confirmer",
+        "close": "Fermer",
+        "search": "Rechercher",
+        "filter": "Filtrer",
+        "actions": "Actions",
+        "loading": "Chargement...",
+        "saving": "Enregistrement...",
+        "deleting": "Suppression...",
+        "success": "Succès",
+        "error": "Erreur",
+        "never": "Jamais",
+        "back": "Retour",
+        "backToList": "Retour à la liste"
       }
     }
   }

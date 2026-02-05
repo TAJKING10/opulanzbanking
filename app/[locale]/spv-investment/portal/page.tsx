@@ -27,6 +27,18 @@ export default function SpvPortalLoginPage() {
     }
   }, [locale, router]);
 
+  // Hidden admin portal access: Ctrl+Shift+A
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === "A") {
+        e.preventDefault();
+        router.push(`/${locale}/spv-investment/admin`);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [locale, router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");

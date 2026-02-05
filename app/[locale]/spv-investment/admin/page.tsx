@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { validateAdminCode } from "@/lib/spv-data";
+import { loginAdmin } from "@/lib/spv-data";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -29,7 +29,8 @@ export default function AdminLoginPage() {
     // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    if (validateAdminCode(accessCode)) {
+    const admin = loginAdmin(accessCode);
+    if (admin) {
       sessionStorage.setItem("spv-admin-access", "granted");
       sessionStorage.setItem("spv-admin-timestamp", Date.now().toString());
       router.push(`/${locale}/spv-investment/admin/dashboard`);

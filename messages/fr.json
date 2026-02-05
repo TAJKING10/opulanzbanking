@@ -674,6 +674,22 @@
         "subtitle": "Gérer les accès et identifiants des investisseurs",
         "addCustomer": "Ajouter un Client",
         "searchPlaceholder": "Rechercher des clients...",
+        "editCustomer": "Modifier le Client",
+        "filter": {
+          "all": "Tous",
+          "active": "Actifs",
+          "inactive": "Inactifs"
+        },
+        "columns": {
+          "name": "Nom",
+          "email": "E-mail",
+          "accessCode": "Code d'accès",
+          "type": "Type",
+          "profile": "Profil",
+          "status": "Statut",
+          "lastAccess": "Dernier accès",
+          "actions": "Actions"
+        },
         "filters": {
           "all": "Tous",
           "active": "Actifs",
@@ -742,6 +758,13 @@
         "title": "Gestion des Propriétés",
         "subtitle": "Gérer les offres d'investissement SPV",
         "addProperty": "Ajouter une Propriété",
+        "editProperty": "Modifier la Propriété",
+        "createProperty": "Nouvelle Propriété",
+        "backToList": "Retour aux propriétés",
+        "searchPlaceholder": "Rechercher des propriétés...",
+        "filter": {
+          "all": "Toutes"
+        },
         "filters": {
           "all": "Toutes",
           "open": "Ouvertes",
@@ -808,6 +831,120 @@
         "deleteConfirm": {
           "title": "Supprimer la Propriété",
           "message": "Êtes-vous sûr de vouloir supprimer cette propriété ? Cette action est irréversible."
+        }
+      },
+      "documents": {
+        "title": "Documents",
+        "addDocument": "Ajouter un Document",
+        "editDocument": "Modifier le Document",
+        "documentName": "Nom du Document",
+        "documentNamePlaceholder": "Entrez le nom du document",
+        "documentType": "Type de Document",
+        "selectFile": "Sélectionner un Fichier",
+        "selectedFile": "Sélectionné",
+        "documentUrl": "URL du Document (optionnel)",
+        "noDocuments": "Aucun document téléchargé.",
+        "types": {
+          "id": "Pièce d'identité",
+          "contract": "Contrat",
+          "kyc": "Document KYC",
+          "prospectus": "Prospectus",
+          "legal": "Document Juridique",
+          "financial": "Rapport Financier",
+          "other": "Autre"
+        }
+      },
+      "profile": {
+        "admin": "Administrateur",
+        "primaryAdmin": "Admin Principal",
+        "viewProfile": "Voir le Profil",
+        "manageAdmins": "Gérer les Admins",
+        "settings": "Paramètres Admin",
+        "settingsSubtitle": "Gérez votre profil et les comptes administrateurs"
+      },
+      "settings": {
+        "title": "Paramètres Admin",
+        "profile": {
+          "title": "Mon Profil",
+          "subtitle": "Informations de votre profil administrateur",
+          "name": "Nom",
+          "email": "Email",
+          "role": "Rôle",
+          "accessCode": "Code d'Accès",
+          "lastLogin": "Dernière Connexion",
+          "memberSince": "Membre Depuis",
+          "updateProfile": "Mettre à Jour le Profil",
+          "changePassword": "Changer le Code d'Accès"
+        },
+        "admins": {
+          "title": "Gestion des Administrateurs",
+          "subtitle": "Gérez les comptes et permissions des administrateurs",
+          "addAdmin": "Ajouter un Administrateur",
+          "editAdmin": "Modifier l'Administrateur",
+          "noAdmins": "Aucun autre administrateur configuré.",
+          "columns": {
+            "name": "Nom",
+            "email": "Email",
+            "role": "Rôle",
+            "status": "Statut",
+            "lastLogin": "Dernière Connexion",
+            "actions": "Actions"
+          },
+          "form": {
+            "name": "Nom Complet",
+            "namePlaceholder": "Entrez le nom de l'administrateur",
+            "email": "Adresse Email",
+            "emailPlaceholder": "Entrez l'adresse email",
+            "role": "Rôle",
+            "roles": {
+              "primary": "Admin Principal",
+              "admin": "Administrateur"
+            },
+            "status": "Statut",
+            "statuses": {
+              "active": "Actif",
+              "inactive": "Inactif"
+            },
+            "accessCode": "Code d'Accès",
+            "generateCode": "Générer un Nouveau Code"
+          },
+          "deleteConfirm": {
+            "title": "Supprimer l'Administrateur",
+            "message": "Êtes-vous sûr de vouloir supprimer cet administrateur ? Cette action est irréversible."
+          },
+          "resetPassword": {
+            "title": "Réinitialiser le Code d'Accès",
+            "message": "Générer un nouveau code d'accès pour cet administrateur ?",
+            "newCode": "Nouveau code d'accès",
+            "copyCode": "Copier le Code",
+            "copied": "Copié !"
+          }
+        },
+        "activity": {
+          "title": "Journal d'Activité",
+          "subtitle": "Surveillez les actions des administrateurs et l'activité du système",
+          "filterByAdmin": "Filtrer par Admin",
+          "allAdmins": "Tous les Admins",
+          "noActivity": "Aucune activité enregistrée.",
+          "types": {
+            "admin_login": "Connexion Admin",
+            "admin_created": "Admin Créé",
+            "admin_updated": "Admin Mis à Jour",
+            "admin_deleted": "Admin Supprimé",
+            "password_reset": "Mot de Passe Réinitialisé",
+            "customer_login": "Connexion Client",
+            "customer_created": "Client Créé",
+            "customer_updated": "Client Mis à Jour",
+            "customer_deleted": "Client Supprimé",
+            "offering_created": "Propriété Créée",
+            "offering_updated": "Propriété Mise à Jour",
+            "offering_deleted": "Propriété Supprimée"
+          }
+        },
+        "tabs": {
+          "profile": "Profil",
+          "admins": "Administrateurs",
+          "activity": "Journal d'Activité"
         }
       },
       "common": {

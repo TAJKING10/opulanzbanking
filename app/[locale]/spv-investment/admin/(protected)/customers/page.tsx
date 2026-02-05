@@ -2,55 +2,23 @@
 
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
-import {
-  Search, Plus, Edit2, Trash2, Copy, Check, X,
-  RefreshCw, User, Mail, Phone, Calendar
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLocale, useTranslations } from "next-intl";
+import Link from "next/link";
+import { Search, Plus, Edit2, Trash2, Copy, Check, X, User } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import {
-  getCustomers,
-  createCustomer,
-  updateCustomer,
-  deleteCustomer,
-  generateAccessCode,
-  type Customer,
-} from "@/lib/spv-data";
-
-type FormData = {
-  name: string;
-  email: string;
-  phone: string;
-  investorType: "institutional" | "professional" | "private";
-  profile: "existing" | "new";
-  status: "active" | "inactive";
-  accessCode: string;
-};
-
-const defaultFormData: FormData = {
-  name: "",
-  email: "",
-  phone: "",
-  investorType: "private",
-  profile: "new",
-  status: "active",
-  accessCode: "",
-};
+import { getCustomers, deleteCustomer, type Customer } from "@/lib/spv-data";
 
 export default function CustomersPage() {
   const t = useTranslations();
+  const locale = useLocale();
   const searchParams = useSearchParams();
 
   const [customers, setCustomers] = React.useState<Customer[]>([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<"all" | "active" | "inactive">("all");
-  const [showModal, setShowModal] = React.useState(false);
-  const [editingCustomer, setEditingCustomer] = React.useState<Customer | null>(null);
-  const [formData, setFormData] = React.useState<FormData>(defaultFormData);
   const [copiedCode, setCopiedCode] = React.useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = React.useState<string | null>(null);
 
@@ -62,9 +30,9 @@ export default function CustomersPage() {
   // Check for ?action=new in URL
   React.useEffect(() => {
     if (searchParams.get("action") === "new") {
-      handleOpenNew();
+      window.location.href = `/${locale}/spv-investment/admin/customers/new`;
     }
-  }, [searchParams]);
+  }, [searchParams, locale]);
 
   const filtered = customers.filter((c) => {
     const matchesSearch =
@@ -75,51 +43,6 @@ export default function CustomersPage() {
     const matchesStatus = statusFilter === "all" || c.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
-
-  const handleOpenNew = () => {
-    setEditingCustomer(null);
-    setFormData({ ...defaultFormData, accessCode: generateAccessCode() });
-    setShowModal(true);
-  };
-
-  const handleOpenEdit = (customer: Customer) => {
-    setEditingCustomer(customer);
-    setFormData({
-      name: customer.name,
-      email: customer.email,
-      phone: customer.phone || "",
-      investorType: customer.investorType,
-      profile: customer.profile,
-      status: customer.status,
-      accessCode: customer.accessCode,
-    });
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setEditingCustomer(null);
-    setFormData(defaultFormData);
-  };
-
-  const handleRegenerateCode = () => {
-    setFormData({ ...formData, accessCode: generateAccessCode() });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (editingCustomer) {
-      // Update existing
-      updateCustomer(editingCustomer.id, formData);
-    } else {
-      // Create new
-      createCustomer(formData);
-    }
-
-    setCustomers(getCustomers());
-    handleCloseModal();
-  };
 
   const handleDelete = (id: string) => {
     deleteCustomer(id);
@@ -156,9 +79,11 @@ export default function CustomersPage() {
                 {t("spvInvestment.admin.customers.subtitle")}
               </p>
             </div>
-            <Button onClick={handleOpenNew} className="bg-indigo-600 hover:bg-indigo-700">
-              <Plus className="mr-2 h-4 w-4" />
-              {t("spvInvestment.admin.customers.addCustomer")}
+            <Button asChild className="bg-indigo-600 hover:bg-indigo-700">
+              <Link href={`/${locale}/spv-investment/admin/customers/new`}>
+                <Plus className="mr-2 h-4 w-4" />
+                {t("spvInvestment.admin.customers.addCustomer")}
+              </Link>
             </Button>
           </div>
         </div>
@@ -275,10 +200,12 @@ export default function CustomersPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleOpenEdit(customer)}
+                      asChild
                       className="text-slate-500 hover:text-indigo-600"
                     >
-                      <Edit2 className="h-4 w-4" />
+                      <Link href={`/${locale}/spv-investment/admin/customers/${customer.id}`}>
+                        <Edit2 className="h-4 w-4" />
+                      </Link>
                     </Button>
                     {deleteConfirm === customer.id ? (
                       <div className="flex gap-1">
@@ -316,147 +243,6 @@ export default function CustomersPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Create/Edit Modal */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <Card className="w-full max-w-lg border-none shadow-2xl">
-            <CardHeader className="border-b border-slate-200">
-              <div className="flex items-center justify-between">
-                <CardTitle>
-                  {editingCustomer
-                    ? t("spvInvestment.admin.customers.editCustomer")
-                    : t("spvInvestment.admin.customers.addCustomer")}
-                </CardTitle>
-                <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-            </CardHeader>
-            <CardContent className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Name */}
-                <div className="space-y-2">
-                  <Label htmlFor="name">{t("spvInvestment.admin.customers.form.name")} *</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="pl-10"
-                      required
-                    />
-                  </div>
-                </div>
-
-                {/* Email */}
-                <div className="space-y-2">
-                  <Label htmlFor="email">{t("spvInvestment.admin.customers.form.email")} *</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="pl-10"
-                      required
-                    />
-                  </div>
-                </div>
-
-                {/* Phone */}
-                <div className="space-y-2">
-                  <Label htmlFor="phone">{t("spvInvestment.admin.customers.form.phone")}</Label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-
-                {/* Type + Profile */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="investorType">{t("spvInvestment.admin.customers.form.investorType")}</Label>
-                    <select
-                      id="investorType"
-                      value={formData.investorType}
-                      onChange={(e) => setFormData({ ...formData, investorType: e.target.value as FormData["investorType"] })}
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    >
-                      <option value="institutional">Institutional</option>
-                      <option value="professional">Professional</option>
-                      <option value="private">Private</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="profile">{t("spvInvestment.admin.customers.form.profile")}</Label>
-                    <select
-                      id="profile"
-                      value={formData.profile}
-                      onChange={(e) => setFormData({ ...formData, profile: e.target.value as FormData["profile"] })}
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    >
-                      <option value="new">New Investor</option>
-                      <option value="existing">Existing Investor</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Status */}
-                <div className="space-y-2">
-                  <Label htmlFor="status">{t("spvInvestment.admin.customers.form.status")}</Label>
-                  <select
-                    id="status"
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value as FormData["status"] })}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
-
-                {/* Access Code */}
-                <div className="space-y-2">
-                  <Label htmlFor="accessCode">{t("spvInvestment.admin.customers.form.accessCode")}</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="accessCode"
-                      value={formData.accessCode}
-                      onChange={(e) => setFormData({ ...formData, accessCode: e.target.value })}
-                      className="font-mono"
-                      required
-                    />
-                    <Button type="button" variant="outline" onClick={handleRegenerateCode}>
-                      <RefreshCw className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
-                  <Button type="button" variant="outline" onClick={handleCloseModal}>
-                    {t("spvInvestment.admin.common.cancel")}
-                  </Button>
-                  <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
-                    {editingCustomer
-                      ? t("spvInvestment.admin.common.save")
-                      : t("spvInvestment.admin.common.create")}
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-      )}
     </div>
   );
 }

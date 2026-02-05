@@ -4,8 +4,8 @@ import * as React from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  ArrowLeft, Save, Trash2, Plus, X, ImageIcon, MapPin,
-  Building2, Calendar, DollarSign, Landmark, Check, FileText, Edit2
+  ArrowLeft, Save, Trash2, Plus, X, FileText, Upload,
+  User, Mail, Phone, Key, RefreshCw, Check, Edit2
 } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,45 +13,49 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  getOfferingById,
-  createOffering,
-  updateOffering,
-  deleteOffering,
-  addOfferingDocument,
-  updateOfferingDocument,
-  deleteOfferingDocument,
+  getCustomerById,
+  createCustomer,
+  updateCustomer,
+  deleteCustomer,
+  generateAccessCode,
+  addCustomerDocument,
+  updateCustomerDocument,
+  deleteCustomerDocument,
   formatFileSize,
-  type Offering,
-  type OfferingFinancials,
-  type OfferingBankTransfer,
+  type Customer,
   type Document,
 } from "@/lib/spv-data";
 
+type FormData = {
+  name: string;
+  email: string;
+  phone: string;
+  investorType: "institutional" | "professional" | "private";
+  profile: "existing" | "new";
+  status: "active" | "inactive";
+  accessCode: string;
+};
+
+const defaultFormData: FormData = {
+  name: "",
+  email: "",
+  phone: "",
+  investorType: "private",
+  profile: "new",
+  status: "active",
+  accessCode: "",
+};
+
 const documentTypes = [
-  { value: "prospectus", label: "Prospectus" },
-  { value: "legal", label: "Legal Document" },
-  { value: "financial", label: "Financial Report" },
+  { value: "id", label: "ID Document" },
   { value: "contract", label: "Contract" },
+  { value: "kyc", label: "KYC Document" },
+  { value: "legal", label: "Legal Document" },
+  { value: "financial", label: "Financial Document" },
   { value: "other", label: "Other" },
 ];
 
-const defaultFinancials: OfferingFinancials = {
-  totalValue: "",
-  spvShares: "",
-  minimumInvestment: "",
-  targetReturn: "",
-  investmentTerm: "",
-  distributionFrequency: "",
-};
-
-const defaultBankTransfer: OfferingBankTransfer = {
-  bankName: "Banque de Luxembourg",
-  iban: "",
-  bic: "BLLLLULL",
-  reference: "",
-};
-
-export default function PropertyEditPage() {
+export default function CustomerEditPage() {
   const router = useRouter();
   const params = useParams();
   const locale = useLocale();
@@ -60,27 +64,15 @@ export default function PropertyEditPage() {
   const id = params.id as string;
   const isNew = id === "new";
 
-  const [formData, setFormData] = React.useState({
-    title: "",
-    location: "",
-    propertyType: "",
-    size: "",
-    yearBuilt: "",
-    status: "open" as Offering["status"],
-    description: "",
-    features: [] as string[],
-    images: [] as string[],
-    financials: { ...defaultFinancials },
-    bankTransfer: { ...defaultBankTransfer },
+  const [formData, setFormData] = React.useState<FormData>({
+    ...defaultFormData,
+    accessCode: generateAccessCode(),
   });
-
-  const [newFeature, setNewFeature] = React.useState("");
-  const [newImage, setNewImage] = React.useState("");
+  const [documents, setDocuments] = React.useState<Document[]>([]);
   const [deleteConfirm, setDeleteConfirm] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
 
-  // Document state
-  const [documents, setDocuments] = React.useState<Document[]>([]);
+  // Document form state
   const [showDocForm, setShowDocForm] = React.useState(false);
   const [editingDoc, setEditingDoc] = React.useState<Document | null>(null);
   const [docForm, setDocForm] = React.useState({
@@ -93,25 +85,21 @@ export default function PropertyEditPage() {
   const [deleteDocConfirm, setDeleteDocConfirm] = React.useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  // Load existing offering
+  // Load existing customer
   React.useEffect(() => {
     if (!isNew) {
-      const offering = getOfferingById(id);
-      if (offering) {
+      const customer = getCustomerById(id);
+      if (customer) {
         setFormData({
-          title: offering.title,
-          location: offering.location,
-          propertyType: offering.propertyType,
-          size: offering.size,
-          yearBuilt: offering.yearBuilt,
-          status: offering.status,
-          description: offering.description,
-          features: [...offering.features],
-          images: [...offering.images],
-          financials: { ...offering.financials },
-          bankTransfer: { ...offering.bankTransfer },
+          name: customer.name,
+          email: customer.email,
+          phone: customer.phone || "",
+          investorType: customer.investorType,
+          profile: customer.profile,
+          status: customer.status,
+          accessCode: customer.accessCode,
         });
-        setDocuments(offering.documents || []);
+        setDocuments(customer.documents || []);
       }
     }
   }, [id, isNew]);
@@ -123,59 +111,21 @@ export default function PropertyEditPage() {
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     if (isNew) {
-      createOffering(formData);
+      createCustomer(formData);
     } else {
-      updateOffering(id, formData);
+      updateCustomer(id, formData);
     }
 
-    router.push(`/${locale}/spv-investment/admin/properties`);
+    router.push(`/${locale}/spv-investment/admin/customers`);
   };
 
   const handleDelete = () => {
-    deleteOffering(id);
-    router.push(`/${locale}/spv-investment/admin/properties`);
+    deleteCustomer(id);
+    router.push(`/${locale}/spv-investment/admin/customers`);
   };
 
-  const addFeature = () => {
-    if (newFeature.trim()) {
-      setFormData({ ...formData, features: [...formData.features, newFeature.trim()] });
-      setNewFeature("");
-    }
-  };
-
-  const removeFeature = (index: number) => {
-    setFormData({
-      ...formData,
-      features: formData.features.filter((_, i) => i !== index),
-    });
-  };
-
-  const addImage = () => {
-    if (newImage.trim()) {
-      setFormData({ ...formData, images: [...formData.images, newImage.trim()] });
-      setNewImage("");
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setFormData({
-      ...formData,
-      images: formData.images.filter((_, i) => i !== index),
-    });
-  };
-
-  const updateFinancials = (key: keyof OfferingFinancials, value: string) => {
-    setFormData({
-      ...formData,
-      financials: { ...formData.financials, [key]: value },
-    });
-  };
-
-  const updateBankTransfer = (key: keyof OfferingBankTransfer, value: string) => {
-    setFormData({
-      ...formData,
-      bankTransfer: { ...formData.bankTransfer, [key]: value },
-    });
+  const handleRegenerateCode = () => {
+    setFormData({ ...formData, accessCode: generateAccessCode() });
   };
 
   // Document handlers
@@ -195,7 +145,7 @@ export default function PropertyEditPage() {
     if (!docForm.name || !docForm.fileName) return;
 
     if (editingDoc) {
-      updateOfferingDocument(id, editingDoc.id, {
+      updateCustomerDocument(id, editingDoc.id, {
         name: docForm.name,
         type: docForm.type,
         fileName: docForm.fileName,
@@ -203,7 +153,7 @@ export default function PropertyEditPage() {
         url: docForm.url,
       });
     } else {
-      addOfferingDocument(id, {
+      addCustomerDocument(id, {
         name: docForm.name,
         type: docForm.type,
         fileName: docForm.fileName,
@@ -213,9 +163,9 @@ export default function PropertyEditPage() {
     }
 
     // Refresh documents
-    const offering = getOfferingById(id);
-    if (offering) {
-      setDocuments(offering.documents || []);
+    const customer = getCustomerById(id);
+    if (customer) {
+      setDocuments(customer.documents || []);
     }
 
     resetDocForm();
@@ -234,10 +184,10 @@ export default function PropertyEditPage() {
   };
 
   const handleDeleteDocument = (docId: string) => {
-    deleteOfferingDocument(id, docId);
-    const offering = getOfferingById(id);
-    if (offering) {
-      setDocuments(offering.documents || []);
+    deleteCustomerDocument(id, docId);
+    const customer = getCustomerById(id);
+    if (customer) {
+      setDocuments(customer.documents || []);
     }
     setDeleteDocConfirm(null);
   };
@@ -271,17 +221,17 @@ export default function PropertyEditPage() {
       <div className="bg-white border-b border-slate-200">
         <div className="container mx-auto max-w-5xl px-6 py-6">
           <Link
-            href={`/${locale}/spv-investment/admin/properties`}
+            href={`/${locale}/spv-investment/admin/customers`}
             className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-700 mb-4"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            {t("spvInvestment.admin.properties.backToList")}
+            {t("spvInvestment.admin.common.backToList")}
           </Link>
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-slate-900">
               {isNew
-                ? t("spvInvestment.admin.properties.createProperty")
-                : t("spvInvestment.admin.properties.editProperty")}
+                ? t("spvInvestment.admin.customers.form.createTitle")
+                : t("spvInvestment.admin.customers.form.editTitle")}
             </h1>
             {!isNew && (
               deleteConfirm ? (
@@ -290,14 +240,14 @@ export default function PropertyEditPage() {
                     variant="outline"
                     onClick={() => setDeleteConfirm(false)}
                   >
-                    Cancel
+                    {t("spvInvestment.admin.common.cancel")}
                   </Button>
                   <Button
                     onClick={handleDelete}
                     className="bg-red-600 hover:bg-red-700 text-white"
                   >
                     <Check className="mr-2 h-4 w-4" />
-                    Confirm Delete
+                    {t("spvInvestment.admin.common.confirm")}
                   </Button>
                 </div>
               ) : (
@@ -307,7 +257,7 @@ export default function PropertyEditPage() {
                   className="text-red-600 border-red-200 hover:bg-red-50"
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete
+                  {t("spvInvestment.admin.common.delete")}
                 </Button>
               )
             )}
@@ -317,288 +267,133 @@ export default function PropertyEditPage() {
 
       <form onSubmit={handleSubmit}>
         <div className="container mx-auto max-w-5xl px-6 py-8 space-y-6">
-          {/* Basic Information */}
+          {/* Customer Information */}
           <Card className="border-none shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Building2 className="h-5 w-5 text-indigo-600" />
-                {t("spvInvestment.admin.properties.form.basicInfo")}
+                <User className="h-5 w-5 text-indigo-600" />
+                {t("spvInvestment.admin.customers.form.title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="md:col-span-2 space-y-2">
-                  <Label htmlFor="title">{t("spvInvestment.admin.properties.form.title")} *</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    placeholder="e.g. Luxembourg City Premium Residence"
-                    required
-                  />
-                </div>
+                {/* Name */}
                 <div className="space-y-2">
-                  <Label htmlFor="location">{t("spvInvestment.admin.properties.form.location")} *</Label>
+                  <Label htmlFor="name">{t("spvInvestment.admin.customers.form.name")} *</Label>
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <Input
-                      id="location"
-                      value={formData.location}
-                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                      id="name"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="pl-10"
-                      placeholder="e.g. Luxembourg City, Luxembourg"
+                      placeholder={t("spvInvestment.admin.customers.form.namePlaceholder")}
                       required
                     />
                   </div>
                 </div>
+
+                {/* Email */}
                 <div className="space-y-2">
-                  <Label htmlFor="propertyType">{t("spvInvestment.admin.properties.form.propertyType")} *</Label>
-                  <Input
-                    id="propertyType"
-                    value={formData.propertyType}
-                    onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
-                    placeholder="e.g. Residential — Luxury Apartments"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="size">{t("spvInvestment.admin.properties.form.size")}</Label>
-                  <Input
-                    id="size"
-                    value={formData.size}
-                    onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                    placeholder="e.g. 2,400 m²"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="yearBuilt">{t("spvInvestment.admin.properties.form.yearBuilt")}</Label>
+                  <Label htmlFor="email">{t("spvInvestment.admin.customers.form.email")} *</Label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <Input
-                      id="yearBuilt"
-                      value={formData.yearBuilt}
-                      onChange={(e) => setFormData({ ...formData, yearBuilt: e.target.value })}
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="pl-10"
-                      placeholder="e.g. 2022"
+                      placeholder={t("spvInvestment.admin.customers.form.emailPlaceholder")}
+                      required
                     />
                   </div>
                 </div>
+
+                {/* Phone */}
                 <div className="space-y-2">
-                  <Label htmlFor="status">{t("spvInvestment.admin.properties.form.status")}</Label>
+                  <Label htmlFor="phone">{t("spvInvestment.admin.customers.form.phone")}</Label>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="pl-10"
+                      placeholder={t("spvInvestment.admin.customers.form.phonePlaceholder")}
+                    />
+                  </div>
+                </div>
+
+                {/* Investor Type */}
+                <div className="space-y-2">
+                  <Label htmlFor="investorType">{t("spvInvestment.admin.customers.form.investorType")}</Label>
+                  <select
+                    id="investorType"
+                    value={formData.investorType}
+                    onChange={(e) => setFormData({ ...formData, investorType: e.target.value as FormData["investorType"] })}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  >
+                    <option value="institutional">{t("spvInvestment.admin.customers.form.investorTypes.institutional")}</option>
+                    <option value="professional">{t("spvInvestment.admin.customers.form.investorTypes.professional")}</option>
+                    <option value="private">{t("spvInvestment.admin.customers.form.investorTypes.private")}</option>
+                  </select>
+                </div>
+
+                {/* Profile */}
+                <div className="space-y-2">
+                  <Label htmlFor="profile">{t("spvInvestment.admin.customers.form.profile")}</Label>
+                  <select
+                    id="profile"
+                    value={formData.profile}
+                    onChange={(e) => setFormData({ ...formData, profile: e.target.value as FormData["profile"] })}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  >
+                    <option value="new">{t("spvInvestment.admin.customers.form.profiles.new")}</option>
+                    <option value="existing">{t("spvInvestment.admin.customers.form.profiles.existing")}</option>
+                  </select>
+                </div>
+
+                {/* Status */}
+                <div className="space-y-2">
+                  <Label htmlFor="status">{t("spvInvestment.admin.customers.form.status")}</Label>
                   <select
                     id="status"
                     value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value as Offering["status"] })}
+                    onChange={(e) => setFormData({ ...formData, status: e.target.value as FormData["status"] })}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   >
-                    <option value="open">Open for Investment</option>
-                    <option value="closing">Closing Soon</option>
-                    <option value="closed">Fully Subscribed</option>
-                    <option value="coming">Coming Soon</option>
+                    <option value="active">{t("spvInvestment.admin.customers.form.statuses.active")}</option>
+                    <option value="inactive">{t("spvInvestment.admin.customers.form.statuses.inactive")}</option>
                   </select>
                 </div>
+
+                {/* Access Code */}
                 <div className="md:col-span-2 space-y-2">
-                  <Label htmlFor="description">{t("spvInvestment.admin.properties.form.description")}</Label>
-                  <textarea
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    rows={4}
-                    className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-none"
-                    placeholder="Describe the property and investment opportunity..."
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Features */}
-          <Card className="border-none shadow-sm">
-            <CardHeader>
-              <CardTitle>{t("spvInvestment.admin.properties.form.features")}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Input
-                  value={newFeature}
-                  onChange={(e) => setNewFeature(e.target.value)}
-                  placeholder="Add a feature..."
-                  onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addFeature())}
-                />
-                <Button type="button" onClick={addFeature} variant="outline">
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-              {formData.features.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {formData.features.map((feature, index) => (
-                    <span
-                      key={index}
-                      className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-sm"
-                    >
-                      {feature}
-                      <button
-                        type="button"
-                        onClick={() => removeFeature(index)}
-                        className="text-slate-400 hover:text-red-500"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Images */}
-          <Card className="border-none shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <ImageIcon className="h-5 w-5 text-indigo-600" />
-                {t("spvInvestment.admin.properties.form.images")}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Input
-                  value={newImage}
-                  onChange={(e) => setNewImage(e.target.value)}
-                  placeholder="Add image URL..."
-                  onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addImage())}
-                />
-                <Button type="button" onClick={addImage} variant="outline">
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-              {formData.images.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {formData.images.map((url, index) => (
-                    <div key={index} className="relative aspect-[4/3] rounded-lg overflow-hidden bg-slate-100">
-                      <img src={url} alt="" className="w-full h-full object-cover" />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute top-2 right-2 p-1 rounded-full bg-red-500 text-white hover:bg-red-600"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
+                  <Label htmlFor="accessCode">{t("spvInvestment.admin.customers.form.accessCode")}</Label>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                      <Input
+                        id="accessCode"
+                        value={formData.accessCode}
+                        onChange={(e) => setFormData({ ...formData, accessCode: e.target.value })}
+                        className="pl-10 font-mono"
+                        required
+                      />
                     </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Financials */}
-          <Card className="border-none shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <DollarSign className="h-5 w-5 text-indigo-600" />
-                {t("spvInvestment.admin.properties.form.financials")}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label>Total Value</Label>
-                  <Input
-                    value={formData.financials.totalValue}
-                    onChange={(e) => updateFinancials("totalValue", e.target.value)}
-                    placeholder="e.g. €3,200,000"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>SPV Shares</Label>
-                  <Input
-                    value={formData.financials.spvShares}
-                    onChange={(e) => updateFinancials("spvShares", e.target.value)}
-                    placeholder="e.g. 40 SPV shares"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Minimum Investment</Label>
-                  <Input
-                    value={formData.financials.minimumInvestment}
-                    onChange={(e) => updateFinancials("minimumInvestment", e.target.value)}
-                    placeholder="e.g. €50,000"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Target Return</Label>
-                  <Input
-                    value={formData.financials.targetReturn}
-                    onChange={(e) => updateFinancials("targetReturn", e.target.value)}
-                    placeholder="e.g. 7–9% p.a."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Investment Term</Label>
-                  <Input
-                    value={formData.financials.investmentTerm}
-                    onChange={(e) => updateFinancials("investmentTerm", e.target.value)}
-                    placeholder="e.g. 5 years"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Distribution Frequency</Label>
-                  <Input
-                    value={formData.financials.distributionFrequency}
-                    onChange={(e) => updateFinancials("distributionFrequency", e.target.value)}
-                    placeholder="e.g. Quarterly"
-                  />
+                    <Button type="button" variant="outline" onClick={handleRegenerateCode}>
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      {t("spvInvestment.admin.customers.form.regenerateCode")}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Bank Transfer */}
-          <Card className="border-none shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Landmark className="h-5 w-5 text-indigo-600" />
-                {t("spvInvestment.admin.properties.form.bankTransfer")}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Bank Name</Label>
-                  <Input
-                    value={formData.bankTransfer.bankName}
-                    onChange={(e) => updateBankTransfer("bankName", e.target.value)}
-                    placeholder="e.g. Banque de Luxembourg"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>IBAN</Label>
-                  <Input
-                    value={formData.bankTransfer.iban}
-                    onChange={(e) => updateBankTransfer("iban", e.target.value)}
-                    placeholder="e.g. LU12 3456 7890 1234 5678"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>BIC/SWIFT</Label>
-                  <Input
-                    value={formData.bankTransfer.bic}
-                    onChange={(e) => updateBankTransfer("bic", e.target.value)}
-                    placeholder="e.g. BLLLLULL"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Payment Reference</Label>
-                  <Input
-                    value={formData.bankTransfer.reference}
-                    onChange={(e) => updateBankTransfer("reference", e.target.value)}
-                    placeholder="e.g. SPV-LUX-RES-01"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Documents Section - Only for existing properties */}
+          {/* Documents Section - Only for existing customers */}
           {!isNew && (
             <Card className="border-none shadow-sm">
               <CardHeader>
@@ -770,7 +565,7 @@ export default function PropertyEditPage() {
           {/* Actions */}
           <div className="flex justify-end gap-3 pb-8">
             <Button type="button" variant="outline" asChild>
-              <Link href={`/${locale}/spv-investment/admin/properties`}>
+              <Link href={`/${locale}/spv-investment/admin/customers`}>
                 {t("spvInvestment.admin.common.cancel")}
               </Link>
             </Button>
@@ -778,7 +573,7 @@ export default function PropertyEditPage() {
               {isSaving ? (
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                  Saving...
+                  {t("spvInvestment.admin.common.saving")}
                 </div>
               ) : (
                 <>

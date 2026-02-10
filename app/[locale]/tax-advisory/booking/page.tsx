@@ -82,7 +82,7 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
   if (step === "calendly") {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
@@ -111,7 +111,7 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
   if (step === "service-selection") {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
@@ -174,7 +174,7 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
   if (step === "payment" && selectedServiceData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">

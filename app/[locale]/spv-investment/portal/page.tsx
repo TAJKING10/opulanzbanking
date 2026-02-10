@@ -60,7 +60,7 @@ export default function SpvPortalLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white py-20">
+    <div className="min-h-screen bg-white py-12">
       <div className="container mx-auto max-w-md px-6">
         {/* Brand */}
         <div className="mb-8 text-center">

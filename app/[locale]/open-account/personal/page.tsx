@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
 import { Step } from "@/components/account-opening/stepper";
 
@@ -13,19 +14,20 @@ import { EligibilityDocumentsStep } from "@/components/account-opening/personal/
 import { ReviewConsentsStep } from "@/components/account-opening/personal/review-consents-step";
 import { SubmissionStep } from "@/components/account-opening/personal/submission-step";
 
-const PERSONAL_ACCOUNT_STEPS: Step[] = [
-  { id: 1, label: "Welcome", description: "Get started" },
-  { id: 2, label: "Identity", description: "Your details" },
-  { id: 3, label: "Intent", description: "Account type" },
-  { id: 4, label: "Documents", description: "Verification" },
-  { id: 5, label: "Review", description: "Confirm details" },
-  { id: 6, label: "Submit", description: "Final step" },
-];
-
 export default function PersonalAccountPage() {
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string;
+  const t = useTranslations("accountForms.personal");
+
+  const PERSONAL_ACCOUNT_STEPS: Step[] = [
+    { id: 1, label: t("steps.welcomeLabel"), description: t("steps.welcomeDesc") },
+    { id: 2, label: t("steps.identityLabel"), description: t("steps.identityDesc") },
+    { id: 3, label: t("steps.intentLabel"), description: t("steps.intentDesc") },
+    { id: 4, label: t("steps.documentsLabel"), description: t("steps.documentsDesc") },
+    { id: 5, label: t("steps.reviewLabel"), description: t("steps.reviewDesc") },
+    { id: 6, label: t("steps.submitLabel"), description: t("steps.submitDesc") },
+  ];
 
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -102,38 +104,26 @@ export default function PersonalAccountPage() {
   // Check if current step allows navigation
   const canProceed = () => {
     if (currentStep === 1) {
-      // Welcome step - check if mode is selected
       return !!formData.mode;
     }
     if (currentStep === 2) {
-      // Identity step - check if all fields are filled
       const hasAllFields =
         formData.firstName?.trim() &&
         formData.lastName?.trim() &&
         formData.email?.trim() &&
         formData.phone?.trim();
-
-      console.log("Step 2 validation check:", {
-        formData,
-        hasAllFields,
-        isIdentityStepValid: formData.isIdentityStepValid
-      });
-
       return formData.isIdentityStepValid === true || hasAllFields;
     }
     if (currentStep === 3) {
-      // Intent step - check if all required fields are filled
       return formData.isIntentStepValid === true;
     }
     if (currentStep === 4) {
-      // Documents step - check if documents are uploaded or upload later is selected
       return formData.isDocumentsStepValid === true;
     }
     if (currentStep === 5) {
-      // Review step - check if consents are accepted
       return formData.canContinueReview === true;
     }
-    return true; // Other steps handle their own validation
+    return true;
   };
 
   const renderStep = () => {
@@ -193,8 +183,8 @@ export default function PersonalAccountPage() {
 
   return (
     <AccountOpeningLayout
-      title="Open a Personal Account"
-      description="Complete your application in 6 simple steps"
+      title={t("title")}
+      description={t("description")}
       steps={PERSONAL_ACCOUNT_STEPS}
       currentStep={currentStep}
       onStepChange={handleStepChange}

@@ -64,13 +64,13 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
           href: `/${locale}/invoicing-accounting/onboarding`,
         }}
         secondaryCta={{
-          label: "Learn More",
+          label: t("common.learnMore"),
           href: "#features",
         }}
       />
 
       {/* Features Section */}
-      <section id="features" className="bg-white py-20 md:py-28">
+      <section id="features" className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline="Our Services"
@@ -99,7 +99,7 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-gray-50 py-20 md:py-28">
+      <section className="bg-gray-50 py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
@@ -132,7 +132,7 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
             Ready to Streamline Your Finances?

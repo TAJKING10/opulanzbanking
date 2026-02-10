@@ -71,7 +71,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-brand-off py-20">
+    <div className="min-h-screen bg-brand-off py-12">
       <div className="container mx-auto max-w-7xl px-6">
         <div className="mb-12">
           <h1 className="mb-2 text-3xl font-bold text-brand-dark">Dashboard</h1>

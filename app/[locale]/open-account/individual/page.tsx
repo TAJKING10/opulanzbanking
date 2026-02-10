@@ -160,7 +160,7 @@ export default function IndividualAccountPage() {
 
   if (status === "approved") {
     return (
-      <div className="min-h-screen bg-brand-off py-20">
+      <div className="min-h-screen bg-brand-off py-12">
         <div className="container mx-auto max-w-3xl px-6">
           <Card className="border-none shadow-elevated">
             <CardContent className="p-12 text-center">
@@ -234,7 +234,7 @@ export default function IndividualAccountPage() {
 
   if (status === "submitted") {
     return (
-      <div className="min-h-screen bg-brand-off py-20">
+      <div className="min-h-screen bg-brand-off py-12">
         <div className="container mx-auto max-w-3xl px-6">
           <Card className="border-none shadow-elevated">
             <CardContent className="p-12 text-center">
@@ -256,7 +256,7 @@ export default function IndividualAccountPage() {
   }
 
   return (
-    <div className="min-h-screen bg-brand-off py-20">
+    <div className="min-h-screen bg-brand-off py-12">
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading
           title={t("whitelabel.kycTitle")}

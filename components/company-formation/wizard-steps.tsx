@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useTranslations } from "next-intl";
 import {
   Users,
   Euro,
@@ -31,6 +32,8 @@ type StepProps = {
 
 // Step 3: People (Shareholders, Directors, UBOs)
 export function Step3People({ dossier, updateDossier }: StepProps) {
+  const t = useTranslations("companyFormation.wizard.step3");
+
   const [shareholders, setShareholders] = React.useState<Person[]>(dossier.shareholders || []);
   const [directors, setDirectors] = React.useState<Person[]>(dossier.directors || []);
   const [managers, setManagers] = React.useState<Person[]>(dossier.managers || []);
@@ -106,15 +109,15 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
       {/* Shareholders */}
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-brand-dark">Shareholders</h3>
+          <h3 className="text-lg font-bold text-brand-dark">{t("shareholders")}</h3>
           <Button size="sm" onClick={() => addPerson("shareholder")}>
             <Plus className="mr-2 h-4 w-4" />
-            Add Shareholder
+            {t("addShareholder")}
           </Button>
         </div>
         {shareholders.length === 0 ? (
           <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
-            No shareholders added yet. Click "Add Shareholder" to begin.
+            {t("noShareholders")}
           </div>
         ) : (
           <div className="space-y-4">
@@ -122,6 +125,8 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
               <PersonCard
                 key={person.id}
                 person={person}
+                editLabel={t("edit")}
+                ownershipLabel={t("ownership")}
                 onEdit={() => {
                   setEditingPerson(person);
                   setEditingType("shareholder");
@@ -132,7 +137,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
             {totalSharePercent !== 100 && (
               <div className="flex items-center gap-2 rounded-xl bg-yellow-50 p-4 text-sm text-yellow-900">
                 <AlertCircle className="h-5 w-5" />
-                <span>Total ownership: {totalSharePercent}% (should equal 100%)</span>
+                <span>{t("totalOwnership", { percent: totalSharePercent })}</span>
               </div>
             )}
           </div>
@@ -143,15 +148,15 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
       {COMPANY_FORM_RULES[dossier.formType!]?.requiresDirectors && (
         <div>
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg font-bold text-brand-dark">Directors</h3>
+            <h3 className="text-lg font-bold text-brand-dark">{t("directors")}</h3>
             <Button size="sm" onClick={() => addPerson("director")}>
               <Plus className="mr-2 h-4 w-4" />
-              Add Director
+              {t("addDirector")}
             </Button>
           </div>
           {directors.length === 0 ? (
             <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
-              No directors added yet. {dossier.formType} requires at least {(COMPANY_FORM_RULES[dossier.formType!] as any).minDirectors || 1} directors.
+              {t("noDirectors", { formType: dossier.formType, count: (COMPANY_FORM_RULES[dossier.formType!] as any).minDirectors || 1 })}
             </div>
           ) : (
             <div className="space-y-4">
@@ -159,6 +164,8 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                 <PersonCard
                   key={person.id}
                   person={person}
+                  editLabel={t("edit")}
+                  ownershipLabel={t("ownership")}
                   onEdit={() => {
                     setEditingPerson(person);
                     setEditingType("director");
@@ -175,15 +182,15 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
       {COMPANY_FORM_RULES[dossier.formType!]?.requiresManagers && (
         <div>
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg font-bold text-brand-dark">Managers</h3>
+            <h3 className="text-lg font-bold text-brand-dark">{t("managers")}</h3>
             <Button size="sm" onClick={() => addPerson("manager")}>
               <Plus className="mr-2 h-4 w-4" />
-              Add Manager
+              {t("addManager")}
             </Button>
           </div>
           {managers.length === 0 ? (
             <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
-              No managers added yet. {dossier.formType} requires at least {(COMPANY_FORM_RULES[dossier.formType!] as any).minManagers || 1} manager.
+              {t("noManagers", { formType: dossier.formType, count: (COMPANY_FORM_RULES[dossier.formType!] as any).minManagers || 1 })}
             </div>
           ) : (
             <div className="space-y-4">
@@ -191,6 +198,8 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                 <PersonCard
                   key={person.id}
                   person={person}
+                  editLabel={t("edit")}
+                  ownershipLabel={t("ownership")}
                   onEdit={() => {
                     setEditingPerson(person);
                     setEditingType("manager");
@@ -206,18 +215,18 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
       {/* UBOs */}
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-brand-dark">Ultimate Beneficial Owners (UBOs)</h3>
+          <h3 className="text-lg font-bold text-brand-dark">{t("ubosTitle")}</h3>
           <Button size="sm" onClick={() => addPerson("ubo")}>
             <Plus className="mr-2 h-4 w-4" />
-            Add UBO
+            {t("addUbo")}
           </Button>
         </div>
         <p className="mb-4 text-sm text-brand-grayMed">
-          Individuals who own or control more than 25% of the company
+          {t("ubosDesc")}
         </p>
         {ubos.length === 0 ? (
           <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
-            No UBOs added yet.
+            {t("noUbos")}
           </div>
         ) : (
           <div className="space-y-4">
@@ -226,6 +235,9 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                 key={person.id}
                 person={person}
                 showPep
+                pepLabel={t("pep")}
+                editLabel={t("edit")}
+                ownershipLabel={t("ownership")}
                 onEdit={() => {
                   setEditingPerson(person);
                   setEditingType("ubo");
@@ -242,19 +254,19 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
             <h3 className="mb-6 text-2xl font-bold text-brand-dark">
-              {editingPerson.firstName ? "Edit" : "Add"} {editingType}
+              {editingPerson.firstName ? t("editPerson") : t("addPerson")} {editingType}
             </h3>
             <div className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>First Name *</Label>
+                  <Label>{t("firstName")} *</Label>
                   <Input
                     value={editingPerson.firstName}
                     onChange={(e) => setEditingPerson({ ...editingPerson, firstName: e.target.value })}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Last Name *</Label>
+                  <Label>{t("lastName")} *</Label>
                   <Input
                     value={editingPerson.lastName}
                     onChange={(e) => setEditingPerson({ ...editingPerson, lastName: e.target.value })}
@@ -263,7 +275,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
               </div>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Date of Birth *</Label>
+                  <Label>{t("dob")} *</Label>
                   <Input
                     type="date"
                     value={editingPerson.dob}
@@ -271,7 +283,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Nationality *</Label>
+                  <Label>{t("nationality")} *</Label>
                   <Input
                     value={editingPerson.nationality}
                     onChange={(e) => setEditingPerson({ ...editingPerson, nationality: e.target.value })}
@@ -279,7 +291,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Address *</Label>
+                <Label>{t("address")} *</Label>
                 <Input
                   value={editingPerson.address}
                   onChange={(e) => setEditingPerson({ ...editingPerson, address: e.target.value })}
@@ -287,7 +299,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
               </div>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Email</Label>
+                  <Label>{t("email")}</Label>
                   <Input
                     type="email"
                     value={editingPerson.email}
@@ -295,7 +307,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Phone</Label>
+                  <Label>{t("phone")}</Label>
                   <Input
                     value={editingPerson.phone}
                     onChange={(e) => setEditingPerson({ ...editingPerson, phone: e.target.value })}
@@ -304,7 +316,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
               </div>
               {editingType === "shareholder" && (
                 <div className="space-y-2">
-                  <Label>Ownership Percentage *</Label>
+                  <Label>{t("ownershipPercent")} *</Label>
                   <Input
                     type="number"
                     min="0"
@@ -321,7 +333,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                     checked={editingPerson.isPep}
                     onCheckedChange={(checked) => setEditingPerson({ ...editingPerson, isPep: checked as boolean })}
                   />
-                  <Label htmlFor="isPep">This person is a Politically Exposed Person (PEP)</Label>
+                  <Label htmlFor="isPep">{t("isPep")}</Label>
                 </div>
               )}
             </div>
@@ -330,9 +342,9 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                 setEditingPerson(null);
                 setEditingType(null);
               }}>
-                Cancel
+                {t("cancel")}
               </Button>
-              <Button onClick={savePerson}>Save</Button>
+              <Button onClick={savePerson}>{t("save")}</Button>
             </div>
           </div>
         </div>
@@ -341,9 +353,12 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
   );
 }
 
-function PersonCard({ person, showPep, onEdit, onDelete }: {
+function PersonCard({ person, showPep, pepLabel, editLabel, ownershipLabel, onEdit, onDelete }: {
   person: Person;
   showPep?: boolean;
+  pepLabel?: string;
+  editLabel?: string;
+  ownershipLabel?: string;
   onEdit: () => void;
   onDelete: () => void;
 }) {
@@ -357,13 +372,13 @@ function PersonCard({ person, showPep, onEdit, onDelete }: {
           <p className="font-semibold text-brand-dark">{person.firstName} {person.lastName}</p>
           <p className="text-sm text-brand-grayMed">
             {person.nationality} • {person.dob}
-            {person.sharePercent && <> • {person.sharePercent}% ownership</>}
-            {showPep && person.isPep && <> • PEP</>}
+            {person.sharePercent && <> • {person.sharePercent}% {ownershipLabel || "ownership"}</>}
+            {showPep && person.isPep && <> • {pepLabel || "PEP"}</>}
           </p>
         </div>
       </div>
       <div className="flex gap-2">
-        <Button size="sm" variant="outline" onClick={onEdit}>Edit</Button>
+        <Button size="sm" variant="outline" onClick={onEdit}>{editLabel || "Edit"}</Button>
         <Button size="sm" variant="outline" onClick={onDelete}>
           <X className="h-4 w-4" />
         </Button>
@@ -374,6 +389,8 @@ function PersonCard({ person, showPep, onEdit, onDelete }: {
 
 // Step 4: Capital & Contributions
 export function Step4Capital({ dossier, updateDossier }: StepProps) {
+  const t = useTranslations("companyFormation.wizard.step4");
+
   const [capitalAmount, setCapitalAmount] = React.useState(dossier.capitalAmount || 0);
   const [paidUpPercent, setPaidUpPercent] = React.useState(dossier.capitalPaidUpPercent || 100);
   const [contributions, setContributions] = React.useState<Contribution[]>(dossier.contributions || []);
@@ -414,7 +431,7 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
     <div className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="capitalAmount">
-          Share Capital Amount (EUR) <span className="text-red-500">*</span>
+          {t("capitalAmount")} <span className="text-red-500">*</span>
         </Label>
         <Input
           id="capitalAmount"
@@ -425,12 +442,12 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
           onChange={(e) => setCapitalAmount(parseFloat(e.target.value) || 0)}
         />
         <p className="text-xs text-brand-grayMed">
-          {rules.minCapital === 0 ? "No minimum required" : `Minimum: €${rules.minCapital.toLocaleString()}`}
-          {rules.maxCapital !== Infinity && ` • Maximum: €${rules.maxCapital.toLocaleString()}`}
+          {rules.minCapital === 0 ? t("noMinRequired") : t("minimum", { amount: `€${rules.minCapital.toLocaleString()}` })}
+          {rules.maxCapital !== Infinity && ` • ${t("maximum", { amount: `€${rules.maxCapital.toLocaleString()}` })}`}
         </p>
         {!isValid && (
           <p className="text-sm text-red-500">
-            Capital amount must be between €{rules.minCapital.toLocaleString()} and €{rules.maxCapital === Infinity ? "∞" : rules.maxCapital.toLocaleString()}
+            {t("capitalError", { min: `€${rules.minCapital.toLocaleString()}`, max: rules.maxCapital === Infinity ? "∞" : `€${rules.maxCapital.toLocaleString()}` })}
           </p>
         )}
       </div>
@@ -438,7 +455,7 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
       {(rules as any).requiresPaidUpPercent && (
         <div className="space-y-2">
           <Label htmlFor="paidUpPercent">
-            Paid-Up Percentage <span className="text-red-500">*</span>
+            {t("paidUpPercent")} <span className="text-red-500">*</span>
           </Label>
           <Input
             id="paidUpPercent"
@@ -449,22 +466,22 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
             onChange={(e) => setPaidUpPercent(parseFloat(e.target.value) || 100)}
           />
           <p className="text-xs text-brand-grayMed">
-            For SA, at least 25% must be paid up at incorporation
+            {t("paidUpHelp")}
           </p>
         </div>
       )}
 
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-brand-dark">Contributions</h3>
+          <h3 className="text-lg font-bold text-brand-dark">{t("contributions")}</h3>
           <Button size="sm" onClick={addContribution}>
             <Plus className="mr-2 h-4 w-4" />
-            Add Contribution
+            {t("addContribution")}
           </Button>
         </div>
         {contributions.length === 0 ? (
           <div className="rounded-xl border-2 border-dashed border-brand-grayLight p-8 text-center text-brand-grayMed">
-            No contributions added yet. Add cash or in-kind contributions.
+            {t("noContributions")}
           </div>
         ) : (
           <div className="space-y-4">
@@ -472,18 +489,18 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
               <div key={contribution.id} className="rounded-xl border border-brand-grayLight p-4 space-y-4">
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="space-y-2">
-                    <Label>Type</Label>
+                    <Label>{t("type")}</Label>
                     <select
                       className="flex h-11 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                       value={contribution.type}
                       onChange={(e) => updateContribution(contribution.id, { type: e.target.value as any })}
                     >
-                      <option value="CASH">Cash</option>
-                      <option value="INKIND">In-Kind</option>
+                      <option value="CASH">{t("cash")}</option>
+                      <option value="INKIND">{t("inKind")}</option>
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Amount (EUR)</Label>
+                    <Label>{t("amountEur")}</Label>
                     <Input
                       type="number"
                       value={contribution.amount}
@@ -498,28 +515,28 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
                       className="w-full"
                     >
                       <X className="mr-2 h-4 w-4" />
-                      Remove
+                      {t("remove")}
                     </Button>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Description</Label>
+                  <Label>{t("description")}</Label>
                   <Input
                     value={contribution.description}
                     onChange={(e) => updateContribution(contribution.id, { description: e.target.value })}
-                    placeholder="Describe the contribution..."
+                    placeholder={t("descriptionPlaceholder")}
                   />
                 </div>
               </div>
             ))}
             <div className="rounded-xl bg-brand-goldLight/20 p-4">
               <p className="text-sm font-semibold text-brand-dark">
-                Total Contributions: €{totalContributions.toLocaleString()}
+                {t("totalContributions", { amount: `€${totalContributions.toLocaleString()}` })}
               </p>
               {totalContributions !== capitalAmount && (
                 <p className="text-sm text-yellow-700 mt-1">
                   <AlertCircle className="inline h-4 w-4 mr-1" />
-                  Contributions should equal capital amount (€{capitalAmount.toLocaleString()})
+                  {t("contributionsMismatch", { amount: `€${capitalAmount.toLocaleString()}` })}
                 </p>
               )}
             </div>
@@ -529,5 +546,3 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
     </div>
   );
 }
-
-// Continue with remaining steps in the next message due to length...

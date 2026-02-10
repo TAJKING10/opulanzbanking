@@ -2,12 +2,14 @@
 
 import * as React from "react";
 import { Heart, Shield, Users, TrendingUp, CheckCircle, FileText, DollarSign, Briefcase, Clock } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default function LifeInsurancePage({ params: { locale } }: { params: { locale: string } }) {
+  const t = useTranslations();
   const products = [
     {
       icon: Clock,
@@ -54,7 +56,7 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
           href: `/${locale}/life-insurance/schedule`,
         }}
         secondaryCta={{
-          label: "Learn More",
+          label: t("common.learnMore"),
           href: "#overview",
         }}
       />
@@ -122,7 +124,7 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
       </section>
 
       {/* Products Section */}
-      <section id="products" className="relative bg-gray-50 py-16 md:py-20 overflow-hidden">
+      <section id="products" className="relative bg-gray-50 py-12 md:py-16 overflow-hidden">
         {/* Animated background pattern */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
           <div className="absolute top-0 left-1/4 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl animate-pulse"></div>
@@ -169,7 +171,7 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
       </section>
 
       {/* How It Works Section */}
-      <section className="relative bg-white py-16 md:py-20 overflow-hidden">
+      <section className="relative bg-white py-12 md:py-16 overflow-hidden">
         {/* Decorative grid background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30"></div>
 
@@ -214,7 +216,7 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
       </section>
 
       {/* Features Section */}
-      <section className="relative bg-gradient-to-b from-gray-50 to-white py-16 md:py-20">
+      <section className="relative bg-gradient-to-b from-gray-50 to-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline="Why We're Different"
@@ -256,7 +258,7 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-16 md:py-20">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-5xl px-6">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/20">
             <div className="text-center mb-8">

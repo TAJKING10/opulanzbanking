@@ -13,7 +13,7 @@ export default function LifeInsuranceSchedulePage({ params: { locale } }: { para
 
   return (
     <>
-      <section className="hero-gradient py-16 md:py-20">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6">
           <div className="text-center">
             <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">

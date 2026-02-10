@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
 import { Step } from "@/components/account-opening/stepper";
 
@@ -15,21 +16,22 @@ import { BusinessDocumentsStep } from "@/components/account-opening/business/doc
 import { BusinessReviewConsentsStep } from "@/components/account-opening/business/review-consents-step";
 import { BusinessSubmissionStep } from "@/components/account-opening/business/submission-step";
 
-const BUSINESS_ACCOUNT_STEPS: Step[] = [
-  { id: 1, label: "Welcome", description: "Get started" },
-  { id: 2, label: "Company", description: "Status" },
-  { id: 3, label: "Jurisdiction", description: "Location" },
-  { id: 4, label: "Directors", description: "UBOs" },
-  { id: 5, label: "Formation", description: "If new" },
-  { id: 6, label: "Documents", description: "Verification" },
-  { id: 7, label: "Review", description: "Confirm" },
-  { id: 8, label: "Submit", description: "Final step" },
-];
-
 export default function BusinessAccountPage() {
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string;
+  const t = useTranslations("accountForms.business");
+
+  const BUSINESS_ACCOUNT_STEPS: Step[] = [
+    { id: 1, label: t("steps.welcomeLabel"), description: t("steps.welcomeDesc") },
+    { id: 2, label: t("steps.companyLabel"), description: t("steps.companyDesc") },
+    { id: 3, label: t("steps.jurisdictionLabel"), description: t("steps.jurisdictionDesc") },
+    { id: 4, label: t("steps.directorsLabel"), description: t("steps.directorsDesc") },
+    { id: 5, label: t("steps.formationLabel"), description: t("steps.formationDesc") },
+    { id: 6, label: t("steps.documentsLabel"), description: t("steps.documentsDesc") },
+    { id: 7, label: t("steps.reviewLabel"), description: t("steps.reviewDesc") },
+    { id: 8, label: t("steps.submitLabel"), description: t("steps.submitDesc") },
+  ];
 
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -231,8 +233,8 @@ export default function BusinessAccountPage() {
 
   return (
     <AccountOpeningLayout
-      title="Open a Business Account"
-      description="Complete your business banking application"
+      title={t("title")}
+      description={t("description")}
       steps={BUSINESS_ACCOUNT_STEPS}
       currentStep={currentStep}
       onStepChange={handleStepChange}

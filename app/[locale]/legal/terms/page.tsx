@@ -16,7 +16,7 @@ export default function TermsPage() {
         subtitle="Terms and Conditions"
       />
 
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-4xl px-6">
           <Card className="border-none shadow-sm">
             <CardContent className="prose prose-lg max-w-none p-8">

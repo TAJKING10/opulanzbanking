@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Stepper, Step } from "./stepper";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,8 @@ export function AccountOpeningLayout({
   description,
   hideNavigation = false,
 }: AccountOpeningLayoutProps) {
+  const t = useTranslations("accountForms.layout");
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto max-w-4xl px-6">
@@ -65,7 +68,7 @@ export function AccountOpeningLayout({
                 className="min-w-32 border-brand-grayLight text-brand-dark hover:bg-brand-grayLight/10"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
+                {t("back")}
               </Button>
 
               <Button
@@ -75,10 +78,10 @@ export function AccountOpeningLayout({
                 className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark disabled:bg-gray-400 disabled:opacity-50"
               >
                 {isLoading ? (
-                  "Processing..."
+                  t("processing")
                 ) : (
                   <>
-                    Continue
+                    {t("continue")}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </>
                 )}
@@ -88,7 +91,7 @@ export function AccountOpeningLayout({
             {/* Progress saved indicator */}
             <div className="mt-6 text-center">
               <p className="text-sm text-brand-grayMed">
-                Your progress is automatically saved. You can return anytime to complete your application.
+                {t("progressSaved")}
               </p>
             </div>
           </>

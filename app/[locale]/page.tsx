@@ -72,7 +72,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       />
 
       {/* Services Section */}
-      <section id="services" className="bg-white py-20 md:py-28">
+      <section id="services" className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline={t('home.services.title')}
@@ -92,7 +92,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </section>
 
       {/* Trust Section */}
-      <section className="bg-gradient-to-br from-brand-off via-white to-brand-goldLight/10 py-20 md:py-28 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-brand-off via-white to-brand-goldLight/10 py-12 md:py-16 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 left-0 w-96 h-96 bg-brand-gold rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-goldLight rounded-full blur-3xl" />
@@ -131,7 +131,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28 relative overflow-hidden">
+      <section className="hero-gradient py-12 md:py-16 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-brand-goldLight rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,8 @@ interface CompanyStatusStepProps {
 }
 
 export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepProps) {
+  const t = useTranslations("accountForms.business.companyStatus");
+
   const [companyStatus, setCompanyStatus] = React.useState(data.companyStatus || "");
   const [companyName, setCompanyName] = React.useState(data.companyName || "");
   const [registrationNumber, setRegistrationNumber] = React.useState(data.registrationNumber || "");
@@ -40,16 +43,16 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Company Status</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          Tell us about your company so we can provide the right banking solution.
+          {t("description")}
         </p>
       </div>
 
       <div className="space-y-6">
         <div>
           <h3 className="mb-4 text-lg font-semibold text-brand-dark">
-            Do you have an existing company or want to start a new one?
+            {t("question")}
           </h3>
 
           <RadioGroup value={companyStatus} onValueChange={handleStatusChange} className="space-y-4">
@@ -69,11 +72,11 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
                     htmlFor="existing"
                     className="cursor-pointer text-base font-semibold text-brand-dark"
                   >
-                    Existing Company
+                    {t("existingTitle")}
                   </Label>
                 </div>
                 <p className="mt-2 text-sm text-brand-grayMed">
-                  I already have a registered company and need a bank account for it.
+                  {t("existingDesc")}
                 </p>
               </div>
             </div>
@@ -94,11 +97,11 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
                     htmlFor="new"
                     className="cursor-pointer text-base font-semibold text-brand-dark"
                   >
-                    New Company
+                    {t("newTitle")}
                   </Label>
                 </div>
                 <p className="mt-2 text-sm text-brand-grayMed">
-                  I want to start a new company and need help with company formation and banking.
+                  {t("newDesc")}
                 </p>
               </div>
             </div>
@@ -107,28 +110,28 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
 
         {companyStatus === "existing" && (
           <div className="space-y-4 rounded-lg border border-brand-grayLight bg-gray-50 p-6">
-            <h4 className="font-semibold text-brand-dark">Company Details</h4>
+            <h4 className="font-semibold text-brand-dark">{t("companyDetails")}</h4>
 
             <div className="space-y-2">
-              <Label htmlFor="companyName">Company Name *</Label>
+              <Label htmlFor="companyName">{t("companyName")} *</Label>
               <Input
                 id="companyName"
                 type="text"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="Enter your company name"
+                placeholder={t("companyNamePlaceholder")}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="registrationNumber">Company Registration Number *</Label>
+              <Label htmlFor="registrationNumber">{t("registrationNumber")} *</Label>
               <Input
                 id="registrationNumber"
                 type="text"
                 value={registrationNumber}
                 onChange={(e) => setRegistrationNumber(e.target.value)}
-                placeholder="e.g., B123456"
+                placeholder={t("registrationNumberPlaceholder")}
                 required
               />
             </div>
@@ -137,10 +140,9 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
 
         {companyStatus === "new" && (
           <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-            <h4 className="mb-2 text-sm font-semibold text-blue-900">Company Formation Service</h4>
+            <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("formationServiceTitle")}</h4>
             <p className="text-sm text-blue-800">
-              We'll help you form your company in your chosen jurisdiction and open a bank account
-              simultaneously. This streamlined process saves time and ensures everything is set up correctly.
+              {t("formationServiceDesc")}
             </p>
           </div>
         )}

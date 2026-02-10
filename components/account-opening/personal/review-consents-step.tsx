@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -13,6 +14,9 @@ interface ReviewConsentsStepProps {
 }
 
 export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsStepProps) {
+  const t = useTranslations("accountForms.personal.review");
+  const tc = useTranslations("accountForms.common");
+
   const [consents, setConsents] = React.useState({
     processing: data.consents?.processing || false,
     dataSharing: data.consents?.dataSharing || false,
@@ -28,7 +32,6 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
 
     onUpdate({ consents: newConsents, canContinueReview: canContinue });
 
-    // Log consent with metadata (in real app, send to backend)
     console.log("Consent logged:", {
       type: consent,
       value: checked,
@@ -49,22 +52,20 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Review & Consents</h2>
-        <p className="text-brand-grayMed">
-          Please review your information and provide the necessary consents to proceed.
-        </p>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
+        <p className="text-brand-grayMed">{t("description")}</p>
       </div>
 
       <div className="space-y-6">
         {/* Review Summary */}
         <div className="rounded-lg border border-brand-grayLight bg-white p-6">
-          <h3 className="mb-4 text-lg font-semibold text-brand-dark">Application Summary</h3>
+          <h3 className="mb-4 text-lg font-semibold text-brand-dark">{tc("applicationSummary")}</h3>
 
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <User className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Full Name</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("fullName")}</p>
                 <p className="text-sm text-brand-grayMed">
                   {data.firstName} {data.lastName}
                 </p>
@@ -74,12 +75,12 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
             <div className="flex items-start gap-3">
               <Mail className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Email</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("email")}</p>
                 <p className="text-sm text-brand-grayMed">{data.email}</p>
                 {data.emailVerified && (
                   <span className="inline-flex items-center gap-1 text-xs text-green-600">
                     <CheckCircle className="h-3 w-3" />
-                    Verified
+                    {tc("verified")}
                   </span>
                 )}
               </div>
@@ -88,12 +89,12 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
             <div className="flex items-start gap-3">
               <Phone className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Phone</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("phone")}</p>
                 <p className="text-sm text-brand-grayMed">{data.phone}</p>
                 {data.phoneVerified && (
                   <span className="inline-flex items-center gap-1 text-xs text-green-600">
                     <CheckCircle className="h-3 w-3" />
-                    Verified
+                    {tc("verified")}
                   </span>
                 )}
               </div>
@@ -102,11 +103,11 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
             <div className="flex items-start gap-3">
               <MapPin className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Residence</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("residence")}</p>
                 <p className="text-sm text-brand-grayMed">
                   {data.residence === "resident-europe"
-                    ? `European Resident - ${data.country}`
-                    : "Non-resident"}
+                    ? `${tc("europeanResident")} - ${data.country}`
+                    : tc("nonResident")}
                 </p>
               </div>
             </div>
@@ -114,9 +115,9 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
             <div className="flex items-start gap-3">
               <FileText className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Account Type</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("accountType")}</p>
                 <p className="text-sm text-brand-grayMed">
-                  {data.mode === "current" ? "Current / Everyday Account" : "Private Banking"}
+                  {data.mode === "current" ? tc("currentAccount") : tc("privateBanking")}
                 </p>
               </div>
             </div>
@@ -124,11 +125,11 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
             <div className="flex items-start gap-3">
               <FileText className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">Documents</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("documents")}</p>
                 <p className="text-sm text-brand-grayMed">
                   {data.uploadLater
-                    ? "To be uploaded later"
-                    : `${data.documents?.length || 0} documents uploaded`}
+                    ? tc("toBeUploadedLater")
+                    : `${data.documents?.length || 0} ${tc("documentsUploaded")}`}
                 </p>
               </div>
             </div>
@@ -137,7 +138,7 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               <div className="flex items-start gap-3">
                 <Coins className="h-5 w-5 flex-shrink-0 text-brand-gold" />
                 <div>
-                  <p className="text-sm font-medium text-brand-dark">Currencies Needed</p>
+                  <p className="text-sm font-medium text-brand-dark">{tc("currenciesNeeded")}</p>
                   <p className="text-sm text-brand-grayMed">
                     {data.currencies.join(", ")}
                   </p>
@@ -149,7 +150,7 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               <div className="flex items-start gap-3">
                 <TrendingUp className="h-5 w-5 flex-shrink-0 text-brand-gold" />
                 <div>
-                  <p className="text-sm font-medium text-brand-dark">Est. Monthly Incoming Transfers</p>
+                  <p className="text-sm font-medium text-brand-dark">{tc("estMonthlyTransfers")}</p>
                   <p className="text-sm text-brand-grayMed">
                     {new Intl.NumberFormat("en-US", {
                       style: "currency",
@@ -167,17 +168,17 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               <div className="flex items-start gap-3">
                 <Wallet className="h-5 w-5 flex-shrink-0 text-brand-gold" />
                 <div>
-                  <p className="text-sm font-medium text-brand-dark">Primary Source of Funds</p>
+                  <p className="text-sm font-medium text-brand-dark">{tc("primarySourceOfFunds")}</p>
                   <p className="text-sm text-brand-grayMed">
-                    {data.sourceOfFunds === "salary" && "Salary"}
-                    {data.sourceOfFunds === "dividends" && "Dividends"}
-                    {data.sourceOfFunds === "business" && "Business Income"}
-                    {data.sourceOfFunds === "asset-sale" && "Asset Sale"}
-                    {data.sourceOfFunds === "savings" && "Savings"}
+                    {data.sourceOfFunds === "salary" && tc("salary")}
+                    {data.sourceOfFunds === "dividends" && tc("dividends")}
+                    {data.sourceOfFunds === "business" && tc("businessIncome")}
+                    {data.sourceOfFunds === "asset-sale" && tc("assetSale")}
+                    {data.sourceOfFunds === "savings" && tc("savings")}
                     {data.sourceOfFunds === "other" && data.sourceOfFundsOther
-                      ? `Other: ${data.sourceOfFundsOther}`
+                      ? `${tc("other")}: ${data.sourceOfFundsOther}`
                       : data.sourceOfFunds === "other"
-                      ? "Other"
+                      ? tc("other")
                       : ""}
                   </p>
                 </div>
@@ -188,11 +189,9 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               <div className="flex items-start gap-3">
                 <ShieldCheck className="h-5 w-5 flex-shrink-0 text-brand-gold" />
                 <div>
-                  <p className="text-sm font-medium text-brand-dark">PEP / Sanctions Screening</p>
+                  <p className="text-sm font-medium text-brand-dark">{tc("pepScreeningLabel")}</p>
                   <p className="text-sm text-brand-grayMed">
-                    {data.pepScreening
-                      ? "Confirmed: Not a Politically Exposed Person"
-                      : "Not confirmed"}
+                    {data.pepScreening ? tc("pepConfirmed") : tc("pepNotConfirmed")}
                   </p>
                 </div>
               </div>
@@ -202,7 +201,7 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
 
         {/* Required Consents */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-brand-dark">Required Consents</h3>
+          <h3 className="text-lg font-semibold text-brand-dark">{tc("requiredConsents")}</h3>
 
           <div className="space-y-4">
             {/* Processing Consent */}
@@ -222,12 +221,9 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
                 />
                 <div className="flex-1">
                   <Label htmlFor="consent-processing" className="cursor-pointer font-semibold text-brand-dark">
-                    Processing for Bank Introduction *
+                    {tc("consentProcessingTitle")} *
                   </Label>
-                  <p className="mt-1 text-sm text-brand-grayMed">
-                    I consent to Opulanz processing my personal data for the purpose of introducing
-                    me to Opulanz Partner Bank for account opening. This is required to proceed.
-                  </p>
+                  <p className="mt-1 text-sm text-brand-grayMed">{tc("consentProcessingDesc")}</p>
                 </div>
               </div>
             </div>
@@ -249,12 +245,9 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
                 />
                 <div className="flex-1">
                   <Label htmlFor="consent-sharing" className="cursor-pointer font-semibold text-brand-dark">
-                    Data Sharing with Partner Banks *
+                    {tc("consentDataSharingTitle")} *
                   </Label>
-                  <p className="mt-1 text-sm text-brand-grayMed">
-                    I consent to Opulanz sharing my application data with partner banks and EMIs
-                    for the purpose of account opening and compliance checks. This is required to proceed.
-                  </p>
+                  <p className="mt-1 text-sm text-brand-grayMed">{tc("consentDataSharingDesc")}</p>
                 </div>
               </div>
             </div>
@@ -276,12 +269,9 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
                 />
                 <div className="flex-1">
                   <Label htmlFor="consent-marketing" className="cursor-pointer font-semibold text-brand-dark">
-                    Marketing Communications (Optional)
+                    {tc("consentMarketingTitle")}
                   </Label>
-                  <p className="mt-1 text-sm text-brand-grayMed">
-                    I would like to receive updates, offers, and news from Opulanz about banking
-                    products and services. You can unsubscribe at any time.
-                  </p>
+                  <p className="mt-1 text-sm text-brand-grayMed">{tc("consentMarketingDesc")}</p>
                 </div>
               </div>
             </div>
@@ -290,23 +280,14 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
 
         {/* GDPR Notice */}
         <div className="rounded-lg bg-blue-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-blue-900">Your Data Rights</h4>
-          <p className="text-sm text-blue-800">
-            Under GDPR, you have the right to access, rectify, erase, or port your data. You can
-            also object to processing and withdraw consent at any time. See our{" "}
-            <a href="/legal/privacy" className="underline">
-              Privacy Policy
-            </a>{" "}
-            for details.
-          </p>
+          <h4 className="mb-2 text-sm font-semibold text-blue-900">{tc("gdprTitle")}</h4>
+          <p className="text-sm text-blue-800">{tc("gdprDesc")}</p>
         </div>
 
         {!canContinue && (
           <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-600" />
-            <div className="text-sm text-red-900">
-              Both required consents must be accepted to continue with your application.
-            </div>
+            <div className="text-sm text-red-900">{tc("consentsRequired")}</div>
           </div>
         )}
       </div>

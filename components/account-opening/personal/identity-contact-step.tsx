@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,9 @@ interface IdentityContactStepProps {
 }
 
 export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactStepProps) {
+  const t = useTranslations("accountForms.personal.identity");
+  const tc = useTranslations("accountForms.common");
+
   const [formState, setFormState] = React.useState({
     firstName: data.firstName || "",
     lastName: data.lastName || "",
@@ -37,19 +41,14 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
   };
 
   const sendEmailOtp = async () => {
-    // Simulate sending email OTP
     setVerification((prev) => ({ ...prev, emailSent: true, showEmailOtp: true }));
-    // In real implementation, call API to send OTP
   };
 
   const sendPhoneOtp = async () => {
-    // Simulate sending phone OTP
     setVerification((prev) => ({ ...prev, phoneSent: true, showPhoneOtp: true }));
-    // In real implementation, call API to send OTP
   };
 
   const verifyEmailOtp = () => {
-    // Simulate OTP verification
     if (verification.emailOtp.length === 6) {
       setVerification((prev) => ({ ...prev, emailVerified: true, showEmailOtp: false }));
       onUpdate({ emailVerified: true });
@@ -57,7 +56,6 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
   };
 
   const verifyPhoneOtp = () => {
-    // Simulate OTP verification
     if (verification.phoneOtp.length === 6) {
       setVerification((prev) => ({ ...prev, phoneVerified: true, showPhoneOtp: false }));
       onUpdate({ phoneVerified: true });
@@ -69,19 +67,9 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
     formState.lastName?.trim() &&
     formState.email?.trim() &&
     formState.phone?.trim();
-    // Note: Email and phone verification disabled for now
-    // && verification.emailVerified &&
-    // && verification.phoneVerified;
 
   // Update parent with validation status
   React.useEffect(() => {
-    console.log("Identity step validation:", {
-      firstName: formState.firstName,
-      lastName: formState.lastName,
-      email: formState.email,
-      phone: formState.phone,
-      isFormValid
-    });
     onUpdate({ isIdentityStepValid: isFormValid });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormValid, formState.firstName, formState.lastName, formState.email, formState.phone]);
@@ -89,62 +77,60 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Your Identity & Contact</h2>
-        <p className="text-brand-grayMed">
-          We need to verify your identity and contact information for regulatory compliance.
-        </p>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
+        <p className="text-brand-grayMed">{t("description")}</p>
       </div>
 
       <div className="space-y-6">
         {/* Name Fields */}
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="firstName">First Name *</Label>
+            <Label htmlFor="firstName">{tc("firstName")} *</Label>
             <Input
               id="firstName"
               type="text"
               value={formState.firstName}
               onChange={(e) => handleInputChange("firstName", e.target.value)}
-              placeholder="Enter your first name"
+              placeholder={t("firstNamePlaceholder")}
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="lastName">Last Name *</Label>
+            <Label htmlFor="lastName">{tc("lastName")} *</Label>
             <Input
               id="lastName"
               type="text"
               value={formState.lastName}
               onChange={(e) => handleInputChange("lastName", e.target.value)}
-              placeholder="Enter your last name"
+              placeholder={t("lastNamePlaceholder")}
               required
             />
           </div>
         </div>
 
-        {/* Email - Verification Disabled */}
+        {/* Email */}
         <div className="space-y-2">
-          <Label htmlFor="email">Email Address *</Label>
+          <Label htmlFor="email">{tc("emailAddress")} *</Label>
           <Input
             id="email"
             type="email"
             value={formState.email}
             onChange={(e) => handleInputChange("email", e.target.value)}
-            placeholder="your.email@example.com"
+            placeholder={t("emailPlaceholder")}
             required
           />
         </div>
 
-        {/* Phone - Verification Disabled */}
+        {/* Phone */}
         <div className="space-y-2">
-          <Label htmlFor="phone">Phone Number *</Label>
+          <Label htmlFor="phone">{tc("phoneNumber")} *</Label>
           <Input
             id="phone"
             type="tel"
             value={formState.phone}
             onChange={(e) => handleInputChange("phone", e.target.value)}
-            placeholder="+352 123 456 789"
+            placeholder={t("phonePlaceholder")}
             required
           />
         </div>
@@ -153,7 +139,7 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
           <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-amber-600" />
             <div className="text-sm text-amber-900">
-              Please complete all required fields to continue.
+              {tc("completeRequired")}
             </div>
           </div>
         )}

@@ -156,7 +156,7 @@ export default function SpvDocumentsPage() {
 
         {/* Documents List */}
         {filtered.length === 0 ? (
-          <div className="py-20 text-center">
+          <div className="py-12 text-center">
             <FolderOpen className="mx-auto h-12 w-12 text-brand-grayLight" />
             <p className="mt-4 text-brand-grayMed">
               {t("spvInvestment.portal.documents.noDocuments")}

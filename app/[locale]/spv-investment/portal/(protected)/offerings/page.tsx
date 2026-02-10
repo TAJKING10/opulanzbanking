@@ -70,7 +70,7 @@ export default function SpvOfferingsPage() {
 
       <div className="container mx-auto max-w-7xl px-6 py-8">
         {filteredOfferings.length === 0 ? (
-          <div className="py-20 text-center">
+          <div className="py-12 text-center">
             <Building2 className="mx-auto h-12 w-12 text-brand-grayLight" />
             <p className="mt-4 text-brand-grayMed">
               {t("spvInvestment.portal.offerings.noOfferings")}

@@ -38,7 +38,7 @@ export default function SupportPage() {
       />
 
       {/* Contact Methods */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             title="Get in Touch"
@@ -108,7 +108,7 @@ export default function SupportPage() {
       </section>
 
       {/* Contact Form */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
             title="Send Us a Message"
@@ -251,7 +251,7 @@ export default function SupportPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
             title="Frequently Asked Questions"
@@ -305,7 +305,7 @@ export default function SupportPage() {
       </section>
 
       {/* Additional Resources */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             title="Additional Resources"
@@ -362,7 +362,7 @@ export default function SupportPage() {
       </section>
 
       {/* Office Locations */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             title="Our Offices"

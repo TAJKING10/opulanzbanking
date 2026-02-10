@@ -16,62 +16,71 @@ export default function AboutPage() {
   const strengths = [
     {
       icon: Users,
-      title: "Business Banking Expertise",
-      description: "Over 18+ years of experience serving commercial companies, financial institutions, and investment funds across Europe.",
+      title: t('hero.about.strength1Title'),
+      description: t('hero.about.strength1Description'),
     },
     {
       icon: Target,
-      title: "All-in-One Platform",
-      description: "Complete business solution from company formation to banking, accounting, tax advisory, investment, and insurance.",
+      title: t('hero.about.strength2Title'),
+      description: t('hero.about.strength2Description'),
     },
     {
       icon: Globe,
-      title: "Modern Technology",
-      description: "Leveraging Artificial Intelligence and Blockchain to make business banking better, easier, and more efficient.",
+      title: t('hero.about.strength3Title'),
+      description: t('hero.about.strength3Description'),
     },
   ];
 
   const certifications = [
     {
       icon: BadgeCheck,
-      title: "State Licensed",
-      description: "State Licensed Agents",
+      title: t('hero.about.cert1Title'),
+      description: t('hero.about.cert1Description'),
     },
     {
       icon: Award,
-      title: "Certified",
-      description: "Industry Certified Professionals",
+      title: t('hero.about.cert2Title'),
+      description: t('hero.about.cert2Description'),
     },
     {
       icon: Shield,
-      title: "Bonded",
-      description: "Bonded & Insured Operations",
+      title: t('hero.about.cert3Title'),
+      description: t('hero.about.cert3Description'),
     },
     {
       icon: FileCheck,
-      title: "Accredited",
-      description: "Better Business Bureau Accredited",
+      title: t('hero.about.cert4Title'),
+      description: t('hero.about.cert4Description'),
     },
   ];
 
   const stats = [
-    { number: "18+", label: "Years of Experience" },
-    { number: "500+", label: "Business Clients" },
+    { number: t('hero.about.statsYears'), label: t('hero.about.statsYearsLabel') },
+    { number: t('hero.about.statsClients'), label: t('hero.about.statsClientsLabel') },
+  ];
+
+  const benefits = [
+    { title: t('hero.about.benefit1Title'), description: t('hero.about.benefit1Description') },
+    { title: t('hero.about.benefit2Title'), description: t('hero.about.benefit2Description') },
+    { title: t('hero.about.benefit3Title'), description: t('hero.about.benefit3Description') },
+    { title: t('hero.about.benefit4Title'), description: t('hero.about.benefit4Description') },
+    { title: t('hero.about.benefit5Title'), description: t('hero.about.benefit5Description') },
+    { title: t('hero.about.benefit6Title'), description: t('hero.about.benefit6Description') },
   ];
 
   return (
     <>
       <Hero
-        title="About Opulanz"
-        subtitle="The One-Stop-Shop Business Banking Platform"
+        title={t('hero.about.title')}
+        subtitle={t('hero.about.subtitle')}
       />
 
       {/* Our Story */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
-            overline="OUR STORY"
-            title="Transforming Business Banking"
+            overline={t('hero.about.storyOverline')}
+            title={t('hero.about.storyTitle')}
             align="center"
             className="mb-12"
           />
@@ -79,7 +88,7 @@ export default function AboutPage() {
           <div className="space-y-6">
             <div className="rounded-2xl bg-gradient-to-br from-brand-goldLight/20 to-brand-gold/10 p-8 border-l-4 border-brand-gold">
               <p className="text-base text-brand-grayMed leading-relaxed">
-                Opulanz is part of <span className="font-semibold text-brand-dark">Groupe Advensys Luxembourg S.A.</span>, a holding company with over <span className="font-semibold text-brand-gold">18+ years of experience</span> in providing comprehensive business solutions across Europe. We built Opulanz with a clear vision: to become the leader in European online banking for businesses.
+                {t('hero.about.storyIntro')}
               </p>
             </div>
 
@@ -87,33 +96,33 @@ export default function AboutPage() {
               <div className="rounded-xl bg-white p-6 shadow-sm border border-brand-grayLight">
                 <div className="flex items-start gap-3 mb-3">
                   <Target className="h-6 w-6 text-brand-gold flex-shrink-0 mt-1" />
-                  <h3 className="text-lg font-bold text-brand-dark">Our Mission</h3>
+                  <h3 className="text-lg font-bold text-brand-dark">{t('hero.about.missionTitle')}</h3>
                 </div>
                 <p className="text-base text-brand-grayMed leading-relaxed">
-                  To improve the ecosystem of business banking, payments, and operational processes using modern technology including AI and Blockchain.
+                  {t('hero.about.missionText')}
                 </p>
               </div>
 
               <div className="rounded-xl bg-white p-6 shadow-sm border border-brand-grayLight">
                 <div className="flex items-start gap-3 mb-3">
                   <Eye className="h-6 w-6 text-brand-gold flex-shrink-0 mt-1" />
-                  <h3 className="text-lg font-bold text-brand-dark">Our Vision</h3>
+                  <h3 className="text-lg font-bold text-brand-dark">{t('hero.about.visionTitle')}</h3>
                 </div>
                 <p className="text-base text-brand-grayMed leading-relaxed">
-                  To become the leaders of the European online banking market with full banking license and integrated blockchain technologies.
+                  {t('hero.about.visionText')}
                 </p>
               </div>
             </div>
 
             <p className="text-base text-brand-grayMed leading-relaxed text-center">
-              Today, we serve <span className="font-semibold text-brand-dark">commercial companies, financial institutions, investment funds, and freelancers</span> across Europe. Our experienced team continues to innovate with cutting-edge technology while maintaining the highest standards of security, compliance, and customer service. We represent quality, trust, and innovation in business banking.
+              {t('hero.about.storyClosing')}
             </p>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="relative bg-gradient-to-br from-brand-dark via-brand-grayDark to-brand-dark py-24 md:py-32 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-brand-dark via-brand-grayDark to-brand-dark py-12 md:py-16 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-gold rounded-full filter blur-3xl animate-pulse"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-brand-gold rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -121,14 +130,14 @@ export default function AboutPage() {
         <div className="container mx-auto max-w-5xl px-6 relative z-10">
           <div className="text-center mb-16">
             <div className="inline-block mb-4">
-              <span className="text-brand-gold text-sm font-bold tracking-wider uppercase">Our Impact</span>
+              <span className="text-brand-gold text-sm font-bold tracking-wider uppercase">{t('hero.about.impactOverline')}</span>
               <div className="h-1 w-16 bg-gradient-to-r from-brand-gold to-brand-goldDark mx-auto mt-2 rounded-full"></div>
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Trusted by Businesses Across Europe
+              {t('hero.about.impactTitle')}
             </h2>
             <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              Our growth reflects the trust our clients place in us
+              {t('hero.about.impactSubtitle')}
             </p>
           </div>
 
@@ -154,12 +163,12 @@ export default function AboutPage() {
       </section>
 
       {/* Our Strengths */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline="OUR STRENGTHS"
-            title="What Sets Us Apart"
-            description="Three key pillars of our success"
+            overline={t('hero.about.strengthsOverline')}
+            title={t('hero.about.strengthsTitle')}
+            description={t('hero.about.strengthsDescription')}
             align="center"
             className="mb-12"
           />
@@ -188,12 +197,12 @@ export default function AboutPage() {
       </section>
 
       {/* Licenses & Certifications */}
-      <section className="bg-brand-off py-20 md:py-28">
+      <section className="bg-brand-off py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline="LICENSES & CERTIFICATIONS"
-            title="Fully Licensed & Certified"
-            description="We maintain all necessary licenses and certifications to provide business banking and financial services across Europe, ensuring compliance with industry regulations and standards."
+            overline={t('hero.about.licensesOverline')}
+            title={t('hero.about.licensesTitle')}
+            description={t('hero.about.licensesDescription')}
             align="center"
             className="mb-12"
           />
@@ -222,42 +231,17 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
-            title="Why Choose Opulanz?"
-            description="What makes us your trusted business banking partner"
+            title={t('hero.about.whyTitle')}
+            description={t('hero.about.whyDescription')}
             align="center"
             className="mb-12"
           />
 
           <div className="space-y-6">
-            {[
-              {
-                title: "One-Stop-Shop Platform",
-                description: "Complete business solution covering company formation, banking, accounting, tax advisory, investment, insurance, and more - all in one platform.",
-              },
-              {
-                title: "18+ Years of Experience",
-                description: "Part of Groupe Advensys Luxembourg S.A., we bring nearly two decades of expertise in serving businesses across Europe.",
-              },
-              {
-                title: "Modern Technology Stack",
-                description: "Built with cutting-edge Artificial Intelligence and Blockchain technology to provide efficient, secure, and innovative banking solutions.",
-              },
-              {
-                title: "Business-Focused Approach",
-                description: "Specifically designed for commercial companies, financial institutions, investment funds, and freelancers - not retail banking.",
-              },
-              {
-                title: "European Quality Standards",
-                description: "Operating across Europe, we maintain the highest standards of quality, trust, and compliance with banking regulations.",
-              },
-              {
-                title: "Future-Ready Vision",
-                description: "Working towards full banking license with integrated blockchain and green technologies to lead the European online banking market.",
-              },
-            ].map((benefit, index) => (
+            {benefits.map((benefit, index) => (
               <Card key={index} className="border-none">
                 <CardContent className="flex items-start gap-4 p-6">
                   <div className="flex-shrink-0">
@@ -279,13 +263,13 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            Ready to Get Started?
+            {t('hero.about.ctaTitle')}
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            Join thousands of businesses across Europe who trust Opulanz as their all-in-one banking and business solution platform.
+            {t('hero.about.ctaDescription')}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button
@@ -293,7 +277,7 @@ export default function AboutPage() {
               size="lg"
               className="min-w-48 bg-white text-brand-dark hover:bg-gray-50"
             >
-              <Link href={`/${locale}/open-account`}>Open an Account</Link>
+              <Link href={`/${locale}/open-account`}>{t('hero.about.ctaOpenAccount')}</Link>
             </Button>
             <Button
               asChild
@@ -301,7 +285,7 @@ export default function AboutPage() {
               variant="outline"
               className="min-w-48 border-2 border-white bg-transparent text-white hover:bg-white/10"
             >
-              <Link href={`/${locale}/support`}>Contact Us</Link>
+              <Link href={`/${locale}/support`}>{t('hero.about.ctaContact')}</Link>
             </Button>
           </div>
         </div>

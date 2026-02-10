@@ -76,7 +76,7 @@ export default function SpvInvestmentPage() {
       />
 
       {/* What is an SPV Section */}
-      <section id="what-is-spv" className="bg-white py-20 md:py-28">
+      <section id="what-is-spv" className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline={t("spvInvestment.landing.whatIsSpv.overline")}
@@ -105,7 +105,7 @@ export default function SpvInvestmentPage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="bg-gray-50 py-20 md:py-28">
+      <section className="bg-gray-50 py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline={t("spvInvestment.landing.howItWorks.overline")}
@@ -138,7 +138,7 @@ export default function SpvInvestmentPage() {
       </section>
 
       {/* Contact Form Section */}
-      <section id="contact" className="bg-white py-20 md:py-28">
+      <section id="contact" className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left Column - Information */}
@@ -291,7 +291,7 @@ export default function SpvInvestmentPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28 relative overflow-hidden">
+      <section className="hero-gradient py-12 md:py-16 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-brand-goldLight rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />

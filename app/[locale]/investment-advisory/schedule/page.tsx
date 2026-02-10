@@ -179,7 +179,7 @@ export default function ScheduleInvestmentMeetingPage() {
         subtitle="Book a convenient time to discuss your investment goals with our expert advisors"
       />
 
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-5xl px-6">
           {/* Step 1: Calendly Calendar */}
           {step === 'calendar' && (

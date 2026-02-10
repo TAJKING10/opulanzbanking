@@ -79,7 +79,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
       />
 
       {/* Services Section */}
-      <section id="services" className="bg-white py-20 md:py-28">
+      <section id="services" className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline="Investment Services"
@@ -108,7 +108,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="bg-gray-50 py-20 md:py-28">
+      <section className="bg-gray-50 py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
@@ -142,7 +142,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
       </section>
 
       {/* Investment Options Section */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline="Investment Options"
@@ -169,7 +169,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
       </section>
 
       {/* Stats Section */}
-      <section className="bg-gray-50 py-20 md:py-28">
+      <section className="bg-gray-50 py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid gap-8 md:grid-cols-3">
             <div className="text-center">
@@ -189,7 +189,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
             Start Building Your Investment Portfolio
@@ -209,7 +209,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
-              Learn More
+              {t("common.learnMore")}
             </Link>
           </div>
         </div>

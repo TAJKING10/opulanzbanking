@@ -266,7 +266,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'confirmation' && bookingData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-500">
@@ -355,7 +355,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'payment' && bookingData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
@@ -503,7 +503,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'calendar') {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
@@ -570,7 +570,7 @@ Contact: opulanz.banking@gmail.com
         subtitle="Expert guidance on cross-border tax matters and transfer pricing"
       />
 
-      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-12 md:py-16 overflow-hidden">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-brand-goldLight/20 rounded-full blur-3xl"></div>
 
@@ -601,7 +601,7 @@ Contact: opulanz.banking@gmail.com
         </div>
       </section>
 
-      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-white py-12 md:py-16 overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30"></div>
 
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
@@ -648,7 +648,7 @@ Contact: opulanz.banking@gmail.com
         </div>
       </section>
 
-      <section className="relative bg-gray-50 py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-gray-50 py-12 md:py-16 overflow-hidden">
         <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-brand-goldLight/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl"></div>
 
@@ -682,7 +682,7 @@ Contact: opulanz.banking@gmail.com
         </div>
       </section>
 
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
             Ready to Optimize Your International Tax?

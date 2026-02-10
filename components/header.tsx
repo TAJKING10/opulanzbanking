@@ -13,28 +13,29 @@ interface HeaderProps {
 }
 
 export function Header({ locale }: HeaderProps) {
-  const t = useTranslations();
-
-  const navigation = [
-    { name: t('nav.home'), href: "" },
-    { name: t('nav.about'), href: "/about" },
-    { name: t('nav.openAccount'), href: "/open-account" },
-    { name: t('nav.services'), href: "/services" },
-    { name: t('nav.support'), href: "/support" },
-  ];
-
-  const services = [
-    { name: t('nav.companyFormation'), href: "/company-formation" },
-    { name: t('nav.taxAdvisory'), href: "/tax-advisory" },
-    { name: t('nav.investmentAdvisory'), href: "/investment-advisory" },
-    { name: t('nav.lifeInsurance'), href: "/life-insurance" },
-    { name: t('nav.accountingInvoicing'), href: "/invoicing-accounting" },
-  ];
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isServicesDropdownOpen, setIsServicesDropdownOpen] = React.useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = React.useState(false);
   const pathname = usePathname();
+  const t = useTranslations();
+
+  const navigation = [
+    { name: t("nav.home"), href: "" },
+    { name: t("nav.about"), href: "/about" },
+    { name: t("nav.openAccount"), href: "/open-account" },
+    { name: t("nav.services"), href: "/services", isServices: true },
+    { name: t("nav.support"), href: "/support" },
+  ];
+
+  const services = [
+    { name: t("nav.companyFormation"), href: "/company-formation" },
+    { name: t("nav.taxAdvisory"), href: "/tax-advisory" },
+    { name: t("nav.investmentAdvisory"), href: "/investment-advisory" },
+    { name: t("nav.lifeInsurance"), href: "/life-insurance" },
+    { name: t("nav.accountingInvoicing"), href: "/invoicing-accounting" },
+    { name: t("nav.investment"), href: "/spv-investment" },
+  ];
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -61,7 +62,7 @@ export function Header({ locale }: HeaderProps) {
           className="flex items-center gap-3 transition-opacity hover:opacity-80"
         >
           <img
-            src={`${process.env.NODE_ENV === 'production' ? '' : ''}/images/opulanz-logo.png`}
+            src={`${process.env.NODE_ENV === 'production' ? '/opulanzbanking' : ''}/images/opulanz-logo.png`}
             alt="Opulanz Logo"
             width={60}
             height={60}
@@ -77,10 +78,10 @@ export function Header({ locale }: HeaderProps) {
               : pathname.includes(item.href);
 
             // Services dropdown
-            if (item.name === "Services") {
+            if (item.isServices) {
               return (
                 <div
-                  key={item.name}
+                  key={item.href}
                   className="relative"
                   onMouseEnter={() => setIsServicesDropdownOpen(true)}
                   onMouseLeave={() => setIsServicesDropdownOpen(false)}
@@ -104,11 +105,11 @@ export function Header({ locale }: HeaderProps) {
                             href={`/${locale}/services`}
                             className="block px-4 py-2.5 text-sm font-bold text-brand-gold transition-colors hover:bg-brand-off"
                           >
-                            {t('nav.ourServices')}
+                            {t("nav.ourServices")}
                           </Link>
                           {services.map((service) => (
                             <Link
-                              key={service.name}
+                              key={service.href}
                               href={`/${locale}${service.href}`}
                               className="block px-4 py-2.5 text-sm font-medium text-brand-dark transition-colors hover:bg-brand-off hover:text-brand-gold"
                             >
@@ -125,7 +126,7 @@ export function Header({ locale }: HeaderProps) {
 
             return (
               <Link
-                key={item.name}
+                key={item.href}
                 href={`/${locale}${item.href}`}
                 className={cn(
                   "text-sm font-semibold transition-all duration-200 hover:text-brand-gold hover:scale-105 px-1",
@@ -164,7 +165,7 @@ export function Header({ locale }: HeaderProps) {
             size="sm"
             className="hidden sm:inline-flex bg-brand-gold text-white hover:bg-brand-goldDark transition-all duration-200 hover:scale-105 shadow-sm hover:shadow-md"
           >
-            <Link href={`/${locale}/open-account`}>{t('nav.openAccount')}</Link>
+            <Link href={`/${locale}/open-account`}>{t("nav.openAccount")}</Link>
           </Button>
 
           {/* Mobile Menu Toggle */}
@@ -188,9 +189,9 @@ export function Header({ locale }: HeaderProps) {
           <div className="container mx-auto space-y-1 px-6 py-6">
             {navigation.map((item) => {
               // Services with submenu
-              if (item.name === "Services") {
+              if (item.isServices) {
                 return (
-                  <div key={item.name}>
+                  <div key={item.href}>
                     <button
                       onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
                       className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-base font-semibold text-brand-dark transition-colors hover:bg-gray-50 hover:text-brand-gold"
@@ -210,11 +211,11 @@ export function Header({ locale }: HeaderProps) {
                           className="block rounded-lg px-4 py-2.5 text-sm font-bold text-brand-gold transition-colors hover:bg-gray-50"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
-                          {t('nav.ourServices')}
+                          {t("nav.ourServices")}
                         </Link>
                         {services.map((service) => (
                           <Link
-                            key={service.name}
+                            key={service.href}
                             href={`/${locale}${service.href}`}
                             className="block rounded-lg px-4 py-2.5 text-sm font-medium text-brand-grayMed transition-colors hover:bg-gray-50 hover:text-brand-gold"
                             onClick={() => setIsMobileMenuOpen(false)}
@@ -230,7 +231,7 @@ export function Header({ locale }: HeaderProps) {
 
               return (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   href={`/${locale}${item.href}`}
                   className="block rounded-lg px-4 py-3 text-base font-semibold text-brand-dark transition-colors hover:bg-gray-50 hover:text-brand-gold"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -255,12 +256,12 @@ export function Header({ locale }: HeaderProps) {
             </div>
             <div className="space-y-2 pt-4">
               <div className="space-y-2">
-                <p className="px-4 text-xs font-semibold text-brand-grayMed uppercase tracking-wide">{t('nav.openAccount')}</p>
+                <p className="px-4 text-xs font-semibold text-brand-grayMed uppercase tracking-wide">{t("nav.openAccount")}</p>
                 <Button asChild variant="primary" className="w-full">
-                  <Link href={`/${locale}/open-account/individual`}>{t('nav.individualAccount')}</Link>
+                  <Link href={`/${locale}/open-account/individual`}>{t("nav.individualAccount")}</Link>
                 </Button>
                 <Button asChild variant="default" className="w-full">
-                  <Link href={`/${locale}/open-account/company`}>{t('nav.companyAccount')}</Link>
+                  <Link href={`/${locale}/open-account/company`}>{t("nav.companyAccount")}</Link>
                 </Button>
               </div>
             </div>

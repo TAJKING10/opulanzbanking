@@ -69,7 +69,7 @@ export default function WarmReferralPage() {
 
   if (step === "thank-you") {
     return (
-      <div className="min-h-screen bg-brand-off py-20">
+      <div className="min-h-screen bg-brand-off py-12">
         <div className="container mx-auto max-w-2xl px-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -100,7 +100,7 @@ export default function WarmReferralPage() {
 
   if (step === "handoff") {
     return (
-      <div className="min-h-screen bg-brand-off py-20">
+      <div className="min-h-screen bg-brand-off py-12">
         <div className="container mx-auto max-w-3xl px-6">
           <SectionHeading
             title={tHandoff("title")}
@@ -180,7 +180,7 @@ export default function WarmReferralPage() {
   }
 
   return (
-    <div className="min-h-screen bg-brand-off py-20">
+    <div className="min-h-screen bg-brand-off py-12">
       <div className="container mx-auto max-w-3xl px-6">
         <SectionHeading
           title={t("warmReferral.title")}

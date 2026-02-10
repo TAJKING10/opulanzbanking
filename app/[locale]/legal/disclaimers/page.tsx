@@ -17,7 +17,7 @@ export default function DisclaimersPage() {
         subtitle="Important information about our services and limitations"
       />
 
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-4xl px-6">
           <div className="mb-8 rounded-lg border-l-4 border-brand-gold bg-brand-goldLight/20 p-6">
             <div className="flex items-start gap-4">

@@ -55,11 +55,7 @@
       "Bash(psql:*)",
       "Bash(tee:*)",
       "Bash(cp:*)",
-      "Bash(timeout:*)",
-      "Bash(test:*)",
-      "Bash(ls:*)",
-      "Bash(ping:*)",
-      "Bash(git status:*)"
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []

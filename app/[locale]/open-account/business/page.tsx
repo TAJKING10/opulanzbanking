@@ -20,17 +20,17 @@ export default function BusinessAccountPage() {
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string;
-  const t = useTranslations("accountOpening.business");
+  const t = useTranslations("accountForms.business");
 
   const BUSINESS_ACCOUNT_STEPS: Step[] = [
-    { id: 1, label: t("steps.welcome.label"), description: t("steps.welcome.description") },
-    { id: 2, label: t("steps.company.label"), description: t("steps.company.description") },
-    { id: 3, label: t("steps.jurisdiction.label"), description: t("steps.jurisdiction.description") },
-    { id: 4, label: t("steps.directors.label"), description: t("steps.directors.description") },
-    { id: 5, label: t("steps.formation.label"), description: t("steps.formation.description") },
-    { id: 6, label: t("steps.documents.label"), description: t("steps.documents.description") },
-    { id: 7, label: t("steps.review.label"), description: t("steps.review.description") },
-    { id: 8, label: t("steps.submit.label"), description: t("steps.submit.description") },
+    { id: 1, label: t("steps.welcomeLabel"), description: t("steps.welcomeDesc") },
+    { id: 2, label: t("steps.companyLabel"), description: t("steps.companyDesc") },
+    { id: 3, label: t("steps.jurisdictionLabel"), description: t("steps.jurisdictionDesc") },
+    { id: 4, label: t("steps.directorsLabel"), description: t("steps.directorsDesc") },
+    { id: 5, label: t("steps.formationLabel"), description: t("steps.formationDesc") },
+    { id: 6, label: t("steps.documentsLabel"), description: t("steps.documentsDesc") },
+    { id: 7, label: t("steps.reviewLabel"), description: t("steps.reviewDesc") },
+    { id: 8, label: t("steps.submitLabel"), description: t("steps.submitDesc") },
   ];
 
   const [currentStep, setCurrentStep] = React.useState(1);

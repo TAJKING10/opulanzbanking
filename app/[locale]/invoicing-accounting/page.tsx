@@ -15,37 +15,44 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
   const features = [
     {
       icon: FileText,
-      title: t('accounting.features.invoicing.title'),
-      description: t('accounting.features.invoicing.description'),
+      title: "Professional Invoicing",
+      description: "Create and send professional invoices with automated payment reminders and tracking.",
     },
     {
       icon: Calculator,
-      title: t('accounting.features.bookkeeping.title'),
-      description: t('accounting.features.bookkeeping.description'),
+      title: "Bookkeeping Services",
+      description: "Comprehensive bookkeeping services to keep your financial records accurate and up-to-date.",
     },
     {
       icon: PieChart,
-      title: t('accounting.features.reporting.title'),
-      description: t('accounting.features.reporting.description'),
+      title: "Financial Reporting",
+      description: "Detailed financial reports and insights to help you make informed business decisions.",
     },
     {
       icon: Users,
-      title: t('accounting.features.payroll.title'),
-      description: t('accounting.features.payroll.description'),
+      title: "Payroll Management",
+      description: "Efficient payroll processing with automated tax calculations and compliance.",
     },
     {
       icon: Shield,
-      title: t('accounting.features.compliance.title'),
-      description: t('accounting.features.compliance.description'),
+      title: "Compliance & Audit",
+      description: "Ensure compliance with local regulations and prepare for audits with confidence.",
     },
     {
       icon: TrendingUp,
-      title: t('accounting.features.planning.title'),
-      description: t('accounting.features.planning.description'),
+      title: "Financial Planning",
+      description: "Strategic financial planning and analysis to support your business growth.",
     },
   ];
 
-  const benefits = t.raw('accounting.benefits.list') as string[];
+  const benefits = [
+    "Save time with automated invoicing and bookkeeping",
+    "Reduce errors with professional accounting expertise",
+    "Stay compliant with local tax regulations",
+    "Get real-time insights into your financial health",
+    "Focus on growing your business while we handle the numbers",
+    "Secure cloud-based access to your financial data anytime",
+  ];
 
   return (
     <>
@@ -53,22 +60,22 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
         title={t('services.accounting.title')}
         subtitle={t('services.accounting.description')}
         primaryCta={{
-          label: t('common.getStarted'),
+          label: "Get Started",
           href: `/${locale}/invoicing-accounting/onboarding`,
         }}
         secondaryCta={{
-          label: t('common.learnMore'),
+          label: t("common.learnMore"),
           href: "#features",
         }}
       />
 
       {/* Features Section */}
-      <section id="features" className="bg-white py-20 md:py-28">
+      <section id="features" className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline={t('accounting.sections.ourServices')}
-            title={t('accounting.sections.completeSolutions')}
-            description={t('accounting.sections.solutionsDesc')}
+            overline="Our Services"
+            title="Complete Accounting Solutions for Your Business"
+            description="From invoicing to financial reporting, we provide comprehensive accounting services tailored to your business needs."
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature) => {
@@ -92,22 +99,24 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-gray-50 py-20 md:py-28">
+      <section className="bg-gray-50 py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
               <h2 className="mb-6 text-3xl font-bold text-brand-dark md:text-4xl">
-                {t('accounting.benefits.title')}
+                Why Choose Our Accounting Services?
               </h2>
               <p className="mb-8 text-lg text-brand-grayMed">
-                {t('accounting.benefits.subtitle')}
+                We combine cutting-edge technology with expert financial knowledge to deliver accounting
+                services that help your business thrive. Our team of certified accountants ensures accuracy,
+                compliance, and strategic insights for your financial success.
               </p>
               <Button
                 asChild
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <Link href={`/${locale}/invoicing-accounting/onboarding`}>{t('common.getStarted')}</Link>
+                <Link href={`/${locale}/invoicing-accounting/onboarding`}>Get Started</Link>
               </Button>
             </div>
             <div className="space-y-4">
@@ -123,26 +132,27 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            {t('accounting.cta.title')}
+            Ready to Streamline Your Finances?
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            {t('accounting.cta.subtitle')}
+            Join thousands of businesses that trust us with their accounting and invoicing needs.
+            Get started today and experience the difference.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href={`/${locale}/invoicing-accounting/onboarding`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
-              {t('common.getStarted')}
+              Get Started
             </Link>
             <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
-              {t('accounting.cta.contactSales')}
+              Contact Sales
             </Link>
           </div>
         </div>

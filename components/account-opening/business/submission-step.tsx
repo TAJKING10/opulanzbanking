@@ -13,7 +13,8 @@ interface BusinessSubmissionStepProps {
 }
 
 export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmissionStepProps) {
-  const t = useTranslations("accountOpening.business.submissionStep");
+  const tc = useTranslations("accountForms.common");
+
   const [submitted, setSubmitted] = React.useState(false);
   const [applicationId, setApplicationId] = React.useState("");
   const hasSubmitted = React.useRef(false);
@@ -152,24 +153,24 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
               <CheckCircle className="h-12 w-12 text-green-600" />
             </div>
-            <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
+            <h2 className="mb-2 text-2xl font-bold text-brand-dark">{tc("applicationSubmitted")}</h2>
             <p className="text-lg text-brand-grayMed">
-              {t("subtitle")}
+              {tc("applicationSubmittedDesc")}
             </p>
           </div>
 
           {/* Application ID */}
           <div className="rounded-lg border border-brand-grayLight bg-brand-gold/5 p-6 text-center">
-            <p className="mb-2 text-sm font-medium text-brand-dark">{t("applicationReference")}</p>
+            <p className="mb-2 text-sm font-medium text-brand-dark">{tc("applicationReference")}</p>
             <p className="text-2xl font-bold text-brand-gold">{applicationId}</p>
             <p className="mt-2 text-xs text-brand-grayMed">
-              {t("saveReference")}
+              {tc("saveReference")}
             </p>
           </div>
 
           {/* Next Steps */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-brand-dark">{t("whatHappensNext")}</h3>
+            <h3 className="text-lg font-semibold text-brand-dark">{tc("whatHappensNext")}</h3>
 
             <div className="space-y-3">
               <div className="flex items-start gap-4 rounded-lg border border-brand-grayLight bg-white p-4">
@@ -177,9 +178,9 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
                   1
                 </div>
                 <div>
-                  <p className="font-semibold text-brand-dark">{t("steps.emailConfirmation.title")}</p>
+                  <p className="font-semibold text-brand-dark">{tc("emailConfirmation")}</p>
                   <p className="mt-1 text-sm text-brand-grayMed">
-                    {t("steps.emailConfirmation.description", { email: data.email })}
+                    {tc("emailConfirmationDesc")}
                   </p>
                 </div>
               </div>
@@ -189,9 +190,9 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
                   2
                 </div>
                 <div>
-                  <p className="font-semibold text-brand-dark">{t("steps.bankReview.title")}</p>
+                  <p className="font-semibold text-brand-dark">{tc("bankReview")}</p>
                   <p className="mt-1 text-sm text-brand-grayMed">
-                    {t("steps.bankReview.description")}
+                    {tc("bankReviewDesc")}
                   </p>
                 </div>
               </div>
@@ -201,9 +202,9 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
                   3
                 </div>
                 <div>
-                  <p className="font-semibold text-brand-dark">{t("steps.accountActivation.title")}</p>
+                  <p className="font-semibold text-brand-dark">{tc("accountActivation")}</p>
                   <p className="mt-1 text-sm text-brand-grayMed">
-                    {t("steps.accountActivation.description")}
+                    {tc("accountActivationDesc")}
                   </p>
                 </div>
               </div>
@@ -212,9 +213,9 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
                 <div className="flex items-start gap-4 rounded-lg border border-amber-200 bg-amber-50 p-4">
                   <FileText className="h-5 w-5 flex-shrink-0 text-amber-600" />
                   <div>
-                    <p className="font-semibold text-amber-900">{t("documentUploadPending")}</p>
+                    <p className="font-semibold text-amber-900">{tc("docUploadPending")}</p>
                     <p className="mt-1 text-sm text-amber-800">
-                      {t("documentUploadPendingDescription")}
+                      {tc("docUploadPendingDesc")}
                     </p>
                   </div>
                 </div>
@@ -224,22 +225,22 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
 
           {/* Quick Actions */}
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-brand-dark">{t("quickActions.title")}</h3>
+            <h3 className="text-lg font-semibold text-brand-dark">{tc("quickActions")}</h3>
 
             <div className="grid gap-3 md:grid-cols-2">
               <div className="flex items-center gap-3 rounded-lg border border-brand-grayLight bg-white p-4">
                 <Mail className="h-8 w-8 text-brand-gold" />
                 <div className="flex-1">
-                  <p className="text-sm font-semibold text-brand-dark">{t("quickActions.checkEmail")}</p>
-                  <p className="text-xs text-brand-grayMed">{t("quickActions.emailSent", { email: data.email })}</p>
+                  <p className="text-sm font-semibold text-brand-dark">{tc("checkEmail")}</p>
+                  <p className="text-xs text-brand-grayMed">{tc("confirmationSentTo")} {data.email}</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-3 rounded-lg border border-brand-grayLight bg-white p-4">
                 <Clock className="h-8 w-8 text-brand-gold" />
                 <div className="flex-1">
-                  <p className="text-sm font-semibold text-brand-dark">{t("quickActions.expectedTimeline")}</p>
-                  <p className="text-xs text-brand-grayMed">{t("quickActions.timelineDescription")}</p>
+                  <p className="text-sm font-semibold text-brand-dark">{tc("expectedTimeline")}</p>
+                  <p className="text-xs text-brand-grayMed">{tc("reviewTimeline")}</p>
                 </div>
               </div>
             </div>
@@ -249,20 +250,23 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
           <div className="flex flex-col items-center gap-4 pt-6 sm:flex-row sm:justify-center">
             <Button asChild className="min-w-48 bg-brand-gold text-white hover:bg-brand-goldDark">
               <Link href={`/${locale}`}>
-                {t("returnToHomepage")}
+                {tc("returnToHomepage")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
 
             <Button asChild variant="outline" className="min-w-48">
-              <Link href={`/${locale}/support`}>{t("contactSupport")}</Link>
+              <Link href={`/${locale}/support`}>{tc("contactSupport")}</Link>
             </Button>
           </div>
 
           {/* Additional Info */}
           <div className="rounded-lg bg-blue-50 p-4 text-center">
             <p className="text-sm text-blue-900">
-              {t("supportInfo")}
+              <strong>{tc("needHelp")}</strong> {tc("supportHours")}{" "}
+              <a href="mailto:support@opulanz.com" className="underline">
+                support@opulanz.com
+              </a>
             </p>
           </div>
         </>
@@ -271,8 +275,8 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
           {/* Loading State */}
           <div className="text-center">
             <div className="mx-auto mb-6 h-16 w-16 animate-spin rounded-full border-4 border-brand-gold border-t-transparent"></div>
-            <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("submitting")}</h2>
-            <p className="text-lg text-brand-grayMed">{t("submittingDescription")}</p>
+            <h2 className="mb-2 text-2xl font-bold text-brand-dark">{tc("submittingApplication")}</h2>
+            <p className="text-lg text-brand-grayMed">{tc("submittingWait")}</p>
           </div>
         </>
       )}

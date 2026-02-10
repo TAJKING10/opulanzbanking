@@ -235,7 +235,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'confirmation' && bookingData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-500">
@@ -303,7 +303,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'payment' && bookingData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
@@ -417,7 +417,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'calendar') {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">Book Your Corporate Tax Consultation</h1>
@@ -459,7 +459,7 @@ Contact: opulanz.banking@gmail.com
   return (
     <>
       <Hero title="Corporate Tax" subtitle="Comprehensive corporate tax services and planning" />
-      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-12 md:py-16 overflow-hidden">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <div className="text-center mb-8">
@@ -483,7 +483,7 @@ Contact: opulanz.banking@gmail.com
           </div>
         </div>
       </section>
-      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-white py-12 md:py-16 overflow-hidden">
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div className="relative">
@@ -507,7 +507,7 @@ Contact: opulanz.banking@gmail.com
           </div>
         </div>
       </section>
-      <section className="relative bg-gray-50 py-20 md:py-28">
+      <section className="relative bg-gray-50 py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading overline="WHY CHOOSE US" title="Benefits of Professional Corporate Tax Advice" align="center" className="mb-12" />
           <div className="grid gap-6 md:grid-cols-2">
@@ -522,7 +522,7 @@ Contact: opulanz.banking@gmail.com
           </div>
         </div>
       </section>
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">Ready to Optimize Your Corporate Tax?</h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">Book your consultation now and let our experts help you with corporate tax planning.</p>

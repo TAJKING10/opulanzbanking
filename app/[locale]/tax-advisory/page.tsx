@@ -86,7 +86,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       />
 
       {/* Services Section */}
-      <section id="services" className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <section id="services" className="relative bg-white py-12 md:py-16 overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-brand-goldLight/10 rounded-full blur-3xl"></div>
@@ -129,7 +129,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="relative bg-gray-50 py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-gray-50 py-12 md:py-16 overflow-hidden">
         {/* Decorative grid background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30"></div>
 
@@ -167,7 +167,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       </section>
 
       {/* Expertise Section */}
-      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-white py-12 md:py-16 overflow-hidden">
         {/* Animated background orbs */}
         <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-brand-goldLight/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl"></div>
@@ -228,7 +228,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
             {t('taxAdvisory.cta.title')}

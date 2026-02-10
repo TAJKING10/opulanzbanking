@@ -252,7 +252,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'confirmation' && bookingData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-500">
@@ -299,7 +299,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'payment' && bookingData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500"><CheckCircle className="h-10 w-10 text-white" /></div>
@@ -370,7 +370,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'calendar') {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">Book Your Tax Compliance Consultation</h1>
@@ -394,7 +394,7 @@ Contact: opulanz.banking@gmail.com
   return (
     <>
       <Hero title="Tax Compliance" subtitle="Ensure ongoing compliance with tax laws and regulations" />
-      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-12 md:py-16 overflow-hidden">
         <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <div className="text-center mb-8">
             <div className="relative">
@@ -407,7 +407,7 @@ Contact: opulanz.banking@gmail.com
           </div>
         </div>
       </section>
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
@@ -421,13 +421,13 @@ Contact: opulanz.banking@gmail.com
           </div>
         </div>
       </section>
-      <section className="bg-gray-50 py-20">
+      <section className="bg-gray-50 py-12">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading overline="WHY CHOOSE US" title="Benefits" align="center" className="mb-12" />
           <div className="grid gap-6 md:grid-cols-2">{benefits.map((benefit) => (<Card key={benefit}><CardContent className="flex items-start gap-4 p-6"><CheckCircle className="h-6 w-6 text-brand-gold flex-shrink-0 mt-1" /><p className="text-lg text-brand-dark">{benefit}</p></CardContent></Card>))}</div>
         </div>
       </section>
-      <section className="hero-gradient py-20">
+      <section className="hero-gradient py-12">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl">Ready to Ensure Compliance?</h2>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-white/90">Book your consultation now.</p>

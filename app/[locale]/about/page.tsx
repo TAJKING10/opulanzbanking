@@ -10,95 +10,77 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function AboutPage() {
-  const t = useTranslations('about');
+  const t = useTranslations();
   const locale = useLocale();
 
   const strengths = [
     {
       icon: Users,
-      title: t('strengths.banking.title'),
-      description: t('strengths.banking.description'),
+      title: t('hero.about.strength1Title'),
+      description: t('hero.about.strength1Description'),
     },
     {
       icon: Target,
-      title: t('strengths.platform.title'),
-      description: t('strengths.platform.description'),
+      title: t('hero.about.strength2Title'),
+      description: t('hero.about.strength2Description'),
     },
     {
       icon: Globe,
-      title: t('strengths.technology.title'),
-      description: t('strengths.technology.description'),
+      title: t('hero.about.strength3Title'),
+      description: t('hero.about.strength3Description'),
     },
   ];
 
   const certifications = [
     {
       icon: BadgeCheck,
-      title: t('certifications.stateLicensed.title'),
-      description: t('certifications.stateLicensed.description'),
+      title: t('hero.about.cert1Title'),
+      description: t('hero.about.cert1Description'),
     },
     {
       icon: Award,
-      title: t('certifications.certified.title'),
-      description: t('certifications.certified.description'),
+      title: t('hero.about.cert2Title'),
+      description: t('hero.about.cert2Description'),
     },
     {
       icon: Shield,
-      title: t('certifications.bonded.title'),
-      description: t('certifications.bonded.description'),
+      title: t('hero.about.cert3Title'),
+      description: t('hero.about.cert3Description'),
     },
     {
       icon: FileCheck,
-      title: t('certifications.accredited.title'),
-      description: t('certifications.accredited.description'),
+      title: t('hero.about.cert4Title'),
+      description: t('hero.about.cert4Description'),
     },
   ];
 
   const stats = [
-    { number: "18+", label: t('stats.yearsExperience') },
-    { number: "500+", label: t('stats.businessClients') },
+    { number: t('hero.about.statsYears'), label: t('hero.about.statsYearsLabel') },
+    { number: t('hero.about.statsClients'), label: t('hero.about.statsClientsLabel') },
   ];
 
   const benefits = [
-    {
-      title: t('whyChoose.benefits.platform.title'),
-      description: t('whyChoose.benefits.platform.description'),
-    },
-    {
-      title: t('whyChoose.benefits.experience.title'),
-      description: t('whyChoose.benefits.experience.description'),
-    },
-    {
-      title: t('whyChoose.benefits.technology.title'),
-      description: t('whyChoose.benefits.technology.description'),
-    },
-    {
-      title: t('whyChoose.benefits.focus.title'),
-      description: t('whyChoose.benefits.focus.description'),
-    },
-    {
-      title: t('whyChoose.benefits.quality.title'),
-      description: t('whyChoose.benefits.quality.description'),
-    },
-    {
-      title: t('whyChoose.benefits.vision.title'),
-      description: t('whyChoose.benefits.vision.description'),
-    },
+    { title: t('hero.about.benefit1Title'), description: t('hero.about.benefit1Description') },
+    { title: t('hero.about.benefit2Title'), description: t('hero.about.benefit2Description') },
+    { title: t('hero.about.benefit3Title'), description: t('hero.about.benefit3Description') },
+    { title: t('hero.about.benefit4Title'), description: t('hero.about.benefit4Description') },
+    { title: t('hero.about.benefit5Title'), description: t('hero.about.benefit5Description') },
+    { title: t('hero.about.benefit6Title'), description: t('hero.about.benefit6Description') },
   ];
 
   return (
     <>
       <Hero
-        title={t('hero.title')}
-        subtitle={t('hero.subtitle')}
+        title={t('hero.about.title')}
+        subtitle={t('hero.about.subtitle')}
       />
 
       {/* Our Story */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
-            overline={t('story.overline')}
-            title={t('story.title')}
+            overline={t('hero.about.storyOverline')}
+            title={t('hero.about.storyTitle')}
             align="center"
             className="mb-12"
           />
@@ -106,7 +88,7 @@ export default function AboutPage() {
           <div className="space-y-6">
             <div className="rounded-2xl bg-gradient-to-br from-brand-goldLight/20 to-brand-gold/10 p-8 border-l-4 border-brand-gold">
               <p className="text-base text-brand-grayMed leading-relaxed">
-                {t('story.intro')}
+                {t('hero.about.storyIntro')}
               </p>
             </div>
 
@@ -114,33 +96,33 @@ export default function AboutPage() {
               <div className="rounded-xl bg-white p-6 shadow-sm border border-brand-grayLight">
                 <div className="flex items-start gap-3 mb-3">
                   <Target className="h-6 w-6 text-brand-gold flex-shrink-0 mt-1" />
-                  <h3 className="text-lg font-bold text-brand-dark">{t('story.mission.title')}</h3>
+                  <h3 className="text-lg font-bold text-brand-dark">{t('hero.about.missionTitle')}</h3>
                 </div>
                 <p className="text-base text-brand-grayMed leading-relaxed">
-                  {t('story.mission.description')}
+                  {t('hero.about.missionText')}
                 </p>
               </div>
 
               <div className="rounded-xl bg-white p-6 shadow-sm border border-brand-grayLight">
                 <div className="flex items-start gap-3 mb-3">
                   <Eye className="h-6 w-6 text-brand-gold flex-shrink-0 mt-1" />
-                  <h3 className="text-lg font-bold text-brand-dark">{t('story.vision.title')}</h3>
+                  <h3 className="text-lg font-bold text-brand-dark">{t('hero.about.visionTitle')}</h3>
                 </div>
                 <p className="text-base text-brand-grayMed leading-relaxed">
-                  {t('story.vision.description')}
+                  {t('hero.about.visionText')}
                 </p>
               </div>
             </div>
 
             <p className="text-base text-brand-grayMed leading-relaxed text-center">
-              {t('story.summary')}
+              {t('hero.about.storyClosing')}
             </p>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="relative bg-gradient-to-br from-brand-dark via-brand-grayDark to-brand-dark py-24 md:py-32 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-brand-dark via-brand-grayDark to-brand-dark py-12 md:py-16 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-gold rounded-full filter blur-3xl animate-pulse"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-brand-gold rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -148,14 +130,14 @@ export default function AboutPage() {
         <div className="container mx-auto max-w-5xl px-6 relative z-10">
           <div className="text-center mb-16">
             <div className="inline-block mb-4">
-              <span className="text-brand-gold text-sm font-bold tracking-wider uppercase">{t('stats.overline')}</span>
+              <span className="text-brand-gold text-sm font-bold tracking-wider uppercase">{t('hero.about.impactOverline')}</span>
               <div className="h-1 w-16 bg-gradient-to-r from-brand-gold to-brand-goldDark mx-auto mt-2 rounded-full"></div>
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              {t('stats.title')}
+              {t('hero.about.impactTitle')}
             </h2>
             <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              {t('stats.subtitle')}
+              {t('hero.about.impactSubtitle')}
             </p>
           </div>
 
@@ -181,12 +163,12 @@ export default function AboutPage() {
       </section>
 
       {/* Our Strengths */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline={t('strengths.overline')}
-            title={t('strengths.title')}
-            description={t('strengths.subtitle')}
+            overline={t('hero.about.strengthsOverline')}
+            title={t('hero.about.strengthsTitle')}
+            description={t('hero.about.strengthsDescription')}
             align="center"
             className="mb-12"
           />
@@ -215,12 +197,12 @@ export default function AboutPage() {
       </section>
 
       {/* Licenses & Certifications */}
-      <section className="bg-brand-off py-20 md:py-28">
+      <section className="bg-brand-off py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline={t('certifications.overline')}
-            title={t('certifications.title')}
-            description={t('certifications.subtitle')}
+            overline={t('hero.about.licensesOverline')}
+            title={t('hero.about.licensesTitle')}
+            description={t('hero.about.licensesDescription')}
             align="center"
             className="mb-12"
           />
@@ -249,11 +231,11 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
-            title={t('whyChoose.title')}
-            description={t('whyChoose.subtitle')}
+            title={t('hero.about.whyTitle')}
+            description={t('hero.about.whyDescription')}
             align="center"
             className="mb-12"
           />
@@ -281,13 +263,13 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            {t('cta.title')}
+            {t('hero.about.ctaTitle')}
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            {t('cta.subtitle')}
+            {t('hero.about.ctaDescription')}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button
@@ -295,7 +277,7 @@ export default function AboutPage() {
               size="lg"
               className="min-w-48 bg-white text-brand-dark hover:bg-gray-50"
             >
-              <Link href={`/${locale}/open-account`}>{t('cta.openAccount')}</Link>
+              <Link href={`/${locale}/open-account`}>{t('hero.about.ctaOpenAccount')}</Link>
             </Button>
             <Button
               asChild
@@ -303,7 +285,7 @@ export default function AboutPage() {
               variant="outline"
               className="min-w-48 border-2 border-white bg-transparent text-white hover:bg-white/10"
             >
-              <Link href={`/${locale}/support`}>{t('cta.contactUs')}</Link>
+              <Link href={`/${locale}/support`}>{t('hero.about.ctaContact')}</Link>
             </Button>
           </div>
         </div>

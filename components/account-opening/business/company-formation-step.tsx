@@ -15,22 +15,13 @@ interface CompanyFormationStepProps {
 }
 
 export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormationStepProps) {
-  const t = useTranslations("accountOpening.business.companyFormationStep");
+  const t = useTranslations("accountForms.business.formation");
+
   const [proposedName, setProposedName] = React.useState(data.proposedCompanyName || "");
   const [businessActivity, setBusinessActivity] = React.useState(data.businessActivity || "");
   const [shareCapital, setShareCapital] = React.useState(data.shareCapital || "");
 
   const isFormationStepValid = proposedName && businessActivity && shareCapital;
-
-  // Get jurisdiction name for subtitle and helper text
-  const getJurisdictionName = () => {
-    const jurisdictionMap: { [key: string]: string } = {
-      LU: "Luxembourg",
-      FR: "France",
-      FI: "Finland"
-    };
-    return jurisdictionMap[data.jurisdiction] || data.jurisdiction;
-  };
 
   // Update parent with validation status
   React.useEffect(() => {
@@ -48,7 +39,7 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          {t("subtitle", { jurisdiction: getJurisdictionName() })}
+          {t("serviceDesc")}
         </p>
       </div>
 
@@ -57,30 +48,30 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
           <div className="flex items-start gap-4">
             <Building2 className="h-8 w-8 flex-shrink-0 text-brand-gold" />
             <div>
-              <h3 className="mb-2 text-lg font-semibold text-brand-dark">{t("companyFormationService.title")}</h3>
+              <h3 className="mb-2 text-lg font-semibold text-brand-dark">{t("serviceTitle")}</h3>
               <p className="text-sm text-brand-grayMed">
-                {t("companyFormationService.description")}
+                {t("serviceDesc")}
               </p>
             </div>
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="proposedName">{t("proposedCompanyName")} {t("required")}</Label>
+          <Label htmlFor="proposedName">{t("proposedName")} *</Label>
           <Input
             id="proposedName"
             type="text"
             value={proposedName}
             onChange={(e) => setProposedName(e.target.value)}
-            placeholder={t("proposedCompanyNamePlaceholder")}
+            placeholder={t("proposedNamePlaceholder")}
           />
           <p className="text-xs text-brand-grayMed">
-            {t("proposedCompanyNameHelper")}
+            {t("proposedNameHelp")}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="businessActivity">{t("businessActivity")} {t("required")}</Label>
+          <Label htmlFor="businessActivity">{t("businessActivity")} *</Label>
           <Textarea
             id="businessActivity"
             value={businessActivity}
@@ -91,7 +82,7 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="shareCapital">{t("shareCapital")} {t("required")}</Label>
+          <Label htmlFor="shareCapital">{t("shareCapital")} *</Label>
           <Input
             id="shareCapital"
             type="text"
@@ -100,32 +91,32 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
             placeholder={t("shareCapitalPlaceholder")}
           />
           <p className="text-xs text-brand-grayMed">
-            {t("shareCapitalHelper")}
-            {data.jurisdiction === "LU" && ` ${t("shareCapitalRequirements.luxembourg")}`}
-            {data.jurisdiction === "FR" && ` ${t("shareCapitalRequirements.france")}`}
-            {data.jurisdiction === "FI" && ` ${t("shareCapitalRequirements.finland")}`}
+            {t("shareCapitalHelp")}
+            {data.jurisdiction === "LU" && ` ${t("luxembourgMin")}`}
+            {data.jurisdiction === "FR" && ` ${t("franceMin")}`}
+            {data.jurisdiction === "FI" && ` ${t("finlandMin")}`}
           </p>
         </div>
 
         <div className="rounded-lg bg-amber-50 p-4">
           <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-amber-900">
             <FileText className="h-4 w-4" />
-            {t("whatsIncluded.title")}
+            {t("whatsIncluded")}
           </h4>
           <ul className="space-y-1 text-sm text-amber-800">
-            <li>• {t("whatsIncluded.item1")}</li>
-            <li>• {t("whatsIncluded.item2")}</li>
-            <li>• {t("whatsIncluded.item3")}</li>
-            <li>• {t("whatsIncluded.item4")}</li>
-            <li>• {t("whatsIncluded.item5")}</li>
-            <li>• {t("whatsIncluded.item6")}</li>
+            <li>• {t("included1")}</li>
+            <li>• {t("included2")}</li>
+            <li>• {t("included3")}</li>
+            <li>• {t("included4")}</li>
+            <li>• {t("included5")}</li>
+            <li>• {t("included6")}</li>
           </ul>
         </div>
 
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("formationTimeline.title")}</h4>
+          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("timelineTitle")}</h4>
           <p className="text-sm text-blue-800">
-            {t("formationTimeline.description")}
+            {t("timelineDesc")}
           </p>
         </div>
       </div>

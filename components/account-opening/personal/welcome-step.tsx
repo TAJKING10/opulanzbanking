@@ -13,10 +13,9 @@ interface WelcomeStepProps {
 }
 
 export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
-  const t = useTranslations("accountOpening.personal.welcomeStep");
-  const [mode, setMode] = React.useState<string>(
-    data?.mode ?? ""
-  );
+  const t = useTranslations("accountForms.personal.welcome");
+  const [mode, setMode] = React.useState(data.mode || "");
+
   const handleModeChange = (value: string) => {
     setMode(value);
     onUpdate({ mode: value });
@@ -26,9 +25,7 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
     <div className="space-y-8">
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
-        <p className="text-brand-grayMed">
-          {t("subtitle")}
-        </p>
+        <p className="text-brand-grayMed">{t("description")}</p>
       </div>
 
       <div className="space-y-6">
@@ -39,10 +36,11 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
 
           <RadioGroup value={mode} onValueChange={handleModeChange} className="space-y-4">
             <div
-              className={`relative flex cursor-pointer items-start space-x-4 rounded-lg border-2 p-6 transition-all ${mode === "current"
-                ? "border-brand-gold bg-brand-gold/5"
-                : "border-gray-200 hover:border-gray-300"
-                }`}
+              className={`relative flex cursor-pointer items-start space-x-4 rounded-lg border-2 p-6 transition-all ${
+                mode === "current"
+                  ? "border-brand-gold bg-brand-gold/5"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
               onClick={() => handleModeChange("current")}
             >
               <RadioGroupItem value="current" id="current" className="mt-1" />
@@ -53,20 +51,19 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
                     htmlFor="current"
                     className="text-base font-semibold text-brand-dark cursor-pointer"
                   >
-                    {t("accountTypes.current.title")}
+                    {t("currentTitle")}
                   </Label>
                 </div>
-                <p className="mt-2 text-sm text-brand-grayMed">
-                  {t("accountTypes.current.description")}
-                </p>
+                <p className="mt-2 text-sm text-brand-grayMed">{t("currentDesc")}</p>
               </div>
             </div>
 
             <div
-              className={`relative flex cursor-pointer items-start space-x-4 rounded-lg border-2 p-6 transition-all ${mode === "private"
-                ? "border-brand-gold bg-brand-gold/5"
-                : "border-gray-200 hover:border-gray-300"
-                }`}
+              className={`relative flex cursor-pointer items-start space-x-4 rounded-lg border-2 p-6 transition-all ${
+                mode === "private"
+                  ? "border-brand-gold bg-brand-gold/5"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
               onClick={() => handleModeChange("private")}
             >
               <RadioGroupItem value="private" id="private" className="mt-1" />
@@ -77,24 +74,22 @@ export function WelcomeStep({ data, onUpdate, onNext }: WelcomeStepProps) {
                     htmlFor="private"
                     className="text-base font-semibold text-brand-dark cursor-pointer"
                   >
-                    {t("accountTypes.private.title")}
+                    {t("privateTitle")}
                   </Label>
                 </div>
-                <p className="mt-2 text-sm text-brand-grayMed">
-                  {t("accountTypes.private.description")}
-                </p>
+                <p className="mt-2 text-sm text-brand-grayMed">{t("privateDesc")}</p>
               </div>
             </div>
           </RadioGroup>
         </div>
 
         <div className="rounded-lg bg-blue-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("whatHappensNext")}</h4>
+          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("whatNext")}</h4>
           <ul className="space-y-1 text-sm text-blue-800">
-            <li>• {t("timeline.step1")}</li>
-            <li>• {t("timeline.step2")}</li>
-            <li>• {t("timeline.step3")}</li>
-            <li>• {t("timeline.step4")}</li>
+            <li>• {t("nextStep1")}</li>
+            <li>• {t("nextStep2")}</li>
+            <li>• {t("nextStep3")}</li>
+            <li>• {t("nextStep4")}</li>
           </ul>
         </div>
       </div>

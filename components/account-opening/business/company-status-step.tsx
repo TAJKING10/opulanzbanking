@@ -15,7 +15,8 @@ interface CompanyStatusStepProps {
 }
 
 export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepProps) {
-  const t = useTranslations("accountOpening.business.companyStatusStep");
+  const t = useTranslations("accountForms.business.companyStatus");
+
   const [companyStatus, setCompanyStatus] = React.useState(data.companyStatus || "");
   const [companyName, setCompanyName] = React.useState(data.companyName || "");
   const [registrationNumber, setRegistrationNumber] = React.useState(data.registrationNumber || "");
@@ -44,7 +45,7 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          {t("subtitle")}
+          {t("description")}
         </p>
       </div>
 
@@ -71,11 +72,11 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
                     htmlFor="existing"
                     className="cursor-pointer text-base font-semibold text-brand-dark"
                   >
-                    {t("existing.title")}
+                    {t("existingTitle")}
                   </Label>
                 </div>
                 <p className="mt-2 text-sm text-brand-grayMed">
-                  {t("existing.description")}
+                  {t("existingDesc")}
                 </p>
               </div>
             </div>
@@ -96,11 +97,11 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
                     htmlFor="new"
                     className="cursor-pointer text-base font-semibold text-brand-dark"
                   >
-                    {t("new.title")}
+                    {t("newTitle")}
                   </Label>
                 </div>
                 <p className="mt-2 text-sm text-brand-grayMed">
-                  {t("new.description")}
+                  {t("newDesc")}
                 </p>
               </div>
             </div>
@@ -112,7 +113,7 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
             <h4 className="font-semibold text-brand-dark">{t("companyDetails")}</h4>
 
             <div className="space-y-2">
-              <Label htmlFor="companyName">{t("companyName")} {t("required")}</Label>
+              <Label htmlFor="companyName">{t("companyName")} *</Label>
               <Input
                 id="companyName"
                 type="text"
@@ -124,7 +125,7 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="registrationNumber">{t("registrationNumber")} {t("required")}</Label>
+              <Label htmlFor="registrationNumber">{t("registrationNumber")} *</Label>
               <Input
                 id="registrationNumber"
                 type="text"
@@ -139,9 +140,9 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
 
         {companyStatus === "new" && (
           <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-            <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("companyFormationService.title")}</h4>
+            <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("formationServiceTitle")}</h4>
             <p className="text-sm text-blue-800">
-              {t("companyFormationService.description")}
+              {t("formationServiceDesc")}
             </p>
           </div>
         )}

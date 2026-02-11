@@ -1062,6 +1062,325 @@
       }
     }
   },
+  "taxAdvisory": {
+    "hero": {
+      "primaryCta": "Planifier une consultation",
+      "secondaryCta": "Voir les services"
+    },
+    "services": {
+      "overline": "Nos Services",
+      "title": "Services de conseil fiscal",
+      "description": "Services de consultation fiscale professionnels adaptés à vos besoins",
+      "taxReturn": {
+        "title": "Préparation des déclarations fiscales",
+        "description": "Préparation et dépôt professionnels des déclarations fiscales des entreprises et des particuliers dans plusieurs juridictions"
+      },
+      "international": {
+        "title": "Fiscalité internationale",
+        "description": "Conseils d'experts sur les questions fiscales transfrontalières, les prix de transfert et l'optimisation des conventions de double imposition"
+      },
+      "corporate": {
+        "title": "Fiscalité des entreprises",
+        "description": "Services complets de fiscalité des entreprises incluant la due diligence M&A, le conseil en TVA et la planification fiscale"
+      },
+      "compliance": {
+        "title": "Conformité fiscale",
+        "description": "Conformité continue avec les lois et réglementations fiscales, surveillance proactive et représentation"
+      },
+      "personal": {
+        "title": "Conseil fiscal personnel",
+        "description": "Conseils fiscaux personnalisés pour les particuliers fortunés, les expatriés et la planification successorale"
+      }
+    },
+    "benefits": {
+      "1": "Conseillers fiscaux qualifiés au Luxembourg avec des décennies d'expérience",
+      "2": "Expertise en structures fiscales transfrontalières et internationales",
+      "3": "Surveillance proactive de la conformité et mises à jour réglementaires",
+      "4": "Stratégies personnalisées pour les particuliers et les entreprises",
+      "5": "Conseil complet en TVA et fiscalité indirecte",
+      "6": "Accompagnement en restructuration d'entreprise fiscalement efficace",
+      "7": "Services de conseil confidentiels et discrets"
+    },
+    "whyChoose": {
+      "title": "Pourquoi choisir le conseil fiscal Opulanz ?",
+      "description": "Notre équipe de professionnels fiscaux certifiés combine une expertise approfondie du Luxembourg avec des connaissances internationales pour fournir des solutions fiscales optimisées et conformes à chaque client."
+    },
+    "expertise": {
+      "overline": "Notre Expertise",
+      "title": "Connaissances fiscales spécialisées",
+      "description": "Nos conseillers apportent une expertise spécialisée dans tous les domaines majeurs de la fiscalité",
+      "optimization": {
+        "title": "Optimisation fiscale",
+        "description": "Planification stratégique pour minimiser la charge fiscale tout en maintenant une conformité totale"
+      },
+      "compliance": {
+        "title": "Conformité réglementaire",
+        "description": "Restez en avance sur les réglementations changeantes grâce à une surveillance et des conseils proactifs"
+      },
+      "international": {
+        "title": "Fiscalité internationale",
+        "description": "Naviguez dans la fiscalité transfrontalière complexe avec l'optimisation des conventions et les prix de transfert"
+      },
+      "personal": {
+        "title": "Conseil personnel",
+        "description": "Solutions sur mesure pour les particuliers fortunés, les expatriés et la planification successorale"
+      }
+    },
+    "cta": {
+      "title": "Prêt à optimiser votre stratégie fiscale ?",
+      "description": "Réservez une consultation avec nos experts fiscaux et commencez à planifier votre structure fiscale optimale dès aujourd'hui.",
+      "schedule": "Planifier une consultation",
+      "contact": "Contactez-nous"
+    },
+    "shared": {
+      "sixtyMinutes": "60 minutes",
+      "duration": "Durée :",
+      "service": "Service :",
+      "name": "Nom :",
+      "email": "E-mail :",
+      "date": "Date :",
+      "time": "Heure :",
+      "confirmation": {
+        "title": "Paiement confirmé !",
+        "subtitle": "Merci pour votre paiement. Votre rendez-vous est maintenant confirmé.",
+        "subtitleWithEmail": "Votre rendez-vous est confirmé. E-mails de confirmation envoyés !",
+        "confirmedAppointment": "Rendez-vous confirmé",
+        "whatsNext": "Et maintenant ?",
+        "checkEmail": "Vérifiez votre e-mail ({email}) pour le lien de réunion et l'invitation au calendrier",
+        "confirmationSent": "E-mail de confirmation envoyé à {email}",
+        "teamNotified": "Notre équipe à opulanz.banking@gmail.com a été notifiée",
+        "checkMeetLink": "Vérifiez votre e-mail pour le lien Google Meet de Calendly",
+        "prepareDocuments": "Préparez vos documents et questions fiscaux",
+        "joinConference": "Rejoignez la vidéoconférence à l'heure prévue",
+        "teamReady": "Notre équipe a été notifiée et sera prête pour votre consultation",
+        "downloadReceipt": "Télécharger le reçu",
+        "returnHome": "Retour à l'accueil",
+        "paymentReceipt": "Reçu de paiement",
+        "paypalOrderId": "ID de commande PayPal :",
+        "payerName": "Nom du payeur :",
+        "payerEmail": "E-mail du payeur :",
+        "amountPaid": "Montant payé :",
+        "paymentStatus": "Statut du paiement :",
+        "paymentDate": "Date du paiement :"
+      },
+      "payment": {
+        "timeSlotReserved": "Créneau réservé !",
+        "completePaymentToConfirm": "Effectuez votre paiement pour confirmer votre réservation",
+        "appointmentDetails": "Détails de votre rendez-vous",
+        "serviceFee": "Frais de service (HT) :",
+        "vat": "TVA (17%) :",
+        "totalInclVat": "Total (TTC) :",
+        "completeYourPayment": "Effectuez votre paiement",
+        "oneTimePayment": "Paiement unique pour une consultation de 60 minutes",
+        "testing": "Test :",
+        "testCard": "Utilisez la carte",
+        "testCardExpiry": "(Expiration : 12/2030, CVV : 123)",
+        "paymentSuccessful": "Paiement réussi !",
+        "processing": "Traitement en cours...",
+        "continueToConfirmation": "Continuer vers la confirmation",
+        "paymentFailed": "Le paiement a échoué. Veuillez réessayer.",
+        "errorProcessing": "Une erreur est survenue lors du traitement de votre paiement. Veuillez contacter le support.",
+        "errorGeneral": "Une erreur est survenue. Veuillez contacter le support.",
+        "completePaypalFirst": "Veuillez d'abord effectuer le paiement PayPal."
+      },
+      "calendar": {
+        "bookYour": "Réservez votre {service}",
+        "scheduleConsultation": "Planifiez votre consultation de 60 minutes - {price}",
+        "sixtyMinConsultation": "Consultation de 60 minutes",
+        "consultationDesc": "Session de consultation professionnelle avec notre conseiller fiscal expert",
+        "fee": "Frais de {price}",
+        "expertService": "Service expert",
+        "troubleCalendly": "Des problèmes avec Calendly ? Utilisez la réservation manuelle",
+        "bookConsultation": "Réservez votre consultation",
+        "enterDetails": "Étape 1 : Entrez vos coordonnées",
+        "enterYourDetails": "Entrez vos coordonnées",
+        "enterDetailsDesc": "Nous les utiliserons pour planifier votre rendez-vous",
+        "fullName": "Nom complet *",
+        "emailAddress": "Adresse e-mail *",
+        "nextStepNote": "Après avoir entré vos coordonnées, vous sélectionnerez votre date et heure préférées dans notre calendrier.",
+        "continueToCalendar": "Continuer vers le calendrier",
+        "fillDetails": "Remplissez vos coordonnées pour procéder au paiement",
+        "preferredDate": "Date préférée *",
+        "preferredTime": "Heure préférée *",
+        "backToCalendly": "Retour à Calendly",
+        "continueToPayment": "Continuer vers le paiement"
+      },
+      "info": {
+        "fixedFee": "Tarif fixe pour le service {service}",
+        "sixtyMinConsultation": "Consultation de 60 minutes avec un conseiller fiscal expert",
+        "bookNow": "Réservez votre consultation maintenant",
+        "serviceDetails": "DÉTAILS DU SERVICE",
+        "whatsIncluded": "Ce qui est inclus",
+        "whyChooseUs": "POURQUOI NOUS CHOISIR",
+        "bookConsultationPrice": "Réserver - {price}",
+        "backToTaxAdvisory": "Retour au conseil fiscal"
+      },
+      "noBooking": {
+        "title": "Aucune réservation trouvée",
+        "subtitle": "Veuillez d'abord planifier votre rendez-vous avant de procéder au paiement.",
+        "subtitleCalendly": "Vous devez d'abord réserver un rendez-vous via Calendly avant de voir la confirmation.",
+        "scheduleAppointment": "Planifier un rendez-vous",
+        "startFresh": "Recommencer - Réserver un rendez-vous"
+      }
+    },
+    "booking": {
+      "calendly": {
+        "title": "Planifiez votre consultation fiscale",
+        "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes"
+      },
+      "serviceSelection": {
+        "title": "Consultation planifiée !",
+        "subtitle": "Maintenant, veuillez sélectionner le service dont vous avez besoin",
+        "step": "ÉTAPE 2 SUR 3",
+        "selectTitle": "Sélectionnez votre service de conseil fiscal",
+        "selectDesc": "Choisissez le service qui correspond le mieux à vos besoins",
+        "selectService": "Sélectionner le service"
+      },
+      "payment": {
+        "title": "Effectuez votre paiement",
+        "subtitle": "Dernière étape pour confirmer votre consultation",
+        "step": "ÉTAPE 3 SUR 3",
+        "paymentDetails": "Détails du paiement",
+        "orderSummary": "Résumé de la commande",
+        "paymentMethod": "Mode de paiement",
+        "paymentMethodDesc": "Pour finaliser votre réservation, veuillez procéder au paiement en utilisant l'une des méthodes ci-dessous.",
+        "payWithCard": "Payer par carte bancaire",
+        "payWithTransfer": "Payer par virement bancaire",
+        "payWithPaypal": "Payer avec PayPal",
+        "reservedNote": "Votre créneau de consultation est réservé pendant 15 minutes. Veuillez effectuer le paiement pour confirmer votre réservation.",
+        "backToSelection": "Retour à la sélection du service",
+        "cancelBooking": "Annuler la réservation"
+      }
+    },
+    "taxReturn": {
+      "title": "Préparation des déclarations fiscales",
+      "subtitle": "Préparation et dépôt professionnels des déclarations fiscales des entreprises et des particuliers",
+      "serviceDetailsTitle": "Services professionnels de déclaration fiscale",
+      "serviceDetailsDesc1": "Laissez nos professionnels fiscaux expérimentés gérer la complexité de la préparation des déclarations fiscales. Nous garantissons l'exactitude, la conformité et le dépôt dans les délais dans plusieurs juridictions.",
+      "serviceDetailsDesc2": "Que vous soyez un contribuable individuel ou une entité commerciale, notre service complet couvre tous les aspects de la préparation des déclarations fiscales, de l'examen de la documentation à la soumission finale.",
+      "features": {
+        "1": "Préparation professionnelle des déclarations fiscales des entreprises et des particuliers",
+        "2": "Dépôt dans plusieurs juridictions",
+        "3": "Exactitude et conformité garanties",
+        "4": "Examen expert de toute la documentation",
+        "5": "Soumission dans les délais aux autorités fiscales",
+        "6": "Assistance pour les questions et correspondances fiscales"
+      },
+      "benefitsTitle": "Avantages de la préparation professionnelle des déclarations fiscales",
+      "benefits": {
+        "1": "Gagnez du temps et réduisez le stress",
+        "2": "Assurez la conformité avec les réglementations fiscales",
+        "3": "Maximisez les déductions et crédits éligibles",
+        "4": "Expertise professionnelle à des tarifs abordables"
+      },
+      "feeDesc": "Tarif fixe pour le service de préparation des déclarations fiscales",
+      "expertServiceDesc": "Préparation et dépôt professionnels des déclarations fiscales",
+      "ctaTitle": "Prêt à déposer votre déclaration fiscale ?",
+      "ctaDesc": "Réservez votre consultation maintenant et laissez nos experts gérer votre déclaration fiscale de manière professionnelle."
+    },
+    "internationalTax": {
+      "title": "Fiscalité internationale",
+      "subtitle": "Conseils d'experts sur les questions fiscales transfrontalières et les prix de transfert",
+      "serviceDetailsTitle": "Expertise en fiscalité internationale",
+      "serviceDetailsDesc1": "Naviguez dans les complexités de la fiscalité transfrontalière avec nos conseils d'experts. Nous sommes spécialisés dans la structuration fiscale internationale, les prix de transfert et l'optimisation des conventions.",
+      "serviceDetailsDesc2": "Notre équipe possède une vaste expérience des réglementations fiscales européennes et mondiales, garantissant que vos opérations internationales sont fiscalement efficaces et conformes.",
+      "features": {
+        "1": "Conseils d'experts sur les questions fiscales transfrontalières",
+        "2": "Analyse et documentation des prix de transfert",
+        "3": "Optimisation des conventions de double imposition",
+        "4": "Conseils en structuration fiscale internationale",
+        "5": "Planification des transactions transfrontalières",
+        "6": "Conformité avec plusieurs juridictions"
+      },
+      "benefitsTitle": "Avantages du conseil professionnel en fiscalité internationale",
+      "benefits": {
+        "1": "Minimisez l'exposition fiscale internationale",
+        "2": "Naviguez dans les réglementations transfrontalières complexes",
+        "3": "Optimisez les structures fiscales mondiales",
+        "4": "Connaissance experte du droit fiscal européen et international"
+      },
+      "feeDesc": "Tarif fixe pour le service de fiscalité internationale",
+      "expertServiceDesc": "Expertise en fiscalité transfrontalière et prix de transfert",
+      "ctaTitle": "Prêt à optimiser votre fiscalité internationale ?",
+      "ctaDesc": "Réservez votre consultation maintenant et laissez nos experts vous aider à naviguer dans la fiscalité transfrontalière."
+    },
+    "corporateTax": {
+      "title": "Fiscalité des entreprises",
+      "subtitle": "Services complets de fiscalité des entreprises et planification",
+      "serviceDetailsTitle": "Services de fiscalité des entreprises",
+      "serviceDetailsDesc1": "Notre équipe d'experts fournit des services complets de planification et de conformité fiscale des entreprises pour optimiser la position fiscale de votre entreprise.",
+      "serviceDetailsDesc2": "De la restructuration aux conseils fiscaux M&A, nous veillons à ce que vos transactions d'entreprise soient fiscalement efficaces et conformes.",
+      "features": {
+        "1": "Services complets de fiscalité et planification des entreprises",
+        "2": "Conseils en restructuration d'entreprise fiscalement efficace",
+        "3": "Due diligence et conseils fiscaux M&A",
+        "4": "Conseil et conformité en TVA",
+        "5": "Stratégies d'optimisation de l'impôt sur les sociétés",
+        "6": "Implications fiscales des transactions commerciales"
+      },
+      "benefitsTitle": "Avantages du conseil professionnel en fiscalité des entreprises",
+      "benefits": {
+        "1": "Optimisez la structure fiscale de l'entreprise",
+        "2": "Conseils d'experts sur les questions fiscales complexes",
+        "3": "Assurez la conformité avec les réglementations",
+        "4": "Expertise professionnelle pour les entreprises"
+      },
+      "feeDesc": "Tarif fixe pour le service de fiscalité des entreprises",
+      "expertServiceDesc": "Planification et conformité fiscale des entreprises",
+      "ctaTitle": "Prêt à optimiser votre fiscalité d'entreprise ?",
+      "ctaDesc": "Réservez votre consultation maintenant et laissez nos experts vous aider dans la planification fiscale de votre entreprise."
+    },
+    "taxCompliance": {
+      "title": "Conformité fiscale",
+      "subtitle": "Conformité continue avec les lois et réglementations fiscales",
+      "serviceDetailsTitle": "Services de conformité fiscale",
+      "serviceDetailsDesc1": "Restez conforme aux réglementations fiscales en évolution grâce à notre surveillance proactive et nos conseils d'experts.",
+      "features": {
+        "1": "Conformité continue avec les lois et réglementations fiscales",
+        "2": "Surveillance régulière des changements réglementaires",
+        "3": "Conseils et accompagnement proactifs en conformité",
+        "4": "Correspondance et représentation auprès des autorités fiscales",
+        "5": "Revues de conformité et bilans de santé",
+        "6": "Mises à jour sur les changements du droit fiscal luxembourgeois et européen"
+      },
+      "benefitsTitle": "Avantages",
+      "benefits": {
+        "1": "Restez conforme aux réglementations en évolution",
+        "2": "Évitez les pénalités et les problèmes juridiques",
+        "3": "Tranquillité d'esprit avec une surveillance experte",
+        "4": "Gestion proactive des risques"
+      },
+      "feeDesc": "Tarif fixe pour le service de conformité fiscale",
+      "expertServiceDesc": "Surveillance de la conformité et conseils",
+      "ctaTitle": "Prêt à assurer votre conformité ?",
+      "ctaDesc": "Réservez votre consultation maintenant."
+    },
+    "personalTax": {
+      "title": "Conseil fiscal personnel",
+      "subtitle": "Conseils fiscaux personnalisés pour les particuliers fortunés",
+      "serviceDetailsTitle": "Conseil fiscal personnel",
+      "serviceDetailsDesc1": "Obtenez des conseils fiscaux personnalisés adaptés à votre situation et vos objectifs uniques.",
+      "features": {
+        "1": "Conseils fiscaux personnalisés pour les particuliers fortunés",
+        "2": "Planification et conformité fiscale des expatriés",
+        "3": "Optimisation de l'impôt sur le revenu personnel",
+        "4": "Planification patrimoniale et successorale",
+        "5": "Stratégies d'investissement fiscalement efficaces",
+        "6": "Conseils fiscaux en matière de relocalisation et de résidence"
+      },
+      "benefitsTitle": "Avantages",
+      "benefits": {
+        "1": "Optimisez votre position fiscale personnelle",
+        "2": "Conseils d'experts pour les situations complexes",
+        "3": "Tranquillité d'esprit avec des conseils professionnels",
+        "4": "Solutions sur mesure pour vos besoins"
+      },
+      "feeDesc": "Tarif fixe pour le conseil fiscal personnel",
+      "expertServiceDesc": "Conseils fiscaux personnalisés",
+      "ctaTitle": "Prêt pour des conseils fiscaux personnalisés ?",
+      "ctaDesc": "Réservez votre consultation maintenant."
+    }
+  },
   "dashboard": {
     "title": "Tableau de bord",
     "welcome": "Bienvenue ! Voici un aperçu de votre compte.",

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { FileCheck, Globe, Briefcase, Shield, UserCheck, CheckCircle } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +10,9 @@ import { Button } from "@/components/ui/button";
 
 export default function BookingPage({ params: { locale } }: { params: { locale: string } }) {
   const router = useRouter();
+  const t = useTranslations("taxAdvisory.booking");
+  const ts = useTranslations("taxAdvisory.shared");
+  const tSvc = useTranslations("taxAdvisory.services");
   const [selectedService, setSelectedService] = React.useState<string | null>(null);
   const [step, setStep] = React.useState<"calendly" | "service-selection" | "payment">("calendly");
 
@@ -38,36 +42,31 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
     {
       id: "tax-return-preparation",
       icon: FileCheck,
-      title: "Tax Return Preparation",
-      description: "Professional preparation and filing of corporate and individual tax returns",
+      titleKey: "taxReturn" as const,
       price: 299,
     },
     {
       id: "international-tax",
       icon: Globe,
-      title: "International Tax",
-      description: "Expert guidance on cross-border tax matters and transfer pricing",
+      titleKey: "international" as const,
       price: 250,
     },
     {
       id: "corporate-tax",
       icon: Briefcase,
-      title: "Corporate Tax",
-      description: "Comprehensive corporate tax services including M&A and VAT consulting",
+      titleKey: "corporate" as const,
       price: 150,
     },
     {
       id: "tax-compliance",
       icon: Shield,
-      title: "Tax Compliance",
-      description: "Ongoing compliance with tax laws and regulations",
+      titleKey: "compliance" as const,
       price: 250,
     },
     {
       id: "personal-tax-advisory",
       icon: UserCheck,
-      title: "Personal Tax Advisory",
-      description: "Personalized tax advice for high-net-worth individuals and expatriates",
+      titleKey: "personal" as const,
       price: 100,
     },
   ];
@@ -86,10 +85,10 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Schedule Your Tax Advisory Consultation
+                {t("calendly.title")}
               </h1>
               <p className="text-lg text-white/90">
-                Choose a convenient time for your 60-minute consultation
+                {t("calendly.subtitle")}
               </p>
             </div>
           </div>
@@ -118,10 +117,10 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
                 <CheckCircle className="h-10 w-10 text-white" />
               </div>
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Consultation Scheduled!
+                {t("serviceSelection.title")}
               </h1>
               <p className="text-lg text-white/90">
-                Now, please select which service you need assistance with
+                {t("serviceSelection.subtitle")}
               </p>
             </div>
           </div>
@@ -130,9 +129,9 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-7xl px-6">
             <SectionHeading
-              overline="STEP 2 OF 3"
-              title="Select Your Tax Advisory Service"
-              description="Choose the service that best matches your needs"
+              overline={t("serviceSelection.step")}
+              title={t("serviceSelection.selectTitle")}
+              description={t("serviceSelection.selectDesc")}
               align="center"
               className="mb-12"
             />
@@ -150,15 +149,15 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
                       <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-gold/10">
                         <Icon className="h-6 w-6 text-brand-gold" />
                       </div>
-                      <CardTitle className="text-xl">{service.title}</CardTitle>
+                      <CardTitle className="text-xl">{tSvc(`${service.titleKey}.title`)}</CardTitle>
                       <div className="mt-2">
-                        <span className="text-2xl font-bold text-brand-gold">€{service.price}</span>
+                        <span className="text-2xl font-bold text-brand-gold">&euro;{service.price}</span>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-brand-grayMed mb-4">{service.description}</p>
+                      <p className="text-sm text-brand-grayMed mb-4">{tSvc(`${service.titleKey}.description`)}</p>
                       <Button className="w-full bg-brand-gold text-white hover:bg-brand-goldDark">
-                        Select Service
+                        {t("serviceSelection.selectService")}
                       </Button>
                     </CardContent>
                   </Card>
@@ -178,10 +177,10 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Complete Your Payment
+                {t("payment.title")}
               </h1>
               <p className="text-lg text-white/90">
-                Final step to confirm your consultation
+                {t("payment.subtitle")}
               </p>
             </div>
           </div>
@@ -190,15 +189,15 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-3xl px-6">
             <SectionHeading
-              overline="STEP 3 OF 3"
-              title="Payment Details"
+              overline={t("payment.step")}
+              title={t("payment.paymentDetails")}
               align="center"
               className="mb-12"
             />
 
             <Card className="border-2 border-brand-grayLight mb-8">
               <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-2xl">Order Summary</CardTitle>
+                <CardTitle className="text-2xl">{t("payment.orderSummary")}</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="space-y-4">
@@ -212,28 +211,28 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
                       );
                     })()}
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-brand-dark">{selectedServiceData.title}</h3>
-                      <p className="text-sm text-brand-grayMed mt-1">{selectedServiceData.description}</p>
-                      <p className="text-sm text-brand-grayMed mt-2">Duration: 60 minutes</p>
+                      <h3 className="text-xl font-bold text-brand-dark">{tSvc(`${selectedServiceData.titleKey}.title`)}</h3>
+                      <p className="text-sm text-brand-grayMed mt-1">{tSvc(`${selectedServiceData.titleKey}.description`)}</p>
+                      <p className="text-sm text-brand-grayMed mt-2">{ts("duration")} {ts("sixtyMinutes")}</p>
                     </div>
                   </div>
 
                   <div className="border-t border-brand-grayLight pt-4 mt-4">
                     <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">Service Fee (excl. VAT):</span>
-                      <span className="font-semibold text-brand-dark">€{(selectedServiceData.price / 1.17).toFixed(2)}</span>
+                      <span className="text-brand-grayMed">{ts("payment.serviceFee")}</span>
+                      <span className="font-semibold text-brand-dark">&euro;{(selectedServiceData.price / 1.17).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">VAT (17%):</span>
+                      <span className="text-brand-grayMed">{ts("payment.vat")}</span>
                       <span className="font-semibold text-brand-dark">
-                        €{(selectedServiceData.price - (selectedServiceData.price / 1.17)).toFixed(2)}
+                        &euro;{(selectedServiceData.price - (selectedServiceData.price / 1.17)).toFixed(2)}
                       </span>
                     </div>
                     <div className="border-t border-brand-grayLight pt-4 mt-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-brand-dark">Total (incl. VAT):</span>
+                        <span className="text-xl font-bold text-brand-dark">{ts("payment.totalInclVat")}</span>
                         <span className="text-3xl font-bold text-brand-gold">
-                          €{selectedServiceData.price.toFixed(2)}
+                          &euro;{selectedServiceData.price.toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -244,35 +243,34 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
 
             <Card className="border-2 border-brand-grayLight mb-8">
               <CardHeader>
-                <CardTitle>Payment Method</CardTitle>
+                <CardTitle>{t("payment.paymentMethod")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-brand-grayMed mb-6">
-                  To complete your booking, please proceed with the payment using one of the methods below.
+                  {t("payment.paymentMethodDesc")}
                 </p>
 
                 <div className="space-y-4">
                   <Button className="w-full bg-brand-gold text-white hover:bg-brand-goldDark h-14 text-lg">
-                    Pay with Credit/Debit Card
+                    {t("payment.payWithCard")}
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10 h-14 text-lg"
                   >
-                    Pay with Bank Transfer
+                    {t("payment.payWithTransfer")}
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full border-2 border-brand-grayMed text-brand-grayMed hover:bg-gray-50 h-14 text-lg"
                   >
-                    Pay with PayPal
+                    {t("payment.payWithPaypal")}
                   </Button>
                 </div>
 
                 <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                   <p className="text-sm text-blue-900">
-                    <strong>Note:</strong> Your consultation slot is reserved for 15 minutes. Please complete
-                    the payment to confirm your booking.
+                    <strong>Note:</strong> {t("payment.reservedNote")}
                   </p>
                 </div>
               </CardContent>
@@ -284,14 +282,14 @@ export default function BookingPage({ params: { locale } }: { params: { locale: 
                 onClick={() => setStep("service-selection")}
                 className="flex-1"
               >
-                Back to Service Selection
+                {t("payment.backToSelection")}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => router.push(`/${locale}/tax-advisory`)}
                 className="flex-1"
               >
-                Cancel Booking
+                {t("payment.cancelBooking")}
               </Button>
             </div>
           </div>

@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Upload, X, FileText, CheckCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Upload, X, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export interface UploadedDocument {
@@ -30,6 +31,7 @@ export function DocUpload({
   accept = ".pdf,.png,.jpg,.jpeg",
   helpText,
 }: DocUploadProps) {
+  const t = useTranslations("accounting.documents.upload");
   const [isDragging, setIsDragging] = React.useState(false);
   const [isUploading, setIsUploading] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -140,16 +142,16 @@ export function DocUpload({
           {isUploading ? (
             <>
               <div className="h-10 w-10 animate-spin rounded-full border-4 border-brand-grayLight border-t-brand-gold"></div>
-              <p className="text-sm text-brand-dark">Uploading...</p>
+              <p className="text-sm text-brand-dark">{t("uploading")}</p>
             </>
           ) : (
             <>
               <Upload className="h-10 w-10 text-brand-gold" />
               <p className="text-sm font-medium text-brand-dark">
-                Drop file here or click to browse
+                {t("dropOrClick")}
               </p>
               <p className="text-xs text-brand-grayMed">
-                PDF, PNG, JPG (max 10MB)
+                {t("fileTypes")}
               </p>
             </>
           )}

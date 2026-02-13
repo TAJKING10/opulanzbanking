@@ -1381,6 +1381,262 @@
       "ctaDesc": "Book your consultation now."
     }
   },
+  "accounting": {
+    "steps": {
+      "company": { "label": "Company", "description": "Basic company information" },
+      "activity": { "label": "Activity", "description": "Business activity and scale" },
+      "contacts": { "label": "Contacts", "description": "Contacts and addresses" },
+      "volume": { "label": "Volume", "description": "Billing volume details" },
+      "documents": { "label": "Documents", "description": "Upload required documents" },
+      "review": { "label": "Review", "description": "Review and submit" }
+    },
+    "onboarding": {
+      "title": "Accounting & Invoicing Onboarding",
+      "subtitle": "Complete this form to set up your accounting and invoicing services"
+    },
+    "companyBasics": {
+      "title": "Company Basics",
+      "subtitle": "Provide basic information about your company",
+      "fields": {
+        "companyType": "Company Type",
+        "companyTypeOther": "Specify Company Type",
+        "countryOfIncorporation": "Country of Incorporation",
+        "dateOfIncorporation": "Date of Incorporation",
+        "shareCapital": "Share Capital",
+        "legalName": "Legal Name",
+        "tradeName": "Trade Name",
+        "registrationNumber": "Registration Number",
+        "vatNumber": "VAT Number"
+      },
+      "placeholders": {
+        "companyType": "Select company type",
+        "companyTypeOther": "Enter your company type",
+        "country": "Select country",
+        "date": "Select date",
+        "legalName": "Full legal name of your company",
+        "tradeName": "Trading or brand name (if different)",
+        "registrationNumber": "e.g., B123456",
+        "vatNumber": "e.g., LU12345678"
+      },
+      "hints": {
+        "tradeName": "Leave blank if the same as the legal name",
+        "registrationNumber": "Luxembourg RCS number or equivalent",
+        "vatNumber": "Intra-community VAT identification number"
+      }
+    },
+    "activityScale": {
+      "title": "Activity & Scale",
+      "subtitle": "Tell us about your business activity and financial scale",
+      "fields": {
+        "businessActivity": "Business Activity (NACE code)",
+        "turnoverLastFY": "Annual Turnover (Last Financial Year)",
+        "turnoverCurrentFY": "Projected Turnover (Current Financial Year)",
+        "employees": "Number of Employees (FTE)"
+      },
+      "placeholders": {
+        "businessActivity": "Select your primary business activity"
+      },
+      "hints": {
+        "turnoverLastFY": "Total revenue for the last completed financial year",
+        "turnoverCurrentFY": "Expected revenue for the current financial year",
+        "employees": "Full-time equivalent headcount"
+      }
+    },
+    "contactsAddresses": {
+      "title": "Contacts & Addresses",
+      "subtitle": "Provide company addresses and key contacts",
+      "registeredAddress": "Registered Address",
+      "operatingAddress": "Operating Address",
+      "sameAsRegistered": "Operating address is the same as registered address",
+      "primaryContact": "Primary Contact",
+      "addAccountingContact": "Add a separate accounting contact",
+      "accountingContact": "Accounting Contact",
+      "fields": {
+        "street": "Street Address",
+        "city": "City",
+        "postal": "Postal Code",
+        "country": "Country",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "role": "Role",
+        "email": "Email",
+        "phone": "Phone Number"
+      },
+      "placeholders": {
+        "street": "Street and number",
+        "city": "City name",
+        "postal": "Postal code",
+        "country": "Select country",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "role": "Select role",
+        "email": "email@example.com",
+        "phone": "+352 000 000 000"
+      }
+    },
+    "billingVolume": {
+      "title": "Billing Volume",
+      "subtitle": "Help us understand your invoicing and billing needs",
+      "fields": {
+        "salesInvoices": "Average Monthly Sales Invoices",
+        "purchaseInvoices": "Average Monthly Purchase Invoices",
+        "payrollNeeded": "I need payroll processing services",
+        "payrollEmployees": "Number of Employees for Payroll",
+        "multiCurrency": "I need multi-currency bookkeeping",
+        "selectCurrencies": "Select Currencies"
+      },
+      "hints": {
+        "salesInvoices": "Number of invoices you issue to clients per month",
+        "purchaseInvoices": "Number of invoices you receive from suppliers per month"
+      }
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Upload required documents for your accounting setup. All documents are optional at this stage.",
+      "types": {
+        "incorporation": "Certificate of Incorporation",
+        "articles": "Articles of Association / Statuts",
+        "vat": "VAT Certificate",
+        "directorId": "ID/Passport of Director"
+      },
+      "hints": {
+        "incorporation": "Official certificate from the trade register",
+        "articles": "Latest version of your company's articles",
+        "vat": "VAT registration certificate if applicable",
+        "directorId": "Valid government-issued ID of the managing director"
+      },
+      "note": {
+        "title": "Note:",
+        "text": "All documents are optional at this stage. You can upload them later during the onboarding process."
+      },
+      "upload": {
+        "uploading": "Uploading...",
+        "dropOrClick": "Drop file here or click to browse",
+        "fileTypes": "PDF, PNG, JPG (max 10MB)"
+      }
+    },
+    "review": {
+      "title": "Review & Submit",
+      "subtitle": "Please review your information before submitting",
+      "summary": "Application Summary",
+      "sections": {
+        "company": "Company Details",
+        "activity": "Activity & Scale",
+        "teamSize": "Team Size",
+        "contact": "Primary Contact",
+        "volume": "Billing Volume",
+        "documents": "Documents"
+      },
+      "incorporated": "Incorporated",
+      "lastFY": "Last FY",
+      "projected": "Projected",
+      "fteEmployees": "FTE employees",
+      "sales": "Sales",
+      "purchases": "Purchases",
+      "invoices": "invoices/month",
+      "payroll": "Payroll",
+      "employees": "employees",
+      "multiCurrency": "Multi-currency",
+      "documentsUploaded": "document(s) uploaded",
+      "consent": {
+        "title": "Consent & Confirmation",
+        "label": "I confirm the information provided is accurate",
+        "text": "By submitting this application, I confirm that all information provided is accurate and complete. I agree to the",
+        "privacyPolicy": "Privacy Policy",
+        "termsOfService": "Terms of Service",
+        "required": "You must accept the consent to submit your application."
+      },
+      "gdpr": {
+        "title": "Data Protection (GDPR)",
+        "text": "Your data is processed in accordance with GDPR regulations. We use your information solely for the purpose of providing accounting services and will not share it with third parties without your consent."
+      },
+      "submit": "Submit Application",
+      "acceptConsent": "Accept consent to continue"
+    }
+  },
+  "invoicingAccounting": {
+    "features": {
+      "overline": "Our Services",
+      "title": "Complete Accounting Solutions for Your Business",
+      "description": "From invoicing to financial reporting, we provide comprehensive accounting services tailored to your business needs.",
+      "invoicing": {
+        "title": "Professional Invoicing",
+        "description": "Create and send professional invoices with automated payment reminders and tracking."
+      },
+      "bookkeeping": {
+        "title": "Bookkeeping Services",
+        "description": "Comprehensive bookkeeping services to keep your financial records accurate and up-to-date."
+      },
+      "reporting": {
+        "title": "Financial Reporting",
+        "description": "Detailed financial reports and insights to help you make informed business decisions."
+      },
+      "payroll": {
+        "title": "Payroll Management",
+        "description": "Efficient payroll processing with automated tax calculations and compliance."
+      },
+      "compliance": {
+        "title": "Compliance & Audit",
+        "description": "Ensure compliance with local regulations and prepare for audits with confidence."
+      },
+      "planning": {
+        "title": "Financial Planning",
+        "description": "Strategic financial planning and analysis to support your business growth."
+      }
+    },
+    "benefits": {
+      "title": "Why Choose Our Accounting Services?",
+      "description": "We combine cutting-edge technology with expert financial knowledge to deliver accounting services that help your business thrive. Our team of certified accountants ensures accuracy, compliance, and strategic insights for your financial success.",
+      "1": "Save time with automated invoicing and bookkeeping",
+      "2": "Reduce errors with professional accounting expertise",
+      "3": "Stay compliant with local tax regulations",
+      "4": "Get real-time insights into your financial health",
+      "5": "Focus on growing your business while we handle the numbers",
+      "6": "Secure cloud-based access to your financial data anytime"
+    },
+    "getStarted": "Get Started",
+    "cta": {
+      "title": "Ready to Streamline Your Finances?",
+      "description": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
+      "contactSales": "Contact Sales"
+    },
+    "confirmation": {
+      "heroTitle": "Application Submitted Successfully!",
+      "heroSubtitle": "Your accounting & invoicing application has been received",
+      "reference": "Reference:",
+      "emailSent": "Confirmation email sent",
+      "emailSentDesc": "A confirmation email with all the details has been sent to",
+      "emailSentSuffix": ". Please check your inbox and spam folder.",
+      "applicationSummary": "Application Summary",
+      "companyName": "Company Name",
+      "contactEmail": "Contact Email",
+      "primaryContact": "Primary Contact",
+      "applicationStatus": "Application Status",
+      "submitted": "SUBMITTED",
+      "companyDetails": "Company Details",
+      "companyType": "Company Type:",
+      "registrationNumber": "Registration Number:",
+      "vatNumber": "VAT Number:",
+      "downloadPdf": "Download PDF Summary",
+      "goToDashboard": "Go to Dashboard",
+      "whatsNext": "What happens next?",
+      "step1Title": "Application Review",
+      "step1Desc": "Our accounting team will review your application within 1-2 business days",
+      "step2Title": "Email Confirmation",
+      "step2Desc": "You'll receive a detailed confirmation email with next steps",
+      "step3Title": "Additional Information",
+      "step3Desc": "We may contact you if we need any additional documents or clarification",
+      "step4Title": "Onboarding Process",
+      "step4Desc": "Once approved, we'll send onboarding materials and schedule a setup call",
+      "step5Title": "Account Activation",
+      "step5Desc": "Your dedicated account manager will help you get started with our services",
+      "questionsAbout": "Questions about your application?",
+      "contactTeam": "Contact our accounting team at",
+      "referenceNumber": "Reference Number:",
+      "notProvided": "Not provided",
+      "yourCompany": "Your Company"
+    }
+  },
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome back! Here's your account overview.",

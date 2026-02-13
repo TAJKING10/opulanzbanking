@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { CheckCircle, Building2, Mail, User, FileText, Download, ArrowRight, Calendar, MapPin, Euro, Users, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ export const dynamic = 'force-dynamic';
 export default function AccountingConfirmationClient({ params: { locale } }: { params: { locale: string } }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations("invoicingAccounting.confirmation");
 
   // Get application details from URL or sessionStorage
   const applicationData = React.useMemo(() => {
@@ -145,11 +147,11 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
 </head>
 <body>
   <div class="print-instructions">
-    <h3 style="color: #1e40af; margin-top: 0;">📄 Save as PDF Instructions</h3>
+    <h3 style="color: #1e40af; margin-top: 0;">Save as PDF Instructions</h3>
     <p style="color: #1e3a8a; margin: 10px 0;">
       To save this summary as a PDF, click the button below and select "Save as PDF" as your printer destination.
     </p>
-    <button class="print-button" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <button class="print-button" onclick="window.print()">Print / Save as PDF</button>
   </div>
 
   <div class="header">
@@ -260,15 +262,15 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
               <CheckCircle className="h-12 w-12 text-white" />
             </div>
             <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-              Application Submitted Successfully!
+              {t("heroTitle")}
             </h1>
             <p className="mb-6 text-lg text-white/90 md:text-xl">
-              Your accounting & invoicing application has been received
+              {t("heroSubtitle")}
             </p>
             <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-6 py-3 backdrop-blur-sm">
               <FileText className="h-5 w-5 text-white" />
               <span className="font-mono text-sm font-semibold text-white">
-                Reference: {applicationData.applicationId}
+                {t("reference")} {applicationData.applicationId}
               </span>
             </div>
           </div>
@@ -284,12 +286,12 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
               <Mail className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-green-900 mb-1">
-                  Confirmation email sent
+                  {t("emailSent")}
                 </h3>
                 <p className="text-sm text-green-800">
-                  A confirmation email with all the details has been sent to{" "}
-                  <span className="font-semibold">{applicationData.email || "your email address"}</span>.
-                  Please check your inbox and spam folder.
+                  {t("emailSentDesc")}{" "}
+                  <span className="font-semibold">{applicationData.email || t("notProvided")}</span>
+                  {t("emailSentSuffix")}
                 </p>
               </div>
             </div>
@@ -298,7 +300,7 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
           {/* Application Summary Card */}
           <Card className="border-2 border-brand-grayLight mb-8">
             <CardHeader className="bg-brand-goldLight/10">
-              <CardTitle className="text-2xl">Application Summary</CardTitle>
+              <CardTitle className="text-2xl">{t("applicationSummary")}</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid gap-6 md:grid-cols-2">
@@ -307,9 +309,9 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
                     <Building2 className="h-6 w-6 text-brand-gold" />
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Company Name</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("companyName")}</p>
                     <p className="font-semibold text-brand-dark">
-                      {applicationData.legalName || "Your Company"}
+                      {applicationData.legalName || t("yourCompany")}
                     </p>
                   </div>
                 </div>
@@ -319,9 +321,9 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
                     <Mail className="h-6 w-6 text-brand-gold" />
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Contact Email</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("contactEmail")}</p>
                     <p className="font-semibold text-brand-dark break-all">
-                      {applicationData.email || "Not provided"}
+                      {applicationData.email || t("notProvided")}
                     </p>
                   </div>
                 </div>
@@ -332,7 +334,7 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
                       <User className="h-6 w-6 text-brand-gold" />
                     </div>
                     <div>
-                      <p className="text-sm text-brand-grayMed mb-1">Primary Contact</p>
+                      <p className="text-sm text-brand-grayMed mb-1">{t("primaryContact")}</p>
                       <p className="font-semibold text-brand-dark">
                         {applicationData.primaryContactName}
                       </p>
@@ -345,9 +347,9 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
                     <CheckCircle className="h-6 w-6 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Application Status</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("applicationStatus")}</p>
                     <div className="inline-flex items-center gap-2 bg-green-100 px-3 py-1 rounded-full">
-                      <span className="font-semibold text-green-800">SUBMITTED</span>
+                      <span className="font-semibold text-green-800">{t("submitted")}</span>
                     </div>
                   </div>
                 </div>
@@ -355,23 +357,23 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
 
               {(applicationData.companyType || applicationData.vatNumber || applicationData.registrationNumber) && (
                 <div className="mt-6 pt-6 border-t border-brand-grayLight">
-                  <h4 className="font-semibold text-brand-dark mb-3">Company Details</h4>
+                  <h4 className="font-semibold text-brand-dark mb-3">{t("companyDetails")}</h4>
                   <div className="grid gap-3 md:grid-cols-2">
                     {applicationData.companyType && (
                       <div className="flex justify-between py-2 border-b border-brand-grayLight/50">
-                        <span className="text-sm text-brand-grayMed">Company Type:</span>
+                        <span className="text-sm text-brand-grayMed">{t("companyType")}</span>
                         <span className="font-semibold text-brand-dark uppercase">{applicationData.companyType}</span>
                       </div>
                     )}
                     {applicationData.registrationNumber && (
                       <div className="flex justify-between py-2 border-b border-brand-grayLight/50">
-                        <span className="text-sm text-brand-grayMed">Registration Number:</span>
+                        <span className="text-sm text-brand-grayMed">{t("registrationNumber")}</span>
                         <span className="font-semibold text-brand-dark">{applicationData.registrationNumber}</span>
                       </div>
                     )}
                     {applicationData.vatNumber && (
                       <div className="flex justify-between py-2 border-b border-brand-grayLight/50">
-                        <span className="text-sm text-brand-grayMed">VAT Number:</span>
+                        <span className="text-sm text-brand-grayMed">{t("vatNumber")}</span>
                         <span className="font-semibold text-brand-dark">{applicationData.vatNumber}</span>
                       </div>
                     )}
@@ -388,14 +390,14 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
               className="h-14 bg-brand-gold text-white hover:bg-brand-goldDark"
             >
               <Download className="mr-2 h-5 w-5" />
-              Download PDF Summary
+              {t("downloadPdf")}
             </Button>
             <Button
               onClick={() => router.push(`/${locale}/dashboard`)}
               variant="outline"
               className="h-14 border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
             >
-              Go to Dashboard
+              {t("goToDashboard")}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
@@ -403,7 +405,7 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
           {/* Next Steps Card */}
           <Card className="border-2 border-blue-200 bg-blue-50">
             <CardHeader>
-              <CardTitle className="text-xl text-blue-900">What happens next?</CardTitle>
+              <CardTitle className="text-xl text-blue-900">{t("whatsNext")}</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
@@ -412,10 +414,8 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
                     1
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-900">Application Review</p>
-                    <p className="text-sm text-blue-800">
-                      Our accounting team will review your application within 1-2 business days
-                    </p>
+                    <p className="font-semibold text-blue-900">{t("step1Title")}</p>
+                    <p className="text-sm text-blue-800">{t("step1Desc")}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -423,10 +423,8 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
                     2
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-900">Email Confirmation</p>
-                    <p className="text-sm text-blue-800">
-                      You'll receive a detailed confirmation email with next steps
-                    </p>
+                    <p className="font-semibold text-blue-900">{t("step2Title")}</p>
+                    <p className="text-sm text-blue-800">{t("step2Desc")}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -434,10 +432,8 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
                     3
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-900">Additional Information</p>
-                    <p className="text-sm text-blue-800">
-                      We may contact you if we need any additional documents or clarification
-                    </p>
+                    <p className="font-semibold text-blue-900">{t("step3Title")}</p>
+                    <p className="text-sm text-blue-800">{t("step3Desc")}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -445,10 +441,8 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
                     4
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-900">Onboarding Process</p>
-                    <p className="text-sm text-blue-800">
-                      Once approved, we'll send onboarding materials and schedule a setup call
-                    </p>
+                    <p className="font-semibold text-blue-900">{t("step4Title")}</p>
+                    <p className="text-sm text-blue-800">{t("step4Desc")}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -456,10 +450,8 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
                     5
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-900">Account Activation</p>
-                    <p className="text-sm text-blue-800">
-                      Your dedicated account manager will help you get started with our services
-                    </p>
+                    <p className="font-semibold text-blue-900">{t("step5Title")}</p>
+                    <p className="text-sm text-blue-800">{t("step5Desc")}</p>
                   </div>
                 </li>
               </ul>
@@ -469,16 +461,16 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
           {/* Support Contact */}
           <div className="mt-12 text-center border-t border-brand-grayLight pt-8">
             <p className="text-sm text-brand-grayMed mb-4">
-              Questions about your application?
+              {t("questionsAbout")}
             </p>
             <p className="text-sm text-brand-grayMed">
-              Contact our accounting team at{" "}
+              {t("contactTeam")}{" "}
               <a href="mailto:accounting@opulanzbanking.com" className="text-brand-gold hover:underline font-semibold">
                 accounting@opulanzbanking.com
               </a>
             </p>
             <p className="text-xs text-brand-grayMed mt-4">
-              Reference Number: <span className="font-mono font-semibold">{applicationData.applicationId}</span>
+              {t("referenceNumber")} <span className="font-mono font-semibold">{applicationData.applicationId}</span>
             </p>
           </div>
         </div>

@@ -1381,6 +1381,262 @@
       "ctaDesc": "Réservez votre consultation maintenant."
     }
   },
+  "accounting": {
+    "steps": {
+      "company": { "label": "Société", "description": "Informations de base" },
+      "activity": { "label": "Activité", "description": "Activité et échelle" },
+      "contacts": { "label": "Contacts", "description": "Contacts et adresses" },
+      "volume": { "label": "Volume", "description": "Détails de facturation" },
+      "documents": { "label": "Documents", "description": "Télécharger les documents" },
+      "review": { "label": "Vérification", "description": "Vérifier et soumettre" }
+    },
+    "onboarding": {
+      "title": "Intégration Comptabilité & Facturation",
+      "subtitle": "Remplissez ce formulaire pour configurer vos services de comptabilité et facturation"
+    },
+    "companyBasics": {
+      "title": "Informations de la société",
+      "subtitle": "Fournissez les informations de base sur votre société",
+      "fields": {
+        "companyType": "Type de société",
+        "companyTypeOther": "Précisez le type de société",
+        "countryOfIncorporation": "Pays de constitution",
+        "dateOfIncorporation": "Date de constitution",
+        "shareCapital": "Capital social",
+        "legalName": "Dénomination sociale",
+        "tradeName": "Nom commercial",
+        "registrationNumber": "Numéro d'immatriculation",
+        "vatNumber": "Numéro de TVA"
+      },
+      "placeholders": {
+        "companyType": "Sélectionnez le type de société",
+        "companyTypeOther": "Entrez votre type de société",
+        "country": "Sélectionnez le pays",
+        "date": "Sélectionnez la date",
+        "legalName": "Dénomination sociale complète",
+        "tradeName": "Nom commercial (si différent)",
+        "registrationNumber": "ex. B123456",
+        "vatNumber": "ex. LU12345678"
+      },
+      "hints": {
+        "tradeName": "Laissez vide si identique à la dénomination sociale",
+        "registrationNumber": "Numéro RCS Luxembourg ou équivalent",
+        "vatNumber": "Numéro d'identification TVA intracommunautaire"
+      }
+    },
+    "activityScale": {
+      "title": "Activité & Échelle",
+      "subtitle": "Décrivez votre activité commerciale et votre échelle financière",
+      "fields": {
+        "businessActivity": "Activité commerciale (code NACE)",
+        "turnoverLastFY": "Chiffre d'affaires annuel (Dernier exercice)",
+        "turnoverCurrentFY": "Chiffre d'affaires projeté (Exercice en cours)",
+        "employees": "Nombre d'employés (ETP)"
+      },
+      "placeholders": {
+        "businessActivity": "Sélectionnez votre activité principale"
+      },
+      "hints": {
+        "turnoverLastFY": "Revenus totaux du dernier exercice clôturé",
+        "turnoverCurrentFY": "Revenus attendus pour l'exercice en cours",
+        "employees": "Effectif en équivalent temps plein"
+      }
+    },
+    "contactsAddresses": {
+      "title": "Contacts & Adresses",
+      "subtitle": "Fournissez les adresses et contacts clés de la société",
+      "registeredAddress": "Adresse du siège social",
+      "operatingAddress": "Adresse d'exploitation",
+      "sameAsRegistered": "L'adresse d'exploitation est la même que le siège social",
+      "primaryContact": "Contact principal",
+      "addAccountingContact": "Ajouter un contact comptable séparé",
+      "accountingContact": "Contact comptable",
+      "fields": {
+        "street": "Adresse",
+        "city": "Ville",
+        "postal": "Code postal",
+        "country": "Pays",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "role": "Rôle",
+        "email": "E-mail",
+        "phone": "Numéro de téléphone"
+      },
+      "placeholders": {
+        "street": "Rue et numéro",
+        "city": "Nom de la ville",
+        "postal": "Code postal",
+        "country": "Sélectionnez le pays",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "role": "Sélectionnez le rôle",
+        "email": "email@exemple.com",
+        "phone": "+352 000 000 000"
+      }
+    },
+    "billingVolume": {
+      "title": "Volume de facturation",
+      "subtitle": "Aidez-nous à comprendre vos besoins en facturation",
+      "fields": {
+        "salesInvoices": "Factures de vente mensuelles moyennes",
+        "purchaseInvoices": "Factures d'achat mensuelles moyennes",
+        "payrollNeeded": "J'ai besoin de services de gestion de paie",
+        "payrollEmployees": "Nombre d'employés pour la paie",
+        "multiCurrency": "J'ai besoin d'une comptabilité multi-devises",
+        "selectCurrencies": "Sélectionnez les devises"
+      },
+      "hints": {
+        "salesInvoices": "Nombre de factures que vous émettez par mois",
+        "purchaseInvoices": "Nombre de factures que vous recevez des fournisseurs par mois"
+      }
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Téléchargez les documents requis pour la configuration comptable. Tous les documents sont optionnels à ce stade.",
+      "types": {
+        "incorporation": "Certificat de constitution",
+        "articles": "Statuts de la société",
+        "vat": "Certificat de TVA",
+        "directorId": "Pièce d'identité / Passeport du directeur"
+      },
+      "hints": {
+        "incorporation": "Certificat officiel du registre de commerce",
+        "articles": "Dernière version des statuts de votre société",
+        "vat": "Certificat d'immatriculation TVA le cas échéant",
+        "directorId": "Pièce d'identité officielle du gérant"
+      },
+      "note": {
+        "title": "Note :",
+        "text": "Tous les documents sont optionnels à ce stade. Vous pourrez les télécharger ultérieurement lors du processus d'intégration."
+      },
+      "upload": {
+        "uploading": "Téléchargement en cours...",
+        "dropOrClick": "Déposez le fichier ici ou cliquez pour parcourir",
+        "fileTypes": "PDF, PNG, JPG (max 10 Mo)"
+      }
+    },
+    "review": {
+      "title": "Vérification & Soumission",
+      "subtitle": "Veuillez vérifier vos informations avant de soumettre",
+      "summary": "Résumé de la demande",
+      "sections": {
+        "company": "Détails de la société",
+        "activity": "Activité & Échelle",
+        "teamSize": "Taille de l'équipe",
+        "contact": "Contact principal",
+        "volume": "Volume de facturation",
+        "documents": "Documents"
+      },
+      "incorporated": "Constituée le",
+      "lastFY": "Dernier exercice",
+      "projected": "Projeté",
+      "fteEmployees": "employés ETP",
+      "sales": "Ventes",
+      "purchases": "Achats",
+      "invoices": "factures/mois",
+      "payroll": "Paie",
+      "employees": "employés",
+      "multiCurrency": "Multi-devises",
+      "documentsUploaded": "document(s) téléchargé(s)",
+      "consent": {
+        "title": "Consentement & Confirmation",
+        "label": "Je confirme que les informations fournies sont exactes",
+        "text": "En soumettant cette demande, je confirme que toutes les informations fournies sont exactes et complètes. J'accepte la",
+        "privacyPolicy": "Politique de confidentialité",
+        "termsOfService": "Conditions d'utilisation",
+        "required": "Vous devez accepter le consentement pour soumettre votre demande."
+      },
+      "gdpr": {
+        "title": "Protection des données (RGPD)",
+        "text": "Vos données sont traitées conformément au RGPD. Nous utilisons vos informations uniquement pour fournir des services comptables et ne les partagerons pas avec des tiers sans votre consentement."
+      },
+      "submit": "Soumettre la demande",
+      "acceptConsent": "Accepter le consentement pour continuer"
+    }
+  },
+  "invoicingAccounting": {
+    "features": {
+      "overline": "Nos Services",
+      "title": "Solutions comptables complètes pour votre entreprise",
+      "description": "De la facturation aux rapports financiers, nous fournissons des services comptables complets adaptés aux besoins de votre entreprise.",
+      "invoicing": {
+        "title": "Facturation professionnelle",
+        "description": "Créez et envoyez des factures professionnelles avec des rappels de paiement et un suivi automatisés."
+      },
+      "bookkeeping": {
+        "title": "Services de comptabilité",
+        "description": "Services de comptabilité complets pour maintenir vos dossiers financiers précis et à jour."
+      },
+      "reporting": {
+        "title": "Rapports financiers",
+        "description": "Rapports financiers détaillés et analyses pour vous aider à prendre des décisions commerciales éclairées."
+      },
+      "payroll": {
+        "title": "Gestion de la paie",
+        "description": "Traitement efficace de la paie avec calculs fiscaux et conformité automatisés."
+      },
+      "compliance": {
+        "title": "Conformité & Audit",
+        "description": "Assurez la conformité avec les réglementations locales et préparez vos audits en toute confiance."
+      },
+      "planning": {
+        "title": "Planification financière",
+        "description": "Planification et analyse financières stratégiques pour soutenir la croissance de votre entreprise."
+      }
+    },
+    "benefits": {
+      "title": "Pourquoi choisir nos services comptables ?",
+      "description": "Nous combinons une technologie de pointe avec une expertise financière pour fournir des services comptables qui aident votre entreprise à prospérer. Notre équipe de comptables certifiés garantit précision, conformité et perspectives stratégiques pour votre succès financier.",
+      "1": "Gagnez du temps avec la facturation et la comptabilité automatisées",
+      "2": "Réduisez les erreurs avec une expertise comptable professionnelle",
+      "3": "Restez conforme aux réglementations fiscales locales",
+      "4": "Obtenez des informations en temps réel sur votre santé financière",
+      "5": "Concentrez-vous sur la croissance de votre entreprise pendant que nous gérons les chiffres",
+      "6": "Accès sécurisé à vos données financières dans le cloud à tout moment"
+    },
+    "getStarted": "Commencer",
+    "cta": {
+      "title": "Prêt à rationaliser vos finances ?",
+      "description": "Rejoignez des milliers d'entreprises qui nous font confiance pour leurs besoins en comptabilité et facturation. Commencez aujourd'hui et découvrez la différence.",
+      "contactSales": "Contacter les ventes"
+    },
+    "confirmation": {
+      "heroTitle": "Demande soumise avec succès !",
+      "heroSubtitle": "Votre demande de comptabilité et facturation a été reçue",
+      "reference": "Référence :",
+      "emailSent": "E-mail de confirmation envoyé",
+      "emailSentDesc": "Un e-mail de confirmation avec tous les détails a été envoyé à",
+      "emailSentSuffix": ". Veuillez vérifier votre boîte de réception et votre dossier spam.",
+      "applicationSummary": "Résumé de la demande",
+      "companyName": "Nom de la société",
+      "contactEmail": "E-mail de contact",
+      "primaryContact": "Contact principal",
+      "applicationStatus": "Statut de la demande",
+      "submitted": "SOUMISE",
+      "companyDetails": "Détails de la société",
+      "companyType": "Type de société :",
+      "registrationNumber": "Numéro d'immatriculation :",
+      "vatNumber": "Numéro de TVA :",
+      "downloadPdf": "Télécharger le résumé PDF",
+      "goToDashboard": "Aller au tableau de bord",
+      "whatsNext": "Que se passe-t-il ensuite ?",
+      "step1Title": "Examen de la demande",
+      "step1Desc": "Notre équipe comptable examinera votre demande sous 1 à 2 jours ouvrables",
+      "step2Title": "Confirmation par e-mail",
+      "step2Desc": "Vous recevrez un e-mail de confirmation détaillé avec les prochaines étapes",
+      "step3Title": "Informations complémentaires",
+      "step3Desc": "Nous pourrions vous contacter si nous avons besoin de documents ou clarifications supplémentaires",
+      "step4Title": "Processus d'intégration",
+      "step4Desc": "Une fois approuvé, nous vous enverrons les documents d'intégration et planifierons un appel de configuration",
+      "step5Title": "Activation du compte",
+      "step5Desc": "Votre gestionnaire de compte dédié vous aidera à démarrer avec nos services",
+      "questionsAbout": "Des questions sur votre demande ?",
+      "contactTeam": "Contactez notre équipe comptable à",
+      "referenceNumber": "Numéro de référence :",
+      "notProvided": "Non fourni",
+      "yourCompany": "Votre société"
+    }
+  },
   "dashboard": {
     "title": "Tableau de bord",
     "welcome": "Bienvenue ! Voici un aperçu de votre compte.",

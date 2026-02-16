@@ -6,57 +6,68 @@ import { useLocale, useTranslations } from "next-intl";
 import { Users, Building2, TrendingUp, UserPlus, Plus, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getStats, getActivityLog, type ActivityLog } from "@/lib/spv-data";
+import { getDashboardStats, type ActivityLog, type DashboardStats } from "@/lib/investment-api";
 
 export default function AdminDashboardPage() {
   const t = useTranslations();
   const locale = useLocale();
 
-  const [stats, setStats] = React.useState({
-    totalCustomers: 0,
-    activeCustomers: 0,
-    totalOfferings: 0,
-    openOfferings: 0,
+  const [stats, setStats] = React.useState<DashboardStats>({
+    totalInvestors: 0,
+    activeInvestors: 0,
+    totalProperties: 0,
+    openProperties: 0,
+    totalAdmins: 0,
+    recentActivity: [],
   });
-  const [activities, setActivities] = React.useState<ActivityLog[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    setStats(getStats());
-    setActivities(getActivityLog().slice(0, 10));
+    const fetchStats = async () => {
+      try {
+        const data = await getDashboardStats();
+        setStats(data);
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchStats();
   }, []);
 
   const statCards = [
     {
       label: t("spvInvestment.admin.dashboard.totalCustomers"),
-      value: stats.totalCustomers,
+      value: stats.totalInvestors,
       icon: Users,
       color: "bg-blue-500",
       href: `/${locale}/spv-investment/admin/customers`,
     },
     {
       label: t("spvInvestment.admin.dashboard.activeCustomers"),
-      value: stats.activeCustomers,
+      value: stats.activeInvestors,
       icon: UserPlus,
       color: "bg-green-500",
       href: `/${locale}/spv-investment/admin/customers`,
     },
     {
       label: t("spvInvestment.admin.dashboard.totalProperties"),
-      value: stats.totalOfferings,
+      value: stats.totalProperties,
       icon: Building2,
       color: "bg-purple-500",
       href: `/${locale}/spv-investment/admin/properties`,
     },
     {
       label: t("spvInvestment.admin.dashboard.openProperties"),
-      value: stats.openOfferings,
+      value: stats.openProperties,
       icon: TrendingUp,
       color: "bg-amber-500",
       href: `/${locale}/spv-investment/admin/properties`,
     },
   ];
 
-  const getActivityIcon = (type: ActivityLog["type"]) => {
+  const getActivityIcon = (type: string) => {
     switch (type) {
       case "customer_login":
         return <Clock className="h-4 w-4 text-blue-500" />;
@@ -83,6 +94,14 @@ export default function AdminDashboardPage() {
       minute: "2-digit",
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600/30 border-t-indigo-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-slate-100">
@@ -134,22 +153,23 @@ export default function AdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {activities.length === 0 ? (
+                {stats.recentActivity.length === 0 ? (
                   <p className="text-sm text-slate-500 py-4">
                     {t("spvInvestment.admin.dashboard.noActivity")}
                   </p>
                 ) : (
                   <div className="space-y-4">
-                    {activities.map((activity) => (
+                    {stats.recentActivity.map((activity: ActivityLog) => (
                       <div
                         key={activity.id}
                         className="flex items-start gap-3 pb-4 border-b border-slate-100 last:border-0 last:pb-0"
                       >
-                        <div className="mt-0.5">{getActivityIcon(activity.type)}</div>
+                        <div className="mt-0.5">{getActivityIcon(activity.log_type)}</div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-slate-700">{activity.description}</p>
                           <p className="mt-0.5 text-xs text-slate-400">
-                            {formatTimestamp(activity.timestamp)}
+                            {formatTimestamp(activity.created_at)}
+                            {activity.admin_name && ` • ${activity.admin_name}`}
                           </p>
                         </div>
                       </div>

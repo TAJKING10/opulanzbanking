@@ -4,8 +4,7 @@ import * as React from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  ArrowLeft, Save, Trash2, Plus, X, FileText, Upload,
-  User, Mail, Phone, Key, RefreshCw, Check, Edit2
+  ArrowLeft, Save, Trash2, User, Mail, Phone, Key, RefreshCw, Check, Building
 } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,47 +12,36 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  getCustomerById,
-  createCustomer,
-  updateCustomer,
-  deleteCustomer,
-  generateAccessCode,
-  addCustomerDocument,
-  updateCustomerDocument,
-  deleteCustomerDocument,
-  formatFileSize,
-  type Customer,
-  type Document,
-} from "@/lib/spv-data";
+  getInvestorById,
+  createInvestor,
+  updateInvestor,
+  deleteInvestor,
+  resetInvestorAccessCode,
+  getCurrentAdmin,
+  type Investor,
+} from "@/lib/investment-api";
 
 type FormData = {
   name: string;
   email: string;
   phone: string;
-  investorType: "institutional" | "professional" | "private";
-  profile: "existing" | "new";
+  investor_type: "institutional" | "professional" | "private";
+  profile_type: "existing" | "new";
   status: "active" | "inactive";
-  accessCode: string;
+  company_name: string;
+  notes: string;
 };
 
 const defaultFormData: FormData = {
   name: "",
   email: "",
   phone: "",
-  investorType: "private",
-  profile: "new",
+  investor_type: "private",
+  profile_type: "new",
   status: "active",
-  accessCode: "",
+  company_name: "",
+  notes: "",
 };
-
-const documentTypes = [
-  { value: "id", label: "ID Document" },
-  { value: "contract", label: "Contract" },
-  { value: "kyc", label: "KYC Document" },
-  { value: "legal", label: "Legal Document" },
-  { value: "financial", label: "Financial Document" },
-  { value: "other", label: "Other" },
-];
 
 export default function CustomerEditPage() {
   const router = useRouter();
@@ -64,156 +52,138 @@ export default function CustomerEditPage() {
   const id = params.id as string;
   const isNew = id === "new";
 
-  const [formData, setFormData] = React.useState<FormData>({
-    ...defaultFormData,
-    accessCode: generateAccessCode(),
-  });
-  const [documents, setDocuments] = React.useState<Document[]>([]);
+  const [formData, setFormData] = React.useState<FormData>(defaultFormData);
+  const [accessCode, setAccessCode] = React.useState<string>("");
   const [deleteConfirm, setDeleteConfirm] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(!isNew);
+  const [error, setError] = React.useState<string | null>(null);
 
-  // Document form state
-  const [showDocForm, setShowDocForm] = React.useState(false);
-  const [editingDoc, setEditingDoc] = React.useState<Document | null>(null);
-  const [docForm, setDocForm] = React.useState({
-    name: "",
-    type: "other" as Document["type"],
-    fileName: "",
-    fileSize: "",
-    url: "",
-  });
-  const [deleteDocConfirm, setDeleteDocConfirm] = React.useState<string | null>(null);
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
-
-  // Load existing customer
+  // Load existing investor
   React.useEffect(() => {
-    if (!isNew) {
-      const customer = getCustomerById(id);
-      if (customer) {
-        setFormData({
-          name: customer.name,
-          email: customer.email,
-          phone: customer.phone || "",
-          investorType: customer.investorType,
-          profile: customer.profile,
-          status: customer.status,
-          accessCode: customer.accessCode,
-        });
-        setDocuments(customer.documents || []);
+    const fetchInvestor = async () => {
+      if (!isNew) {
+        try {
+          const investor = await getInvestorById(parseInt(id));
+          if (investor) {
+            setFormData({
+              name: investor.name,
+              email: investor.email,
+              phone: investor.phone || "",
+              investor_type: investor.investor_type,
+              profile_type: investor.profile_type,
+              status: investor.status,
+              company_name: investor.company_name || "",
+              notes: investor.notes || "",
+            });
+            setAccessCode(investor.access_code);
+          }
+        } catch (err) {
+          console.error("Error fetching investor:", err);
+          setError("Failed to load investor data");
+        } finally {
+          setIsLoading(false);
+        }
       }
-    }
+    };
+    fetchInvestor();
   }, [id, isNew]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
+    setError(null);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      const admin = getCurrentAdmin();
 
-    if (isNew) {
-      createCustomer(formData);
-    } else {
-      updateCustomer(id, formData);
-    }
+      if (isNew) {
+        const result = await createInvestor({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          investor_type: formData.investor_type,
+          profile_type: formData.profile_type,
+          company_name: formData.company_name || undefined,
+          notes: formData.notes || undefined,
+          createdBy: admin?.id,
+        });
 
-    router.push(`/${locale}/spv-investment/admin/customers`);
-  };
+        if (result.success) {
+          // Show the access code to the user
+          if (result.accessCode) {
+            alert(`Investor created successfully!\n\nAccess Code: ${result.accessCode}\n\nPlease save this code - it will be needed for portal login.`);
+          }
+          router.push(`/${locale}/spv-investment/admin/customers`);
+        } else {
+          setError(result.error || "Failed to create investor");
+          setIsSaving(false);
+        }
+      } else {
+        const result = await updateInvestor(parseInt(id), {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          investor_type: formData.investor_type,
+          profile_type: formData.profile_type,
+          status: formData.status,
+          company_name: formData.company_name || undefined,
+          notes: formData.notes || undefined,
+          updatedBy: admin?.id,
+        });
 
-  const handleDelete = () => {
-    deleteCustomer(id);
-    router.push(`/${locale}/spv-investment/admin/customers`);
-  };
-
-  const handleRegenerateCode = () => {
-    setFormData({ ...formData, accessCode: generateAccessCode() });
-  };
-
-  // Document handlers
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setDocForm({
-        ...docForm,
-        fileName: file.name,
-        fileSize: formatFileSize(file.size),
-        name: docForm.name || file.name.replace(/\.[^/.]+$/, ""),
-      });
-    }
-  };
-
-  const handleAddDocument = () => {
-    if (!docForm.name || !docForm.fileName) return;
-
-    if (editingDoc) {
-      updateCustomerDocument(id, editingDoc.id, {
-        name: docForm.name,
-        type: docForm.type,
-        fileName: docForm.fileName,
-        fileSize: docForm.fileSize,
-        url: docForm.url,
-      });
-    } else {
-      addCustomerDocument(id, {
-        name: docForm.name,
-        type: docForm.type,
-        fileName: docForm.fileName,
-        fileSize: docForm.fileSize,
-        url: docForm.url,
-      });
-    }
-
-    // Refresh documents
-    const customer = getCustomerById(id);
-    if (customer) {
-      setDocuments(customer.documents || []);
-    }
-
-    resetDocForm();
-  };
-
-  const handleEditDocument = (doc: Document) => {
-    setEditingDoc(doc);
-    setDocForm({
-      name: doc.name,
-      type: doc.type,
-      fileName: doc.fileName,
-      fileSize: doc.fileSize,
-      url: doc.url || "",
-    });
-    setShowDocForm(true);
-  };
-
-  const handleDeleteDocument = (docId: string) => {
-    deleteCustomerDocument(id, docId);
-    const customer = getCustomerById(id);
-    if (customer) {
-      setDocuments(customer.documents || []);
-    }
-    setDeleteDocConfirm(null);
-  };
-
-  const resetDocForm = () => {
-    setShowDocForm(false);
-    setEditingDoc(null);
-    setDocForm({
-      name: "",
-      type: "other",
-      fileName: "",
-      fileSize: "",
-      url: "",
-    });
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+        if (result) {
+          router.push(`/${locale}/spv-investment/admin/customers`);
+        } else {
+          setError("Failed to update investor");
+          setIsSaving(false);
+        }
+      }
+    } catch (err) {
+      console.error("Error saving investor:", err);
+      setError("An error occurred while saving");
+      setIsSaving(false);
     }
   };
 
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
+  const handleDelete = async () => {
+    try {
+      const admin = getCurrentAdmin();
+      const success = await deleteInvestor(parseInt(id), admin?.id);
+      if (success) {
+        router.push(`/${locale}/spv-investment/admin/customers`);
+      } else {
+        setError("Failed to delete investor");
+      }
+    } catch (err) {
+      console.error("Error deleting investor:", err);
+      setError("An error occurred while deleting");
+    }
   };
+
+  const handleResetCode = async () => {
+    try {
+      const admin = getCurrentAdmin();
+      const result = await resetInvestorAccessCode(parseInt(id), admin?.id);
+      if (result.success && result.accessCode) {
+        setAccessCode(result.accessCode);
+        alert(`Access code reset successfully!\n\nNew Access Code: ${result.accessCode}`);
+      } else {
+        setError("Failed to reset access code");
+      }
+    } catch (err) {
+      console.error("Error resetting access code:", err);
+      setError("An error occurred while resetting access code");
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600/30 border-t-indigo-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-slate-100">
@@ -267,6 +237,13 @@ export default function CustomerEditPage() {
 
       <form onSubmit={handleSubmit}>
         <div className="container mx-auto max-w-5xl px-6 py-8 space-y-6">
+          {/* Error Message */}
+          {error && (
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+              {error}
+            </div>
+          )}
+
           {/* Customer Information */}
           <Card className="border-none shadow-sm">
             <CardHeader>
@@ -326,13 +303,28 @@ export default function CustomerEditPage() {
                   </div>
                 </div>
 
+                {/* Company Name */}
+                <div className="space-y-2">
+                  <Label htmlFor="company_name">Company Name</Label>
+                  <div className="relative">
+                    <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Input
+                      id="company_name"
+                      value={formData.company_name}
+                      onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
+                      className="pl-10"
+                      placeholder="Company name (if applicable)"
+                    />
+                  </div>
+                </div>
+
                 {/* Investor Type */}
                 <div className="space-y-2">
-                  <Label htmlFor="investorType">{t("spvInvestment.admin.customers.form.investorType")}</Label>
+                  <Label htmlFor="investor_type">{t("spvInvestment.admin.customers.form.investorType")}</Label>
                   <select
-                    id="investorType"
-                    value={formData.investorType}
-                    onChange={(e) => setFormData({ ...formData, investorType: e.target.value as FormData["investorType"] })}
+                    id="investor_type"
+                    value={formData.investor_type}
+                    onChange={(e) => setFormData({ ...formData, investor_type: e.target.value as FormData["investor_type"] })}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   >
                     <option value="institutional">{t("spvInvestment.admin.customers.form.investorTypes.institutional")}</option>
@@ -343,11 +335,11 @@ export default function CustomerEditPage() {
 
                 {/* Profile */}
                 <div className="space-y-2">
-                  <Label htmlFor="profile">{t("spvInvestment.admin.customers.form.profile")}</Label>
+                  <Label htmlFor="profile_type">{t("spvInvestment.admin.customers.form.profile")}</Label>
                   <select
-                    id="profile"
-                    value={formData.profile}
-                    onChange={(e) => setFormData({ ...formData, profile: e.target.value as FormData["profile"] })}
+                    id="profile_type"
+                    value={formData.profile_type}
+                    onChange={(e) => setFormData({ ...formData, profile_type: e.target.value as FormData["profile_type"] })}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   >
                     <option value="new">{t("spvInvestment.admin.customers.form.profiles.new")}</option>
@@ -356,211 +348,59 @@ export default function CustomerEditPage() {
                 </div>
 
                 {/* Status */}
-                <div className="space-y-2">
-                  <Label htmlFor="status">{t("spvInvestment.admin.customers.form.status")}</Label>
-                  <select
-                    id="status"
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value as FormData["status"] })}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  >
-                    <option value="active">{t("spvInvestment.admin.customers.form.statuses.active")}</option>
-                    <option value="inactive">{t("spvInvestment.admin.customers.form.statuses.inactive")}</option>
-                  </select>
+                {!isNew && (
+                  <div className="space-y-2">
+                    <Label htmlFor="status">{t("spvInvestment.admin.customers.form.status")}</Label>
+                    <select
+                      id="status"
+                      value={formData.status}
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value as FormData["status"] })}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    >
+                      <option value="active">{t("spvInvestment.admin.customers.form.statuses.active")}</option>
+                      <option value="inactive">{t("spvInvestment.admin.customers.form.statuses.inactive")}</option>
+                    </select>
+                  </div>
+                )}
+
+                {/* Notes */}
+                <div className="md:col-span-2 space-y-2">
+                  <Label htmlFor="notes">Notes</Label>
+                  <textarea
+                    id="notes"
+                    value={formData.notes}
+                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                    className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    placeholder="Any additional notes about the investor..."
+                  />
                 </div>
 
-                {/* Access Code */}
-                <div className="md:col-span-2 space-y-2">
-                  <Label htmlFor="accessCode">{t("spvInvestment.admin.customers.form.accessCode")}</Label>
-                  <div className="flex gap-2">
-                    <div className="relative flex-1">
-                      <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                      <Input
-                        id="accessCode"
-                        value={formData.accessCode}
-                        onChange={(e) => setFormData({ ...formData, accessCode: e.target.value })}
-                        className="pl-10 font-mono"
-                        required
-                      />
+                {/* Access Code - Only for existing investors */}
+                {!isNew && (
+                  <div className="md:col-span-2 space-y-2">
+                    <Label>{t("spvInvestment.admin.customers.form.accessCode")}</Label>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <Input
+                          value={accessCode}
+                          className="pl-10 font-mono"
+                          readOnly
+                        />
+                      </div>
+                      <Button type="button" variant="outline" onClick={handleResetCode}>
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Reset Code
+                      </Button>
                     </div>
-                    <Button type="button" variant="outline" onClick={handleRegenerateCode}>
-                      <RefreshCw className="h-4 w-4 mr-2" />
-                      {t("spvInvestment.admin.customers.form.regenerateCode")}
-                    </Button>
+                    <p className="text-xs text-slate-500">
+                      Resetting the code will generate a new access code and invalidate the old one.
+                    </p>
                   </div>
-                </div>
+                )}
               </div>
             </CardContent>
           </Card>
-
-          {/* Documents Section - Only for existing customers */}
-          {!isNew && (
-            <Card className="border-none shadow-sm">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-indigo-600" />
-                    {t("spvInvestment.admin.documents.title")}
-                  </CardTitle>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setShowDocForm(true)}
-                    className="text-indigo-600 border-indigo-200 hover:bg-indigo-50"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    {t("spvInvestment.admin.documents.addDocument")}
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {/* Document Form */}
-                {showDocForm && (
-                  <div className="mb-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
-                    <h4 className="font-medium text-slate-900 mb-4">
-                      {editingDoc ? t("spvInvestment.admin.documents.editDocument") : t("spvInvestment.admin.documents.addDocument")}
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label>{t("spvInvestment.admin.documents.documentName")} *</Label>
-                        <Input
-                          value={docForm.name}
-                          onChange={(e) => setDocForm({ ...docForm, name: e.target.value })}
-                          placeholder={t("spvInvestment.admin.documents.documentNamePlaceholder")}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>{t("spvInvestment.admin.documents.documentType")}</Label>
-                        <select
-                          value={docForm.type}
-                          onChange={(e) => setDocForm({ ...docForm, type: e.target.value as Document["type"] })}
-                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                        >
-                          {documentTypes.map((type) => (
-                            <option key={type.value} value={type.value}>
-                              {type.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="md:col-span-2 space-y-2">
-                        <Label>{t("spvInvestment.admin.documents.selectFile")}</Label>
-                        <div className="flex gap-2">
-                          <Input
-                            ref={fileInputRef}
-                            type="file"
-                            onChange={handleFileSelect}
-                            className="flex-1"
-                            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                          />
-                        </div>
-                        {docForm.fileName && (
-                          <p className="text-sm text-slate-500">
-                            {t("spvInvestment.admin.documents.selectedFile")}: {docForm.fileName} ({docForm.fileSize})
-                          </p>
-                        )}
-                      </div>
-                      <div className="md:col-span-2 space-y-2">
-                        <Label>{t("spvInvestment.admin.documents.documentUrl")}</Label>
-                        <Input
-                          value={docForm.url}
-                          onChange={(e) => setDocForm({ ...docForm, url: e.target.value })}
-                          placeholder="https://..."
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-end gap-2 mt-4">
-                      <Button type="button" variant="outline" onClick={resetDocForm}>
-                        {t("spvInvestment.admin.common.cancel")}
-                      </Button>
-                      <Button
-                        type="button"
-                        onClick={handleAddDocument}
-                        disabled={!docForm.name || !docForm.fileName}
-                        className="bg-indigo-600 hover:bg-indigo-700"
-                      >
-                        {editingDoc ? t("spvInvestment.admin.common.save") : t("spvInvestment.admin.documents.addDocument")}
-                      </Button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Documents List */}
-                {documents.length === 0 ? (
-                  <div className="text-center py-8 text-slate-500">
-                    <FileText className="mx-auto h-12 w-12 text-slate-300 mb-3" />
-                    <p>{t("spvInvestment.admin.documents.noDocuments")}</p>
-                  </div>
-                ) : (
-                  <div className="divide-y divide-slate-100">
-                    {documents.map((doc) => (
-                      <div
-                        key={doc.id}
-                        className="flex items-center justify-between py-3 hover:bg-slate-50 px-2 -mx-2 rounded"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-indigo-50 rounded-lg">
-                            <FileText className="h-5 w-5 text-indigo-600" />
-                          </div>
-                          <div>
-                            <p className="font-medium text-slate-900">{doc.name}</p>
-                            <p className="text-sm text-slate-500">
-                              {documentTypes.find((t) => t.value === doc.type)?.label || doc.type} • {doc.fileSize} • {formatDate(doc.uploadedAt)}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {deleteDocConfirm === doc.id ? (
-                            <>
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleDeleteDocument(doc.id)}
-                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                              >
-                                <Check className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setDeleteDocConfirm(null)}
-                                className="text-slate-500"
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            </>
-                          ) : (
-                            <>
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleEditDocument(doc)}
-                                className="text-slate-500 hover:text-indigo-600"
-                              >
-                                <Edit2 className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setDeleteDocConfirm(doc.id)}
-                                className="text-slate-500 hover:text-red-600"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
 
           {/* Actions */}
           <div className="flex justify-end gap-3 pb-8">

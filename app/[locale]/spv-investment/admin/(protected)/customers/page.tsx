@@ -9,23 +9,36 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { getCustomers, deleteCustomer, type Customer } from "@/lib/spv-data";
+import { getInvestors, deleteInvestor, getCurrentAdmin, type Investor } from "@/lib/investment-api";
 
 export default function CustomersPage() {
   const t = useTranslations();
   const locale = useLocale();
   const searchParams = useSearchParams();
 
-  const [customers, setCustomers] = React.useState<Customer[]>([]);
+  const [investors, setInvestors] = React.useState<Investor[]>([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<"all" | "active" | "inactive">("all");
   const [copiedCode, setCopiedCode] = React.useState<string | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = React.useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = React.useState<number | null>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  // Load customers
+  // Load investors
   React.useEffect(() => {
-    setCustomers(getCustomers());
-  }, []);
+    const fetchInvestors = async () => {
+      try {
+        const status = statusFilter === "all" ? undefined : statusFilter;
+        const search = searchTerm || undefined;
+        const result = await getInvestors({ status, search });
+        setInvestors(result.data);
+      } catch (error) {
+        console.error("Error fetching investors:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchInvestors();
+  }, [statusFilter, searchTerm]);
 
   // Check for ?action=new in URL
   React.useEffect(() => {
@@ -34,19 +47,12 @@ export default function CustomersPage() {
     }
   }, [searchParams, locale]);
 
-  const filtered = customers.filter((c) => {
-    const matchesSearch =
-      searchTerm === "" ||
-      c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.accessCode.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || c.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
-
-  const handleDelete = (id: string) => {
-    deleteCustomer(id);
-    setCustomers(getCustomers());
+  const handleDelete = async (id: number) => {
+    const admin = getCurrentAdmin();
+    const success = await deleteInvestor(id, admin?.id);
+    if (success) {
+      setInvestors((prev) => prev.filter((i) => i.id !== id));
+    }
     setDeleteConfirm(null);
   };
 
@@ -64,6 +70,14 @@ export default function CustomersPage() {
       year: "numeric",
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600/30 border-t-indigo-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-slate-100">
@@ -133,34 +147,34 @@ export default function CustomersPage() {
           </div>
 
           <CardContent className="p-0">
-            {filtered.length === 0 ? (
+            {investors.length === 0 ? (
               <div className="py-12 text-center">
                 <User className="mx-auto h-12 w-12 text-slate-300" />
                 <p className="mt-4 text-slate-500">{t("spvInvestment.admin.customers.noCustomers")}</p>
               </div>
             ) : (
-              filtered.map((customer) => (
+              investors.map((investor) => (
                 <div
-                  key={customer.id}
+                  key={investor.id}
                   className="grid grid-cols-1 lg:grid-cols-12 gap-2 lg:gap-4 items-center px-6 py-4 border-b border-slate-100 last:border-0 hover:bg-slate-50/50 transition-colors"
                 >
                   {/* Name + Email */}
                   <div className="lg:col-span-3">
-                    <p className="font-medium text-slate-900">{customer.name}</p>
-                    <p className="text-sm text-slate-500">{customer.email}</p>
+                    <p className="font-medium text-slate-900">{investor.name}</p>
+                    <p className="text-sm text-slate-500">{investor.email}</p>
                   </div>
 
                   {/* Access Code */}
                   <div className="lg:col-span-2">
                     <div className="flex items-center gap-2">
                       <code className="text-xs font-mono bg-slate-100 px-2 py-1 rounded">
-                        {customer.accessCode}
+                        {investor.access_code}
                       </code>
                       <button
-                        onClick={() => handleCopyCode(customer.accessCode)}
+                        onClick={() => handleCopyCode(investor.access_code)}
                         className="text-slate-400 hover:text-indigo-600 transition-colors"
                       >
-                        {copiedCode === customer.accessCode ? (
+                        {copiedCode === investor.access_code ? (
                           <Check className="h-4 w-4 text-green-500" />
                         ) : (
                           <Copy className="h-4 w-4" />
@@ -171,14 +185,14 @@ export default function CustomersPage() {
 
                   {/* Type */}
                   <div className="lg:col-span-2">
-                    <span className="text-sm text-slate-600 capitalize">{customer.investorType}</span>
+                    <span className="text-sm text-slate-600 capitalize">{investor.investor_type}</span>
                     <span className="text-slate-300 mx-2">•</span>
-                    <span className="text-sm text-slate-500 capitalize">{customer.profile}</span>
+                    <span className="text-sm text-slate-500 capitalize">{investor.profile_type}</span>
                   </div>
 
                   {/* Last Access */}
                   <div className="lg:col-span-2">
-                    <p className="text-sm text-slate-500">{formatDate(customer.lastAccess)}</p>
+                    <p className="text-sm text-slate-500">{formatDate(investor.last_access)}</p>
                   </div>
 
                   {/* Status */}
@@ -186,12 +200,12 @@ export default function CustomersPage() {
                     <span
                       className={cn(
                         "inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium",
-                        customer.status === "active"
+                        investor.status === "active"
                           ? "bg-green-100 text-green-800"
                           : "bg-slate-100 text-slate-600"
                       )}
                     >
-                      {customer.status}
+                      {investor.status}
                     </span>
                   </div>
 
@@ -203,16 +217,16 @@ export default function CustomersPage() {
                       asChild
                       className="text-slate-500 hover:text-indigo-600"
                     >
-                      <Link href={`/${locale}/spv-investment/admin/customers/${customer.id}`}>
+                      <Link href={`/${locale}/spv-investment/admin/customers/${investor.id}`}>
                         <Edit2 className="h-4 w-4" />
                       </Link>
                     </Button>
-                    {deleteConfirm === customer.id ? (
+                    {deleteConfirm === investor.id ? (
                       <div className="flex gap-1">
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => handleDelete(customer.id)}
+                          onClick={() => handleDelete(investor.id)}
                           className="text-red-600 hover:text-red-700 hover:bg-red-50"
                         >
                           <Check className="h-4 w-4" />
@@ -230,7 +244,7 @@ export default function CustomersPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => setDeleteConfirm(customer.id)}
+                        onClick={() => setDeleteConfirm(investor.id)}
                         className="text-slate-500 hover:text-red-600"
                       >
                         <Trash2 className="h-4 w-4" />

@@ -7,7 +7,23 @@ import { useLocale, useTranslations } from "next-intl";
 import { MapPin, Building2, Maximize2, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { getOfferings, type Offering } from "@/lib/spv-data";
+import { getProperties, type Property } from "@/lib/investment-api";
+
+// Map Property to display format
+interface Offering {
+  id: number;
+  title: string;
+  location: string;
+  propertyType: string;
+  size: string;
+  status: "open" | "closing" | "closed" | "coming";
+  images: string[];
+  financials: {
+    minimumInvestment: string;
+    targetReturn: string;
+    investmentTerm: string;
+  };
+}
 
 const statusConfig: Record<string, { color: string; label: string }> = {
   open: { color: "bg-green-100 text-green-800", label: "open" },
@@ -21,9 +37,35 @@ export default function SpvOfferingsPage() {
   const locale = useLocale();
   const [activeFilter, setActiveFilter] = React.useState("all");
   const [offerings, setOfferings] = React.useState<Offering[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    setOfferings(getOfferings());
+    async function fetchProperties() {
+      try {
+        const { data } = await getProperties();
+        // Map database properties to offerings format
+        const mapped: Offering[] = data.map((p: Property) => ({
+          id: p.id,
+          title: p.title,
+          location: p.location,
+          propertyType: p.property_type,
+          size: p.size || "N/A",
+          status: p.status as "open" | "closing" | "closed" | "coming",
+          images: p.images || ["https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=500&fit=crop"],
+          financials: {
+            minimumInvestment: p.min_investment ? `€${p.min_investment.toLocaleString()}` : "Contact us",
+            targetReturn: p.target_return || "N/A",
+            investmentTerm: p.investment_term || "N/A",
+          },
+        }));
+        setOfferings(mapped);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchProperties();
   }, []);
 
   const filters = [
@@ -69,7 +111,12 @@ export default function SpvOfferingsPage() {
       </div>
 
       <div className="container mx-auto max-w-7xl px-6 py-8">
-        {filteredOfferings.length === 0 ? (
+        {isLoading ? (
+          <div className="py-12 text-center">
+            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-brand-gold/30 border-t-brand-gold" />
+            <p className="mt-4 text-brand-grayMed">Loading offerings...</p>
+          </div>
+        ) : filteredOfferings.length === 0 ? (
           <div className="py-12 text-center">
             <Building2 className="mx-auto h-12 w-12 text-brand-grayLight" />
             <p className="mt-4 text-brand-grayMed">

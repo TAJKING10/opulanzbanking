@@ -6,11 +6,11 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Search, Plus, Edit2, Trash2, MapPin, Building2, Check, X } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { getOfferings, deleteOffering, type Offering } from "@/lib/spv-data";
+import { getProperties, deleteProperty, getCurrentAdmin, type Property } from "@/lib/investment-api";
 
 const statusConfig: Record<string, { color: string; label: string }> = {
   open: { color: "bg-green-100 text-green-800", label: "Open" },
@@ -24,38 +24,62 @@ export default function PropertiesPage() {
   const locale = useLocale();
   const searchParams = useSearchParams();
 
-  const [offerings, setOfferings] = React.useState<Offering[]>([]);
+  const [properties, setProperties] = React.useState<Property[]>([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<string>("all");
-  const [deleteConfirm, setDeleteConfirm] = React.useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = React.useState<number | null>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  // Load offerings
+  // Load properties
   React.useEffect(() => {
-    setOfferings(getOfferings());
-  }, []);
+    const fetchProperties = async () => {
+      try {
+        const status = statusFilter === "all" ? undefined : statusFilter;
+        const search = searchTerm || undefined;
+        const result = await getProperties({ status, search });
+        setProperties(result.data);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProperties();
+  }, [statusFilter, searchTerm]);
 
   // Check for ?action=new in URL
   React.useEffect(() => {
     if (searchParams.get("action") === "new") {
-      // Redirect to create page
       window.location.href = `/${locale}/spv-investment/admin/properties/new`;
     }
   }, [searchParams, locale]);
 
-  const filtered = offerings.filter((o) => {
-    const matchesSearch =
-      searchTerm === "" ||
-      o.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      o.location.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || o.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
-
-  const handleDelete = (id: string) => {
-    deleteOffering(id);
-    setOfferings(getOfferings());
+  const handleDelete = async (id: number) => {
+    const admin = getCurrentAdmin();
+    const success = await deleteProperty(id, admin?.id);
+    if (success) {
+      setProperties((prev) => prev.filter((p) => p.id !== id));
+    }
     setDeleteConfirm(null);
   };
+
+  const formatCurrency = (value: number | undefined) => {
+    if (!value) return "—";
+    return new Intl.NumberFormat("en-EU", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600/30 border-t-indigo-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-slate-100">
@@ -113,7 +137,7 @@ export default function PropertiesPage() {
         </div>
 
         {/* Properties Grid */}
-        {filtered.length === 0 ? (
+        {properties.length === 0 ? (
           <Card className="border-none shadow-sm">
             <CardContent className="py-12 text-center">
               <Building2 className="mx-auto h-12 w-12 text-slate-300" />
@@ -122,15 +146,16 @@ export default function PropertiesPage() {
           </Card>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((offering) => {
-              const config = statusConfig[offering.status] || statusConfig.open;
+            {properties.map((property) => {
+              const config = statusConfig[property.status] || statusConfig.open;
+              const images = property.images || [];
               return (
-                <Card key={offering.id} className="border-none shadow-sm overflow-hidden group">
+                <Card key={property.id} className="border-none shadow-sm overflow-hidden group">
                   {/* Image */}
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <Image
-                      src={offering.images[0] || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=500&fit=crop"}
-                      alt={offering.title}
+                      src={images[0] || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=500&fit=crop"}
+                      alt={property.title}
                       fill
                       className="object-cover transition-transform group-hover:scale-105"
                     />
@@ -143,40 +168,40 @@ export default function PropertiesPage() {
 
                   <CardContent className="p-5">
                     {/* Title */}
-                    <h3 className="font-bold text-slate-900 line-clamp-1">{offering.title}</h3>
+                    <h3 className="font-bold text-slate-900 line-clamp-1">{property.title}</h3>
 
                     {/* Location */}
                     <div className="mt-2 flex items-center gap-1.5 text-sm text-slate-500">
                       <MapPin className="h-4 w-4" />
-                      {offering.location}
+                      {property.location}
                     </div>
 
                     {/* Property Type */}
                     <div className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
                       <Building2 className="h-4 w-4" />
-                      {offering.propertyType}
+                      {property.property_type}
                     </div>
 
                     {/* Financials */}
                     <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                       <div>
                         <p className="text-slate-400">Min. Investment</p>
-                        <p className="font-semibold text-slate-900">{offering.financials.minimumInvestment}</p>
+                        <p className="font-semibold text-slate-900">{formatCurrency(property.min_investment)}</p>
                       </div>
                       <div>
                         <p className="text-slate-400">Target Return</p>
-                        <p className="font-semibold text-slate-900">{offering.financials.targetReturn}</p>
+                        <p className="font-semibold text-slate-900">{property.target_return || "—"}</p>
                       </div>
                     </div>
 
                     {/* Actions */}
                     <div className="mt-4 pt-4 border-t border-slate-100 flex justify-end gap-2">
-                      {deleteConfirm === offering.id ? (
+                      {deleteConfirm === property.id ? (
                         <>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleDelete(offering.id)}
+                            onClick={() => handleDelete(property.id)}
                             className="text-red-600 hover:text-red-700 hover:bg-red-50"
                           >
                             <Check className="h-4 w-4 mr-1" />
@@ -197,13 +222,13 @@ export default function PropertiesPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => setDeleteConfirm(offering.id)}
+                            onClick={() => setDeleteConfirm(property.id)}
                             className="text-slate-500 hover:text-red-600"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                           <Button asChild variant="outline" size="sm">
-                            <Link href={`/${locale}/spv-investment/admin/properties/${offering.id}`}>
+                            <Link href={`/${locale}/spv-investment/admin/properties/${property.id}`}>
                               <Edit2 className="h-4 w-4 mr-1" />
                               Edit
                             </Link>

@@ -187,7 +187,7 @@ Contact: opulanz.banking@gmail.com
             });
           },
           onError: function(err: any) {
-            alert('Payment failed. Please try again.');
+            alert(tCommon('payment.paymentFailed'));
           }
         }).render(paypalRef.current);
       }
@@ -195,7 +195,7 @@ Contact: opulanz.banking@gmail.com
   }, [step, paypalLoaded, bookingData, totalPrice]);
 
   const handlePaymentComplete = async () => {
-    if (!paymentCompleted) { alert('Please complete the PayPal payment first.'); return; }
+    if (!paymentCompleted) { alert(tCommon('payment.completePaypalFirst')); return; }
     setLoading(true);
     try {
       const startDate = new Date(bookingData.eventStartTime);
@@ -230,7 +230,7 @@ Contact: opulanz.banking@gmail.com
       setStep('confirmation');
     } catch (error) {
       console.error('Error:', error);
-      alert('There was an error. Please contact support.');
+      alert(tCommon('payment.errorGeneral'));
     } finally {
       setLoading(false);
     }

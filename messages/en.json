@@ -14,7 +14,17 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "required": "Required",
-    "and": "and"
+    "and": "and",
+    "progressSaved": "Your progress is automatically saved. You can return anytime to complete your application.",
+    "fileDropzone": {
+      "fileSizeExceeds": "File size exceeds {maxSize}MB",
+      "fileTypeNotAccepted": "File type not accepted. Accepted types: {types}",
+      "clickToUpload": "Click to upload or drag and drop",
+      "max": "max"
+    },
+    "submitting": "Submitting...",
+    "submitApplication": "Submit Application",
+    "stepOf": "Step {current} of {total}"
   },
   "login": {
     "tagline": "Professional digital banking",
@@ -452,7 +462,11 @@
         "submissionSuccessMessage": "Your company formation dossier has been created. Our team will review it and contact you within 24–72 hours to proceed with the notarization and registration process.",
         "reference": "Reference: {ref}",
         "emailConfirmation": "You'll receive an email confirmation shortly.",
-        "returnToHome": "Return to Home"
+        "returnToHome": "Return to Home",
+        "securePaymentNote": "Secure Payment: Your payment is processed securely through PayPal. You don't need a PayPal account - you can pay with credit/debit card.",
+        "loadingPaymentOptions": "Loading payment options...",
+        "paypalOrderId": "PayPal Order ID:",
+        "paymentCompleteFee": "Setup fee of €{amount} has been paid successfully."
       }
     }
   },
@@ -590,7 +604,14 @@
         "testingCardDesc": "Use card {code} (Expiry: 12/2030, CVV: 123)",
         "paymentSuccessful": "Payment Successful!",
         "processing": "Processing...",
-        "continueToConfirmation": "Continue to Confirmation"
+        "continueToConfirmation": "Continue to Confirmation",
+        "noBookingFound": "No Booking Found",
+        "scheduleFirst": "Please schedule your appointment first before proceeding to payment.",
+        "scheduleAppointment": "Schedule Appointment",
+        "paymentFailed": "Payment failed. Please try again.",
+        "completePaypalFirst": "Please complete the PayPal payment first.",
+        "errorProcessing": "There was an error processing your payment. Please contact support.",
+        "errorGeneral": "There was an error. Please contact support."
       },
       "confirmation": {
         "title": "Payment Confirmed!",
@@ -602,7 +623,8 @@
         "prepareDocuments": "✓ Prepare your tax documents and questions",
         "joinConference": "✓ Join the video conference at your scheduled time",
         "teamNotified": "✓ Our team has been notified and will be ready for your consultation",
-        "returnToHome": "Return to Home"
+        "returnToHome": "Return to Home",
+        "downloadReceipt": "Download Receipt"
       },
       "features": {
         "title": "What's Included",
@@ -1005,6 +1027,278 @@
         "disclaimer": "All information provided is subject to change without notice. Please verify current terms and conditions.",
         "lastUpdated": "Last updated: January 2025"
       }
+    },
+    "disclaimers": {
+      "heroTitle": "Disclaimers",
+      "heroSubtitle": "Important information about our services and limitations",
+      "importantNotice": "Important Notice",
+      "importantNoticeText": "Please read these disclaimers carefully. By using our services, you acknowledge that you have read, understood, and agree to be bound by these disclaimers.",
+      "s1": {
+        "title": "1. General Disclaimer",
+        "text": "The information provided on the Opulanz platform is for general informational purposes only. While we strive to keep the information accurate and up-to-date, we make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the information, products, services, or related graphics contained on the platform."
+      },
+      "s2": {
+        "title": "2. Financial Advice Disclaimer",
+        "text": "The content provided on our platform does not constitute financial, investment, tax, or legal advice. Any information or recommendations provided are for informational purposes only and should not be considered as professional advice. You should consult with qualified professionals before making any financial decisions. Past performance is not indicative of future results."
+      },
+      "s3": {
+        "title": "3. Investment Risk Disclaimer",
+        "intro": "Investing in financial products involves risk, including the potential loss of principal. Before investing, you should consider:",
+        "items": {
+          "0": "Your financial situation, investment objectives, and risk tolerance",
+          "1": "The risks associated with specific investment products",
+          "2": "Market volatility and economic conditions",
+          "3": "Currency exchange rate fluctuations",
+          "4": "Potential tax implications"
+        },
+        "conclusion": "We do not guarantee any specific investment returns or outcomes. You are solely responsible for your investment decisions and any resulting gains or losses."
+      },
+      "s4": {
+        "title": "4. Service Availability Disclaimer",
+        "text": "While we strive to maintain 99.9% uptime, we cannot guarantee uninterrupted or error-free access to our platform. Services may be temporarily unavailable due to maintenance, technical issues, or circumstances beyond our control. We are not liable for any losses resulting from service interruptions or delays in processing transactions."
+      },
+      "s5": {
+        "title": "5. Third-Party Services Disclaimer",
+        "text": "Our platform may contain links to or integrate with third-party websites, services, or products. We do not endorse or assume responsibility for the content, privacy policies, or practices of third-party services. Your interactions with third-party services are governed by their respective terms and conditions. We are not liable for any damages or losses resulting from your use of third-party services."
+      },
+      "s6": {
+        "title": "6. Regulatory and Jurisdictional Disclaimer",
+        "text": "Opulanz operates under licenses and regulations in specific jurisdictions. Our services may not be available in all countries or regions. It is your responsibility to ensure that your use of our services complies with local laws and regulations in your jurisdiction. We make no representation that materials on our platform are appropriate or available for use in all locations."
+      },
+      "s7": {
+        "title": "7. Exchange Rate and Currency Disclaimer",
+        "text": "Exchange rates displayed on our platform are indicative and may not reflect real-time market rates. Actual rates applied to transactions may differ based on market conditions, transaction size, and timing. Currency exchange involves risk, and rates can fluctuate significantly. We are not responsible for losses resulting from exchange rate movements."
+      },
+      "s8": {
+        "title": "8. Tax Disclaimer",
+        "text": "Information provided regarding tax matters is general in nature and should not be considered as tax advice. Tax laws vary by jurisdiction and individual circumstances. You are responsible for understanding and complying with your tax obligations. We recommend consulting with qualified tax professionals for advice specific to your situation. Opulanz is not responsible for any tax liabilities you may incur."
+      },
+      "s9": {
+        "title": "9. Insurance Coverage Disclaimer",
+        "text": "Insurance products offered through our platform are provided by licensed insurance companies. We act as an intermediary and are not the insurance provider. Coverage terms, conditions, and exclusions are determined by the insurance policy documents. You should carefully review all policy documents before purchasing insurance. We are not liable for claims disputes or coverage issues between you and the insurance provider."
+      },
+      "s10": {
+        "title": "10. Company Formation Disclaimer",
+        "text": "Company formation services are provided for informational and administrative assistance purposes only. We do not provide legal advice regarding corporate structure, governance, or compliance. The suitability of a particular corporate structure depends on your specific circumstances and objectives. You should consult with legal and tax professionals before forming a company."
+      },
+      "s11": {
+        "title": "11. Security Disclaimer",
+        "text": "While we implement industry-standard security measures, no system is completely secure. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account. We are not liable for unauthorized access resulting from your failure to maintain security, disclosure of credentials, or use of compromised devices or networks."
+      },
+      "s12": {
+        "title": "12. Transaction Disclaimer",
+        "text": "Once a transaction is executed, it may not be reversible. You are responsible for verifying all transaction details before confirming. We are not liable for losses resulting from incorrect recipient information, amount errors, or transactions executed based on your instructions. Some transactions may be delayed or rejected due to compliance reviews, technical issues, or insufficient funds."
+      },
+      "s13": {
+        "title": "13. Content Accuracy Disclaimer",
+        "text": "We make reasonable efforts to ensure information accuracy, but content on our platform may contain errors, omissions, or outdated information. Account balances, transaction history, and other data are provided \"as is\" without warranty. You should verify critical information independently. We reserve the right to correct errors and update information without prior notice."
+      },
+      "s14": {
+        "title": "14. Limitation of Liability",
+        "text": "To the maximum extent permitted by law, Opulanz, its directors, employees, partners, and affiliates shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from: your use or inability to use our services, unauthorized access to your account, errors or omissions in content, delays or interruptions in service, or any decisions made based on information provided on our platform."
+      },
+      "s15": {
+        "title": "15. Changes to Disclaimers",
+        "text": "We reserve the right to modify these disclaimers at any time. Material changes will be communicated through our platform or via email. Your continued use of our services after changes are posted constitutes acceptance of the updated disclaimers. We recommend reviewing this page periodically."
+      },
+      "s16": {
+        "title": "16. Contact Information",
+        "intro": "If you have questions about these disclaimers, please contact us:",
+        "emailLabel": "Email:",
+        "email": "legal@opulanz.com",
+        "phoneLabel": "Phone:",
+        "phone": "+352 20 30 40 50",
+        "addressLabel": "Address:",
+        "address": "1 Avenue de la Liberté, L-1931 Luxembourg"
+      },
+      "lastUpdated": "Last updated: October 28, 2025"
+    },
+    "privacy": {
+      "heroTitle": "Privacy Policy",
+      "heroSubtitle": "Data Protection and GDPR Compliance",
+      "gdpr": {
+        "title": "GDPR Compliance",
+        "text1": "We are committed to protecting your personal data and respecting your privacy rights in accordance with the General Data Protection Regulation (GDPR).",
+        "text2": "You have the right to access, rectify, delete, and port your personal data.",
+        "contactText": "To exercise these rights, please contact us at:"
+      },
+      "dataController": {
+        "title": "Data Controller",
+        "text1": "Advensys Insurance Finance S.A.R.L. acts as the data controller for all personal data collected through this website.",
+        "text2": "We process your data in accordance with applicable data protection laws and regulations."
+      },
+      "dataCollection": {
+        "title": "Data Collection",
+        "text1": "We collect personal data that you voluntarily provide to us through our website forms and communications.",
+        "text2": "All personal data concerning Internet users is collected directly from them. Advensys Insurance Finance S.A.R.L. undertakes to obtain the consent of Internet users and/or to allow them to oppose the use of their personal data."
+      },
+      "typesOfData": {
+        "title": "Types of Data and Purpose of Collection",
+        "intro": "The following data from Internet users may be collected by Advensys Insurance Finance S.A.R.L.:",
+        "items": {
+          "surname": "Surname",
+          "firstName": "First name",
+          "address": "Address",
+          "email": "Email",
+          "ip": "IP address for Google Analytics"
+        },
+        "purposeIntro": "This collected data is mainly processed for:",
+        "purposes": {
+          "navigation": "Allow navigation on the site",
+          "statistics": "Produce statistics"
+        }
+      },
+      "legitimateInterest": {
+        "title": "Legitimate Interest",
+        "intro": "The collection of personal data is based on the legitimate interest of Advensys Insurance Finance S.A.R.L. to offer:",
+        "items": {
+          "news": "News and services of interest to anyone looking for information on the profession of financial investment advice, a job or an internship",
+          "wealthManagement": "Information on wealth management and financial investment services"
+        }
+      },
+      "processingLocation": {
+        "title": "Data Processing Location",
+        "text": "The processing carried out by Advensys Insurance Finance S.A.R.L. is located exclusively in Metropolitan France."
+      },
+      "dataRetention": {
+        "title": "Data Retention",
+        "intro": "Personal data is kept only for the time necessary for the purpose pursued by the processing:",
+        "navigation": {
+          "label": "Navigation on the site and statistics:",
+          "duration": "1 year"
+        },
+        "membership": {
+          "label": "Membership:",
+          "duration": "The membership processing time (a few weeks)"
+        }
+      },
+      "yourRights": {
+        "title": "Your Rights",
+        "intro": "Under GDPR, you have the following rights regarding your personal data:",
+        "access": {
+          "label": "Right to Access:",
+          "text": "Request a copy of your personal data"
+        },
+        "rectification": {
+          "label": "Right to Rectification:",
+          "text": "Correct inaccurate or incomplete data"
+        },
+        "erasure": {
+          "label": "Right to Erasure (Right to be Forgotten):",
+          "text": "Request deletion of your data"
+        },
+        "portability": {
+          "label": "Right to Data Portability:",
+          "text": "Receive your data in a machine-readable format"
+        },
+        "object": {
+          "label": "Right to Object:",
+          "text": "Object to certain types of processing"
+        },
+        "restriction": {
+          "label": "Right to Restriction of Processing:",
+          "text": "Limit how we use your data"
+        }
+      },
+      "contactDPO": {
+        "title": "Contact for Data Protection",
+        "intro": "To exercise your rights or for any questions regarding data protection, please contact us:",
+        "emailLabel": "Email:",
+        "addressLabel": "Address:",
+        "phoneLabel": "Phone:"
+      },
+      "cookies": {
+        "title": "Cookies and Tracking",
+        "text": "We use Google Analytics to analyze website usage and improve our services. This involves collecting IP addresses and website navigation data."
+      },
+      "dataSecurity": {
+        "title": "Data Security",
+        "text": "We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction."
+      },
+      "updates": {
+        "title": "Updates to This Policy",
+        "text": "This privacy policy may be updated from time to time. We recommend that you review this page periodically to stay informed of any changes."
+      },
+      "lastUpdated": "Last updated: January 2025"
+    },
+    "regulatory": {
+      "heroTitle": "Regulatory Information",
+      "heroSubtitle": "Our commitment to compliance and regulatory oversight",
+      "intro": "Opulanz operates under strict regulatory oversight to ensure the highest standards of financial integrity, client protection, and operational transparency.",
+      "framework": {
+        "title": "Regulatory Framework",
+        "intro": "Opulanz is regulated by leading European financial authorities. Our operations comply with:",
+        "items": {
+          "psd2": "EU Payment Services Directive (PSD2)",
+          "mifid": "Markets in Financial Instruments Directive (MiFID II)",
+          "amld": "Anti-Money Laundering Directives (AMLD5/6)",
+          "gdpr": "General Data Protection Regulation (GDPR)",
+          "banking": "Banking and financial services regulations in France"
+        }
+      },
+      "regulatorsTitle": "Our Regulators",
+      "regulators": {
+        "acpr": {
+          "country": "France",
+          "description": "The French Prudential Supervision and Resolution Authority supervises banks, insurance companies, and financial institutions operating in France."
+        },
+        "amf": {
+          "country": "France",
+          "description": "The French Financial Markets Authority regulates financial markets, investment services, and protects investors."
+        }
+      },
+      "visitWebsite": "Visit Official Website →",
+      "compliance": {
+        "title": "Compliance Standards",
+        "intro": "We maintain the highest compliance standards across all aspects of our operations:",
+        "aml": {
+          "title": "Anti-Money Laundering (AML)",
+          "text": "We implement comprehensive AML policies and procedures to detect and prevent money laundering activities. This includes ongoing transaction monitoring, suspicious activity reporting, and staff training programs."
+        },
+        "kyc": {
+          "title": "Know Your Customer (KYC)",
+          "text": "All clients undergo thorough identity verification and due diligence procedures. We collect and verify personal information, beneficial ownership details, and source of funds to ensure regulatory compliance."
+        },
+        "ctf": {
+          "title": "Counter-Terrorist Financing (CTF)",
+          "text": "We screen all clients and transactions against international sanctions lists and watchlists to prevent terrorist financing and comply with international security regulations."
+        },
+        "dataProtection": {
+          "title": "Data Protection",
+          "text": "We comply with GDPR and implement robust data protection measures to safeguard your personal information. Your data is processed lawfully, transparently, and securely."
+        },
+        "clientFunds": {
+          "title": "Client Fund Protection",
+          "text": "Client funds are held in segregated accounts with licensed banking partners and are protected according to applicable deposit guarantee schemes. Your funds are kept separate from company operational funds."
+        }
+      },
+      "licenses": {
+        "title": "Licenses and Authorizations",
+        "intro": "Opulanz holds the necessary licenses and authorizations to provide financial services:",
+        "banking": {
+          "title": "Banking Services - France",
+          "supervised": "Licensed and supervised by ACPR (Autorité de Contrôle Prudentiel et de Résolution)",
+          "text": "Our French banking operations are fully compliant with French banking law and European banking directives."
+        },
+        "investment": {
+          "title": "Investment Services - France",
+          "regulated": "Regulated by AMF (Autorité des Marchés Financiers)",
+          "text": "Our investment advisory services comply with MiFID II regulations and AMF requirements."
+        },
+        "payment": {
+          "title": "Payment Services",
+          "authorized": "Authorized under PSD2 (Payment Services Directive 2)",
+          "text": "We provide secure payment services across the European Economic Area in compliance with PSD2 requirements."
+        }
+      },
+      "questions": {
+        "title": "Questions About Our Regulatory Status?",
+        "text": "For inquiries about our licenses, compliance procedures, or regulatory matters, please contact our compliance team.",
+        "emailLabel": "Compliance Email:",
+        "phoneLabel": "General Inquiries:",
+        "addressLabel": "Address:"
+      },
+      "lastUpdated": "Last updated: October 28, 2025"
     }
   },
   "footer": {
@@ -1225,6 +1519,10 @@
         "step": "Step",
         "of": "of",
         "complete": "Complete"
+      },
+      "missionStep": {
+        "title": "Relationship & Mission",
+        "description": "Mission objectives (patrimony structuring, protection, investment assistance), remuneration understanding"
       }
     },
     "clientType": {
@@ -1338,7 +1636,8 @@
           "selfEmployed": "Self-Employed",
           "retired": "Retired",
           "unemployed": "Unemployed",
-          "student": "Student"
+          "student": "Student",
+          "select": "Select status"
         },
         "originOfFunds": {
           "salary": "Salary/Employment Income",
@@ -1346,7 +1645,11 @@
           "investment": "Investment Returns",
           "inheritance": "Inheritance",
           "savings": "Personal Savings",
-          "other": "Other"
+          "other": "Other",
+          "select": "Select origin",
+          "saleOfAssets": "Sale of Assets",
+          "businessIncome": "Business Income",
+          "investmentReturns": "Investment Returns"
         },
         "investmentExperience": {
           "beginner": "Beginner (No Experience)",
@@ -1367,13 +1670,15 @@
           "short": "Short-term (< 2 years)",
           "medium": "Medium-term (2-5 years)",
           "long": "Long-term (5-10 years)",
-          "veryLong": "Very Long-term (10+ years)"
+          "veryLong": "Very Long-term (10+ years)",
+          "select": "Select horizon"
         },
         "investmentObjective": {
           "preservation": "Capital Preservation",
           "income": "Income Generation",
           "growth": "Capital Growth",
-          "balanced": "Balanced Growth & Income"
+          "balanced": "Balanced Growth & Income",
+          "select": "Select objective"
         },
         "riskTolerance": {
           "conservative": "Conservative (Low Risk)",
@@ -1384,6 +1689,15 @@
         "missionType": {
           "advisory": "Investment Advisory (Conseil)",
           "management": "Portfolio Management (Gestion sous mandat)"
+        },
+        "incomeSource": {
+          "select": "Select source",
+          "salary": "Salary",
+          "business": "Business Income",
+          "investments": "Investment Income",
+          "pension": "Pension",
+          "inheritance": "Inheritance",
+          "other": "Other"
         }
       },
       "consents": {
@@ -1391,7 +1705,25 @@
         "kyc": "I consent to identity verification and AML/CFT compliance checks as required by French regulations (ACPR, AMF)",
         "electronic": "I consent to receive and sign documents electronically via DocuSign",
         "marketing": "I consent to receive marketing communications from Opulanz (optional)"
-      }
+      },
+      "sectionTitles": {
+        "identity": "1. Personal Identity",
+        "family": "2. Family Situation",
+        "financial": "3. Financial Situation",
+        "origin": "4. Origin of Funds",
+        "investment": "5. Investment Profile",
+        "mission": "6. Service Type & Initial Investment",
+        "consents": "7. Consents & Authorizations"
+      },
+      "helpers": {
+        "placeOfBirthHint": "City, Country",
+        "sectorHint": "e.g., Technology, Finance, Healthcare",
+        "originDetailsHint": "Provide additional context about the origin of your investment funds",
+        "advisoryDescription": "We provide recommendations, you make the final decisions",
+        "managementDescription": "We manage your portfolio with discretionary authority",
+        "minimumInvestment": "Minimum: €10,000"
+      },
+      "continueToReview": "Continue to Review"
     },
     "company": {
       "title": "Company Client Information",
@@ -1571,7 +1903,54 @@
         "checkbox": "I confirm that I have reviewed all information and agree to the terms"
       },
       "submit": "Submit Application",
-      "submitting": "Submitting..."
+      "submitting": "Submitting...",
+      "completeSectionTitle": "Complete Application Details",
+      "clientTypeLabel": "Client Type",
+      "emailLabel": "Email",
+      "mobileLabel": "Mobile",
+      "preferredLanguageLabel": "Preferred Language",
+      "fullNameLabel": "Full Name",
+      "statusLabel": "Status",
+      "employerLabel": "Employer",
+      "positionLabel": "Position",
+      "additionalDetails": "Additional Details:",
+      "individualType": "Individual",
+      "companyType": "Company",
+      "grantedLabel": "Granted",
+      "notGrantedLabel": "Not granted",
+      "dataProcessingConsentLabel": "Data Processing Consent",
+      "kycComplianceLabel": "KYC/AML Compliance",
+      "electronicSignatureLabel": "Electronic Signature",
+      "marketingLabel": "Marketing Communications",
+      "errorTitle": "Submission Failed",
+      "submittingTitle": "Submitting Application...",
+      "submittingDescription": "Generating documents and preparing signature request",
+      "companyIdentitySection": "Company Identity",
+      "registeredAddressSection": "Registered Address",
+      "legalRepresentativeSection": "Legal Representative",
+      "uboSection": "Ultimate Beneficial Owner (UBO)",
+      "fatcaCrsSection": "FATCA & CRS",
+      "usPersonLabel": "US Person",
+      "taxResidentCountriesLabel": "Tax Resident Countries",
+      "financialInfoSection": "Financial Information",
+      "investmentProfileSection": "Investment Profile",
+      "serviceDetailsSection": "Service Details",
+      "consentsSection": "Consents & Authorizations",
+      "yesLabel": "Yes",
+      "noLabel": "No",
+      "annualRevenueLabel": "Annual Revenue",
+      "sourceOfRevenueLabel": "Source of Revenue",
+      "uboNameLabel": "UBO Name",
+      "ownershipLabel": "Ownership %",
+      "serviceTypeLabel": "Service Type",
+      "investmentExperienceLabel": "Investment Experience",
+      "riskToleranceLabel": "Risk Tolerance",
+      "investmentHorizonLabel": "Investment Horizon",
+      "investmentObjectiveLabel": "Investment Objective",
+      "expectedReturnLabel": "Expected Annual Return",
+      "maxLossLabel": "Max Acceptable Loss",
+      "initialInvestmentLabel": "Initial Investment",
+      "processingLabel": "Processing..."
     },
     "success": {
       "title": "Application Submitted Successfully!",
@@ -1579,7 +1958,33 @@
       "actions": {
         "home": "Return to Homepage",
         "new": "Start New Application"
-      }
+      },
+      "nextSteps": {
+        "title": "What Happens Next?",
+        "step1": {
+          "title": "Document Generation",
+          "description": "We'll automatically generate your regulatory documents (Lettre de mission, Déclaration d'adéquation, etc.)"
+        },
+        "step2": {
+          "title": "Compliance Review",
+          "description": "Our team will review your application within 2-3 business days"
+        },
+        "step3": {
+          "title": "DocuSign Signature",
+          "description": "You'll receive an email with documents to sign electronically via DocuSign"
+        },
+        "step4": {
+          "title": "Account Activation",
+          "description": "Once signed, your investment account will be activated"
+        }
+      },
+      "reference": {
+        "title": "Application Reference",
+        "processing": "Processing...",
+        "envelopeId": "DocuSign Envelope ID:",
+        "checkEmail": "📧 Check your email for the signature request"
+      },
+      "contactSupport": "Questions? Contact us at support@opulanz.com"
     },
     "hero": {
       "primaryCta": "Schedule Meeting",
@@ -2243,6 +2648,13 @@
         "description": "Employer-sponsored coverage at competitive group rates"
       }
     },
+    "schedule": {
+      "heroTitle": "Schedule Your Life Insurance Consultation",
+      "heroSubtitle": "Book a consultation with our expert advisors to discuss your life insurance needs",
+      "overline": "Book a Consultation",
+      "title": "Choose Your Preferred Time",
+      "description": "Meet with our expert advisors to discuss your life insurance needs and explore the best coverage options for your family."
+    },
     "customerInfo": {
       "title": "Book Your Life Insurance Consultation",
       "subtitle": "Let's start by collecting your contact information",
@@ -2315,7 +2727,63 @@
       "heading": "Payment Information",
       "description": "Your payment is secure and processed through PayPal",
       "loading": "Loading PayPal payment...",
-      "backToSummary": "Back to Summary"
+      "backToSummary": "Back to Summary",
+      "paymentFailed": "Payment failed. Please try again or contact support.",
+      "paymentSuccessError": "Payment successful, but there was an error saving your booking. Please contact support with your payment confirmation.",
+      "securePaymentLabel": "Secure Payment:",
+      "securePaymentText": "Your payment is processed securely through PayPal. You don't need a PayPal account - you can pay with credit/debit card.",
+      "paymentSummary": "Payment Summary",
+      "serviceLabel": "Service",
+      "clientLabel": "Client",
+      "totalLabel": "Total",
+      "cancelBooking": "Cancel Booking"
+    },
+    "confirmation": {
+      "title": "Booking Confirmed!",
+      "subtitle": "Your life insurance consultation has been successfully booked",
+      "confirmationLabel": "Confirmation",
+      "emailSent": "Confirmation email sent",
+      "emailSentText": "A confirmation email with all the details has been sent to",
+      "yourEmailAddress": "your email address",
+      "checkInbox": "Please check your inbox and spam folder.",
+      "appointmentDetails": "Your Appointment Details",
+      "clientName": "Client Name",
+      "guest": "Guest",
+      "emailLabel": "Email",
+      "notProvided": "Not provided",
+      "phoneLabel": "Phone",
+      "dateLabel": "Date",
+      "timeLabel": "Time",
+      "duration60": "Duration: 60 minutes",
+      "scheduledViaCalendly": "Appointment Scheduled via Calendly",
+      "checkEmailForDetails": "Check your email for appointment details",
+      "calendlyConfirmation": "You will receive a confirmation email from Calendly with your appointment date, time, and Google Meet link.",
+      "serviceDetails": "Service Details",
+      "sixtyMinConsultation": "60-minute consultation",
+      "inclVat": "incl. VAT",
+      "addToCalendar": "Add to Calendar",
+      "downloadReceipt": "Download PDF Receipt",
+      "whatsNext": "What happens next?",
+      "step1": {
+        "title": "Check your email",
+        "text": "You'll receive a confirmation email with a calendar invite and meeting link"
+      },
+      "step2": {
+        "title": "Prepare for your consultation",
+        "text": "Gather relevant documents and prepare questions you'd like to discuss"
+      },
+      "step3": {
+        "title": "Join the meeting",
+        "text": "Click the meeting link in your email at the scheduled time"
+      },
+      "step4": {
+        "title": "Receive your action plan",
+        "text": "After the consultation, you'll receive a summary and recommended next steps"
+      },
+      "rescheduleQuestion": "Need to reschedule or have questions?",
+      "backToLifeInsurance": "Back to Life Insurance",
+      "goToDashboard": "Go to Dashboard",
+      "supportText": "Questions about your booking? Contact us at"
     }
   },
   "accountOpening": {
@@ -2554,7 +3022,17 @@
           "uploadId": "Upload ID",
           "uploadProof": "Upload Proof",
           "uploadTaxId": "Upload Tax ID",
-          "uploaded": "✓ Uploaded"
+          "uploaded": "✓ Uploaded",
+          "sourceOfFunds": "Source of Funds Documentation",
+          "sourceOfFundsDescription": "Pay slips, investment statements, or other proof",
+          "uploadSourceOfFunds": "Upload Proof",
+          "proofOfAssets": "Proof of Assets",
+          "proofOfAssetsDescription": "Bank statements, investment portfolios",
+          "uploadAssets": "Upload Assets",
+          "incomeEvidence": "Income Evidence",
+          "incomeEvidenceDescription": "Tax returns, employment contracts",
+          "uploadIncomeProof": "Upload Income Proof",
+          "uploadedDocuments": "Uploaded Documents ({count})"
         },
         "review": {
           "title": "Review & Consents",
@@ -2579,7 +3057,8 @@
           "nextStep1": "Our compliance team will review your application",
           "nextStep2": "We'll match you with the most suitable Opulanz partner bank",
           "nextStep3": "You'll receive an email with next steps within 24-72 hours",
-          "backToHomepage": "Back to Homepage"
+          "backToHomepage": "Back to Homepage",
+          "startBusinessApplication": "Start a Business Application"
         }
       }
     },
@@ -2862,6 +3341,216 @@
         "supportInfo": "Need help? Our support team is available Monday-Friday, 9:00-18:00 CET. Email us at support@opulanz.com",
         "submitting": "Submitting Your Application",
         "submittingDescription": "Please wait while we process your application..."
+      },
+      "businessFunnel": {
+        "steps": {
+          "welcome": {
+            "label": "Welcome",
+            "shortLabel": "Welcome"
+          },
+          "company": {
+            "label": "Company Status",
+            "shortLabel": "Company"
+          },
+          "contact": {
+            "label": "Contact Person",
+            "shortLabel": "Contact"
+          },
+          "intent": {
+            "label": "Business Intent",
+            "shortLabel": "Intent"
+          },
+          "directors": {
+            "label": "Directors & UBOs",
+            "shortLabel": "Directors"
+          },
+          "review": {
+            "label": "Review & Consents",
+            "shortLabel": "Review"
+          },
+          "submission": {
+            "label": "Submission",
+            "shortLabel": "Submit"
+          }
+        },
+        "welcome": {
+          "title": "Open Your Business Account",
+          "subtitle": "Tell us about your company, and we'll guide you through the right setup with an Opulanz partner bank.",
+          "timeline": {
+            "title": "Application Timeline",
+            "step1": {
+              "title": "Application Submission",
+              "description": "Complete the online form (15-20 minutes)"
+            },
+            "step2": {
+              "title": "Document Review",
+              "description": "Partner bank reviews company documents and UBO information (2-5 business days)"
+            },
+            "step3": {
+              "title": "KYC & Compliance",
+              "description": "Enhanced due diligence for business accounts (3-7 business days)"
+            },
+            "step4": {
+              "title": "Account Activation",
+              "description": "Receive IBAN, credentials, and corporate cards (2-3 business days)"
+            },
+            "totalTime": "Total estimated time: 7-15 business days",
+            "note": "Timeline may vary based on company structure complexity and document completeness"
+          },
+          "eligibility": {
+            "title": "Eligibility Requirements",
+            "requirement1": "Company registered in EU/EEA or select jurisdictions",
+            "requirement2": "Valid company registration documents",
+            "requirement3": "Articles of association or equivalent",
+            "requirement4": "UBO declaration (Ultimate Beneficial Owners)",
+            "requirement5": "All directors/signatories have valid ID",
+            "requirement6": "Company tax identification number"
+          },
+          "documents": {
+            "title": "Required Documents",
+            "document1": "Certificate of incorporation (dated within 3 months)",
+            "document2": "Articles of association / company bylaws",
+            "document3": "Register of directors and shareholders",
+            "document4": "ID/passport for all directors and UBOs (>25% ownership)",
+            "document5": "Proof of business address (utility bill, lease)",
+            "document6": "Business plan or activity description"
+          },
+          "howItWorks": {
+            "title": "How It Works",
+            "smartRouting": {
+              "title": "Smart Routing:",
+              "description": "Based on your company's jurisdiction, industry, and banking needs, we automatically route your application to the most suitable Opulanz partner bank."
+            },
+            "priorityProcessing": {
+              "title": "Priority Processing:",
+              "description": "Your application includes a secure signed referral code from Opulanz, ensuring expedited review and preferential commercial terms from our partner banks."
+            },
+            "enhancedDueDiligence": {
+              "title": "Enhanced Due Diligence:",
+              "description": "Business accounts undergo comprehensive KYC/AML screening including UBO verification, business activity assessment, and source of funds validation to ensure full regulatory compliance."
+            },
+            "noObligation": {
+              "title": "No Obligation:",
+              "description": "Submitting this application does not commit you to opening an account. You'll receive final terms and can decide whether to proceed after partner bank approval."
+            }
+          },
+          "features": {
+            "title": "Business Account Features",
+            "feature1": "Dedicated business IBAN in EUR",
+            "feature2": "SEPA transfers and SWIFT payments",
+            "feature3": "Corporate debit/credit cards",
+            "feature4": "Multi-user access with permissions",
+            "feature5": "Accounting software integration",
+            "feature6": "Dedicated business support"
+          },
+          "startButton": "Start Business Application"
+        },
+        "company": {
+          "title": "Company Status",
+          "subtitle": "Do you have an existing company or need to create one?",
+          "existingCompany": "I already have a company",
+          "newCompany": "I need to create a company",
+          "companyName": "Company Name",
+          "countryOfIncorporation": "Country of Incorporation",
+          "registrationNumber": "Registration Number",
+          "legalForm": "Legal Form",
+          "website": "Website (optional)",
+          "formationService": {
+            "description": "We can help you incorporate your company in Luxembourg or other jurisdictions. Our company formation service includes:",
+            "item1": "Legal structure consultation",
+            "item2": "Company registration and filing",
+            "item3": "Registered office address",
+            "item4": "Bank account setup",
+            "learnMore": "Learn More About Company Formation"
+          }
+        },
+        "contact": {
+          "title": "Contact Person",
+          "subtitle": "Who will be the main contact for this application?",
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "email": "Email",
+          "mobile": "Mobile Phone",
+          "dateOfBirth": "Date of Birth",
+          "nationality": "Nationality",
+          "countryOfResidence": "Country of Residence",
+          "taxResidency": "Tax Residency",
+          "taxId": "Tax ID (Optional)",
+          "required": "*"
+        },
+        "intent": {
+          "title": "Business Intent & Activity",
+          "subtitle": "Tell us about your business operations",
+          "jurisdictions": "Intended Jurisdictions",
+          "required": "*",
+          "businessActivity": "Business Activity",
+          "businessActivityPlaceholder": "E-commerce, Consulting, etc.",
+          "expectedMonthlyVolume": "Expected Monthly Volume (€)",
+          "averageTicketSize": "Average Ticket Size (€)",
+          "currencies": "Primary Currencies",
+          "supportingDocuments": {
+            "title": "Supporting Documents",
+            "subtitle": "Please upload the following documents to support your business application",
+            "companyCertificate": "Company Registration Certificate",
+            "articles": "Articles of Association / Statutes",
+            "shareholderRegister": "Shareholder Register / UBO Declaration",
+            "businessPlan": "Business Plan / Activity Description",
+            "recommended": "(Recommended)",
+            "financialStatements": "Recent Financial Statements",
+            "ifExisting": "(If existing company)",
+            "uploadCertificate": "Upload Registration Certificate",
+            "uploadArticles": "Upload Articles of Association",
+            "uploadShareholder": "Upload Shareholder Register",
+            "uploadBusinessPlan": "Upload Business Plan",
+            "uploadFinancial": "Upload Financial Statements",
+            "uploadedDocuments": "Uploaded Documents ({count})",
+            "fileRequirements": "Accepted formats: JPG, PNG, PDF • Maximum size: 5MB per file"
+          }
+        },
+        "directors": {
+          "title": "Directors & Ultimate Beneficial Owners",
+          "subtitle": "Add key persons associated with the company",
+          "personLabel": "Person #{index}",
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "dateOfBirth": "Date of Birth",
+          "nationality": "Nationality",
+          "residency": "Residency",
+          "role": "Role",
+          "directorRole": "Director",
+          "uboRole": "UBO",
+          "bothRole": "Both",
+          "ownershipPercent": "Ownership %",
+          "addDirector": "Add Director / UBO",
+          "atLeastOneRequired": "Please add at least one director or UBO"
+        },
+        "review": {
+          "title": "Review & Consents",
+          "subtitle": "Please review and provide your consent",
+          "summaryTitle": "Application Summary",
+          "company": "Company",
+          "newCompany": "New Company",
+          "contactPerson": "Contact Person",
+          "businessActivity": "Business Activity",
+          "directorsUbos": "Directors & UBOs",
+          "personsCount": "{count} person(s)",
+          "dataProcessingConsent": "I consent to Opulanz processing company data for partner bank introductions.",
+          "dataSharingConsent": "I authorize Opulanz to share information with partner banks for account onboarding.",
+          "authorizedRepresentativeConsent": "I confirm I am authorized to submit this application on behalf of the company.",
+          "marketingOptIn": "Keep me informed about Opulanz services (optional)"
+        },
+        "submission": {
+          "title": "Application Submitted Successfully!",
+          "message": "Thank you for submitting your business account application. Our team will review your information and contact you within 24-72 hours.",
+          "applicationNumberLabel": "Your Application Number",
+          "saveNumberMessage": "Please save this number for your records",
+          "nextStepsTitle": "What happens next?",
+          "nextStep1": "Our compliance team will review your application and supporting documents",
+          "nextStep2": "We'll match your business with the most suitable Opulanz partner bank",
+          "nextStep3": "You'll receive an email with next steps within 24-72 hours",
+          "backToHomepage": "Back to Homepage",
+          "startPersonalApplication": "Start a Personal Application"
+        }
       }
     },
     "individual": {
@@ -3049,6 +3738,462 @@
       "description": "Join thousands of satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
       "openAccount": "Open an Account",
       "contactUs": "Contact Us"
+    }
+  },
+  "insurance": {
+    "title": "Luxembourg Life Insurance Application",
+    "description": "Complete your application in 7 comprehensive steps",
+    "steps": {
+      "personal": {
+        "label": "Personal",
+        "description": "Details & Tax"
+      },
+      "financial": {
+        "label": "Financial",
+        "description": "Profile"
+      },
+      "investment": {
+        "label": "Investment",
+        "description": "Profile"
+      },
+      "premium": {
+        "label": "Premium",
+        "description": "Payments"
+      },
+      "beneficiaries": {
+        "label": "Beneficiaries",
+        "description": "Designation"
+      },
+      "compliance": {
+        "label": "Compliance",
+        "description": "Documents"
+      },
+      "review": {
+        "label": "Review",
+        "description": "Submit"
+      }
+    },
+    "policyholderTax": {
+      "title": "Policyholder Information",
+      "subtitle": "Please provide your personal details and tax residency information.",
+      "personalDetails": "Personal Details",
+      "titleLabel": "Title *",
+      "select": "Select",
+      "titles": {
+        "mr": "Mr",
+        "mrs": "Mrs",
+        "ms": "Ms",
+        "dr": "Dr"
+      },
+      "firstName": "First Name *",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastName": "Last Name *",
+      "lastNamePlaceholder": "Enter your last name",
+      "dateOfBirth": "Date of Birth *",
+      "placeOfBirth": "Place of Birth *",
+      "placeOfBirthPlaceholder": "City, Country",
+      "nationality": "Nationality *",
+      "selectNationality": "Select nationality",
+      "contactInfo": "Contact Information",
+      "email": "Email Address *",
+      "phone": "Phone Number *",
+      "residentialAddress": "Residential Address",
+      "addressLine1": "Address Line 1 *",
+      "addressLine1Placeholder": "Street address",
+      "addressLine2": "Address Line 2",
+      "addressLine2Placeholder": "Apartment, suite, etc. (optional)",
+      "city": "City *",
+      "cityPlaceholder": "City",
+      "postalCode": "Postal Code *",
+      "postalCodePlaceholder": "Postal code",
+      "country": "Country *",
+      "selectCountry": "Select country",
+      "taxResidency": "Tax Residency",
+      "taxResidentLU": "I am a tax resident of Luxembourg",
+      "taxResidentLUDesc": "Check this if you are liable to pay taxes in Luxembourg",
+      "additionalTaxResidencies": "Additional Tax Residencies",
+      "tin": "TIN",
+      "remove": "Remove",
+      "addTaxResidency": "Add Tax Residency",
+      "countryLabel": "Country",
+      "tinLabel": "Tax Identification Number (TIN)",
+      "tinPlaceholder": "Enter TIN",
+      "fatcaTitle": "FATCA & CRS Compliance",
+      "fatcaText": "Luxembourg life insurance companies are required to report to tax authorities under FATCA (US) and CRS (OECD) regulations. Please ensure all tax residency information is accurate and complete."
+    },
+    "financialProfile": {
+      "title": "Financial Profile",
+      "subtitle": "Help us understand your financial situation and the source of funds for this investment.",
+      "employmentInfo": "Employment Information",
+      "employmentStatusLabel": "Employment Status *",
+      "selectEmploymentStatus": "Select employment status",
+      "employmentStatuses": {
+        "employed": "Employed",
+        "selfEmployed": "Self-Employed",
+        "retired": "Retired",
+        "unemployed": "Unemployed",
+        "student": "Student"
+      },
+      "occupation": "Occupation / Job Title *",
+      "occupationPlaceholder": "e.g., Financial Analyst, Business Owner",
+      "employer": "Employer Name *",
+      "employerPlaceholder": "Name of your employer",
+      "financialInfo": "Financial Information",
+      "annualIncome": "Annual Income *",
+      "selectAnnualIncome": "Select annual income range",
+      "totalAssets": "Total Assets *",
+      "selectTotalAssets": "Select total assets range",
+      "totalAssetsDesc": "Include all assets: savings, investments, property, business interests, etc.",
+      "liquidAssets": "Liquid Assets *",
+      "selectLiquidAssets": "Select liquid assets range",
+      "liquidAssetsDesc": "Assets readily convertible to cash: bank accounts, stocks, bonds, etc.",
+      "sourceOfFundsWealth": "Source of Funds & Wealth",
+      "sourceOfFundsLabel": "Source of Funds for This Investment *",
+      "selectSourceOfFunds": "Select source of funds",
+      "sourceOfFundsDesc": "Where will the money for the insurance premium come from?",
+      "sourceOfFunds": {
+        "salary": "Salary / Employment Income",
+        "business": "Business Income",
+        "inheritance": "Inheritance",
+        "investments": "Investment Returns",
+        "savings": "Savings",
+        "property": "Property Sale",
+        "gift": "Gift",
+        "other": "Other"
+      },
+      "pleaseSpecify": "Please specify *",
+      "sourceOfFundsDetailsPlaceholder": "Provide details about the source of funds",
+      "sourceOfWealthLabel": "Source of Wealth *",
+      "selectSourceOfWealth": "Select source of wealth",
+      "sourceOfWealthDesc": "How did you accumulate your overall wealth?",
+      "sourceOfWealthDetailsPlaceholder": "Provide details about the source of wealth",
+      "politicalExposure": "Political Exposure",
+      "pepNo": "I am not a Politically Exposed Person (PEP)",
+      "pepYes": "I am a Politically Exposed Person (PEP)",
+      "pepInfoTitle": "What is a PEP?",
+      "pepInfoText": "A Politically Exposed Person is an individual who holds or has held a prominent public function, such as a head of state, senior politician, senior government official, judicial or military official, senior executive of a state-owned corporation, or important political party official. Family members and close associates of PEPs are also considered PEPs.",
+      "pepDetailsLabel": "Please provide details *",
+      "pepDetailsPlaceholder": "Describe your political position, role, or relationship to a PEP",
+      "amlTitle": "AML/KYC Compliance",
+      "amlText": "This information is required under Luxembourg and EU Anti-Money Laundering regulations. All data provided will be kept confidential and used solely for compliance purposes."
+    },
+    "investmentProfile": {
+      "title": "Investment Profile",
+      "subtitle": "Help us understand your investment experience and objectives to recommend suitable products.",
+      "warningHighRiskShort": "Your high risk tolerance may not align with your short investment horizon. Consider adjusting your approach.",
+      "warningLowRiskLong": "A conservative risk approach with a long investment horizon may limit potential returns.",
+      "risk": {
+        "veryConservative": "Very Conservative",
+        "conservative": "Conservative",
+        "moderate": "Moderate",
+        "growth": "Growth",
+        "aggressive": "Aggressive"
+      },
+      "horizon": {
+        "title": "Investment Horizon *",
+        "short": "Short-term (0-3 years)",
+        "shortDesc": "I may need access to my funds within 3 years",
+        "medium": "Medium-term (3-7 years)",
+        "mediumDesc": "I can invest for 3-7 years without needing access",
+        "long": "Long-term (7+ years)",
+        "longDesc": "I can invest for 7 years or more without needing access"
+      },
+      "knowledge": {
+        "title": "Investment Knowledge *",
+        "none": "Limited or None",
+        "noneDesc": "I have little to no knowledge of investment products",
+        "basic": "Basic",
+        "basicDesc": "I understand basic investment concepts (stocks, bonds, funds)",
+        "good": "Good",
+        "goodDesc": "I have good knowledge of various investment products and strategies",
+        "advanced": "Advanced",
+        "advancedDesc": "I have extensive knowledge and experience with complex investment products"
+      },
+      "experience": {
+        "title": "Investment Experience *",
+        "none": "No Experience",
+        "noneDesc": "I have never invested before",
+        "limited": "Limited (Less than 2 years)",
+        "limitedDesc": "I have invested occasionally or for a short period",
+        "moderate": "Moderate (2-5 years)",
+        "moderateDesc": "I have been actively investing for 2-5 years",
+        "extensive": "Extensive (5+ years)",
+        "extensiveDesc": "I have been actively investing for over 5 years"
+      },
+      "riskTolerance": {
+        "title": "Risk Tolerance *",
+        "description": "How much risk are you willing to take with your investment? Higher risk can lead to higher potential returns, but also higher potential losses."
+      },
+      "objective": {
+        "title": "Investment Objective *",
+        "preservation": "Capital Preservation",
+        "preservationDesc": "Protect my capital with minimal risk, accepting lower returns",
+        "income": "Income Generation",
+        "incomeDesc": "Generate regular income from my investments",
+        "balanced": "Balanced Growth",
+        "balancedDesc": "Balance growth and income with moderate risk",
+        "growth": "Capital Growth",
+        "growthDesc": "Maximize long-term capital appreciation, accepting higher volatility",
+        "aggressive": "Aggressive Growth",
+        "aggressiveDesc": "Seek maximum returns with high risk tolerance"
+      },
+      "expectedReturn": {
+        "title": "Expected Return *",
+        "low": "0-3% per year",
+        "lowDesc": "Low risk, stable returns",
+        "moderate": "3-6% per year",
+        "moderateDesc": "Moderate risk and returns",
+        "high": "6-10% per year",
+        "highDesc": "Higher risk for growth potential",
+        "veryHigh": "10%+ per year",
+        "veryHighDesc": "High risk, high potential returns"
+      },
+      "liquidity": {
+        "title": "Liquidity Needs *",
+        "high": "High - I may need access to funds soon",
+        "medium": "Medium - I might need partial access in a few years",
+        "low": "Low - I don't need access to these funds"
+      },
+      "mifidTitle": "MiFID II Suitability Assessment",
+      "mifidText": "This questionnaire helps us assess whether our products are suitable for you based on your investment knowledge, experience, objectives, and financial situation, as required by EU MiFID II regulations."
+    },
+    "premiumPayments": {
+      "title": "Premium & Payments",
+      "subtitle": "Choose your premium structure and provide payment details.",
+      "policyCurrency": "Policy Currency *",
+      "selectCurrencyLabel": "Select Currency",
+      "selectCurrency": "Select currency",
+      "currencyDesc": "All premiums and payouts will be denominated in this currency",
+      "premiumStructure": "Premium Structure *",
+      "singlePremium": "Single Premium",
+      "singlePremiumDesc": "One-time lump sum payment (Minimum: €25,000)",
+      "regularPremium": "Regular Premium",
+      "regularPremiumDesc": "Recurring payments (monthly, quarterly, or annually)",
+      "singlePremiumAmount": "Single Premium Amount *",
+      "minimumSinglePremium": "Minimum single premium",
+      "totalPremium": "Total Premium",
+      "paymentFrequency": "Payment Frequency *",
+      "selectFrequency": "Select frequency",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "annually": "Annually",
+      "premiumAmount": "Premium Amount *",
+      "minimumPremium": "Minimum {frequency} premium",
+      "premiumLabel": "Premium",
+      "annualTotal": "Annual total",
+      "paymentMethod": "Payment Method *",
+      "bankTransfer": "Bank Transfer / SEPA",
+      "bankTransferSingleDesc": "One-time wire transfer from your bank account",
+      "bankTransferRegularDesc": "Set up automatic recurring payments",
+      "bankCheck": "Bank Check",
+      "bankCheckDesc": "Send a certified bank check",
+      "paypalSingleDesc": "Pay securely with PayPal, debit or credit card",
+      "paypalRegularDesc": "Set up recurring payments via PayPal",
+      "bankAccountDetails": "Bank Account Details",
+      "accountHolder": "Account Holder Name *",
+      "accountHolderPlaceholder": "Full name as it appears on the account",
+      "accountHolderDesc": "Must match the policyholder name for AML compliance",
+      "ibanLabel": "IBAN *",
+      "bicLabel": "BIC / SWIFT Code *",
+      "bankNameLabel": "Bank Name *",
+      "bankNamePlaceholder": "Name of your bank",
+      "sepaTitle": "SEPA Direct Debit Authorization",
+      "sepaText": "By providing your bank details, you authorize us to automatically debit your account for regular premium payments. You can cancel this authorization at any time.",
+      "checkInstructionsTitle": "Bank Check Instructions",
+      "checkInstructionsPayable": "Please make the check payable to \"Opulanz Life Luxembourg S.A.\" and send it to:",
+      "checkInstructionsMemo": "Include your application reference number on the check memo line.",
+      "paypalPayment": "PayPal Payment",
+      "securePaypal": "Secure PayPal Payment",
+      "securePaypalDesc": "You will be redirected to PayPal to complete your payment securely. You can pay with your PayPal balance, bank account, or credit/debit card.",
+      "amountToPay": "Amount to pay",
+      "paymentLabel": "payment",
+      "payWithPaypal": "Pay with PayPal",
+      "acceptedPaymentMethods": "Accepted payment methods",
+      "securedBy": "Secured by",
+      "paymentVerification": "Payment Verification",
+      "paymentVerificationDesc": "After completing your PayPal payment, you will receive a confirmation email. Your application will be processed once the payment is verified.",
+      "importantNote": "Important Note",
+      "importantNoteText": "Premium payments must originate from an account in the policyholder's name. Third-party payments may not be accepted due to anti-money laundering regulations."
+    },
+    "beneficiaries": {
+      "title": "Beneficiaries",
+      "subtitle": "Designate who will receive the policy proceeds in the event of your death.",
+      "noBeneficiaries": "No beneficiaries added yet",
+      "addFirst": "Add First Beneficiary",
+      "beneficiaryNumber": "Beneficiary {number}",
+      "removeBeneficiary": "Remove beneficiary",
+      "beneficiaryType": "Beneficiary Type *",
+      "selectType": "Select type",
+      "primaryBeneficiary": "Primary Beneficiary",
+      "contingentBeneficiary": "Contingent Beneficiary",
+      "beneficiaryTypeDesc": "Primary beneficiaries receive proceeds first. Contingent beneficiaries receive proceeds if all primary beneficiaries predecease you.",
+      "titleLabel": "Title *",
+      "select": "Select",
+      "titles": {
+        "mr": "Mr",
+        "mrs": "Mrs",
+        "ms": "Ms",
+        "dr": "Dr"
+      },
+      "firstName": "First Name *",
+      "firstNamePlaceholder": "First name",
+      "lastName": "Last Name *",
+      "lastNamePlaceholder": "Last name",
+      "dateOfBirth": "Date of Birth *",
+      "relationship": "Relationship *",
+      "selectRelationship": "Select relationship",
+      "relationships": {
+        "spouse": "Spouse",
+        "partner": "Partner",
+        "child": "Child",
+        "parent": "Parent",
+        "sibling": "Sibling",
+        "otherFamily": "Other Family Member",
+        "friend": "Friend",
+        "charity": "Charity/Organization",
+        "other": "Other"
+      },
+      "percentage": "Percentage of Proceeds *",
+      "totalPercentage": "Total Percentage",
+      "percentageMustEqual100": "The total percentage must equal 100%. Currently {direction} {difference}%",
+      "missing": "missing",
+      "overBy": "over by",
+      "addAnother": "Add Another Beneficiary",
+      "designationTitle": "Beneficiary Designation",
+      "primaryLabel": "Primary Beneficiaries",
+      "primaryDesc": "Receive policy proceeds first according to their percentage allocation.",
+      "contingentLabel": "Contingent Beneficiaries",
+      "contingentDesc": "Only receive proceeds if all primary beneficiaries have predeceased you.",
+      "percentageRule": "The total percentage for all primary beneficiaries must equal 100%, as must the total for all contingent beneficiaries (if any).",
+      "updateAnytime": "You can update beneficiaries at any time during the life of the policy.",
+      "importantNote": "Important Note",
+      "importantNoteText": "If you do not name a beneficiary, or if no named beneficiaries survive you, the proceeds will be paid to your estate. We recommend consulting with a legal or tax advisor when making beneficiary designations, especially for complex family situations or international beneficiaries."
+    },
+    "compliance": {
+      "title": "Compliance & Declarations",
+      "subtitle": "Please review and confirm the following declarations and upload required documents.",
+      "requiredDocuments": "Required Documents",
+      "docs": {
+        "identityType": "Identity Document",
+        "identityName": "Passport or National ID",
+        "addressType": "Proof of Address",
+        "addressName": "Utility bill or bank statement (less than 3 months old)",
+        "taxType": "Tax Residency",
+        "taxName": "Tax residency certificate (if non-LU resident)",
+        "sofType": "Source of Funds",
+        "sofName": "Bank statements, payslips, or other evidence"
+      },
+      "uploaded": "Uploaded",
+      "upload": "Upload",
+      "uploadLater": "I will upload documents later",
+      "uploadLaterDesc": "You can proceed with your application and upload documents via email or secure portal. Your application will remain pending until all documents are received.",
+      "declarationsConsents": "Declarations & Consents",
+      "health": {
+        "label": "Health Declaration *",
+        "text": "I declare that I am in good health and have no knowledge of any medical condition that may affect my life expectancy. I understand that false declarations may void the policy."
+      },
+      "accuracy": {
+        "label": "Accuracy of Information *",
+        "text": "I declare that all information provided in this application is true, complete, and accurate to the best of my knowledge. I will notify the insurer of any changes to this information."
+      },
+      "taxCompliance": {
+        "label": "Tax Compliance *",
+        "text": "I confirm that I am in compliance with all applicable tax laws and regulations in my country(ies) of tax residence. I understand my obligation to report this policy to relevant tax authorities as required."
+      },
+      "aml": {
+        "label": "Anti-Money Laundering Declaration *",
+        "text": "I declare that the funds used for premium payments are from legitimate sources and are not proceeds from illegal activities. I understand that the insurer may conduct ongoing monitoring for AML/CFT purposes."
+      },
+      "dataProcessing": {
+        "label": "Data Processing Consent *",
+        "text": "I consent to the processing of my personal data by Opulanz Life Luxembourg S.A. and its service providers for the purpose of administering this insurance policy, in accordance with GDPR and Luxembourg data protection laws."
+      },
+      "terms": {
+        "label": "Terms and Conditions *",
+        "textBefore": "I have read, understood, and agree to the",
+        "link": "Policy Terms and Conditions",
+        "textAfter": ", including all fees, charges, and investment risks."
+      },
+      "eSignature": {
+        "label": "Electronic Signature Consent *",
+        "text": "I agree that my electronic submission of this application constitutes my legal signature and has the same binding effect as a handwritten signature."
+      },
+      "marketing": {
+        "label": "Marketing Communications (Optional)",
+        "text": "I consent to receive marketing communications about products and services that may be of interest to me. You can unsubscribe at any time."
+      },
+      "regulatoryTitle": "Regulatory Compliance",
+      "regulatoryText": "This application is subject to Luxembourg insurance regulations and EU directives including Solvency II, IDD (Insurance Distribution Directive), and GDPR. All declarations are legally binding.",
+      "coolingOffTitle": "Cooling-off Period",
+      "coolingOffText": "Luxembourg law provides a 30-day cooling-off period from policy issuance. You may cancel the policy within this period and receive a full refund of premiums paid, subject to market value adjustments for unit-linked policies."
+    },
+    "reviewSubmit": {
+      "title": "Review & Submit",
+      "subtitle": "Please review your information before submitting your application.",
+      "suitabilityNotice": "Suitability Notice",
+      "sections": {
+        "personalInfo": "Personal Information",
+        "financialProfile": "Financial Profile",
+        "investmentProfile": "Investment Profile",
+        "premiumDetails": "Premium Details",
+        "beneficiaries": "Beneficiaries"
+      },
+      "labels": {
+        "name": "Name",
+        "dateOfBirth": "Date of Birth",
+        "nationality": "Nationality",
+        "email": "Email",
+        "employmentStatus": "Employment Status",
+        "annualIncome": "Annual Income",
+        "totalAssets": "Total Assets",
+        "sourceOfFunds": "Source of Funds",
+        "investmentHorizon": "Investment Horizon",
+        "investmentKnowledge": "Investment Knowledge",
+        "riskTolerance": "Risk Tolerance",
+        "investmentObjective": "Investment Objective",
+        "currency": "Currency",
+        "premiumType": "Premium Type",
+        "premiumAmount": "Premium Amount",
+        "frequency": "Frequency"
+      },
+      "noBeneficiaries": "No beneficiaries designated",
+      "submitError": "An error occurred while submitting your application. Please try again or contact support.",
+      "beforeSubmit": "Before You Submit",
+      "beforeSubmitText": "By submitting this application, you confirm that all information provided is accurate and complete. You also acknowledge that you have read and agreed to all declarations and terms and conditions.",
+      "submitting": "Submitting Application...",
+      "submitApplication": "Submit Application",
+      "success": {
+        "title": "Application Submitted!",
+        "subtitle": "Thank you for your life insurance application",
+        "applicationId": "Your Application ID",
+        "saveReference": "Please save this reference number for your records",
+        "whatsNext": "What Happens Next?",
+        "step1Title": "Email Confirmation",
+        "step1Desc": "You'll receive a confirmation email at {email} within a few minutes with your application details.",
+        "step2Title": "Document Review",
+        "step2Desc": "Our compliance team will review your application and documents within 3-5 business days.",
+        "step3Title": "Medical Underwriting",
+        "step3Desc": "Depending on your premium amount and age, we may request additional medical information or examination.",
+        "step4Title": "Policy Issuance",
+        "step4Desc": "Once approved, your policy will be issued and you'll receive your policy documents and payment instructions.",
+        "completePayment": "Complete Your Payment",
+        "paymentDesc": "Pay your premium now to activate your policy immediately",
+        "premiumAmount": "Premium Amount",
+        "secureProcessing": "Secure payment processing via PayPal",
+        "policyActivation": "Policy activation upon payment confirmation",
+        "instantReceipt": "Instant email receipt and policy documents",
+        "payWithPaypal": "Pay with PayPal",
+        "acceptedMethods": "Accepted payment methods",
+        "securedBy": "Secured by",
+        "afterPayment": "After payment, your policy will be issued and sent to {email}",
+        "important": "Important",
+        "importantText": "Your policy coverage will begin immediately after successful payment confirmation. You will receive your policy documents and payment receipt via email within minutes.",
+        "needHelp": "Need Help?",
+        "needHelpText": "If you have questions about your application, contact our client services team at",
+        "orCall": "or call",
+        "returnHome": "Return to Home",
+        "printConfirmation": "Print Confirmation"
+      }
     }
   }
 }

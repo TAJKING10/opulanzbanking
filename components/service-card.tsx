@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -25,11 +26,14 @@ export function ServiceCard({
   description,
   image,
   href,
-  ctaLabel = "Learn More",
-  exploreLabel = "Explore →",
+  ctaLabel,
+  exploreLabel,
   className,
   style,
 }: ServiceCardProps) {
+  const tc = useTranslations("common");
+  const resolvedCtaLabel = ctaLabel || tc("learnMore");
+  const resolvedExploreLabel = exploreLabel || tc("explore");
   const cardRef = React.useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);
@@ -93,7 +97,7 @@ export function ServiceCard({
               className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-1"
             />
             <div className="absolute top-4 right-4 z-20 bg-brand-gold/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              {exploreLabel}
+              {resolvedExploreLabel}
             </div>
           </div>
           <CardContent className="p-6 relative">
@@ -101,7 +105,7 @@ export function ServiceCard({
             <h3 className="mb-3 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{title}</h3>
             <p className="mb-6 text-sm text-brand-grayMed leading-relaxed">{description}</p>
             <div className="flex items-center text-brand-gold font-semibold group-hover:gap-3 transition-all">
-              {ctaLabel}
+              {resolvedCtaLabel}
               <ArrowRight className="ml-2 h-4 w-4 transition-all group-hover:translate-x-2 group-hover:scale-125" />
             </div>
           </CardContent>

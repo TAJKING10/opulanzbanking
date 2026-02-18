@@ -3,9 +3,13 @@
 import React, { useState } from 'react';
 import { useKYCWizard } from '@/contexts/KYCWizardContext';
 import { WizardNavigation } from '../../WizardNavigation';
+import { useTranslations } from 'next-intl';
 
 export function ReviewStep() {
   const { data, prevStep, nextStep, updateData } = useKYCWizard();
+  const tReview = useTranslations('investmentAdvisory.review');
+  const tInd = useTranslations('investmentAdvisory.individual');
+  const tComp = useTranslations('investmentAdvisory.company');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,13 +37,11 @@ export function ReviewStep() {
 
       console.log('✅ Application submitted successfully:', result);
 
-      // Store the application ID and envelope ID for the success page
       updateData({
         applicationId: result.applicationId,
         envelopeId: result.envelopeId,
       });
 
-      // Move to success step
       nextStep();
     } catch (err) {
       console.error('❌ Submission error:', err);
@@ -70,102 +72,102 @@ export function ReviewStep() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-brand-dark mb-6">Review & Confirm</h2>
-      <p className="text-brand-grayMed mb-6">Please review all information carefully before submitting.</p>
+      <h2 className="text-2xl font-bold text-brand-dark mb-6">{tReview('title')}</h2>
+      <p className="text-brand-grayMed mb-6">{tReview('subtitle')}</p>
 
       <div className="space-y-6">
         {/* Complete Application Details */}
         <div className="bg-white border border-brand-grayLight rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-brand-dark mb-4">Complete Application Details</h3>
+          <h3 className="text-lg font-semibold text-brand-dark mb-4">{tReview('completeSectionTitle')}</h3>
 
           {/* Basic Information */}
           <div className="space-y-2">
-            <DetailRow label="Client Type" value={isIndividual ? 'Individual' : 'Company'} />
-            <DetailRow label="Email" value={(data as any).basicContact?.email || (data as any).representatives?.[0]?.email} />
-            <DetailRow label="Mobile" value={(data as any).basicContact?.mobile || (data as any).representatives?.[0]?.mobile} />
-            <DetailRow label="Preferred Language" value={data.preferredLanguage === 'fr' ? 'Français' : 'English'} />
+            <DetailRow label={tReview('clientTypeLabel')} value={isIndividual ? tReview('individualType') : tReview('companyType')} />
+            <DetailRow label={tReview('emailLabel')} value={(data as any).basicContact?.email || (data as any).representatives?.[0]?.email} />
+            <DetailRow label={tReview('mobileLabel')} value={(data as any).basicContact?.mobile || (data as any).representatives?.[0]?.mobile} />
+            <DetailRow label={tReview('preferredLanguageLabel')} value={data.preferredLanguage === 'fr' ? 'Français' : 'English'} />
           </div>
 
           {/* INDIVIDUAL CLIENT DETAILS */}
           {isIndividual && (data as any).holders?.holder1 && (
             <>
-              <SectionHeader title="Personal Identity" />
+              <SectionHeader title={tInd('sections.identity')} />
               <div className="space-y-2">
-                <DetailRow label="Full Name" value={`${(data as any).holders.holder1.title} ${(data as any).holders.holder1.firstName} ${(data as any).holders.holder1.lastName}`} />
-                <DetailRow label="Date of Birth" value={(data as any).holders.holder1.dateOfBirth} />
-                <DetailRow label="Place of Birth" value={(data as any).holders.holder1.placeOfBirth} />
-                <DetailRow label="Nationality" value={(data as any).holders.holder1.nationality} />
-                <DetailRow label="Marital Status" value={(data as any).holders.holder1.maritalStatus} />
+                <DetailRow label={tReview('fullNameLabel')} value={`${(data as any).holders.holder1.title} ${(data as any).holders.holder1.firstName} ${(data as any).holders.holder1.lastName}`} />
+                <DetailRow label={tInd('fields.dateOfBirth')} value={(data as any).holders.holder1.dateOfBirth} />
+                <DetailRow label={tInd('fields.placeOfBirth')} value={(data as any).holders.holder1.placeOfBirth} />
+                <DetailRow label={tInd('fields.nationality')} value={(data as any).holders.holder1.nationality} />
+                <DetailRow label={tInd('fields.maritalStatus')} value={(data as any).holders.holder1.maritalStatus} />
               </div>
 
               {(data as any).holders.holder1.address && (
                 <>
-                  <SectionHeader title="Residential Address" />
+                  <SectionHeader title={tInd('sections.address')} />
                   <div className="space-y-2">
-                    <DetailRow label="Address Line 1" value={(data as any).holders.holder1.address.line1} />
+                    <DetailRow label={tInd('fields.addressLine1')} value={(data as any).holders.holder1.address.line1} />
                     {(data as any).holders.holder1.address.line2 && (
-                      <DetailRow label="Address Line 2" value={(data as any).holders.holder1.address.line2} />
+                      <DetailRow label={tInd('fields.addressLine2')} value={(data as any).holders.holder1.address.line2} />
                     )}
-                    <DetailRow label="City" value={(data as any).holders.holder1.address.city} />
-                    <DetailRow label="Postal Code" value={(data as any).holders.holder1.address.postalCode} />
-                    <DetailRow label="Country" value={(data as any).holders.holder1.address.country} />
+                    <DetailRow label={tInd('fields.city')} value={(data as any).holders.holder1.address.city} />
+                    <DetailRow label={tInd('fields.postalCode')} value={(data as any).holders.holder1.address.postalCode} />
+                    <DetailRow label={tInd('fields.country')} value={(data as any).holders.holder1.address.country} />
                   </div>
                 </>
               )}
 
               {(data as any).holders.holder1.taxResidency && (
                 <>
-                  <SectionHeader title="Tax Residency" />
+                  <SectionHeader title={tInd('sections.taxResidency')} />
                   <div className="space-y-2">
-                    <DetailRow label="Tax Residence Country" value={(data as any).holders.holder1.taxResidency.country} />
-                    <DetailRow label="Tax ID Number" value={(data as any).holders.holder1.taxResidency.taxIdentificationNumber} />
+                    <DetailRow label={tInd('fields.taxCountry')} value={(data as any).holders.holder1.taxResidency.country} />
+                    <DetailRow label={tInd('fields.taxId')} value={(data as any).holders.holder1.taxResidency.taxIdentificationNumber} />
                   </div>
                 </>
               )}
 
               {(data as any).holders.holder1.professionalSituation && (
                 <>
-                  <SectionHeader title="Professional Situation" />
+                  <SectionHeader title={tInd('sections.professional')} />
                   <div className="space-y-2">
-                    <DetailRow label="Status" value={(data as any).holders.holder1.professionalSituation.status} />
-                    <DetailRow label="Employer" value={(data as any).holders.holder1.professionalSituation.employerName} />
-                    <DetailRow label="Position" value={(data as any).holders.holder1.professionalSituation.position} />
-                    <DetailRow label="Sector" value={(data as any).holders.holder1.professionalSituation.sector} />
+                    <DetailRow label={tReview('statusLabel')} value={(data as any).holders.holder1.professionalSituation.status} />
+                    <DetailRow label={tReview('employerLabel')} value={(data as any).holders.holder1.professionalSituation.employerName} />
+                    <DetailRow label={tReview('positionLabel')} value={(data as any).holders.holder1.professionalSituation.position} />
+                    <DetailRow label={tInd('fields.sector')} value={(data as any).holders.holder1.professionalSituation.sector} />
                   </div>
                 </>
               )}
 
               {(data as any).family && (
                 <>
-                  <SectionHeader title="Family Situation" />
+                  <SectionHeader title={tInd('sections.family')} />
                   <div className="space-y-2">
-                    <DetailRow label="Number of Dependents" value={(data as any).family.numberOfDependents?.toString()} />
+                    <DetailRow label={tInd('fields.numberOfDependents')} value={(data as any).family.numberOfDependents?.toString()} />
                   </div>
                 </>
               )}
 
               {(data as any).financialSituation && (
                 <>
-                  <SectionHeader title="Financial Situation" />
+                  <SectionHeader title={tInd('sections.financial')} />
                   <div className="space-y-2">
-                    <DetailRow label="Annual Income" value={(data as any).financialSituation.annualIncome ? `€${parseFloat((data as any).financialSituation.annualIncome).toLocaleString()}` : undefined} />
-                    <DetailRow label="Income Source" value={(data as any).financialSituation.incomeSource} />
-                    <DetailRow label="Total Assets" value={(data as any).financialSituation.totalAssets ? `€${parseFloat((data as any).financialSituation.totalAssets).toLocaleString()}` : undefined} />
-                    <DetailRow label="Liquid Assets" value={(data as any).financialSituation.liquidAssets ? `€${parseFloat((data as any).financialSituation.liquidAssets).toLocaleString()}` : undefined} />
-                    <DetailRow label="Real Estate Value" value={(data as any).financialSituation.realEstateValue ? `€${parseFloat((data as any).financialSituation.realEstateValue).toLocaleString()}` : undefined} />
-                    <DetailRow label="Outstanding Debts" value={(data as any).financialSituation.outstandingDebts ? `€${parseFloat((data as any).financialSituation.outstandingDebts).toLocaleString()}` : undefined} />
+                    <DetailRow label={tInd('fields.annualIncome')} value={(data as any).financialSituation.annualIncome ? `€${parseFloat((data as any).financialSituation.annualIncome).toLocaleString()}` : undefined} />
+                    <DetailRow label={tInd('fields.incomeSource')} value={(data as any).financialSituation.incomeSource} />
+                    <DetailRow label={tInd('fields.totalAssets')} value={(data as any).financialSituation.totalAssets ? `€${parseFloat((data as any).financialSituation.totalAssets).toLocaleString()}` : undefined} />
+                    <DetailRow label={tInd('fields.liquidAssets')} value={(data as any).financialSituation.liquidAssets ? `€${parseFloat((data as any).financialSituation.liquidAssets).toLocaleString()}` : undefined} />
+                    <DetailRow label={tInd('fields.realEstateValue')} value={(data as any).financialSituation.realEstateValue ? `€${parseFloat((data as any).financialSituation.realEstateValue).toLocaleString()}` : undefined} />
+                    <DetailRow label={tInd('fields.outstandingDebts')} value={(data as any).financialSituation.outstandingDebts ? `€${parseFloat((data as any).financialSituation.outstandingDebts).toLocaleString()}` : undefined} />
                   </div>
                 </>
               )}
 
               {(data as any).originOfFunds && (
                 <>
-                  <SectionHeader title="Origin of Funds" />
+                  <SectionHeader title={tInd('sections.origin')} />
                   <div className="space-y-2">
-                    <DetailRow label="Primary Origin" value={(data as any).originOfFunds.primary} />
+                    <DetailRow label={tInd('fields.originOfFunds')} value={(data as any).originOfFunds.primary} />
                     {(data as any).originOfFunds.details && (
                       <div className="py-2">
-                        <p className="text-sm font-semibold text-brand-dark mb-1">Additional Details:</p>
+                        <p className="text-sm font-semibold text-brand-dark mb-1">{tReview('additionalDetails')}</p>
                         <p className="text-sm text-brand-grayMed">{(data as any).originOfFunds.details}</p>
                       </div>
                     )}
@@ -178,88 +180,88 @@ export function ReviewStep() {
           {/* COMPANY CLIENT DETAILS */}
           {isCompany && (data as any).company && (
             <>
-              <SectionHeader title="Company Identity" />
+              <SectionHeader title={tReview('companyIdentitySection')} />
               <div className="space-y-2">
-                <DetailRow label="Legal Name" value={(data as any).company.legalName} />
-                <DetailRow label="Trading Name" value={(data as any).company.tradingName} />
-                <DetailRow label="Legal Form" value={(data as any).company.legalForm} />
-                <DetailRow label="Registration Number" value={(data as any).company.registrationNumber} />
-                <DetailRow label="Registration Country" value={(data as any).company.registrationCountry} />
-                <DetailRow label="Tax ID Number" value={(data as any).company.taxIdentificationNumber} />
-                <DetailRow label="Date of Incorporation" value={(data as any).company.dateOfIncorporation} />
-                <DetailRow label="Sector" value={(data as any).company.sector} />
-                <DetailRow label="Number of Employees" value={(data as any).company.numberOfEmployees?.toString()} />
-                <DetailRow label="Website" value={(data as any).company.website} />
+                <DetailRow label={tComp('fields.legalName')} value={(data as any).company.legalName} />
+                <DetailRow label={tComp('fields.tradingName')} value={(data as any).company.tradingName} />
+                <DetailRow label={tComp('fields.legalForm')} value={(data as any).company.legalForm} />
+                <DetailRow label={tComp('fields.registrationNumber')} value={(data as any).company.registrationNumber} />
+                <DetailRow label={tComp('fields.registrationCountry')} value={(data as any).company.registrationCountry} />
+                <DetailRow label={tComp('fields.taxIdentificationNumber')} value={(data as any).company.taxIdentificationNumber} />
+                <DetailRow label={tComp('fields.dateOfIncorporation')} value={(data as any).company.dateOfIncorporation} />
+                <DetailRow label={tComp('fields.industrySector')} value={(data as any).company.sector} />
+                <DetailRow label={tComp('fields.numberOfEmployees')} value={(data as any).company.numberOfEmployees?.toString()} />
+                <DetailRow label={tComp('fields.website')} value={(data as any).company.website} />
               </div>
 
               {(data as any).company.registeredAddress && (
                 <>
-                  <SectionHeader title="Registered Address" />
+                  <SectionHeader title={tReview('registeredAddressSection')} />
                   <div className="space-y-2">
-                    <DetailRow label="Address Line 1" value={(data as any).company.registeredAddress.line1} />
+                    <DetailRow label={tComp('fields.addressLine1')} value={(data as any).company.registeredAddress.line1} />
                     {(data as any).company.registeredAddress.line2 && (
-                      <DetailRow label="Address Line 2" value={(data as any).company.registeredAddress.line2} />
+                      <DetailRow label={tComp('fields.addressLine2')} value={(data as any).company.registeredAddress.line2} />
                     )}
-                    <DetailRow label="City" value={(data as any).company.registeredAddress.city} />
-                    <DetailRow label="Postal Code" value={(data as any).company.registeredAddress.postalCode} />
-                    <DetailRow label="Country" value={(data as any).company.registeredAddress.country} />
+                    <DetailRow label={tComp('fields.city')} value={(data as any).company.registeredAddress.city} />
+                    <DetailRow label={tComp('fields.postalCode')} value={(data as any).company.registeredAddress.postalCode} />
+                    <DetailRow label={tComp('fields.country')} value={(data as any).company.registeredAddress.country} />
                   </div>
                 </>
               )}
 
               {(data as any).representatives?.[0] && (
                 <>
-                  <SectionHeader title="Legal Representative" />
+                  <SectionHeader title={tReview('legalRepresentativeSection')} />
                   <div className="space-y-2">
-                    <DetailRow label="Full Name" value={`${(data as any).representatives[0].title} ${(data as any).representatives[0].firstName} ${(data as any).representatives[0].lastName}`} />
-                    <DetailRow label="Position" value={(data as any).representatives[0].position} />
-                    <DetailRow label="Date of Birth" value={(data as any).representatives[0].dateOfBirth} />
-                    <DetailRow label="Nationality" value={(data as any).representatives[0].nationality} />
-                    <DetailRow label="Email" value={(data as any).representatives[0].email} />
-                    <DetailRow label="Mobile" value={(data as any).representatives[0].mobile} />
+                    <DetailRow label={tReview('fullNameLabel')} value={`${(data as any).representatives[0].title} ${(data as any).representatives[0].firstName} ${(data as any).representatives[0].lastName}`} />
+                    <DetailRow label={tComp('fields.position')} value={(data as any).representatives[0].position} />
+                    <DetailRow label={tComp('fields.dateOfBirth')} value={(data as any).representatives[0].dateOfBirth} />
+                    <DetailRow label={tComp('fields.nationality')} value={(data as any).representatives[0].nationality} />
+                    <DetailRow label={tReview('emailLabel')} value={(data as any).representatives[0].email} />
+                    <DetailRow label={tReview('mobileLabel')} value={(data as any).representatives[0].mobile} />
                   </div>
                 </>
               )}
 
               {(data as any).beneficialOwners && (data as any).beneficialOwners.length > 0 && (
                 <>
-                  <SectionHeader title="Ultimate Beneficial Owner (UBO)" />
+                  <SectionHeader title={tReview('uboSection')} />
                   <div className="space-y-2">
-                    <DetailRow label="UBO Name" value={(data as any).beneficialOwners[0].name} />
-                    <DetailRow label="Ownership %" value={`${(data as any).beneficialOwners[0].ownershipPercentage}%`} />
+                    <DetailRow label={tReview('uboNameLabel')} value={(data as any).beneficialOwners[0].name} />
+                    <DetailRow label={tReview('ownershipLabel')} value={`${(data as any).beneficialOwners[0].ownershipPercentage}%`} />
                   </div>
                 </>
               )}
 
               {(data as any).fatcaCrs && (
                 <>
-                  <SectionHeader title="FATCA & CRS" />
+                  <SectionHeader title={tReview('fatcaCrsSection')} />
                   <div className="space-y-2">
-                    <DetailRow label="US Person" value={(data as any).fatcaCrs.usPerson ? 'Yes' : 'No'} />
-                    <DetailRow label="Tax Resident Countries" value={(data as any).fatcaCrs.taxResidentCountries?.join(', ')} />
+                    <DetailRow label={tReview('usPersonLabel')} value={(data as any).fatcaCrs.usPerson ? tReview('yesLabel') : tReview('noLabel')} />
+                    <DetailRow label={tReview('taxResidentCountriesLabel')} value={(data as any).fatcaCrs.taxResidentCountries?.join(', ')} />
                   </div>
                 </>
               )}
 
               {(data as any).financialSituation && (
                 <>
-                  <SectionHeader title="Financial Information" />
+                  <SectionHeader title={tReview('financialInfoSection')} />
                   <div className="space-y-2">
-                    <DetailRow label="Annual Revenue" value={(data as any).financialSituation.annualRevenue ? `€${parseFloat((data as any).financialSituation.annualRevenue).toLocaleString()}` : undefined} />
-                    <DetailRow label="Total Assets" value={(data as any).financialSituation.totalAssets ? `€${parseFloat((data as any).financialSituation.totalAssets).toLocaleString()}` : undefined} />
-                    <DetailRow label="Source of Revenue" value={(data as any).financialSituation.sourceOfRevenue} />
+                    <DetailRow label={tReview('annualRevenueLabel')} value={(data as any).financialSituation.annualRevenue ? `€${parseFloat((data as any).financialSituation.annualRevenue).toLocaleString()}` : undefined} />
+                    <DetailRow label={tComp('fields.totalAssets')} value={(data as any).financialSituation.totalAssets ? `€${parseFloat((data as any).financialSituation.totalAssets).toLocaleString()}` : undefined} />
+                    <DetailRow label={tReview('sourceOfRevenueLabel')} value={(data as any).financialSituation.sourceOfRevenue} />
                   </div>
                 </>
               )}
 
               {(data as any).originOfFunds && (
                 <>
-                  <SectionHeader title="Origin of Funds" />
+                  <SectionHeader title={tInd('sections.origin')} />
                   <div className="space-y-2">
-                    <DetailRow label="Primary Origin" value={(data as any).originOfFunds.primary} />
+                    <DetailRow label={tInd('fields.originOfFunds')} value={(data as any).originOfFunds.primary} />
                     {(data as any).originOfFunds.details && (
                       <div className="py-2">
-                        <p className="text-sm font-semibold text-brand-dark mb-1">Additional Details:</p>
+                        <p className="text-sm font-semibold text-brand-dark mb-1">{tReview('additionalDetails')}</p>
                         <p className="text-sm text-brand-grayMed">{(data as any).originOfFunds.details}</p>
                       </div>
                     )}
@@ -272,14 +274,14 @@ export function ReviewStep() {
           {/* INVESTMENT PROFILE (Both PP and PM) */}
           {(data as any).investmentProfile && (
             <>
-              <SectionHeader title="Investment Profile" />
+              <SectionHeader title={tReview('investmentProfileSection')} />
               <div className="space-y-2">
-                <DetailRow label="Investment Experience" value={(data as any).investmentProfile.experience} />
-                <DetailRow label="Risk Tolerance" value={(data as any).investmentProfile.riskTolerance} />
-                <DetailRow label="Investment Horizon" value={(data as any).investmentProfile.investmentHorizon} />
-                <DetailRow label="Investment Objective" value={(data as any).investmentProfile.objective} />
-                <DetailRow label="Expected Annual Return" value={(data as any).investmentProfile.expectedReturn ? `${(data as any).investmentProfile.expectedReturn}%` : undefined} />
-                <DetailRow label="Max Acceptable Loss" value={(data as any).investmentProfile.maxLossAcceptable ? `${(data as any).investmentProfile.maxLossAcceptable}%` : undefined} />
+                <DetailRow label={tReview('investmentExperienceLabel')} value={(data as any).investmentProfile.experience} />
+                <DetailRow label={tReview('riskToleranceLabel')} value={(data as any).investmentProfile.riskTolerance} />
+                <DetailRow label={tReview('investmentHorizonLabel')} value={(data as any).investmentProfile.investmentHorizon} />
+                <DetailRow label={tReview('investmentObjectiveLabel')} value={(data as any).investmentProfile.objective} />
+                <DetailRow label={tReview('expectedReturnLabel')} value={(data as any).investmentProfile.expectedReturn ? `${(data as any).investmentProfile.expectedReturn}%` : undefined} />
+                <DetailRow label={tReview('maxLossLabel')} value={(data as any).investmentProfile.maxLossAcceptable ? `${(data as any).investmentProfile.maxLossAcceptable}%` : undefined} />
               </div>
             </>
           )}
@@ -287,10 +289,10 @@ export function ReviewStep() {
           {/* SERVICE INFORMATION */}
           {(data as any).missionType && (
             <>
-              <SectionHeader title="Service Details" />
+              <SectionHeader title={tReview('serviceDetailsSection')} />
               <div className="space-y-2">
-                <DetailRow label="Service Type" value={(data as any).missionType === 'advisory' ? 'Investment Advisory (Conseil)' : 'Portfolio Management (Gestion sous mandat)'} />
-                <DetailRow label="Initial Investment" value={(data as any).initialInvestment ? `€${parseFloat((data as any).initialInvestment).toLocaleString()}` : undefined} />
+                <DetailRow label={tReview('serviceTypeLabel')} value={(data as any).missionType === 'advisory' ? tInd('options.missionType.advisory') : tInd('options.missionType.management')} />
+                <DetailRow label={tReview('initialInvestmentLabel')} value={(data as any).initialInvestment ? `€${parseFloat((data as any).initialInvestment).toLocaleString()}` : undefined} />
               </div>
             </>
           )}
@@ -298,26 +300,26 @@ export function ReviewStep() {
           {/* CONSENTS */}
           {(data as any).consents && (
             <>
-              <SectionHeader title="Consents & Authorizations" />
+              <SectionHeader title={tReview('consentsSection')} />
               <div className="space-y-2">
                 <div className="py-2">
                   <p className="text-sm text-brand-grayMed">
-                    ✓ Data Processing Consent: {(data as any).consents.dataProcessing ? 'Granted' : 'Not granted'}
+                    ✓ {tReview('dataProcessingConsentLabel')}: {(data as any).consents.dataProcessing ? tReview('grantedLabel') : tReview('notGrantedLabel')}
                   </p>
                 </div>
                 <div className="py-2">
                   <p className="text-sm text-brand-grayMed">
-                    ✓ KYC/AML Compliance: {(data as any).consents.kyc ? 'Granted' : 'Not granted'}
+                    ✓ {tReview('kycComplianceLabel')}: {(data as any).consents.kyc ? tReview('grantedLabel') : tReview('notGrantedLabel')}
                   </p>
                 </div>
                 <div className="py-2">
                   <p className="text-sm text-brand-grayMed">
-                    ✓ Electronic Signature: {(data as any).consents.electronic ? 'Granted' : 'Not granted'}
+                    ✓ {tReview('electronicSignatureLabel')}: {(data as any).consents.electronic ? tReview('grantedLabel') : tReview('notGrantedLabel')}
                   </p>
                 </div>
                 <div className="py-2">
                   <p className="text-sm text-brand-grayMed">
-                    ✓ Marketing Communications: {(data as any).consents.marketing ? 'Granted' : 'Not granted'}
+                    ✓ {tReview('marketingLabel')}: {(data as any).consents.marketing ? tReview('grantedLabel') : tReview('notGrantedLabel')}
                   </p>
                 </div>
               </div>
@@ -327,11 +329,9 @@ export function ReviewStep() {
 
         {/* Confirmation */}
         <div className="bg-brand-goldLight/10 border border-brand-gold/30 rounded-lg p-6">
-          <h4 className="font-semibold text-brand-dark mb-3">Declaration</h4>
+          <h4 className="font-semibold text-brand-dark mb-3">{tReview('declaration.title')}</h4>
           <p className="text-sm text-brand-grayMed mb-4">
-            I hereby confirm that all information provided is true and accurate to the best of my knowledge.
-            I understand that this information will be used for regulatory compliance (KYC/AML) purposes
-            and to generate the required documentation for my investment account.
+            {tReview('declaration.text')}
           </p>
           <label className="flex items-start gap-3">
             <input
@@ -340,7 +340,7 @@ export function ReviewStep() {
               required
             />
             <span className="text-sm text-brand-dark">
-              I confirm that I have reviewed all information and agree to the terms
+              {tReview('declaration.checkbox')}
             </span>
           </label>
         </div>
@@ -353,7 +353,7 @@ export function ReviewStep() {
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
               <div>
-                <h4 className="text-sm font-semibold text-red-800 mb-1">Submission Failed</h4>
+                <h4 className="text-sm font-semibold text-red-800 mb-1">{tReview('errorTitle')}</h4>
                 <p className="text-sm text-red-700">{error}</p>
               </div>
             </div>
@@ -369,8 +369,8 @@ export function ReviewStep() {
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
               <div>
-                <h4 className="text-sm font-semibold text-blue-800">Submitting Application...</h4>
-                <p className="text-sm text-blue-700">Generating documents and preparing signature request</p>
+                <h4 className="text-sm font-semibold text-blue-800">{tReview('submittingTitle')}</h4>
+                <p className="text-sm text-blue-700">{tReview('submittingDescription')}</p>
               </div>
             </div>
           </div>
@@ -382,7 +382,7 @@ export function ReviewStep() {
         onPrev={prevStep}
         canGoPrev={!isSubmitting}
         canGoNext={!isSubmitting}
-        nextLabel={isSubmitting ? "Submitting..." : "Submit Application"}
+        nextLabel={isSubmitting ? tReview('submitting') : tReview('submit')}
       />
     </div>
   );

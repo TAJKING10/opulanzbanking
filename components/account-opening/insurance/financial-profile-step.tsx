@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -15,44 +16,45 @@ interface FinancialProfileStepProps {
 }
 
 const EMPLOYMENT_STATUSES = [
-  { value: "employed", label: "Employed" },
-  { value: "self-employed", label: "Self-Employed" },
-  { value: "retired", label: "Retired" },
-  { value: "unemployed", label: "Unemployed" },
-  { value: "student", label: "Student" },
+  { value: "employed", labelKey: "employmentStatuses.employed" },
+  { value: "self-employed", labelKey: "employmentStatuses.selfEmployed" },
+  { value: "retired", labelKey: "employmentStatuses.retired" },
+  { value: "unemployed", labelKey: "employmentStatuses.unemployed" },
+  { value: "student", labelKey: "employmentStatuses.student" },
 ];
 
 const INCOME_RANGES = [
-  { value: "0-25k", label: "€0 - €25,000" },
-  { value: "25k-50k", label: "€25,000 - €50,000" },
-  { value: "50k-100k", label: "€50,000 - €100,000" },
-  { value: "100k-250k", label: "€100,000 - €250,000" },
-  { value: "250k-500k", label: "€250,000 - €500,000" },
-  { value: "500k+", label: "€500,000+" },
+  { value: "0-25k", label: "\u20ac0 - \u20ac25,000" },
+  { value: "25k-50k", label: "\u20ac25,000 - \u20ac50,000" },
+  { value: "50k-100k", label: "\u20ac50,000 - \u20ac100,000" },
+  { value: "100k-250k", label: "\u20ac100,000 - \u20ac250,000" },
+  { value: "250k-500k", label: "\u20ac250,000 - \u20ac500,000" },
+  { value: "500k+", label: "\u20ac500,000+" },
 ];
 
 const ASSET_RANGES = [
-  { value: "0-50k", label: "€0 - €50,000" },
-  { value: "50k-100k", label: "€50,000 - €100,000" },
-  { value: "100k-250k", label: "€100,000 - €250,000" },
-  { value: "250k-500k", label: "€250,000 - €500,000" },
-  { value: "500k-1m", label: "€500,000 - €1,000,000" },
-  { value: "1m-2m", label: "€1,000,000 - €2,000,000" },
-  { value: "2m+", label: "€2,000,000+" },
+  { value: "0-50k", label: "\u20ac0 - \u20ac50,000" },
+  { value: "50k-100k", label: "\u20ac50,000 - \u20ac100,000" },
+  { value: "100k-250k", label: "\u20ac100,000 - \u20ac250,000" },
+  { value: "250k-500k", label: "\u20ac250,000 - \u20ac500,000" },
+  { value: "500k-1m", label: "\u20ac500,000 - \u20ac1,000,000" },
+  { value: "1m-2m", label: "\u20ac1,000,000 - \u20ac2,000,000" },
+  { value: "2m+", label: "\u20ac2,000,000+" },
 ];
 
-const SOURCE_OF_FUNDS = [
-  { value: "salary", label: "Salary / Employment Income" },
-  { value: "business", label: "Business Income" },
-  { value: "inheritance", label: "Inheritance" },
-  { value: "investments", label: "Investment Returns" },
-  { value: "savings", label: "Savings" },
-  { value: "property", label: "Property Sale" },
-  { value: "gift", label: "Gift" },
-  { value: "other", label: "Other" },
+const SOURCE_OF_FUNDS_KEYS = [
+  { value: "salary", labelKey: "sourceOfFunds.salary" },
+  { value: "business", labelKey: "sourceOfFunds.business" },
+  { value: "inheritance", labelKey: "sourceOfFunds.inheritance" },
+  { value: "investments", labelKey: "sourceOfFunds.investments" },
+  { value: "savings", labelKey: "sourceOfFunds.savings" },
+  { value: "property", labelKey: "sourceOfFunds.property" },
+  { value: "gift", labelKey: "sourceOfFunds.gift" },
+  { value: "other", labelKey: "sourceOfFunds.other" },
 ];
 
 export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfileStepProps) {
+  const t = useTranslations("insurance.financialProfile");
   const [formState, setFormState] = React.useState({
     employmentStatus: data.employmentStatus || "",
     occupation: data.occupation || "",
@@ -82,19 +84,15 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
       formState.sourceOfFunds &&
       formState.sourceOfWealth;
 
-    // If employed or self-employed, occupation is required
     const occupationValid =
       !["employed", "self-employed"].includes(formState.employmentStatus) || formState.occupation;
 
-    // If employed, employer is required
     const employerValid = formState.employmentStatus !== "employed" || formState.employer;
 
-    // If source is "other", details are required
     const sofDetailsValid = formState.sourceOfFunds !== "other" || formState.sourceOfFundsDetails.trim();
 
     const sowDetailsValid = formState.sourceOfWealth !== "other" || formState.sourceOfWealthDetails.trim();
 
-    // If PEP, details are required
     const pepValid = !formState.isPEP || formState.pepDetails.trim();
 
     return baseValid && occupationValid && employerValid && sofDetailsValid && sowDetailsValid && pepValid;
@@ -112,29 +110,29 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Financial Profile</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          Help us understand your financial situation and the source of funds for this investment.
+          {t("subtitle")}
         </p>
       </div>
 
       {/* Employment Information */}
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-brand-dark">Employment Information</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">{t("employmentInfo")}</h3>
 
         <div className="space-y-2">
-          <Label htmlFor="employmentStatus">Employment Status *</Label>
+          <Label htmlFor="employmentStatus">{t("employmentStatusLabel")}</Label>
           <Select
             value={formState.employmentStatus}
             onValueChange={(value) => updateField("employmentStatus", value)}
           >
             <SelectTrigger id="employmentStatus">
-              <SelectValue placeholder="Select employment status" />
+              <SelectValue placeholder={t("selectEmploymentStatus")} />
             </SelectTrigger>
             <SelectContent>
               {EMPLOYMENT_STATUSES.map((status) => (
                 <SelectItem key={status.value} value={status.value}>
-                  {status.label}
+                  {t(status.labelKey)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -144,26 +142,26 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
         {["employed", "self-employed"].includes(formState.employmentStatus) && (
           <>
             <div className="space-y-2">
-              <Label htmlFor="occupation">Occupation / Job Title *</Label>
+              <Label htmlFor="occupation">{t("occupation")}</Label>
               <Input
                 id="occupation"
                 type="text"
                 value={formState.occupation}
                 onChange={(e) => updateField("occupation", e.target.value)}
-                placeholder="e.g., Financial Analyst, Business Owner"
+                placeholder={t("occupationPlaceholder")}
                 required
               />
             </div>
 
             {formState.employmentStatus === "employed" && (
               <div className="space-y-2">
-                <Label htmlFor="employer">Employer Name *</Label>
+                <Label htmlFor="employer">{t("employer")}</Label>
                 <Input
                   id="employer"
                   type="text"
                   value={formState.employer}
                   onChange={(e) => updateField("employer", e.target.value)}
-                  placeholder="Name of your employer"
+                  placeholder={t("employerPlaceholder")}
                   required
                 />
               </div>
@@ -174,13 +172,13 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
 
       {/* Financial Information */}
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-brand-dark">Financial Information</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">{t("financialInfo")}</h3>
 
         <div className="space-y-2">
-          <Label htmlFor="annualIncome">Annual Income *</Label>
+          <Label htmlFor="annualIncome">{t("annualIncome")}</Label>
           <Select value={formState.annualIncome} onValueChange={(value) => updateField("annualIncome", value)}>
             <SelectTrigger id="annualIncome">
-              <SelectValue placeholder="Select annual income range" />
+              <SelectValue placeholder={t("selectAnnualIncome")} />
             </SelectTrigger>
             <SelectContent>
               {INCOME_RANGES.map((range) => (
@@ -193,10 +191,10 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="totalAssets">Total Assets *</Label>
+          <Label htmlFor="totalAssets">{t("totalAssets")}</Label>
           <Select value={formState.totalAssets} onValueChange={(value) => updateField("totalAssets", value)}>
             <SelectTrigger id="totalAssets">
-              <SelectValue placeholder="Select total assets range" />
+              <SelectValue placeholder={t("selectTotalAssets")} />
             </SelectTrigger>
             <SelectContent>
               {ASSET_RANGES.map((range) => (
@@ -207,15 +205,15 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
             </SelectContent>
           </Select>
           <p className="text-xs text-brand-grayMed">
-            Include all assets: savings, investments, property, business interests, etc.
+            {t("totalAssetsDesc")}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="liquidAssets">Liquid Assets *</Label>
+          <Label htmlFor="liquidAssets">{t("liquidAssets")}</Label>
           <Select value={formState.liquidAssets} onValueChange={(value) => updateField("liquidAssets", value)}>
             <SelectTrigger id="liquidAssets">
-              <SelectValue placeholder="Select liquid assets range" />
+              <SelectValue placeholder={t("selectLiquidAssets")} />
             </SelectTrigger>
             <SelectContent>
               {ASSET_RANGES.map((range) => (
@@ -226,42 +224,42 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
             </SelectContent>
           </Select>
           <p className="text-xs text-brand-grayMed">
-            Assets readily convertible to cash: bank accounts, stocks, bonds, etc.
+            {t("liquidAssetsDesc")}
           </p>
         </div>
       </div>
 
       {/* Source of Funds */}
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-brand-dark">Source of Funds & Wealth</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">{t("sourceOfFundsWealth")}</h3>
 
         <div className="space-y-2">
-          <Label htmlFor="sourceOfFunds">Source of Funds for This Investment *</Label>
+          <Label htmlFor="sourceOfFunds">{t("sourceOfFundsLabel")}</Label>
           <Select value={formState.sourceOfFunds} onValueChange={(value) => updateField("sourceOfFunds", value)}>
             <SelectTrigger id="sourceOfFunds">
-              <SelectValue placeholder="Select source of funds" />
+              <SelectValue placeholder={t("selectSourceOfFunds")} />
             </SelectTrigger>
             <SelectContent>
-              {SOURCE_OF_FUNDS.map((source) => (
+              {SOURCE_OF_FUNDS_KEYS.map((source) => (
                 <SelectItem key={source.value} value={source.value}>
-                  {source.label}
+                  {t(source.labelKey)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
           <p className="text-xs text-brand-grayMed">
-            Where will the money for the insurance premium come from?
+            {t("sourceOfFundsDesc")}
           </p>
         </div>
 
         {formState.sourceOfFunds === "other" && (
           <div className="space-y-2">
-            <Label htmlFor="sourceOfFundsDetails">Please specify *</Label>
+            <Label htmlFor="sourceOfFundsDetails">{t("pleaseSpecify")}</Label>
             <Textarea
               id="sourceOfFundsDetails"
               value={formState.sourceOfFundsDetails}
               onChange={(e) => updateField("sourceOfFundsDetails", e.target.value)}
-              placeholder="Provide details about the source of funds"
+              placeholder={t("sourceOfFundsDetailsPlaceholder")}
               rows={3}
               required
             />
@@ -269,32 +267,32 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
         )}
 
         <div className="space-y-2">
-          <Label htmlFor="sourceOfWealth">Source of Wealth *</Label>
+          <Label htmlFor="sourceOfWealth">{t("sourceOfWealthLabel")}</Label>
           <Select value={formState.sourceOfWealth} onValueChange={(value) => updateField("sourceOfWealth", value)}>
             <SelectTrigger id="sourceOfWealth">
-              <SelectValue placeholder="Select source of wealth" />
+              <SelectValue placeholder={t("selectSourceOfWealth")} />
             </SelectTrigger>
             <SelectContent>
-              {SOURCE_OF_FUNDS.map((source) => (
+              {SOURCE_OF_FUNDS_KEYS.map((source) => (
                 <SelectItem key={source.value} value={source.value}>
-                  {source.label}
+                  {t(source.labelKey)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
           <p className="text-xs text-brand-grayMed">
-            How did you accumulate your overall wealth?
+            {t("sourceOfWealthDesc")}
           </p>
         </div>
 
         {formState.sourceOfWealth === "other" && (
           <div className="space-y-2">
-            <Label htmlFor="sourceOfWealthDetails">Please specify *</Label>
+            <Label htmlFor="sourceOfWealthDetails">{t("pleaseSpecify")}</Label>
             <Textarea
               id="sourceOfWealthDetails"
               value={formState.sourceOfWealthDetails}
               onChange={(e) => updateField("sourceOfWealthDetails", e.target.value)}
-              placeholder="Provide details about the source of wealth"
+              placeholder={t("sourceOfWealthDetailsPlaceholder")}
               rows={3}
               required
             />
@@ -304,7 +302,7 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
 
       {/* PEP Screening */}
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-brand-dark">Political Exposure</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">{t("politicalExposure")}</h3>
 
         <div className="rounded-lg border border-brand-grayLight bg-gray-50 p-6">
           <RadioGroup
@@ -316,7 +314,7 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
                 <RadioGroupItem value="no" id="pep-no" />
                 <div>
                   <Label htmlFor="pep-no" className="cursor-pointer font-medium">
-                    I am not a Politically Exposed Person (PEP)
+                    {t("pepNo")}
                   </Label>
                 </div>
               </div>
@@ -325,7 +323,7 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
                 <RadioGroupItem value="yes" id="pep-yes" />
                 <div>
                   <Label htmlFor="pep-yes" className="cursor-pointer font-medium">
-                    I am a Politically Exposed Person (PEP)
+                    {t("pepYes")}
                   </Label>
                 </div>
               </div>
@@ -336,12 +334,9 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
             <div className="flex items-start gap-2">
               <Info className="mt-0.5 h-5 w-5 text-blue-600" />
               <div className="space-y-1 text-sm text-blue-800">
-                <p className="font-semibold">What is a PEP?</p>
+                <p className="font-semibold">{t("pepInfoTitle")}</p>
                 <p>
-                  A Politically Exposed Person is an individual who holds or has held a prominent public function,
-                  such as a head of state, senior politician, senior government official, judicial or military
-                  official, senior executive of a state-owned corporation, or important political party official.
-                  Family members and close associates of PEPs are also considered PEPs.
+                  {t("pepInfoText")}
                 </p>
               </div>
             </div>
@@ -350,12 +345,12 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
 
         {formState.isPEP && (
           <div className="space-y-2">
-            <Label htmlFor="pepDetails">Please provide details *</Label>
+            <Label htmlFor="pepDetails">{t("pepDetailsLabel")}</Label>
             <Textarea
               id="pepDetails"
               value={formState.pepDetails}
               onChange={(e) => updateField("pepDetails", e.target.value)}
-              placeholder="Describe your political position, role, or relationship to a PEP"
+              placeholder={t("pepDetailsPlaceholder")}
               rows={4}
               required
             />
@@ -367,10 +362,9 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
         <div className="flex items-start gap-2">
           <Info className="mt-0.5 h-5 w-5 text-blue-600" />
           <div className="space-y-1 text-sm text-blue-800">
-            <p className="font-semibold">AML/KYC Compliance</p>
+            <p className="font-semibold">{t("amlTitle")}</p>
             <p>
-              This information is required under Luxembourg and EU Anti-Money Laundering regulations. All data
-              provided will be kept confidential and used solely for compliance purposes.
+              {t("amlText")}
             </p>
           </div>
         </div>

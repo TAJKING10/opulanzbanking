@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { CheckCircle, Calendar, Clock, Mail, User, FileText, Download, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ export const dynamic = 'force-dynamic';
 function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations("lifeInsuranceBooking.confirmation");
 
   // Get booking details from session storage (primary) or URL params (fallback)
   const bookingData = React.useMemo(() => {
@@ -22,7 +24,6 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
       if (stored) {
         try {
           const data = JSON.parse(stored);
-          // Map session storage data to expected format
           return {
             name: `${data.firstName || ''} ${data.lastName || ''}`.trim(),
             firstName: data.firstName || '',
@@ -46,7 +47,6 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
       }
     }
 
-    // Fallback to URL params
     return {
       name: searchParams.get("name") || "",
       email: searchParams.get("email") || "",
@@ -59,18 +59,14 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
     };
   }, [searchParams]);
 
-  // Generate confirmation number if not provided
   const confirmationNumber = bookingData.confirmationNumber || `LIFE-${Date.now().toString(36).toUpperCase()}`;
 
-  // Format date
   const formattedDate = React.useMemo(() => {
     if (!bookingData.date) return null;
-
     try {
       const date = new Date(bookingData.date);
       if (isNaN(date.getTime())) return null;
-
-      return date.toLocaleDateString("en-US", {
+      return date.toLocaleDateString(locale === "fr" ? "fr-FR" : "en-US", {
         weekday: "long",
         year: "numeric",
         month: "long",
@@ -79,19 +75,16 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
     } catch (error) {
       return null;
     }
-  }, [bookingData.date]);
+  }, [bookingData.date, locale]);
 
-  // Format time
   const formattedTime = React.useMemo(() => {
     if (!bookingData.time) return null;
     return bookingData.time;
   }, [bookingData.time]);
 
-  // Check if we have valid appointment data
   const hasAppointmentData = formattedDate && formattedTime;
 
   const handleDownloadReceipt = () => {
-    // Create a properly formatted HTML receipt for PDF download
     const receiptHTML = `
 <!DOCTYPE html>
 <html>
@@ -99,132 +92,34 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
   <meta charset="UTF-8">
   <title>Opulanz Banking - Payment Receipt</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 40px;
-      color: #333;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-      border-bottom: 3px solid #b59354;
-      padding-bottom: 20px;
-    }
-    .logo {
-      font-size: 32px;
-      font-weight: bold;
-      color: #b59354;
-      margin-bottom: 10px;
-    }
-    .receipt-title {
-      font-size: 24px;
-      color: #252623;
-      margin-top: 20px;
-    }
-    .confirmation-number {
-      background: #f6f8f8;
-      padding: 15px;
-      margin: 20px 0;
-      border-left: 4px solid #b59354;
-      font-family: monospace;
-      font-size: 18px;
-    }
-    .section {
-      margin: 30px 0;
-    }
-    .section-title {
-      font-size: 18px;
-      font-weight: bold;
-      color: #252623;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #e5e7eb;
-      padding-bottom: 10px;
-    }
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #f3f4f6;
-    }
-    .detail-label {
-      color: #6b7280;
-      font-weight: 500;
-    }
-    .detail-value {
-      color: #252623;
-      font-weight: 600;
-      text-align: right;
-    }
-    .total-row {
-      background: #f6f8f8;
-      padding: 15px;
-      margin-top: 20px;
-      font-size: 20px;
-      border-radius: 8px;
-    }
-    .total-label {
-      color: #252623;
-      font-weight: bold;
-    }
-    .total-value {
-      color: #b59354;
-      font-weight: bold;
-      font-size: 24px;
-    }
-    .paid-stamp {
-      display: inline-block;
-      background: #10b981;
-      color: white;
-      padding: 8px 20px;
-      border-radius: 20px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-    .footer {
-      margin-top: 50px;
-      text-align: center;
-      color: #6b7280;
-      font-size: 14px;
-      border-top: 2px solid #e5e7eb;
-      padding-top: 20px;
-    }
-    .print-instructions {
-      background: #eff6ff;
-      border: 2px solid #3b82f6;
-      border-radius: 8px;
-      padding: 20px;
-      margin: 30px 0;
-      text-align: center;
-    }
-    .print-button {
-      background: #3b82f6;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    .print-button:hover {
-      background: #2563eb;
-    }
-    @media print {
-      body { padding: 20px; }
-      .print-instructions { display: none; }
-    }
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px; color: #333; }
+    .header { text-align: center; margin-bottom: 40px; border-bottom: 3px solid #b59354; padding-bottom: 20px; }
+    .logo { font-size: 32px; font-weight: bold; color: #b59354; margin-bottom: 10px; }
+    .receipt-title { font-size: 24px; color: #252623; margin-top: 20px; }
+    .confirmation-number { background: #f6f8f8; padding: 15px; margin: 20px 0; border-left: 4px solid #b59354; font-family: monospace; font-size: 18px; }
+    .section { margin: 30px 0; }
+    .section-title { font-size: 18px; font-weight: bold; color: #252623; margin-bottom: 15px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
+    .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+    .detail-label { color: #6b7280; font-weight: 500; }
+    .detail-value { color: #252623; font-weight: 600; text-align: right; }
+    .total-row { background: #f6f8f8; padding: 15px; margin-top: 20px; font-size: 20px; border-radius: 8px; }
+    .total-label { color: #252623; font-weight: bold; }
+    .total-value { color: #b59354; font-weight: bold; font-size: 24px; }
+    .paid-stamp { display: inline-block; background: #10b981; color: white; padding: 8px 20px; border-radius: 20px; font-weight: bold; margin-top: 10px; }
+    .footer { margin-top: 50px; text-align: center; color: #6b7280; font-size: 14px; border-top: 2px solid #e5e7eb; padding-top: 20px; }
+    .print-instructions { background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 20px; margin: 30px 0; text-align: center; }
+    .print-button { background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    .print-button:hover { background: #2563eb; }
+    @media print { body { padding: 20px; } .print-instructions { display: none; } }
   </style>
 </head>
 <body>
   <div class="print-instructions">
-    <h3 style="color: #1e40af; margin-top: 0;">📄 Save as PDF Instructions</h3>
+    <h3 style="color: #1e40af; margin-top: 0;">Save as PDF Instructions</h3>
     <p style="color: #1e3a8a; margin: 10px 0;">
       To save this receipt as a PDF, click the button below and select "Save as PDF" as your printer destination.
     </p>
-    <button class="print-button" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <button class="print-button" onclick="window.print()">Print / Save as PDF</button>
   </div>
 
   <div class="header">
@@ -278,17 +173,17 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
     </div>
     <div class="detail-row">
       <span class="detail-label">Service Fee (excl. VAT):</span>
-      <span class="detail-value">€${(parseFloat(bookingData.price || '0') / 1.17).toFixed(2)}</span>
+      <span class="detail-value">&euro;${(parseFloat(bookingData.price || '0') / 1.17).toFixed(2)}</span>
     </div>
     <div class="detail-row">
       <span class="detail-label">VAT (17%):</span>
-      <span class="detail-value">€${(parseFloat(bookingData.price || '0') - (parseFloat(bookingData.price || '0') / 1.17)).toFixed(2)}</span>
+      <span class="detail-value">&euro;${(parseFloat(bookingData.price || '0') - (parseFloat(bookingData.price || '0') / 1.17)).toFixed(2)}</span>
     </div>
   </div>
 
   <div class="total-row detail-row">
     <span class="total-label">TOTAL (incl. VAT):</span>
-    <span class="total-value">€${parseFloat(bookingData.price || '0').toFixed(2)}</span>
+    <span class="total-value">&euro;${parseFloat(bookingData.price || '0').toFixed(2)}</span>
   </div>
 
   <div class="section">
@@ -328,7 +223,6 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
 </html>
     `;
 
-    // Create blob and download as HTML file
     const blob = new Blob([receiptHTML], { type: "text/html" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -337,15 +231,12 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-
-    // Clean up the blob URL
     setTimeout(() => {
       window.URL.revokeObjectURL(url);
     }, 100);
   };
 
   const handleAddToCalendar = () => {
-    // Create Google Calendar link
     const calendarUrl = new URL("https://calendar.google.com/calendar/render");
     calendarUrl.searchParams.set("action", "TEMPLATE");
     calendarUrl.searchParams.set("text", `Opulanz Life Insurance - ${bookingData.serviceTitle}`);
@@ -369,15 +260,15 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
               <CheckCircle className="h-12 w-12 text-white" />
             </div>
             <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-              Booking Confirmed!
+              {t("title")}
             </h1>
             <p className="mb-6 text-lg text-white/90 md:text-xl">
-              Your life insurance consultation has been successfully booked
+              {t("subtitle")}
             </p>
             <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-6 py-3 backdrop-blur-sm">
               <FileText className="h-5 w-5 text-white" />
               <span className="font-mono text-sm font-semibold text-white">
-                Confirmation: {confirmationNumber}
+                {t("confirmationLabel")}: {confirmationNumber}
               </span>
             </div>
           </div>
@@ -393,12 +284,12 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
               <Mail className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-green-900 mb-1">
-                  Confirmation email sent
+                  {t("emailSent")}
                 </h3>
                 <p className="text-sm text-green-800">
-                  A confirmation email with all the details has been sent to{" "}
-                  <span className="font-semibold">{bookingData.email || "your email address"}</span>.
-                  Please check your inbox and spam folder.
+                  {t("emailSentText")}{" "}
+                  <span className="font-semibold">{bookingData.email || t("yourEmailAddress")}</span>.
+                  {" "}{t("checkInbox")}
                 </p>
               </div>
             </div>
@@ -407,7 +298,7 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
           {/* Appointment Details Card */}
           <Card className="border-2 border-brand-grayLight mb-8">
             <CardHeader className="bg-brand-goldLight/10">
-              <CardTitle className="text-2xl">Your Appointment Details</CardTitle>
+              <CardTitle className="text-2xl">{t("appointmentDetails")}</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid gap-6 md:grid-cols-2">
@@ -416,9 +307,9 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
                     <User className="h-6 w-6 text-brand-gold" />
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Client Name</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("clientName")}</p>
                     <p className="font-semibold text-brand-dark">
-                      {bookingData.name || "Guest"}
+                      {bookingData.name || t("guest")}
                     </p>
                   </div>
                 </div>
@@ -428,9 +319,9 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
                     <Mail className="h-6 w-6 text-brand-gold" />
                   </div>
                   <div>
-                    <p className="text-sm text-brand-grayMed mb-1">Email</p>
+                    <p className="text-sm text-brand-grayMed mb-1">{t("emailLabel")}</p>
                     <p className="font-semibold text-brand-dark break-all">
-                      {bookingData.email || "Not provided"}
+                      {bookingData.email || t("notProvided")}
                     </p>
                   </div>
                 </div>
@@ -441,7 +332,7 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
                       <User className="h-6 w-6 text-brand-gold" />
                     </div>
                     <div>
-                      <p className="text-sm text-brand-grayMed mb-1">Phone</p>
+                      <p className="text-sm text-brand-grayMed mb-1">{t("phoneLabel")}</p>
                       <p className="font-semibold text-brand-dark">
                         {bookingData.phone}
                       </p>
@@ -456,7 +347,7 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
                         <Calendar className="h-6 w-6 text-brand-gold" />
                       </div>
                       <div>
-                        <p className="text-sm text-brand-grayMed mb-1">Date</p>
+                        <p className="text-sm text-brand-grayMed mb-1">{t("dateLabel")}</p>
                         <p className="font-semibold text-brand-dark">{formattedDate}</p>
                       </div>
                     </div>
@@ -466,11 +357,11 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
                         <Clock className="h-6 w-6 text-brand-gold" />
                       </div>
                       <div>
-                        <p className="text-sm text-brand-grayMed mb-1">Time</p>
+                        <p className="text-sm text-brand-grayMed mb-1">{t("timeLabel")}</p>
                         <p className="font-semibold text-brand-dark">
                           {formattedTime}
                         </p>
-                        <p className="text-sm text-brand-grayMed">Duration: 60 minutes</p>
+                        <p className="text-sm text-brand-grayMed">{t("duration60")}</p>
                       </div>
                     </div>
                   </>
@@ -480,13 +371,13 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
                       <Calendar className="h-6 w-6 text-blue-600" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-brand-grayMed mb-1">Appointment Scheduled via Calendly</p>
-                      <p className="font-semibold text-brand-dark">Check your email for appointment details</p>
+                      <p className="text-sm text-brand-grayMed mb-1">{t("scheduledViaCalendly")}</p>
+                      <p className="font-semibold text-brand-dark">{t("checkEmailForDetails")}</p>
                       <p className="text-sm text-blue-600 mt-2">
-                        You will receive a confirmation email from Calendly with your appointment date, time, and Google Meet link.
+                        {t("calendlyConfirmation")}
                       </p>
                       <p className="text-sm text-brand-grayMed mt-1">
-                        Duration: 60 minutes
+                        {t("duration60")}
                       </p>
                     </div>
                   </div>
@@ -494,15 +385,15 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
               </div>
 
               <div className="mt-6 pt-6 border-t border-brand-grayLight">
-                <h4 className="font-semibold text-brand-dark mb-3">Service Details</h4>
+                <h4 className="font-semibold text-brand-dark mb-3">{t("serviceDetails")}</h4>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-semibold text-brand-dark">{bookingData.serviceTitle}</p>
-                    <p className="text-sm text-brand-grayMed">60-minute consultation</p>
+                    <p className="text-sm text-brand-grayMed">{t("sixtyMinConsultation")}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-brand-gold">€{bookingData.price}.00</p>
-                    <p className="text-xs text-brand-grayMed">incl. VAT</p>
+                    <p className="text-2xl font-bold text-brand-gold">&euro;{bookingData.price}.00</p>
+                    <p className="text-xs text-brand-grayMed">{t("inclVat")}</p>
                   </div>
                 </div>
               </div>
@@ -516,7 +407,7 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
               className="h-14 bg-brand-gold text-white hover:bg-brand-goldDark"
             >
               <Calendar className="mr-2 h-5 w-5" />
-              Add to Calendar
+              {t("addToCalendar")}
             </Button>
             <Button
               onClick={handleDownloadReceipt}
@@ -524,59 +415,43 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
               className="h-14 border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
             >
               <Download className="mr-2 h-5 w-5" />
-              Download PDF Receipt
+              {t("downloadReceipt")}
             </Button>
           </div>
 
           {/* Next Steps Card */}
           <Card className="border-2 border-blue-200 bg-blue-50">
             <CardHeader>
-              <CardTitle className="text-xl text-blue-900">What happens next?</CardTitle>
+              <CardTitle className="text-xl text-blue-900">{t("whatsNext")}</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
-                  <div className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-bold mt-0.5">
-                    1
-                  </div>
+                  <div className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-bold mt-0.5">1</div>
                   <div>
-                    <p className="font-semibold text-blue-900">Check your email</p>
-                    <p className="text-sm text-blue-800">
-                      You'll receive a confirmation email with a calendar invite and meeting link
-                    </p>
+                    <p className="font-semibold text-blue-900">{t("step1.title")}</p>
+                    <p className="text-sm text-blue-800">{t("step1.text")}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-bold mt-0.5">
-                    2
-                  </div>
+                  <div className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-bold mt-0.5">2</div>
                   <div>
-                    <p className="font-semibold text-blue-900">Prepare for your consultation</p>
-                    <p className="text-sm text-blue-800">
-                      Gather relevant documents and prepare questions you'd like to discuss
-                    </p>
+                    <p className="font-semibold text-blue-900">{t("step2.title")}</p>
+                    <p className="text-sm text-blue-800">{t("step2.text")}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-bold mt-0.5">
-                    3
-                  </div>
+                  <div className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-bold mt-0.5">3</div>
                   <div>
-                    <p className="font-semibold text-blue-900">Join the meeting</p>
-                    <p className="text-sm text-blue-800">
-                      Click the meeting link in your email at the scheduled time
-                    </p>
+                    <p className="font-semibold text-blue-900">{t("step3.title")}</p>
+                    <p className="text-sm text-blue-800">{t("step3.text")}</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-bold mt-0.5">
-                    4
-                  </div>
+                  <div className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-bold mt-0.5">4</div>
                   <div>
-                    <p className="font-semibold text-blue-900">Receive your action plan</p>
-                    <p className="text-sm text-blue-800">
-                      After the consultation, you'll receive a summary and recommended next steps
-                    </p>
+                    <p className="font-semibold text-blue-900">{t("step4.title")}</p>
+                    <p className="text-sm text-blue-800">{t("step4.text")}</p>
                   </div>
                 </li>
               </ul>
@@ -585,23 +460,21 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
 
           {/* Additional Resources */}
           <div className="mt-8 text-center">
-            <p className="text-brand-grayMed mb-4">
-              Need to reschedule or have questions?
-            </p>
+            <p className="text-brand-grayMed mb-4">{t("rescheduleQuestion")}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 variant="outline"
                 onClick={() => router.push(`/${locale}/life-insurance`)}
                 className="border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
               >
-                Back to Life Insurance
+                {t("backToLifeInsurance")}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => router.push(`/${locale}/dashboard`)}
                 className="border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
               >
-                Go to Dashboard
+                {t("goToDashboard")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -610,7 +483,7 @@ function LifeInsuranceConfirmationPageContent({ locale }: { locale: string }) {
           {/* Support Contact */}
           <div className="mt-12 text-center border-t border-brand-grayLight pt-8">
             <p className="text-sm text-brand-grayMed">
-              Questions about your booking? Contact us at{" "}
+              {t("supportText")}{" "}
               <a href="mailto:support@opulanzbanking.com" className="text-brand-gold hover:underline font-semibold">
                 support@opulanzbanking.com
               </a>

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
 import { Step } from "@/components/account-opening/stepper";
 
@@ -14,19 +15,20 @@ import { BeneficiariesStep } from "@/components/account-opening/insurance/benefi
 import { ComplianceDeclarationsStep } from "@/components/account-opening/insurance/compliance-declarations-step";
 import { ReviewSubmitStep } from "@/components/account-opening/insurance/review-submit-step";
 
-const INSURANCE_STEPS: Step[] = [
-  { id: 1, label: "Personal", description: "Details & Tax" },
-  { id: 2, label: "Financial", description: "Profile" },
-  { id: 3, label: "Investment", description: "Profile" },
-  { id: 4, label: "Premium", description: "Payments" },
-  { id: 5, label: "Beneficiaries", description: "Designation" },
-  { id: 6, label: "Compliance", description: "Documents" },
-  { id: 7, label: "Review", description: "Submit" },
-];
-
 export default function InsurancePage() {
+  const t = useTranslations("insurance");
   const params = useParams();
   const locale = params.locale as string;
+
+  const INSURANCE_STEPS: Step[] = [
+    { id: 1, label: t("steps.personal.label"), description: t("steps.personal.description") },
+    { id: 2, label: t("steps.financial.label"), description: t("steps.financial.description") },
+    { id: 3, label: t("steps.investment.label"), description: t("steps.investment.description") },
+    { id: 4, label: t("steps.premium.label"), description: t("steps.premium.description") },
+    { id: 5, label: t("steps.beneficiaries.label"), description: t("steps.beneficiaries.description") },
+    { id: 6, label: t("steps.compliance.label"), description: t("steps.compliance.description") },
+    { id: 7, label: t("steps.review.label"), description: t("steps.review.description") },
+  ];
 
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -223,8 +225,8 @@ export default function InsurancePage() {
 
   return (
     <AccountOpeningLayout
-      title="Luxembourg Life Insurance Application"
-      description="Complete your application in 7 comprehensive steps"
+      title={t("title")}
+      description={t("description")}
       steps={INSURANCE_STEPS}
       currentStep={currentStep}
       onStepChange={handleStepChange}

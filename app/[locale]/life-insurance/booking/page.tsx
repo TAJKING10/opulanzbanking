@@ -276,7 +276,7 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
       router.push(`/${locale}/life-insurance/confirmation?confirmation=${confirmationNumber}`);
     } catch (error) {
       console.error('Error saving booking:', error);
-      alert('Payment successful, but there was an error saving your booking. Please contact support with your payment confirmation.');
+      alert(t('payment.paymentSuccessError'));
     }
   };
 
@@ -712,7 +712,7 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                 },
                 onError: function(err: any) {
                   console.error('PayPal error:', err);
-                  alert('Payment failed. Please try again or contact support.');
+                  alert(t('payment.paymentFailed'));
                 }
               }).render('#paypal-button-container');
             }
@@ -723,10 +723,10 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                Complete Your Payment
+                {t('payment.title')}
               </h1>
               <p className="text-lg text-white/90">
-                Secure payment powered by PayPal
+                {t('payment.subtitle')}
               </p>
             </div>
           </div>
@@ -736,27 +736,26 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
           <div className="container mx-auto max-w-3xl px-6">
             <div className="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
               <p className="text-sm text-blue-900">
-                <strong>Secure Payment:</strong> Your payment is processed securely through PayPal.
-                You don't need a PayPal account - you can pay with credit/debit card.
+                <strong>{t('payment.securePaymentLabel')}</strong> {t('payment.securePaymentText')}
               </p>
             </div>
 
             <Card className="border-2 border-brand-grayLight mb-8">
               <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-2xl">Payment Summary</CardTitle>
+                <CardTitle className="text-2xl">{t('payment.paymentSummary')}</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">
-                    <span className="text-brand-grayMed">Service:</span>
+                    <span className="text-brand-grayMed">{t('payment.serviceLabel')}:</span>
                     <span className="font-semibold text-brand-dark">{bookingData.serviceTitle}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-brand-grayMed">Client:</span>
+                    <span className="text-brand-grayMed">{t('payment.clientLabel')}:</span>
                     <span className="font-semibold text-brand-dark">{bookingData.firstName} {bookingData.lastName}</span>
                   </div>
                   <div className="flex justify-between text-xl font-bold border-t pt-3">
-                    <span className="text-brand-dark">Total:</span>
+                    <span className="text-brand-dark">{t('payment.totalLabel')}:</span>
                     <span className="text-brand-gold">€{(bookingData.servicePrice || 0).toFixed(2)}</span>
                   </div>
                 </div>
@@ -766,7 +765,7 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                 {!isPayPalLoaded && (
                   <div className="text-center py-8">
                     <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-brand-gold border-r-transparent"></div>
-                    <p className="mt-4 text-brand-grayMed">Loading payment options...</p>
+                    <p className="mt-4 text-brand-grayMed">{t('payment.loading')}</p>
                   </div>
                 )}
               </CardContent>
@@ -779,14 +778,14 @@ function LifeInsuranceBookingPageContent({ locale }: { locale: string }) {
                 className="flex-1 border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Summary
+                {t('payment.backToSummary')}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => router.push(`/${locale}/life-insurance`)}
                 className="flex-1"
               >
-                Cancel Booking
+                {t('payment.cancelBooking')}
               </Button>
             </div>
           </div>

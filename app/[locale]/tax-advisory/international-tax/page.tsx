@@ -163,7 +163,7 @@ Contact: opulanz.banking@gmail.com
           },
           onError: function(err: any) {
             console.error('PayPal error:', err);
-            alert('Payment failed. Please try again.');
+            alert(t('payment.paymentFailed'));
           }
         }).render(paypalRef.current);
       }
@@ -172,7 +172,7 @@ Contact: opulanz.banking@gmail.com
 
   const handlePaymentComplete = async () => {
     if (!paymentCompleted) {
-      alert('Please complete the PayPal payment first.');
+      alert(t('payment.completePaypalFirst'));
       return;
     }
     setLoading(true);
@@ -199,7 +199,7 @@ Contact: opulanz.banking@gmail.com
       setStep('confirmation');
     } catch (error) {
       console.error('Error processing payment:', error);
-      alert('There was an error processing your payment. Please contact support.');
+      alert(t('payment.errorProcessing'));
     } finally {
       setLoading(false);
     }

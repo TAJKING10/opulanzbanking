@@ -6,130 +6,98 @@ import { Hero } from "@/components/hero";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function PrivacyPage() {
-  const t = useTranslations();
+  const t = useTranslations("legal.privacy");
   const locale = useLocale();
 
   return (
     <>
       <Hero
-        title="Privacy Policy"
-        subtitle="Data Protection and GDPR Compliance"
+        title={t("heroTitle")}
+        subtitle={t("heroSubtitle")}
       />
 
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-4xl px-6">
           <Card className="border-none shadow-sm">
             <CardContent className="prose prose-lg max-w-none p-8">
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">GDPR Compliance</h2>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("gdpr.title")}</h2>
+              <p className="text-brand-grayMed mb-6">{t("gdpr.text1")}</p>
+              <p className="text-brand-grayMed mb-6">{t("gdpr.text2")}</p>
               <p className="text-brand-grayMed mb-6">
-                We are committed to protecting your personal data and respecting your privacy rights in accordance with the General Data Protection Regulation (GDPR).
-              </p>
-              <p className="text-brand-grayMed mb-6">
-                You have the right to access, rectify, delete, and port your personal data.
-              </p>
-              <p className="text-brand-grayMed mb-6">
-                To exercise these rights, please contact us at: <strong>contact@advensys-in-finance.com</strong>
+                {t("gdpr.contactText")} <strong>contact@advensys-in-finance.com</strong>
               </p>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Data Controller</h2>
-              <p className="text-brand-grayMed mb-6">
-                Advensys Insurance Finance S.A.R.L. acts as the data controller for all personal data collected through this website.
-              </p>
-              <p className="text-brand-grayMed mb-6">
-                We process your data in accordance with applicable data protection laws and regulations.
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("dataController.title")}</h2>
+              <p className="text-brand-grayMed mb-6">{t("dataController.text1")}</p>
+              <p className="text-brand-grayMed mb-6">{t("dataController.text2")}</p>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Data Collection</h2>
-              <p className="text-brand-grayMed mb-6">
-                We collect personal data that you voluntarily provide to us through our website forms and communications.
-              </p>
-              <p className="text-brand-grayMed mb-6">
-                All personal data concerning Internet users is collected directly from them. Advensys Insurance Finance S.A.R.L. undertakes to obtain the consent of Internet users and/or to allow them to oppose the use of their personal data.
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("dataCollection.title")}</h2>
+              <p className="text-brand-grayMed mb-6">{t("dataCollection.text1")}</p>
+              <p className="text-brand-grayMed mb-6">{t("dataCollection.text2")}</p>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Types of Data and Purpose of Collection</h2>
-              <p className="text-brand-grayMed mb-4">
-                The following data from Internet users may be collected by Advensys Insurance Finance S.A.R.L.:
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("typesOfData.title")}</h2>
+              <p className="text-brand-grayMed mb-4">{t("typesOfData.intro")}</p>
               <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-                <li>Surname</li>
-                <li>First name</li>
-                <li>Address</li>
-                <li>Email</li>
-                <li>IP address for Google Analytics</li>
+                <li>{t("typesOfData.items.surname")}</li>
+                <li>{t("typesOfData.items.firstName")}</li>
+                <li>{t("typesOfData.items.address")}</li>
+                <li>{t("typesOfData.items.email")}</li>
+                <li>{t("typesOfData.items.ip")}</li>
               </ul>
 
-              <p className="text-brand-grayMed mb-4">
-                This collected data is mainly processed for:
-              </p>
+              <p className="text-brand-grayMed mb-4">{t("typesOfData.purposeIntro")}</p>
               <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-                <li>Allow navigation on the site</li>
-                <li>Produce statistics</li>
+                <li>{t("typesOfData.purposes.navigation")}</li>
+                <li>{t("typesOfData.purposes.statistics")}</li>
               </ul>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Legitimate Interest</h2>
-              <p className="text-brand-grayMed mb-4">
-                The collection of personal data is based on the legitimate interest of Advensys Insurance Finance S.A.R.L. to offer:
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("legitimateInterest.title")}</h2>
+              <p className="text-brand-grayMed mb-4">{t("legitimateInterest.intro")}</p>
               <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-                <li>News and services of interest to anyone looking for information on the profession of financial investment advice, a job or an internship</li>
-                <li>Information on wealth management and financial investment services</li>
+                <li>{t("legitimateInterest.items.news")}</li>
+                <li>{t("legitimateInterest.items.wealthManagement")}</li>
               </ul>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Data Processing Location</h2>
-              <p className="text-brand-grayMed mb-6">
-                The processing carried out by Advensys Insurance Finance S.A.R.L. is located exclusively in Metropolitan France.
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("processingLocation.title")}</h2>
+              <p className="text-brand-grayMed mb-6">{t("processingLocation.text")}</p>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Data Retention</h2>
-              <p className="text-brand-grayMed mb-4">
-                Personal data is kept only for the time necessary for the purpose pursued by the processing:
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("dataRetention.title")}</h2>
+              <p className="text-brand-grayMed mb-4">{t("dataRetention.intro")}</p>
               <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-                <li><strong>Navigation on the site and statistics:</strong> 1 year</li>
-                <li><strong>Membership:</strong> The membership processing time (a few weeks)</li>
+                <li><strong>{t("dataRetention.navigation.label")}</strong> {t("dataRetention.navigation.duration")}</li>
+                <li><strong>{t("dataRetention.membership.label")}</strong> {t("dataRetention.membership.duration")}</li>
               </ul>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Your Rights</h2>
-              <p className="text-brand-grayMed mb-4">
-                Under GDPR, you have the following rights regarding your personal data:
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("yourRights.title")}</h2>
+              <p className="text-brand-grayMed mb-4">{t("yourRights.intro")}</p>
               <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-                <li><strong>Right to Access:</strong> Request a copy of your personal data</li>
-                <li><strong>Right to Rectification:</strong> Correct inaccurate or incomplete data</li>
-                <li><strong>Right to Erasure (Right to be Forgotten):</strong> Request deletion of your data</li>
-                <li><strong>Right to Data Portability:</strong> Receive your data in a machine-readable format</li>
-                <li><strong>Right to Object:</strong> Object to certain types of processing</li>
-                <li><strong>Right to Restriction of Processing:</strong> Limit how we use your data</li>
+                <li><strong>{t("yourRights.access.label")}</strong> {t("yourRights.access.text")}</li>
+                <li><strong>{t("yourRights.rectification.label")}</strong> {t("yourRights.rectification.text")}</li>
+                <li><strong>{t("yourRights.erasure.label")}</strong> {t("yourRights.erasure.text")}</li>
+                <li><strong>{t("yourRights.portability.label")}</strong> {t("yourRights.portability.text")}</li>
+                <li><strong>{t("yourRights.object.label")}</strong> {t("yourRights.object.text")}</li>
+                <li><strong>{t("yourRights.restriction.label")}</strong> {t("yourRights.restriction.text")}</li>
               </ul>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Contact for Data Protection</h2>
-              <p className="text-brand-grayMed mb-4">
-                To exercise your rights or for any questions regarding data protection, please contact us:
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("contactDPO.title")}</h2>
+              <p className="text-brand-grayMed mb-4">{t("contactDPO.intro")}</p>
               <div className="text-brand-grayMed mb-6 space-y-2">
-                <p><strong>Email:</strong> contact@advensys-in-finance.com</p>
-                <p><strong>Address:</strong> 66 avenue des Champs Elysées, 75008 Paris</p>
-                <p><strong>Phone:</strong> +33 6 98 21 44 46</p>
+                <p><strong>{t("contactDPO.emailLabel")}</strong> contact@advensys-in-finance.com</p>
+                <p><strong>{t("contactDPO.addressLabel")}</strong> 66 avenue des Champs Elysées, 75008 Paris</p>
+                <p><strong>{t("contactDPO.phoneLabel")}</strong> +33 6 98 21 44 46</p>
               </div>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Cookies and Tracking</h2>
-              <p className="text-brand-grayMed mb-6">
-                We use Google Analytics to analyze website usage and improve our services. This involves collecting IP addresses and website navigation data.
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("cookies.title")}</h2>
+              <p className="text-brand-grayMed mb-6">{t("cookies.text")}</p>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Data Security</h2>
-              <p className="text-brand-grayMed mb-6">
-                We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("dataSecurity.title")}</h2>
+              <p className="text-brand-grayMed mb-6">{t("dataSecurity.text")}</p>
 
-              <h2 className="text-2xl font-bold text-brand-dark mb-4">Updates to This Policy</h2>
-              <p className="text-brand-grayMed mb-6">
-                This privacy policy may be updated from time to time. We recommend that you review this page periodically to stay informed of any changes.
-              </p>
+              <h2 className="text-2xl font-bold text-brand-dark mb-4">{t("updates.title")}</h2>
+              <p className="text-brand-grayMed mb-6">{t("updates.text")}</p>
 
               <p className="text-sm text-brand-grayMed mt-8 pt-6 border-t border-brand-grayLight">
-                Last updated: January 2025
+                {t("lastUpdated")}
               </p>
             </CardContent>
           </Card>

@@ -20,4 +20,4 @@ const Label = React.forwardRef<
 ));
 Label.displayName = LabelPrimitive.Root.displayName;
 
-export { Label };
+export * from "@/shared/components/ui/label";

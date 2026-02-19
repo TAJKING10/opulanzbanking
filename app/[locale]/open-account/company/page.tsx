@@ -8,7 +8,7 @@ import { CheckCircle2 } from "lucide-react";
 import {
   whitelabelKYBSchema,
   type WhitelabelKYBFormData,
-} from "@/lib/validators/whitelabel";
+} from "@/shared/lib/validators/whitelabel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

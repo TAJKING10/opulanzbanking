@@ -100,7 +100,7 @@ export default function IndividualAccountPage() {
           // Address Information
           address: data.address,
           city: data.city,
-          postalCode: data.postalCode,
+          postalCode: data.postal,
           country: data.country,
 
           // Activity Information

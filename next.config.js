@@ -4,6 +4,7 @@ const withNextIntl = require('next-intl/plugin')(
 );
 
 const nextConfig = {
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
   images: {
     unoptimized: true,
     remotePatterns: [

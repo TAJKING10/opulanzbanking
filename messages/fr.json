@@ -12,7 +12,8 @@
     "loading": "Chargement...",
     "error": "Une erreur s'est produite",
     "required": "Requis",
-    "explore": "Explorer"
+    "explore": "Explorer",
+    "readyToStart": "Prêt à démarrer"
   },
   "nav": {
     "home": "Accueil",
@@ -20,7 +21,7 @@
     "openAccount": "Ouvrir un compte",
     "companyFormation": "Création de société",
     "services": "Services",
-    "support": "Support",
+    "support": "Assistance",
     "ourServices": "Nos Services",
     "taxAdvisory": "Conseil Fiscal",
     "investmentAdvisory": "Conseil en Investissement",

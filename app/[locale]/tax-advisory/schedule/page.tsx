@@ -17,7 +17,7 @@ export default function ScheduleConsultationPage() {
         subtitle="Book a convenient time to discuss your tax strategy with our expert advisors"
       />
 
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-5xl px-6">
           <div className="mb-8 text-center">
             <h2 className="mb-4 text-2xl font-bold text-brand-dark md:text-3xl">

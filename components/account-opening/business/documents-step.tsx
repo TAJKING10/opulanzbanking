@@ -22,41 +22,43 @@ interface BusinessDocumentsStepProps {
 }
 
 export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocumentsStepProps) {
-  const t = useTranslations("accountOpening.business.documentsStep");
+  const t = useTranslations("accountForms.business.documents");
+  const tc = useTranslations("accountForms.common");
+
   const [documents, setDocuments] = React.useState<Document[]>([
     {
       id: "company-registration",
-      name: t("documents.registration"),
+      name: t("companyRegistration"),
       required: data.companyStatus === "existing",
       uploaded: false,
     },
     {
       id: "articles",
-      name: t("documents.articles"),
+      name: t("articles"),
       required: data.companyStatus === "existing",
       uploaded: false,
     },
     {
       id: "ubo-register",
-      name: t("documents.uboRegister"),
+      name: t("uboRegister"),
       required: true,
       uploaded: false,
     },
     {
       id: "director-ids",
-      name: t("documents.directorsId"),
+      name: t("directorIds"),
       required: true,
       uploaded: false,
     },
     {
       id: "ubo-ids",
-      name: t("documents.ubosId"),
+      name: t("uboIds"),
       required: true,
       uploaded: false,
     },
     {
       id: "business-address",
-      name: t("documents.proofOfAddress"),
+      name: t("businessAddress"),
       required: true,
       uploaded: false,
     },
@@ -67,27 +69,23 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
   const handleFileUpload = (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Validate file type (PDF, JPG, PNG)
       const validTypes = ["application/pdf", "image/jpeg", "image/png"];
       if (!validTypes.includes(file.type)) {
-        alert(t("errors.invalidFormat"));
+        alert("Please upload a PDF, JPG, or PNG file");
         return;
       }
 
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert(t("errors.fileTooLarge"));
+        alert("File size must be less than 5MB");
         return;
       }
 
-      // Update document status
       setDocuments((prev) =>
         prev.map((doc) =>
           doc.id === documentId ? { ...doc, uploaded: true, file } : doc
         )
       );
 
-      // Simulate upload with auto-retry
       console.log(`Uploading ${file.name}...`);
     }
   };
@@ -115,14 +113,14 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          {t("subtitle")}
+          {t("description")}
         </p>
       </div>
 
       <div className="space-y-6">
         {/* Document Checklist */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-brand-dark">{t("requiredDocuments")}</h3>
+          <h3 className="text-lg font-semibold text-brand-dark">{tc("requiredDocuments")}</h3>
 
           {documents.map((document) => (
             <div
@@ -150,7 +148,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
                       </p>
                       {document.uploaded && document.file && (
                         <p className="mt-1 text-sm text-green-700">
-                          {t("uploaded", { filename: document.file.name })}
+                          {tc("uploaded")}: {document.file.name}
                         </p>
                       )}
                     </div>
@@ -167,7 +165,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
                         className="pointer-events-none"
                       >
                         <Upload className="mr-2 h-4 w-4" />
-                        {t("upload")}
+                        {tc("upload")}
                       </Button>
                       <input
                         id={`file-${document.id}`}
@@ -193,7 +191,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
                       }
                     >
                       <XCircle className="mr-2 h-4 w-4" />
-                      {t("remove")}
+                      {tc("remove")}
                     </Button>
                   )}
                 </div>
@@ -213,32 +211,28 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
             />
             <div className="flex-1">
               <Label htmlFor="upload-later" className="cursor-pointer font-semibold text-blue-900">
-                {t("uploadLater")}
+                {tc("uploadLater")}
               </Label>
-              <p className="mt-1 text-sm text-blue-800">
-                {t("uploadLaterDescription")}
-              </p>
+              <p className="mt-1 text-sm text-blue-800">{tc("uploadLaterDesc")}</p>
             </div>
           </div>
         </div>
 
         {/* File Requirements */}
         <div className="rounded-lg bg-gray-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-brand-dark">{t("fileRequirements.title")}</h4>
+          <h4 className="mb-2 text-sm font-semibold text-brand-dark">{tc("fileRequirements")}</h4>
           <ul className="space-y-1 text-sm text-brand-grayMed">
-            <li>• {t("fileRequirements.formats")}</li>
-            <li>• {t("fileRequirements.maxSize")}</li>
-            <li>• {t("fileRequirements.quality")}</li>
-            <li>• {t("fileRequirements.validity")}</li>
+            <li>• {tc("fileReqFormats")}</li>
+            <li>• {tc("fileReqSize")}</li>
+            <li>• {tc("fileReqClear")}</li>
+            <li>• {tc("fileReqValid")}</li>
           </ul>
         </div>
 
         {!isDocumentsStepValid && (
           <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-amber-600" />
-            <div className="text-sm text-amber-900">
-              {t("validationError")}
-            </div>
+            <div className="text-sm text-amber-900">{tc("uploadRequired")}</div>
           </div>
         )}
       </div>

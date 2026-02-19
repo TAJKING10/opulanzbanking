@@ -11,80 +11,91 @@ import { CompanyFormationWizard } from "@/components/company-formation/company-f
 import type { CompanyFormType } from "@/types/company-formation";
 
 export default function CompanyFormationPage() {
-  const t = useTranslations('companyFormation');
+  const t = useTranslations("companyFormation");
   const [selectedForm, setSelectedForm] = React.useState<CompanyFormType | null>(null);
 
   const companyForms = [
     {
       id: "SARL" as const,
       name: "SARL",
-      fullName: t('forms.sarl.fullName'),
-      minCapital: t('forms.sarl.minCapital'),
+      fullName: t("forms.sarl.fullName"),
+      minCapital: t("forms.sarl.minCapital"),
       minShareholders: 1,
-      liability: t('forms.sarl.liability'),
+      liability: t("forms.sarl.liability"),
       features: [
-        t('forms.sarl.features.common'),
-        t('forms.sarl.features.flexible'),
-        t('forms.sarl.features.capital'),
-        t('forms.sarl.features.suitable'),
+        t("forms.sarl.features.common"),
+        t("forms.sarl.features.flexible"),
+        t("forms.sarl.features.capital"),
+        t("forms.sarl.features.suitable"),
       ],
     },
     {
       id: "SARL-S" as const,
       name: "SARL-S",
-      fullName: t('forms.sarls.fullName'),
-      minCapital: t('forms.sarls.minCapital'),
+      fullName: t("forms.sarls.fullName"),
+      minCapital: t("forms.sarls.minCapital"),
       minShareholders: 1,
-      liability: t('forms.sarl.liability'),
+      liability: t("forms.sarl.liability"),
       features: [
-        t('forms.sarls.features.capital'),
-        t('forms.sarls.features.formation'),
-        t('forms.sarls.features.startups'),
-        t('forms.sarls.features.max'),
+        t("forms.sarls.features.capital"),
+        t("forms.sarls.features.formation"),
+        t("forms.sarls.features.startups"),
+        t("forms.sarls.features.max"),
       ],
     },
     {
       id: "SA" as const,
       name: "SA",
-      fullName: t('forms.sa.fullName'),
-      minCapital: t('forms.sa.minCapital'),
+      fullName: t("forms.sa.fullName"),
+      minCapital: t("forms.sa.minCapital"),
       minShareholders: 1,
-      liability: t('forms.sarl.liability'),
+      liability: t("forms.sarl.liability"),
       features: [
-        t('forms.sa.features.public'),
-        t('forms.sa.features.board'),
-        t('forms.sa.features.credibility'),
-        t('forms.sa.features.suitable'),
+        t("forms.sa.features.public"),
+        t("forms.sa.features.board"),
+        t("forms.sa.features.credibility"),
+        t("forms.sa.features.suitable"),
       ],
     },
     {
       id: "SCSp" as const,
       name: "SCSp",
-      fullName: t('forms.scsp.fullName'),
-      minCapital: t('forms.scsp.minCapital'),
+      fullName: t("forms.scsp.fullName"),
+      minCapital: t("forms.scsp.minCapital"),
       minShareholders: 2,
-      liability: "Mixed",
+      liability: t("forms.scsp.features.liability"),
       features: [
-        t('forms.scsp.features.transparent'),
-        t('forms.scsp.features.funds'),
-        t('forms.scsp.features.flexible'),
-        t('forms.scsp.features.liability'),
+        t("forms.scsp.features.transparent"),
+        t("forms.scsp.features.funds"),
+        t("forms.scsp.features.flexible"),
+        t("forms.scsp.features.liability"),
       ],
     },
     {
       id: "SOLE" as const,
-      name: t('forms.soleProprietor'),
-      fullName: t('forms.soleProprietor'),
-      minCapital: t('forms.scsp.minCapital'),
+      name: t("forms.soleProprietor"),
+      fullName: t("forms.sole.fullName"),
+      minCapital: t("forms.sole.minCapital"),
       minShareholders: 1,
-      liability: "Unlimited",
+      liability: t("forms.sole.liability"),
       features: [
-        "Simplest structure",
-        "No separate legal entity",
-        "Full control",
-        "Personal liability",
+        t("forms.sole.features.simplest"),
+        t("forms.sole.features.noEntity"),
+        t("forms.sole.features.control"),
+        t("forms.sole.features.personal"),
       ],
     },
+  ];
+
+  const processSteps = [
+    { icon: Building2, title: t("processSteps.companyType"), desc: t("processSteps.companyTypeDesc") },
+    { icon: FileText, title: t("processSteps.generalInfo"), desc: t("processSteps.generalInfoDesc") },
+    { icon: Users, title: t("processSteps.people"), desc: t("processSteps.peopleDesc") },
+    { icon: CreditCard, title: t("processSteps.capital"), desc: t("processSteps.capitalDesc") },
+    { icon: FileText, title: t("processSteps.activity"), desc: t("processSteps.activityDesc") },
+    { icon: Building2, title: t("processSteps.notary"), desc: t("processSteps.notaryDesc") },
+    { icon: FileText, title: t("processSteps.documents"), desc: t("processSteps.documentsDesc") },
+    { icon: CheckCircle, title: t("processSteps.submit"), desc: t("processSteps.submitDesc") },
   ];
 
   if (selectedForm) {
@@ -99,16 +110,16 @@ export default function CompanyFormationPage() {
   return (
     <>
       <Hero
-        title={t('hero.title')}
-        subtitle={t('subtitle')}
+        title={t("heroTitle")}
+        subtitle={t("heroSubtitle")}
       />
 
       {/* Company Types Selection */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title={t('selection.title')}
-            description={t('description')}
+            title={t("chooseForm")}
+            description={t("chooseFormDesc")}
             align="center"
             className="mb-12"
           />
@@ -130,19 +141,19 @@ export default function CompanyFormationPage() {
                 <CardContent className="space-y-4">
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-brand-grayMed">{t('labels.minCapital')}</span>
+                      <span className="text-brand-grayMed">{t("minCapitalLabel")}</span>
                       <span className="font-semibold text-brand-dark">
                         {form.minCapital}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-brand-grayMed">{t('labels.shareholders')}</span>
+                      <span className="text-brand-grayMed">{t("shareholdersLabel")}</span>
                       <span className="font-semibold text-brand-dark">
-                        {t('labels.minPrefix')} {form.minShareholders}
+                        {t("minPrefix")} {form.minShareholders}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-brand-grayMed">{t('labels.liability')}</span>
+                      <span className="text-brand-grayMed">{t("liabilityLabel")}</span>
                       <span className="font-semibold text-brand-dark">
                         {form.liability}
                       </span>
@@ -163,7 +174,7 @@ export default function CompanyFormationPage() {
                     variant="outline"
                     className="w-full group-hover:border-brand-gold group-hover:bg-brand-goldLight/10 group-hover:text-brand-gold"
                   >
-                    {t('labels.startFormation')}
+                    {t("startFormation")}
                   </Button>
                 </CardContent>
               </Card>
@@ -173,43 +184,37 @@ export default function CompanyFormationPage() {
       </section>
 
       {/* Process Overview */}
-      <section className="bg-gray-50 py-20">
+      <section className="bg-gray-50 py-12">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title={t('process.title')}
-            description={t('process.description')}
+            title={t("processTitle")}
+            description={t("processDesc")}
             align="center"
             className="mb-12"
           />
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {[
-              { icon: Building2, title: t('steps.companyType.title'), desc: t('steps.companyType.description') },
-              { icon: FileText, title: t('steps.details.title'), desc: t('steps.details.description') },
-              { icon: Users, title: t('steps.shareholders.title'), desc: t('steps.shareholders.description') },
-              { icon: CreditCard, title: t('steps.capital.title'), desc: t('steps.capital.description') },
-              { icon: FileText, title: t('steps.activity.title'), desc: t('steps.activity.description') },
-              { icon: Building2, title: t('steps.notary.title'), desc: t('steps.notary.description') },
-              { icon: FileText, title: t('steps.documents.title'), desc: t('steps.documents.description') },
-              { icon: CheckCircle, title: t('steps.submit.title'), desc: t('steps.submit.description') },
-            ].map((item, index) => (
-              <div key={item.title} className="text-center">
-                <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold text-white font-bold">
-                  {index + 1}
+            {processSteps.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.title} className="text-center">
+                  <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold text-white font-bold">
+                    {index + 1}
+                  </div>
+                  <h3 className="mb-2 font-bold text-brand-dark">{item.title}</h3>
+                  <p className="text-sm text-brand-grayMed">{item.desc}</p>
                 </div>
-                <h3 className="mb-2 font-bold text-brand-dark">{item.title}</h3>
-                <p className="text-sm text-brand-grayMed">{item.desc}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Benefits */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            title={t('benefits.title')}
+            title={t("benefitsTitle")}
             align="center"
             className="mb-12"
           />
@@ -218,11 +223,11 @@ export default function CompanyFormationPage() {
             <Card>
               <CardHeader>
                 <CheckCircle className="mb-4 h-12 w-12 text-brand-gold" />
-                <CardTitle>{t('benefits.expertGuidance.title')}</CardTitle>
+                <CardTitle>{t("benefits.expertTitle")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-brand-grayMed">
-                  {t('benefits.expertGuidance.description')}
+                  {t("benefits.expertDesc")}
                 </p>
               </CardContent>
             </Card>
@@ -230,11 +235,11 @@ export default function CompanyFormationPage() {
             <Card>
               <CardHeader>
                 <CheckCircle className="mb-4 h-12 w-12 text-brand-gold" />
-                <CardTitle>{t('benefits.fastEfficient.title')}</CardTitle>
+                <CardTitle>{t("benefits.fastTitle")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-brand-grayMed">
-                  {t('benefits.fastEfficient.description')}
+                  {t("benefits.fastDesc")}
                 </p>
               </CardContent>
             </Card>
@@ -242,11 +247,11 @@ export default function CompanyFormationPage() {
             <Card>
               <CardHeader>
                 <CheckCircle className="mb-4 h-12 w-12 text-brand-gold" />
-                <CardTitle>{t('benefits.fullService.title')}</CardTitle>
+                <CardTitle>{t("benefits.fullServiceTitle")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-brand-grayMed">
-                  {t('benefits.fullService.description')}
+                  {t("benefits.fullServiceDesc")}
                 </p>
               </CardContent>
             </Card>

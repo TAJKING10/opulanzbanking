@@ -14,7 +14,8 @@ interface JurisdictionStepProps {
 }
 
 export function JurisdictionStep({ data, onUpdate, onNext }: JurisdictionStepProps) {
-  const t = useTranslations("accountOpening.business.jurisdictionStep");
+  const t = useTranslations("accountForms.business.jurisdiction");
+
   const [jurisdiction, setJurisdiction] = React.useState(data.jurisdiction || "");
 
   const handleJurisdictionChange = (value: string) => {
@@ -31,11 +32,11 @@ export function JurisdictionStep({ data, onUpdate, onNext }: JurisdictionStepPro
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">
-          {data.companyStatus === "existing" ? t("titleExisting") : t("titleNew")}
-        </h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          {data.companyStatus === "existing" ? t("subtitleExisting") : t("subtitleNew")}
+          {data.companyStatus === "existing"
+            ? t("existingQuestion")
+            : t("newQuestion")}
         </p>
       </div>
 
@@ -43,28 +44,28 @@ export function JurisdictionStep({ data, onUpdate, onNext }: JurisdictionStepPro
         <div className="space-y-2">
           <Label htmlFor="jurisdiction" className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-brand-gold" />
-            <span>{t("selectJurisdiction")} {t("required")}</span>
+            <span>{t("selectJurisdiction")} *</span>
           </Label>
           <Select value={jurisdiction} onValueChange={handleJurisdictionChange}>
             <SelectTrigger id="jurisdiction" className="w-full">
-              <SelectValue placeholder={t("selectJurisdictionPlaceholder")} />
+              <SelectValue placeholder={t("chooseJurisdiction")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="LU">{t("jurisdictions.luxembourg")}</SelectItem>
-              <SelectItem value="FR">{t("jurisdictions.france")}</SelectItem>
-              <SelectItem value="FI">{t("jurisdictions.finland")}</SelectItem>
-              <SelectItem value="BE">{t("jurisdictions.belgium")}</SelectItem>
-              <SelectItem value="DE">{t("jurisdictions.germany")}</SelectItem>
-              <SelectItem value="NL">{t("jurisdictions.netherlands")}</SelectItem>
-              <SelectItem value="ES">{t("jurisdictions.spain")}</SelectItem>
-              <SelectItem value="IT">{t("jurisdictions.italy")}</SelectItem>
-              <SelectItem value="PT">{t("jurisdictions.portugal")}</SelectItem>
-              <SelectItem value="AT">{t("jurisdictions.austria")}</SelectItem>
-              <SelectItem value="OTHER">{t("jurisdictions.other")}</SelectItem>
+              <SelectItem value="LU">Luxembourg</SelectItem>
+              <SelectItem value="FR">France</SelectItem>
+              <SelectItem value="FI">Finland</SelectItem>
+              <SelectItem value="BE">Belgium</SelectItem>
+              <SelectItem value="DE">Germany</SelectItem>
+              <SelectItem value="NL">Netherlands</SelectItem>
+              <SelectItem value="ES">Spain</SelectItem>
+              <SelectItem value="IT">Italy</SelectItem>
+              <SelectItem value="PT">Portugal</SelectItem>
+              <SelectItem value="AT">Austria</SelectItem>
+              <SelectItem value="OTHER">{t("otherEuCountry")}</SelectItem>
             </SelectContent>
           </Select>
           <p className="text-xs text-brand-grayMed">
-            {t("helperText")}
+            {t("jurisdictionHelp")}
           </p>
         </div>
 
@@ -72,30 +73,33 @@ export function JurisdictionStep({ data, onUpdate, onNext }: JurisdictionStepPro
           <div className="rounded-lg border border-brand-grayLight bg-white p-6">
             <h4 className="mb-3 flex items-center gap-2 font-semibold text-brand-dark">
               <Info className="h-5 w-5 text-brand-gold" />
-              {t("jurisdictionInfo.title")}
+              {t("jurisdictionInfo")}
             </h4>
 
             {jurisdiction === "LU" && (
               <div className="space-y-2 text-sm text-brand-grayMed">
-                <p>{t("jurisdictionInfo.luxembourg")}</p>
+                <p>{t("luxembourgInfo")}</p>
+                <p>{t("luxembourgCapital")}</p>
               </div>
             )}
 
             {jurisdiction === "FR" && (
               <div className="space-y-2 text-sm text-brand-grayMed">
-                <p>{t("jurisdictionInfo.france")}</p>
+                <p>{t("franceInfo")}</p>
+                <p>{t("franceCapital")}</p>
               </div>
             )}
 
             {jurisdiction === "FI" && (
               <div className="space-y-2 text-sm text-brand-grayMed">
-                <p>{t("jurisdictionInfo.finland")}</p>
+                <p>{t("finlandInfo")}</p>
+                <p>{t("finlandCapital")}</p>
               </div>
             )}
 
             {!["LU", "FR", "FI"].includes(jurisdiction) && (
               <div className="space-y-2 text-sm text-brand-grayMed">
-                <p>{t("jurisdictionInfo.general")}</p>
+                <p>{t("otherInfo")}</p>
               </div>
             )}
           </div>
@@ -103,14 +107,9 @@ export function JurisdictionStep({ data, onUpdate, onNext }: JurisdictionStepPro
 
         {data.companyStatus === "new" && jurisdiction && (
           <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-            <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("formationTimeline.title")}</h4>
+            <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("formationTimeline")}</h4>
             <p className="text-sm text-blue-800">
-              {t("formationTimeline.description", {
-                jurisdiction: jurisdiction === "LU" ? t("jurisdictions.luxembourg") :
-                             jurisdiction === "FR" ? t("jurisdictions.france") :
-                             jurisdiction === "FI" ? t("jurisdictions.finland") :
-                             jurisdiction
-              })}
+              {t("formationTimelineDesc")}
             </p>
           </div>
         )}

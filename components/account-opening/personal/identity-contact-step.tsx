@@ -14,7 +14,9 @@ interface IdentityContactStepProps {
 }
 
 export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactStepProps) {
-  const t = useTranslations("accountOpening.personal.identityStep");
+  const t = useTranslations("accountForms.personal.identity");
+  const tc = useTranslations("accountForms.common");
+
   const [formState, setFormState] = React.useState({
     firstName: data.firstName || "",
     lastName: data.lastName || "",
@@ -39,19 +41,14 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
   };
 
   const sendEmailOtp = async () => {
-    // Simulate sending email OTP
     setVerification((prev) => ({ ...prev, emailSent: true, showEmailOtp: true }));
-    // In real implementation, call API to send OTP
   };
 
   const sendPhoneOtp = async () => {
-    // Simulate sending phone OTP
     setVerification((prev) => ({ ...prev, phoneSent: true, showPhoneOtp: true }));
-    // In real implementation, call API to send OTP
   };
 
   const verifyEmailOtp = () => {
-    // Simulate OTP verification
     if (verification.emailOtp.length === 6) {
       setVerification((prev) => ({ ...prev, emailVerified: true, showEmailOtp: false }));
       onUpdate({ emailVerified: true });
@@ -59,7 +56,6 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
   };
 
   const verifyPhoneOtp = () => {
-    // Simulate OTP verification
     if (verification.phoneOtp.length === 6) {
       setVerification((prev) => ({ ...prev, phoneVerified: true, showPhoneOtp: false }));
       onUpdate({ phoneVerified: true });
@@ -71,19 +67,9 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
     formState.lastName?.trim() &&
     formState.email?.trim() &&
     formState.phone?.trim();
-    // Note: Email and phone verification disabled for now
-    // && verification.emailVerified &&
-    // && verification.phoneVerified;
 
   // Update parent with validation status
   React.useEffect(() => {
-    console.log("Identity step validation:", {
-      firstName: formState.firstName,
-      lastName: formState.lastName,
-      email: formState.email,
-      phone: formState.phone,
-      isFormValid
-    });
     onUpdate({ isIdentityStepValid: isFormValid });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormValid, formState.firstName, formState.lastName, formState.email, formState.phone]);
@@ -92,16 +78,14 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
     <div className="space-y-8">
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
-        <p className="text-brand-grayMed">
-          {t("subtitle")}
-        </p>
+        <p className="text-brand-grayMed">{t("description")}</p>
       </div>
 
       <div className="space-y-6">
         {/* Name Fields */}
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="firstName">{t("firstName")} {t("required")}</Label>
+            <Label htmlFor="firstName">{tc("firstName")} *</Label>
             <Input
               id="firstName"
               type="text"
@@ -113,7 +97,7 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="lastName">{t("lastName")} {t("required")}</Label>
+            <Label htmlFor="lastName">{tc("lastName")} *</Label>
             <Input
               id="lastName"
               type="text"
@@ -125,9 +109,9 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
           </div>
         </div>
 
-        {/* Email - Verification Disabled */}
+        {/* Email */}
         <div className="space-y-2">
-          <Label htmlFor="email">{t("email")} {t("required")}</Label>
+          <Label htmlFor="email">{tc("emailAddress")} *</Label>
           <Input
             id="email"
             type="email"
@@ -138,9 +122,9 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
           />
         </div>
 
-        {/* Phone - Verification Disabled */}
+        {/* Phone */}
         <div className="space-y-2">
-          <Label htmlFor="phone">{t("phone")} {t("required")}</Label>
+          <Label htmlFor="phone">{tc("phoneNumber")} *</Label>
           <Input
             id="phone"
             type="tel"
@@ -155,7 +139,7 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
           <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-amber-600" />
             <div className="text-sm text-amber-900">
-              {t("validationError")}
+              {tc("completeRequired")}
             </div>
           </div>
         )}

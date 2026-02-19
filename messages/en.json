@@ -2,8 +2,6 @@
   "common": {
     "getStarted": "Get Started",
     "learnMore": "Learn More",
-    "explore": "Explore →",
-    "readyToStart": "Ready to get started?",
     "submit": "Submit",
     "cancel": "Cancel",
     "continue": "Continue",
@@ -24,7 +22,8 @@
     },
     "submitting": "Submitting...",
     "submitApplication": "Submit Application",
-    "stepOf": "Step {current} of {total}"
+    "stepOf": "Step {current} of {total}",
+    "explore": "Explore"
   },
   "login": {
     "tagline": "Professional digital banking",
@@ -52,21 +51,79 @@
     "openAccount": "Open Account",
     "companyFormation": "Company Formation",
     "services": "Services",
-    "ourServices": "Our Services",
     "support": "Support",
+    "ourServices": "Our Services",
     "taxAdvisory": "Tax Advisory",
     "investmentAdvisory": "Investment Advisory",
     "lifeInsurance": "Life Insurance",
     "accountingInvoicing": "Accounting & Invoicing",
+    "investment": "Investment",
     "individualAccount": "Individual Account",
     "companyAccount": "Company Account"
   },
   "hero": {
     "home": {
-      "title": "Professional Banking for Modern Business",
-      "subtitle": "Trusted digital banking, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg.",
+      "title": "Payment services for modern businesses",
+      "subtitle": "Trusted digital payment services, company formation assistance, investment fund, and consulting services for entrepreneurs and businesses in France and Luxembourg",
       "primaryCta": "Open Account",
       "secondaryCta": "Learn More"
+    },
+    "about": {
+      "title": "About Opulanz",
+      "subtitle": "The All-in-One Enterprise Platform",
+      "storyOverline": "OUR STORY",
+      "storyTitle": "Transforming Corporate Finance",
+      "storyIntro": "Opulanz is part of the Advensys Luxembourg S.A. Group, a holding company with over 19 years of experience providing comprehensive business solutions across Europe. We built Opulanz with a clear vision: to become the European leader in corporate finance.",
+      "missionTitle": "Our Mission",
+      "missionText": "To improve the ecosystem of business financial services, payments, and operational processes using modern technology including AI and Blockchain.",
+      "visionTitle": "Our Vision",
+      "visionText": "To become the market leader in online business services in Europe, with financial and brokerage licenses enabling greater flexibility",
+      "storyClosing": "Today, we serve commercial companies, financial institutions, investment funds, and freelancers across Europe. Our experienced team continues to innovate with cutting-edge technology while maintaining the highest standards of security, compliance, and customer service. We represent quality, trust, and innovation in corporate banking.",
+      "impactOverline": "Our Impact",
+      "impactTitle": "Trusted by Businesses Across Europe",
+      "impactSubtitle": "Our growth reflects the trust our clients place in us",
+      "statsYears": "19+",
+      "statsYearsLabel": "Years of Experience",
+      "statsClients": "500+",
+      "statsClientsLabel": "Business Clients",
+      "strengthsOverline": "OUR STRENGTHS",
+      "strengthsTitle": "What Sets Us Apart",
+      "strengthsDescription": "Three key pillars of our success",
+      "strength1Title": "Business Financial Expertise",
+      "strength1Description": "Over 19+ years of experience serving commercial companies, financial institutions, and investment funds across Europe.",
+      "strength2Title": "All-in-One Platform",
+      "strength2Description": "Complete business solution from company formation to financial services, accounting, tax advisory, investment, and insurance.",
+      "strength3Title": "Modern Technology",
+      "strength3Description": "Leveraging Artificial Intelligence and Blockchain to make business financial services better, easier, and more efficient.",
+      "licensesOverline": "LICENSES & CERTIFICATIONS",
+      "licensesTitle": "Fully Licensed & Certified",
+      "licensesDescription": "We maintain all necessary licenses and certifications to provide business financial services across Europe, ensuring compliance with industry regulations and standards.",
+      "cert1Title": "State Licensed",
+      "cert1Description": "State Licensed Agents",
+      "cert2Title": "Certified",
+      "cert2Description": "Industry Certified Professionals",
+      "cert3Title": "Bonded",
+      "cert3Description": "Bonded & Insured Operations",
+      "cert4Title": "Accredited",
+      "cert4Description": "Better Business Bureau Accredited",
+      "whyTitle": "Why Choose Opulanz?",
+      "whyDescription": "What makes us your trusted business financial partner",
+      "benefit1Title": "All-in-One Platform",
+      "benefit1Description": "Complete business solution covering company formation, financial services, accounting, tax advisory, investment, insurance, and more - all in one platform.",
+      "benefit2Title": "19+ Years of Experience",
+      "benefit2Description": "Part of Groupe Advensys Luxembourg S.A., we bring nearly two decades of expertise in serving businesses across Europe.",
+      "benefit3Title": "Modern Technology Stack",
+      "benefit3Description": "Built with cutting-edge Artificial Intelligence and Blockchain technology to provide efficient, secure, and innovative financial solutions.",
+      "benefit4Title": "Business-Focused Approach",
+      "benefit4Description": "Specifically designed for commercial companies, financial institutions, investment funds, and freelancers - not retail banking.",
+      "benefit5Title": "European Quality Standards",
+      "benefit5Description": "Operating across Europe, we maintain the highest standards of quality, trust, and compliance with financial regulations.",
+      "benefit6Title": "Future-Ready Vision",
+      "benefit6Description": "Working towards full banking license with integrated blockchain and green technologies to lead the European online financial services market.",
+      "ctaTitle": "Ready to Get Started?",
+      "ctaDescription": "Join thousands of businesses across Europe who trust Opulanz as their all-in-one financial and business solution platform.",
+      "ctaOpenAccount": "Open an Account",
+      "ctaContact": "Contact Us"
     }
   },
   "warmReferral": {
@@ -129,14 +186,46 @@
     "nextSteps": "Next Steps"
   },
   "companyFormation": {
-    "hero": {
-      "title": "Company Formation in Luxembourg"
-    },
-    "selection": {
-      "title": "Choose Your Company Form"
-    },
-    "subtitle": "Complete company formation services with expert guidance",
+    "subtitle": "Company formation assistance, Full service from incorporation to consulting",
     "description": "Choose the legal structure that best fits your business needs",
+    "heroTitle": "Company Formation in Luxembourg",
+    "heroSubtitle": "Complete company formation services with expert guidance. Choose your structure and start your formation wizard.",
+    "chooseForm": "Choose Your Company Form",
+    "chooseFormDesc": "Select the legal structure that best fits your business needs",
+    "startFormation": "Start Formation",
+    "minCapitalLabel": "Min. Capital:",
+    "shareholdersLabel": "Shareholders:",
+    "minPrefix": "Min.",
+    "liabilityLabel": "Liability:",
+    "processTitle": "Simple 8-Step Formation Process",
+    "processDesc": "We guide you through every step of the company formation",
+    "processSteps": {
+      "companyType": "Company Type",
+      "companyTypeDesc": "Select your legal structure",
+      "generalInfo": "General Info",
+      "generalInfoDesc": "Provide company details",
+      "people": "People",
+      "peopleDesc": "Add shareholders & directors",
+      "capital": "Capital",
+      "capitalDesc": "Define share capital",
+      "activity": "Activity",
+      "activityDesc": "Business activity details",
+      "notary": "Notary",
+      "notaryDesc": "Notary preferences",
+      "documents": "Documents",
+      "documentsDesc": "Upload required docs",
+      "submit": "Submit",
+      "submitDesc": "Review and submit"
+    },
+    "benefitsTitle": "Why Form Your Company with Opulanz?",
+    "benefits": {
+      "expertTitle": "Expert Guidance",
+      "expertDesc": "Our team of Luxembourg corporate law experts guide you through every step of the formation process.",
+      "fastTitle": "Fast & Efficient",
+      "fastDesc": "Complete the online wizard in minutes. Most formations completed within 2-3 weeks.",
+      "fullServiceTitle": "Full Service",
+      "fullServiceDesc": "From notary coordination to RCS registration, we handle everything for you."
+    },
     "forms": {
       "sarl": {
         "fullName": "Private Limited Company",
@@ -180,24 +269,217 @@
           "liability": "General partner liability"
         }
       },
+      "sole": {
+        "fullName": "Individual Enterprise",
+        "minCapital": "No minimum",
+        "liability": "Unlimited",
+        "features": {
+          "simplest": "Simplest structure",
+          "noEntity": "No separate legal entity",
+          "control": "Full control",
+          "personal": "Personal liability"
+        }
+      },
       "soleProprietor": "Sole Proprietor"
+    },
+    "wizard": {
+      "title": "Company Formation Wizard",
+      "formingIn": "Forming a {formType} in Luxembourg",
+      "backToSelection": "Back to selection",
+      "back": "Back",
+      "next": "Next",
+      "saveResume": "Save & Resume Later",
+      "wizardSteps": {
+        "companyType": "Company Type",
+        "generalInfo": "General Info",
+        "people": "People",
+        "capital": "Capital",
+        "activity": "Activity",
+        "notaryDomiciliation": "Notary & Domiciliation",
+        "documents": "Documents",
+        "reviewSubmit": "Review & Submit"
+      },
+      "step1": {
+        "selectedType": "Selected Company Type",
+        "requirementsFor": "Requirements for {formType}",
+        "minCapital": "Minimum capital: {amount}",
+        "noMinCapital": "Minimum capital: No minimum",
+        "maxCapital": "Maximum capital: {amount}",
+        "requiresDirectors": "Requires {count} or more directors",
+        "requiresManagers": "Requires {count} or more managers",
+        "changeNote": "You can change the company type by going back to the selection page."
+      },
+      "step2": {
+        "proposedName": "Proposed Legal Name",
+        "proposedNamePlaceholder": "e.g., Acme Luxembourg S.à r.l.",
+        "proposedNameHelp": "Include the legal form suffix (S.à r.l., S.A., etc.)",
+        "alternateName": "Alternate Name (Optional)",
+        "alternateNamePlaceholder": "e.g., Acme Lux S.à r.l.",
+        "alternateNameHelp": "In case your first choice is not available",
+        "purpose": "Company Purpose / Activities",
+        "purposePlaceholder": "Describe the main business activities and purpose of the company...",
+        "registeredOffice": "Registered Office Address (Luxembourg)",
+        "registeredOfficePlaceholder": "Street address, postal code, city, Luxembourg",
+        "registeredOfficeHelp": "Or select domiciliation service in Step 6",
+        "duration": "Company Duration",
+        "durationDefault": "unlimited",
+        "durationHelp": "Most companies choose \"unlimited\""
+      },
+      "step3": {
+        "shareholders": "Shareholders",
+        "addShareholder": "Add Shareholder",
+        "noShareholders": "No shareholders added yet. Click \"Add Shareholder\" to begin.",
+        "totalOwnership": "Total ownership: {percent}% (should equal 100%)",
+        "directors": "Directors",
+        "addDirector": "Add Director",
+        "noDirectors": "No directors added yet. {formType} requires at least {count} directors.",
+        "managers": "Managers",
+        "addManager": "Add Manager",
+        "noManagers": "No managers added yet. {formType} requires at least {count} manager.",
+        "ubosTitle": "Ultimate Beneficial Owners (UBOs)",
+        "addUbo": "Add UBO",
+        "ubosDesc": "Individuals who own or control more than 25% of the company",
+        "noUbos": "No UBOs added yet.",
+        "editPerson": "Edit",
+        "addPerson": "Add",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "dob": "Date of Birth",
+        "nationality": "Nationality",
+        "address": "Address",
+        "email": "Email",
+        "phone": "Phone",
+        "ownershipPercent": "Ownership Percentage",
+        "isPep": "This person is a Politically Exposed Person (PEP)",
+        "cancel": "Cancel",
+        "save": "Save",
+        "edit": "Edit",
+        "ownership": "ownership",
+        "pep": "PEP"
+      },
+      "step4": {
+        "capitalAmount": "Share Capital Amount (EUR)",
+        "noMinRequired": "No minimum required",
+        "minimum": "Minimum: {amount}",
+        "maximum": "Maximum: {amount}",
+        "capitalError": "Capital amount must be between {min} and {max}",
+        "paidUpPercent": "Paid-Up Percentage",
+        "paidUpHelp": "For SA, at least 25% must be paid up at incorporation",
+        "contributions": "Contributions",
+        "addContribution": "Add Contribution",
+        "noContributions": "No contributions added yet. Add cash or in-kind contributions.",
+        "type": "Type",
+        "cash": "Cash",
+        "inKind": "In-Kind",
+        "amountEur": "Amount (EUR)",
+        "remove": "Remove",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe the contribution...",
+        "totalContributions": "Total Contributions: {amount}",
+        "contributionsMismatch": "Contributions should equal capital amount ({amount})"
+      },
+      "step5": {
+        "naceCode": "NACE Code",
+        "naceCodePlaceholder": "e.g., 62.01 - Computer programming activities",
+        "naceCodeHelp": "Statistical classification of economic activities in the EU.",
+        "findNaceCode": "Find your NACE code",
+        "expectedTurnover": "Expected Annual Turnover (EUR)",
+        "expectedTurnoverPlaceholder": "e.g., 500000",
+        "expectedTurnoverHelp": "Estimated annual revenue for the first year",
+        "numberOfEmployees": "Number of Employees at Launch",
+        "numberOfEmployeesPlaceholder": "e.g., 5",
+        "numberOfEmployeesHelp": "Expected number of employees when starting operations",
+        "whyWeAsk": "Why we ask",
+        "whyWeAskDesc": "This information helps us prepare accurate documentation and advise you on applicable regulations, tax obligations, and reporting requirements."
+      },
+      "step6": {
+        "notaryPreferences": "Notary Preferences",
+        "notaryName": "Preferred Notary Name (Optional)",
+        "notaryNamePlaceholder": "Leave blank to let us choose",
+        "notaryCity": "Preferred City (Optional)",
+        "notaryCityPlaceholder": "e.g., Luxembourg City",
+        "notaryLanguage": "Language for Incorporation Deeds",
+        "english": "English",
+        "french": "French",
+        "german": "German",
+        "registeredOffice": "Registered Office / Domiciliation",
+        "needDomiciliation": "I need a domiciliation / registered address service",
+        "needDomiciliationDesc": "We can provide you with a professional business address in Luxembourg for your registered office.",
+        "domiciliationService": "Domiciliation Service",
+        "domiciliationIncludes": "Our domiciliation service includes:",
+        "domiciliationItem1": "Professional business address in Luxembourg",
+        "domiciliationItem2": "Mail forwarding and scanning",
+        "domiciliationItem3": "Meeting room access",
+        "domiciliationPrice": "From €600/year",
+        "noDomiciliationNote": "If you don't select domiciliation service, you must provide proof of a registered address (lease agreement or property title) in the next step."
+      },
+      "step7": {
+        "idDocuments": "ID/Passport Copies",
+        "idDocumentsDesc": "Upload ID or passport copies for all directors, managers, and UBOs",
+        "uploadIdPassport": "Click to upload ID/Passport",
+        "fileFormats": "PDF, JPG, or PNG - Max 10MB",
+        "leaseTitle": "Lease Agreement / Property Title",
+        "leaseDesc": "Proof of registered office address in Luxembourg",
+        "uploadLease": "Click to upload Lease/Title",
+        "leasePdfOnly": "PDF - Max 10MB",
+        "capitalCertTitle": "Capital Deposit Certificate (Optional)",
+        "capitalCertDesc": "Can be uploaded after payment. Bank certificate confirming capital deposit.",
+        "uploadCertificate": "Click to upload Certificate",
+        "certPdfOnly": "PDF - Max 10MB",
+        "simulationNote": "This is a simulation. In production, files would be uploaded to secure cloud storage."
+      },
+      "step8": {
+        "dossierSummary": "Dossier Summary",
+        "companyType": "Company Type",
+        "companyName": "Company Name",
+        "notProvided": "Not provided",
+        "alternate": "Alternate: {name}",
+        "capital": "Capital",
+        "people": "People",
+        "shareholdersCount": "Shareholders: {count}",
+        "directorsCount": "Directors: {count}",
+        "managersCount": "Managers: {count}",
+        "ubosCount": "UBOs: {count}",
+        "activity": "Activity",
+        "nace": "NACE: {code}",
+        "expectedTurnover": "Expected turnover: {amount}",
+        "documents": "Documents",
+        "idDocuments": "ID documents: {count}",
+        "leaseDomiciliation": "Lease/Domiciliation: {value}",
+        "serviceRequested": "Service requested",
+        "uploaded": "uploaded",
+        "capitalCertificate": "Capital certificate: {value}",
+        "uploadedStatus": "Uploaded",
+        "notYet": "Not yet",
+        "setupFeePayment": "Setup Fee Payment",
+        "opulanzSetupFee": "Opulanz Setup Fee",
+        "feeDescription": "This covers our administrative and coordination services. Notary and registration fees are separate and will be communicated by the notary.",
+        "processing": "Processing...",
+        "paySetupFee": "Pay Setup Fee (Demo)",
+        "paymentComplete": "Payment complete",
+        "requiredConsents": "Required Consents",
+        "accuracyConfirm": "I confirm that all information provided is accurate and complete to the best of my knowledge",
+        "acceptTerms": "I accept the",
+        "termsConditions": "Terms & Conditions",
+        "acceptPrivacy": "I accept the",
+        "privacyPolicy": "Privacy Policy",
+        "submitDossier": "Submit Formation Dossier",
+        "completePaymentFirst": "Please complete payment before submitting",
+        "acceptAllConsents": "Please accept all consents to submit",
+        "submitted": {
+          "title": "Formation Dossier Submitted!",
+          "description": "Your company formation dossier has been created. Our team will review it and contact you within 24-72 hours to proceed with the notarization and registration process.",
+          "reference": "Reference:",
+          "emailConfirmation": "You'll receive an email confirmation shortly.",
+          "returnHome": "Return to Home"
+        }
+      }
     },
     "process": {
       "title": "Simple Formation Process",
       "description": "We guide you through every step"
     },
-    "labels": {
-      "minCapital": "Min. Capital:",
-      "shareholders": "Shareholders:",
-      "minPrefix": "Min.",
-      "liability": "Liability:",
-      "startFormation": "Start Formation"
-    },
     "steps": {
-      "companyType": {
-        "title": "Company Type",
-        "description": "Select your legal structure"
-      },
       "details": {
         "title": "Company Details",
         "description": "Provide company information"
@@ -209,22 +491,6 @@
       "capital": {
         "title": "Capital Deposit",
         "description": "Deposit share capital"
-      },
-      "activity": {
-        "title": "Activity",
-        "description": "Business activity details"
-      },
-      "notary": {
-        "title": "Notary",
-        "description": "Notary preferences"
-      },
-      "documents": {
-        "title": "Documents",
-        "description": "Upload required docs"
-      },
-      "submit": {
-        "title": "Submit",
-        "description": "Review and submit"
       },
       "payment": {
         "title": "Payment",
@@ -249,225 +515,6 @@
       "email": {
         "placeholder": "Email"
       }
-    },
-    "benefits": {
-      "title": "Why Form Your Company with Opulanz?",
-      "expertGuidance": {
-        "title": "Expert Guidance",
-        "description": "Our team of Luxembourg corporate law experts guide you through every step of the formation process."
-      },
-      "fastEfficient": {
-        "title": "Fast & Efficient",
-        "description": "Complete the online wizard in minutes. Most formations completed within 2-3 weeks."
-      },
-      "fullService": {
-        "title": "Full Service",
-        "description": "From notary coordination to RCS registration, we handle everything for you."
-      }
-    },
-    "wizard": {
-      "backToSelection": "Back to selection",
-      "wizardTitle": "Company Formation Wizard",
-      "forming": "Forming a",
-      "inLuxembourg": "in Luxembourg",
-      "selectedCompanyType": "Selected Company Type",
-      "requirementsFor": "Requirements for",
-      "minimumCapital": "Minimum capital:",
-      "maximumCapital": "Maximum capital:",
-      "noMinimum": "No minimum",
-      "requiresDirectors": "Requires {count} or more directors",
-      "requiresManagers": "Requires {count} or more managers",
-      "noteTitle": "Note:",
-      "noteChangeType": "You can change the company type by going back to the selection page.",
-      "saveResume": "Save & Resume Later",
-      "stepLabels": {
-        "companyType": "Company Type",
-        "generalInfo": "General Info",
-        "people": "People",
-        "capital": "Capital",
-        "activity": "Activity",
-        "notaryDomiciliation": "Notary & Domiciliation",
-        "documents": "Documents",
-        "reviewSubmit": "Review & Submit"
-      },
-      "step2": {
-        "proposedLegalName": "Proposed Legal Name",
-        "proposedLegalNamePlaceholder": "e.g., Acme Luxembourg S.à r.l.",
-        "proposedLegalNameHint": "Include the legal form suffix (S.à r.l., S.A., etc.)",
-        "alternateName": "Alternate Name (Optional)",
-        "alternateNamePlaceholder": "e.g., Acme Lux S.à r.l.",
-        "alternateNameHint": "In case your first choice is not available",
-        "companyPurpose": "Company Purpose / Activities",
-        "companyPurposePlaceholder": "Describe the main business activities and purpose of the company...",
-        "registeredOffice": "Registered Office Address (Luxembourg)",
-        "registeredOfficePlaceholder": "Street address, postal code, city, Luxembourg",
-        "registeredOfficeHint": "Or select domiciliation service in Step 6",
-        "companyDuration": "Company Duration",
-        "companyDurationPlaceholder": "unlimited",
-        "companyDurationHint": "Most companies choose \"unlimited\""
-      },
-      "step3": {
-        "title": "People (Shareholders, Directors, Managers, UBOs)",
-        "shareholders": "Shareholders",
-        "addShareholder": "Add Shareholder",
-        "noShareholdersYet": "No shareholders added yet. Click \"Add Shareholder\" to begin.",
-        "totalOwnership": "Total ownership: {percent}% (should equal 100%)",
-        "directors": "Directors",
-        "addDirector": "Add Director",
-        "noDirectorsYet": "No directors added yet. {formType} requires at least {minDirectors} directors.",
-        "managers": "Managers",
-        "addManager": "Add Manager",
-        "noManagersYet": "No managers added yet. {formType} requires at least {minManagers} manager.",
-        "ubos": "Ultimate Beneficial Owners (UBOs)",
-        "addUBO": "Add UBO",
-        "ubosDescription": "Individuals who own or control more than 25% of the company",
-        "noUBOsYet": "No UBOs added yet.",
-        "editPerson": "Edit {type}",
-        "addPerson": "Add {type}",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "dateOfBirth": "Date of Birth",
-        "nationality": "Nationality",
-        "address": "Address",
-        "email": "Email",
-        "phone": "Phone",
-        "ownershipPercentage": "Ownership Percentage",
-        "isPEP": "This person is a Politically Exposed Person (PEP)",
-        "cancel": "Cancel",
-        "save": "Save",
-        "edit": "Edit",
-        "ownership": "ownership",
-        "pep": "PEP"
-      },
-      "step4": {
-        "title": "Capital & Contributions",
-        "shareCapitalAmount": "Share Capital Amount (EUR)",
-        "shareCapitalAmountRequired": "*",
-        "minimumCapital": "Minimum: €{amount}",
-        "maximumCapital": "Maximum: €{amount}",
-        "noMinimumRequired": "No minimum required",
-        "capitalAmountError": "Capital amount must be between €{min} and €{max}",
-        "paidUpPercentage": "Paid-Up Percentage",
-        "paidUpPercentageRequired": "*",
-        "paidUpPercentageHint": "For SA, at least 25% must be paid up at incorporation",
-        "contributions": "Contributions",
-        "addContribution": "Add Contribution",
-        "noContributionsYet": "No contributions added yet. Add cash or in-kind contributions.",
-        "contributionType": "Type",
-        "contributionTypeCash": "Cash",
-        "contributionTypeInKind": "In-Kind",
-        "contributionAmount": "Amount (EUR)",
-        "contributionDescription": "Description",
-        "contributionDescriptionPlaceholder": "Describe the contribution...",
-        "remove": "Remove",
-        "totalContributions": "Total Contributions: €{amount}",
-        "contributionsMismatch": "Contributions should equal capital amount (€{amount})"
-      },
-      "step5": {
-        "title": "Activity & Scale",
-        "naceCode": "NACE Code",
-        "naceCodeRequired": "*",
-        "naceCodePlaceholder": "e.g., 62.01 - Computer programming activities",
-        "naceCodeHint": "Statistical classification of economic activities in the EU.",
-        "findNaceCode": "Find your NACE code",
-        "expectedTurnover": "Expected Annual Turnover (EUR)",
-        "expectedTurnoverRequired": "*",
-        "expectedTurnoverPlaceholder": "e.g., 500000",
-        "expectedTurnoverHint": "Estimated annual revenue for the first year",
-        "numberOfEmployees": "Number of Employees at Launch",
-        "numberOfEmployeesPlaceholder": "e.g., 5",
-        "numberOfEmployeesHint": "Expected number of employees when starting operations",
-        "whyWeAskTitle": "Why we ask",
-        "whyWeAskDescription": "This information helps us prepare accurate documentation and advise you on applicable regulations, tax obligations, and reporting requirements."
-      },
-      "step6": {
-        "title": "Notary & Domiciliation",
-        "notaryPreferences": "Notary Preferences",
-        "preferredNotaryName": "Preferred Notary Name (Optional)",
-        "preferredNotaryNamePlaceholder": "Leave blank to let us choose",
-        "preferredCity": "Preferred City (Optional)",
-        "preferredCityPlaceholder": "e.g., Luxembourg City",
-        "languageForDeeds": "Language for Incorporation Deeds",
-        "languageEnglish": "English",
-        "languageFrench": "French",
-        "languageGerman": "German",
-        "registeredOffice": "Registered Office / Domiciliation",
-        "needDomiciliation": "I need a domiciliation / registered address service",
-        "domiciliationDescription": "We can provide you with a professional business address in Luxembourg for your registered office.",
-        "domiciliationServiceTitle": "Domiciliation Service",
-        "domiciliationServiceDescription": "Our domiciliation service includes:",
-        "domiciliationFeature1": "Professional business address in Luxembourg",
-        "domiciliationFeature2": "Mail forwarding and scanning",
-        "domiciliationFeature3": "Meeting room access",
-        "domiciliationPrice": "From €600/year",
-        "noteDomiciliation": "If you don't select domiciliation service, you must provide proof of a registered address (lease agreement or property title) in the next step."
-      },
-      "step7": {
-        "title": "Documents",
-        "idDocuments": "ID/Passport Copies",
-        "idDocumentsRequired": "*",
-        "idDocumentsDescription": "Upload ID or passport copies for all directors, managers, and UBOs",
-        "uploadIdPassport": "Click to upload ID/Passport",
-        "uploadFileFormats": "PDF, JPG, or PNG • Max 10MB",
-        "leaseAgreement": "Lease Agreement / Property Title",
-        "leaseAgreementRequired": "*",
-        "leaseAgreementDescription": "Proof of registered office address in Luxembourg",
-        "uploadLease": "Click to upload Lease/Title",
-        "uploadLeasePDF": "PDF • Max 10MB",
-        "capitalCertificate": "Capital Deposit Certificate (Optional)",
-        "capitalCertificateDescription": "Can be uploaded after payment. Bank certificate confirming capital deposit.",
-        "uploadCertificate": "Click to upload Certificate",
-        "simulationNote": "This is a simulation. In production, files would be uploaded to secure cloud storage."
-      },
-      "step8": {
-        "title": "Review & Submit",
-        "dossierSummary": "Dossier Summary",
-        "companyType": "Company Type",
-        "companyName": "Company Name",
-        "notProvided": "Not provided",
-        "alternate": "Alternate: {name}",
-        "capital": "Capital",
-        "people": "People",
-        "shareholdersCount": "Shareholders: {count}",
-        "directorsCount": "Directors: {count}",
-        "managersCount": "Managers: {count}",
-        "ubosCount": "UBOs: {count}",
-        "activity": "Activity",
-        "nace": "NACE: {code}",
-        "expectedTurnover": "Expected turnover: €{amount}",
-        "documents": "Documents",
-        "idDocuments": "ID documents: {count}",
-        "leaseDomiciliation": "Lease/Domiciliation: {status}",
-        "serviceRequested": "Service requested",
-        "uploaded": "{count} uploaded",
-        "capitalCertificate": "Capital certificate: {status}",
-        "uploadedStatus": "Uploaded",
-        "notYet": "Not yet",
-        "setupFeePayment": "Setup Fee Payment",
-        "setupFee": "Opulanz Setup Fee",
-        "setupFeeDescription": "This covers our administrative and coordination services. Notary and registration fees are separate and will be communicated by the notary.",
-        "paySetupFee": "Pay Setup Fee (Demo)",
-        "processing": "Processing...",
-        "paymentComplete": "Payment complete",
-        "requiredConsents": "Required Consents",
-        "accuracyConfirmation": "I confirm that all information provided is accurate and complete to the best of my knowledge",
-        "termsAcceptance": "I accept the",
-        "termsLink": "Terms & Conditions",
-        "privacyAcceptance": "I accept the",
-        "privacyLink": "Privacy Policy",
-        "submitDossier": "Submit Formation Dossier",
-        "pleaseCompletePayment": "Please complete payment before submitting",
-        "pleaseAcceptConsents": "Please accept all consents to submit",
-        "submissionSuccessTitle": "Formation Dossier Submitted!",
-        "submissionSuccessMessage": "Your company formation dossier has been created. Our team will review it and contact you within 24–72 hours to proceed with the notarization and registration process.",
-        "reference": "Reference: {ref}",
-        "emailConfirmation": "You'll receive an email confirmation shortly.",
-        "returnToHome": "Return to Home",
-        "securePaymentNote": "Secure Payment: Your payment is processed securely through PayPal. You don't need a PayPal account - you can pay with credit/debit card.",
-        "loadingPaymentOptions": "Loading payment options...",
-        "paypalOrderId": "PayPal Order ID:",
-        "paymentCompleteFee": "Setup fee of €{amount} has been paid successfully."
-      }
     }
   },
   "services": {
@@ -490,470 +537,123 @@
     "mortgage": {
       "title": "Mortgage Services",
       "description": "Home financing solutions in Luxembourg"
+    },
+    "spvInvestment": {
+      "title": "Investment",
+      "description": "Exclusive real estate investment opportunities through Special Purpose Vehicles"
     }
   },
-  "taxAdvisory": {
+  "servicesPage": {
     "hero": {
-      "primaryCta": "Schedule Consultation",
-      "secondaryCta": "Our Services"
+      "title": "Complete Financial Services for Your Success",
+      "subtitle": "From banking to investment advisory, discover our comprehensive range of financial services designed to help individuals and businesses thrive in Luxembourg and beyond.",
+      "primaryCta": "Open an Account",
+      "secondaryCta": "Explore Services"
     },
-    "services": {
-      "overline": "Tax Services",
-      "title": "Expert Tax Advisory for Businesses & Individuals",
-      "description": "Navigate complex tax regulations with confidence. Our experienced tax advisors provide strategic guidance to optimize your tax position.",
-      "taxReturn": {
-        "title": "Tax Return Preparation",
-        "description": "Professional preparation and filing of corporate and individual tax returns across multiple jurisdictions."
-      },
-      "international": {
-        "title": "International Tax",
-        "description": "Expert guidance on cross-border tax matters, transfer pricing, and double taxation treaties."
-      },
-      "corporate": {
-        "title": "Corporate Tax",
-        "description": "Comprehensive corporate tax services including restructuring, M&A tax advice, and VAT consulting."
-      },
-      "compliance": {
-        "title": "Tax Compliance",
-        "description": "Ensure ongoing compliance with changing tax laws and regulations in Luxembourg and beyond."
-      },
-      "personal": {
-        "title": "Personal Tax Advisory",
-        "description": "Personalized tax advice for high-net-worth individuals and expatriates."
-      }
+    "servicesSection": {
+      "overline": "Our Services",
+      "title": "Everything You Need Under One Roof",
+      "description": "Explore our comprehensive range of financial services designed to support your personal and business goals."
     },
-    "whyChoose": {
-      "title": "Trusted Tax Experts in Luxembourg",
-      "description": "With decades of combined experience and deep knowledge of Luxembourg and international tax law, our team of certified tax advisors delivers practical, actionable advice that protects your interests and optimizes your tax position. We stay ahead of regulatory changes to keep you compliant and competitive."
-    },
-    "benefits": {
-      "1": "Reduce tax burden through strategic planning",
-      "2": "Stay compliant with complex tax regulations",
-      "3": "Expert knowledge of Luxembourg and EU tax law",
-      "4": "Proactive advice on tax-efficient structures",
-      "5": "Support during tax audits and disputes",
-      "6": "Regular updates on tax law changes",
-      "7": "Multi-jurisdictional tax expertise"
-    },
-    "expertise": {
-      "overline": "Our Expertise",
-      "title": "Comprehensive Tax Coverage",
-      "description": "From local compliance to international tax structures, we cover all aspects of tax advisory.",
-      "optimization": {
+    "featuresSection": {
+      "overline": "Why Opulanz",
+      "title": "Your Trusted Financial Partner",
+      "description": "We provide comprehensive financial solutions with the expertise, security, and personalized service you deserve.",
+      "expertFinancial": {
+        "title": "Expert Financial Services",
+        "description": "Professional accounting, bookkeeping, and financial management services tailored to your business."
+      },
+      "taxOptimization": {
         "title": "Tax Optimization",
-        "description": "Minimize tax burden legally and ethically"
+        "description": "Strategic tax planning and advisory services to minimize your tax burden while ensuring compliance."
       },
-      "compliance": {
-        "title": "Compliance",
-        "description": "Full adherence to tax regulations"
+      "investmentManagement": {
+        "title": "Investment Management",
+        "description": "Personalized investment strategies and wealth management to help you achieve your financial goals."
       },
-      "international": {
-        "title": "International",
-        "description": "Cross-border tax expertise"
+      "insuranceSolutions": {
+        "title": "Insurance Solutions",
+        "description": "Comprehensive life insurance products to protect what matters most to you and your family."
       },
-      "personal": {
-        "title": "Personal Service",
-        "description": "Dedicated tax advisors for your needs"
+      "companyFormation": {
+        "title": "Company Formation",
+        "description": "Complete support for establishing your business in Luxembourg with legal and regulatory guidance."
+      },
+      "bankingServices": {
+        "title": "Banking Services",
+        "description": "Modern digital banking solutions with multi-currency accounts and international payment capabilities."
       }
+    },
+    "whyChooseUs": {
+      "title": "Why Choose Opulanz?",
+      "paragraph1": "Opulanz brings together the best of traditional banking expertise and modern fintech innovation. As a fully regulated financial institution with presence in Luxembourg and France, we offer the security and reliability you need, combined with the flexibility and innovation you want.",
+      "paragraph2": "Whether you're an individual looking for banking and investment services, or a business seeking comprehensive financial solutions, we have the expertise and services to support your success.",
+      "cta": "Get Started Today",
+      "reasons": {
+        "regulated": "Regulated by ACPR and AMF for your peace of mind",
+        "expertise": "Over 25 years of combined expertise in financial services",
+        "personalized": "Personalized service from dedicated account managers",
+        "competitive": "Competitive rates and transparent fee structure",
+        "multilingual": "Multi-lingual support in English and French",
+        "digital": "Cutting-edge digital platforms for 24/7 access",
+        "comprehensive": "Comprehensive suite of services under one roof"
+      }
+    },
+    "regulatorySection": {
+      "overline": "Trusted & Regulated",
+      "title": "Your Security is Our Priority",
+      "description": "We are regulated by leading European financial authorities, ensuring the highest standards of security and compliance."
+    },
+    "ctaSection": {
+      "title": "Ready to Experience Banking Excellence?",
+      "description": "Join thousands of satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
+      "openAccount": "Open an Account",
+      "contactUs": "Contact Us"
+    },
+    "grid": {
+      "overline": "Our Services",
+      "title": "Everything You Need Under One Roof",
+      "description": "Explore our comprehensive range of financial services designed to support your personal and business goals."
+    },
+    "features": {
+      "overline": "Why Opulanz",
+      "title": "Your Trusted Financial Partner",
+      "description": "We provide comprehensive financial solutions with the expertise, security, and personalized service you deserve.",
+      "expertFinancial": {
+        "title": "Expert Financial Services",
+        "description": "Professional accounting, bookkeeping, and financial management services tailored to your business."
+      },
+      "taxOptimization": {
+        "title": "Tax Optimization",
+        "description": "Strategic tax planning and advisory services to minimize your tax burden while ensuring compliance."
+      },
+      "investmentManagement": {
+        "title": "Investment Management",
+        "description": "Personalized investment strategies and wealth management to help you achieve your financial goals."
+      },
+      "insuranceSolutions": {
+        "title": "Insurance Solutions",
+        "description": "Comprehensive life insurance products to protect what matters most to you and your family."
+      },
+      "companyFormation": {
+        "title": "Company Formation",
+        "description": "Complete support for establishing your business in Luxembourg with legal and regulatory guidance."
+      },
+      "bankingServices": {
+        "title": "Payment Services",
+        "description": "Modern digital payment solutions with multi-currency accounts and international payment capabilities."
+      }
+    },
+    "regulatory": {
+      "overline": "Trusted & Regulated",
+      "title": "Your Security is Our Priority",
+      "description": "We are regulated by leading European financial authorities, ensuring the highest standards of security and compliance."
     },
     "cta": {
-      "title": "Let's Optimize Your Tax Strategy",
-      "description": "Schedule a consultation with our tax experts to discover how we can help you reduce your tax burden while staying fully compliant.",
-      "schedule": "Schedule Consultation",
-      "contact": "Contact Us"
-    },
-    "internationalTax": {
-      "hero": {
-        "title": "International Tax",
-        "subtitle": "Expert guidance on cross-border tax matters and transfer pricing"
-      },
-      "pricing": {
-        "price": "€250",
-        "description": "Fixed fee for international tax service",
-        "duration": "60-minute consultation with expert tax advisor",
-        "bookNow": "Book Your Consultation Now"
-      },
-      "calendar": {
-        "title": "Book Your International Tax Consultation",
-        "subtitle": "Schedule your 60-minute consultation - €{price}",
-        "consultation60": "60-Minute Consultation",
-        "consultationDesc": "Professional consultation session with our expert tax advisor",
-        "feeLabel": "€{price} Fee",
-        "feeDesc": "Fixed price for international tax service",
-        "expertService": "Expert Service",
-        "expertDesc": "Cross-border tax and transfer pricing expertise"
-      },
-      "payment": {
-        "timeSlotReserved": "Time Slot Reserved!",
-        "completePayment": "Complete your payment to confirm your booking",
-        "appointmentDetails": "Your Appointment Details",
-        "name": "Name:",
-        "email": "Email:",
-        "date": "Date:",
-        "time": "Time:",
-        "duration": "Duration:",
-        "minutes60": "60 minutes",
-        "serviceTitle": "International Tax",
-        "serviceDesc": "Expert guidance on cross-border tax matters and transfer pricing",
-        "serviceFeeExcl": "Service Fee (excl. VAT):",
-        "vat17": "VAT (17%):",
-        "totalIncl": "Total (incl. VAT):",
-        "completeYourPayment": "Complete Your Payment",
-        "oneTimePayment": "One-time payment for 60-minute consultation",
-        "testingCard": "Testing:",
-        "testingCardDesc": "Use card {code} (Expiry: 12/2030, CVV: 123)",
-        "paymentSuccessful": "Payment Successful!",
-        "processing": "Processing...",
-        "continueToConfirmation": "Continue to Confirmation",
-        "noBookingFound": "No Booking Found",
-        "scheduleFirst": "Please schedule your appointment first before proceeding to payment.",
-        "scheduleAppointment": "Schedule Appointment",
-        "paymentFailed": "Payment failed. Please try again.",
-        "completePaypalFirst": "Please complete the PayPal payment first.",
-        "errorProcessing": "There was an error processing your payment. Please contact support.",
-        "errorGeneral": "There was an error. Please contact support."
-      },
-      "confirmation": {
-        "title": "Payment Confirmed!",
-        "subtitle": "Thank you for your payment. Your appointment is now confirmed.",
-        "confirmedAppointment": "Confirmed Appointment",
-        "service": "Service:",
-        "whatsNext": "What's Next?",
-        "checkEmail": "✓ Check your email ({email}) for the meeting link and calendar invite",
-        "prepareDocuments": "✓ Prepare your tax documents and questions",
-        "joinConference": "✓ Join the video conference at your scheduled time",
-        "teamNotified": "✓ Our team has been notified and will be ready for your consultation",
-        "returnToHome": "Return to Home",
-        "downloadReceipt": "Download Receipt"
-      },
-      "features": {
-        "title": "What's Included",
-        "feature1": "Expert guidance on cross-border tax matters",
-        "feature2": "Transfer pricing analysis and documentation",
-        "feature3": "Double taxation treaty optimization",
-        "feature4": "International tax structuring advice",
-        "feature5": "Cross-border transaction planning",
-        "feature6": "Compliance with multiple jurisdictions"
-      },
-      "benefits": {
-        "overline": "WHY CHOOSE US",
-        "title": "Benefits of Professional International Tax Advice",
-        "benefit1": "Minimize international tax exposure",
-        "benefit2": "Navigate complex cross-border regulations",
-        "benefit3": "Optimize global tax structures",
-        "benefit4": "Expert knowledge of EU and international tax law"
-      },
-      "details": {
-        "overline": "SERVICE DETAILS",
-        "title": "International Tax Expertise",
-        "description1": "Navigate the complexities of cross-border taxation with our expert guidance. We specialize in international tax structuring, transfer pricing, and treaty optimization.",
-        "description2": "Our team has extensive experience with EU and global tax regulations, ensuring your international operations are tax-efficient and compliant."
-      },
-      "cta": {
-        "title": "Ready to Optimize Your International Tax?",
-        "description": "Book your consultation now and let our experts help you navigate cross-border taxation.",
-        "bookConsultation": "Book Consultation",
-        "backToTaxAdvisory": "Back to Tax Advisory"
-      }
-    },
-    "corporateTax": {
-      "hero": {
-        "title": "Corporate Tax",
-        "subtitle": "Comprehensive corporate tax services and planning"
-      },
-      "pricing": {
-        "price": "€150",
-        "description": "Fixed fee for corporate tax service",
-        "duration": "60-minute consultation with expert tax advisor",
-        "bookNow": "Book Your Consultation Now"
-      },
-      "calendar": {
-        "title": "Book Your Corporate Tax Consultation",
-        "subtitle": "Schedule your 60-minute consultation - €{price}",
-        "consultation60": "60-Minute Consultation",
-        "consultationDesc": "Professional consultation session with our expert tax advisor",
-        "feeLabel": "€{price} Fee",
-        "feeDesc": "Fixed price for corporate tax service",
-        "expertService": "Expert Service",
-        "expertDesc": "Corporate tax planning and compliance"
-      },
-      "payment": {
-        "serviceTitle": "Corporate Tax",
-        "serviceDesc": "Comprehensive corporate tax services and planning"
-      },
-      "features": {
-        "title": "What's Included",
-        "feature1": "Comprehensive corporate tax services and planning",
-        "feature2": "Tax-efficient corporate restructuring advice",
-        "feature3": "M&A tax due diligence and advice",
-        "feature4": "VAT consulting and compliance",
-        "feature5": "Corporate tax optimization strategies",
-        "feature6": "Tax implications of business transactions"
-      },
-      "benefits": {
-        "title": "Benefits of Professional Corporate Tax Advice",
-        "benefit1": "Optimize corporate tax structure",
-        "benefit2": "Expert guidance on complex tax matters",
-        "benefit3": "Ensure compliance with regulations",
-        "benefit4": "Professional expertise for businesses",
-        "overline": "Benefits"
-      },
-      "details": {
-        "overline": "SERVICE DETAILS",
-        "title": "Corporate Tax Services",
-        "description1": "Our expert team provides comprehensive corporate tax planning and compliance services to optimize your business's tax position.",
-        "description2": "From restructuring to M&A tax advice, we ensure your corporate transactions are tax-efficient and compliant."
-      },
-      "cta": {
-        "title": "Ready to Optimize Your Corporate Tax?",
-        "description": "Book your consultation now and let our experts help you with corporate tax planning.",
-        "bookConsultation": "Book Consultation",
-        "backToTaxAdvisory": "Back to Tax Advisory"
-      }
-    },
-    "taxCompliance": {
-      "hero": {
-        "title": "Tax Compliance",
-        "subtitle": "Ensure ongoing compliance with tax laws and regulations"
-      },
-      "pricing": {
-        "price": "€250",
-        "description": "Fixed fee for tax compliance service",
-        "bookNow": "Book Your Consultation Now"
-      },
-      "calendar": {
-        "title": "Book Your Tax Compliance Consultation",
-        "subtitle": "Schedule your 60-minute consultation - €{price}",
-        "consultation60": "60-Minute Consultation",
-        "consultationDesc": "Professional consultation session",
-        "feeLabel": "€{price} Fee",
-        "feeDesc": "Fixed price for tax compliance",
-        "expertService": "Expert Service",
-        "expertDesc": "Compliance monitoring and advice"
-      },
-      "payment": {
-        "serviceTitle": "Tax Compliance",
-        "serviceDesc": "Ongoing compliance with tax laws and regulations"
-      },
-      "confirmation": {
-        "subtitle": "Your appointment is confirmed. Confirmation emails sent!",
-        "confirmationEmailSent": "✓ Confirmation email sent to {email}",
-        "teamNotifiedEmail": "✓ Our team at opulanz.banking@gmail.com has been notified",
-        "checkEmailLink": "✓ Check your email for the Google Meet link from Calendly",
-        "prepareQuestions": "✓ Prepare your compliance questions and documents",
-        "downloadReceipt": "Download Receipt"
-      },
-      "features": {
-        "title": "What's Included",
-        "feature1": "Ensure ongoing compliance with tax laws and regulations",
-        "feature2": "Regular monitoring of regulatory changes",
-        "feature3": "Proactive compliance advice and guidance",
-        "feature4": "Tax authority correspondence and representation",
-        "feature5": "Compliance reviews and health checks",
-        "feature6": "Updates on Luxembourg and EU tax law changes"
-      },
-      "benefits": {
-        "overline": "Benefits",
-        "title": "Benefits",
-        "benefit1": "Stay compliant with evolving regulations",
-        "benefit2": "Avoid penalties and legal issues",
-        "benefit3": "Peace of mind with expert monitoring",
-        "benefit4": "Proactive risk management"
-      },
-      "details": {
-        "overline": "Service Details",
-        "title": "Tax Compliance Services",
-        "description": "Stay compliant with evolving tax regulations through our proactive monitoring and expert guidance."
-      },
-      "cta": {
-        "title": "Ready to Ensure Compliance?",
-        "description": "Book your consultation now.",
-        "bookButton": "Book - €{price}",
-        "backToTaxAdvisory": "Back to Tax Advisory"
-      }
-    },
-    "taxReturnPreparation": {
-      "hero": {
-        "title": "Tax Return Preparation",
-        "subtitle": "Professional preparation and filing of corporate and individual tax returns"
-      },
-      "pricing": {
-        "price": "€299",
-        "description": "Fixed fee for tax return preparation service",
-        "duration": "60-minute consultation with expert tax advisor",
-        "bookNow": "Book Your Consultation Now"
-      },
-      "calendar": {
-        "title": "Book Your Tax Return Preparation",
-        "subtitle": "Schedule your 60-minute consultation - €{price}",
-        "feeDesc": "Fixed price for tax return preparation service",
-        "expertDesc": "Professional tax return preparation and filing"
-      },
-      "payment": {
-        "serviceTitle": "Tax Return Preparation",
-        "serviceDesc": "Professional preparation and filing of corporate and individual tax returns"
-      },
-      "features": {
-        "title": "What's Included",
-        "feature1": "Professional preparation of corporate and individual tax returns",
-        "feature2": "Filing across multiple jurisdictions",
-        "feature3": "Accuracy and compliance guaranteed",
-        "feature4": "Expert review of all documentation",
-        "feature5": "Timely submission to tax authorities",
-        "feature6": "Support for tax queries and correspondence"
-      },
-      "benefits": {
-        "overline": "Benefits",
-        "title": "Benefits of Professional Tax Return Preparation",
-        "benefit1": "Save time and reduce stress",
-        "benefit2": "Ensure compliance with tax regulations",
-        "benefit3": "Maximize eligible deductions and credits",
-        "benefit4": "Professional expertise at affordable rates"
-      },
-      "details": {
-        "overline": "Service Details",
-        "title": "Professional Tax Return Services",
-        "description1": "Let our experienced tax professionals handle the complexity of tax return preparation. We ensure accuracy, compliance, and timely filing across multiple jurisdictions.",
-        "description2": "Whether you're an individual taxpayer or a business entity, our comprehensive service covers all aspects of tax return preparation, from documentation review to final submission."
-      },
-      "cta": {
-        "title": "Ready to File Your Tax Return?",
-        "description": "Book your consultation now and let our experts handle your tax return preparation professionally.",
-        "bookConsultation": "Book Consultation",
-        "backToTaxAdvisory": "Back to Tax Advisory"
-      }
-    },
-    "personalTaxAdvisory": {
-      "hero": {
-        "title": "Personal Tax Advisory",
-        "subtitle": "Personalized tax advice for high-net-worth individuals"
-      },
-      "pricing": {
-        "price": "€100",
-        "description": "Fixed fee for personal tax advisory",
-        "bookNow": "Book Now"
-      },
-      "calendar": {
-        "title": "Book Your Personal Tax Advisory",
-        "subtitle": "Schedule your 60-minute consultation - €{price}",
-        "consultationDesc": "Personal consultation session",
-        "feeDesc": "Fixed price for personal tax advisory",
-        "expertDesc": "Personalized tax advice"
-      },
-      "payment": {
-        "serviceTitle": "Personal Tax Advisory",
-        "serviceDesc": "Personalized tax advice for individuals"
-      },
-      "confirmation": {
-        "prepareDocuments": "✓ Prepare your personal tax questions and documents"
-      },
-      "features": {
-        "title": "What's Included",
-        "feature1": "Personalized tax advice for high-net-worth individuals",
-        "feature2": "Expatriate tax planning and compliance",
-        "feature3": "Personal income tax optimization",
-        "feature4": "Wealth and estate tax planning",
-        "feature5": "Tax-efficient investment strategies",
-        "feature6": "Relocation and residency tax advice"
-      },
-      "benefits": {
-        "overline": "Benefits",
-        "title": "Why Choose Our Personal Tax Advisory?",
-        "benefit1": "Optimize personal tax position",
-        "benefit2": "Expert guidance for complex situations",
-        "benefit3": "Peace of mind with professional advice",
-        "benefit4": "Tailored solutions for your needs"
-      },
-      "details": {
-        "overline": "Service Details",
-        "title": "Personal Tax Advisory",
-        "description": "Get personalized tax advice tailored to your unique situation and goals."
-      },
-      "cta": {
-        "title": "Ready for Personalized Tax Advice?",
-        "description": "Book your consultation now.",
-        "bookButton": "Book Consultation",
-        "backToTaxAdvisory": "Back to Tax Advisory"
-      }
-    },
-    "taxAdvisoryBooking": {
-      "customerInfo": {
-        "title": "Book Your Tax Advisory Consultation",
-        "subtitle": "Let's start by collecting your contact information",
-        "overline": "STEP 1 OF 4",
-        "heading": "Your Contact Information",
-        "description": "We'll use this information to send you booking confirmation and meeting details",
-        "firstName": "First Name *",
-        "firstNamePlaceholder": "John",
-        "lastName": "Last Name *",
-        "lastNamePlaceholder": "Doe",
-        "email": "Email Address *",
-        "emailPlaceholder": "john.doe@example.com",
-        "phone": "Phone Number *",
-        "phonePlaceholder": "+352 123 456 789",
-        "continue": "Continue to Schedule",
-        "backToTaxAdvisory": "Back to Tax Advisory",
-        "errors": {
-          "firstNameRequired": "First name is required",
-          "lastNameRequired": "Last name is required",
-          "emailRequired": "Email is required",
-          "emailInvalid": "Please enter a valid email",
-          "phoneRequired": "Phone number is required"
-        }
-      },
-      "calendar": {
-        "title": "Schedule Your Tax Advisory Consultation",
-        "subtitle": "Choose a convenient time for your 60-minute consultation",
-        "overline": "STEP 2 OF 4",
-        "heading": "Choose Your Time",
-        "description": "Select a date and time for your 60-minute consultation"
-      },
-      "serviceSelection": {
-        "overline": "STEP 3 OF 4",
-        "title": "Select Your Tax Advisory Service",
-        "description": "Choose the service that best matches your needs",
-        "confirmed": "Consultation Scheduled!",
-        "selectService": "Now, please select which service you need assistance with",
-        "selectButton": "Select Service"
-      },
-      "summary": {
-        "overline": "STEP 4 OF 4",
-        "title": "Review Your Information",
-        "description": "Please verify all information is correct before proceeding to payment",
-        "customerInfo": "Customer Information",
-        "name": "Name",
-        "email": "Email",
-        "phone": "Phone",
-        "appointmentDetails": "Appointment Details",
-        "service": "Service",
-        "dateTime": "Date & Time",
-        "duration": "Duration",
-        "minutes": "60 minutes",
-        "pricing": "Pricing",
-        "serviceFee": "Service Fee",
-        "total": "Total",
-        "proceedToPayment": "Proceed to Payment",
-        "backToServiceSelection": "Back to Service Selection",
-        "edit": "Edit",
-        "editInfo": "Edit Information"
-      },
-      "payment": {
-        "overline": "PAYMENT",
-        "title": "Complete Your Payment",
-        "subtitle": "Final step to confirm your consultation",
-        "paymentDetails": "Payment Details",
-        "orderSummary": "Order Summary",
-        "paymentMethod": "Payment Method",
-        "paymentInfo": "To complete your booking, please proceed with the payment using one of the methods below.",
-        "payCard": "Pay with Credit/Debit Card",
-        "payBank": "Pay with Bank Transfer",
-        "payPaypal": "Pay with PayPal",
-        "reservationNote": "Your consultation slot is reserved for 15 minutes. Please complete the payment to confirm your booking.",
-        "backToSummary": "Back to Summary",
-        "cancelBooking": "Cancel Booking",
-        "processing": "Processing...",
-        "testMode": "Test mode: Use card 4111 1111 1111 1111"
-      }
+      "title": "Ready to Experience Financial Excellence?",
+      "subtitle": "Join thousands of satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
+      "openAccount": "Open an Account",
+      "contactUs": "Contact Us"
     }
   },
   "legal": {
@@ -1314,7 +1014,8 @@
         "companyFormation": "Company Formation",
         "accounting": "Accounting & Invoicing",
         "tax": "Tax Advisory",
-        "investment": "Investment Advisory"
+        "investment": "Investment Advisory",
+        "spvInvestment": "Investment"
       },
       "products": {
         "lifeInsurance": "Life Insurance",
@@ -1339,7 +1040,7 @@
       "facebook": "Facebook",
       "instagram": "Instagram"
     },
-    "description": "The One-Stop-Shop Business Banking Platform. Part of Groupe Advensys Luxembourg S.A., with 18+ years of experience providing comprehensive business solutions across Europe.",
+    "description": "The All-in-One Financial Platform for Businesses. Member of the Advensys Luxembourg S.A. Group, with over 19 years of experience in comprehensive business solutions in Europe.",
     "copyright": "© {year} Opulanz. All rights reserved.",
     "regulated": "Regulated by ACPR & AMF (FR)"
   },
@@ -1347,12 +1048,12 @@
     "services": {
       "title": "Our Services",
       "description": "Everything you need to grow your business",
-      "summary": "From banking to advisory, we provide comprehensive financial services for modern entrepreneurs.",
+      "summary": "From payment processing to consulting, we provide comprehensive financial services for modern entrepreneurs.",
       "banking": {
         "description": "Professional business banking accounts for individuals and companies"
       },
       "formation": {
-        "description": "Complete company formation services in Luxembourg"
+        "description": "Company formation assistance, Full service from incorporation to consulting"
       }
     },
     "trust": {
@@ -1367,15 +1068,12 @@
     },
     "cta": {
       "title": "Ready to get started?",
-      "description": "Open your account in minutes and access professional banking services tailored for your business.",
+      "description": "Open your account in minutes and access professional payment services tailored to your business.",
       "contact": "Contact Us"
     }
   },
   "openAccount": {
     "subtitle": "Choose your account type and complete the application in minutes",
-    "buttons": {
-      "getStarted": "Get Started"
-    },
     "individual": {
       "description": "Personal banking account for individuals with professional features and multi-currency support.",
       "features": {
@@ -1386,7 +1084,7 @@
       }
     },
     "company": {
-      "description": "Professional business account for companies with advanced features and multi-currency support.",
+      "description": "Professional business account for companies with advanced features and multi-user access.",
       "features": {
         "iban": "Dedicated business IBAN",
         "access": "Multi-user access control",
@@ -1395,17 +1093,309 @@
       }
     },
     "formation": {
-      "cta": "We can help you form your company in Luxembourg before opening your business account."
+      "cta": "We can assist you in setting up your company in Luxembourg before opening your business account."
     },
     "referral": {
       "title": "Not sure which banking partner is right for you?",
       "description": "Answer a few questions and we'll recommend the best banking solution for your needs.",
       "cta": "Find Your Match"
+    },
+    "getStarted": "Get Started"
+  },
+  "accountForms": {
+    "layout": {
+      "back": "Back",
+      "continue": "Continue",
+      "processing": "Processing...",
+      "progressSaved": "Your progress is automatically saved. You can return anytime to complete your application."
+    },
+    "common": {
+      "upload": "Upload",
+      "remove": "Remove",
+      "uploaded": "Uploaded",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "emailAddress": "Email Address",
+      "phone": "Phone",
+      "phoneNumber": "Phone Number",
+      "fullName": "Full Name",
+      "residence": "Residence",
+      "accountType": "Account Type",
+      "documents": "Documents",
+      "verified": "Verified",
+      "requiredDocuments": "Required Documents",
+      "fileRequirements": "File Requirements",
+      "fileReqFormats": "Accepted formats: PDF, JPG, PNG",
+      "fileReqSize": "Maximum file size: 5MB per document",
+      "fileReqClear": "Documents must be clear and legible",
+      "fileReqValid": "All documents must be valid (not expired)",
+      "uploadLater": "I'll upload documents later via my dashboard",
+      "uploadLaterDesc": "You can submit your application now and upload documents later. We'll send you a secure link to your dashboard where you can complete the document upload.",
+      "uploadRequired": "Please upload all required documents or select the option to upload later to continue.",
+      "completeRequired": "Please complete all required fields to continue.",
+      "currenciesNeeded": "Currencies Needed",
+      "estMonthlyTransfers": "Est. Monthly Incoming Transfers",
+      "primarySourceOfFunds": "Primary Source of Funds",
+      "pepScreeningLabel": "PEP / Sanctions Screening",
+      "pepConfirmed": "Confirmed: Not a Politically Exposed Person",
+      "pepNotConfirmed": "Not confirmed",
+      "toBeUploadedLater": "To be uploaded later",
+      "documentsUploaded": "documents uploaded",
+      "currentAccount": "Current / Everyday Account",
+      "privateBanking": "Private Banking",
+      "europeanResident": "European Resident",
+      "nonResident": "Non-resident",
+      "salary": "Salary",
+      "dividends": "Dividends",
+      "businessIncome": "Business Income",
+      "assetSale": "Asset Sale",
+      "savings": "Savings",
+      "other": "Other",
+      "applicationSummary": "Application Summary",
+      "requiredConsents": "Required Consents",
+      "consentProcessingTitle": "Processing for Bank Introduction",
+      "consentProcessingDesc": "I consent to Opulanz processing my personal data for the purpose of introducing me to Opulanz Partner Bank for account opening. This is required to proceed.",
+      "consentDataSharingTitle": "Data Sharing with Partner Banks",
+      "consentDataSharingDesc": "I consent to Opulanz sharing my application data with partner banks and EMIs for the purpose of account opening and compliance checks. This is required to proceed.",
+      "consentMarketingTitle": "Marketing Communications (Optional)",
+      "consentMarketingDesc": "I would like to receive updates, offers, and news from Opulanz about banking products and services. You can unsubscribe at any time.",
+      "gdprTitle": "Your Data Rights",
+      "gdprDesc": "Under GDPR, you have the right to access, rectify, erase, or port your data. You can also object to processing and withdraw consent at any time. See our Privacy Policy for details.",
+      "consentsRequired": "Both required consents must be accepted to continue with your application.",
+      "applicationSubmitted": "Application Submitted!",
+      "applicationSubmittedDesc": "Your application has been successfully submitted to Opulanz Partner Bank.",
+      "applicationReference": "Your Application Reference",
+      "saveReference": "Save this reference number for tracking your application",
+      "whatHappensNext": "What Happens Next?",
+      "emailConfirmation": "Email Confirmation",
+      "emailConfirmationDesc": "We've sent a confirmation email with your application details and reference number.",
+      "bankReview": "Bank Review",
+      "bankReviewDesc": "Opulanz Partner Bank will review your application and verify your documents. This typically takes 2-5 business days.",
+      "accountActivation": "Account Activation",
+      "accountActivationDesc": "Once approved, the bank will contact you directly to complete the account activation and provide your account details.",
+      "docUploadPending": "Document Upload Pending",
+      "docUploadPendingDesc": "You still need to upload your documents. We'll send you a secure link to your dashboard within 24 hours.",
+      "quickActions": "Quick Actions",
+      "checkEmail": "Check Your Email",
+      "confirmationSentTo": "Confirmation sent to",
+      "expectedTimeline": "Expected Timeline",
+      "reviewTimeline": "2-5 business days for review",
+      "returnToHomepage": "Return to Homepage",
+      "contactSupport": "Contact Support",
+      "needHelp": "Need help?",
+      "supportHours": "Our support team is available Monday-Friday, 9:00-18:00 CET.",
+      "submittingApplication": "Submitting Your Application",
+      "submittingWait": "Please wait while we process your application..."
+    },
+    "personal": {
+      "title": "Open a Personal Account",
+      "description": "Complete your application in 6 simple steps",
+      "steps": {
+        "welcomeLabel": "Welcome",
+        "welcomeDesc": "Get started",
+        "identityLabel": "Identity",
+        "identityDesc": "Your details",
+        "intentLabel": "Intent",
+        "intentDesc": "Account type",
+        "documentsLabel": "Documents",
+        "documentsDesc": "Verification",
+        "reviewLabel": "Review",
+        "reviewDesc": "Confirm details",
+        "submitLabel": "Submit",
+        "submitDesc": "Final step"
+      },
+      "welcome": {
+        "title": "Welcome to Opulanz",
+        "description": "Let's get started with opening your personal bank account. This should take about 10 minutes.",
+        "accountTypeQuestion": "What type of account are you opening?",
+        "currentTitle": "Current / Everyday Account",
+        "currentDesc": "Standard personal banking for daily transactions, payments, and savings. Suitable for residents and non-residents.",
+        "privateTitle": "Private Banking",
+        "privateDesc": "Wealth management and private banking services for high-net-worth individuals. Minimum deposit typically required.",
+        "whatNext": "What happens next?",
+        "nextStep1": "We'll collect your personal information",
+        "nextStep2": "Verify your identity and contact details",
+        "nextStep3": "Match you with Opulanz Partner Bank",
+        "nextStep4": "Complete the account opening process"
+      },
+      "identity": {
+        "title": "Your Identity & Contact",
+        "description": "We need to verify your identity and contact information for regulatory compliance.",
+        "firstNamePlaceholder": "Enter your first name",
+        "lastNamePlaceholder": "Enter your last name",
+        "emailPlaceholder": "your.email@example.com",
+        "phonePlaceholder": "+352 123 456 789"
+      },
+      "intent": {
+        "title": "Account Intent",
+        "description": "Help us understand your banking needs so we can match you with the right partner bank.",
+        "residenceQuestion": "What is your residence status?",
+        "residentEurope": "I am a resident of a European country",
+        "residentEuropeDesc": "You live and pay taxes in a European Union member state",
+        "nonResident": "I am a non-resident",
+        "nonResidentDesc": "You live outside of Europe but want a European bank account",
+        "countryQuestion": "Which country do you reside in?",
+        "selectCountry": "Select your country",
+        "countryHelp": "This helps us match you with the appropriate banking partner",
+        "currenciesQuestion": "Which currencies do you need?",
+        "currenciesHelp": "Select all currencies you plan to use for transactions",
+        "monthlyTransfers": "Estimated monthly incoming transfers",
+        "monthlyTransfersHelp": "This helps us recommend appropriate account features and limits",
+        "sourceOfFunds": "Source of funds (primary)",
+        "selectSourceOfFunds": "Select your primary source of funds",
+        "specifySourceOfFunds": "Please specify your source of funds",
+        "sourceOfFundsHelp": "Required for compliance and anti-money laundering checks",
+        "pepTitle": "PEP / Sanctions Screening",
+        "pepDescription": "I confirm that I am not a Politically Exposed Person (PEP) or subject to any international sanctions. PEPs include government officials, senior politicians, and their close associates.",
+        "pepWarning": "If you are a PEP or subject to sanctions, additional verification will be required",
+        "whyNeeded": "Why we need this information",
+        "whyNeededDesc": "Based on your residence status and location, we'll match you with Opulanz Partner Bank that can best serve your needs and comply with local banking regulations.",
+        "privateBankingNotice": "Private Banking Selected",
+        "privateBankingNoticeDesc": "Private banking typically requires a minimum deposit (€100,000+) and provides dedicated relationship management, wealth advisory, and investment services.",
+        "otherEuCountry": "Other EU Country"
+      },
+      "documents": {
+        "title": "Eligibility & Documents",
+        "description": "Upload the required documents for identity verification and compliance.",
+        "passport": "Valid Passport or National ID",
+        "addressProof": "Proof of Address (utility bill, bank statement)",
+        "incomeProof": "Proof of Income (payslip, tax return)",
+        "wealthStatement": "Statement of Wealth/Assets"
+      },
+      "review": {
+        "title": "Review & Consents",
+        "description": "Please review your information and provide the necessary consents to proceed."
+      }
+    },
+    "business": {
+      "title": "Open a Business Account",
+      "description": "Complete your business banking application",
+      "steps": {
+        "welcomeLabel": "Welcome",
+        "welcomeDesc": "Get started",
+        "companyLabel": "Company",
+        "companyDesc": "Status",
+        "jurisdictionLabel": "Jurisdiction",
+        "jurisdictionDesc": "Location",
+        "directorsLabel": "Directors",
+        "directorsDesc": "UBOs",
+        "formationLabel": "Formation",
+        "formationDesc": "If new",
+        "documentsLabel": "Documents",
+        "documentsDesc": "Verification",
+        "reviewLabel": "Review",
+        "reviewDesc": "Confirm",
+        "submitLabel": "Submit",
+        "submitDesc": "Final step"
+      },
+      "welcome": {
+        "title": "Welcome to Business Banking",
+        "description": "Let's get started with opening your business bank account. This process should take about 15-20 minutes.",
+        "accountOpeningTitle": "Business Account Opening",
+        "accountOpeningDesc": "Whether you have an existing company or want to start a new one, we'll guide you through the process of opening a business bank account with Opulanz Partner Bank.",
+        "whatYouNeed": "What you'll need:",
+        "need1": "Company registration documents (if existing company)",
+        "need2": "Information about directors and beneficial owners (UBOs)",
+        "need3": "Identity documents for all directors and UBOs",
+        "need4": "Proof of business address",
+        "need5": "Company formation details (if starting a new company)",
+        "processingTime": "Processing Time",
+        "processingTimeDesc": "Business account applications typically take 5-10 business days to review. We may contact you for additional information during the review process.",
+        "startApplication": "Start Application"
+      },
+      "companyStatus": {
+        "title": "Company Status",
+        "description": "Tell us about your company so we can provide the right banking solution.",
+        "question": "Do you have an existing company or want to start a new one?",
+        "existingTitle": "Existing Company",
+        "existingDesc": "I already have a registered company and need a bank account for it.",
+        "newTitle": "New Company",
+        "newDesc": "I want to start a new company and need help with company formation and banking.",
+        "companyDetails": "Company Details",
+        "companyName": "Company Name",
+        "companyNamePlaceholder": "Enter your company name",
+        "registrationNumber": "Company Registration Number",
+        "registrationNumberPlaceholder": "e.g., B123456",
+        "formationServiceTitle": "Company Formation Service",
+        "formationServiceDesc": "We'll help you form your company in your chosen jurisdiction and open a bank account simultaneously. This streamlined process saves time and ensures everything is set up correctly."
+      },
+      "jurisdiction": {
+        "title": "Intended Jurisdiction",
+        "existingQuestion": "Where is your company registered?",
+        "newQuestion": "Where would you like to form your company?",
+        "selectJurisdiction": "Select Jurisdiction",
+        "chooseJurisdiction": "Choose a jurisdiction",
+        "jurisdictionHelp": "This determines which banking partner and regulatory framework will apply",
+        "jurisdictionInfo": "Jurisdiction Information",
+        "luxembourgInfo": "Luxembourg: Premier financial center with favorable tax regime for holding companies. Corporate tax rate: ~24%.",
+        "luxembourgCapital": "Minimum share capital: €12,000 for S.à r.l. (limited liability company)",
+        "franceInfo": "France: Large economy with access to EU market. Corporate tax rate: ~25%.",
+        "franceCapital": "Minimum share capital: €1 for SAS/SARL (most common structures)",
+        "finlandInfo": "Finland: Stable Nordic economy with strong digital infrastructure. Corporate tax rate: 20%.",
+        "finlandCapital": "Minimum share capital: €2,500 for Oy (limited company)",
+        "otherInfo": "We'll match you with Opulanz Partner Bank that serves companies in your selected jurisdiction. Specific requirements and timelines will be provided after application review.",
+        "formationTimeline": "Company Formation Timeline",
+        "formationTimelineDesc": "Company formation typically takes 2-4 weeks. We'll guide you through the entire process and help you open your bank account simultaneously.",
+        "otherEuCountry": "Other EU Country"
+      },
+      "directors": {
+        "title": "Directors & Beneficial Owners",
+        "description": "Provide information about company directors and ultimate beneficial owners (UBOs).",
+        "companyDirectors": "Company Directors",
+        "addDirector": "Add Director",
+        "director": "Director",
+        "ubosTitle": "Ultimate Beneficial Owners (UBOs)",
+        "ubosDescription": "Individuals who own 25% or more of the company",
+        "addUbo": "Add UBO",
+        "ubo": "UBO",
+        "ownership": "Ownership %",
+        "ownershipPlaceholder": "e.g., 50",
+        "whyNeeded": "Why we need this information",
+        "whyNeededDesc": "Banks are required by law (KYC/AML regulations) to know who controls the company. This helps prevent financial crime and ensures transparency."
+      },
+      "formation": {
+        "title": "Company Formation Details",
+        "serviceTitle": "Company Formation Service",
+        "serviceDesc": "We'll handle the entire company formation process including registration, drafting articles of association, and setting up your corporate structure.",
+        "proposedName": "Proposed Company Name",
+        "proposedNamePlaceholder": "Enter your proposed company name",
+        "proposedNameHelp": "We'll check availability and suggest alternatives if needed",
+        "businessActivity": "Business Activity / Description",
+        "businessActivityPlaceholder": "Describe your business activities (e.g., software development, consulting, e-commerce)",
+        "shareCapital": "Initial Share Capital",
+        "shareCapitalPlaceholder": "e.g., €12,000",
+        "shareCapitalHelp": "Minimum requirements vary by jurisdiction",
+        "luxembourgMin": "(Luxembourg: €12,000 for S.à r.l.)",
+        "franceMin": "(France: €1 for SAS/SARL)",
+        "finlandMin": "(Finland: €2,500 for Oy)",
+        "whatsIncluded": "What's Included",
+        "included1": "Company name reservation and registration",
+        "included2": "Articles of association preparation",
+        "included3": "Company registration with authorities",
+        "included4": "Tax registration",
+        "included5": "Bank account opening",
+        "included6": "Registered office address (if needed)",
+        "timelineTitle": "Formation Timeline",
+        "timelineDesc": "The company formation process typically takes 2-4 weeks. We'll keep you updated at each stage and coordinate the bank account opening to minimize delays."
+      },
+      "documents": {
+        "title": "Business Documents",
+        "description": "Upload the required business and identity documents for verification and compliance.",
+        "companyRegistration": "Company Registration Certificate",
+        "articles": "Articles of Association / Statutes",
+        "uboRegister": "UBO Register / Shareholder Register",
+        "directorIds": "Directors' Identity Documents",
+        "uboIds": "UBOs' Identity Documents",
+        "businessAddress": "Proof of Business Address"
+      },
+      "review": {
+        "title": "Review & Consents",
+        "description": "Please review your information and provide the necessary consents to proceed."
+      }
     }
   },
   "kyc": {
-    "title": "Client Onboarding",
-    "description": "Complete your client profile for regulatory compliance (KYC)",
     "subtitle": "Complete your identity verification to open your account",
     "sections": {
       "personalInfo": "Personal Information",
@@ -1460,6 +1450,660 @@
     "buttons": {
       "dashboard": "Go to Dashboard",
       "downloadApp": "Download App"
+    }
+  },
+  "taxAdvisory": {
+    "hero": {
+      "primaryCta": "Schedule a Consultation",
+      "secondaryCta": "View Services"
+    },
+    "services": {
+      "overline": "Our Services",
+      "title": "Tax Advisory Services",
+      "description": "Professional tax consultation services tailored to your needs",
+      "taxReturn": {
+        "title": "Tax Return Preparation",
+        "description": "Professional preparation and filing of corporate and individual tax returns across multiple jurisdictions"
+      },
+      "international": {
+        "title": "International Tax",
+        "description": "Expert guidance on cross-border tax matters, transfer pricing, and double taxation treaty optimization"
+      },
+      "corporate": {
+        "title": "Corporate Tax",
+        "description": "Comprehensive corporate tax services including M&A due diligence, VAT consulting, and tax planning"
+      },
+      "compliance": {
+        "title": "Tax Compliance",
+        "description": "Ongoing compliance with tax laws and regulations, proactive monitoring, and representation"
+      },
+      "personal": {
+        "title": "Personal Tax Advisory",
+        "description": "Personalized tax advice for high-net-worth individuals, expatriates, and estate planning"
+      }
+    },
+    "benefits": {
+      "1": "Luxembourg-qualified tax advisors with decades of experience",
+      "2": "Expertise in cross-border and international tax structures",
+      "3": "Proactive compliance monitoring and regulatory updates",
+      "4": "Personalized strategies for individuals and businesses",
+      "5": "Comprehensive VAT and indirect tax advisory",
+      "6": "Tax-efficient corporate restructuring guidance",
+      "7": "Confidential and discreet advisory services"
+    },
+    "whyChoose": {
+      "title": "Why Choose Opulanz Tax Advisory?",
+      "description": "Our team of certified tax professionals combines deep Luxembourg expertise with international knowledge to deliver optimized, compliant tax solutions for every client."
+    },
+    "expertise": {
+      "overline": "Our Expertise",
+      "title": "Specialized Tax Knowledge",
+      "description": "Our advisors bring specialized expertise across all major areas of taxation",
+      "optimization": {
+        "title": "Tax Optimization",
+        "description": "Strategic planning to minimize tax liability while maintaining full compliance"
+      },
+      "compliance": {
+        "title": "Regulatory Compliance",
+        "description": "Stay ahead of changing regulations with proactive monitoring and guidance"
+      },
+      "international": {
+        "title": "International Tax",
+        "description": "Navigate complex cross-border taxation with treaty optimization and transfer pricing"
+      },
+      "personal": {
+        "title": "Personal Advisory",
+        "description": "Tailored solutions for high-net-worth individuals, expatriates, and estate planning"
+      }
+    },
+    "cta": {
+      "title": "Ready to Optimize Your Tax Strategy?",
+      "description": "Book a consultation with our expert tax advisors and start planning your optimal tax structure today.",
+      "schedule": "Schedule Consultation",
+      "contact": "Contact Us"
+    },
+    "shared": {
+      "sixtyMinutes": "60 minutes",
+      "duration": "Duration:",
+      "service": "Service:",
+      "name": "Name:",
+      "email": "Email:",
+      "date": "Date:",
+      "time": "Time:",
+      "confirmation": {
+        "title": "Payment Confirmed!",
+        "subtitle": "Thank you for your payment. Your appointment is now confirmed.",
+        "subtitleWithEmail": "Your appointment is confirmed. Confirmation emails sent!",
+        "confirmedAppointment": "Confirmed Appointment",
+        "whatsNext": "What's Next?",
+        "checkEmail": "Check your email ({email}) for the meeting link and calendar invite",
+        "confirmationSent": "Confirmation email sent to {email}",
+        "teamNotified": "Our team at opulanz.banking@gmail.com has been notified",
+        "checkMeetLink": "Check your email for the Google Meet link from Calendly",
+        "prepareDocuments": "Prepare your tax documents and questions",
+        "joinConference": "Join the video conference at your scheduled time",
+        "teamReady": "Our team has been notified and will be ready for your consultation",
+        "downloadReceipt": "Download Receipt",
+        "returnHome": "Return to Home",
+        "paymentReceipt": "Payment Receipt",
+        "paypalOrderId": "PayPal Order ID:",
+        "payerName": "Payer Name:",
+        "payerEmail": "Payer Email:",
+        "amountPaid": "Amount Paid:",
+        "paymentStatus": "Payment Status:",
+        "paymentDate": "Payment Date:"
+      },
+      "payment": {
+        "timeSlotReserved": "Time Slot Reserved!",
+        "completePaymentToConfirm": "Complete your payment to confirm your booking",
+        "appointmentDetails": "Your Appointment Details",
+        "serviceFee": "Service Fee (excl. VAT):",
+        "vat": "VAT (17%):",
+        "totalInclVat": "Total (incl. VAT):",
+        "completeYourPayment": "Complete Your Payment",
+        "oneTimePayment": "One-time payment for 60-minute consultation",
+        "testing": "Testing:",
+        "testCard": "Use card",
+        "testCardExpiry": "(Expiry: 12/2030, CVV: 123)",
+        "paymentSuccessful": "Payment Successful!",
+        "processing": "Processing...",
+        "continueToConfirmation": "Continue to Confirmation",
+        "paymentFailed": "Payment failed. Please try again.",
+        "errorProcessing": "There was an error processing your payment. Please contact support.",
+        "errorGeneral": "There was an error. Please contact support.",
+        "completePaypalFirst": "Please complete the PayPal payment first."
+      },
+      "calendar": {
+        "bookYour": "Book Your {service}",
+        "scheduleConsultation": "Schedule your 60-minute consultation - {price}",
+        "sixtyMinConsultation": "60-Minute Consultation",
+        "consultationDesc": "Professional consultation session with our expert tax advisor",
+        "fee": "{price} Fee",
+        "expertService": "Expert Service",
+        "troubleCalendly": "Having trouble with Calendly? Use Manual Booking",
+        "bookConsultation": "Book Your Consultation",
+        "enterDetails": "Step 1: Enter your details",
+        "enterYourDetails": "Enter Your Details",
+        "enterDetailsDesc": "We'll use this to schedule your appointment",
+        "fullName": "Full Name *",
+        "emailAddress": "Email Address *",
+        "nextStepNote": "After entering your details, you'll select your preferred date and time on our calendar.",
+        "continueToCalendar": "Continue to Calendar",
+        "fillDetails": "Fill in your details to proceed with payment",
+        "preferredDate": "Preferred Date *",
+        "preferredTime": "Preferred Time *",
+        "backToCalendly": "Back to Calendly",
+        "continueToPayment": "Continue to Payment"
+      },
+      "info": {
+        "fixedFee": "Fixed fee for {service} service",
+        "sixtyMinConsultation": "60-minute consultation with expert tax advisor",
+        "bookNow": "Book Your Consultation Now",
+        "serviceDetails": "SERVICE DETAILS",
+        "whatsIncluded": "What's Included",
+        "whyChooseUs": "WHY CHOOSE US",
+        "bookConsultationPrice": "Book Consultation - {price}",
+        "backToTaxAdvisory": "Back to Tax Advisory"
+      },
+      "noBooking": {
+        "title": "No Booking Found",
+        "subtitle": "Please schedule your appointment first before proceeding to payment.",
+        "subtitleCalendly": "You need to book an appointment through Calendly first before seeing the confirmation.",
+        "scheduleAppointment": "Schedule Appointment",
+        "startFresh": "Start Fresh - Book Appointment"
+      }
+    },
+    "booking": {
+      "calendly": {
+        "title": "Schedule Your Tax Advisory Consultation",
+        "subtitle": "Choose a convenient time for your 60-minute consultation"
+      },
+      "serviceSelection": {
+        "title": "Consultation Scheduled!",
+        "subtitle": "Now, please select which service you need assistance with",
+        "step": "STEP 2 OF 3",
+        "selectTitle": "Select Your Tax Advisory Service",
+        "selectDesc": "Choose the service that best matches your needs",
+        "selectService": "Select Service"
+      },
+      "payment": {
+        "title": "Complete Your Payment",
+        "subtitle": "Final step to confirm your consultation",
+        "step": "STEP 3 OF 3",
+        "paymentDetails": "Payment Details",
+        "orderSummary": "Order Summary",
+        "paymentMethod": "Payment Method",
+        "paymentMethodDesc": "To complete your booking, please proceed with the payment using one of the methods below.",
+        "payWithCard": "Pay with Credit/Debit Card",
+        "payWithTransfer": "Pay with Bank Transfer",
+        "payWithPaypal": "Pay with PayPal",
+        "reservedNote": "Your consultation slot is reserved for 15 minutes. Please complete the payment to confirm your booking.",
+        "backToSelection": "Back to Service Selection",
+        "cancelBooking": "Cancel Booking"
+      }
+    },
+    "taxReturn": {
+      "title": "Tax Return Preparation",
+      "subtitle": "Professional preparation and filing of corporate and individual tax returns",
+      "serviceDetailsTitle": "Professional Tax Return Services",
+      "serviceDetailsDesc1": "Let our experienced tax professionals handle the complexity of tax return preparation. We ensure accuracy, compliance, and timely filing across multiple jurisdictions.",
+      "serviceDetailsDesc2": "Whether you're an individual taxpayer or a business entity, our comprehensive service covers all aspects of tax return preparation, from documentation review to final submission.",
+      "features": {
+        "1": "Professional preparation of corporate and individual tax returns",
+        "2": "Filing across multiple jurisdictions",
+        "3": "Accuracy and compliance guaranteed",
+        "4": "Expert review of all documentation",
+        "5": "Timely submission to tax authorities",
+        "6": "Support for tax queries and correspondence"
+      },
+      "benefitsTitle": "Benefits of Professional Tax Return Preparation",
+      "benefits": {
+        "1": "Save time and reduce stress",
+        "2": "Ensure compliance with tax regulations",
+        "3": "Maximize eligible deductions and credits",
+        "4": "Professional expertise at affordable rates"
+      },
+      "feeDesc": "Fixed price for tax return preparation service",
+      "expertServiceDesc": "Professional tax return preparation and filing",
+      "ctaTitle": "Ready to File Your Tax Return?",
+      "ctaDesc": "Book your consultation now and let our experts handle your tax return preparation professionally."
+    },
+    "internationalTax": {
+      "title": "International Tax",
+      "subtitle": "Expert guidance on cross-border tax matters and transfer pricing",
+      "serviceDetailsTitle": "International Tax Expertise",
+      "serviceDetailsDesc1": "Navigate the complexities of cross-border taxation with our expert guidance. We specialize in international tax structuring, transfer pricing, and treaty optimization.",
+      "serviceDetailsDesc2": "Our team has extensive experience with EU and global tax regulations, ensuring your international operations are tax-efficient and compliant.",
+      "features": {
+        "1": "Expert guidance on cross-border tax matters",
+        "2": "Transfer pricing analysis and documentation",
+        "3": "Double taxation treaty optimization",
+        "4": "International tax structuring advice",
+        "5": "Cross-border transaction planning",
+        "6": "Compliance with multiple jurisdictions"
+      },
+      "benefitsTitle": "Benefits of Professional International Tax Advice",
+      "benefits": {
+        "1": "Minimize international tax exposure",
+        "2": "Navigate complex cross-border regulations",
+        "3": "Optimize global tax structures",
+        "4": "Expert knowledge of EU and international tax law"
+      },
+      "feeDesc": "Fixed price for international tax service",
+      "expertServiceDesc": "Cross-border tax and transfer pricing expertise",
+      "ctaTitle": "Ready to Optimize Your International Tax?",
+      "ctaDesc": "Book your consultation now and let our experts help you navigate cross-border taxation."
+    },
+    "corporateTax": {
+      "title": "Corporate Tax",
+      "subtitle": "Comprehensive corporate tax services and planning",
+      "serviceDetailsTitle": "Corporate Tax Services",
+      "serviceDetailsDesc1": "Our expert team provides comprehensive corporate tax planning and compliance services to optimize your business's tax position.",
+      "serviceDetailsDesc2": "From restructuring to M&A tax advice, we ensure your corporate transactions are tax-efficient and compliant.",
+      "features": {
+        "1": "Comprehensive corporate tax services and planning",
+        "2": "Tax-efficient corporate restructuring advice",
+        "3": "M&A tax due diligence and advice",
+        "4": "VAT consulting and compliance",
+        "5": "Corporate tax optimization strategies",
+        "6": "Tax implications of business transactions"
+      },
+      "benefitsTitle": "Benefits of Professional Corporate Tax Advice",
+      "benefits": {
+        "1": "Optimize corporate tax structure",
+        "2": "Expert guidance on complex tax matters",
+        "3": "Ensure compliance with regulations",
+        "4": "Professional expertise for businesses"
+      },
+      "feeDesc": "Fixed fee for corporate tax service",
+      "expertServiceDesc": "Corporate tax planning and compliance",
+      "ctaTitle": "Ready to Optimize Your Corporate Tax?",
+      "ctaDesc": "Book your consultation now and let our experts help you with corporate tax planning."
+    },
+    "taxCompliance": {
+      "title": "Tax Compliance",
+      "subtitle": "Ensure ongoing compliance with tax laws and regulations",
+      "serviceDetailsTitle": "Tax Compliance Services",
+      "serviceDetailsDesc1": "Stay compliant with evolving tax regulations through our proactive monitoring and expert guidance.",
+      "features": {
+        "1": "Ensure ongoing compliance with tax laws and regulations",
+        "2": "Regular monitoring of regulatory changes",
+        "3": "Proactive compliance advice and guidance",
+        "4": "Tax authority correspondence and representation",
+        "5": "Compliance reviews and health checks",
+        "6": "Updates on Luxembourg and EU tax law changes"
+      },
+      "benefitsTitle": "Benefits",
+      "benefits": {
+        "1": "Stay compliant with evolving regulations",
+        "2": "Avoid penalties and legal issues",
+        "3": "Peace of mind with expert monitoring",
+        "4": "Proactive risk management"
+      },
+      "feeDesc": "Fixed fee for tax compliance service",
+      "expertServiceDesc": "Compliance monitoring and advice",
+      "ctaTitle": "Ready to Ensure Compliance?",
+      "ctaDesc": "Book your consultation now."
+    },
+    "personalTax": {
+      "title": "Personal Tax Advisory",
+      "subtitle": "Personalized tax advice for high-net-worth individuals",
+      "serviceDetailsTitle": "Personal Tax Advisory",
+      "serviceDetailsDesc1": "Get personalized tax advice tailored to your unique situation and goals.",
+      "features": {
+        "1": "Personalized tax advice for high-net-worth individuals",
+        "2": "Expatriate tax planning and compliance",
+        "3": "Personal income tax optimization",
+        "4": "Wealth and estate tax planning",
+        "5": "Tax-efficient investment strategies",
+        "6": "Relocation and residency tax advice"
+      },
+      "benefitsTitle": "Benefits",
+      "benefits": {
+        "1": "Optimize personal tax position",
+        "2": "Expert guidance for complex situations",
+        "3": "Peace of mind with professional advice",
+        "4": "Tailored solutions for your needs"
+      },
+      "feeDesc": "Fixed fee for personal tax advisory",
+      "expertServiceDesc": "Personalized tax advice",
+      "ctaTitle": "Ready for Personalized Tax Advice?",
+      "ctaDesc": "Book your consultation now."
+    }
+  },
+  "accounting": {
+    "onboarding": {
+      "title": "Accounting & Bookkeeping Onboarding",
+      "subtitle": "Complete your application in 6 simple steps",
+      "autoSave": "Your progress is automatically saved. You can return anytime to complete your application."
+    },
+    "steps": {
+      "company": {
+        "label": "Company",
+        "description": "Basic details"
+      },
+      "activity": {
+        "label": "Activity",
+        "description": "Business & scale"
+      },
+      "contacts": {
+        "label": "Contacts",
+        "description": "Addresses & people"
+      },
+      "volume": {
+        "label": "Volume",
+        "description": "Billing info"
+      },
+      "documents": {
+        "label": "Documents",
+        "description": "Optional uploads"
+      },
+      "review": {
+        "label": "Review",
+        "description": "Confirm & submit"
+      }
+    },
+    "companyBasics": {
+      "title": "Company Basics",
+      "subtitle": "Tell us about your company's legal structure and registration details.",
+      "fields": {
+        "companyType": "Company Type",
+        "companyTypeOther": "Specify Company Type",
+        "countryOfIncorporation": "Country of Incorporation",
+        "dateOfIncorporation": "Date of Incorporation",
+        "shareCapital": "Share Capital",
+        "legalName": "Registered Name (Legal)",
+        "tradeName": "Trade Name (Optional)",
+        "registrationNumber": "Registration Number (Optional)",
+        "vatNumber": "VAT Number (Optional)"
+      },
+      "placeholders": {
+        "companyType": "Select company type",
+        "companyTypeOther": "Enter company type",
+        "country": "Select country",
+        "date": "mm/dd/yyyy",
+        "legalName": "Company Legal Name S.A.",
+        "tradeName": "Trading as...",
+        "registrationNumber": "RCS B123456",
+        "vatNumber": "LU12345678"
+      },
+      "hints": {
+        "tradeName": "If different from legal name",
+        "registrationNumber": "Company registration or RCS number",
+        "vatNumber": "If you don't have a VAT number yet, leave blank"
+      },
+      "errors": {
+        "companyTypeRequired": "Company type is required",
+        "specifyRequired": "Please specify company type",
+        "countryRequired": "Country is required",
+        "dateRequired": "Date is required",
+        "shareCapitalRequired": "Share capital must be greater than 0",
+        "legalNameRequired": "Legal name is required"
+      }
+    },
+    "contactsAddresses": {
+      "title": "Contacts & Addresses",
+      "subtitle": "Provide your company addresses and key contact information.",
+      "registeredAddress": "Registered Address",
+      "operatingAddress": "Operating Address",
+      "sameAsRegistered": "Operating address same as registered address",
+      "primaryContact": "Primary Contact",
+      "accountingContact": "Accounting Contact",
+      "addAccountingContact": "Add a separate accounting contact",
+      "fields": {
+        "street": "Street Address",
+        "city": "City",
+        "postal": "Postal Code",
+        "country": "Country",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "role": "Role",
+        "email": "Email",
+        "phone": "Phone"
+      },
+      "placeholders": {
+        "street": "123 Main Street",
+        "city": "Luxembourg",
+        "postal": "L-1234",
+        "country": "Select country",
+        "firstName": "John",
+        "lastName": "Doe",
+        "role": "Select role",
+        "email": "john@example.com",
+        "phone": "+352 123 456 789"
+      },
+      "errors": {
+        "invalidEmail": "Please enter a valid email address (e.g., user@example.com)",
+        "invalidPhone": "Please enter a valid phone number (e.g., +352 123 456 789)"
+      }
+    },
+    "activityScale": {
+      "title": "Activity & Scale",
+      "subtitle": "Help us understand your business activity and financial scale.",
+      "fields": {
+        "businessActivity": "Business Activity",
+        "turnoverLastFY": "Annual Turnover (Last FY)",
+        "turnoverCurrentFY": "Projected Turnover (Current FY)",
+        "employees": "Number of Employees (FTE)"
+      },
+      "placeholders": {
+        "businessActivity": "Select business activity"
+      },
+      "hints": {
+        "turnoverLastFY": "Use your last approved financial year for turnover",
+        "turnoverCurrentFY": "Expected turnover for the current financial year",
+        "employees": "Full-time equivalent employees"
+      }
+    },
+    "billingVolume": {
+      "title": "Billing Volume",
+      "subtitle": "Help us understand your transaction volume to recommend the right accounting package.",
+      "fields": {
+        "salesInvoices": "Avg. Monthly Sales Invoices",
+        "purchaseInvoices": "Avg. Monthly Purchase Invoices",
+        "payrollNeeded": "Payroll processing needed?",
+        "payrollEmployees": "Number of Employees on Payroll",
+        "multiCurrency": "Multi-currency bookkeeping needed?",
+        "selectCurrencies": "Select Currencies"
+      },
+      "hints": {
+        "salesInvoices": "Number of outgoing invoices per month",
+        "purchaseInvoices": "Number of incoming invoices per month"
+      }
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Upload your company documents. These are optional at this stage and can be provided later.",
+      "types": {
+        "incorporation": "Certificate of Incorporation",
+        "articles": "Articles of Association / Statuts",
+        "vat": "VAT Certificate",
+        "directorId": "ID/Passport of Director(s)"
+      },
+      "hints": {
+        "incorporation": "Official document confirming company registration",
+        "articles": "Company articles or statuts document",
+        "vat": "VAT registration certificate (if applicable)",
+        "directorId": "ID or passport of directors and shareholders over 25%"
+      },
+      "note": {
+        "title": "Note:",
+        "text": "You can skip document uploads for now and provide them later. However, submitting documents now will speed up your onboarding process."
+      },
+      "upload": {
+        "uploading": "Uploading...",
+        "dropOrClick": "Drop file here or click to browse",
+        "fileTypes": "PDF, PNG, JPG (max 10MB)"
+      }
+    },
+    "review": {
+      "title": "Review & Submit",
+      "subtitle": "Please review your information before submitting your accounting onboarding request.",
+      "summary": "Application Summary",
+      "sections": {
+        "company": "Company",
+        "activity": "Business Activity",
+        "teamSize": "Team Size",
+        "contact": "Primary Contact",
+        "volume": "Monthly Volume",
+        "documents": "Documents"
+      },
+      "incorporated": "Incorporated",
+      "lastFY": "Last FY Turnover",
+      "projected": "Projected",
+      "fteEmployees": "FTE employees",
+      "sales": "Sales",
+      "purchases": "Purchases",
+      "invoices": "invoices",
+      "payroll": "Payroll",
+      "employees": "employees",
+      "multiCurrency": "Multi-currency",
+      "documentsUploaded": "document(s) uploaded",
+      "consent": {
+        "title": "Required Consent",
+        "label": "I agree to data processing for bookkeeping onboarding *",
+        "text": "I consent to Opulanz processing my data for bookkeeping onboarding purposes. This includes sharing information with our accounting partners. See our",
+        "privacyPolicy": "Privacy Policy",
+        "termsOfService": "Terms of Service",
+        "required": "You must accept the consent to submit your application."
+      },
+      "gdpr": {
+        "title": "Your Data Rights",
+        "text": "Under GDPR, you have the right to access, rectify, erase, or port your data. You can also object to processing and withdraw consent at any time."
+      },
+      "submit": "Confirm & Send",
+      "acceptConsent": "Accept Consent to Continue"
+    },
+    "features": {
+      "invoicing": {
+        "title": "Professional Invoicing",
+        "description": "Create and send professional invoices with automated payment reminders and tracking."
+      },
+      "bookkeeping": {
+        "title": "Bookkeeping Services",
+        "description": "Comprehensive bookkeeping services to keep your financial records accurate and up-to-date."
+      },
+      "reporting": {
+        "title": "Financial Reporting",
+        "description": "Detailed financial reports and insights to help you make informed business decisions."
+      },
+      "payroll": {
+        "title": "Payroll Management",
+        "description": "Efficient payroll processing with automated tax calculations and compliance."
+      },
+      "compliance": {
+        "title": "Compliance & Audit",
+        "description": "Ensure compliance with local regulations and prepare for audits with confidence."
+      },
+      "planning": {
+        "title": "Financial Planning",
+        "description": "Strategic financial planning and analysis to support your business growth."
+      }
+    },
+    "benefits": {
+      "title": "Why Choose Our Accounting Services?",
+      "subtitle": "We combine cutting-edge technology with expert financial knowledge to deliver accounting services that help your business thrive. Our team of certified accountants ensures accuracy, compliance, and strategic insights for your financial success.",
+      "list": [
+        "Save time with automated invoicing and bookkeeping",
+        "Reduce errors with professional accounting expertise",
+        "Stay compliant with local tax regulations",
+        "Get real-time insights into your financial health",
+        "Focus on growing your business while we handle the numbers",
+        "Secure cloud-based access to your financial data anytime"
+      ]
+    },
+    "cta": {
+      "title": "Ready to Streamline Your Finances?",
+      "subtitle": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
+      "contactSales": "Contact Sales"
+    },
+    "sections": {
+      "ourServices": "Our Services",
+      "completeSolutions": "Complete Accounting Solutions for Your Business",
+      "solutionsDesc": "From invoicing to financial reporting, we provide comprehensive accounting services tailored to your business needs."
+    }
+  },
+  "invoicingAccounting": {
+    "features": {
+      "overline": "Our Services",
+      "title": "Complete Accounting Solutions for Your Business",
+      "description": "From invoicing to financial reporting, we provide comprehensive accounting services tailored to your business needs.",
+      "invoicing": {
+        "title": "Professional Invoicing",
+        "description": "Create and send professional invoices with automated payment reminders and tracking."
+      },
+      "bookkeeping": {
+        "title": "Bookkeeping Services",
+        "description": "Comprehensive bookkeeping services to keep your financial records accurate and up-to-date."
+      },
+      "reporting": {
+        "title": "Financial Reporting",
+        "description": "Detailed financial reports and insights to help you make informed business decisions."
+      },
+      "payroll": {
+        "title": "Payroll Management",
+        "description": "Efficient payroll processing with automated tax calculations and compliance."
+      },
+      "compliance": {
+        "title": "Compliance & Audit",
+        "description": "Ensure compliance with local regulations and prepare for audits with confidence."
+      },
+      "planning": {
+        "title": "Financial Planning",
+        "description": "Strategic financial planning and analysis to support your business growth."
+      }
+    },
+    "benefits": {
+      "title": "Why Choose Our Accounting Services?",
+      "description": "We combine cutting-edge technology with expert financial knowledge to deliver accounting services that help your business thrive. Our team of certified accountants ensures accuracy, compliance, and strategic insights for your financial success.",
+      "1": "Save time with automated invoicing and bookkeeping",
+      "2": "Reduce errors with professional accounting expertise",
+      "3": "Stay compliant with local tax regulations",
+      "4": "Get real-time insights into your financial health",
+      "5": "Focus on growing your business while we handle the numbers",
+      "6": "Secure cloud-based access to your financial data anytime"
+    },
+    "getStarted": "Get Started",
+    "cta": {
+      "title": "Ready to Streamline Your Finances?",
+      "description": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
+      "contactSales": "Contact Sales"
+    },
+    "confirmation": {
+      "heroTitle": "Application Submitted Successfully!",
+      "heroSubtitle": "Your accounting & invoicing application has been received",
+      "reference": "Reference:",
+      "emailSent": "Confirmation email sent",
+      "emailSentDesc": "A confirmation email with all the details has been sent to",
+      "emailSentSuffix": ". Please check your inbox and spam folder.",
+      "applicationSummary": "Application Summary",
+      "companyName": "Company Name",
+      "contactEmail": "Contact Email",
+      "primaryContact": "Primary Contact",
+      "applicationStatus": "Application Status",
+      "submitted": "SUBMITTED",
+      "companyDetails": "Company Details",
+      "companyType": "Company Type:",
+      "registrationNumber": "Registration Number:",
+      "vatNumber": "VAT Number:",
+      "downloadPdf": "Download PDF Summary",
+      "goToDashboard": "Go to Dashboard",
+      "whatsNext": "What happens next?",
+      "step1Title": "Application Review",
+      "step1Desc": "Our accounting team will review your application within 1-2 business days",
+      "step2Title": "Email Confirmation",
+      "step2Desc": "You'll receive a detailed confirmation email with next steps",
+      "step3Title": "Additional Information",
+      "step3Desc": "We may contact you if we need any additional documents or clarification",
+      "step4Title": "Onboarding Process",
+      "step4Desc": "Once approved, we'll send onboarding materials and schedule a setup call",
+      "step5Title": "Account Activation",
+      "step5Desc": "Your dedicated account manager will help you get started with our services",
+      "questionsAbout": "Questions about your application?",
+      "contactTeam": "Contact our accounting team at",
+      "referenceNumber": "Reference Number:",
+      "notProvided": "Not provided",
+      "yourCompany": "Your Company"
     }
   },
   "dashboard": {
@@ -2160,253 +2804,6 @@
       "contactUs": "Contact Us"
     }
   },
-  "accounting": {
-    "onboarding": {
-      "title": "Accounting & Bookkeeping Onboarding",
-      "subtitle": "Complete your application in 6 simple steps",
-      "autoSave": "Your progress is automatically saved. You can return anytime to complete your application."
-    },
-    "steps": {
-      "company": {
-        "label": "Company",
-        "description": "Basic details"
-      },
-      "activity": {
-        "label": "Activity",
-        "description": "Business & scale"
-      },
-      "contacts": {
-        "label": "Contacts",
-        "description": "Addresses & people"
-      },
-      "volume": {
-        "label": "Volume",
-        "description": "Billing info"
-      },
-      "documents": {
-        "label": "Documents",
-        "description": "Optional uploads"
-      },
-      "review": {
-        "label": "Review",
-        "description": "Confirm & submit"
-      }
-    },
-    "companyBasics": {
-      "title": "Company Basics",
-      "subtitle": "Tell us about your company's legal structure and registration details.",
-      "fields": {
-        "companyType": "Company Type",
-        "companyTypeOther": "Specify Company Type",
-        "countryOfIncorporation": "Country of Incorporation",
-        "dateOfIncorporation": "Date of Incorporation",
-        "shareCapital": "Share Capital",
-        "legalName": "Registered Name (Legal)",
-        "tradeName": "Trade Name (Optional)",
-        "registrationNumber": "Registration Number (Optional)",
-        "vatNumber": "VAT Number (Optional)"
-      },
-      "placeholders": {
-        "companyType": "Select company type",
-        "companyTypeOther": "Enter company type",
-        "country": "Select country",
-        "date": "mm/dd/yyyy",
-        "legalName": "Company Legal Name S.A.",
-        "tradeName": "Trading as...",
-        "registrationNumber": "RCS B123456",
-        "vatNumber": "LU12345678"
-      },
-      "hints": {
-        "tradeName": "If different from legal name",
-        "registrationNumber": "Company registration or RCS number",
-        "vatNumber": "If you don't have a VAT number yet, leave blank"
-      },
-      "errors": {
-        "companyTypeRequired": "Company type is required",
-        "specifyRequired": "Please specify company type",
-        "countryRequired": "Country is required",
-        "dateRequired": "Date is required",
-        "shareCapitalRequired": "Share capital must be greater than 0",
-        "legalNameRequired": "Legal name is required"
-      }
-    },
-    "contactsAddresses": {
-      "title": "Contacts & Addresses",
-      "subtitle": "Provide your company addresses and key contact information.",
-      "registeredAddress": "Registered Address",
-      "operatingAddress": "Operating Address",
-      "sameAsRegistered": "Operating address same as registered address",
-      "primaryContact": "Primary Contact",
-      "accountingContact": "Accounting Contact",
-      "addAccountingContact": "Add a separate accounting contact",
-      "fields": {
-        "street": "Street Address",
-        "city": "City",
-        "postal": "Postal Code",
-        "country": "Country",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "role": "Role",
-        "email": "Email",
-        "phone": "Phone"
-      },
-      "placeholders": {
-        "street": "123 Main Street",
-        "city": "Luxembourg",
-        "postal": "L-1234",
-        "country": "Select country",
-        "firstName": "John",
-        "lastName": "Doe",
-        "role": "Select role",
-        "email": "john@example.com",
-        "phone": "+352 123 456 789"
-      },
-      "errors": {
-        "invalidEmail": "Please enter a valid email address (e.g., user@example.com)",
-        "invalidPhone": "Please enter a valid phone number (e.g., +352 123 456 789)"
-      }
-    },
-    "activityScale": {
-      "title": "Activity & Scale",
-      "subtitle": "Help us understand your business activity and financial scale.",
-      "fields": {
-        "businessActivity": "Business Activity",
-        "turnoverLastFY": "Annual Turnover (Last FY)",
-        "turnoverCurrentFY": "Projected Turnover (Current FY)",
-        "employees": "Number of Employees (FTE)"
-      },
-      "placeholders": {
-        "businessActivity": "Select business activity"
-      },
-      "hints": {
-        "turnoverLastFY": "Use your last approved financial year for turnover",
-        "turnoverCurrentFY": "Expected turnover for the current financial year",
-        "employees": "Full-time equivalent employees"
-      }
-    },
-    "billingVolume": {
-      "title": "Billing Volume",
-      "subtitle": "Help us understand your transaction volume to recommend the right accounting package.",
-      "fields": {
-        "salesInvoices": "Avg. Monthly Sales Invoices",
-        "purchaseInvoices": "Avg. Monthly Purchase Invoices",
-        "payrollNeeded": "Payroll processing needed?",
-        "payrollEmployees": "Number of Employees on Payroll",
-        "multiCurrency": "Multi-currency bookkeeping needed?",
-        "selectCurrencies": "Select Currencies"
-      },
-      "hints": {
-        "salesInvoices": "Number of outgoing invoices per month",
-        "purchaseInvoices": "Number of incoming invoices per month"
-      }
-    },
-    "documents": {
-      "title": "Documents",
-      "subtitle": "Upload your company documents. These are optional at this stage and can be provided later.",
-      "types": {
-        "incorporation": "Certificate of Incorporation",
-        "articles": "Articles of Association / Statuts",
-        "vat": "VAT Certificate",
-        "directorId": "ID/Passport of Director(s)"
-      },
-      "hints": {
-        "incorporation": "Official document confirming company registration",
-        "articles": "Company articles or statuts document",
-        "vat": "VAT registration certificate (if applicable)",
-        "directorId": "ID or passport of directors and shareholders over 25%"
-      },
-      "note": {
-        "title": "Note:",
-        "text": "You can skip document uploads for now and provide them later. However, submitting documents now will speed up your onboarding process."
-      }
-    },
-    "review": {
-      "title": "Review & Submit",
-      "subtitle": "Please review your information before submitting your accounting onboarding request.",
-      "summary": "Application Summary",
-      "sections": {
-        "company": "Company",
-        "activity": "Business Activity",
-        "teamSize": "Team Size",
-        "contact": "Primary Contact",
-        "volume": "Monthly Volume",
-        "documents": "Documents"
-      },
-      "incorporated": "Incorporated",
-      "lastFY": "Last FY Turnover",
-      "projected": "Projected",
-      "fteEmployees": "FTE employees",
-      "sales": "Sales",
-      "purchases": "Purchases",
-      "invoices": "invoices",
-      "payroll": "Payroll",
-      "employees": "employees",
-      "multiCurrency": "Multi-currency",
-      "documentsUploaded": "document(s) uploaded",
-      "consent": {
-        "title": "Required Consent",
-        "label": "I agree to data processing for bookkeeping onboarding *",
-        "text": "I consent to Opulanz processing my data for bookkeeping onboarding purposes. This includes sharing information with our accounting partners. See our",
-        "privacyPolicy": "Privacy Policy",
-        "termsOfService": "Terms of Service",
-        "required": "You must accept the consent to submit your application."
-      },
-      "gdpr": {
-        "title": "Your Data Rights",
-        "text": "Under GDPR, you have the right to access, rectify, erase, or port your data. You can also object to processing and withdraw consent at any time."
-      },
-      "submit": "Confirm & Send",
-      "acceptConsent": "Accept Consent to Continue"
-    },
-    "features": {
-      "invoicing": {
-        "title": "Professional Invoicing",
-        "description": "Create and send professional invoices with automated payment reminders and tracking."
-      },
-      "bookkeeping": {
-        "title": "Bookkeeping Services",
-        "description": "Comprehensive bookkeeping services to keep your financial records accurate and up-to-date."
-      },
-      "reporting": {
-        "title": "Financial Reporting",
-        "description": "Detailed financial reports and insights to help you make informed business decisions."
-      },
-      "payroll": {
-        "title": "Payroll Management",
-        "description": "Efficient payroll processing with automated tax calculations and compliance."
-      },
-      "compliance": {
-        "title": "Compliance & Audit",
-        "description": "Ensure compliance with local regulations and prepare for audits with confidence."
-      },
-      "planning": {
-        "title": "Financial Planning",
-        "description": "Strategic financial planning and analysis to support your business growth."
-      }
-    },
-    "benefits": {
-      "title": "Why Choose Our Accounting Services?",
-      "subtitle": "We combine cutting-edge technology with expert financial knowledge to deliver accounting services that help your business thrive. Our team of certified accountants ensures accuracy, compliance, and strategic insights for your financial success.",
-      "list": [
-        "Save time with automated invoicing and bookkeeping",
-        "Reduce errors with professional accounting expertise",
-        "Stay compliant with local tax regulations",
-        "Get real-time insights into your financial health",
-        "Focus on growing your business while we handle the numbers",
-        "Secure cloud-based access to your financial data anytime"
-      ]
-    },
-    "cta": {
-      "title": "Ready to Streamline Your Finances?",
-      "subtitle": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
-      "contactSales": "Contact Sales"
-    },
-    "sections": {
-      "ourServices": "Our Services",
-      "completeSolutions": "Complete Accounting Solutions for Your Business",
-      "solutionsDesc": "From invoicing to financial reporting, we provide comprehensive accounting services tailored to your business needs."
-    }
-  },
   "supportPage": {
     "hero": {
       "title": "How Can We Help You?",
@@ -2828,59 +3225,40 @@
             "title": "Current / Everyday Account",
             "description": "Standard personal banking for daily transactions, payments, and savings. Suitable for residents and non-residents."
           },
-          "private": {
-            "title": "Private Banking",
-            "description": "Wealth management and private banking services for high-net-worth individuals. Minimum deposit typically required."
+          "governance": {
+            "title": "Professional Governance",
+            "description": "Expert management, regulatory compliance, and fiduciary oversight throughout the SPV lifecycle."
+          },
+          "transparency": {
+            "title": "Full Transparency",
+            "description": "Detailed quarterly reports, audited financials, and full visibility into SPV operations and performance."
+          },
+          "exit": {
+            "title": "Defined Exit Strategy",
+            "description": "Structured maturity terms and predefined exit options as set out in contractual documentation."
           }
-        },
-        "whatHappensNext": "What happens next?",
-        "timeline": {
-          "step1": "We'll collect your personal information",
-          "step2": "Verify your identity and contact details",
-          "step3": "Match you with Opulanz Partner Bank",
-          "step4": "Complete the account opening process"
-        },
-        "continueButton": "Continue"
+        }
       },
-      "identityStep": {
-        "title": "Your Identity & Contact",
-        "subtitle": "We need to verify your identity and contact information for regulatory compliance.",
-        "firstName": "First Name",
-        "firstNamePlaceholder": "Enter your first name",
-        "lastName": "Last Name",
-        "lastNamePlaceholder": "Enter your last name",
-        "email": "Email Address",
-        "emailPlaceholder": "your.email@example.com",
-        "phone": "Phone Number",
-        "phonePlaceholder": "+352 123 456 789",
-        "required": "*",
-        "validationError": "Please complete all required fields to continue."
-      },
-      "personalFunnel": {
+      "howItWorks": {
+        "overline": "How It Works",
+        "title": "A Private, Invitation-Based Process",
+        "description": "Our SPV investment opportunities are available exclusively through a private, invitation-based process to ensure regulatory compliance and investor suitability.",
         "steps": {
-          "welcome": {
-            "label": "Welcome",
-            "shortLabel": "Welcome"
+          "contact": {
+            "title": "Initial Contact",
+            "description": "Reach out to our advisory team to express your interest in real estate SPV investment opportunities."
           },
-          "identity": {
-            "label": "Identity & Contact",
-            "shortLabel": "Identity"
+          "qualification": {
+            "title": "Qualification Review",
+            "description": "Our team reviews your investor profile, conducts suitability assessments, and completes KYC/AML verification."
           },
-          "intent": {
-            "label": "Account Intent",
-            "shortLabel": "Intent"
+          "access": {
+            "title": "Portal Access",
+            "description": "Qualified investors receive secure portal credentials to view available SPV offerings and documentation."
           },
-          "eligibility": {
-            "label": "Eligibility",
-            "shortLabel": "Eligibility"
-          },
-          "review": {
-            "label": "Review & Consents",
-            "shortLabel": "Review"
-          },
-          "submission": {
-            "label": "Submission",
-            "shortLabel": "Submit"
+          "investment": {
+            "title": "Investment & Monitoring",
+            "description": "Select opportunities, complete documentation, execute via bank transfer, and track your investment over time."
           }
         },
         "welcome": {
@@ -3099,236 +3477,59 @@
           "description": "Final step"
         }
       },
-      "welcomeStep": {
-        "title": "Welcome to Business Banking",
-        "subtitle": "Let's get started with opening your business bank account. This process should take about 15-20 minutes.",
-        "businessAccountOpening": {
-          "title": "Business Account Opening",
-          "description": "Whether you have an existing company or want to start a new one, we'll guide you through the process of opening a business bank account with Opulanz Partner Bank."
-        },
-        "whatYouNeed": {
-          "title": "What you'll need:",
-          "item1": "Company registration documents (if existing company)",
-          "item2": "Information about directors and beneficial owners (UBOs)",
-          "item3": "Identity documents for all directors and UBOs",
-          "item4": "Proof of business address",
-          "item5": "Company formation details (if starting a new company)"
-        },
-        "processingTime": {
-          "title": "Processing Time",
-          "description": "Business account applications typically take 5-10 business days to review. We may contact you for additional information during the review process."
-        },
-        "startApplication": "Start Application"
+      "cta": {
+        "title": "Interested in SPV Investment Opportunities?",
+        "description": "Contact our advisory team to learn more about current and upcoming real estate SPV investment opportunities. Access is available by invitation only.",
+        "contactButton": "Contact Our Team",
+        "portalAccess": "Investor Portal"
       },
-      "companyStatusStep": {
-        "title": "Company Status",
-        "subtitle": "Tell us about your company so we can provide the right banking solution.",
-        "question": "Do you have an existing company or want to start a new one?",
-        "existing": {
-          "title": "Existing Company",
-          "description": "I already have a registered company and need a bank account for it."
-        },
-        "new": {
-          "title": "New Company",
-          "description": "I want to start a new company and need help with company formation and banking."
-        },
-        "companyDetails": "Company Details",
-        "companyName": "Company Name",
-        "companyNamePlaceholder": "Enter your company name",
-        "registrationNumber": "Company Registration Number",
-        "registrationNumberPlaceholder": "e.g., B123456",
-        "required": "*",
-        "companyFormationService": {
-          "title": "Company Formation Service",
-          "description": "We'll help you form your company in your chosen jurisdiction and open a bank account simultaneously. This streamlined process saves time and ensures everything is set up correctly."
-        }
-      },
-      "jurisdictionStep": {
-        "titleExisting": "Intended Jurisdiction",
-        "titleNew": "Intended Jurisdiction",
-        "subtitleExisting": "Where is your company registered?",
-        "subtitleNew": "Where would you like to form your company?",
-        "selectJurisdiction": "Select Jurisdiction",
-        "selectJurisdictionPlaceholder": "Choose a jurisdiction",
-        "required": "*",
-        "jurisdictions": {
-          "luxembourg": "Luxembourg",
-          "france": "France",
-          "finland": "Finland",
-          "belgium": "Belgium",
-          "germany": "Germany",
-          "netherlands": "Netherlands",
-          "spain": "Spain",
-          "italy": "Italy",
-          "portugal": "Portugal",
-          "austria": "Austria",
-          "other": "Other EU Country"
-        },
-        "helperText": "This determines which banking partner and regulatory framework will apply",
-        "jurisdictionInfo": {
-          "title": "Jurisdiction Information",
-          "luxembourg": "Luxembourg: Premier financial center with favorable tax regime for holding companies. Corporate tax rate: ~24%. Minimum share capital: €12,000 for S.à r.l. (limited liability company)",
-          "france": "France: Large economy with access to EU market. Corporate tax rate: ~25%. Minimum share capital: €1 for SAS/SARL (most common structures)",
-          "finland": "Finland: Stable Nordic economy with strong digital infrastructure. Corporate tax rate: 20%. Minimum share capital: €2,500 for Oy (limited company)",
-          "general": "We'll match you with Opulanz Partner Bank that serves companies in your selected jurisdiction. Specific requirements and timelines will be provided after application review."
-        },
-        "formationTimeline": {
-          "title": "Company Formation Timeline",
-          "description": "Company formation in {jurisdiction} typically takes 2-4 weeks. We'll guide you through the entire process and help you open your bank account simultaneously."
-        }
-      },
-      "directorsUbosStep": {
-        "title": "Directors & Beneficial Owners",
-        "subtitle": "Provide information about company directors and ultimate beneficial owners (UBOs).",
-        "companyDirectors": "Company Directors",
-        "addDirector": "Add Director",
-        "director": "Director",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "email": "Email",
-        "firstNamePlaceholder": "First name",
-        "lastNamePlaceholder": "Last name",
-        "emailPlaceholder": "email@example.com",
-        "required": "*",
-        "ubos": "Ultimate Beneficial Owners (UBOs)",
-        "ubosDescription": "Individuals who own 25% or more of the company",
-        "addUBO": "Add UBO",
-        "ubo": "UBO",
-        "ownershipPercent": "Ownership %",
-        "ownershipPlaceholder": "e.g., 50",
-        "whyWeNeedThis": {
-          "title": "Why we need this information",
-          "description": "Banks are required by law (KYC/AML regulations) to know who controls the company. This helps prevent financial crime and ensures transparency."
-        }
-      },
-      "companyFormationStep": {
-        "title": "Company Formation Details",
-        "subtitle": "Provide information for forming your new company in {jurisdiction}.",
-        "companyFormationService": {
-          "title": "Company Formation Service",
-          "description": "We'll handle the entire company formation process including registration, drafting articles of association, and setting up your corporate structure."
-        },
-        "proposedCompanyName": "Proposed Company Name",
-        "proposedCompanyNamePlaceholder": "Enter your proposed company name",
-        "proposedCompanyNameHelper": "We'll check availability and suggest alternatives if needed",
-        "businessActivity": "Business Activity / Description",
-        "businessActivityPlaceholder": "Describe your business activities (e.g., software development, consulting, e-commerce)",
-        "shareCapital": "Initial Share Capital",
-        "shareCapitalPlaceholder": "e.g., €12,000",
-        "shareCapitalHelper": "Minimum requirements vary by jurisdiction",
-        "shareCapitalRequirements": {
-          "luxembourg": "(Luxembourg: €12,000 for S.à r.l.)",
-          "france": "(France: €1 for SAS/SARL)",
-          "finland": "(Finland: €2,500 for Oy)"
-        },
-        "required": "*",
-        "whatsIncluded": {
-          "title": "What's Included",
-          "item1": "Company name reservation and registration",
-          "item2": "Articles of association preparation",
-          "item3": "Company registration with authorities",
-          "item4": "Tax registration",
-          "item5": "Bank account opening",
-          "item6": "Registered office address (if needed)"
-        },
-        "formationTimeline": {
-          "title": "Formation Timeline",
-          "description": "The company formation process typically takes 2-4 weeks. We'll keep you updated at each stage and coordinate the bank account opening to minimize delays."
-        }
-      },
-      "documentsStep": {
-        "title": "Business Documents",
-        "subtitle": "Upload the required business and identity documents for verification and compliance.",
-        "requiredDocuments": "Required Documents",
-        "documents": {
-          "registration": "Company Registration Certificate",
-          "articles": "Articles of Association / Statutes",
-          "uboRegister": "UBO Register / Shareholder Register",
-          "directorsId": "Directors' Identity Documents",
-          "ubosId": "UBOs' Identity Documents",
-          "proofOfAddress": "Proof of Business Address"
-        },
-        "upload": "Upload",
-        "uploaded": "Uploaded: {filename}",
-        "remove": "Remove",
-        "uploadLater": "I'll upload documents later via my dashboard",
-        "uploadLaterDescription": "You can submit your application now and upload documents later. We'll send you a secure link to your dashboard where you can complete the document upload.",
-        "fileRequirements": {
-          "title": "File Requirements",
-          "formats": "Accepted formats: PDF, JPG, PNG",
-          "maxSize": "Maximum file size: 5MB per document",
-          "quality": "Documents must be clear and legible",
-          "validity": "All documents must be valid (not expired)"
-        },
-        "validationError": "Please upload all required documents or select 'I'll upload documents later' to continue.",
-        "errors": {
-          "invalidFormat": "Please upload a PDF, JPG, or PNG file",
-          "fileTooLarge": "File size must be less than 5MB"
-        }
-      },
-      "reviewConsentsStep": {
-        "title": "Review & Consents",
-        "subtitle": "Please review your information and provide the necessary consents to proceed.",
-        "applicationSummary": "Application Summary",
+      "contactForm": {
+        "title": "Request Information",
+        "description": "Provide your details and our team will be in touch to discuss SPV investment opportunities.",
         "fullName": "Full Name",
-        "email": "Email",
-        "phone": "Phone",
-        "residence": "Residence",
-        "accountType": "Account Type",
-        "documents": "Documents",
-        "verified": "Verified",
-        "europeanResident": "European Resident - {country}",
-        "nonResident": "Non-resident",
-        "accountTypes": {
-          "current": "Current / Everyday Account",
-          "privateBanking": "Private Banking"
+        "email": "Email Address",
+        "phone": "Phone Number (optional)",
+        "investorType": "Investor Type",
+        "investorTypes": {
+          "institutional": "Institutional Investor",
+          "professional": "Professional Investor",
+          "private": "Private Investor"
         },
-        "documentsStatus": {
-          "uploaded": "{count} documents uploaded",
-          "uploadLater": "To be uploaded later"
-        },
-        "requiredConsents": "Required Consents",
-        "processingConsent": {
-          "title": "Processing for Bank Introduction",
-          "description": "I consent to Opulanz processing my personal data for the purpose of introducing me to Opulanz Partner Bank for account opening. This is required to proceed."
-        },
-        "dataSharingConsent": {
-          "title": "Data Sharing with Partner Banks",
-          "description": "I consent to Opulanz sharing my application data with partner banks and EMIs for the purpose of account opening and compliance checks. This is required to proceed."
-        },
-        "marketingConsent": {
-          "title": "Marketing Communications (Optional)",
-          "description": "I would like to receive updates, offers, and news from Opulanz about banking products and services. You can unsubscribe at any time."
-        },
-        "required": "*",
-        "dataRights": {
-          "title": "Your Data Rights",
-          "description": "Under GDPR, you have the right to access, rectify, erase, or port your data. You can also object to processing and withdraw consent at any time. See our Privacy Policy for details."
-        },
-        "validationError": "Both required consents must be accepted to continue with your application."
+        "message": "Message",
+        "messagePlaceholder": "Please describe your investment interests and objectives...",
+        "submit": "Submit Request",
+        "success": "Thank you for your interest. A member of our team will contact you shortly.",
+        "disclaimer": "This page is provided for informational purposes only and does not constitute a public offer, solicitation, or investment advice. Access to detailed investment information is available exclusively through restricted, invitation-based access following appropriate investor verification."
+      }
+    },
+    "portal": {
+      "login": {
+        "title": "Investor Portal",
+        "subtitle": "Enter your access code to view investment opportunities",
+        "accessCode": "Access Code",
+        "accessCodePlaceholder": "Enter your access code",
+        "signIn": "Access Portal",
+        "error": "Invalid access code. Please contact your advisor for assistance.",
+        "help": "Need access? Contact your Opulanz advisor or reach out to our team.",
+        "contactSupport": "Contact Support",
+        "securityNotice": "This portal is restricted to authorised investors only"
       },
-      "submissionStep": {
-        "title": "Application Submitted!",
-        "subtitle": "Your application has been successfully submitted to Opulanz Partner Bank.",
-        "applicationReference": "Your Application Reference",
-        "saveReference": "Save this reference number for tracking your application",
-        "whatHappensNext": "What Happens Next?",
-        "steps": {
-          "emailConfirmation": {
-            "title": "Email Confirmation",
-            "description": "We've sent a confirmation email to {email} with your application details and reference number."
-          },
-          "bankReview": {
-            "title": "Bank Review",
-            "description": "Opulanz Partner Bank will review your application and verify your documents. This typically takes 2-5 business days."
-          },
-          "accountActivation": {
-            "title": "Account Activation",
-            "description": "Once approved, the bank will contact you directly to complete the account activation and provide your account details."
-          }
-        },
-        "documentUploadPending": "Document Upload Pending",
-        "documentUploadPendingDescription": "You still need to upload your documents. We'll send you a secure link to your dashboard within 24 hours.",
+      "nav": {
+        "dashboard": "Dashboard",
+        "offerings": "Offerings",
+        "documents": "Documents",
+        "logout": "Sign Out"
+      },
+      "dashboard": {
+        "title": "Investor Dashboard",
+        "welcome": "Welcome to your SPV Investment Portal",
+        "summary": "Investment Summary",
+        "totalInvested": "Total Invested",
+        "activeSpvs": "Active SPVs",
+        "estimatedReturn": "Est. Annual Return",
+        "documentsAvailable": "Documents",
+        "recentActivity": "Recent Activity",
+        "noActivity": "No recent activity to display.",
         "quickActions": {
           "title": "Quick Actions",
           "checkEmail": "Check Your Email",
@@ -3600,144 +3801,422 @@
           "startNew": "Start New Application"
         }
       },
-      "submitted": {
-        "message": "Your account application is being reviewed. You will receive a decision within 24-48 hours."
+      "offerings": {
+        "title": "SPV Offerings",
+        "subtitle": "Browse current SPV investment opportunities",
+        "status": {
+          "open": "Open for Investment",
+          "closing": "Closing Soon",
+          "closed": "Fully Subscribed",
+          "coming": "Coming Soon"
+        },
+        "filters": {
+          "all": "All",
+          "open": "Open",
+          "closing": "Closing Soon"
+        },
+        "card": {
+          "location": "Location",
+          "type": "Property Type",
+          "size": "Size",
+          "minimumInvestment": "Min. Investment",
+          "targetReturn": "Target Return",
+          "term": "Term",
+          "viewDetails": "View Details"
+        },
+        "noOfferings": "No offerings match your current filters."
+      },
+      "offeringDetail": {
+        "backToOfferings": "Back to Offerings",
+        "overview": "Overview",
+        "investmentTerms": "Investment Terms",
+        "propertyDetails": "Property Details",
+        "location": "Location",
+        "propertyType": "Property Type",
+        "totalSize": "Total Size",
+        "yearBuilt": "Year Built",
+        "status": "Status",
+        "features": "Key Features",
+        "description": "Description",
+        "financials": {
+          "title": "Financial Overview",
+          "totalValue": "Total Property Value",
+          "spvShares": "SPV Shares Available",
+          "minimumInvestment": "Minimum Investment",
+          "targetReturn": "Target Annual Return",
+          "investmentTerm": "Investment Term",
+          "distributionFrequency": "Distribution Frequency"
+        },
+        "bankTransfer": {
+          "title": "Bank Transfer Instructions",
+          "description": "To participate in this offering, please transfer your investment amount to the following account:",
+          "bankName": "Bank Name",
+          "iban": "IBAN",
+          "bic": "BIC/SWIFT",
+          "reference": "Payment Reference",
+          "copied": "Copied!",
+          "important": "Important: Please include the payment reference to ensure your investment is correctly allocated to this SPV."
+        },
+        "documents": {
+          "title": "Related Documents",
+          "prospectus": "Investment Prospectus",
+          "agreement": "Subscription Agreement",
+          "termSheet": "Term Sheet"
+        },
+        "disclaimer": "This information is provided to authorised investors only and does not constitute investment advice. Past performance is not indicative of future results. All investments carry risk, including the potential loss of capital."
+      },
+      "documents": {
+        "title": "Document Centre",
+        "subtitle": "Access and download your investment documents",
+        "search": "Search documents...",
+        "categories": {
+          "all": "All",
+          "agreements": "Agreements",
+          "reports": "Reports",
+          "tax": "Tax Documents",
+          "legal": "Legal Documents"
+        },
+        "table": {
+          "name": "Document Name",
+          "category": "Category",
+          "date": "Date",
+          "size": "Size",
+          "download": "Download"
+        },
+        "noDocuments": "No documents match your search criteria."
       }
     },
-    "company": {
-      "title": "Company Account KYB",
-      "description": "Complete your business verification to open your company account",
-      "form": {
-        "companyInfo": "Company Information",
-        "companyName": "Company Name",
-        "registrationNumber": "Registration Number",
-        "dateOfIncorporation": "Date of Incorporation",
-        "legalForm": "Legal Form",
-        "selectLegalForm": "Select legal form",
-        "companyAddress": "Company Address",
-        "streetAddress": "Street Address",
-        "city": "City",
-        "postalCode": "Postal Code",
-        "country": "Country",
-        "selectCountry": "Select country",
-        "companyDocuments": "Company Documents",
-        "documentDescription": "Please upload clear copies of the following documents (max 15MB each)",
-        "businessActivity": "Business Activity",
-        "businessActivityDescription": "Business Activity Description",
-        "businessActivityPlaceholder": "Describe your main business activities...",
-        "activityCountries": "Countries of Activity",
-        "activityCountriesHelp": "Hold Ctrl (Windows) or Cmd (Mac) to select multiple countries",
-        "expectedMonthlyVolume": "Expected Monthly Transaction Volume",
-        "selectRange": "Select range",
-        "consents": "Consents",
-        "consentKYB": "I consent to business verification and compliance checks as required by law",
-        "consentTerms": "I agree to Opulanz",
-        "termsLink": "Terms & Conditions",
-        "privacyLink": "Privacy Policy"
+    "admin": {
+      "title": "Admin Portal",
+      "login": {
+        "title": "Admin Portal",
+        "subtitle": "Enter your administrator access code",
+        "accessCode": "Admin Access Code",
+        "accessCodePlaceholder": "Enter admin code",
+        "signIn": "Access Admin Portal",
+        "error": "Invalid admin code. Please check your credentials.",
+        "backToSite": "Back to main site",
+        "securityNotice": "Authorised administrators only"
       },
-      "approved": {
-        "message": "Your business account has been successfully approved!",
-        "nextSteps": {
-          "multiUser": "Set up multi-user access for your team",
-          "accounting": "Configure accounting integration",
-          "corporateCards": "Order corporate debit cards",
-          "fundAccount": "Fund your account via transfer"
+      "nav": {
+        "dashboard": "Dashboard",
+        "customers": "Customers",
+        "properties": "Properties",
+        "logout": "Sign Out"
+      },
+      "dashboard": {
+        "title": "Admin Dashboard",
+        "subtitle": "Manage customers and property offerings",
+        "totalCustomers": "Total Customers",
+        "activeCustomers": "Active Customers",
+        "totalProperties": "Total Properties",
+        "openProperties": "Open Properties",
+        "recentActivity": "Recent Activity",
+        "noActivity": "No recent activity to display.",
+        "quickActions": "Quick Actions",
+        "addCustomer": "Add Customer",
+        "addProperty": "Add Property",
+        "viewCustomers": "View Customers",
+        "viewProperties": "View Properties"
+      },
+      "customers": {
+        "title": "Customer Management",
+        "subtitle": "Manage investor access and credentials",
+        "addCustomer": "Add Customer",
+        "editCustomer": "Edit Customer",
+        "searchPlaceholder": "Search customers...",
+        "filter": {
+          "all": "All",
+          "active": "Active",
+          "inactive": "Inactive"
         },
-        "buttons": {
-          "dashboard": "Go to Dashboard",
-          "downloadApp": "Download App",
-          "startNew": "Start New Application"
+        "filters": {
+          "all": "All",
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "columns": {
+          "name": "Name",
+          "email": "Email",
+          "accessCode": "Access Code",
+          "type": "Type",
+          "profile": "Profile",
+          "status": "Status",
+          "lastAccess": "Last Access",
+          "actions": "Actions"
+        },
+        "table": {
+          "name": "Name",
+          "email": "Email",
+          "accessCode": "Access Code",
+          "type": "Type",
+          "profile": "Profile",
+          "status": "Status",
+          "lastAccess": "Last Access",
+          "actions": "Actions"
+        },
+        "noCustomers": "No customers found.",
+        "form": {
+          "title": "Customer Details",
+          "editTitle": "Edit Customer",
+          "createTitle": "New Customer",
+          "name": "Full Name",
+          "namePlaceholder": "Enter full name",
+          "email": "Email Address",
+          "emailPlaceholder": "Enter email address",
+          "phone": "Phone Number",
+          "phonePlaceholder": "Enter phone number (optional)",
+          "investorType": "Investor Type",
+          "investorTypes": {
+            "institutional": "Institutional",
+            "professional": "Professional",
+            "private": "Private"
+          },
+          "profile": "Investor Profile",
+          "profiles": {
+            "existing": "Existing Investor",
+            "new": "New Investor"
+          },
+          "status": "Status",
+          "statuses": {
+            "active": "Active",
+            "inactive": "Inactive"
+          },
+          "accessCode": "Access Code",
+          "regenerateCode": "Regenerate",
+          "copyCode": "Copy"
+        },
+        "deleteConfirm": {
+          "title": "Delete Customer",
+          "message": "Are you sure you want to delete this customer? This action cannot be undone."
+        },
+        "types": {
+          "institutional": "Institutional",
+          "professional": "Professional",
+          "private": "Private"
+        },
+        "profiles": {
+          "existing": "Existing",
+          "new": "New"
+        },
+        "statuses": {
+          "active": "Active",
+          "inactive": "Inactive"
         }
       },
-      "submitted": {
-        "message": "Your business account application is being reviewed. You will receive a decision within 2-3 business days."
-      }
-    },
-    "warmReferral": {
-      "handoff": {
-        "title": "Secure Handoff",
-        "description": "Your information will be securely transferred to {partner}",
-        "step1": {
-          "title": "Secure Handoff",
-          "description": "Your information will be securely transferred to {partner}"
+      "properties": {
+        "title": "Property Management",
+        "subtitle": "Manage SPV investment offerings",
+        "addProperty": "Add Property",
+        "editProperty": "Edit Property",
+        "createProperty": "New Property",
+        "backToList": "Back to properties",
+        "searchPlaceholder": "Search properties...",
+        "filter": {
+          "all": "All"
         },
-        "step2": {
-          "title": "Complete Application",
-          "description": "Follow {partner}'s process to complete your application"
+        "filters": {
+          "all": "All",
+          "open": "Open",
+          "closing": "Closing",
+          "closed": "Closed",
+          "coming": "Coming Soon"
         },
-        "step3": {
-          "title": "Opulanz Support",
-          "description": "We remain your point of contact for any questions"
+        "noProperties": "No properties found.",
+        "form": {
+          "title": "Property Details",
+          "editTitle": "Edit Property",
+          "createTitle": "New Property",
+          "basicInfo": "Basic Information",
+          "propertyTitle": "Property Title",
+          "titlePlaceholder": "Enter property title",
+          "location": "Location",
+          "locationPlaceholder": "e.g., Paris 16th, France",
+          "propertyType": "Property Type",
+          "typePlaceholder": "e.g., Residential Apartment",
+          "size": "Size",
+          "sizePlaceholder": "e.g., 185 sqm",
+          "yearBuilt": "Year Built",
+          "yearPlaceholder": "e.g., 2019",
+          "status": "Status",
+          "statuses": {
+            "open": "Open for Investment",
+            "closing": "Closing Soon",
+            "closed": "Fully Subscribed",
+            "coming": "Coming Soon"
+          },
+          "description": "Description",
+          "descriptionPlaceholder": "Enter property description...",
+          "features": "Features",
+          "featuresHelp": "List property features, one per line",
+          "addFeature": "Add Feature",
+          "featurePlaceholder": "Enter feature",
+          "images": "Image URLs",
+          "imagesHelp": "Add image URLs for the property",
+          "addImage": "Add Image",
+          "imagePlaceholder": "https://...",
+          "financials": "Financial Details",
+          "totalValue": "Total Property Value",
+          "totalValuePlaceholder": "e.g., €2,500,000",
+          "spvShares": "SPV Shares Available",
+          "spvSharesPlaceholder": "e.g., 100 shares",
+          "minimumInvestment": "Minimum Investment",
+          "minimumPlaceholder": "e.g., €25,000",
+          "targetReturn": "Target Return",
+          "returnPlaceholder": "e.g., 6-8% p.a.",
+          "investmentTerm": "Investment Term",
+          "termPlaceholder": "e.g., 5 years",
+          "distributionFrequency": "Distribution Frequency",
+          "frequencyPlaceholder": "e.g., Quarterly",
+          "bankTransfer": "Bank Transfer Details",
+          "bankName": "Bank Name",
+          "bankNamePlaceholder": "e.g., Banque Internationale à Luxembourg",
+          "iban": "IBAN",
+          "ibanPlaceholder": "e.g., LU00 0000 0000 0000 0000",
+          "bic": "BIC/SWIFT",
+          "bicPlaceholder": "e.g., BILLLULL",
+          "reference": "Payment Reference",
+          "referencePlaceholder": "e.g., SPV-PARIS-001"
+        },
+        "deleteConfirm": {
+          "title": "Delete Property",
+          "message": "Are you sure you want to delete this property? This action cannot be undone."
         }
+      },
+      "documents": {
+        "title": "Documents",
+        "addDocument": "Add Document",
+        "editDocument": "Edit Document",
+        "documentName": "Document Name",
+        "documentNamePlaceholder": "Enter document name",
+        "documentType": "Document Type",
+        "selectFile": "Select File",
+        "selectedFile": "Selected",
+        "documentUrl": "Document URL (optional)",
+        "noDocuments": "No documents uploaded yet.",
+        "types": {
+          "id": "ID Document",
+          "contract": "Contract",
+          "kyc": "KYC Document",
+          "prospectus": "Prospectus",
+          "legal": "Legal Document",
+          "financial": "Financial Report",
+          "other": "Other"
+        }
+      },
+      "profile": {
+        "admin": "Administrator",
+        "primaryAdmin": "Primary Admin",
+        "viewProfile": "View Profile",
+        "manageAdmins": "Manage Admins",
+        "settings": "Admin Settings",
+        "settingsSubtitle": "Manage your profile and administrator accounts"
+      },
+      "settings": {
+        "title": "Admin Settings",
+        "profile": {
+          "title": "My Profile",
+          "subtitle": "Your administrator profile information",
+          "name": "Name",
+          "email": "Email",
+          "role": "Role",
+          "accessCode": "Access Code",
+          "lastLogin": "Last Login",
+          "memberSince": "Member Since",
+          "updateProfile": "Update Profile",
+          "changePassword": "Change Access Code"
+        },
+        "admins": {
+          "title": "Administrator Management",
+          "subtitle": "Manage administrator accounts and permissions",
+          "addAdmin": "Add Administrator",
+          "editAdmin": "Edit Administrator",
+          "noAdmins": "No other administrators configured.",
+          "columns": {
+            "name": "Name",
+            "email": "Email",
+            "role": "Role",
+            "status": "Status",
+            "lastLogin": "Last Login",
+            "actions": "Actions"
+          },
+          "form": {
+            "name": "Full Name",
+            "namePlaceholder": "Enter administrator name",
+            "email": "Email Address",
+            "emailPlaceholder": "Enter email address",
+            "role": "Role",
+            "roles": {
+              "primary": "Primary Admin",
+              "admin": "Administrator"
+            },
+            "status": "Status",
+            "statuses": {
+              "active": "Active",
+              "inactive": "Inactive"
+            },
+            "accessCode": "Access Code",
+            "generateCode": "Generate New Code"
+          },
+          "deleteConfirm": {
+            "title": "Delete Administrator",
+            "message": "Are you sure you want to delete this administrator? This action cannot be undone."
+          },
+          "resetPassword": {
+            "title": "Reset Access Code",
+            "message": "Generate a new access code for this administrator?",
+            "newCode": "New access code",
+            "copyCode": "Copy Code",
+            "copied": "Copied!"
+          }
+        },
+        "activity": {
+          "title": "Activity Log",
+          "subtitle": "Monitor administrator actions and system activity",
+          "filterByAdmin": "Filter by Admin",
+          "allAdmins": "All Admins",
+          "noActivity": "No activity recorded yet.",
+          "types": {
+            "admin_login": "Admin Login",
+            "admin_created": "Admin Created",
+            "admin_updated": "Admin Updated",
+            "admin_deleted": "Admin Deleted",
+            "password_reset": "Password Reset",
+            "customer_login": "Customer Login",
+            "customer_created": "Customer Created",
+            "customer_updated": "Customer Updated",
+            "customer_deleted": "Customer Deleted",
+            "offering_created": "Property Created",
+            "offering_updated": "Property Updated",
+            "offering_deleted": "Property Deleted"
+          }
+        },
+        "tabs": {
+          "profile": "Profile",
+          "admins": "Administrators",
+          "activity": "Activity Log"
+        }
+      },
+      "common": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "create": "Create",
+        "edit": "Edit",
+        "delete": "Delete",
+        "confirm": "Confirm",
+        "close": "Close",
+        "search": "Search",
+        "filter": "Filter",
+        "actions": "Actions",
+        "loading": "Loading...",
+        "saving": "Saving...",
+        "deleting": "Deleting...",
+        "success": "Success",
+        "error": "Error",
+        "never": "Never",
+        "back": "Back",
+        "backToList": "Back to list"
       }
-    }
-  },
-  "servicesPage": {
-    "hero": {
-      "title": "Complete Financial Services for Your Success",
-      "subtitle": "From banking to investment advisory, discover our comprehensive range of financial services designed to help individuals and businesses thrive in Luxembourg and beyond.",
-      "primaryCta": "Open an Account",
-      "secondaryCta": "Explore Services"
-    },
-    "servicesSection": {
-      "overline": "Our Services",
-      "title": "Everything You Need Under One Roof",
-      "description": "Explore our comprehensive range of financial services designed to support your personal and business goals."
-    },
-    "featuresSection": {
-      "overline": "Why Opulanz",
-      "title": "Your Trusted Financial Partner",
-      "description": "We provide comprehensive financial solutions with the expertise, security, and personalized service you deserve.",
-      "expertFinancial": {
-        "title": "Expert Financial Services",
-        "description": "Professional accounting, bookkeeping, and financial management services tailored to your business."
-      },
-      "taxOptimization": {
-        "title": "Tax Optimization",
-        "description": "Strategic tax planning and advisory services to minimize your tax burden while ensuring compliance."
-      },
-      "investmentManagement": {
-        "title": "Investment Management",
-        "description": "Personalized investment strategies and wealth management to help you achieve your financial goals."
-      },
-      "insuranceSolutions": {
-        "title": "Insurance Solutions",
-        "description": "Comprehensive life insurance products to protect what matters most to you and your family."
-      },
-      "companyFormation": {
-        "title": "Company Formation",
-        "description": "Complete support for establishing your business in Luxembourg with legal and regulatory guidance."
-      },
-      "bankingServices": {
-        "title": "Banking Services",
-        "description": "Modern digital banking solutions with multi-currency accounts and international payment capabilities."
-      }
-    },
-    "whyChooseUs": {
-      "title": "Why Choose Opulanz?",
-      "paragraph1": "Opulanz brings together the best of traditional banking expertise and modern fintech innovation. As a fully regulated financial institution with presence in Luxembourg and France, we offer the security and reliability you need, combined with the flexibility and innovation you want.",
-      "paragraph2": "Whether you're an individual looking for banking and investment services, or a business seeking comprehensive financial solutions, we have the expertise and services to support your success.",
-      "cta": "Get Started Today",
-      "reasons": {
-        "regulated": "Regulated by ACPR and AMF for your peace of mind",
-        "expertise": "Over 25 years of combined expertise in financial services",
-        "personalized": "Personalized service from dedicated account managers",
-        "competitive": "Competitive rates and transparent fee structure",
-        "multilingual": "Multi-lingual support in English and French",
-        "digital": "Cutting-edge digital platforms for 24/7 access",
-        "comprehensive": "Comprehensive suite of services under one roof"
-      }
-    },
-    "regulatorySection": {
-      "overline": "Trusted & Regulated",
-      "title": "Your Security is Our Priority",
-      "description": "We are regulated by leading European financial authorities, ensuring the highest standards of security and compliance."
-    },
-    "ctaSection": {
-      "title": "Ready to Experience Banking Excellence?",
-      "description": "Join thousands of satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
-      "openAccount": "Open an Account",
-      "contactUs": "Contact Us"
     }
   },
   "insurance": {
@@ -4193,6 +4672,534 @@
         "orCall": "or call",
         "returnHome": "Return to Home",
         "printConfirmation": "Print Confirmation"
+      }
+    }
+  },
+  "spvInvestment": {
+    "landing": {
+      "heroTitle": "Real Estate SPV Investment",
+      "heroSubtitle": "Access carefully selected European real estate opportunities through professionally managed Special Purpose Vehicle (SPV) structures, available exclusively to qualified investors.",
+      "whatIsSpv": {
+        "overline": "About SPV Investment",
+        "title": "What is an SPV?",
+        "description": "A Special Purpose Vehicle (SPV) is a dedicated legal entity created specifically to hold and manage a real estate asset. Each SPV isolates the investment, providing clear legal separation, professional governance, and transparent reporting for investors.",
+        "benefits": {
+          "protection": {
+            "title": "Asset Protection",
+            "description": "Each SPV isolates the property asset, shielding investors from unrelated liabilities."
+          },
+          "governance": {
+            "title": "Professional Governance",
+            "description": "Expert management, regulatory compliance, and fiduciary oversight throughout the SPV lifecycle."
+          },
+          "transparency": {
+            "title": "Full Transparency",
+            "description": "Detailed quarterly reports, audited financials, and full visibility into SPV operations and performance."
+          },
+          "exit": {
+            "title": "Defined Exit Strategy",
+            "description": "Structured maturity terms and predefined exit options as set out in contractual documentation."
+          }
+        }
+      },
+      "howItWorks": {
+        "overline": "How It Works",
+        "title": "A Private, Invitation-Based Process",
+        "description": "Our SPV investment opportunities are available exclusively through a private, invitation-based process to ensure regulatory compliance and investor suitability.",
+        "steps": {
+          "contact": {
+            "title": "Initial Contact",
+            "description": "Reach out to our advisory team to express your interest in real estate SPV investment opportunities."
+          },
+          "qualification": {
+            "title": "Qualification Review",
+            "description": "Our team reviews your investor profile, conducts suitability assessments, and completes KYC/AML verification."
+          },
+          "access": {
+            "title": "Portal Access",
+            "description": "Qualified investors receive secure portal credentials to view available SPV offerings and documentation."
+          },
+          "investment": {
+            "title": "Investment & Monitoring",
+            "description": "Select opportunities, complete documentation, execute via bank transfer, and track your investment over time."
+          }
+        }
+      },
+      "cta": {
+        "title": "Interested in SPV Investment Opportunities?",
+        "description": "Contact our advisory team to learn more about current and upcoming real estate SPV investment opportunities. Access is available by invitation only.",
+        "contactButton": "Contact Our Team",
+        "portalAccess": "Investor Portal"
+      },
+      "contactForm": {
+        "title": "Request Information",
+        "description": "Provide your details and our team will be in touch to discuss SPV investment opportunities.",
+        "fullName": "Full Name",
+        "email": "Email Address",
+        "phone": "Phone Number (optional)",
+        "investorType": "Investor Type",
+        "investorTypes": {
+          "institutional": "Institutional Investor",
+          "professional": "Professional Investor",
+          "private": "Private Investor"
+        },
+        "message": "Message",
+        "messagePlaceholder": "Please describe your investment interests and objectives...",
+        "submit": "Submit Request",
+        "success": "Thank you for your interest. A member of our team will contact you shortly.",
+        "disclaimer": "This page is provided for informational purposes only and does not constitute a public offer, solicitation, or investment advice. Access to detailed investment information is available exclusively through restricted, invitation-based access following appropriate investor verification."
+      }
+    },
+    "portal": {
+      "login": {
+        "title": "Investor Portal",
+        "subtitle": "Enter your access code to view investment opportunities",
+        "accessCode": "Access Code",
+        "accessCodePlaceholder": "Enter your access code",
+        "signIn": "Access Portal",
+        "error": "Invalid access code. Please contact your advisor for assistance.",
+        "help": "Need access? Contact your Opulanz advisor or reach out to our team.",
+        "contactSupport": "Contact Support",
+        "securityNotice": "This portal is restricted to authorised investors only"
+      },
+      "nav": {
+        "dashboard": "Dashboard",
+        "offerings": "Offerings",
+        "documents": "Documents",
+        "logout": "Sign Out"
+      },
+      "dashboard": {
+        "title": "Investor Dashboard",
+        "welcome": "Welcome to your SPV Investment Portal",
+        "summary": "Investment Summary",
+        "totalInvested": "Total Invested",
+        "activeSpvs": "Active SPVs",
+        "estimatedReturn": "Est. Annual Return",
+        "documentsAvailable": "Documents",
+        "recentActivity": "Recent Activity",
+        "noActivity": "No recent activity to display.",
+        "quickActions": {
+          "title": "Quick Actions",
+          "viewOfferings": "View Offerings",
+          "downloadDocuments": "Download Documents",
+          "contactAdvisor": "Contact Advisor"
+        }
+      },
+      "offerings": {
+        "title": "SPV Offerings",
+        "subtitle": "Browse current SPV investment opportunities",
+        "status": {
+          "open": "Open for Investment",
+          "closing": "Closing Soon",
+          "closed": "Fully Subscribed",
+          "coming": "Coming Soon"
+        },
+        "filters": {
+          "all": "All",
+          "open": "Open",
+          "closing": "Closing Soon"
+        },
+        "card": {
+          "location": "Location",
+          "type": "Property Type",
+          "size": "Size",
+          "minimumInvestment": "Min. Investment",
+          "targetReturn": "Target Return",
+          "term": "Term",
+          "viewDetails": "View Details"
+        },
+        "noOfferings": "No offerings match your current filters."
+      },
+      "offeringDetail": {
+        "backToOfferings": "Back to Offerings",
+        "overview": "Overview",
+        "investmentTerms": "Investment Terms",
+        "propertyDetails": "Property Details",
+        "location": "Location",
+        "propertyType": "Property Type",
+        "totalSize": "Total Size",
+        "yearBuilt": "Year Built",
+        "status": "Status",
+        "features": "Key Features",
+        "description": "Description",
+        "financials": {
+          "title": "Financial Overview",
+          "totalValue": "Total Property Value",
+          "spvShares": "SPV Shares Available",
+          "minimumInvestment": "Minimum Investment",
+          "targetReturn": "Target Annual Return",
+          "investmentTerm": "Investment Term",
+          "distributionFrequency": "Distribution Frequency"
+        },
+        "bankTransfer": {
+          "title": "Bank Transfer Instructions",
+          "description": "To participate in this offering, please transfer your investment amount to the following account:",
+          "bankName": "Bank Name",
+          "iban": "IBAN",
+          "bic": "BIC/SWIFT",
+          "reference": "Payment Reference",
+          "copied": "Copied!",
+          "important": "Important: Please include the payment reference to ensure your investment is correctly allocated to this SPV."
+        },
+        "documents": {
+          "title": "Related Documents",
+          "prospectus": "Investment Prospectus",
+          "agreement": "Subscription Agreement",
+          "termSheet": "Term Sheet"
+        },
+        "disclaimer": "This information is provided to authorised investors only and does not constitute investment advice. Past performance is not indicative of future results. All investments carry risk, including the potential loss of capital."
+      },
+      "documents": {
+        "title": "Document Centre",
+        "subtitle": "Access and download your investment documents",
+        "search": "Search documents...",
+        "categories": {
+          "all": "All",
+          "agreements": "Agreements",
+          "reports": "Reports",
+          "tax": "Tax Documents",
+          "legal": "Legal Documents"
+        },
+        "table": {
+          "name": "Document Name",
+          "category": "Category",
+          "date": "Date",
+          "size": "Size",
+          "download": "Download"
+        },
+        "noDocuments": "No documents match your search criteria."
+      }
+    },
+    "admin": {
+      "title": "Admin Portal",
+      "login": {
+        "title": "Admin Portal",
+        "subtitle": "Enter your administrator access code",
+        "accessCode": "Admin Access Code",
+        "accessCodePlaceholder": "Enter admin code",
+        "signIn": "Access Admin Portal",
+        "error": "Invalid admin code. Please check your credentials.",
+        "backToSite": "Back to main site",
+        "securityNotice": "Authorised administrators only"
+      },
+      "nav": {
+        "dashboard": "Dashboard",
+        "customers": "Customers",
+        "properties": "Properties",
+        "logout": "Sign Out"
+      },
+      "dashboard": {
+        "title": "Admin Dashboard",
+        "subtitle": "Manage customers and property offerings",
+        "totalCustomers": "Total Customers",
+        "activeCustomers": "Active Customers",
+        "totalProperties": "Total Properties",
+        "openProperties": "Open Properties",
+        "recentActivity": "Recent Activity",
+        "noActivity": "No recent activity to display.",
+        "quickActions": "Quick Actions",
+        "addCustomer": "Add Customer",
+        "addProperty": "Add Property",
+        "viewCustomers": "View Customers",
+        "viewProperties": "View Properties"
+      },
+      "customers": {
+        "title": "Customer Management",
+        "subtitle": "Manage investor access and credentials",
+        "addCustomer": "Add Customer",
+        "editCustomer": "Edit Customer",
+        "searchPlaceholder": "Search customers...",
+        "filter": {
+          "all": "All",
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "filters": {
+          "all": "All",
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "columns": {
+          "name": "Name",
+          "email": "Email",
+          "accessCode": "Access Code",
+          "type": "Type",
+          "profile": "Profile",
+          "status": "Status",
+          "lastAccess": "Last Access",
+          "actions": "Actions"
+        },
+        "table": {
+          "name": "Name",
+          "email": "Email",
+          "accessCode": "Access Code",
+          "type": "Type",
+          "profile": "Profile",
+          "status": "Status",
+          "lastAccess": "Last Access",
+          "actions": "Actions"
+        },
+        "noCustomers": "No customers found.",
+        "form": {
+          "title": "Customer Details",
+          "editTitle": "Edit Customer",
+          "createTitle": "New Customer",
+          "name": "Full Name",
+          "namePlaceholder": "Enter full name",
+          "email": "Email Address",
+          "emailPlaceholder": "Enter email address",
+          "phone": "Phone Number",
+          "phonePlaceholder": "Enter phone number (optional)",
+          "investorType": "Investor Type",
+          "investorTypes": {
+            "institutional": "Institutional",
+            "professional": "Professional",
+            "private": "Private"
+          },
+          "profile": "Investor Profile",
+          "profiles": {
+            "existing": "Existing Investor",
+            "new": "New Investor"
+          },
+          "status": "Status",
+          "statuses": {
+            "active": "Active",
+            "inactive": "Inactive"
+          },
+          "accessCode": "Access Code",
+          "regenerateCode": "Regenerate",
+          "copyCode": "Copy"
+        },
+        "deleteConfirm": {
+          "title": "Delete Customer",
+          "message": "Are you sure you want to delete this customer? This action cannot be undone."
+        },
+        "types": {
+          "institutional": "Institutional",
+          "professional": "Professional",
+          "private": "Private"
+        },
+        "profiles": {
+          "existing": "Existing",
+          "new": "New"
+        },
+        "statuses": {
+          "active": "Active",
+          "inactive": "Inactive"
+        }
+      },
+      "properties": {
+        "title": "Property Management",
+        "subtitle": "Manage SPV investment offerings",
+        "addProperty": "Add Property",
+        "editProperty": "Edit Property",
+        "createProperty": "New Property",
+        "backToList": "Back to properties",
+        "searchPlaceholder": "Search properties...",
+        "filter": {
+          "all": "All"
+        },
+        "filters": {
+          "all": "All",
+          "open": "Open",
+          "closing": "Closing",
+          "closed": "Closed",
+          "coming": "Coming Soon"
+        },
+        "noProperties": "No properties found.",
+        "form": {
+          "title": "Property Details",
+          "editTitle": "Edit Property",
+          "createTitle": "New Property",
+          "basicInfo": "Basic Information",
+          "propertyTitle": "Property Title",
+          "titlePlaceholder": "Enter property title",
+          "location": "Location",
+          "locationPlaceholder": "e.g., Paris 16th, France",
+          "propertyType": "Property Type",
+          "typePlaceholder": "e.g., Residential Apartment",
+          "size": "Size",
+          "sizePlaceholder": "e.g., 185 sqm",
+          "yearBuilt": "Year Built",
+          "yearPlaceholder": "e.g., 2019",
+          "status": "Status",
+          "statuses": {
+            "open": "Open for Investment",
+            "closing": "Closing Soon",
+            "closed": "Fully Subscribed",
+            "coming": "Coming Soon"
+          },
+          "description": "Description",
+          "descriptionPlaceholder": "Enter property description...",
+          "features": "Features",
+          "featuresHelp": "List property features, one per line",
+          "addFeature": "Add Feature",
+          "featurePlaceholder": "Enter feature",
+          "images": "Image URLs",
+          "imagesHelp": "Add image URLs for the property",
+          "addImage": "Add Image",
+          "imagePlaceholder": "https://...",
+          "financials": "Financial Details",
+          "totalValue": "Total Property Value",
+          "totalValuePlaceholder": "e.g., €2,500,000",
+          "spvShares": "SPV Shares Available",
+          "spvSharesPlaceholder": "e.g., 100 shares",
+          "minimumInvestment": "Minimum Investment",
+          "minimumPlaceholder": "e.g., €25,000",
+          "targetReturn": "Target Return",
+          "returnPlaceholder": "e.g., 6-8% p.a.",
+          "investmentTerm": "Investment Term",
+          "termPlaceholder": "e.g., 5 years",
+          "distributionFrequency": "Distribution Frequency",
+          "frequencyPlaceholder": "e.g., Quarterly",
+          "bankTransfer": "Bank Transfer Details",
+          "bankName": "Bank Name",
+          "bankNamePlaceholder": "e.g., Banque Internationale à Luxembourg",
+          "iban": "IBAN",
+          "ibanPlaceholder": "e.g., LU00 0000 0000 0000 0000",
+          "bic": "BIC/SWIFT",
+          "bicPlaceholder": "e.g., BILLLULL",
+          "reference": "Payment Reference",
+          "referencePlaceholder": "e.g., SPV-PARIS-001"
+        },
+        "deleteConfirm": {
+          "title": "Delete Property",
+          "message": "Are you sure you want to delete this property? This action cannot be undone."
+        }
+      },
+      "documents": {
+        "title": "Documents",
+        "addDocument": "Add Document",
+        "editDocument": "Edit Document",
+        "documentName": "Document Name",
+        "documentNamePlaceholder": "Enter document name",
+        "documentType": "Document Type",
+        "selectFile": "Select File",
+        "selectedFile": "Selected",
+        "documentUrl": "Document URL (optional)",
+        "noDocuments": "No documents uploaded yet.",
+        "types": {
+          "id": "ID Document",
+          "contract": "Contract",
+          "kyc": "KYC Document",
+          "prospectus": "Prospectus",
+          "legal": "Legal Document",
+          "financial": "Financial Report",
+          "other": "Other"
+        }
+      },
+      "profile": {
+        "admin": "Administrator",
+        "primaryAdmin": "Primary Admin",
+        "viewProfile": "View Profile",
+        "manageAdmins": "Manage Admins",
+        "settings": "Admin Settings",
+        "settingsSubtitle": "Manage your profile and administrator accounts"
+      },
+      "settings": {
+        "title": "Admin Settings",
+        "profile": {
+          "title": "My Profile",
+          "subtitle": "Your administrator profile information",
+          "name": "Name",
+          "email": "Email",
+          "role": "Role",
+          "accessCode": "Access Code",
+          "lastLogin": "Last Login",
+          "memberSince": "Member Since",
+          "updateProfile": "Update Profile",
+          "changePassword": "Change Access Code"
+        },
+        "admins": {
+          "title": "Administrator Management",
+          "subtitle": "Manage administrator accounts and permissions",
+          "addAdmin": "Add Administrator",
+          "editAdmin": "Edit Administrator",
+          "noAdmins": "No other administrators configured.",
+          "columns": {
+            "name": "Name",
+            "email": "Email",
+            "role": "Role",
+            "status": "Status",
+            "lastLogin": "Last Login",
+            "actions": "Actions"
+          },
+          "form": {
+            "name": "Full Name",
+            "namePlaceholder": "Enter administrator name",
+            "email": "Email Address",
+            "emailPlaceholder": "Enter email address",
+            "role": "Role",
+            "roles": {
+              "primary": "Primary Admin",
+              "admin": "Administrator"
+            },
+            "status": "Status",
+            "statuses": {
+              "active": "Active",
+              "inactive": "Inactive"
+            },
+            "accessCode": "Access Code",
+            "generateCode": "Generate New Code"
+          },
+          "deleteConfirm": {
+            "title": "Delete Administrator",
+            "message": "Are you sure you want to delete this administrator? This action cannot be undone."
+          },
+          "resetPassword": {
+            "title": "Reset Access Code",
+            "message": "Generate a new access code for this administrator?",
+            "newCode": "New access code",
+            "copyCode": "Copy Code",
+            "copied": "Copied!"
+          }
+        },
+        "activity": {
+          "title": "Activity Log",
+          "subtitle": "Monitor administrator actions and system activity",
+          "filterByAdmin": "Filter by Admin",
+          "allAdmins": "All Admins",
+          "noActivity": "No activity recorded yet.",
+          "types": {
+            "admin_login": "Admin Login",
+            "admin_created": "Admin Created",
+            "admin_updated": "Admin Updated",
+            "admin_deleted": "Admin Deleted",
+            "password_reset": "Password Reset",
+            "customer_login": "Customer Login",
+            "customer_created": "Customer Created",
+            "customer_updated": "Customer Updated",
+            "customer_deleted": "Customer Deleted",
+            "offering_created": "Property Created",
+            "offering_updated": "Property Updated",
+            "offering_deleted": "Property Deleted"
+          }
+        },
+        "tabs": {
+          "profile": "Profile",
+          "admins": "Administrators",
+          "activity": "Activity Log"
+        }
+      },
+      "common": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "create": "Create",
+        "edit": "Edit",
+        "delete": "Delete",
+        "confirm": "Confirm",
+        "close": "Close",
+        "search": "Search",
+        "filter": "Filter",
+        "actions": "Actions",
+        "loading": "Loading...",
+        "saving": "Saving...",
+        "deleting": "Deleting...",
+        "success": "Success",
+        "error": "Error",
+        "never": "Never",
+        "back": "Back",
+        "backToList": "Back to list"
       }
     }
   }

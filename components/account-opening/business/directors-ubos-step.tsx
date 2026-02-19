@@ -22,7 +22,9 @@ interface Person {
 }
 
 export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepProps) {
-  const t = useTranslations("accountOpening.business.directorsUbosStep");
+  const t = useTranslations("accountForms.business.directors");
+  const tc = useTranslations("accountForms.common");
+
   const [directors, setDirectors] = React.useState<Person[]>(
     data.directors?.length > 0 ? data.directors : [{ id: "1", firstName: "", lastName: "", email: "" }]
   );
@@ -78,7 +80,7 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          {t("subtitle")}
+          {t("description")}
         </p>
       </div>
 
@@ -114,28 +116,28 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>{t("firstName")} {t("required")}</Label>
+                  <Label>{tc("firstName")} *</Label>
                   <Input
                     value={director.firstName}
                     onChange={(e) => updateDirector(director.id, "firstName", e.target.value)}
-                    placeholder={t("firstNamePlaceholder")}
+                    placeholder={tc("firstName")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("lastName")} {t("required")}</Label>
+                  <Label>{tc("lastName")} *</Label>
                   <Input
                     value={director.lastName}
                     onChange={(e) => updateDirector(director.id, "lastName", e.target.value)}
-                    placeholder={t("lastNamePlaceholder")}
+                    placeholder={tc("lastName")}
                   />
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label>{t("email")} {t("required")}</Label>
+                  <Label>{tc("email")} *</Label>
                   <Input
                     type="email"
                     value={director.email}
                     onChange={(e) => updateDirector(director.id, "email", e.target.value)}
-                    placeholder={t("emailPlaceholder")}
+                    placeholder="email@example.com"
                   />
                 </div>
               </div>
@@ -149,7 +151,7 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
             <div>
               <h3 className="flex items-center gap-2 text-lg font-semibold text-brand-dark">
                 <Users className="h-5 w-5 text-brand-gold" />
-                {t("ubos")}
+                {t("ubosTitle")}
               </h3>
               <p className="mt-1 text-sm text-brand-grayMed">
                 {t("ubosDescription")}
@@ -157,7 +159,7 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
             </div>
             <Button type="button" onClick={addUBO} variant="outline" size="sm">
               <Plus className="mr-2 h-4 w-4" />
-              {t("addUBO")}
+              {t("addUbo")}
             </Button>
           </div>
 
@@ -174,32 +176,32 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>{t("firstName")} {t("required")}</Label>
+                  <Label>{tc("firstName")} *</Label>
                   <Input
                     value={ubo.firstName}
                     onChange={(e) => updateUBO(ubo.id, "firstName", e.target.value)}
-                    placeholder={t("firstNamePlaceholder")}
+                    placeholder={tc("firstName")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("lastName")} {t("required")}</Label>
+                  <Label>{tc("lastName")} *</Label>
                   <Input
                     value={ubo.lastName}
                     onChange={(e) => updateUBO(ubo.id, "lastName", e.target.value)}
-                    placeholder={t("lastNamePlaceholder")}
+                    placeholder={tc("lastName")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("email")} {t("required")}</Label>
+                  <Label>{tc("email")} *</Label>
                   <Input
                     type="email"
                     value={ubo.email}
                     onChange={(e) => updateUBO(ubo.id, "email", e.target.value)}
-                    placeholder={t("emailPlaceholder")}
+                    placeholder="email@example.com"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("ownershipPercent")} {t("required")}</Label>
+                  <Label>{t("ownership")} *</Label>
                   <Input
                     type="number"
                     min="25"
@@ -215,9 +217,9 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
         </div>
 
         <div className="rounded-lg bg-blue-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("whyWeNeedThis.title")}</h4>
+          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("whyNeeded")}</h4>
           <p className="text-sm text-blue-800">
-            {t("whyWeNeedThis.description")}
+            {t("whyNeededDesc")}
           </p>
         </div>
       </div>

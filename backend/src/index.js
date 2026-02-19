@@ -23,6 +23,12 @@ const kycRoutes = require('./routes/kyc');
 const taxAdvisoryBookingsRoutes = require('./routes/tax-advisory-bookings');
 const lifeInsuranceBookingsRoutes = require('./routes/life-insurance-bookings');
 
+// Investment Portal Routes
+const investmentAdminsRoutes = require('./routes/investment-admins');
+const investmentInvestorsRoutes = require('./routes/investment-investors');
+const investmentPropertiesRoutes = require('./routes/investment-properties');
+const investmentActivityRoutes = require('./routes/investment-activity');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -56,6 +62,12 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/kyc', kycRoutes);
 app.use('/api/tax-advisory-bookings', taxAdvisoryBookingsRoutes); // Tax advisory service bookings
 app.use('/api/life-insurance-bookings', lifeInsuranceBookingsRoutes); // Life insurance service bookings
+
+// Investment Portal Routes
+app.use('/api/investment/admins', investmentAdminsRoutes);
+app.use('/api/investment/investors', investmentInvestorsRoutes);
+app.use('/api/investment/properties', investmentPropertiesRoutes);
+app.use('/api/investment/activity', investmentActivityRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -158,6 +170,7 @@ const startServer = async () => {
       console.log(`   📅 Appointments:    http://localhost:${PORT}/api/appointments`);
       console.log(`   💼 Tax Advisory:    http://localhost:${PORT}/api/tax-advisory-bookings`);
       console.log(`   🛡️  Life Insurance:  http://localhost:${PORT}/api/life-insurance-bookings`);
+      console.log(`   📈 Investments:     http://localhost:${PORT}/api/investment`);
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       console.log('');
     });

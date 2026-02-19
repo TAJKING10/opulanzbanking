@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getCustomerByAccessCode, updateCustomerLastAccess } from "@/lib/spv-data";
+import { loginInvestor } from "@/lib/investment-api";
 
 export default function SpvPortalLoginPage() {
   const locale = useLocale();
@@ -44,16 +44,18 @@ export default function SpvPortalLoginPage() {
     setError("");
     setIsLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 800));
-
-    const customer = getCustomerByAccessCode(accessCode.trim());
-    if (customer) {
-      updateCustomerLastAccess(accessCode.trim());
-      sessionStorage.setItem("spv-portal-access", "granted");
-      sessionStorage.setItem("spv-portal-timestamp", Date.now().toString());
-      sessionStorage.setItem("spv-portal-profile", customer.profile);
-      router.push(`/${locale}/spv-investment/portal/dashboard`);
-    } else {
+    try {
+      const investor = await loginInvestor(accessCode.trim());
+      if (investor) {
+        sessionStorage.setItem("spv-portal-access", "granted");
+        sessionStorage.setItem("spv-portal-timestamp", Date.now().toString());
+        sessionStorage.setItem("spv-portal-profile", investor.profile_type || "new");
+        router.push(`/${locale}/spv-investment/portal/dashboard`);
+      } else {
+        setError(t("spvInvestment.portal.login.error"));
+        setIsLoading(false);
+      }
+    } catch {
       setError(t("spvInvestment.portal.login.error"));
       setIsLoading(false);
     }

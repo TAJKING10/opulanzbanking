@@ -31,11 +31,10 @@ import {
   updateAdmin,
   deleteAdmin,
   resetAdminPassword,
-  generateAdminAccessCode,
   getActivityLog,
-  AdminProfile,
-  ActivityLog,
-} from "@/lib/spv-data";
+  type AdminProfile,
+  type ActivityLog,
+} from "@/lib/investment-api";
 
 type TabType = "profile" | "admins" | "activity";
 
@@ -53,17 +52,18 @@ export default function AdminSettingsPage() {
   // Modal states
   const [showAdminModal, setShowAdminModal] = React.useState(false);
   const [editingAdmin, setEditingAdmin] = React.useState<AdminProfile | null>(null);
-  const [showDeleteConfirm, setShowDeleteConfirm] = React.useState<string | null>(null);
-  const [showResetPassword, setShowResetPassword] = React.useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = React.useState<number | null>(null);
+  const [showResetPassword, setShowResetPassword] = React.useState<number | null>(null);
   const [newAccessCode, setNewAccessCode] = React.useState<string | null>(null);
   const [codeCopied, setCodeCopied] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
 
   // Form state
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
+    phone: "",
     status: "active" as "active" | "inactive",
-    accessCode: "",
   });
 
   // Activity filter
@@ -77,11 +77,21 @@ export default function AdminSettingsPage() {
     loadData();
   }, [searchParams]);
 
-  const loadData = () => {
-    setCurrentAdmin(getCurrentAdmin());
-    setAdmins(getAdmins());
-    setActivityLogs(getActivityLog());
-    setIsLoading(false);
+  const loadData = async () => {
+    try {
+      const admin = getCurrentAdmin();
+      setCurrentAdmin(admin);
+
+      const adminsData = await getAdmins();
+      setAdmins(adminsData);
+
+      const activityData = await getActivityLog({ limit: 100 });
+      setActivityLogs(activityData.data);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const tabs = [
@@ -96,54 +106,74 @@ export default function AdminSettingsPage() {
       setFormData({
         name: admin.name,
         email: admin.email,
+        phone: admin.phone || "",
         status: admin.status,
-        accessCode: admin.accessCode,
       });
     } else {
       setEditingAdmin(null);
       setFormData({
         name: "",
         email: "",
+        phone: "",
         status: "active",
-        accessCode: generateAdminAccessCode(),
       });
     }
     setShowAdminModal(true);
   };
 
-  const handleSaveAdmin = () => {
-    if (editingAdmin) {
-      updateAdmin(editingAdmin.id, {
-        name: formData.name,
-        email: formData.email,
-        status: formData.status,
-      });
-    } else {
-      createAdmin({
-        name: formData.name,
-        email: formData.email,
-        accessCode: formData.accessCode,
-        role: "admin",
-        status: formData.status,
-      });
+  const handleSaveAdmin = async () => {
+    setIsSaving(true);
+    try {
+      if (editingAdmin) {
+        await updateAdmin(editingAdmin.id, {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          status: formData.status,
+          updatedBy: currentAdmin?.id,
+        });
+      } else {
+        const result = await createAdmin({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          createdBy: currentAdmin?.id,
+        });
+
+        if (result.success && result.accessCode) {
+          setNewAccessCode(result.accessCode);
+        }
+      }
+      setShowAdminModal(false);
+      await loadData();
+    } catch (error) {
+      console.error("Error saving admin:", error);
+    } finally {
+      setIsSaving(false);
     }
-    setShowAdminModal(false);
-    loadData();
   };
 
-  const handleDeleteAdmin = (id: string) => {
-    deleteAdmin(id);
-    setShowDeleteConfirm(null);
-    loadData();
+  const handleDeleteAdmin = async (id: number) => {
+    try {
+      await deleteAdmin(id, currentAdmin?.id);
+      setShowDeleteConfirm(null);
+      await loadData();
+    } catch (error) {
+      console.error("Error deleting admin:", error);
+    }
   };
 
-  const handleResetPassword = (id: string) => {
-    const result = resetAdminPassword(id);
-    if (typeof result === "string") {
-      setNewAccessCode(result);
+  const handleResetPassword = async (id: number) => {
+    try {
+      const result = await resetAdminPassword(id, currentAdmin?.id);
+      if (result.success && result.accessCode) {
+        setNewAccessCode(result.accessCode);
+      }
+      setShowResetPassword(null);
+      await loadData();
+    } catch (error) {
+      console.error("Error resetting password:", error);
     }
-    setShowResetPassword(null);
-    loadData();
   };
 
   const copyAccessCode = (code: string) => {
@@ -165,7 +195,7 @@ export default function AdminSettingsPage() {
 
   const filteredLogs = activityFilter === "all"
     ? activityLogs
-    : activityLogs.filter((log) => log.adminId === activityFilter);
+    : activityLogs.filter((log) => log.admin_id?.toString() === activityFilter);
 
   if (isLoading) {
     return (
@@ -253,19 +283,15 @@ export default function AdminSettingsPage() {
                     <span className="text-slate-600">{currentAdmin.email}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <Key className="h-4 w-4 text-slate-400" />
-                    <span className="font-mono text-slate-600">{currentAdmin.accessCode}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
                     <Clock className="h-4 w-4 text-slate-400" />
                     <span className="text-slate-600">
-                      {t("spvInvestment.admin.settings.profile.lastLogin")}: {formatDate(currentAdmin.lastLogin)}
+                      {t("spvInvestment.admin.settings.profile.lastLogin")}: {formatDate(currentAdmin.last_login)}
                     </span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <Calendar className="h-4 w-4 text-slate-400" />
                     <span className="text-slate-600">
-                      {t("spvInvestment.admin.settings.profile.memberSince")}: {formatDate(currentAdmin.createdAt)}
+                      {t("spvInvestment.admin.settings.profile.memberSince")}: {formatDate(currentAdmin.created_at)}
                     </span>
                   </div>
                 </div>
@@ -380,7 +406,7 @@ export default function AdminSettingsPage() {
                             </span>
                           </td>
                           <td className="px-4 py-4 text-sm text-slate-600">
-                            {formatDate(admin.lastLogin)}
+                            {formatDate(admin.last_login)}
                           </td>
                           <td className="px-4 py-4 text-right">
                             {admin.role !== "primary" && (
@@ -432,7 +458,7 @@ export default function AdminSettingsPage() {
                 >
                   <option value="all">{t("spvInvestment.admin.settings.activity.allAdmins")}</option>
                   {admins.map((admin) => (
-                    <option key={admin.id} value={admin.id}>
+                    <option key={admin.id} value={admin.id.toString()}>
                       {admin.name}
                     </option>
                   ))}
@@ -456,11 +482,11 @@ export default function AdminSettingsPage() {
                         <div className="flex-1">
                           <p className="text-sm font-medium text-slate-900">{log.description}</p>
                           <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                            <span>{formatDate(log.timestamp)}</span>
-                            {log.adminName && (
+                            <span>{formatDate(log.created_at)}</span>
+                            {log.admin_name && (
                               <>
                                 <span>•</span>
-                                <span>by {log.adminName}</span>
+                                <span>by {log.admin_name}</span>
                               </>
                             )}
                           </div>
@@ -468,16 +494,16 @@ export default function AdminSettingsPage() {
                         <span
                           className={cn(
                             "rounded-full px-2 py-1 text-xs font-medium",
-                            log.type.includes("delete")
+                            log.log_type.includes("delete")
                               ? "bg-red-100 text-red-700"
-                              : log.type.includes("create")
+                              : log.log_type.includes("create")
                               ? "bg-green-100 text-green-700"
-                              : log.type.includes("login")
+                              : log.log_type.includes("login")
                               ? "bg-blue-100 text-blue-700"
                               : "bg-slate-100 text-slate-700"
                           )}
                         >
-                          {t(`spvInvestment.admin.settings.activity.types.${log.type}`)}
+                          {log.log_type}
                         </span>
                       </div>
                     ))}
@@ -516,45 +542,50 @@ export default function AdminSettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("spvInvestment.admin.settings.admins.form.status")}</Label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value as "active" | "inactive" })}
-                    className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
-                  >
-                    <option value="active">{t("spvInvestment.admin.settings.admins.form.statuses.active")}</option>
-                    <option value="inactive">{t("spvInvestment.admin.settings.admins.form.statuses.inactive")}</option>
-                  </select>
+                  <Label>Phone</Label>
+                  <Input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+352 123 456 789"
+                  />
                 </div>
-                {!editingAdmin && (
+                {editingAdmin && (
                   <div className="space-y-2">
-                    <Label>{t("spvInvestment.admin.settings.admins.form.accessCode")}</Label>
-                    <div className="flex gap-2">
-                      <Input value={formData.accessCode} readOnly className="font-mono" />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setFormData({ ...formData, accessCode: generateAdminAccessCode() })}
-                      >
-                        <RefreshCw className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => copyAccessCode(formData.accessCode)}
-                      >
-                        {codeCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                      </Button>
-                    </div>
+                    <Label>{t("spvInvestment.admin.settings.admins.form.status")}</Label>
+                    <select
+                      value={formData.status}
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value as "active" | "inactive" })}
+                      className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+                    >
+                      <option value="active">{t("spvInvestment.admin.settings.admins.form.statuses.active")}</option>
+                      <option value="inactive">{t("spvInvestment.admin.settings.admins.form.statuses.inactive")}</option>
+                    </select>
                   </div>
+                )}
+                {!editingAdmin && (
+                  <p className="text-sm text-slate-500">
+                    An access code will be automatically generated for the new admin.
+                  </p>
                 )}
               </div>
               <div className="mt-6 flex justify-end gap-3">
                 <Button variant="outline" onClick={() => setShowAdminModal(false)}>
                   {t("spvInvestment.admin.common.cancel")}
                 </Button>
-                <Button onClick={handleSaveAdmin} className="bg-indigo-600 hover:bg-indigo-700">
-                  {t("spvInvestment.admin.common.save")}
+                <Button
+                  onClick={handleSaveAdmin}
+                  disabled={isSaving || !formData.name || !formData.email}
+                  className="bg-indigo-600 hover:bg-indigo-700"
+                >
+                  {isSaving ? (
+                    <div className="flex items-center gap-2">
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                      Saving...
+                    </div>
+                  ) : (
+                    t("spvInvestment.admin.common.save")
+                  )}
                 </Button>
               </div>
             </div>
@@ -616,8 +647,11 @@ export default function AdminSettingsPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
               <h2 className="mb-2 text-lg font-semibold text-slate-900">
-                {t("spvInvestment.admin.settings.admins.resetPassword.newCode")}
+                Access Code Generated
               </h2>
+              <p className="mb-4 text-sm text-slate-600">
+                Please save this access code - it will only be shown once.
+              </p>
               <div className="mb-4 flex items-center gap-2 rounded-lg bg-slate-100 p-3">
                 <code className="flex-1 font-mono text-lg font-semibold text-slate-900">
                   {newAccessCode}
@@ -630,9 +664,11 @@ export default function AdminSettingsPage() {
                   {codeCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                 </Button>
               </div>
-              <p className="mb-4 text-sm text-slate-600">
-                {codeCopied && t("spvInvestment.admin.settings.admins.resetPassword.copied")}
-              </p>
+              {codeCopied && (
+                <p className="mb-4 text-sm text-green-600">
+                  Copied to clipboard!
+                </p>
+              )}
               <div className="flex justify-end">
                 <Button onClick={() => setNewAccessCode(null)} className="bg-indigo-600 hover:bg-indigo-700">
                   {t("spvInvestment.admin.common.close")}

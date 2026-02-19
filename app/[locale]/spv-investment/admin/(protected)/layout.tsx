@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { LayoutDashboard, Users, Building2, LogOut, Shield, ChevronDown, User, Settings, Key } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getCurrentAdmin, logoutAdmin, AdminProfile } from "@/lib/spv-data";
+import { getCurrentAdmin, logoutAdmin, type AdminProfile } from "@/lib/investment-api";
 
 const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 

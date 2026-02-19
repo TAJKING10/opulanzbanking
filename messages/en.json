@@ -12,7 +12,8 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "required": "Required",
-    "explore": "Explore"
+    "explore": "Explore",
+    "readyToStart": "Ready to Start"
   },
   "nav": {
     "home": "Home",

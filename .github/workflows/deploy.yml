@@ -36,6 +36,7 @@ jobs:
         run: NODE_ENV=production npm run build
         env:
           NODE_ENV: production
+          NEXT_PUBLIC_BASE_PATH: /opulanzbanking
 
       - name: Fix locale routes
         run: node scripts/fix-locale-routes.js

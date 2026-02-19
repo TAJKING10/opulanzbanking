@@ -189,11 +189,11 @@
   "companyFormation": {
     "subtitle": "Assistance en montage de sociétés, Service complet du montage au conseil",
     "description": "Choisissez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
-    "heroTitle": "Création de société au Luxembourg",
-    "heroSubtitle": "Services complets de création de société avec accompagnement expert. Choisissez votre structure et lancez l'assistant de création.",
-    "chooseForm": "Choisissez votre forme juridique",
+    "heroTitle": "Assistance en constitution de société au Luxembourg",
+    "heroSubtitle": "Services complets avec conseils d'experts",
+    "chooseForm": "Choisissez la forme de votre entreprise",
     "chooseFormDesc": "Sélectionnez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
-    "startFormation": "Commencer la création",
+    "startFormation": "Commencez ici",
     "minCapitalLabel": "Capital min. :",
     "shareholdersLabel": "Actionnaires :",
     "minPrefix": "Min.",
@@ -218,7 +218,7 @@
       "submit": "Soumettre",
       "submitDesc": "Vérifier et soumettre"
     },
-    "benefitsTitle": "Pourquoi créer votre société avec Opulanz ?",
+    "benefitsTitle": "Pourquoi être assisté par Opulanz ?",
     "benefits": {
       "expertTitle": "Accompagnement expert",
       "expertDesc": "Notre équipe d'experts en droit des sociétés luxembourgeois vous guide à chaque étape du processus de création.",
@@ -808,7 +808,7 @@
         "emailLabel": "E-mail :",
         "email": "legal@opulanz.com",
         "phoneLabel": "Téléphone :",
-        "phone": "+352 20 30 40 50",
+        "phone": "+352 28 79 76 26",
         "addressLabel": "Adresse :",
         "address": "1 Avenue de la Liberté, L-1931 Luxembourg"
       },
@@ -3380,7 +3380,7 @@
       "phone": {
         "title": "Assistance Téléphonique",
         "description": "Parlez directement avec notre équipe d'assistance",
-        "number": "+352 20 30 40 50",
+        "number": "+352 28 79 76 26",
         "hours": "Lun-Ven, 9h00-18h00 CET"
       },
       "email": {
@@ -3438,7 +3438,7 @@
         },
         "contact": {
           "question": "Comment puis-je contacter l'assistance ?",
-          "answer": "Vous pouvez nous joindre par téléphone au +352 20 30 40 50, par e-mail à support@opulanz.com, ou par chat en direct pendant les heures de bureau (Lun-Ven, 9h00-18h00 CET)."
+          "answer": "Vous pouvez nous joindre par téléphone au +352 28 79 76 26, par e-mail à support@opulanz.com, ou par chat en direct pendant les heures de bureau (Lun-Ven, 9h00-18h00 CET)."
         }
       }
     },

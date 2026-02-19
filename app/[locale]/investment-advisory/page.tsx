@@ -168,25 +168,6 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="bg-gray-50 py-12 md:py-16">
-        <div className="container mx-auto max-w-7xl px-6">
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="text-center">
-              <div className="mb-2 text-4xl font-bold text-brand-gold">€2.5B+</div>
-              <p className="text-sm text-brand-grayMed">Assets Under Management</p>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 text-4xl font-bold text-brand-gold">5,000+</div>
-              <p className="text-sm text-brand-grayMed">Satisfied Clients</p>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 text-4xl font-bold text-brand-gold">25+</div>
-              <p className="text-sm text-brand-grayMed">Years of Experience</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="hero-gradient py-12 md:py-16">

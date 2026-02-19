@@ -189,11 +189,11 @@
   "companyFormation": {
     "subtitle": "Company formation assistance, Full service from incorporation to consulting",
     "description": "Choose the legal structure that best fits your business needs",
-    "heroTitle": "Company Formation in Luxembourg",
-    "heroSubtitle": "Complete company formation services with expert guidance. Choose your structure and start your formation wizard.",
-    "chooseForm": "Choose Your Company Form",
+    "heroTitle": "Company formation assistance in Luxembourg",
+    "heroSubtitle": "Comprehensive services with expert advice",
+    "chooseForm": "Choose your business form",
     "chooseFormDesc": "Select the legal structure that best fits your business needs",
-    "startFormation": "Start Formation",
+    "startFormation": "Start here",
     "minCapitalLabel": "Min. Capital:",
     "shareholdersLabel": "Shareholders:",
     "minPrefix": "Min.",
@@ -218,7 +218,7 @@
       "submit": "Submit",
       "submitDesc": "Review and submit"
     },
-    "benefitsTitle": "Why Form Your Company with Opulanz?",
+    "benefitsTitle": "Why seek assistance from Opulanz?",
     "benefits": {
       "expertTitle": "Expert Guidance",
       "expertDesc": "Our team of Luxembourg corporate law experts guide you through every step of the formation process.",
@@ -808,7 +808,7 @@
         "emailLabel": "Email:",
         "email": "legal@opulanz.com",
         "phoneLabel": "Phone:",
-        "phone": "+352 20 30 40 50",
+        "phone": "+352 28 79 76 26",
         "addressLabel": "Address:",
         "address": "1 Avenue de la Liberté, L-1931 Luxembourg"
       },
@@ -2816,7 +2816,7 @@
       "phone": {
         "title": "Phone Support",
         "description": "Speak directly with our support team",
-        "number": "+352 20 30 40 50",
+        "number": "+352 28 79 76 26",
         "hours": "Mon-Fri, 9:00-18:00 CET"
       },
       "email": {
@@ -2874,7 +2874,7 @@
         },
         "contact": {
           "question": "How can I contact support?",
-          "answer": "You can reach us via phone at +352 20 30 40 50, email at support@opulanz.com, or live chat during business hours (Mon-Fri, 9:00-18:00 CET)."
+          "answer": "You can reach us via phone at +352 28 79 76 26, email at support@opulanz.com, or live chat during business hours (Mon-Fri, 9:00-18:00 CET)."
         }
       }
     },

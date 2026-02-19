@@ -20,7 +20,7 @@ export default function OpenAccountPage() {
         subtitle={t("openAccount.subtitle")}
       />
 
-      <section className="bg-brand-off py-20">
+      <section className="bg-brand-off py-12">
         <div className="container mx-auto max-w-5xl px-6">
           <SectionHeading
             title={t("whitelabel.choiceTitle")}
@@ -66,7 +66,7 @@ export default function OpenAccountPage() {
                   className="w-full group-hover:bg-brand-goldDark"
                 >
                   <Link href={`/${locale}/open-account/start?mode=personal`}>
-                    {t("openAccount.buttons.getStarted")}
+                    {t("openAccount.getStarted")}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
@@ -110,7 +110,7 @@ export default function OpenAccountPage() {
                   className="w-full group-hover:bg-brand-goldDark"
                 >
                   <Link href={`/${locale}/open-account/start?mode=business`}>
-                    {t("openAccount.buttons.getStarted")}
+                    {t("openAccount.getStarted")}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>

@@ -14,7 +14,9 @@ interface BusinessReviewConsentsStepProps {
 }
 
 export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessReviewConsentsStepProps) {
-  const t = useTranslations("accountOpening.business.reviewConsentsStep");
+  const t = useTranslations("accountForms.business.review");
+  const tc = useTranslations("accountForms.common");
+
   const [consents, setConsents] = React.useState({
     processing: data.consents?.processing || false,
     dataSharing: data.consents?.dataSharing || false,
@@ -25,7 +27,6 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
     const newConsents = { ...consents, [consent]: checked };
     setConsents(newConsents);
 
-    // Log consent with metadata (in real app, send to backend)
     console.log("Consent logged:", {
       type: consent,
       value: checked,
@@ -48,20 +49,20 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
       <div>
         <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          {t("subtitle")}
+          {t("description")}
         </p>
       </div>
 
       <div className="space-y-6">
         {/* Review Summary */}
         <div className="rounded-lg border border-brand-grayLight bg-white p-6">
-          <h3 className="mb-4 text-lg font-semibold text-brand-dark">{t("applicationSummary")}</h3>
+          <h3 className="mb-4 text-lg font-semibold text-brand-dark">{tc("applicationSummary")}</h3>
 
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <User className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">{t("fullName")}</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("fullName")}</p>
                 <p className="text-sm text-brand-grayMed">
                   {data.firstName} {data.lastName}
                 </p>
@@ -71,12 +72,12 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             <div className="flex items-start gap-3">
               <Mail className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">{t("email")}</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("email")}</p>
                 <p className="text-sm text-brand-grayMed">{data.email}</p>
                 {data.emailVerified && (
                   <span className="inline-flex items-center gap-1 text-xs text-green-600">
                     <CheckCircle className="h-3 w-3" />
-                    {t("verified")}
+                    {tc("verified")}
                   </span>
                 )}
               </div>
@@ -85,12 +86,12 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             <div className="flex items-start gap-3">
               <Phone className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">{t("phone")}</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("phone")}</p>
                 <p className="text-sm text-brand-grayMed">{data.phone}</p>
                 {data.phoneVerified && (
                   <span className="inline-flex items-center gap-1 text-xs text-green-600">
                     <CheckCircle className="h-3 w-3" />
-                    {t("verified")}
+                    {tc("verified")}
                   </span>
                 )}
               </div>
@@ -99,11 +100,11 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             <div className="flex items-start gap-3">
               <MapPin className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">{t("residence")}</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("residence")}</p>
                 <p className="text-sm text-brand-grayMed">
                   {data.residence === "resident-europe"
-                    ? t("europeanResident", { country: data.country })
-                    : t("nonResident")}
+                    ? `${tc("europeanResident")} - ${data.country}`
+                    : tc("nonResident")}
                 </p>
               </div>
             </div>
@@ -111,9 +112,9 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             <div className="flex items-start gap-3">
               <FileText className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">{t("accountType")}</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("accountType")}</p>
                 <p className="text-sm text-brand-grayMed">
-                  {data.mode === "current" ? t("accountTypes.current") : t("accountTypes.privateBanking")}
+                  {data.mode === "current" ? tc("currentAccount") : tc("privateBanking")}
                 </p>
               </div>
             </div>
@@ -121,11 +122,11 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
             <div className="flex items-start gap-3">
               <FileText className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
-                <p className="text-sm font-medium text-brand-dark">{t("documents")}</p>
+                <p className="text-sm font-medium text-brand-dark">{tc("documents")}</p>
                 <p className="text-sm text-brand-grayMed">
                   {data.uploadLater
-                    ? t("documentsStatus.uploadLater")
-                    : t("documentsStatus.uploaded", { count: data.documents?.length || 0 })}
+                    ? tc("toBeUploadedLater")
+                    : `${data.documents?.length || 0} ${tc("documentsUploaded")}`}
                 </p>
               </div>
             </div>
@@ -134,7 +135,7 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
 
         {/* Required Consents */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-brand-dark">{t("requiredConsents")}</h3>
+          <h3 className="text-lg font-semibold text-brand-dark">{tc("requiredConsents")}</h3>
 
           <div className="space-y-4">
             {/* Processing Consent */}
@@ -154,10 +155,10 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
                 />
                 <div className="flex-1">
                   <Label htmlFor="consent-processing" className="cursor-pointer font-semibold text-brand-dark">
-                    {t("processingConsent.title")} {t("required")}
+                    {tc("consentProcessingTitle")} *
                   </Label>
                   <p className="mt-1 text-sm text-brand-grayMed">
-                    {t("processingConsent.description")}
+                    {tc("consentProcessingDesc")}
                   </p>
                 </div>
               </div>
@@ -180,10 +181,10 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
                 />
                 <div className="flex-1">
                   <Label htmlFor="consent-sharing" className="cursor-pointer font-semibold text-brand-dark">
-                    {t("dataSharingConsent.title")} {t("required")}
+                    {tc("consentDataSharingTitle")} *
                   </Label>
                   <p className="mt-1 text-sm text-brand-grayMed">
-                    {t("dataSharingConsent.description")}
+                    {tc("consentDataSharingDesc")}
                   </p>
                 </div>
               </div>
@@ -206,10 +207,10 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
                 />
                 <div className="flex-1">
                   <Label htmlFor="consent-marketing" className="cursor-pointer font-semibold text-brand-dark">
-                    {t("marketingConsent.title")}
+                    {tc("consentMarketingTitle")}
                   </Label>
                   <p className="mt-1 text-sm text-brand-grayMed">
-                    {t("marketingConsent.description")}
+                    {tc("consentMarketingDesc")}
                   </p>
                 </div>
               </div>
@@ -219,9 +220,9 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
 
         {/* GDPR Notice */}
         <div className="rounded-lg bg-blue-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("dataRights.title")}</h4>
+          <h4 className="mb-2 text-sm font-semibold text-blue-900">{tc("gdprTitle")}</h4>
           <p className="text-sm text-blue-800">
-            {t("dataRights.description")}
+            {tc("gdprDesc")}
           </p>
         </div>
 
@@ -229,7 +230,7 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
           <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-600" />
             <div className="text-sm text-red-900">
-              {t("validationError")}
+              {tc("consentsRequired")}
             </div>
           </div>
         )}

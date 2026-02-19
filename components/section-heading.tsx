@@ -19,7 +19,7 @@ export function SectionHeading({
   const alignClass = align === "center" ? "text-center mx-auto" : "text-left";
 
   return (
-    <div className={cn("mb-12 max-w-3xl", alignClass, className)}>
+    <div className={cn("mb-8 max-w-3xl", alignClass, className)}>
       {overline && (
         <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-brand-gold">
           {overline}
@@ -34,7 +34,7 @@ export function SectionHeading({
         {title}
       </h2>
       {description && (
-        <p className="mt-6 text-balance text-lg text-brand-grayMed">
+        <p className="mt-4 text-balance text-lg text-brand-grayMed">
           {description}
         </p>
       )}

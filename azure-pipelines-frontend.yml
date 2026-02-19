@@ -1,0 +1,62 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: frontend-env-vars
+
+steps:
+# 1️⃣ Use Node.js 20
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Use Node.js 20'
+
+# 2️⃣ Install dependencies for lint/type-check only
+- script: npm ci
+  displayName: 'Install dependencies'
+
+# 3️⃣ Prepare deployment folder (source code + package files)
+- script: |
+    mkdir build_output
+    # Copy all files including hidden ones, excluding unnecessary files
+    rsync -av \
+      --exclude 'node_modules' \
+      --exclude '.next' \
+      --exclude '.git' \
+      --exclude '.github' \
+      --exclude 'out' \
+      --exclude 'build' \
+      --exclude '.env.local' \
+      --exclude '.env.*.local' \
+      --exclude '*.log' \
+      --exclude '.DS_Store' \
+      --exclude 'Thumbs.db' \
+      --exclude 'backend/node_modules' \
+      --exclude 'backend/.next' \
+      ./ build_output/
+    echo "✅ Files prepared for deployment"
+    ls -la build_output/
+  displayName: 'Prepare deploy folder'
+
+# 4️⃣ Archive deployment folder
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'build_output'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+    replaceExistingArchive: true
+  displayName: 'Archive deploy files'
+
+# 5️⃣ Deploy ZIP to App Service (let App Service build)
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Azure-Service-Connection'
+    appName: 'rg-opulanz-frontend'
+    package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+  displayName: 'Deploy to App Service'

@@ -1,15 +1,9 @@
-const withNextIntl = require('next-intl/plugin')();
+const withNextIntl = require('next-intl/plugin')(
+  // Specify the path to the new i18n config
+  './i18n/request.ts'
+);
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Static export enabled for GitHub Pages deployment
-  // Note: Dynamic pages (booking/confirmation) with useSearchParams() will be skipped
-  // These pages require a server or client-side navigation and won't work on static GitHub Pages
-  ...(process.env.NODE_ENV === 'production' && {
-    output: 'export',
-    basePath: '/opulanzbanking',
-    assetPrefix: '/opulanzbanking/',
-  }),
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -21,6 +15,11 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react'],
+  },
+  // Environment variables for production URL (used for SEO)
+  env: {
+    NEXT_PUBLIC_BASE_URL:
+      process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
   },
 };
 

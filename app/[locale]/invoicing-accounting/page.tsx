@@ -11,41 +11,18 @@ import { Button } from "@/components/ui/button";
 
 export default function InvoicingAccountingPage({ params: { locale } }: { params: { locale: string } }) {
   const t = useTranslations();
+  const ti = useTranslations("invoicingAccounting");
 
   const features = [
-    {
-      icon: FileText,
-      title: t('accounting.features.invoicing.title'),
-      description: t('accounting.features.invoicing.description'),
-    },
-    {
-      icon: Calculator,
-      title: t('accounting.features.bookkeeping.title'),
-      description: t('accounting.features.bookkeeping.description'),
-    },
-    {
-      icon: PieChart,
-      title: t('accounting.features.reporting.title'),
-      description: t('accounting.features.reporting.description'),
-    },
-    {
-      icon: Users,
-      title: t('accounting.features.payroll.title'),
-      description: t('accounting.features.payroll.description'),
-    },
-    {
-      icon: Shield,
-      title: t('accounting.features.compliance.title'),
-      description: t('accounting.features.compliance.description'),
-    },
-    {
-      icon: TrendingUp,
-      title: t('accounting.features.planning.title'),
-      description: t('accounting.features.planning.description'),
-    },
+    { icon: FileText, key: "invoicing" },
+    { icon: Calculator, key: "bookkeeping" },
+    { icon: PieChart, key: "reporting" },
+    { icon: Users, key: "payroll" },
+    { icon: Shield, key: "compliance" },
+    { icon: TrendingUp, key: "planning" },
   ];
 
-  const benefits = t.raw('accounting.benefits.list') as string[];
+  const benefitKeys = ["1", "2", "3", "4", "5", "6"];
 
   return (
     <>
@@ -53,36 +30,36 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
         title={t('services.accounting.title')}
         subtitle={t('services.accounting.description')}
         primaryCta={{
-          label: t('common.getStarted'),
+          label: ti("getStarted"),
           href: `/${locale}/invoicing-accounting/onboarding`,
         }}
         secondaryCta={{
-          label: t('common.learnMore'),
+          label: t("common.learnMore"),
           href: "#features",
         }}
       />
 
       {/* Features Section */}
-      <section id="features" className="bg-white py-20 md:py-28">
+      <section id="features" className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
-            overline={t('accounting.sections.ourServices')}
-            title={t('accounting.sections.completeSolutions')}
-            description={t('accounting.sections.solutionsDesc')}
+            overline={ti("features.overline")}
+            title={ti("features.title")}
+            description={ti("features.description")}
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature) => {
               const Icon = feature.icon;
               return (
-                <Card key={feature.title} className="border-none shadow-sm">
+                <Card key={feature.key} className="border-none shadow-sm">
                   <CardHeader>
                     <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-gold/10">
                       <Icon className="h-6 w-6 text-brand-gold" />
                     </div>
-                    <CardTitle className="text-xl">{feature.title}</CardTitle>
+                    <CardTitle className="text-xl">{ti(`features.${feature.key}.title`)}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-brand-grayMed">{feature.description}</p>
+                    <p className="text-sm text-brand-grayMed">{ti(`features.${feature.key}.description`)}</p>
                   </CardContent>
                 </Card>
               );
@@ -92,29 +69,29 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-gray-50 py-20 md:py-28">
+      <section className="bg-gray-50 py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
               <h2 className="mb-6 text-3xl font-bold text-brand-dark md:text-4xl">
-                {t('accounting.benefits.title')}
+                {ti("benefits.title")}
               </h2>
               <p className="mb-8 text-lg text-brand-grayMed">
-                {t('accounting.benefits.subtitle')}
+                {ti("benefits.description")}
               </p>
               <Button
                 asChild
                 size="lg"
                 className="bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <Link href={`/${locale}/invoicing-accounting/onboarding`}>{t('common.getStarted')}</Link>
+                <Link href={`/${locale}/invoicing-accounting/onboarding`}>{ti("getStarted")}</Link>
               </Button>
             </div>
             <div className="space-y-4">
-              {benefits.map((benefit) => (
-                <div key={benefit} className="flex items-start gap-3">
+              {benefitKeys.map((key) => (
+                <div key={key} className="flex items-start gap-3">
                   <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" />
-                  <p className="text-brand-dark">{benefit}</p>
+                  <p className="text-brand-dark">{ti(`benefits.${key}`)}</p>
                 </div>
               ))}
             </div>
@@ -123,26 +100,26 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            {t('accounting.cta.title')}
+            {ti("cta.title")}
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            {t('accounting.cta.subtitle')}
+            {ti("cta.description")}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href={`/${locale}/invoicing-accounting/onboarding`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
-              {t('common.getStarted')}
+              {ti("getStarted")}
             </Link>
             <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
-              {t('accounting.cta.contactSales')}
+              {ti("cta.contactSales")}
             </Link>
           </div>
         </div>

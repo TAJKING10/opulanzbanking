@@ -50,7 +50,7 @@
     "home": "Accueil",
     "about": "À propos",
     "openAccount": "Ouvrir un compte",
-    "companyFormation": "Création de société",
+    "companyFormation": "Assistance en montage de société",
     "services": "Services",
     "support": "Assistance",
     "ourServices": "Nos Services",
@@ -547,13 +547,13 @@
   "servicesPage": {
     "hero": {
       "title": "Services Financiers Complets pour Votre Succès",
-      "subtitle": "De la banque au conseil en investissement, découvrez notre gamme complète de services financiers conçus pour aider les particuliers et les entreprises à prospérer au Luxembourg et au-delà.",
+      "subtitle": "Du service de paiement au conseil en investissement, découvrez notre gamme complète de services financiers conçus pour aider les particuliers et les entreprises à prospérer au Luxembourg et au-delà.",
       "primaryCta": "Ouvrir un Compte",
       "secondaryCta": "Explorer les Services"
     },
     "servicesSection": {
       "overline": "Nos Services",
-      "title": "Tout Ce Dont Vous Avez Besoin Sous Un Seul Toit",
+      "title": "Tout ce dont vous avez besoin au même endroit",
       "description": "Explorez notre gamme complète de services financiers conçus pour soutenir vos objectifs personnels et professionnels."
     },
     "featuresSection": {
@@ -581,18 +581,18 @@
         "description": "Soutien complet pour établir votre entreprise au Luxembourg avec des conseils juridiques et réglementaires."
       },
       "bankingServices": {
-        "title": "Services Bancaires",
+        "title": "Services de paiement",
         "description": "Solutions bancaires numériques modernes avec comptes multidevises et capacités de paiement internationales."
       }
     },
     "whyChooseUs": {
-      "title": "Pourquoi Choisir Opulanz ?",
-      "paragraph1": "Opulanz réunit le meilleur de l'expertise bancaire traditionnelle et de l'innovation fintech moderne. En tant qu'institution financière entièrement réglementée avec présence au Luxembourg et en France, nous offrons la sécurité et la fiabilité dont vous avez besoin, combinées à la flexibilité et à l'innovation que vous souhaitez.",
-      "paragraph2": "Que vous soyez un particulier à la recherche de services bancaires et d'investissement, ou une entreprise recherchant des solutions financières complètes, nous avons l'expertise et les services pour soutenir votre succès.",
+      "title": "Pourquoi choisir Opulanz ?",
+      "paragraph1": "Opulanz réunit le meilleur de l'expertise bancaire traditionnelle et de l'innovation fintech moderne. En tant que entité entièrement réglementée avec présence en Europe, nous offrons la sécurité et la fiabilité dont vous avez besoin, combinées à la flexibilité et à l'innovation que vous souhaitez.",
+      "paragraph2": "Que vous soyez un particulier à la recherche de services bancaires, comptable et d'investissement, ou une entreprise recherchant des solutions financières complètes, nous avons l'expertise et les services pour soutenir votre succès.",
       "cta": "Commencer Aujourd'hui",
       "reasons": {
         "regulated": "Réglementé par l'ACPR et l'AMF pour votre tranquillité d'esprit",
-        "expertise": "Plus de 25 ans d'expertise combinée dans les services financiers",
+        "expertise": "Plus de 19 ans d'expertise combinée dans les services financiers",
         "personalized": "Service personnalisé par des gestionnaires de compte dédiés",
         "competitive": "Tarifs compétitifs et structure de frais transparente",
         "multilingual": "Assistance multilingue en anglais et en français",
@@ -602,7 +602,7 @@
     },
     "regulatorySection": {
       "overline": "Fiable & Réglementé",
-      "title": "Votre Sécurité Est Notre Priorité",
+      "title": "Votre sécurité est notre priorité",
       "description": "Nous sommes réglementés par les principales autorités financières européennes, garantissant les plus hauts standards de sécurité et de conformité."
     },
     "ctaSection": {
@@ -1291,10 +1291,10 @@
         "submitDesc": "Dernière étape"
       },
       "welcome": {
-        "title": "Bienvenue dans la banque d'entreprise",
-        "description": "Commençons l'ouverture de votre compte bancaire professionnel. Ce processus devrait prendre environ 15-20 minutes.",
-        "accountOpeningTitle": "Ouverture de compte professionnel",
-        "accountOpeningDesc": "Que vous ayez une société existante ou que vous souhaitiez en créer une nouvelle, nous vous guiderons tout au long du processus d'ouverture de compte bancaire avec la Banque Partenaire Opulanz.",
+        "title": "Service de paiement pour votre entreprise",
+        "description": "Commençons par l'ouverture de votre compte bancaire professionnel. Ce processus devrait prendre environ 15-20 minutes.",
+        "accountOpeningTitle": "Ouverture de Compte Professionnel",
+        "accountOpeningDesc": "Que vous ayez une entreprise existante ou que vous souhaitiez en créer une nouvelle, nous vous guiderons dans le processus d'ouverture d'un compte bancaire professionnel avec Opulanz.",
         "whatYouNeed": "Ce dont vous aurez besoin :",
         "need1": "Documents d'enregistrement de la société (si société existante)",
         "need2": "Informations sur les dirigeants et bénéficiaires effectifs (UBO)",

@@ -33,8 +33,8 @@ export function Hero({
       className={cn(
         "hero-gradient relative overflow-hidden",
         isPageHeader
-          ? "py-16 md:py-20 lg:py-24"
-          : "py-36 md:py-48 lg:py-60",
+          ? "pt-32 pb-20 md:pt-36 md:pb-24 lg:pt-40 lg:pb-28"
+          : "pt-32 pb-20 md:pt-36 md:pb-24 lg:pt-40 lg:pb-28",
         className
       )}
     >
@@ -48,7 +48,7 @@ export function Hero({
           <h1 className={cn(
             "text-balance font-bold tracking-tight text-white",
             isPageHeader
-              ? "text-3xl md:text-4xl lg:text-5xl"
+              ? "text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
               : "text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
           )}>
             {title}
@@ -58,7 +58,7 @@ export function Hero({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mx-auto mt-6 max-w-2xl text-balance text-lg text-white/90 md:text-xl"
+              className="mx-auto mt-6 max-w-3xl text-balance text-lg text-white/90 md:text-xl"
             >
               {subtitle}
             </motion.p>

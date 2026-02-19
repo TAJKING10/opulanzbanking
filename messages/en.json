@@ -50,7 +50,7 @@
     "home": "Home",
     "about": "About",
     "openAccount": "Open Account",
-    "companyFormation": "Company Formation",
+    "companyFormation": "Assistance en montage de société",
     "services": "Services",
     "support": "Support",
     "ourServices": "Our Services",
@@ -547,13 +547,13 @@
   "servicesPage": {
     "hero": {
       "title": "Complete Financial Services for Your Success",
-      "subtitle": "From banking to investment advisory, discover our comprehensive range of financial services designed to help individuals and businesses thrive in Luxembourg and beyond.",
+      "subtitle": "From payment service to investment advice, discover our full range of financial services designed to help individuals and businesses thrive in Luxembourg and beyond.",
       "primaryCta": "Open an Account",
       "secondaryCta": "Explore Services"
     },
     "servicesSection": {
       "overline": "Our Services",
-      "title": "Everything You Need Under One Roof",
+      "title": "Everything you need in one place",
       "description": "Explore our comprehensive range of financial services designed to support your personal and business goals."
     },
     "featuresSection": {
@@ -581,18 +581,18 @@
         "description": "Complete support for establishing your business in Luxembourg with legal and regulatory guidance."
       },
       "bankingServices": {
-        "title": "Banking Services",
+        "title": "Payment Services",
         "description": "Modern digital banking solutions with multi-currency accounts and international payment capabilities."
       }
     },
     "whyChooseUs": {
-      "title": "Why Choose Opulanz?",
-      "paragraph1": "Opulanz brings together the best of traditional banking expertise and modern fintech innovation. As a fully regulated financial institution with presence in Luxembourg and France, we offer the security and reliability you need, combined with the flexibility and innovation you want.",
-      "paragraph2": "Whether you're an individual looking for banking and investment services, or a business seeking comprehensive financial solutions, we have the expertise and services to support your success.",
+      "title": "Why choose Opulanz?",
+      "paragraph1": "Opulanz brings together the best of traditional banking expertise and modern fintech innovation. As a fully regulated entity with a presence in Europe, we offer the security and reliability you need, combined with the flexibility and innovation you want.",
+      "paragraph2": "Whether you are an individual seeking banking, accounting and investment services, or a business seeking comprehensive financial solutions, we have the expertise and services to support your success.",
       "cta": "Get Started Today",
       "reasons": {
         "regulated": "Regulated by ACPR and AMF for your peace of mind",
-        "expertise": "Over 25 years of combined expertise in financial services",
+        "expertise": "Over 19 years of combined expertise in financial services",
         "personalized": "Personalized service from dedicated account managers",
         "competitive": "Competitive rates and transparent fee structure",
         "multilingual": "Multi-lingual support in English and French",
@@ -602,7 +602,7 @@
     },
     "regulatorySection": {
       "overline": "Trusted & Regulated",
-      "title": "Your Security is Our Priority",
+      "title": "Your safety is our priority",
       "description": "We are regulated by leading European financial authorities, ensuring the highest standards of security and compliance."
     },
     "ctaSection": {
@@ -1291,10 +1291,10 @@
         "submitDesc": "Final step"
       },
       "welcome": {
-        "title": "Welcome to Business Banking",
-        "description": "Let's get started with opening your business bank account. This process should take about 15-20 minutes.",
-        "accountOpeningTitle": "Business Account Opening",
-        "accountOpeningDesc": "Whether you have an existing company or want to start a new one, we'll guide you through the process of opening a business bank account with Opulanz Partner Bank.",
+        "title": "Payment service for your business",
+        "description": "Let's start by opening your business bank account. This process should take approximately 15-20 minutes.",
+        "accountOpeningTitle": "Opening a Professional Account",
+        "accountOpeningDesc": "Whether you have an existing business or want to start a new one, we will guide you through the process of opening a business bank account with Opulanz.",
         "whatYouNeed": "What you'll need:",
         "need1": "Company registration documents (if existing company)",
         "need2": "Information about directors and beneficial owners (UBOs)",

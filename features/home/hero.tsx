@@ -34,7 +34,7 @@ export function Hero({
         "hero-gradient relative overflow-hidden",
         isPageHeader
           ? "py-16 md:py-20 lg:py-24"
-          : "py-24 md:py-32 lg:py-40",
+          : "py-36 md:py-48 lg:py-60",
         className
       )}
     >

@@ -35,8 +35,7 @@ export function AccountOpeningLayout({
   description,
   hideNavigation = false,
 }: AccountOpeningLayoutProps) {
-  const t = useTranslations("accountForms.layout");
-
+  const t = useTranslations("common");
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto max-w-4xl px-6">
@@ -78,7 +77,7 @@ export function AccountOpeningLayout({
                 className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark disabled:bg-gray-400 disabled:opacity-50"
               >
                 {isLoading ? (
-                  t("processing")
+                  t("loading")
                 ) : (
                   <>
                     {t("continue")}

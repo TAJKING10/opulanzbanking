@@ -43,6 +43,16 @@ export function ContactsAddressesStep({
     onUpdate({ hasAccountingContact: checked });
   };
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone: string): boolean => {
+    const phoneRegex = /^\+?[\d\s\-()]{10,}$/;
+    return phoneRegex.test(phone);
+  };
+
   const checkValidity = () => {
     // Check registered address
     if (!data.registeredAddress?.street) return false;
@@ -63,7 +73,20 @@ export function ContactsAddressesStep({
     if (!data.primaryContact?.lastName) return false;
     if (!data.primaryContact?.role) return false;
     if (!data.primaryContact?.email) return false;
+    if (!validateEmail(data.primaryContact.email)) return false;
     if (!data.primaryContact?.phone) return false;
+    if (!validatePhone(data.primaryContact.phone)) return false;
+
+    // Check accounting contact if provided
+    if (hasAccountingContact) {
+      if (!data.accountingContact?.firstName) return false;
+      if (!data.accountingContact?.lastName) return false;
+      if (!data.accountingContact?.role) return false;
+      if (!data.accountingContact?.email) return false;
+      if (!validateEmail(data.accountingContact.email)) return false;
+      if (!data.accountingContact?.phone) return false;
+      if (!validatePhone(data.accountingContact.phone)) return false;
+    }
 
     return true;
   };
@@ -76,7 +99,9 @@ export function ContactsAddressesStep({
     data.registeredAddress,
     data.operatingAddress,
     data.primaryContact,
+    data.accountingContact,
     sameAsRegistered,
+    hasAccountingContact,
   ]);
 
   return (

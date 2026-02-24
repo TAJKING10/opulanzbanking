@@ -4,7 +4,8 @@ import * as React from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  ArrowLeft, Save, Trash2, User, Mail, Phone, Key, RefreshCw, Check, Building
+  ArrowLeft, Save, Trash2, User, Mail, Phone, Key, RefreshCw, Check, Building,
+  Plus, DollarSign, TrendingUp, Calendar, X
 } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +19,13 @@ import {
   deleteInvestor,
   resetInvestorAccessCode,
   getCurrentAdmin,
+  getProperties,
+  getInvestorInvestments,
+  createInvestment,
+  deleteInvestment,
   type Investor,
+  type Property,
+  type Investment,
 } from "@/lib/investment-api";
 
 type FormData = {
@@ -59,11 +66,27 @@ export default function CustomerEditPage() {
   const [isLoading, setIsLoading] = React.useState(!isNew);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Load existing investor
+  // Investment management state
+  const [investments, setInvestments] = React.useState<Investment[]>([]);
+  const [properties, setProperties] = React.useState<Property[]>([]);
+  const [showInvestmentForm, setShowInvestmentForm] = React.useState(false);
+  const [investmentForm, setInvestmentForm] = React.useState({
+    property_id: "",
+    amount_invested: "",
+    ownership_percentage: "",
+    expected_annual_return: "",
+    investment_date: new Date().toISOString().split("T")[0],
+    maturity_date: "",
+  });
+  const [isCreatingInvestment, setIsCreatingInvestment] = React.useState(false);
+  const [deleteInvestmentId, setDeleteInvestmentId] = React.useState<number | null>(null);
+
+  // Load existing investor and their investments
   React.useEffect(() => {
-    const fetchInvestor = async () => {
+    const fetchData = async () => {
       if (!isNew) {
         try {
+          // Fetch investor data
           const investor = await getInvestorById(parseInt(id));
           if (investor) {
             setFormData({
@@ -78,15 +101,27 @@ export default function CustomerEditPage() {
             });
             setAccessCode(investor.access_code);
           }
+
+          // Fetch investor's investments
+          const investorInvestments = await getInvestorInvestments(parseInt(id));
+          setInvestments(investorInvestments.data);
+
+          // Fetch available properties
+          const propertiesResult = await getProperties({ status: "open" });
+          setProperties(propertiesResult.data);
         } catch (err) {
-          console.error("Error fetching investor:", err);
+          console.error("Error fetching data:", err);
           setError("Failed to load investor data");
         } finally {
           setIsLoading(false);
         }
+      } else {
+        // For new investors, still fetch properties for later use
+        const propertiesResult = await getProperties({ status: "open" });
+        setProperties(propertiesResult.data);
       }
     };
-    fetchInvestor();
+    fetchData();
   }, [id, isNew]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -175,6 +210,75 @@ export default function CustomerEditPage() {
       console.error("Error resetting access code:", err);
       setError("An error occurred while resetting access code");
     }
+  };
+
+  // Investment handlers
+  const handleCreateInvestment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsCreatingInvestment(true);
+    setError(null);
+
+    try {
+      const admin = getCurrentAdmin();
+      const result = await createInvestment({
+        investor_id: parseInt(id),
+        property_id: parseInt(investmentForm.property_id),
+        amount_invested: parseFloat(investmentForm.amount_invested.replace(/[^0-9.]/g, "")),
+        ownership_percentage: parseFloat(investmentForm.ownership_percentage),
+        expected_annual_return: investmentForm.expected_annual_return ? parseFloat(investmentForm.expected_annual_return) : undefined,
+        investment_date: investmentForm.investment_date || undefined,
+        maturity_date: investmentForm.maturity_date || undefined,
+        createdBy: admin?.id,
+      });
+
+      if (result.success) {
+        // Refresh investments list
+        const investorInvestments = await getInvestorInvestments(parseInt(id));
+        setInvestments(investorInvestments.data);
+        setShowInvestmentForm(false);
+        setInvestmentForm({
+          property_id: "",
+          amount_invested: "",
+          ownership_percentage: "",
+          expected_annual_return: "",
+          investment_date: new Date().toISOString().split("T")[0],
+          maturity_date: "",
+        });
+      } else {
+        setError(result.error || "Failed to create investment");
+      }
+    } catch (err) {
+      console.error("Error creating investment:", err);
+      setError("An error occurred while creating investment");
+    } finally {
+      setIsCreatingInvestment(false);
+    }
+  };
+
+  const handleDeleteInvestment = async (investmentId: number) => {
+    try {
+      const admin = getCurrentAdmin();
+      const success = await deleteInvestment(investmentId, admin?.id);
+      if (success) {
+        setInvestments(investments.filter((inv) => inv.id !== investmentId));
+      } else {
+        setError("Failed to delete investment");
+      }
+    } catch (err) {
+      console.error("Error deleting investment:", err);
+      setError("An error occurred while deleting investment");
+    }
+    setDeleteInvestmentId(null);
+  };
+
+  const formatCurrency = (value: number | undefined) => {
+    if (!value) return "—";
+    return new Intl.NumberFormat("en-EU", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
   };
 
   if (isLoading) {
@@ -425,6 +529,197 @@ export default function CustomerEditPage() {
           </div>
         </div>
       </form>
+
+      {/* Investments Section - Only for existing investors */}
+      {!isNew && (
+        <div className="container mx-auto max-w-5xl px-6 pb-8">
+          <Card className="border-none shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-indigo-600" />
+                Investments
+              </CardTitle>
+              <Button
+                onClick={() => setShowInvestmentForm(!showInvestmentForm)}
+                className="bg-indigo-600 hover:bg-indigo-700"
+                size="sm"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Assign to Property
+              </Button>
+            </CardHeader>
+            <CardContent>
+              {/* Investment Creation Form */}
+              {showInvestmentForm && (
+                <form onSubmit={handleCreateInvestment} className="mb-6 p-4 bg-slate-50 rounded-lg space-y-4">
+                  <h4 className="font-semibold text-slate-900">Create New Investment</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="md:col-span-2 space-y-2">
+                      <Label>Property *</Label>
+                      <select
+                        value={investmentForm.property_id}
+                        onChange={(e) => setInvestmentForm({ ...investmentForm, property_id: e.target.value })}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                        required
+                      >
+                        <option value="">Select a property...</option>
+                        {properties.map((property) => (
+                          <option key={property.id} value={property.id}>
+                            {property.title} - {property.location}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Amount Invested (EUR) *</Label>
+                      <div className="relative">
+                        <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <Input
+                          value={investmentForm.amount_invested}
+                          onChange={(e) => setInvestmentForm({ ...investmentForm, amount_invested: e.target.value })}
+                          className="pl-10"
+                          placeholder="e.g. 100000"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Ownership Percentage (%) *</Label>
+                      <Input
+                        value={investmentForm.ownership_percentage}
+                        onChange={(e) => setInvestmentForm({ ...investmentForm, ownership_percentage: e.target.value })}
+                        placeholder="e.g. 5"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Expected Annual Return (%)</Label>
+                      <Input
+                        value={investmentForm.expected_annual_return}
+                        onChange={(e) => setInvestmentForm({ ...investmentForm, expected_annual_return: e.target.value })}
+                        placeholder="e.g. 8"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Investment Date</Label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <Input
+                          type="date"
+                          value={investmentForm.investment_date}
+                          onChange={(e) => setInvestmentForm({ ...investmentForm, investment_date: e.target.value })}
+                          className="pl-10"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Maturity Date</Label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <Input
+                          type="date"
+                          value={investmentForm.maturity_date}
+                          onChange={(e) => setInvestmentForm({ ...investmentForm, maturity_date: e.target.value })}
+                          className="pl-10"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 pt-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowInvestmentForm(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit" disabled={isCreatingInvestment} className="bg-indigo-600 hover:bg-indigo-700">
+                      {isCreatingInvestment ? (
+                        <div className="flex items-center gap-2">
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                          Creating...
+                        </div>
+                      ) : (
+                        "Create Investment"
+                      )}
+                    </Button>
+                  </div>
+                </form>
+              )}
+
+              {/* Investments List */}
+              {investments.length === 0 ? (
+                <div className="text-center py-8 text-slate-500">
+                  <TrendingUp className="mx-auto h-12 w-12 text-slate-300 mb-2" />
+                  <p>No investments assigned yet</p>
+                  <p className="text-sm">Click "Assign to Property" to create an investment</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {investments.map((investment) => (
+                    <div
+                      key={investment.id}
+                      className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-lg"
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <Building className="h-4 w-4 text-indigo-600" />
+                          <span className="font-medium text-slate-900">
+                            {investment.property_title || `Property #${investment.property_id}`}
+                          </span>
+                          <span className={`text-xs px-2 py-0.5 rounded-full ${
+                            investment.status === 'active' ? 'bg-green-100 text-green-700' :
+                            investment.status === 'pending' ? 'bg-amber-100 text-amber-700' :
+                            'bg-slate-100 text-slate-600'
+                          }`}>
+                            {investment.status}
+                          </span>
+                        </div>
+                        <div className="mt-1 text-sm text-slate-500 grid grid-cols-2 md:grid-cols-4 gap-2">
+                          <span>Amount: {formatCurrency(investment.amount_invested)}</span>
+                          <span>Ownership: {investment.ownership_percentage}%</span>
+                          <span>Return: {investment.expected_annual_return || "—"}%</span>
+                          <span>Date: {investment.investment_date ? new Date(investment.investment_date).toLocaleDateString() : "—"}</span>
+                        </div>
+                      </div>
+                      <div className="ml-4">
+                        {deleteInvestmentId === investment.id ? (
+                          <div className="flex gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteInvestment(investment.id)}
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <Check className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setDeleteInvestmentId(null)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setDeleteInvestmentId(investment.id)}
+                            className="text-slate-400 hover:text-red-600"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

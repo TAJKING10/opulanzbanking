@@ -3,13 +3,15 @@
 import * as React from "react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
-import { Building2, Shield, Users, Lock, CheckCircle, ArrowRight, Mail, Phone, User, Send } from "lucide-react";
+import { Building2, Shield, Users, Lock, CheckCircle, ArrowRight, Mail, Phone, User, Send, Loader2 } from "lucide-react";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export default function SpvInvestmentPage() {
   const t = useTranslations();
@@ -23,11 +25,34 @@ export default function SpvInvestmentPage() {
     message: "",
   });
   const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("SPV info request:", formData);
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch(`${API_BASE}/api/investment/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setIsSubmitted(true);
+      } else {
+        setSubmitError(data.error || 'Failed to submit inquiry. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting inquiry:', error);
+      setSubmitError('Network error. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const benefits = [
@@ -275,9 +300,30 @@ export default function SpvInvestmentPage() {
                       />
                     </div>
 
-                    <Button type="submit" variant="primary" size="lg" className="w-full">
-                      <Send className="mr-2 h-4 w-4" />
-                      {t("spvInvestment.landing.contactForm.submit")}
+                    {submitError && (
+                      <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                        {submitError}
+                      </div>
+                    )}
+
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      size="lg"
+                      className="w-full"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="mr-2 h-4 w-4" />
+                          {t("spvInvestment.landing.contactForm.submit")}
+                        </>
+                      )}
                     </Button>
                   </form>
                 )}

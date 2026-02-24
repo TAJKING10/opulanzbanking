@@ -28,6 +28,8 @@ const investmentAdminsRoutes = require('./routes/investment-admins');
 const investmentInvestorsRoutes = require('./routes/investment-investors');
 const investmentPropertiesRoutes = require('./routes/investment-properties');
 const investmentActivityRoutes = require('./routes/investment-activity');
+const investmentsRoutes = require('./routes/investments');
+const investmentContactRoutes = require('./routes/investment-contact');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -68,6 +70,8 @@ app.use('/api/investment/admins', investmentAdminsRoutes);
 app.use('/api/investment/investors', investmentInvestorsRoutes);
 app.use('/api/investment/properties', investmentPropertiesRoutes);
 app.use('/api/investment/activity', investmentActivityRoutes);
+app.use('/api/investment/investments', investmentsRoutes);
+app.use('/api/investment/contact', investmentContactRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

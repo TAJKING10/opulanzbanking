@@ -92,7 +92,7 @@ export async function loginAdmin(accessCode: string): Promise<AdminProfile | nul
     const response = await fetch(`${API_BASE}/api/investment/admins/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ accessCode }),
+      body: JSON.stringify({ accessCode: accessCode.trim() }),
     });
 
     const data = await response.json();
@@ -523,7 +523,7 @@ export async function loginInvestor(accessCode: string): Promise<Investor | null
     const response = await fetch(`${API_BASE}/api/investment/investors/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ accessCode }),
+      body: JSON.stringify({ accessCode: accessCode.trim() }),
     });
 
     const data = await response.json();
@@ -564,4 +564,298 @@ export function logoutInvestor(): void {
   sessionStorage.removeItem('spv-investor-data');
   sessionStorage.removeItem('spv-access');
   sessionStorage.removeItem('spv-timestamp');
+}
+
+// ============ INVESTMENTS API ============
+
+export interface Investment {
+  id: number;
+  investor_id: number;
+  property_id: number;
+  amount_invested: number;
+  ownership_percentage: number;
+  number_of_shares: number;
+  investment_date: string;
+  maturity_date?: string;
+  expected_annual_return: number;
+  actual_return_to_date: number;
+  distributions_received: number;
+  status: 'pending' | 'active' | 'matured' | 'exited' | 'cancelled';
+  exit_date?: string;
+  exit_amount?: number;
+  exit_type?: 'maturity' | 'early_exit' | 'buyout' | 'default';
+  notes?: string;
+  created_by?: number;
+  created_at: string;
+  updated_at?: string;
+  // Joined fields
+  investor_name?: string;
+  investor_email?: string;
+  investor_company?: string;
+  property_title?: string;
+  property_location?: string;
+  property_status?: string;
+  days_invested?: number;
+  years_invested?: number;
+  calculations?: InvestmentCalculations;
+}
+
+export interface InvestmentCalculations {
+  expected_return_to_date: number;
+  current_value: number;
+  performance_vs_expected: number;
+  roi_percentage: number;
+  annualized_return?: number;
+  projected_final_value?: number;
+  profit_loss: number;
+  profit_loss_status: 'profit' | 'loss';
+}
+
+export interface InvestorPortfolioSummary {
+  total_investments: number;
+  total_invested: number;
+  total_returns: number;
+  total_distributions: number;
+  portfolio_value: number;
+  portfolio_roi: number;
+  overall_status: 'profit' | 'loss';
+}
+
+export interface PropertyInvestmentSummary {
+  total_investors: number;
+  total_raised: number;
+  total_ownership_sold: number;
+  ownership_available: number;
+  total_shares_sold: number;
+}
+
+export async function getInvestments(params?: {
+  investor_id?: number;
+  property_id?: number;
+  status?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<{ data: Investment[]; total: number }> {
+  try {
+    const searchParams = new URLSearchParams();
+    if (params?.investor_id) searchParams.append('investor_id', params.investor_id.toString());
+    if (params?.property_id) searchParams.append('property_id', params.property_id.toString());
+    if (params?.status) searchParams.append('status', params.status);
+    if (params?.limit) searchParams.append('limit', params.limit.toString());
+    if (params?.offset) searchParams.append('offset', params.offset.toString());
+
+    const response = await fetch(`${API_BASE}/api/investment/investments?${searchParams}`);
+    const data = await response.json();
+    return {
+      data: data.success ? data.data : [],
+      total: data.pagination?.total || 0,
+    };
+  } catch (error) {
+    console.error('Error fetching investments:', error);
+    return { data: [], total: 0 };
+  }
+}
+
+export async function getInvestmentById(id: number): Promise<Investment | null> {
+  try {
+    const response = await fetch(`${API_BASE}/api/investment/investments/${id}`);
+    const data = await response.json();
+    return data.success ? data.data : null;
+  } catch (error) {
+    console.error('Error fetching investment:', error);
+    return null;
+  }
+}
+
+export async function getInvestorInvestments(investorId: number): Promise<{
+  data: Investment[];
+  summary: InvestorPortfolioSummary;
+}> {
+  try {
+    const response = await fetch(`${API_BASE}/api/investment/investments/investor/${investorId}`);
+    const data = await response.json();
+    return {
+      data: data.success ? data.data : [],
+      summary: data.summary || {
+        total_investments: 0,
+        total_invested: 0,
+        total_returns: 0,
+        total_distributions: 0,
+        portfolio_value: 0,
+        portfolio_roi: 0,
+        overall_status: 'profit',
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching investor investments:', error);
+    return {
+      data: [],
+      summary: {
+        total_investments: 0,
+        total_invested: 0,
+        total_returns: 0,
+        total_distributions: 0,
+        portfolio_value: 0,
+        portfolio_roi: 0,
+        overall_status: 'profit',
+      },
+    };
+  }
+}
+
+export async function getPropertyInvestments(propertyId: number): Promise<{
+  data: Investment[];
+  summary: PropertyInvestmentSummary;
+}> {
+  try {
+    const response = await fetch(`${API_BASE}/api/investment/investments/property/${propertyId}`);
+    const data = await response.json();
+    return {
+      data: data.success ? data.data : [],
+      summary: data.summary || {
+        total_investors: 0,
+        total_raised: 0,
+        total_ownership_sold: 0,
+        ownership_available: 100,
+        total_shares_sold: 0,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching property investments:', error);
+    return {
+      data: [],
+      summary: {
+        total_investors: 0,
+        total_raised: 0,
+        total_ownership_sold: 0,
+        ownership_available: 100,
+        total_shares_sold: 0,
+      },
+    };
+  }
+}
+
+export async function createInvestment(investment: {
+  investor_id: number;
+  property_id: number;
+  amount_invested: number;
+  ownership_percentage: number;
+  number_of_shares?: number;
+  investment_date?: string;
+  maturity_date?: string;
+  expected_annual_return?: number;
+  notes?: string;
+  createdBy?: number;
+}): Promise<{ success: boolean; data?: Investment; error?: string }> {
+  try {
+    const response = await fetch(`${API_BASE}/api/investment/investments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(investment),
+    });
+    const data = await response.json();
+    return {
+      success: data.success,
+      data: data.data,
+      error: data.error,
+    };
+  } catch (error) {
+    console.error('Error creating investment:', error);
+    return { success: false, error: 'Network error' };
+  }
+}
+
+export async function updateInvestment(
+  id: number,
+  updates: Partial<Investment & { updatedBy?: number }>
+): Promise<Investment | null> {
+  try {
+    const response = await fetch(`${API_BASE}/api/investment/investments/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    });
+    const data = await response.json();
+    return data.success ? data.data : null;
+  } catch (error) {
+    console.error('Error updating investment:', error);
+    return null;
+  }
+}
+
+export async function deleteInvestment(id: number, deletedBy?: number): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE}/api/investment/investments/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ deletedBy }),
+    });
+    const data = await response.json();
+    return data.success;
+  } catch (error) {
+    console.error('Error deleting investment:', error);
+    return false;
+  }
+}
+
+export async function recordDistribution(
+  investmentId: number,
+  amount: number,
+  recordedBy?: number
+): Promise<{ success: boolean; data?: Investment; error?: string }> {
+  try {
+    const response = await fetch(`${API_BASE}/api/investment/investments/${investmentId}/distribution`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount, recordedBy }),
+    });
+    const data = await response.json();
+    return {
+      success: data.success,
+      data: data.data,
+      error: data.error,
+    };
+  } catch (error) {
+    console.error('Error recording distribution:', error);
+    return { success: false, error: 'Network error' };
+  }
+}
+
+export async function calculateInvestmentReturns(
+  investmentId: number,
+  projectionYears?: number
+): Promise<{
+  investment: Partial<Investment>;
+  current_performance: {
+    days_invested: number;
+    years_invested: number;
+    expected_return_to_date: number;
+    actual_return_to_date: number;
+    performance_vs_expected: number;
+    current_value: number;
+    roi_percentage: number;
+    status: 'on_track' | 'below_target';
+  };
+  projections: Array<{
+    year: number;
+    projected_value: number;
+    projected_return: number;
+    annual_distribution: number;
+    cumulative_roi: number;
+  }>;
+  summary: {
+    break_even_years: number | null;
+    double_value_years: number | null;
+    estimated_annual_income: number;
+  };
+} | null> {
+  try {
+    const params = projectionYears ? `?projection_years=${projectionYears}` : '';
+    const response = await fetch(`${API_BASE}/api/investment/investments/${investmentId}/calculate${params}`);
+    const data = await response.json();
+    return data.success ? data.data : null;
+  } catch (error) {
+    console.error('Error calculating investment returns:', error);
+    return null;
+  }
 }

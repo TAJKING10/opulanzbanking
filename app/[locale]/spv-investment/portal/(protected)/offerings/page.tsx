@@ -44,20 +44,23 @@ export default function SpvOfferingsPage() {
       try {
         const { data } = await getProperties();
         // Map database properties to offerings format
-        const mapped: Offering[] = data.map((p: Property) => ({
-          id: p.id,
-          title: p.title,
-          location: p.location,
-          propertyType: p.property_type,
-          size: p.size || "N/A",
-          status: p.status as "open" | "closing" | "closed" | "coming",
-          images: p.images || ["https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=500&fit=crop"],
-          financials: {
-            minimumInvestment: p.min_investment ? `€${p.min_investment.toLocaleString()}` : "Contact us",
-            targetReturn: p.target_return || "N/A",
-            investmentTerm: p.investment_term || "N/A",
-          },
-        }));
+        // Filter out closed properties - they should not be visible to other investors
+        const mapped: Offering[] = data
+          .filter((p: Property) => p.status !== "closed")
+          .map((p: Property) => ({
+            id: p.id,
+            title: p.title,
+            location: p.location,
+            propertyType: p.property_type,
+            size: p.size || "N/A",
+            status: p.status as "open" | "closing" | "closed" | "coming",
+            images: p.images || ["https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=500&fit=crop"],
+            financials: {
+              minimumInvestment: p.min_investment ? `€${p.min_investment.toLocaleString()}` : "Contact us",
+              targetReturn: p.target_return || "N/A",
+              investmentTerm: p.investment_term || "N/A",
+            },
+          }));
         setOfferings(mapped);
       } catch (error) {
         console.error("Error fetching properties:", error);

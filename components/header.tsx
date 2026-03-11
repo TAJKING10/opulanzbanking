@@ -26,6 +26,7 @@ export function Header({ locale }: HeaderProps) {
     { name: t("nav.openAccount"), href: "/open-account" },
     { name: t("nav.services"), href: "/services", isServices: true },
     { name: t("nav.support"), href: "/support" },
+    { name: t("nav.dashboard") || "Dashboard", href: "/dashboard" },
   ];
 
   const services = [

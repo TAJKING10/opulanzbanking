@@ -28,7 +28,8 @@
     "accountingInvoicing": "Comptabilité & Facturation",
     "investment": "Investissement",
     "individualAccount": "Compte Particulier",
-    "companyAccount": "Compte Entreprise"
+    "companyAccount": "Compte Entreprise",
+    "dashboard": "Tableau de bord"
   },
   "hero": {
     "home": {

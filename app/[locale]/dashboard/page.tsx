@@ -1,248 +1,301 @@
 "use client";
 
 import * as React from "react";
-import { CreditCard, TrendingUp, FileText, Plus, ArrowUpRight, ArrowDownLeft } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { StatusChip } from "@/components/status-chip";
-import { Timeline, type TimelineItem } from "@/components/timeline";
-import { SectionHeading } from "@/components/section-heading";
-import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import {
+  TrendingUp,
+  TrendingDown,
+  Send,
+  Plus,
+  RefreshCw,
+  Copy,
+  ChevronRight,
+  MoreHorizontal,
+  Rocket,
+  Calendar,
+} from "lucide-react";
 
 export default function DashboardPage() {
-  const t = useTranslations('dashboard');
-  const accountBalance = "45,234.50";
-  const currency = "EUR";
+  const params = useParams();
+  const locale = params.locale as string;
+  const [copiedIban, setCopiedIban] = React.useState(false);
 
-  const applications: TimelineItem[] = [
+  const handleCopyIban = () => {
+    navigator.clipboard.writeText("FI91 1234 5678 9012 34");
+    setCopiedIban(true);
+    setTimeout(() => setCopiedIban(false), 2000);
+  };
+
+  const transactions = [
     {
       id: "1",
-      title: "Business Account Opening",
-      description: "Your application has been approved",
+      name: "Amazon Web Services",
+      category: "Cloud Infrastructure",
+      date: "Oct 24, 2023",
+      time: "14:32",
+      amount: "-€1,240.55",
+      isCredit: false,
       status: "completed",
-      date: "2025-10-15",
+      initial: "A",
+      color: "bg-[#3b4078]",
     },
     {
       id: "2",
-      title: "Company Formation - SARL",
-      description: "Awaiting notary certificate",
-      status: "in_progress",
-      date: "2025-10-18",
+      name: "Slack Technologies",
+      category: "Subscriptions",
+      date: "Oct 23, 2023",
+      time: "09:15",
+      amount: "-€89.00",
+      isCredit: false,
+      status: "processing",
+      initial: "S",
+      color: "bg-blue-500",
     },
     {
       id: "3",
-      title: "Tax Advisory Consultation",
-      description: "Scheduled for next week",
-      status: "pending",
-      date: "2025-10-25",
+      name: "Google Cloud",
+      category: "Workspace",
+      date: "Oct 22, 2023",
+      time: "22:01",
+      amount: "-€450.20",
+      isCredit: false,
+      status: "completed",
+      initial: "G",
+      color: "bg-yellow-500",
+    },
+    {
+      id: "4",
+      name: "Stripe Payout",
+      category: "Merchant Settlement",
+      date: "Oct 21, 2023",
+      time: "11:45",
+      amount: "+€12,500.00",
+      isCredit: true,
+      status: "completed",
+      initial: "↓",
+      color: "bg-green-500",
     },
   ];
 
-  const recentTransactions = [
+  const recurringPayments = [
     {
-      id: "1",
-      type: "credit",
-      description: "Wire Transfer from Client ABC",
-      amount: "+5,000.00",
-      date: "2025-10-19",
-      status: "completed",
+      name: "Adobe Creative Cloud",
+      amount: "€54.99",
+      date: "Nov 1",
+      initial: "AD",
+      color: "bg-red-500",
     },
     {
-      id: "2",
-      type: "debit",
-      description: "Payment to Supplier XYZ",
-      amount: "-2,345.67",
-      date: "2025-10-18",
-      status: "completed",
+      name: "GitHub Enterprise",
+      amount: "€1,200.00",
+      date: "Nov 5",
+      initial: "GH",
+      color: "bg-gray-900",
     },
-    {
-      id: "3",
-      type: "debit",
-      description: "Monthly Subscription",
-      amount: "-99.00",
-      date: "2025-10-17",
-      status: "completed",
-    },
-  ];
-
-  const quickActions = [
-    { label: t('actions.openNewAccount'), href: "/open-account", icon: Plus },
-    { label: t('actions.formCompany'), href: "/company-formation", icon: FileText },
-    { label: t('actions.bookAdvisory'), href: "/tax-advisory", icon: TrendingUp },
-    { label: t('actions.viewStatements'), href: "/dashboard/statements", icon: FileText },
   ];
 
   return (
-    <div className="min-h-screen bg-brand-off py-12">
-      <div className="container mx-auto max-w-7xl px-6">
-        <div className="mb-12">
-          <h1 className="mb-2 text-3xl font-bold text-brand-dark">{t('title')}</h1>
-          <p className="text-brand-grayMed">
-            {t('subtitle')}
-          </p>
-        </div>
+    <div className="p-6 lg:p-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">Account Overview</h1>
+        <p className="text-gray-500 mt-1">Welcome back, Nordic Solutions OY</p>
+      </div>
 
-        {/* Account Balance Card */}
-        <div className="mb-8">
-          <Card className="border-none bg-gradient-to-br from-brand-goldDark to-brand-gold shadow-elevated">
-            <CardContent className="p-8">
-              <div className="flex items-start justify-between">
-                <div className="text-white">
-                  <p className="mb-2 text-sm opacity-90">{t('totalBalance')}</p>
-                  <p className="mb-6 text-4xl font-bold">
-                    {currency} {accountBalance}
-                  </p>
-                  <div className="flex gap-4">
-                    <Button
-                      variant="default"
-                      size="sm"
-                      className="bg-white text-brand-dark hover:bg-brand-off"
-                    >
-                      <Plus className="mr-2 h-4 w-4" />
-                      {t('addFunds')}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="border border-white/30 text-white hover:bg-white/10"
-                    >
-                      {t('transfer')}
-                    </Button>
-                  </div>
-                </div>
-                <CreditCard className="h-12 w-12 text-white/50" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid gap-8 lg:grid-cols-3">
-          {/* Main Content - 2 cols */}
-          <div className="space-y-8 lg:col-span-2">
-            {/* Quick Actions */}
-            <div>
-              <h2 className="mb-4 text-xl font-bold text-brand-dark">
-                {t('quickActions')}
-              </h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {quickActions.map((action) => {
-                  const Icon = action.icon;
-                  return (
-                    <Card
-                      key={action.label}
-                      className="card-hover cursor-pointer border-brand-grayLight transition-all hover:border-brand-gold"
-                    >
-                      <CardContent className="flex items-center gap-4 p-6">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
-                          <Icon className="h-6 w-6 text-brand-goldDark" />
-                        </div>
-                        <span className="font-semibold text-brand-dark">
-                          {action.label}
-                        </span>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
+      {/* Balance and IBAN Cards */}
+      <div className="grid gap-6 md:grid-cols-2 mb-6">
+        {/* Balance Card */}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <p className="text-gray-500 text-sm mb-2">Available Balance</p>
+          <div className="flex items-center justify-between">
+            <h2 className="text-4xl font-bold text-[#3b4078]">€124,560.80</h2>
+            <div className="flex items-center gap-1 text-green-500 text-sm font-medium">
+              <TrendingUp className="h-4 w-4" />
+              <span>+2.4%</span>
             </div>
+          </div>
+        </div>
 
-            {/* Recent Transactions */}
-            <div>
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-brand-dark">
-                  {t('recentTransactions')}
-                </h2>
-                <Button variant="link" className="text-brand-gold">
-                  {t('viewAll')}
-                </Button>
-              </div>
-              <Card className="border-brand-grayLight">
-                <CardContent className="p-0">
-                  <div className="divide-y divide-brand-grayLight">
-                    {recentTransactions.map((transaction) => (
+        {/* IBAN Card */}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <p className="text-gray-500 text-sm mb-2">IBAN Number</p>
+          <div className="flex items-center justify-between">
+            <p className="font-mono text-lg text-gray-900">FI91 1234 5678 9012 34</p>
+            <button
+              onClick={handleCopyIban}
+              className="p-2 text-[#3b4078] hover:bg-[#3b4078]/10 rounded-lg transition-colors"
+            >
+              <Copy className="h-5 w-5" />
+            </button>
+          </div>
+          {copiedIban && (
+            <p className="text-green-500 text-xs mt-2">Copied to clipboard!</p>
+          )}
+        </div>
+      </div>
+
+      {/* Weekly Spending Chart */}
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-gray-900">Weekly Spending</h3>
+          <button className="text-gray-400 hover:text-gray-600">
+            <MoreHorizontal className="h-5 w-5" />
+          </button>
+        </div>
+        <div className="h-48 bg-gray-50 rounded-lg flex items-end justify-around p-4">
+          {/* Simple Bar Chart */}
+          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
+            <div key={day} className="flex flex-col items-center gap-2">
+              <div
+                className="w-8 bg-[#3b4078] rounded-t"
+                style={{ height: `${[60, 80, 45, 90, 70, 30, 50][i]}%` }}
+              />
+              <span className="text-xs text-gray-500">{day}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-3 mb-6">
+        <Link
+          href={`/${locale}/dashboard/send`}
+          className="inline-flex items-center gap-2 bg-[#3b4078] text-white px-5 py-2.5 rounded-lg font-medium hover:bg-[#2a2d5a] transition-colors"
+        >
+          <Send className="h-4 w-4" />
+          Send Money
+        </Link>
+        <Link
+          href={`/${locale}/dashboard/add-funds`}
+          className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 px-5 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+        >
+          <Plus className="h-4 w-4" />
+          Add Funds
+        </Link>
+        <Link
+          href={`/${locale}/dashboard/exchange`}
+          className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 px-5 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+        >
+          <RefreshCw className="h-4 w-4" />
+          Exchange
+        </Link>
+      </div>
+
+      {/* Recent Transactions */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 mb-6">
+        <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+          <h3 className="font-semibold text-lg text-gray-900">Recent Transactions</h3>
+          <Link
+            href={`/${locale}/dashboard/transactions`}
+            className="text-[#3b4078] text-sm font-medium hover:underline"
+          >
+            View all
+          </Link>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-100 text-left text-sm text-gray-500">
+                <th className="px-6 py-3 font-medium">Transaction</th>
+                <th className="px-6 py-3 font-medium">Date</th>
+                <th className="px-6 py-3 font-medium">Amount</th>
+                <th className="px-6 py-3 font-medium">Status</th>
+                <th className="px-6 py-3 font-medium"></th>
+              </tr>
+            </thead>
+            <tbody className="text-sm">
+              {transactions.map((tx) => (
+                <tr key={tx.id} className="border-b border-gray-50 hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
                       <div
-                        key={transaction.id}
-                        className="flex items-center justify-between p-6 transition-colors hover:bg-brand-off"
+                        className={`w-10 h-10 ${tx.color} text-white rounded-full flex items-center justify-center text-xs font-bold`}
                       >
-                        <div className="flex items-center gap-4">
-                          <div
-                            className={`flex h-10 w-10 items-center justify-center rounded-full ${
-                              transaction.type === "credit"
-                                ? "bg-green-100"
-                                : "bg-red-100"
-                            }`}
-                          >
-                            {transaction.type === "credit" ? (
-                              <ArrowDownLeft className="h-5 w-5 text-green-600" />
-                            ) : (
-                              <ArrowUpRight className="h-5 w-5 text-red-600" />
-                            )}
-                          </div>
-                          <div>
-                            <p className="font-semibold text-brand-dark">
-                              {transaction.description}
-                            </p>
-                            <p className="text-sm text-brand-grayMed">
-                              {transaction.date}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p
-                            className={`text-lg font-bold ${
-                              transaction.type === "credit"
-                                ? "text-green-600"
-                                : "text-brand-dark"
-                            }`}
-                          >
-                            {transaction.amount} {currency}
-                          </p>
-                          <StatusChip status={transaction.status as any} />
-                        </div>
+                        {tx.initial}
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">{tx.name}</p>
+                        <p className="text-gray-500 text-xs">{tx.category}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">
+                    {tx.date}
+                    <br />
+                    <span className="text-xs text-gray-400">{tx.time}</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`font-semibold ${
+                        tx.isCredit ? "text-green-600" : "text-gray-900"
+                      }`}
+                    >
+                      {tx.amount}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`inline-flex px-2 py-1 rounded text-xs font-medium ${
+                        tx.status === "completed"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-yellow-100 text-yellow-800"
+                      }`}
+                    >
+                      {tx.status === "completed" ? "Completed" : "Processing"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <ChevronRight className="h-5 w-5 text-gray-400" />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-          {/* Sidebar - 1 col */}
-          <div className="space-y-8">
-            {/* Application Status */}
-            <div>
-              <h2 className="mb-4 text-xl font-bold text-brand-dark">
-                {t('applicationStatus')}
-              </h2>
-              <Card className="border-brand-grayLight">
-                <CardContent className="p-6">
-                  <Timeline items={applications} />
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Services */}
-            <div>
-              <h2 className="mb-4 text-xl font-bold text-brand-dark">
-                {t('ourServices')}
-              </h2>
-              <Card className="border-brand-grayLight">
-                <CardContent className="space-y-4 p-6">
-                  <div>
-                    <h4 className="mb-2 font-semibold text-brand-dark">
-                      {t('needHelp')}
-                    </h4>
-                    <p className="mb-4 text-sm text-brand-grayMed">
-                      {t('bookConsultationDescription')}
-                    </p>
-                    <Button variant="outline" size="sm" className="w-full">
-                      {t('bookConsultation')}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+      {/* Bottom Grid - Recurring Payments & Upgrade */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Recurring Payments */}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 mb-4">
+            <Calendar className="h-5 w-5 text-gray-400" />
+            <h3 className="font-semibold text-gray-900">Next Recurring Payments</h3>
           </div>
+          <div className="space-y-4">
+            {recurringPayments.map((payment, index) => (
+              <div key={payment.name}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-10 h-10 ${payment.color} text-white rounded-full flex items-center justify-center text-xs font-bold`}
+                    >
+                      {payment.initial}
+                    </div>
+                    <p className="font-semibold text-sm text-gray-900">{payment.name}</p>
+                  </div>
+                  <p className="font-semibold text-sm text-gray-900">{payment.amount}</p>
+                </div>
+                <p className="text-xs text-gray-500 ml-13 mt-1 pl-13">{payment.date}</p>
+                {index < recurringPayments.length - 1 && <hr className="mt-4" />}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Upgrade Card */}
+        <div className="bg-gradient-to-br from-[#3b4078] to-[#2a2d5a] rounded-xl p-6 text-white">
+          <div className="flex items-center gap-2 mb-4">
+            <Rocket className="h-5 w-5" />
+            <h3 className="font-semibold">Get Narvi Pro</h3>
+          </div>
+          <p className="text-sm text-white/80 mb-4">
+            Unlock global payments, corporate cards, and advanced tax tools.
+          </p>
+          <button className="w-full bg-white text-[#3b4078] px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">
+            Upgrade Now
+          </button>
         </div>
       </div>
     </div>

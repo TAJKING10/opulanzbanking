@@ -28,7 +28,8 @@
     "accountingInvoicing": "Accounting & Invoicing",
     "investment": "Investment",
     "individualAccount": "Individual Account",
-    "companyAccount": "Company Account"
+    "companyAccount": "Company Account",
+    "dashboard": "Dashboard"
   },
   "hero": {
     "home": {

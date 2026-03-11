@@ -59,7 +59,11 @@
       "Bash(ls:*)",
       "Bash(ping:*)",
       "Bash(timeout:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(cmd.exe /c \"taskkill /F /PID 50204\")",
+      "Bash(cmd.exe /c \"taskkill /F /IM node.exe\")",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell.exe -NoProfile -Command \"Stop-Process -Name node -Force -ErrorAction SilentlyContinue\")"
     ],
     "deny": [],
     "ask": []

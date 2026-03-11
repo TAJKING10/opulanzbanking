@@ -4,7 +4,7 @@ import * as React from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { LayoutDashboard, Users, Building2, LogOut, Shield, ChevronDown, User, Settings, Key } from "lucide-react";
+import { LayoutDashboard, Users, Building2, LogOut, Shield, ChevronDown, User, Settings, Key, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getCurrentAdmin, logoutAdmin, type AdminProfile } from "@/lib/investment-api";
 
@@ -69,6 +69,11 @@ export default function AdminProtectedLayout({
       name: t("spvInvestment.admin.nav.dashboard"),
       href: `/${locale}/spv-investment/admin/dashboard`,
       icon: LayoutDashboard,
+    },
+    {
+      name: "Requests",
+      href: `/${locale}/spv-investment/admin/requests`,
+      icon: Clock,
     },
     {
       name: t("spvInvestment.admin.nav.customers"),

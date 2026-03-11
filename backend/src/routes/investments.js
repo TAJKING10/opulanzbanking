@@ -18,6 +18,231 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/db');
+const nodemailer = require('nodemailer');
+
+// Create email transporter
+const createTransporter = () => {
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+};
+
+// Send investment request email to admin
+const sendInvestmentRequestEmail = async (investor, property, investment) => {
+  try {
+    const transporter = createTransporter();
+
+    const emailHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #b59354, #886844); color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+          .content { background: #f9f9f9; padding: 20px; border: 1px solid #ddd; }
+          .field { margin-bottom: 15px; }
+          .label { font-weight: bold; color: #666; font-size: 12px; text-transform: uppercase; }
+          .value { margin-top: 5px; padding: 10px; background: white; border-radius: 4px; font-size: 14px; }
+          .highlight { background: #fef3c7; border-left: 4px solid #b59354; }
+          .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+          .amount { font-size: 24px; font-weight: bold; color: #b59354; }
+          .btn { display: inline-block; padding: 12px 24px; background: #b59354; color: white; text-decoration: none; border-radius: 6px; margin-top: 15px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1 style="margin: 0;">New Investment Request</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Action Required</p>
+          </div>
+          <div class="content">
+            <p style="text-align: center; margin-bottom: 20px;">
+              <span class="amount">€${parseFloat(investment.amount_invested).toLocaleString()}</span>
+              <br><span style="color: #666;">Investment Request</span>
+            </p>
+
+            <div class="field highlight">
+              <div class="label">Property</div>
+              <div class="value"><strong>${property.title}</strong><br>${property.location}</div>
+            </div>
+
+            <div class="field">
+              <div class="label">Investor</div>
+              <div class="value">
+                <strong>${investor.name}</strong><br>
+                ${investor.email}<br>
+                Type: ${investor.investor_type}
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+              <div class="field">
+                <div class="label">Ownership Requested</div>
+                <div class="value"><strong>${investment.ownership_percentage}%</strong></div>
+              </div>
+              <div class="field">
+                <div class="label">Status</div>
+                <div class="value"><span style="color: #f59e0b; font-weight: bold;">⏳ Pending Approval</span></div>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label">Request Date</div>
+              <div class="value">${new Date().toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short', timeZone: 'Europe/Paris' })}</div>
+            </div>
+
+            <p style="text-align: center; margin-top: 20px;">
+              <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/en/spv-investment/admin/requests" class="btn">
+                Review in Admin Portal
+              </a>
+            </p>
+          </div>
+          <div class="footer">
+            <p>This is an automated notification from the Opulanz Investment Portal.</p>
+            <p>Please review and process this request within 24-48 hours.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    await transporter.sendMail({
+      from: `"Opulanz Investment Portal" <${process.env.EMAIL_USER}>`,
+      to: process.env.ADMIN_EMAIL,
+      subject: `[Investment Request] ${investor.name} - €${parseFloat(investment.amount_invested).toLocaleString()} - ${property.title}`,
+      html: emailHtml,
+    });
+
+    console.log(`✅ Investment request email sent to: ${process.env.ADMIN_EMAIL}`);
+  } catch (error) {
+    console.error('Error sending investment request email:', error);
+  }
+};
+
+// Send investment approval email to investor
+const sendInvestmentApprovalEmail = async (investor, property, investment, approved = true, rejectionReason = '') => {
+  try {
+    const transporter = createTransporter();
+
+    const emailHtml = approved ? `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #16a34a, #15803d); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+          .content { padding: 30px; background: #ffffff; border: 1px solid #ddd; }
+          .footer { padding: 20px; text-align: center; background: #f9f9f9; color: #666; font-size: 12px; }
+          .highlight { color: #b59354; font-weight: bold; }
+          .success-icon { font-size: 48px; }
+          .amount { font-size: 28px; font-weight: bold; color: #16a34a; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <div class="success-icon">✓</div>
+            <h1 style="margin: 10px 0 0;">Investment Approved!</h1>
+          </div>
+          <div class="content">
+            <p>Dear <span class="highlight">${investor.name}</span>,</p>
+
+            <p>Great news! Your investment request has been <strong>approved</strong>.</p>
+
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center;">
+              <p style="margin: 0; color: #666;">Investment Amount</p>
+              <p class="amount" style="margin: 5px 0;">€${parseFloat(investment.amount_invested).toLocaleString()}</p>
+              <p style="margin: 0; color: #666;">${investment.ownership_percentage}% ownership in ${property.title}</p>
+            </div>
+
+            <h3>Next Steps:</h3>
+            <ul>
+              <li>Complete the bank transfer using the details provided in your portal</li>
+              <li>Use reference: <strong>${property.bank_reference || 'SPV-' + property.id}</strong></li>
+              <li>Sign the subscription agreement (available in Documents)</li>
+              <li>Your investment will be confirmed once payment is received</li>
+            </ul>
+
+            <p>You can track your investment and access all documents through your <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/en/spv-investment/portal/dashboard" style="color: #b59354;">Investor Portal</a>.</p>
+
+            <p>If you have any questions, please don't hesitate to contact our team.</p>
+
+            <p>Best regards,</p>
+            <p><strong>The Opulanz Investment Team</strong></p>
+          </div>
+          <div class="footer">
+            <p>This email confirms the approval of your investment request.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    ` : `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #b59354, #886844); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+          .content { padding: 30px; background: #ffffff; border: 1px solid #ddd; }
+          .footer { padding: 20px; text-align: center; background: #f9f9f9; color: #666; font-size: 12px; }
+          .highlight { color: #b59354; font-weight: bold; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1 style="margin: 0;">Investment Request Update</h1>
+          </div>
+          <div class="content">
+            <p>Dear <span class="highlight">${investor.name}</span>,</p>
+
+            <p>Thank you for your interest in investing in <strong>${property.title}</strong>.</p>
+
+            <p>After careful review, we regret to inform you that we are unable to proceed with your investment request at this time.</p>
+
+            ${rejectionReason ? `<div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0;"><strong>Reason:</strong> ${rejectionReason}</div>` : ''}
+
+            <p>This decision does not affect your eligibility for future investment opportunities. We encourage you to:</p>
+            <ul>
+              <li>Explore other available offerings in your portal</li>
+              <li>Contact our advisory team to discuss alternative options</li>
+              <li>Update your investor profile if any information has changed</li>
+            </ul>
+
+            <p>If you have any questions or would like to discuss this further, please contact our team.</p>
+
+            <p>Best regards,</p>
+            <p><strong>The Opulanz Investment Team</strong></p>
+          </div>
+          <div class="footer">
+            <p>This email is regarding your investment request for ${property.title}.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    await transporter.sendMail({
+      from: `"Opulanz Investment Team" <${process.env.EMAIL_USER}>`,
+      to: investor.email,
+      subject: approved
+        ? `Investment Approved - ${property.title} - Opulanz`
+        : `Investment Request Update - ${property.title} - Opulanz`,
+      html: emailHtml,
+    });
+
+    console.log(`✅ Investment ${approved ? 'approval' : 'rejection'} email sent to: ${investor.email}`);
+  } catch (error) {
+    console.error('Error sending investment status email:', error);
+  }
+};
 
 // Log activity
 const logActivity = async (type, description, adminId, adminName, investorId = null, propertyId = null, metadata = {}) => {
@@ -350,6 +575,40 @@ router.get('/:id', async (req, res) => {
 });
 
 /**
+ * GET /api/investment/investments/status/pending
+ * Get all pending investment requests
+ * NOTE: This must be defined BEFORE /:id to prevent route conflicts
+ */
+router.get('/status/pending', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        i.*,
+        inv.name as investor_name,
+        inv.email as investor_email,
+        inv.investor_type,
+        p.title as property_title,
+        p.location as property_location,
+        p.images
+      FROM investments i
+      JOIN investment_investors inv ON i.investor_id = inv.id
+      JOIN investment_properties p ON i.property_id = p.id
+      WHERE i.status = 'pending'
+      ORDER BY i.created_at DESC
+    `);
+
+    res.json({
+      success: true,
+      data: result.rows,
+      count: result.rows.length
+    });
+  } catch (error) {
+    console.error('Error fetching pending investments:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
  * POST /api/investment/investments
  * Create new investment
  */
@@ -419,13 +678,16 @@ router.post('/', async (req, res) => {
       });
     }
 
+    // Determine status - if created by admin, set as active; if by investor, set as pending
+    const investmentStatus = createdBy ? 'active' : 'pending';
+
     // Create investment
     const result = await pool.query(`
       INSERT INTO investments (
         investor_id, property_id, amount_invested, ownership_percentage,
         number_of_shares, investment_date, maturity_date, expected_annual_return,
         notes, created_by, status
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'active')
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING *
     `, [
       investor_id,
@@ -437,23 +699,25 @@ router.post('/', async (req, res) => {
       maturity_date,
       expected_annual_return,
       notes,
-      createdBy
+      createdBy,
+      investmentStatus
     ]);
 
     const newInvestment = result.rows[0];
-
-    // Update investor's total invested
-    await pool.query(`
-      UPDATE investment_investors
-      SET total_invested = COALESCE(total_invested, 0) + $1,
-          updated_at = CURRENT_TIMESTAMP
-      WHERE id = $2
-    `, [amount_invested, investor_id]);
-
-    // Log activity
     const investor = investorCheck.rows[0];
     const property = propertyCheck.rows[0];
 
+    // Only update investor's total invested if status is active
+    if (investmentStatus === 'active') {
+      await pool.query(`
+        UPDATE investment_investors
+        SET total_invested = COALESCE(total_invested, 0) + $1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = $2
+      `, [amount_invested, investor_id]);
+    }
+
+    // Log activity
     if (createdBy) {
       const adminResult = await pool.query('SELECT name FROM investment_admins WHERE id = $1', [createdBy]);
       const adminName = adminResult.rows[0]?.name || 'System';
@@ -465,12 +729,25 @@ router.post('/', async (req, res) => {
         investor_id,
         property_id
       );
+    } else {
+      // Investment request from investor - send email to admin
+      await sendInvestmentRequestEmail(investor, property, newInvestment);
+      await logActivity(
+        'investment_requested',
+        `Investment request: ${investor.name} requested ${ownership_percentage}% of ${property.title} (€${amount_invested})`,
+        null,
+        'Investor Portal',
+        investor_id,
+        property_id
+      );
     }
 
     res.status(201).json({
       success: true,
       data: newInvestment,
-      message: `Investment created: ${investor.name} now owns ${ownership_percentage}% of ${property.title}`
+      message: investmentStatus === 'pending'
+        ? `Investment request submitted. Awaiting approval.`
+        : `Investment created: ${investor.name} now owns ${ownership_percentage}% of ${property.title}`
     });
   } catch (error) {
     console.error('Error creating investment:', error);
@@ -859,6 +1136,138 @@ router.get('/:id/calculate', async (req, res) => {
       success: false,
       error: error.message
     });
+  }
+});
+
+/**
+ * POST /api/investment/investments/:id/approve
+ * Approve a pending investment request
+ */
+router.post('/:id/approve', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { adminId } = req.body;
+
+    // Get investment details
+    const investmentResult = await pool.query('SELECT * FROM investments WHERE id = $1', [id]);
+    if (investmentResult.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Investment not found' });
+    }
+
+    const investment = investmentResult.rows[0];
+
+    if (investment.status !== 'pending') {
+      return res.status(400).json({ success: false, error: 'Investment is not pending approval' });
+    }
+
+    // Get investor and property details
+    const investorResult = await pool.query('SELECT * FROM investment_investors WHERE id = $1', [investment.investor_id]);
+    const propertyResult = await pool.query('SELECT * FROM investment_properties WHERE id = $1', [investment.property_id]);
+
+    const investor = investorResult.rows[0];
+    const property = propertyResult.rows[0];
+
+    // Update investment status to active
+    await pool.query(`
+      UPDATE investments
+      SET status = 'active', updated_at = CURRENT_TIMESTAMP
+      WHERE id = $1
+    `, [id]);
+
+    // Update investor's total invested
+    await pool.query(`
+      UPDATE investment_investors
+      SET total_invested = COALESCE(total_invested, 0) + $1,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = $2
+    `, [investment.amount_invested, investment.investor_id]);
+
+    // Send approval email to investor
+    await sendInvestmentApprovalEmail(investor, property, investment, true);
+
+    // Log activity
+    if (adminId) {
+      const adminResult = await pool.query('SELECT name FROM investment_admins WHERE id = $1', [adminId]);
+      const adminName = adminResult.rows[0]?.name || 'Admin';
+      await logActivity(
+        'investment_approved',
+        `Approved investment: ${investor.name} → ${property.title} (${investment.ownership_percentage}%, €${investment.amount_invested})`,
+        adminId,
+        adminName,
+        investment.investor_id,
+        investment.property_id
+      );
+    }
+
+    res.json({
+      success: true,
+      message: `Investment approved. Confirmation email sent to ${investor.email}.`
+    });
+  } catch (error) {
+    console.error('Error approving investment:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * POST /api/investment/investments/:id/reject
+ * Reject a pending investment request
+ */
+router.post('/:id/reject', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { adminId, reason } = req.body;
+
+    // Get investment details
+    const investmentResult = await pool.query('SELECT * FROM investments WHERE id = $1', [id]);
+    if (investmentResult.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Investment not found' });
+    }
+
+    const investment = investmentResult.rows[0];
+
+    if (investment.status !== 'pending') {
+      return res.status(400).json({ success: false, error: 'Investment is not pending' });
+    }
+
+    // Get investor and property details
+    const investorResult = await pool.query('SELECT * FROM investment_investors WHERE id = $1', [investment.investor_id]);
+    const propertyResult = await pool.query('SELECT * FROM investment_properties WHERE id = $1', [investment.property_id]);
+
+    const investor = investorResult.rows[0];
+    const property = propertyResult.rows[0];
+
+    // Update investment status to cancelled
+    await pool.query(`
+      UPDATE investments
+      SET status = 'cancelled', notes = $2, updated_at = CURRENT_TIMESTAMP
+      WHERE id = $1
+    `, [id, reason || 'Rejected by administrator']);
+
+    // Send rejection email to investor
+    await sendInvestmentApprovalEmail(investor, property, investment, false, reason);
+
+    // Log activity
+    if (adminId) {
+      const adminResult = await pool.query('SELECT name FROM investment_admins WHERE id = $1', [adminId]);
+      const adminName = adminResult.rows[0]?.name || 'Admin';
+      await logActivity(
+        'investment_rejected',
+        `Rejected investment: ${investor.name} → ${property.title} (Reason: ${reason || 'Not specified'})`,
+        adminId,
+        adminName,
+        investment.investor_id,
+        investment.property_id
+      );
+    }
+
+    res.json({
+      success: true,
+      message: `Investment rejected. Notification email sent to ${investor.email}.`
+    });
+  } catch (error) {
+    console.error('Error rejecting investment:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

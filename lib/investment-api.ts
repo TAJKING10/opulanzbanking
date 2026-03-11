@@ -765,6 +765,74 @@ export async function createInvestment(investment: {
   }
 }
 
+// Get pending investment requests
+export async function getPendingInvestments(): Promise<{
+  success: boolean;
+  data: Investment[];
+  count: number;
+}> {
+  try {
+    const response = await fetch(`${API_BASE}/api/investment/investments/status/pending`);
+    const data = await response.json();
+    return {
+      success: data.success,
+      data: data.data || [],
+      count: data.count || 0,
+    };
+  } catch (error) {
+    console.error('Error fetching pending investments:', error);
+    return { success: false, data: [], count: 0 };
+  }
+}
+
+// Approve an investment request
+export async function approveInvestment(investmentId: number, adminId?: number): Promise<{
+  success: boolean;
+  message?: string;
+  error?: string;
+}> {
+  try {
+    const response = await fetch(`${API_BASE}/api/investment/investments/${investmentId}/approve`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminId }),
+    });
+    const data = await response.json();
+    return {
+      success: data.success,
+      message: data.message,
+      error: data.error,
+    };
+  } catch (error) {
+    console.error('Error approving investment:', error);
+    return { success: false, error: 'Network error' };
+  }
+}
+
+// Reject an investment request
+export async function rejectInvestment(investmentId: number, adminId?: number, reason?: string): Promise<{
+  success: boolean;
+  message?: string;
+  error?: string;
+}> {
+  try {
+    const response = await fetch(`${API_BASE}/api/investment/investments/${investmentId}/reject`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminId, reason }),
+    });
+    const data = await response.json();
+    return {
+      success: data.success,
+      message: data.message,
+      error: data.error,
+    };
+  } catch (error) {
+    console.error('Error rejecting investment:', error);
+    return { success: false, error: 'Network error' };
+  }
+}
+
 export async function updateInvestment(
   id: number,
   updates: Partial<Investment & { updatedBy?: number }>

@@ -80,11 +80,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           {/* Logo */}
           <div className="flex items-center justify-between p-6 border-b border-gray-100">
             <Link href={`/${locale}/dashboard`} className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-[#3b4078] rounded-lg flex items-center justify-center">
-                <span className="text-lg font-bold text-white">N</span>
+              <div className="w-9 h-9 bg-[#b59354] rounded-lg flex items-center justify-center">
+                <span className="text-lg font-bold text-white">O</span>
               </div>
               <div>
-                <span className="text-xl font-bold text-[#3b4078]">Narvi</span>
+                <span className="text-xl font-bold text-[#252623]">Opulanz</span>
                 <p className="text-xs text-gray-500">Business</p>
               </div>
             </Link>
@@ -109,12 +109,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                     className={cn(
                       "flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors",
                       active
-                        ? "bg-[#3b4078]/10 text-[#3b4078]"
+                        ? "bg-[#b59354]/10 text-[#b59354]"
                         : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                     )}
                     onClick={() => setIsSidebarOpen(false)}
                   >
-                    <Icon className={cn("h-5 w-5", active ? "text-[#3b4078]" : "text-gray-400")} />
+                    <Icon className={cn("h-5 w-5", active ? "text-[#b59354]" : "text-gray-400")} />
                     {item.name}
                   </Link>
                 );
@@ -141,7 +141,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       )}
                       onClick={() => setIsSidebarOpen(false)}
                     >
-                      <Icon className={cn("h-5 w-5", active ? "text-[#3b4078]" : "text-gray-400")} />
+                      <Icon className={cn("h-5 w-5", active ? "text-[#b59354]" : "text-gray-400")} />
                       {item.name}
                     </Link>
                   );
@@ -154,7 +154,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="p-4 border-t border-gray-100">
             <Link
               href={`/${locale}/open-account`}
-              className="flex items-center justify-center gap-2 w-full bg-[#3b4078] text-white py-2.5 px-4 rounded-lg text-sm font-semibold hover:bg-[#2a2d5a] transition-colors"
+              className="flex items-center justify-center gap-2 w-full bg-[#b59354] text-white py-2.5 px-4 rounded-lg text-sm font-semibold hover:bg-[#886844] transition-colors"
             >
               Open New Account
             </Link>
@@ -182,7 +182,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <input
                   type="text"
                   placeholder="Search transactions, accounts..."
-                  className="pl-10 pr-4 py-2 w-80 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20 focus:border-[#3b4078]"
+                  className="pl-10 pr-4 py-2 w-80 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20 focus:border-[#b59354]"
                 />
               </div>
             </div>
@@ -201,7 +201,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                   className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg transition-colors"
                 >
-                  <div className="w-8 h-8 bg-[#3b4078] rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-[#b59354] rounded-full flex items-center justify-center">
                     <User className="h-4 w-4 text-white" />
                   </div>
                   <div className="hidden md:block text-left">

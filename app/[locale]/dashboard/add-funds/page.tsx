@@ -51,7 +51,7 @@ export default function AddFundsPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Add Funds</h1>
-        <p className="text-gray-500 mt-1">Deposit money into your Narvi account</p>
+        <p className="text-gray-500 mt-1">Deposit money into your Opulanz account</p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
@@ -65,12 +65,12 @@ export default function AddFundsPage() {
                 onClick={() => setMethod("bank")}
                 className={`flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all ${
                   method === "bank"
-                    ? "border-[#3b4078] bg-[#3b4078]/5"
+                    ? "border-[#b59354] bg-[#b59354]/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                  method === "bank" ? "bg-[#3b4078] text-white" : "bg-gray-100 text-gray-600"
+                  method === "bank" ? "bg-[#b59354] text-white" : "bg-gray-100 text-gray-600"
                 }`}>
                   <Building2 className="h-6 w-6" />
                 </div>
@@ -84,12 +84,12 @@ export default function AddFundsPage() {
                 onClick={() => setMethod("card")}
                 className={`flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all ${
                   method === "card"
-                    ? "border-[#3b4078] bg-[#3b4078]/5"
+                    ? "border-[#b59354] bg-[#b59354]/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                  method === "card" ? "bg-[#3b4078] text-white" : "bg-gray-100 text-gray-600"
+                  method === "card" ? "bg-[#b59354] text-white" : "bg-gray-100 text-gray-600"
                 }`}>
                   <CreditCard className="h-6 w-6" />
                 </div>
@@ -103,12 +103,12 @@ export default function AddFundsPage() {
                 onClick={() => setMethod("instant")}
                 className={`flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all ${
                   method === "instant"
-                    ? "border-[#3b4078] bg-[#3b4078]/5"
+                    ? "border-[#b59354] bg-[#b59354]/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                  method === "instant" ? "bg-[#3b4078] text-white" : "bg-gray-100 text-gray-600"
+                  method === "instant" ? "bg-[#b59354] text-white" : "bg-gray-100 text-gray-600"
                 }`}>
                   <Smartphone className="h-6 w-6" />
                 </div>
@@ -146,7 +146,7 @@ export default function AddFundsPage() {
                     </div>
                     <button
                       onClick={() => handleCopy(label, value)}
-                      className="p-2 text-[#3b4078] hover:bg-[#3b4078]/10 rounded-lg transition-colors"
+                      className="p-2 text-[#b59354] hover:bg-[#b59354]/10 rounded-lg transition-colors"
                     >
                       {copiedField === label ? (
                         <Check className="h-5 w-5 text-green-500" />
@@ -182,7 +182,7 @@ export default function AddFundsPage() {
                   <select
                     value={selectedAccount}
                     onChange={(e) => setSelectedAccount(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
                   >
                     {accounts.map((account) => (
                       <option key={account.id} value={account.id}>
@@ -206,7 +206,7 @@ export default function AddFundsPage() {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0.00"
-                    className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-lg text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+                    className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-lg text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
                   />
                 </div>
                 <div className="flex gap-2 mt-3">
@@ -231,7 +231,7 @@ export default function AddFundsPage() {
                   <input
                     type="text"
                     placeholder="1234 5678 9012 3456"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -242,7 +242,7 @@ export default function AddFundsPage() {
                     <input
                       type="text"
                       placeholder="MM/YY"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
                     />
                   </div>
                   <div>
@@ -252,13 +252,13 @@ export default function AddFundsPage() {
                     <input
                       type="text"
                       placeholder="123"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
                     />
                   </div>
                 </div>
               </div>
 
-              <button className="w-full mt-6 bg-[#3b4078] text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#2a2d5a] transition-colors">
+              <button className="w-full mt-6 bg-[#b59354] text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#886844] transition-colors">
                 Deposit Funds
                 <ArrowRight className="h-5 w-5" />
               </button>
@@ -337,7 +337,7 @@ export default function AddFundsPage() {
                   <span className="font-medium text-gray-900">€50,000</span>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#3b4078] rounded-full" style={{ width: "15%" }} />
+                  <div className="h-full bg-[#b59354] rounded-full" style={{ width: "15%" }} />
                 </div>
                 <p className="text-xs text-gray-500 mt-1">€7,500 used today</p>
               </div>
@@ -347,7 +347,7 @@ export default function AddFundsPage() {
                   <span className="font-medium text-gray-900">€500,000</span>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#3b4078] rounded-full" style={{ width: "35%" }} />
+                  <div className="h-full bg-[#b59354] rounded-full" style={{ width: "35%" }} />
                 </div>
                 <p className="text-xs text-gray-500 mt-1">€175,000 used this month</p>
               </div>

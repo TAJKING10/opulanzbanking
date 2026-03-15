@@ -37,7 +37,7 @@ export default function CardsPage() {
       status: "active",
       dailyLimit: "€5,000",
       monthlyLimit: "€25,000",
-      color: "from-[#3b4078] to-[#2a2d5a]",
+      color: "from-[#b59354] to-[#886844]",
     },
     {
       id: "2",
@@ -76,7 +76,7 @@ export default function CardsPage() {
           <h1 className="text-2xl font-bold text-gray-900">My Cards</h1>
           <p className="text-gray-500 mt-1">Manage your physical and virtual cards</p>
         </div>
-        <button className="inline-flex items-center gap-2 bg-[#3b4078] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#2a2d5a]">
+        <button className="inline-flex items-center gap-2 bg-[#b59354] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#886844]">
           <Plus className="h-4 w-4" />
           Request New Card
         </button>
@@ -93,12 +93,12 @@ export default function CardsPage() {
                 onClick={() => setSelectedCard(card.id)}
                 className={`min-w-[200px] p-4 rounded-xl border-2 transition-colors ${
                   selectedCard === card.id
-                    ? "border-[#3b4078] bg-[#3b4078]/5"
+                    ? "border-[#b59354] bg-[#b59354]/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <CreditCard className="h-5 w-5 text-[#3b4078]" />
+                  <CreditCard className="h-5 w-5 text-[#b59354]" />
                   <div className="text-left">
                     <p className="font-medium text-gray-900 text-sm">{card.name}</p>
                     <p className="text-xs text-gray-500">•••• {card.lastFour}</p>
@@ -124,9 +124,9 @@ export default function CardsPage() {
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                      <span className="text-lg font-bold">N</span>
+                      <span className="text-lg font-bold">O</span>
                     </div>
-                    <span className="font-bold">Narvi</span>
+                    <span className="font-bold">Opulanz</span>
                   </div>
                   <span className="text-sm font-medium px-2 py-1 bg-white/20 rounded">
                     {selectedCardData.type}
@@ -210,15 +210,15 @@ export default function CardsPage() {
 
           {/* Quick Actions */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <button className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-[#3b4078] hover:bg-[#3b4078]/5 transition-colors">
+            <button className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-[#b59354] hover:bg-[#b59354]/5 transition-colors">
               <Snowflake className="h-6 w-6 text-blue-500" />
               <span className="text-sm font-medium text-gray-700">Freeze Card</span>
             </button>
-            <button className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-[#3b4078] hover:bg-[#3b4078]/5 transition-colors">
+            <button className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-[#b59354] hover:bg-[#b59354]/5 transition-colors">
               <Lock className="h-6 w-6 text-purple-500" />
               <span className="text-sm font-medium text-gray-700">Change PIN</span>
             </button>
-            <button className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-[#3b4078] hover:bg-[#3b4078]/5 transition-colors">
+            <button className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-[#b59354] hover:bg-[#b59354]/5 transition-colors">
               <Settings className="h-6 w-6 text-gray-500" />
               <span className="text-sm font-medium text-gray-700">Set Limits</span>
             </button>
@@ -245,7 +245,7 @@ export default function CardsPage() {
                     </div>
                     <button
                       className={`relative w-11 h-6 rounded-full transition-colors ${
-                        setting.enabled ? "bg-[#3b4078]" : "bg-gray-200"
+                        setting.enabled ? "bg-[#b59354]" : "bg-gray-200"
                       }`}
                     >
                       <span
@@ -266,7 +266,7 @@ export default function CardsPage() {
               <h3 className="font-semibold text-gray-900">Recent Activity</h3>
               <Link
                 href={`/${locale}/dashboard/transactions`}
-                className="text-sm text-[#3b4078] font-medium hover:underline"
+                className="text-sm text-[#b59354] font-medium hover:underline"
               >
                 View all
               </Link>

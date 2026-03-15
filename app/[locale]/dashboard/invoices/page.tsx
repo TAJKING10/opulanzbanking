@@ -124,7 +124,7 @@ export default function InvoicesPage() {
           <h1 className="text-2xl font-bold text-gray-900">Invoices</h1>
           <p className="text-gray-500 mt-1">Create and manage your invoices</p>
         </div>
-        <button className="inline-flex items-center gap-2 bg-[#3b4078] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#2a2d5a]">
+        <button className="inline-flex items-center gap-2 bg-[#b59354] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#886844]">
           <Plus className="h-4 w-4" />
           Create Invoice
         </button>
@@ -160,7 +160,7 @@ export default function InvoicesPage() {
               placeholder="Search by client or invoice number..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
             />
           </div>
           <div className="flex items-center gap-2">
@@ -168,7 +168,7 @@ export default function InvoicesPage() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+              className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
             >
               <option value="all">All Status</option>
               <option value="paid">Paid</option>
@@ -207,8 +207,8 @@ export default function InvoicesPage() {
                   <tr key={invoice.id} className="border-b border-gray-50 hover:bg-gray-50">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#3b4078]/10 rounded-lg flex items-center justify-center">
-                          <FileText className="h-5 w-5 text-[#3b4078]" />
+                        <div className="w-10 h-10 bg-[#b59354]/10 rounded-lg flex items-center justify-center">
+                          <FileText className="h-5 w-5 text-[#b59354]" />
                         </div>
                         <span className="font-medium text-gray-900">{invoice.id}</span>
                       </div>
@@ -265,7 +265,7 @@ export default function InvoicesPage() {
             <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-50" disabled>
               Previous
             </button>
-            <button className="px-3 py-1 bg-[#3b4078] text-white rounded text-sm">1</button>
+            <button className="px-3 py-1 bg-[#b59354] text-white rounded text-sm">1</button>
             <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">
               Next
             </button>
@@ -285,7 +285,7 @@ export default function InvoicesPage() {
           <p className="text-sm text-gray-500 mb-4">
             Send payment reminders for overdue invoices
           </p>
-          <button className="text-sm text-[#3b4078] font-medium hover:underline">
+          <button className="text-sm text-[#b59354] font-medium hover:underline">
             Send to 1 client →
           </button>
         </div>
@@ -300,7 +300,7 @@ export default function InvoicesPage() {
           <p className="text-sm text-gray-500 mb-4">
             Create and manage your invoice templates
           </p>
-          <button className="text-sm text-[#3b4078] font-medium hover:underline">
+          <button className="text-sm text-[#b59354] font-medium hover:underline">
             Manage templates →
           </button>
         </div>
@@ -315,7 +315,7 @@ export default function InvoicesPage() {
           <p className="text-sm text-gray-500 mb-4">
             Set up automatic recurring invoices
           </p>
-          <button className="text-sm text-[#3b4078] font-medium hover:underline">
+          <button className="text-sm text-[#b59354] font-medium hover:underline">
             Configure →
           </button>
         </div>

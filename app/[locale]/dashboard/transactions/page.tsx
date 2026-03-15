@@ -28,7 +28,7 @@ export default function TransactionsPage() {
       isCredit: false,
       status: "completed",
       initial: "A",
-      color: "bg-[#3b4078]",
+      color: "bg-[#b59354]",
     },
     {
       id: "2",
@@ -162,7 +162,7 @@ export default function TransactionsPage() {
         </div>
         <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500 mb-1">Net Change</p>
-          <p className="text-2xl font-bold text-[#3b4078]">{summary.netChange}</p>
+          <p className="text-2xl font-bold text-[#b59354]">{summary.netChange}</p>
         </div>
       </div>
 
@@ -177,7 +177,7 @@ export default function TransactionsPage() {
               placeholder="Search transactions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20 focus:border-[#3b4078]"
+              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20 focus:border-[#b59354]"
             />
           </div>
 
@@ -187,7 +187,7 @@ export default function TransactionsPage() {
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
-              className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+              className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
             >
               <option value="7">Last 7 days</option>
               <option value="30">Last 30 days</option>
@@ -202,7 +202,7 @@ export default function TransactionsPage() {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+              className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
             >
               <option value="all">All Transactions</option>
               <option value="income">Income Only</option>
@@ -285,7 +285,7 @@ export default function TransactionsPage() {
             <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-50" disabled>
               Previous
             </button>
-            <button className="px-3 py-1 bg-[#3b4078] text-white rounded text-sm">1</button>
+            <button className="px-3 py-1 bg-[#b59354] text-white rounded text-sm">1</button>
             <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">2</button>
             <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">3</button>
             <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">

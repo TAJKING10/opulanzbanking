@@ -33,7 +33,7 @@ export default function SendMoneyPage() {
 
   const recentRecipients = [
     { id: "1", name: "Nordic Tech AB", initial: "N", color: "bg-purple-500" },
-    { id: "2", name: "Amazon Services", initial: "A", color: "bg-[#3b4078]" },
+    { id: "2", name: "Amazon Services", initial: "A", color: "bg-[#b59354]" },
     { id: "3", name: "Google Cloud", initial: "G", color: "bg-yellow-500" },
     { id: "4", name: "Slack Inc", initial: "S", color: "bg-blue-500" },
   ];
@@ -64,7 +64,7 @@ export default function SendMoneyPage() {
                 onClick={() => setTransferType("own")}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium transition-colors ${
                   transferType === "own"
-                    ? "bg-[#3b4078] text-white"
+                    ? "bg-[#b59354] text-white"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
@@ -75,7 +75,7 @@ export default function SendMoneyPage() {
                 onClick={() => setTransferType("domestic")}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium transition-colors ${
                   transferType === "domestic"
-                    ? "bg-[#3b4078] text-white"
+                    ? "bg-[#b59354] text-white"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
@@ -86,7 +86,7 @@ export default function SendMoneyPage() {
                 onClick={() => setTransferType("international")}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium transition-colors ${
                   transferType === "international"
-                    ? "bg-[#3b4078] text-white"
+                    ? "bg-[#b59354] text-white"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
@@ -103,7 +103,7 @@ export default function SendMoneyPage() {
               <select
                 value={selectedAccount}
                 onChange={(e) => setSelectedAccount(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20 focus:border-[#3b4078] bg-white"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-[#b59354]/20 focus:border-[#b59354] bg-white"
               >
                 {accounts.map((account) => (
                   <option key={account.id} value={account.id}>
@@ -124,7 +124,7 @@ export default function SendMoneyPage() {
               <label className="text-sm font-medium text-gray-700">To</label>
               <Link
                 href={`/${locale}/dashboard/send/add-recipient`}
-                className="inline-flex items-center gap-1 text-sm text-[#3b4078] font-medium hover:underline"
+                className="inline-flex items-center gap-1 text-sm text-[#b59354] font-medium hover:underline"
               >
                 <Plus className="h-4 w-4" />
                 Add New Beneficiary
@@ -141,7 +141,7 @@ export default function SendMoneyPage() {
                     onClick={() => setSelectedRecipient(recipient.id)}
                     className={`flex flex-col items-center gap-2 p-3 rounded-xl min-w-[80px] transition-colors ${
                       selectedRecipient === recipient.id
-                        ? "bg-[#3b4078]/10 ring-2 ring-[#3b4078]"
+                        ? "bg-[#b59354]/10 ring-2 ring-[#b59354]"
                         : "hover:bg-gray-50"
                     }`}
                   >
@@ -168,7 +168,7 @@ export default function SendMoneyPage() {
                     onClick={() => setSelectedRecipient(beneficiary.id)}
                     className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
                       selectedRecipient === beneficiary.id
-                        ? "bg-[#3b4078]/10 ring-2 ring-[#3b4078]"
+                        ? "bg-[#b59354]/10 ring-2 ring-[#b59354]"
                         : "hover:bg-gray-50 border border-gray-100"
                     }`}
                   >
@@ -182,7 +182,7 @@ export default function SendMoneyPage() {
                       </div>
                     </div>
                     {selectedRecipient === beneficiary.id && (
-                      <Check className="h-5 w-5 text-[#3b4078]" />
+                      <Check className="h-5 w-5 text-[#b59354]" />
                     )}
                   </button>
                 ))}
@@ -200,7 +200,7 @@ export default function SendMoneyPage() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
-                className="w-full pl-12 pr-20 py-4 border border-gray-200 rounded-lg text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20 focus:border-[#3b4078]"
+                className="w-full pl-12 pr-20 py-4 border border-gray-200 rounded-lg text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-[#b59354]/20 focus:border-[#b59354]"
               />
               <select className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 border border-gray-200 rounded text-sm bg-white">
                 <option>EUR</option>
@@ -218,7 +218,7 @@ export default function SendMoneyPage() {
               value={reference}
               onChange={(e) => setReference(e.target.value)}
               placeholder="e.g., Invoice #12345"
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20 focus:border-[#3b4078]"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20 focus:border-[#b59354]"
             />
           </div>
 
@@ -230,7 +230,7 @@ export default function SendMoneyPage() {
                 onClick={() => setIsScheduled(false)}
                 className={`flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-colors ${
                   !isScheduled
-                    ? "bg-[#3b4078] text-white"
+                    ? "bg-[#b59354] text-white"
                     : "border border-gray-200 text-gray-600 hover:bg-gray-50"
                 }`}
               >
@@ -240,7 +240,7 @@ export default function SendMoneyPage() {
                 onClick={() => setIsScheduled(true)}
                 className={`flex-1 py-3 px-4 rounded-lg text-sm font-medium transition-colors ${
                   isScheduled
-                    ? "bg-[#3b4078] text-white"
+                    ? "bg-[#b59354] text-white"
                     : "border border-gray-200 text-gray-600 hover:bg-gray-50"
                 }`}
               >
@@ -250,7 +250,7 @@ export default function SendMoneyPage() {
             {isScheduled && (
               <input
                 type="date"
-                className="mt-3 w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+                className="mt-3 w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
               />
             )}
           </div>
@@ -288,7 +288,7 @@ export default function SendMoneyPage() {
 
             <button
               disabled={!amount || !selectedRecipient}
-              className="w-full bg-[#3b4078] text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#2a2d5a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#b59354] text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#886844] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Review Transfer
               <ArrowRight className="h-5 w-5" />

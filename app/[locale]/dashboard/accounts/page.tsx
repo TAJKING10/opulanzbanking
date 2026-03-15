@@ -34,7 +34,7 @@ export default function AccountsPage() {
       change: "+2.4%",
       isPositive: true,
       icon: Building2,
-      color: "bg-[#3b4078]",
+      color: "bg-[#b59354]",
     },
     {
       id: "2",
@@ -91,7 +91,7 @@ export default function AccountsPage() {
           </button>
           <Link
             href={`/${locale}/open-account`}
-            className="inline-flex items-center gap-2 bg-[#3b4078] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#2a2d5a]"
+            className="inline-flex items-center gap-2 bg-[#b59354] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#886844]"
           >
             <Plus className="h-4 w-4" />
             Add Account
@@ -100,7 +100,7 @@ export default function AccountsPage() {
       </div>
 
       {/* Total Balance Card */}
-      <div className="bg-gradient-to-r from-[#3b4078] to-[#2a2d5a] rounded-xl p-6 text-white mb-8">
+      <div className="bg-gradient-to-r from-[#b59354] to-[#886844] rounded-xl p-6 text-white mb-8">
         <p className="text-white/70 text-sm mb-1">Total Assets</p>
         <h2 className="text-4xl font-bold mb-4">
           {showBalances ? totalBalance : "••••••••"}
@@ -180,7 +180,7 @@ export default function AccountsPage() {
                   <p className="font-mono text-sm text-gray-700">{account.iban}</p>
                   <button
                     onClick={() => navigator.clipboard.writeText(account.iban)}
-                    className="text-[#3b4078] hover:text-[#2a2d5a]"
+                    className="text-[#b59354] hover:text-[#886844]"
                   >
                     <Copy className="h-4 w-4" />
                   </button>
@@ -196,7 +196,7 @@ export default function AccountsPage() {
                 </Link>
                 <Link
                   href={`/${locale}/dashboard/send?from=${account.id}`}
-                  className="flex-1 text-center py-2 px-3 bg-[#3b4078] text-white rounded-lg text-sm font-medium hover:bg-[#2a2d5a]"
+                  className="flex-1 text-center py-2 px-3 bg-[#b59354] text-white rounded-lg text-sm font-medium hover:bg-[#886844]"
                 >
                   Transfer
                 </Link>

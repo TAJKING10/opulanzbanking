@@ -38,7 +38,7 @@ export default function DashboardPage() {
       isCredit: false,
       status: "completed",
       initial: "A",
-      color: "bg-[#3b4078]",
+      color: "bg-[#b59354]",
     },
     {
       id: "2",
@@ -109,7 +109,7 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <p className="text-gray-500 text-sm mb-2">Available Balance</p>
           <div className="flex items-center justify-between">
-            <h2 className="text-4xl font-bold text-[#3b4078]">€124,560.80</h2>
+            <h2 className="text-4xl font-bold text-[#b59354]">€124,560.80</h2>
             <div className="flex items-center gap-1 text-green-500 text-sm font-medium">
               <TrendingUp className="h-4 w-4" />
               <span>+2.4%</span>
@@ -124,7 +124,7 @@ export default function DashboardPage() {
             <p className="font-mono text-lg text-gray-900">FI91 1234 5678 9012 34</p>
             <button
               onClick={handleCopyIban}
-              className="p-2 text-[#3b4078] hover:bg-[#3b4078]/10 rounded-lg transition-colors"
+              className="p-2 text-[#b59354] hover:bg-[#b59354]/10 rounded-lg transition-colors"
             >
               <Copy className="h-5 w-5" />
             </button>
@@ -148,7 +148,7 @@ export default function DashboardPage() {
           {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
             <div key={day} className="flex flex-col items-center gap-2">
               <div
-                className="w-8 bg-[#3b4078] rounded-t"
+                className="w-8 bg-[#b59354] rounded-t"
                 style={{ height: `${[60, 80, 45, 90, 70, 30, 50][i]}%` }}
               />
               <span className="text-xs text-gray-500">{day}</span>
@@ -161,7 +161,7 @@ export default function DashboardPage() {
       <div className="flex flex-wrap gap-3 mb-6">
         <Link
           href={`/${locale}/dashboard/send`}
-          className="inline-flex items-center gap-2 bg-[#3b4078] text-white px-5 py-2.5 rounded-lg font-medium hover:bg-[#2a2d5a] transition-colors"
+          className="inline-flex items-center gap-2 bg-[#b59354] text-white px-5 py-2.5 rounded-lg font-medium hover:bg-[#886844] transition-colors"
         >
           <Send className="h-4 w-4" />
           Send Money
@@ -188,7 +188,7 @@ export default function DashboardPage() {
           <h3 className="font-semibold text-lg text-gray-900">Recent Transactions</h3>
           <Link
             href={`/${locale}/dashboard/transactions`}
-            className="text-[#3b4078] text-sm font-medium hover:underline"
+            className="text-[#b59354] text-sm font-medium hover:underline"
           >
             View all
           </Link>
@@ -285,15 +285,15 @@ export default function DashboardPage() {
         </div>
 
         {/* Upgrade Card */}
-        <div className="bg-gradient-to-br from-[#3b4078] to-[#2a2d5a] rounded-xl p-6 text-white">
+        <div className="bg-gradient-to-br from-[#b59354] to-[#886844] rounded-xl p-6 text-white">
           <div className="flex items-center gap-2 mb-4">
             <Rocket className="h-5 w-5" />
-            <h3 className="font-semibold">Get Narvi Pro</h3>
+            <h3 className="font-semibold">Get Opulanz Pro</h3>
           </div>
           <p className="text-sm text-white/80 mb-4">
             Unlock global payments, corporate cards, and advanced tax tools.
           </p>
-          <button className="w-full bg-white text-[#3b4078] px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">
+          <button className="w-full bg-white text-[#b59354] px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">
             Upgrade Now
           </button>
         </div>

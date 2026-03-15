@@ -71,7 +71,7 @@ export default function SupportPage() {
       </div>
 
       {/* Search */}
-      <div className="bg-gradient-to-r from-[#3b4078] to-[#2a2d5a] rounded-2xl p-8 mb-8">
+      <div className="bg-gradient-to-r from-[#b59354] to-[#886844] rounded-2xl p-8 mb-8">
         <h2 className="text-2xl font-bold text-white mb-2">How can we help you?</h2>
         <p className="text-white/70 mb-6">Search our knowledge base or browse categories below</p>
         <div className="relative max-w-2xl">
@@ -101,14 +101,14 @@ export default function SupportPage() {
                     onClick={() => setSelectedCategory(category.id)}
                     className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
                       selectedCategory === category.id
-                        ? "border-[#3b4078] bg-[#3b4078]/5"
+                        ? "border-[#b59354] bg-[#b59354]/5"
                         : "border-gray-100 hover:border-gray-200"
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                         selectedCategory === category.id
-                          ? "bg-[#3b4078] text-white"
+                          ? "bg-[#b59354] text-white"
                           : "bg-gray-100 text-gray-600"
                       }`}>
                         <Icon className="h-5 w-5" />
@@ -144,7 +144,7 @@ export default function SupportPage() {
                 </button>
               ))}
             </div>
-            <button className="w-full mt-4 py-2 text-sm text-[#3b4078] font-medium hover:underline">
+            <button className="w-full mt-4 py-2 text-sm text-[#b59354] font-medium hover:underline">
               View all articles →
             </button>
           </div>
@@ -154,7 +154,7 @@ export default function SupportPage() {
             <h3 className="font-semibold text-gray-900 mb-4">Video Tutorials</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               {[
-                { title: "Getting Started with Narvi", duration: "5:32" },
+                { title: "Getting Started with Opulanz", duration: "5:32" },
                 { title: "Making Your First Transfer", duration: "3:45" },
                 { title: "Managing Your Cards", duration: "4:18" },
                 { title: "Security Best Practices", duration: "6:12" },
@@ -165,7 +165,7 @@ export default function SupportPage() {
                 >
                   <div className="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                     <div className="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Video className="h-6 w-6 text-[#3b4078] ml-1" />
+                      <Video className="h-6 w-6 text-[#b59354] ml-1" />
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
@@ -184,7 +184,7 @@ export default function SupportPage() {
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <h3 className="font-semibold text-gray-900 mb-4">Contact Us</h3>
             <div className="space-y-3">
-              <button className="w-full flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-[#3b4078] hover:bg-[#3b4078]/5 transition-colors">
+              <button className="w-full flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-[#b59354] hover:bg-[#b59354]/5 transition-colors">
                 <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                   <MessageCircle className="h-5 w-5 text-green-600" />
                 </div>
@@ -194,7 +194,7 @@ export default function SupportPage() {
                 </div>
               </button>
 
-              <button className="w-full flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-[#3b4078] hover:bg-[#3b4078]/5 transition-colors">
+              <button className="w-full flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-[#b59354] hover:bg-[#b59354]/5 transition-colors">
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Phone className="h-5 w-5 text-blue-600" />
                 </div>
@@ -204,13 +204,13 @@ export default function SupportPage() {
                 </div>
               </button>
 
-              <button className="w-full flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-[#3b4078] hover:bg-[#3b4078]/5 transition-colors">
+              <button className="w-full flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-[#b59354] hover:bg-[#b59354]/5 transition-colors">
                 <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
                   <Mail className="h-5 w-5 text-purple-600" />
                 </div>
                 <div className="text-left">
                   <p className="font-medium text-gray-900">Email Support</p>
-                  <p className="text-xs text-gray-500">support@narvi.com</p>
+                  <p className="text-xs text-gray-500">support@opulanz.com</p>
                 </div>
               </button>
             </div>
@@ -228,7 +228,7 @@ export default function SupportPage() {
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold text-gray-900">My Tickets</h3>
-              <button className="text-sm text-[#3b4078] font-medium hover:underline">
+              <button className="text-sm text-[#b59354] font-medium hover:underline">
                 View all
               </button>
             </div>
@@ -254,7 +254,7 @@ export default function SupportPage() {
                 );
               })}
             </div>
-            <button className="w-full mt-4 py-2.5 border border-[#3b4078] text-[#3b4078] rounded-lg font-medium text-sm hover:bg-[#3b4078]/5 transition-colors">
+            <button className="w-full mt-4 py-2.5 border border-[#b59354] text-[#b59354] rounded-lg font-medium text-sm hover:bg-[#b59354]/5 transition-colors">
               Create New Ticket
             </button>
           </div>
@@ -273,7 +273,7 @@ export default function SupportPage() {
                 <a
                   key={index}
                   href={link.href}
-                  className="flex items-center justify-between py-2 text-sm text-gray-600 hover:text-[#3b4078] transition-colors"
+                  className="flex items-center justify-between py-2 text-sm text-gray-600 hover:text-[#b59354] transition-colors"
                 >
                   {link.name}
                   <ExternalLink className="h-4 w-4" />

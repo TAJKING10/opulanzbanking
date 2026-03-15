@@ -93,14 +93,14 @@ export default function ExchangePage() {
                     value={fromAmount}
                     onChange={(e) => handleFromAmountChange(e.target.value)}
                     placeholder="0.00"
-                    className="w-full px-4 py-4 border border-gray-200 rounded-lg text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20"
+                    className="w-full px-4 py-4 border border-gray-200 rounded-lg text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-[#b59354]/20"
                   />
                 </div>
                 <div className="relative">
                   <select
                     value={fromCurrency}
                     onChange={(e) => setFromCurrency(e.target.value)}
-                    className="h-full px-4 py-4 border border-gray-200 rounded-lg text-sm font-medium appearance-none pr-10 focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20 bg-white"
+                    className="h-full px-4 py-4 border border-gray-200 rounded-lg text-sm font-medium appearance-none pr-10 focus:outline-none focus:ring-2 focus:ring-[#b59354]/20 bg-white"
                   >
                     {currencies.map((currency) => (
                       <option key={currency.code} value={currency.code}>
@@ -120,7 +120,7 @@ export default function ExchangePage() {
             <div className="flex items-center justify-between py-4">
               <button
                 onClick={handleSwapCurrencies}
-                className="w-12 h-12 bg-[#3b4078] text-white rounded-full flex items-center justify-center hover:bg-[#2a2d5a] transition-colors"
+                className="w-12 h-12 bg-[#b59354] text-white rounded-full flex items-center justify-center hover:bg-[#886844] transition-colors"
               >
                 <ArrowDownUp className="h-5 w-5" />
               </button>
@@ -148,7 +148,7 @@ export default function ExchangePage() {
                   <select
                     value={toCurrency}
                     onChange={(e) => setToCurrency(e.target.value)}
-                    className="h-full px-4 py-4 border border-gray-200 rounded-lg text-sm font-medium appearance-none pr-10 focus:outline-none focus:ring-2 focus:ring-[#3b4078]/20 bg-white"
+                    className="h-full px-4 py-4 border border-gray-200 rounded-lg text-sm font-medium appearance-none pr-10 focus:outline-none focus:ring-2 focus:ring-[#b59354]/20 bg-white"
                   >
                     {currencies.map((currency) => (
                       <option key={currency.code} value={currency.code}>
@@ -180,7 +180,7 @@ export default function ExchangePage() {
 
             <button
               disabled={!fromAmount || parseFloat(fromAmount) <= 0}
-              className="w-full bg-[#3b4078] text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#2a2d5a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#b59354] text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#886844] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Exchange Now
               <ArrowRight className="h-5 w-5" />
@@ -205,8 +205,8 @@ export default function ExchangePage() {
               {recentExchanges.map((exchange, index) => (
                 <div key={index} className="p-4 flex items-center justify-between hover:bg-gray-50">
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-[#3b4078]/10 rounded-full flex items-center justify-center">
-                      <RefreshCw className="h-5 w-5 text-[#3b4078]" />
+                    <div className="w-10 h-10 bg-[#b59354]/10 rounded-full flex items-center justify-center">
+                      <RefreshCw className="h-5 w-5 text-[#b59354]" />
                     </div>
                     <div>
                       <p className="font-medium text-gray-900">
@@ -261,7 +261,7 @@ export default function ExchangePage() {
             <p className="text-sm text-gray-500 mb-4">
               Get notified when rates reach your target
             </p>
-            <button className="w-full py-2 px-4 border border-[#3b4078] text-[#3b4078] rounded-lg font-medium text-sm hover:bg-[#3b4078]/5 transition-colors">
+            <button className="w-full py-2 px-4 border border-[#b59354] text-[#b59354] rounded-lg font-medium text-sm hover:bg-[#b59354]/5 transition-colors">
               Set Alert
             </button>
           </div>

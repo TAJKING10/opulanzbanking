@@ -30,13 +30,13 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen">
       {/* Left Side - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#3b4078] to-[#2a2d5a] text-white flex-col justify-between p-12">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#b59354] to-[#886844] text-white flex-col justify-between p-12">
         <div>
           <Link href={`/${locale}`} className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-              <span className="text-xl font-bold">N</span>
+              <span className="text-xl font-bold">O</span>
             </div>
-            <span className="text-2xl font-bold">Narvi</span>
+            <span className="text-2xl font-bold">Opulanz</span>
           </Link>
         </div>
 
@@ -79,10 +79,10 @@ export default function LoginPage() {
           {/* Mobile Logo */}
           <div className="lg:hidden mb-8 text-center">
             <Link href={`/${locale}`} className="inline-flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#3b4078] rounded-lg flex items-center justify-center">
-                <span className="text-xl font-bold text-white">N</span>
+              <div className="w-10 h-10 bg-[#b59354] rounded-lg flex items-center justify-center">
+                <span className="text-xl font-bold text-white">O</span>
               </div>
-              <span className="text-2xl font-bold text-[#3b4078]">Narvi</span>
+              <span className="text-2xl font-bold text-[#b59354]">Opulanz</span>
             </Link>
           </div>
 
@@ -105,7 +105,7 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@company.com"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3b4078] focus:border-transparent outline-none transition"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b59354] focus:border-transparent outline-none transition"
                     required
                   />
                 </div>
@@ -123,7 +123,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3b4078] focus:border-transparent outline-none transition"
+                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b59354] focus:border-transparent outline-none transition"
                     required
                   />
                   <button
@@ -143,13 +143,13 @@ export default function LoginPage() {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded border-gray-300 text-[#3b4078] focus:ring-[#3b4078]"
+                    className="w-4 h-4 rounded border-gray-300 text-[#b59354] focus:ring-[#b59354]"
                   />
                   <span className="text-sm text-gray-600">Remember me</span>
                 </label>
                 <Link
                   href={`/${locale}/forgot-password`}
-                  className="text-sm text-[#3b4078] hover:underline font-medium"
+                  className="text-sm text-[#b59354] hover:underline font-medium"
                 >
                   Forgot Password?
                 </Link>
@@ -159,7 +159,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-[#3b4078] hover:bg-[#2a2d5a] text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition"
+                className="w-full bg-[#b59354] hover:bg-[#886844] text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition"
               >
                 {isLoading ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -206,7 +206,7 @@ export default function LoginPage() {
               Don't have an account?{" "}
               <Link
                 href={`/${locale}/open-account`}
-                className="text-[#3b4078] hover:underline font-semibold"
+                className="text-[#b59354] hover:underline font-semibold"
               >
                 Sign Up
               </Link>

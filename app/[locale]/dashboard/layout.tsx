@@ -37,11 +37,11 @@ const navigation = [
   { name: "Send Money", href: "/dashboard/send", icon: Send },
   { name: "Exchange", href: "/dashboard/exchange", icon: RefreshCw },
   { name: "Add Funds", href: "/dashboard/add-funds", icon: PiggyBank },
+  { name: "Support", href: "/dashboard/support", icon: HelpCircle },
 ];
 
 const bottomNavigation = [
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
-  { name: "Help & Support", href: "/dashboard/support", icon: HelpCircle },
 ];
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
@@ -136,7 +136,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       className={cn(
                         "flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors",
                         active
-                          ? "bg-[#3b4078]/10 text-[#3b4078]"
+                          ? "bg-[#b59354]/10 text-[#b59354]"
                           : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                       )}
                       onClick={() => setIsSidebarOpen(false)}

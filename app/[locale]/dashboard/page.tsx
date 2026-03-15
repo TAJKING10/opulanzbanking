@@ -32,48 +32,48 @@ export default function DashboardPage() {
       id: "1",
       name: "Amazon Web Services",
       category: "Cloud Infrastructure",
-      date: "Oct 24, 2023",
+      date: "Mar 15, 2026",
       time: "14:32",
       amount: "-€1,240.55",
       isCredit: false,
       status: "completed",
       initial: "A",
-      color: "bg-[#b59354]",
+      color: "bg-orange-500",
     },
     {
       id: "2",
       name: "Slack Technologies",
       category: "Subscriptions",
-      date: "Oct 23, 2023",
+      date: "Mar 14, 2026",
       time: "09:15",
       amount: "-€89.00",
       isCredit: false,
       status: "processing",
       initial: "S",
-      color: "bg-blue-500",
+      color: "bg-purple-500",
     },
     {
       id: "3",
       name: "Google Cloud",
       category: "Workspace",
-      date: "Oct 22, 2023",
+      date: "Mar 13, 2026",
       time: "22:01",
       amount: "-€450.20",
       isCredit: false,
       status: "completed",
       initial: "G",
-      color: "bg-yellow-500",
+      color: "bg-blue-500",
     },
     {
       id: "4",
       name: "Stripe Payout",
       category: "Merchant Settlement",
-      date: "Oct 21, 2023",
+      date: "Mar 12, 2026",
       time: "11:45",
       amount: "+€12,500.00",
       isCredit: true,
       status: "completed",
-      initial: "↓",
+      initial: "S",
       color: "bg-green-500",
     },
   ];
@@ -82,16 +82,16 @@ export default function DashboardPage() {
     {
       name: "Adobe Creative Cloud",
       amount: "€54.99",
-      date: "Nov 1",
+      date: "Apr 1, 2026",
       initial: "AD",
       color: "bg-red-500",
     },
     {
       name: "GitHub Enterprise",
       amount: "€1,200.00",
-      date: "Nov 5",
+      date: "Apr 5, 2026",
       initial: "GH",
-      color: "bg-gray-900",
+      color: "bg-gray-800",
     },
   ];
 
@@ -99,22 +99,31 @@ export default function DashboardPage() {
     <div className="p-6 lg:p-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Account Overview</h1>
-        <p className="text-gray-500 mt-1">Welcome back, Nordic Solutions OY</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Account Overview</h1>
+            <p className="text-gray-500 mt-1">Welcome back, Nordic Solutions OY</p>
+          </div>
+          <div className="hidden md:flex items-center gap-2 text-sm">
+            <span className="text-gray-500">Last login:</span>
+            <span className="text-gray-700 font-medium">Today, 09:45 AM</span>
+          </div>
+        </div>
       </div>
 
       {/* Balance and IBAN Cards */}
-      <div className="grid gap-6 md:grid-cols-2 mb-6">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6">
         {/* Balance Card */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <p className="text-gray-500 text-sm mb-2">Available Balance</p>
-          <div className="flex items-center justify-between">
-            <h2 className="text-4xl font-bold text-[#b59354]">€124,560.80</h2>
-            <div className="flex items-center gap-1 text-green-500 text-sm font-medium">
+        <div className="bg-gradient-to-br from-[#b59354] to-[#886844] rounded-xl p-6 text-white">
+          <p className="text-white/80 text-sm mb-2">Available Balance</p>
+          <div className="flex items-baseline gap-2">
+            <h2 className="text-3xl font-bold">€124,560.80</h2>
+            <div className="flex items-center gap-1 text-green-300 text-sm font-medium">
               <TrendingUp className="h-4 w-4" />
               <span>+2.4%</span>
             </div>
           </div>
+          <p className="text-white/60 text-xs mt-3">Main Business Account</p>
         </div>
 
         {/* IBAN Card */}
@@ -125,6 +134,7 @@ export default function DashboardPage() {
             <button
               onClick={handleCopyIban}
               className="p-2 text-[#b59354] hover:bg-[#b59354]/10 rounded-lg transition-colors"
+              title="Copy IBAN"
             >
               <Copy className="h-5 w-5" />
             </button>
@@ -133,25 +143,49 @@ export default function DashboardPage() {
             <p className="text-green-500 text-xs mt-2">Copied to clipboard!</p>
           )}
         </div>
+
+        {/* Pending Transactions Card */}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <p className="text-gray-500 text-sm mb-2">Pending Transactions</p>
+          <div className="flex items-baseline gap-2">
+            <h2 className="text-3xl font-bold text-gray-900">3</h2>
+            <span className="text-yellow-600 text-sm font-medium">Processing</span>
+          </div>
+          <p className="text-gray-500 text-xs mt-3">Total: €1,678.55</p>
+        </div>
       </div>
 
       {/* Weekly Spending Chart */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-gray-900">Weekly Spending</h3>
-          <button className="text-gray-400 hover:text-gray-600">
-            <MoreHorizontal className="h-5 w-5" />
-          </button>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="font-semibold text-gray-900">Weekly Spending</h3>
+            <p className="text-sm text-gray-500">Total: €3,519.75</p>
+          </div>
+          <select className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#b59354]/20">
+            <option>This Week</option>
+            <option>Last Week</option>
+            <option>This Month</option>
+          </select>
         </div>
-        <div className="h-48 bg-gray-50 rounded-lg flex items-end justify-around p-4">
-          {/* Simple Bar Chart */}
-          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
-            <div key={day} className="flex flex-col items-center gap-2">
+        <div className="h-52 flex items-end justify-between gap-2 px-2">
+          {/* Bar Chart */}
+          {[
+            { day: "Mon", amount: 850, height: 60 },
+            { day: "Tue", amount: 1240, height: 85 },
+            { day: "Wed", amount: 450, height: 35 },
+            { day: "Thu", amount: 620, height: 45 },
+            { day: "Fri", amount: 89, height: 10 },
+            { day: "Sat", amount: 180, height: 15 },
+            { day: "Sun", amount: 90, height: 8 },
+          ].map((item, i) => (
+            <div key={item.day} className="flex-1 flex flex-col items-center gap-2">
+              <span className="text-xs font-medium text-gray-600">€{item.amount}</span>
               <div
-                className="w-8 bg-[#b59354] rounded-t"
-                style={{ height: `${[60, 80, 45, 90, 70, 30, 50][i]}%` }}
+                className="w-full max-w-[40px] bg-gradient-to-t from-[#b59354] to-[#d4b878] rounded-t-lg transition-all hover:from-[#886844] hover:to-[#b59354] cursor-pointer"
+                style={{ height: `${item.height}%`, minHeight: '8px' }}
               />
-              <span className="text-xs text-gray-500">{day}</span>
+              <span className="text-xs text-gray-500 font-medium">{item.day}</span>
             </div>
           ))}
         </div>
@@ -277,7 +311,7 @@ export default function DashboardPage() {
                   </div>
                   <p className="font-semibold text-sm text-gray-900">{payment.amount}</p>
                 </div>
-                <p className="text-xs text-gray-500 ml-13 mt-1 pl-13">{payment.date}</p>
+                <p className="text-xs text-gray-500 mt-1 ml-[52px]">{payment.date}</p>
                 {index < recurringPayments.length - 1 && <hr className="mt-4" />}
               </div>
             ))}

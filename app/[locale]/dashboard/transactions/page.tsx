@@ -961,13 +961,120 @@ export default function TransactionsPage() {
     setShowExportDropdown(false);
   };
 
+  // Clear all filters
+  const clearFilters = () => {
+    setSearchQuery("");
+    setFilterType("all");
+    setDateRange("");
+    setFromCurrency("");
+    setToCurrency("");
+  };
+
+  const hasActiveFilters = searchQuery || filterType !== "all" || dateRange || fromCurrency || toCurrency;
+
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Left Sidebar - Filters */}
-      <div className="w-72 bg-white border-r border-gray-100 p-6 flex-shrink-0">
-        <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
-          Filters
-        </h2>
+      {/* Main Content */}
+      <div className="flex-1 p-6 lg:p-8">
+        {/* Header with Export */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <ChevronLeft className="h-5 w-5 text-gray-600" />
+            <h1 className="text-xl font-semibold text-gray-900">Transactions</h1>
+          </div>
+          <div className="relative" ref={exportRef}>
+            <button
+              onClick={() => setShowExportDropdown(!showExportDropdown)}
+              className="inline-flex items-center gap-2 text-[#3d3270] font-semibold hover:opacity-80"
+            >
+              <Download className="h-5 w-5" />
+              Export
+            </button>
+
+            {/* Export Dropdown */}
+            {showExportDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-10">
+                <button
+                  onClick={() => {
+                    setShowExportDropdown(false);
+                    setShowPDFModal(true);
+                  }}
+                  className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 font-medium"
+                >
+                  PDF statement
+                </button>
+                <button
+                  onClick={handleExportCSV}
+                  className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 font-medium"
+                >
+                  CSV list
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Transactions List */}
+        <div className="space-y-0">
+          {filteredTransactions.map((tx) => (
+            <div
+              key={tx.id}
+              className="flex items-center justify-between py-5 border-b border-gray-100 hover:bg-gray-50 px-2 -mx-2 rounded-lg transition-colors"
+            >
+              <div className="flex items-center gap-4">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    tx.isCredit ? "bg-green-100" : "bg-orange-100"
+                  }`}
+                >
+                  {tx.isCredit ? (
+                    <ArrowDownLeft className={`h-5 w-5 text-green-600`} />
+                  ) : (
+                    <ArrowUpRight className={`h-5 w-5 text-orange-600`} />
+                  )}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">{tx.name}</p>
+                  <p className="text-sm text-gray-500">{tx.description}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p
+                  className={`font-semibold ${
+                    tx.isCredit ? "text-green-600" : "text-gray-900"
+                  }`}
+                >
+                  {tx.amount >= 0 ? "+" : ""}{tx.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })} {tx.currency}
+                </p>
+                <p className="text-sm text-gray-500">{tx.date}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filteredTransactions.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No transactions found</p>
+          </div>
+        )}
+      </div>
+
+      {/* Right Sidebar - Filters */}
+      <div className="w-72 bg-white border-l border-gray-100 p-6 flex-shrink-0">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
+            Filters
+          </h2>
+          {hasActiveFilters && (
+            <button
+              onClick={clearFilters}
+              className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+            >
+              <X className="h-4 w-4" />
+              Clear
+            </button>
+          )}
+        </div>
 
         {/* Search */}
         <div className="relative mb-4">
@@ -1054,87 +1161,6 @@ export default function TransactionsPage() {
             EUR
           </span>
         </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 p-6 lg:p-8">
-        {/* Header with Export */}
-        <div className="flex items-center justify-end mb-6">
-          <div className="relative" ref={exportRef}>
-            <button
-              onClick={() => setShowExportDropdown(!showExportDropdown)}
-              className="inline-flex items-center gap-2 text-[#3d3270] font-semibold hover:opacity-80"
-            >
-              <Download className="h-5 w-5" />
-              Export
-            </button>
-
-            {/* Export Dropdown */}
-            {showExportDropdown && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-10">
-                <button
-                  onClick={() => {
-                    setShowExportDropdown(false);
-                    setShowPDFModal(true);
-                  }}
-                  className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 font-medium"
-                >
-                  PDF statement
-                </button>
-                <button
-                  onClick={handleExportCSV}
-                  className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 font-medium"
-                >
-                  CSV list
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Transactions List */}
-        <div className="space-y-0">
-          {filteredTransactions.map((tx) => (
-            <div
-              key={tx.id}
-              className="flex items-center justify-between py-5 border-b border-gray-100 hover:bg-gray-50 px-2 -mx-2 rounded-lg transition-colors"
-            >
-              <div className="flex items-center gap-4">
-                <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                    tx.isCredit ? "bg-green-100" : "bg-red-100"
-                  }`}
-                >
-                  {tx.isCredit ? (
-                    <ArrowDownLeft className={`h-6 w-6 text-green-600`} />
-                  ) : (
-                    <ArrowUpRight className={`h-6 w-6 text-red-600`} />
-                  )}
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900">{tx.name}</p>
-                  <p className="text-sm text-gray-500">{tx.description}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p
-                  className={`font-semibold ${
-                    tx.isCredit ? "text-green-600" : "text-gray-900"
-                  }`}
-                >
-                  {tx.amount >= 0 ? "+" : ""}{tx.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })} {tx.currency}
-                </p>
-                <p className="text-sm text-gray-500">{tx.date}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {filteredTransactions.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No transactions found</p>
-          </div>
-        )}
       </div>
 
       {/* PDF Statement Modal */}

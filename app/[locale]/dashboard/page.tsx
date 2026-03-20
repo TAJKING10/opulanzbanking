@@ -177,7 +177,8 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Quick Stats */}
+      {/* Quick Stats - HIDDEN: Uncomment to show Income/Expenses/Pending/Invoices Due cards */}
+      {/*
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {quickStats.map((stat) => {
           const Icon = stat.icon;
@@ -208,6 +209,7 @@ export default function DashboardPage() {
           );
         })}
       </div>
+      */}
 
       {/* Main Balance Card & Quick Actions */}
       <div className="grid gap-6 lg:grid-cols-3">
@@ -516,7 +518,8 @@ export default function DashboardPage() {
 
         {/* Right Sidebar */}
         <div className="space-y-4">
-          {/* Recurring Payments */}
+          {/* Upcoming Payments - HIDDEN: Uncomment to show recurring payments */}
+          {/*
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -541,6 +544,7 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
+          */}
 
           {/* Upgrade Card */}
           <div className="bg-gradient-to-br from-[#b59354] to-[#886844] rounded-2xl p-6 text-white relative overflow-hidden">

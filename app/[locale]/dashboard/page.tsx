@@ -281,6 +281,7 @@ export default function DashboardPage() {
               <Send className="h-6 w-6" />
               <span className="text-sm font-medium">Send Money</span>
             </Link>
+            {/* Add Funds – hidden for now
             <Link
               href={`/${locale}/dashboard/add-funds`}
               className="flex flex-col items-center gap-2 p-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"
@@ -288,6 +289,7 @@ export default function DashboardPage() {
               <Plus className="h-6 w-6" />
               <span className="text-sm font-medium">Add Funds</span>
             </Link>
+            */}
             <Link
               href={`/${locale}/dashboard/exchange`}
               className="flex flex-col items-center gap-2 p-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"

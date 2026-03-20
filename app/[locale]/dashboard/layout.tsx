@@ -40,7 +40,7 @@ const navigation = [
   { name: "Invoices", href: "/dashboard/invoices", icon: FileText },
   { name: "Send Money", href: "/dashboard/send", icon: Send },
   { name: "Exchange", href: "/dashboard/exchange", icon: RefreshCw },
-  { name: "Add Funds", href: "/dashboard/add-funds", icon: PiggyBank },
+  // { name: "Add Funds", href: "/dashboard/add-funds", icon: PiggyBank },
   { name: "Support", href: "/dashboard/support", icon: HelpCircle },
 ];
 

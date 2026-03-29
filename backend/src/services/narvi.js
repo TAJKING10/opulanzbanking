@@ -16,9 +16,12 @@ const canonicaljson = require('canonicaljson');
 require('dotenv').config();
 
 // Configuration
-const NARVI_API_URL = process.env.NARVI_API_URL || 'https://api.narvi.com/rest/v1.0';
+// NARVI_BASE_URL: base domain (e.g. https://api.narvi.com or http://localhost:5001 for mock)
+const NARVI_BASE_URL = process.env.NARVI_BASE_URL || 'https://api.narvi.com';
+const NARVI_API_URL = process.env.NARVI_API_URL || `${NARVI_BASE_URL}/rest/v1.0`;
 const NARVI_API_KEY_ID = process.env.NARVI_API_KEY_ID;
 const NARVI_PRIVATE_KEY_PATH = process.env.NARVI_PRIVATE_KEY_PATH || '../banking_private.pem';
+const USE_MOCK_NARVI = process.env.USE_MOCK_NARVI === 'true';
 
 // Load private key
 let privateKey;
@@ -84,28 +87,32 @@ function generateSignature(url, method, requestId, queryParams = {}, payload = {
  * @returns {Promise<Object>} API response
  */
 async function makeNarviRequest(endpoint, method = 'GET', options = {}) {
-  if (!privateKey) {
-    throw new Error('Narvi private key not loaded. Cannot authenticate requests.');
-  }
-
-  if (!NARVI_API_KEY_ID) {
-    throw new Error('NARVI_API_KEY_ID not configured in environment variables');
+  // Skip key/auth checks when using mock server
+  if (!USE_MOCK_NARVI) {
+    if (!privateKey) {
+      throw new Error('Narvi private key not loaded. Cannot authenticate requests.');
+    }
+    if (!NARVI_API_KEY_ID) {
+      throw new Error('NARVI_API_KEY_ID not configured in environment variables');
+    }
   }
 
   const { queryParams = {}, payload = {} } = options;
   const requestId = uuidv4();
 
-  // BaaS endpoints use https://api.narvi.com directly, REST API uses https://api.narvi.com/rest/v1.0
-  const baseUrl = endpoint.startsWith('/baas/') ? 'https://api.narvi.com' : NARVI_API_URL;
+  // BaaS endpoints use base domain; REST endpoints use the full API URL with /rest/v1.0
+  const baseUrl = endpoint.startsWith('/baas/') ? NARVI_BASE_URL : NARVI_API_URL;
   const url = `${baseUrl}${endpoint}`;
 
   try {
-    // Generate signature
-    const signature = generateSignature(url, method, requestId, queryParams, payload);
+    // Generate signature (use mock placeholder when running against mock server)
+    const signature = USE_MOCK_NARVI
+      ? 'mock-signature-bypass'
+      : generateSignature(url, method, requestId, queryParams, payload);
 
     // Prepare headers
     const headers = {
-      'API-KEY-ID': NARVI_API_KEY_ID,
+      'API-KEY-ID': NARVI_API_KEY_ID || 'mock-api-key',
       'API-REQUEST-ID': requestId,
       'API-REQUEST-SIGNATURE': signature,
       'Content-Type': 'application/json'

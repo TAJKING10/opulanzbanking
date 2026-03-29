@@ -20,6 +20,8 @@ const companyRoutes = require('./routes/companies');
 const appointmentRoutes = require('./routes/appointments');
 const notificationRoutes = require('./routes/notifications');
 const kycRoutes = require('./routes/kyc');
+const sumsubRoutes = require('./routes/sumsub');
+const authRoutes = require('./routes/auth');
 const taxAdvisoryBookingsRoutes = require('./routes/tax-advisory-bookings');
 const lifeInsuranceBookingsRoutes = require('./routes/life-insurance-bookings');
 
@@ -62,6 +64,8 @@ app.use('/api/companies', companyRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/kyc', kycRoutes);
+app.use('/api/sumsub', sumsubRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/tax-advisory-bookings', taxAdvisoryBookingsRoutes); // Tax advisory service bookings
 app.use('/api/life-insurance-bookings', lifeInsuranceBookingsRoutes); // Life insurance service bookings
 

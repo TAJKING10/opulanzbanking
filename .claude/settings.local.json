@@ -76,7 +76,8 @@
       "Bash(grep -r \"narvi\\\\|Narvi\" /c/Users/Toufi/AndroidStudioProjects/azuree/backend/src --include=*.js)",
       "Bash(cat \"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/admin/\\(protected\\)/layout.tsx\")",
       "Bash(grep -E \"\\\\.\\(ts|js\\)$\")",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(\"C:/Users/Toufi/AndroidStudioProjects/azuree/backend/.env\")"
     ],
     "deny": [],
     "ask": []

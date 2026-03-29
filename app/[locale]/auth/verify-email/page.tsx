@@ -44,6 +44,7 @@ export default function VerifyEmailPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      sessionStorage.setItem("sms_sent", String(data.smsSent));
       router.push(`/${locale}/auth/verify-phone`);
     } catch (err: any) {
       setError(err.message || "Failed to verify code");

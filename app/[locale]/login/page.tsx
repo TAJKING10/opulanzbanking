@@ -26,6 +26,7 @@ export default function LoginPage() {
   const [resending, setResending] = React.useState(false);
   const [resent, setResent] = React.useState(false);
   const [error, setError] = React.useState("");
+  const [smsSent, setSmsSent] = React.useState(false);
 
   // Step 1: Submit credentials → send email OTP
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,6 +64,7 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      setSmsSent(data.smsSent === true);
       setOtp("");
       setStep("phone-otp");
     } catch (err: any) {
@@ -338,10 +340,16 @@ export default function LoginPage() {
                   <Smartphone className="h-8 w-8 text-[#b59354]" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Phone verification</h2>
-                <p className="text-gray-600 mb-2">Enter the code sent to your phone</p>
-                <p className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2 mb-6">
-                  Development mode: check your email for the SMS code
-                </p>
+                {smsSent ? (
+                  <p className="text-gray-600 mb-6">Enter the SMS code sent to your phone</p>
+                ) : (
+                  <>
+                    <p className="text-gray-600 mb-2">Enter your phone verification code</p>
+                    <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-6">
+                      Twilio not configured — check the backend console for your OTP code
+                    </p>
+                  </>
+                )}
 
                 <OtpInput value={otp} onChange={(v) => { setOtp(v); setError(""); }} disabled={isLoading} />
 

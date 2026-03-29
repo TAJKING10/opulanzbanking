@@ -21,6 +21,7 @@ export default function VerifyPhonePage() {
   const [resending, setResending] = React.useState(false);
   const [error, setError] = React.useState("");
   const [resent, setResent] = React.useState(false);
+  const [smsSent, setSmsSent] = React.useState<boolean | null>(null);
 
   React.useEffect(() => {
     const id = sessionStorage.getItem("auth_user_id");
@@ -31,6 +32,8 @@ export default function VerifyPhonePage() {
     }
     setUserId(id);
     setPhone(ph || "");
+    const sent = sessionStorage.getItem("sms_sent");
+    setSmsSent(sent === "true");
   }, [locale, router]);
 
   async function handleVerify() {
@@ -93,12 +96,20 @@ export default function VerifyPhonePage() {
           </div>
 
           <h2 className="text-xl font-bold text-gray-900 mb-2">Verify your phone</h2>
-          <p className="text-sm text-gray-500 mb-2">
-            We sent a 6-digit code to <strong>{maskedPhone}</strong>
-          </p>
-          <p className="text-xs text-amber-600 mb-8 bg-amber-50 rounded-lg px-3 py-2">
-            Development mode: check your email inbox for the SMS code
-          </p>
+          {smsSent === true ? (
+            <p className="text-sm text-gray-500 mb-8">
+              We sent an SMS to <strong>{maskedPhone}</strong>
+            </p>
+          ) : (
+            <>
+              <p className="text-sm text-gray-500 mb-2">
+                Code for <strong>{maskedPhone}</strong>
+              </p>
+              <p className="text-xs text-amber-700 mb-8 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                Twilio not configured — check the backend console for your OTP code
+              </p>
+            </>
+          )}
 
           <OtpInput value={otp} onChange={setOtp} disabled={loading} />
 

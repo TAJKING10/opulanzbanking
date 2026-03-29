@@ -217,7 +217,7 @@ router.post('/verify-email-otp', async (req, res) => {
       smsSent: smsResult.sent,
       message: smsResult.sent
         ? 'Email verified. SMS code sent to your phone.'
-        : 'Email verified. SMS code logged to console (configure Twilio for real SMS).',
+        : 'Email verified. SMS code logged to console (configure Azure Communication Services for real SMS).',
     });
   } catch (err) {
     console.error('Email OTP verify error:', err);
@@ -318,7 +318,7 @@ router.post('/verify-signin-email-otp', async (req, res) => {
       smsSent: smsResult.sent,
       message: smsResult.sent
         ? 'Email verified. SMS code sent to your phone.'
-        : 'Email verified. SMS code logged to console (configure Twilio for real SMS).',
+        : 'Email verified. SMS code logged to console (configure Azure Communication Services for real SMS).',
     });
   } catch (err) {
     console.error('Signin email OTP error:', err);
@@ -375,7 +375,7 @@ router.post('/resend-otp', async (req, res) => {
       res.json({
         success: true,
         smsSent: smsResult.sent,
-        message: smsResult.sent ? 'SMS code resent.' : 'SMS code logged to console (Twilio not configured).',
+        message: smsResult.sent ? 'SMS code resent.' : 'SMS code logged to console (Azure Communication Services not configured).',
       });
     }
   } catch (err) {

@@ -1,8 +1,5 @@
 import { z } from 'zod';
 
-const fileType = z.custom<File>((val) => {
-  return typeof File !== 'undefined' && val instanceof File;
-}, 'Must be a file');
 export const whitelabelKYCSchema = z.object({
   // Personal Information
   firstName: z.string().min(2, 'First name is required'),
@@ -14,12 +11,6 @@ export const whitelabelKYCSchema = z.object({
   city: z.string().min(2, 'City is required'),
   postalCode: z.string().min(4, 'Postal code is required'),
   country: z.string().min(2, 'Country is required'),
-
-  // Documents (simulated with file names)
-  idDocument: z.array(fileType).min(1, 'ID document required'),
-  selfie: z.array(fileType).min(1, 'Selfie required'),
-  proofOfAddress: z.array(fileType).min(1, 'Proof of address required'),
-
 
   // Activity Information
   isPEP: z.boolean(),
@@ -46,11 +37,6 @@ export const whitelabelKYBSchema = z.object({
   companyCity: z.string().min(2, 'City is required'),
   companyPostalCode: z.string().min(4, 'Postal code is required'),
   companyCountry: z.string().min(2, 'Country is required'),
-
-  // Documents
-  statutes: z.array(z.instanceof(File)).min(1, 'Company statutes required'),
-  registerExtract: z.array(z.instanceof(File)).min(1, 'Register extract required'),
-  uboDeclaration: z.array(z.instanceof(File)).min(1, 'UBO declaration required'),
 
   // Business Activity
   businessActivity: z.string().min(10, 'Describe your business activity'),

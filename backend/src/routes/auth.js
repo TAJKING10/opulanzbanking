@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const { SmsClient } = require('@azure/communication-sms');
+const twilio = require('twilio');
 const { pool } = require('../config/db');
 const { requireAuth } = require('../middleware/auth');
 
@@ -28,11 +28,12 @@ emailTransporter.verify((err) => {
   }
 });
 
-// ─── AZURE COMMUNICATION SERVICES SMS ──────────────────────────────────────
-function getAzureSmsClient() {
-  const connStr = process.env.AZURE_COMMUNICATION_CONNECTION_STRING;
-  if (!connStr || connStr === 'your_azure_communication_connection_string_here') return null;
-  return new SmsClient(connStr);
+// ─── TWILIO SMS ──────────────────────────────────────────────────────────────
+function getTwilioClient() {
+  const sid = process.env.TWILIO_ACCOUNT_SID;
+  const token = process.env.TWILIO_AUTH_TOKEN;
+  if (!sid || !token || sid === 'your_twilio_account_sid_here') return null;
+  return twilio(sid, token);
 }
 
 // ─── HELPERS ────────────────────────────────────────────────────────────────
@@ -78,33 +79,68 @@ async function sendEmailOTP(email, otp, purpose) {
   console.log(`📧 Email OTP sent to ${email} (purpose: ${purpose})`);
 }
 
-async function sendSmsOTP(phone, otp) {
-  const smsClient = getAzureSmsClient();
+async function sendSmsOTP(phone, otp, email, purpose) {
+  const client = getTwilioClient();
 
-  if (!smsClient) {
+  if (!client) {
+    // Twilio not configured — fall back to email delivery
     console.log('');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log(`📱 SMS OTP for ${phone}: ${otp}`);
-    console.log('   ⚠️  Azure Communication Services not configured');
+    console.log('   ⚠️  Twilio not configured — sending via email');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('');
-    return { sent: false };
+
+    if (email) {
+      const purposeLabel = purpose === 'signup' ? 'signup' : 'signin';
+      await emailTransporter.sendMail({
+        from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: 'Opulanz - Phone Verification Code',
+        html: `
+          <!DOCTYPE html>
+          <html>
+          <body style="margin:0;padding:0;background:#f6f8f8;font-family:Arial,sans-serif;">
+            <div style="max-width:560px;margin:40px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+              <div style="background:linear-gradient(135deg,#b59354,#886844);padding:32px;text-align:center;">
+                <h1 style="color:#fff;font-size:28px;margin:0;letter-spacing:2px;">OPULANZ</h1>
+                <p style="color:rgba(255,255,255,0.8);margin:6px 0 0;font-size:13px;">Banking Platform</p>
+              </div>
+              <div style="padding:40px;text-align:center;">
+                <h2 style="color:#252623;font-size:20px;margin:0 0 8px;">Phone verification code</h2>
+                <p style="color:#666;font-size:14px;margin:0 0 8px;">This code was meant for your phone <strong>${phone}</strong></p>
+                <p style="color:#999;font-size:13px;margin:0 0 32px;">(SMS not configured — delivered to email for testing)</p>
+                <div style="display:inline-block;background:#f6f8f8;border:2px solid #b59354;border-radius:12px;padding:20px 40px;">
+                  <div style="font-size:44px;font-weight:bold;letter-spacing:14px;color:#252623;font-family:monospace;">${otp}</div>
+                </div>
+                <p style="color:#888;font-size:13px;margin:24px 0 0;">This code expires in <strong>10 minutes</strong>.</p>
+                <p style="color:#aaa;font-size:12px;margin:8px 0 0;">If you did not request this, please ignore this email.</p>
+              </div>
+              <div style="background:#f6f8f8;padding:20px;text-align:center;border-top:1px solid #eee;">
+                <p style="color:#aaa;font-size:11px;margin:0;">© 2025 Opulanz Banking • Regulated by ACPR • SEPA Licensed</p>
+              </div>
+            </div>
+          </body>
+          </html>
+        `,
+      });
+      console.log(`📧 Phone OTP sent to email ${email} (Twilio fallback)`);
+    }
+
+    return { sent: false, fallbackEmail: !!email };
   }
 
-  const from = process.env.AZURE_SMS_SENDER || 'OPULANZ'; // alphanumeric sender
-  const results = await smsClient.send({
-    from,
-    to: [phone],
-    message: `Your Opulanz verification code: ${otp}\nExpires in 10 minutes. Do not share.`,
-  });
-
-  const result = results[0];
-  if (result.successful) {
-    console.log(`📱 SMS OTP sent to ${phone} via Azure`);
+  try {
+    await client.messages.create({
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: phone,
+      body: `Your Opulanz verification code: ${otp}\nExpires in 10 minutes. Do not share.`,
+    });
+    console.log(`📱 SMS OTP sent to ${phone} via Twilio`);
     return { sent: true };
-  } else {
-    console.error(`❌ SMS failed to ${phone}:`, result.errorMessage);
-    return { sent: false, reason: result.errorMessage };
+  } catch (err) {
+    console.error(`❌ SMS failed to ${phone}:`, err.message);
+    return { sent: false, reason: err.message };
   }
 }
 
@@ -210,14 +246,14 @@ router.post('/verify-email-otp', async (req, res) => {
     // Send SMS OTP to phone number
     const phoneOtp = generateOTP();
     await saveOTP(user.id, user.email, phoneOtp, 'phone', 'signup');
-    const smsResult = await sendSmsOTP(user.phone, phoneOtp);
+    const smsResult = await sendSmsOTP(user.phone, phoneOtp, user.email, 'signup');
 
     res.json({
       success: true,
       smsSent: smsResult.sent,
       message: smsResult.sent
         ? 'Email verified. SMS code sent to your phone.'
-        : 'Email verified. SMS code logged to console (configure Azure Communication Services for real SMS).',
+        : 'Email verified. SMS not configured — phone code sent to your email.',
     });
   } catch (err) {
     console.error('Email OTP verify error:', err);
@@ -311,14 +347,14 @@ router.post('/verify-signin-email-otp', async (req, res) => {
     // Send SMS OTP to phone number
     const phoneOtp = generateOTP();
     await saveOTP(user.id, user.email, phoneOtp, 'phone', 'signin');
-    const smsResult = await sendSmsOTP(user.phone, phoneOtp);
+    const smsResult = await sendSmsOTP(user.phone, phoneOtp, user.email, 'signin');
 
     res.json({
       success: true,
       smsSent: smsResult.sent,
       message: smsResult.sent
         ? 'Email verified. SMS code sent to your phone.'
-        : 'Email verified. SMS code logged to console (configure Azure Communication Services for real SMS).',
+        : 'Email verified. SMS not configured — phone code sent to your email.',
     });
   } catch (err) {
     console.error('Signin email OTP error:', err);
@@ -371,11 +407,11 @@ router.post('/resend-otp', async (req, res) => {
       await sendEmailOTP(user.email, otp, purpose);
       res.json({ success: true, message: 'Email code resent.' });
     } else {
-      const smsResult = await sendSmsOTP(user.phone, otp);
+      const smsResult = await sendSmsOTP(user.phone, otp, user.email, purpose);
       res.json({
         success: true,
         smsSent: smsResult.sent,
-        message: smsResult.sent ? 'SMS code resent.' : 'SMS code logged to console (Azure Communication Services not configured).',
+        message: smsResult.sent ? 'SMS code resent.' : 'SMS not configured — code sent to your email.',
       });
     }
   } catch (err) {

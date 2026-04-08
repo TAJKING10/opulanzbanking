@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Smartphone, RefreshCw, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OtpInput } from "@/components/otp-input";
@@ -15,6 +15,9 @@ export default function LoginPage() {
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string;
+
+  const searchParams = useSearchParams();
+  const fromOpenAccount = searchParams.get("from") === "open-account";
 
   const [step, setStep] = React.useState<Step>("credentials");
   const [userId, setUserId] = React.useState("");
@@ -187,6 +190,16 @@ export default function LoginPage() {
                   <h2 className="text-2xl font-bold text-gray-900">Welcome Back</h2>
                   <p className="text-gray-600 mt-2">Sign in to your account</p>
                 </div>
+
+                {fromOpenAccount && (
+                  <div className="mb-5 flex items-start gap-3 bg-green-50 border border-green-200 rounded-xl px-4 py-3">
+                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    <div>
+                      <p className="text-sm font-semibold text-green-800">Application submitted!</p>
+                      <p className="text-xs text-green-700 mt-0.5">Sign in to access your dashboard and complete any remaining steps.</p>
+                    </div>
+                  </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>

@@ -30,8 +30,10 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
-import { getCurrentUser, clearAuth } from "@/lib/auth";
+import { getCurrentUser, clearAuth, getAuthToken, setAuthToken } from "@/lib/auth";
 import { useRouter } from "next/navigation";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function DashboardPage() {
   const params = useParams();
@@ -58,6 +60,25 @@ export default function DashboardPage() {
   function handleSignOut() {
     clearAuth();
     router.push(`/${locale}/login`);
+  }
+
+  async function handleKycComplete() {
+    try {
+      const token = getAuthToken();
+      const res = await fetch(`${API}/api/auth/kyc-complete`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAuthToken(data.token);
+      }
+    } catch (err) {
+      console.error("KYC complete error:", err);
+    } finally {
+      setKycVerified(true);
+      setShowKyc(false);
+    }
   }
 
   const handleCopyIban = () => {
@@ -179,6 +200,45 @@ export default function DashboardPage() {
     { name: "Marketing Pro", initials: "MP", color: "bg-green-500" },
   ];
 
+  // ── KYC GATE ─────────────────────────────────────────────────────────────
+  if (!kycVerified) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+        <div className="w-full max-w-lg text-center">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-10">
+            <div className="w-16 h-16 bg-[#b59354]/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <Shield className="h-8 w-8 text-[#b59354]" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Identity Verification Required</h2>
+            <p className="text-gray-600 mb-8">
+              To access your dashboard and start using Opulanz, you need to complete identity verification. This only takes a few minutes.
+            </p>
+            <button
+              onClick={() => setShowKyc(true)}
+              className="w-full py-3 bg-[#b59354] hover:bg-[#886844] text-white font-semibold rounded-xl transition-colors mb-4"
+            >
+              Start Verification
+            </button>
+            <button
+              onClick={handleSignOut}
+              className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              Sign out
+            </button>
+          </div>
+          {showKyc && (
+            <SumsubKycWidget
+              userId={authUserId}
+              levelName={kycType === "corporate" ? "corporate_signup_kyc" : "individual_signup_kyc"}
+              onClose={() => setShowKyc(false)}
+              onComplete={handleKycComplete}
+            />
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 lg:p-8 space-y-6">
       {/* Header with Greeting */}
@@ -247,10 +307,7 @@ export default function DashboardPage() {
           userId={authUserId}
           levelName={kycType === "corporate" ? "corporate_signup_kyc" : "individual_signup_kyc"}
           onClose={() => setShowKyc(false)}
-          onComplete={() => {
-            setKycVerified(true);
-            setShowKyc(false);
-          }}
+          onComplete={handleKycComplete}
         />
       )}
 

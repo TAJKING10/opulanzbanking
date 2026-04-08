@@ -25,6 +25,8 @@ const authRoutes = require('./routes/auth');
 const taxAdvisoryBookingsRoutes = require('./routes/tax-advisory-bookings');
 const lifeInsuranceBookingsRoutes = require('./routes/life-insurance-bookings');
 
+const narviRoutes = require('./routes/narvi');
+
 // Investment Portal Routes
 const investmentAdminsRoutes = require('./routes/investment-admins');
 const investmentInvestorsRoutes = require('./routes/investment-investors');
@@ -68,6 +70,7 @@ app.use('/api/sumsub', sumsubRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/tax-advisory-bookings', taxAdvisoryBookingsRoutes); // Tax advisory service bookings
 app.use('/api/life-insurance-bookings', lifeInsuranceBookingsRoutes); // Life insurance service bookings
+app.use('/api/narvi', narviRoutes); // Narvi banking API
 
 // Investment Portal Routes
 app.use('/api/investment/admins', investmentAdminsRoutes);

@@ -4,6 +4,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { useParams, useRouter } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
 import {
   whitelabelKYBSchema,
@@ -14,18 +15,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConsentCheckbox } from "@/components/form/consent-checkbox";
-import { FileDropzone } from "@/components/form/file-dropzone";
 import { SectionHeading } from "@/components/section-heading";
-import { StatusChip } from "@/components/status-chip";
+import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
 import { COUNTRIES } from "@/shared/lib/countries";
 
-type ApplicationStatus = "form" | "submitted" | "approved" | "declined";
+type ApplicationStatus = "form" | "approved" | "declined";
 
 export default function CompanyAccountPage() {
   const t = useTranslations();
   const tAccount = useTranslations("accountOpening.company");
+  const params = useParams();
+  const router = useRouter();
+  const locale = params.locale as string;
   const [status, setStatus] = React.useState<ApplicationStatus>("form");
-  const [iban, setIban] = React.useState<string>("");
+  const [showKyc, setShowKyc] = React.useState(false);
+  const [applicationId, setApplicationId] = React.useState<string>("");
 
   // Reset status when component mounts to ensure fresh start
   React.useEffect(() => {
@@ -45,16 +49,14 @@ export default function CompanyAccountPage() {
       activityCountries: [],
       consentKYB: false,
       consentTerms: false,
-      statutes: [],
-      registerExtract: [],
-      uboDeclaration: [],
     },
   });
 
   // Function to reset everything for a new application
   const startNewApplication = () => {
     setStatus("form");
-    setIban("");
+    setShowKyc(false);
+    setApplicationId("");
     reset();
   };
 
@@ -107,7 +109,6 @@ export default function CompanyAccountPage() {
       }
 
       const applicationResult = await applicationResponse.json();
-      console.log("Application submitted successfully:", applicationResult);
 
       // Also create a company record
       const companyPayload = {
@@ -134,31 +135,11 @@ export default function CompanyAccountPage() {
 
       if (!companyResponse.ok) {
         console.warn('Failed to create company record, but application was saved');
-      } else {
-        const companyResult = await companyResponse.json();
-        console.log("Company record created:", companyResult);
       }
 
-      // TODO: Handle document uploads separately
-      // For now, we'll store document file names in the console
-      if (data.statutes && data.statutes.length > 0) {
-        console.log("Statutes to upload:", data.statutes[0].name);
-      }
-      if (data.registerExtract && data.registerExtract.length > 0) {
-        console.log("Register Extract to upload:", data.registerExtract[0].name);
-      }
-      if (data.uboDeclaration && data.uboDeclaration.length > 0) {
-        console.log("UBO Declaration to upload:", data.uboDeclaration[0].name);
-      }
-
-      // Show submitted status
-      setStatus("submitted");
-
-      // Simulate approval for demo (in production, this would be done by admin)
-      setTimeout(() => {
-        setStatus("approved");
-        setIban("LU28 0019 4006 4475 0001");
-      }, 3000);
+      // Open Sumsub KYC widget for corporate identity verification
+      setApplicationId(`company-${applicationResult.id || Date.now()}`);
+      setShowKyc(true);
     } catch (error) {
       console.error("Error submitting application:", error);
       alert("Failed to submit application. Please try again.");
@@ -175,61 +156,55 @@ export default function CompanyAccountPage() {
                 <CheckCircle2 className="h-10 w-10 text-green-600" />
               </div>
               <h1 className="mb-4 text-3xl font-bold text-brand-dark">
-                {t("whitelabel.approved")}
+                Verification Complete
               </h1>
               <p className="mb-8 text-lg text-brand-grayMed">
-                {tAccount("approved.message")}
+                Your company verification has been submitted. Our compliance team will review your application and corporate documents.
               </p>
 
-              <div className="mb-8 rounded-xl bg-brand-grayLight/50 p-6">
-                <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-brand-grayMed">
-                  {t("whitelabel.yourIban")}
-                </p>
-                <p className="text-2xl font-bold text-brand-dark">{iban}</p>
+              <div className="mb-8 rounded-xl bg-amber-50 border border-amber-200 p-6">
+                <p className="text-sm font-semibold text-amber-800">Application Under Review</p>
+                <p className="mt-1 text-sm text-amber-700">Corporate applications are reviewed within 2-5 business days due to enhanced due diligence requirements.</p>
               </div>
 
               <div className="space-y-4 text-left">
-                <h3 className="text-xl font-bold text-brand-dark">
-                  {t("whitelabel.nextSteps")}
-                </h3>
+                <h3 className="text-xl font-bold text-brand-dark">What happens next?</h3>
                 <ul className="space-y-3 text-brand-grayMed">
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>
-                      {tAccount("approved.nextSteps.multiUser")}
-                    </span>
+                    <span>You will receive an email confirmation with your application reference</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tAccount("approved.nextSteps.accounting")}</span>
+                    <span>Our compliance team will perform enhanced due diligence on your company</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tAccount("approved.nextSteps.corporateCards")}</span>
+                    <span>Once approved, you will receive your corporate IBAN and account details</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tAccount("approved.nextSteps.fundAccount")}</span>
+                    <span>Set up multi-user access and corporate cards for your team</span>
                   </li>
                 </ul>
               </div>
 
               <div className="mt-10 flex flex-col gap-4">
-                <div className="flex gap-4">
-                  <Button variant="primary" size="lg" className="flex-1">
-                    {tAccount("approved.buttons.dashboard")}
-                  </Button>
-                  <Button variant="outline" size="lg" className="flex-1">
-                    {tAccount("approved.buttons.downloadApp")}
-                  </Button>
-                </div>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
+                  onClick={() => router.push(`/${locale}/login?from=open-account`)}
+                >
+                  Sign In to Dashboard
+                </Button>
                 <Button
                   variant="ghost"
                   size="lg"
                   onClick={startNewApplication}
                   className="w-full text-brand-grayMed hover:text-brand-dark"
                 >
-                  {tAccount("approved.buttons.startNew")}
+                  Start Another Application
                 </Button>
               </div>
             </CardContent>
@@ -239,31 +214,19 @@ export default function CompanyAccountPage() {
     );
   }
 
-  if (status === "submitted") {
-    return (
-      <div className="min-h-screen bg-brand-off py-12">
-        <div className="container mx-auto max-w-3xl px-6">
-          <Card className="border-none shadow-elevated">
-            <CardContent className="p-12 text-center">
-              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-grayLight border-t-brand-gold" />
-              </div>
-              <h1 className="mb-4 text-3xl font-bold text-brand-dark">
-                {t("whitelabel.applicationSubmitted")}
-              </h1>
-              <p className="mb-8 text-lg text-brand-grayMed">
-                {tAccount("submitted.message")}
-              </p>
-              <StatusChip status="submitted" />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-brand-off py-12">
+      {showKyc && (
+        <SumsubKycWidget
+          userId={applicationId}
+          levelName="corporate_signup_kyc"
+          onClose={() => setShowKyc(false)}
+          onComplete={() => {
+            setShowKyc(false);
+            setStatus("approved");
+          }}
+        />
+      )}
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading
           title={tAccount("title")}
@@ -407,43 +370,6 @@ export default function CompanyAccountPage() {
                       </p>
                     )}
                   </div>
-                </div>
-              </div>
-
-              {/* Document Uploads */}
-              <div className="space-y-6">
-                <h3 className="text-lg font-bold text-brand-dark">
-                  Company Documents
-                </h3>
-                <p className="text-sm text-brand-grayMed">
-                  Please upload clear copies of the following documents (max 15MB each)
-                </p>
-
-                <div className="space-y-2">
-                  <Label>{t("whitelabel.uploadStatutes")}*</Label>
-                  <FileDropzone
-                    multiple={false}
-                    onFilesChange={(files) => setValue("statutes", files)}
-                    error={errors.statutes?.message}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>{t("whitelabel.uploadRegister")}*</Label>
-                  <FileDropzone
-                    multiple={false}
-                    onFilesChange={(files) => setValue("registerExtract", files)}
-                    error={errors.registerExtract?.message}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>{t("whitelabel.uploadUbo")}*</Label>
-                  <FileDropzone
-                    multiple={false}
-                    onFilesChange={(files) => setValue("uboDeclaration", files)}
-                    error={errors.uboDeclaration?.message}
-                  />
                 </div>
               </div>
 

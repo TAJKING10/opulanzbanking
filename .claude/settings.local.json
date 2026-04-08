@@ -77,7 +77,9 @@
       "Bash(cat \"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/admin/\\(protected\\)/layout.tsx\")",
       "Bash(grep -E \"\\\\.\\(ts|js\\)$\")",
       "Bash(npx tsc:*)",
-      "Bash(\"C:/Users/Toufi/AndroidStudioProjects/azuree/backend/.env\")"
+      "Bash(\"C:/Users/Toufi/AndroidStudioProjects/azuree/backend/.env\")",
+      "Bash(ls /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/admin/\\\\\\(protected\\\\\\)/)",
+      "Bash(find /c/Users/Toufi/AndroidStudioProjects/azuree -maxdepth 2 -type f \\\\\\(-name .env* -o -name *example* \\\\\\) ! -path *node_modules* ! -path */.git/*)"
     ],
     "deny": [],
     "ask": []

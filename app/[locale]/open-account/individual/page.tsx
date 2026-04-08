@@ -4,6 +4,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { useParams, useRouter } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
 import ReactCountryFlag from "react-country-flag";
 import {
@@ -15,18 +16,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConsentCheckbox } from "@/components/form/consent-checkbox";
-import { FileDropzone } from "@/components/form/file-dropzone";
 import { SectionHeading } from "@/components/section-heading";
-import { StatusChip } from "@/components/status-chip";
+import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
 import { COUNTRIES } from "@/shared/lib/countries";
 
-type ApplicationStatus = "form" | "submitted" | "approved" | "declined";
+type ApplicationStatus = "form" | "approved" | "declined";
 
 export default function IndividualAccountPage() {
   const t = useTranslations();
   const tAccount = useTranslations("accountOpening.individual");
+  const params = useParams();
+  const router = useRouter();
+  const locale = params.locale as string;
   const [status, setStatus] = React.useState<ApplicationStatus>("form");
-  const [iban, setIban] = React.useState<string>("");
+  const [showKyc, setShowKyc] = React.useState(false);
+  const [applicationId, setApplicationId] = React.useState<string>("");
   const [selectedPhoneCode, setSelectedPhoneCode] = React.useState<string>("+33");
   const [isDropdownOpen, setIsDropdownOpen] = React.useState<boolean>(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -62,16 +66,14 @@ export default function IndividualAccountPage() {
       activityCountries: [],
       consentKYC: false,
       consentTerms: false,
-      idDocument: [],
-      selfie: [],
-      proofOfAddress: [],
     },
   });
 
   // Function to reset everything for a new application
   const startNewApplication = () => {
     setStatus("form");
-    setIban("");
+    setShowKyc(false);
+    setApplicationId("");
     setSelectedPhoneCode("+33");
     reset();
   };
@@ -131,28 +133,10 @@ export default function IndividualAccountPage() {
       }
 
       const result = await response.json();
-      console.log("Application submitted successfully:", result);
 
-      // TODO: Handle document uploads separately
-      // For now, we'll store document file names in the console
-      if (data.idDocument && data.idDocument.length > 0) {
-        console.log("ID Document to upload:", data.idDocument[0].name);
-      }
-      if (data.selfie && data.selfie.length > 0) {
-        console.log("Selfie to upload:", data.selfie[0].name);
-      }
-      if (data.proofOfAddress && data.proofOfAddress.length > 0) {
-        console.log("Proof of Address to upload:", data.proofOfAddress[0].name);
-      }
-
-      // Show submitted status
-      setStatus("submitted");
-
-      // Simulate approval for demo (in production, this would be done by admin)
-      setTimeout(() => {
-        setStatus("approved");
-        setIban("LU28 0019 4006 4475 0000");
-      }, 3000);
+      // Open Sumsub KYC widget for identity verification
+      setApplicationId(`individual-${result.id || Date.now()}`);
+      setShowKyc(true);
     } catch (error) {
       console.error("Error submitting application:", error);
       alert("Failed to submit application. Please try again.");
@@ -169,61 +153,55 @@ export default function IndividualAccountPage() {
                 <CheckCircle2 className="h-10 w-10 text-green-600" />
               </div>
               <h1 className="mb-4 text-3xl font-bold text-brand-dark">
-                {t("whitelabel.approved")}
+                Verification Complete
               </h1>
               <p className="mb-8 text-lg text-brand-grayMed">
-                {tAccount("approved.message")}
+                Your identity has been verified. Your application is now under review and you will be notified once your account is activated.
               </p>
 
-              <div className="mb-8 rounded-xl bg-brand-grayLight/50 p-6">
-                <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-brand-grayMed">
-                  {t("whitelabel.yourIban")}
-                </p>
-                <p className="text-2xl font-bold text-brand-dark">{iban}</p>
+              <div className="mb-8 rounded-xl bg-amber-50 border border-amber-200 p-6">
+                <p className="text-sm font-semibold text-amber-800">Application Under Review</p>
+                <p className="mt-1 text-sm text-amber-700">Our compliance team will review your application within 1-2 business days.</p>
               </div>
 
               <div className="space-y-4 text-left">
-                <h3 className="text-xl font-bold text-brand-dark">
-                  {t("whitelabel.nextSteps")}
-                </h3>
+                <h3 className="text-xl font-bold text-brand-dark">What happens next?</h3>
                 <ul className="space-y-3 text-brand-grayMed">
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>
-                      {tAccount("approved.nextSteps.mobileApp")}
-                    </span>
+                    <span>You will receive an email confirmation shortly</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tAccount("approved.nextSteps.security")}</span>
+                    <span>Our team will review your application within 1-2 business days</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tAccount("approved.nextSteps.debitCard")}</span>
+                    <span>Once approved, you will receive your IBAN and account details</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tAccount("approved.nextSteps.fundAccount")}</span>
+                    <span>Download the Opulanz app to manage your account</span>
                   </li>
                 </ul>
               </div>
 
               <div className="mt-10 flex flex-col gap-4">
-                <div className="flex gap-4">
-                  <Button variant="primary" size="lg" className="flex-1">
-                    {tAccount("approved.buttons.dashboard")}
-                  </Button>
-                  <Button variant="outline" size="lg" className="flex-1">
-                    {tAccount("approved.buttons.downloadApp")}
-                  </Button>
-                </div>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
+                  onClick={() => router.push(`/${locale}/login?from=open-account`)}
+                >
+                  Sign In to Dashboard
+                </Button>
                 <Button
                   variant="ghost"
                   size="lg"
                   onClick={startNewApplication}
                   className="w-full text-brand-grayMed hover:text-brand-dark"
                 >
-                  {tAccount("approved.buttons.startNew")}
+                  Start Another Application
                 </Button>
               </div>
             </CardContent>
@@ -233,31 +211,20 @@ export default function IndividualAccountPage() {
     );
   }
 
-  if (status === "submitted") {
-    return (
-      <div className="min-h-screen bg-brand-off py-12">
-        <div className="container mx-auto max-w-3xl px-6">
-          <Card className="border-none shadow-elevated">
-            <CardContent className="p-12 text-center">
-              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-grayLight border-t-brand-gold" />
-              </div>
-              <h1 className="mb-4 text-3xl font-bold text-brand-dark">
-                {t("whitelabel.applicationSubmitted")}
-              </h1>
-              <p className="mb-8 text-lg text-brand-grayMed">
-                {tAccount("submitted.message")}
-              </p>
-              <StatusChip status="submitted" />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-brand-off py-12">
+      {showKyc && (
+        <SumsubKycWidget
+          userId={applicationId}
+          levelName="individual_signup_kyc"
+          onClose={() => setShowKyc(false)}
+          onComplete={() => {
+            setShowKyc(false);
+            setStatus("approved");
+          }}
+        />
+
+      )}
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading
           title={tAccount("title")}
@@ -470,44 +437,6 @@ export default function IndividualAccountPage() {
                       </p>
                     )}
                   </div>
-                </div>
-              </div>
-
-              {/* Document Uploads */}
-              <div className="space-y-6">
-                <h3 className="text-lg font-bold text-brand-dark">
-                  {tAccount("form.documentVerification")}
-                </h3>
-                <p className="text-sm text-brand-grayMed">
-                  {tAccount("form.documentDescription")}
-                </p>
-
-                <div className="space-y-2">
-                  <Label>{t("whitelabel.uploadId")}*</Label>
-                  <FileDropzone
-                    multiple={false}
-                    onFilesChange={(files) => setValue("idDocument", files)}
-                    error={errors.idDocument?.message}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>{t("whitelabel.uploadSelfie")}*</Label>
-                  <FileDropzone
-                    multiple={false}
-                    acceptedTypes={[".jpg", ".jpeg", ".png"]}
-                    onFilesChange={(files) => setValue("selfie", files)}
-                    error={errors.selfie?.message}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>{t("whitelabel.uploadPoa")}*</Label>
-                  <FileDropzone
-                    multiple={false}
-                    onFilesChange={(files) => setValue("proofOfAddress", files)}
-                    error={errors.proofOfAddress?.message}
-                  />
                 </div>
               </div>
 

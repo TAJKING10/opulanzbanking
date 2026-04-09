@@ -9,6 +9,8 @@ import {
   Building2,
   Plus,
   Construction,
+  CheckCircle,
+  Loader2,
   ChevronDown,
   Info,
   Check,
@@ -48,6 +50,60 @@ export default function SendMoneyPage() {
   const [isScheduled, setIsScheduled] = React.useState(false);
   const [beneficiarySearch, setBeneficiarySearch] = React.useState("");
   const [beneficiaryIban, setBeneficiaryIban] = React.useState("");
+  const [submitting, setSubmitting] = React.useState(false);
+  const [txSuccess, setTxSuccess] = React.useState<string | null>(null);
+  const [txError, setTxError] = React.useState("");
+
+  const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+  async function handleSubmitTransfer() {
+    if (!isFormReady || submitting) return;
+    setSubmitting(true);
+    setTxError("");
+    try {
+      // Get source account PID from stored narvi account or fetch first account
+      let fromAccountPid = "";
+      const stored = localStorage.getItem("narvi_account");
+      if (stored) {
+        try { fromAccountPid = JSON.parse(stored).pid || ""; } catch (_) {}
+      }
+      if (!fromAccountPid) {
+        const res = await fetch(`${API}/api/narvi/accounts`);
+        if (res.ok) {
+          const data = await res.json();
+          const list = data.data || data.accounts || data || [];
+          if (list.length > 0) fromAccountPid = list[0].pid;
+        }
+      }
+
+      const recipientData = savedBeneficiaries.find((b) => b.id === selectedRecipient);
+      const recipientIban = beneficiaryIban || recipientData?.iban || "";
+      const recipientName = recipientData?.name || "Recipient";
+
+      const res = await fetch(`${API}/api/narvi/transactions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          accountPid: fromAccountPid,
+          amount: parseFloat(amount),
+          currency: "EUR",
+          counterpartIban: recipientIban,
+          counterpartName: recipientName,
+          reference: reference || "Transfer",
+          type: "DEBIT",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || data.message || "Transfer failed");
+
+      const txId = data.data?.pid || data.pid || data.transaction?.pid || "TX" + Date.now();
+      setTxSuccess(txId);
+    } catch (err: any) {
+      setTxError(err.message || "Transfer failed. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   const accounts = [
     { id: "main", name: "Main Current Account", balance: "€85,230.50", iban: "FI91 1234 5678 9012 34" },
@@ -366,12 +422,27 @@ export default function SendMoneyPage() {
               </div>
             )}
 
+            {txSuccess && (
+              <div className="mb-4 bg-green-50 border border-green-200 rounded-xl px-4 py-4 text-center">
+                <CheckCircle className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <p className="font-semibold text-green-900 text-sm">Transfer Submitted!</p>
+                <p className="text-xs text-green-700 mt-1">Transaction ID: {txSuccess}</p>
+              </div>
+            )}
+
+            {txError && (
+              <div className="mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-center text-sm text-red-700">
+                {txError}
+              </div>
+            )}
+
             <button
-              disabled={!isFormReady}
+              disabled={!isFormReady || submitting}
+              onClick={handleSubmitTransfer}
               className="w-full bg-[#b59354] text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#886844] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              {isFormReady ? "Review Transfer" : "Continue"}
-              <ArrowRight className="h-5 w-5" />
+              {submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : <ArrowRight className="h-5 w-5" />}
+              {submitting ? "Submitting..." : isFormReady ? "Submit Transfer" : "Continue"}
             </button>
           </div>
         </div>

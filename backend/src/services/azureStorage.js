@@ -44,7 +44,15 @@ class AzureStorageService {
    */
   async uploadDocument(fileBuffer, fileName, contentType = 'application/pdf') {
     if (!this.isConfigured) {
-      throw new Error('Azure Storage is not configured');
+      // Demo/mock mode — simulate upload, return local-like URL
+      const mockBlobName = `mock-${Date.now()}-${fileName}`;
+      console.log(`📁 Azure Storage MOCK: Simulating upload of ${fileName} (${fileBuffer.length} bytes)`);
+      return {
+        url: `http://localhost:5000/mock-docs/${mockBlobName}`,
+        blobName: mockBlobName,
+        containerName: 'mock-local',
+        isMock: true,
+      };
     }
 
     await this.ensureContainer();

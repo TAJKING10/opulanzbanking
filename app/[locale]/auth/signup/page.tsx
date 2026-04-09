@@ -61,6 +61,7 @@ export default function SignupPage() {
       sessionStorage.setItem("auth_email", form.email);
       sessionStorage.setItem("auth_phone", form.phone);
       sessionStorage.setItem("auth_account_type", accountType);
+      if (data.demoOtp) sessionStorage.setItem("demo_email_otp", data.demoOtp);
 
       router.push(`/${locale}/auth/verify-email`);
     } catch (err: any) {

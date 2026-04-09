@@ -20,16 +20,19 @@ export default function VerifyEmailPage() {
   const [resending, setResending] = React.useState(false);
   const [error, setError] = React.useState("");
   const [resent, setResent] = React.useState(false);
+  const [demoOtp, setDemoOtp] = React.useState("");
 
   React.useEffect(() => {
     const id = sessionStorage.getItem("auth_user_id");
     const em = sessionStorage.getItem("auth_email");
+    const demo = sessionStorage.getItem("demo_email_otp");
     if (!id || !em) {
       router.replace(`/${locale}/auth/signup`);
       return;
     }
     setUserId(id);
     setEmail(em);
+    if (demo) setDemoOtp(demo);
   }, [locale, router]);
 
   async function handleVerify() {
@@ -45,6 +48,7 @@ export default function VerifyEmailPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       sessionStorage.setItem("sms_sent", String(data.smsSent));
+      if (data.demoOtp) sessionStorage.setItem("demo_phone_otp", data.demoOtp);
       router.push(`/${locale}/auth/verify-phone`);
     } catch (err: any) {
       setError(err.message || "Failed to verify code");
@@ -88,9 +92,22 @@ export default function VerifyEmailPage() {
           </div>
 
           <h2 className="text-xl font-bold text-gray-900 mb-2">Verify your email</h2>
-          <p className="text-sm text-gray-500 mb-8">
+          <p className="text-sm text-gray-500 mb-4">
             We sent a 6-digit code to <strong>{email}</strong>
           </p>
+
+          {demoOtp && (
+            <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-center">
+              <p className="text-xs text-amber-700 font-medium mb-1">Demo Mode — Your code:</p>
+              <p className="text-2xl font-bold tracking-widest text-amber-900 font-mono">{demoOtp}</p>
+              <button
+                onClick={() => setOtp(demoOtp)}
+                className="mt-2 text-xs text-amber-700 underline hover:text-amber-900"
+              >
+                Auto-fill
+              </button>
+            </div>
+          )}
 
           <OtpInput value={otp} onChange={setOtp} disabled={loading} />
 

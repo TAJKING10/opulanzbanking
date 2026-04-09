@@ -75,12 +75,18 @@ export default function KycPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
-      // Store full JWT and go to dashboard
+      // Store full JWT
       setAuthToken(data.token);
+
+      // Store narvi account info for dashboard
+      if (data.narviAccount) {
+        localStorage.setItem("narvi_account", JSON.stringify(data.narviAccount));
+      }
+
       sessionStorage.clear();
       router.push(`/${locale}/dashboard`);
     } catch (err: any) {
-      // Even if this fails, take them to dashboard (KYC will show in dashboard)
+      // Even if this fails, take them to dashboard
       sessionStorage.clear();
       router.push(`/${locale}/dashboard`);
     }
@@ -106,6 +112,20 @@ export default function KycPage() {
               <p className="font-semibold text-gray-900 text-sm">KYC Verification</p>
               <p className="text-xs text-gray-500">Powered by Sumsub • Step 3 of 3</p>
             </div>
+          </div>
+
+          {/* Demo bypass banner */}
+          <div className="px-6 py-3 bg-amber-50 border-b border-amber-100 flex items-center justify-between gap-4">
+            <p className="text-xs text-amber-800">
+              <strong>Demo mode:</strong> Complete the Sumsub verification below, or skip for testing.
+            </p>
+            <button
+              onClick={handleKycComplete}
+              disabled={completing}
+              className="flex-shrink-0 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50"
+            >
+              {completing ? "Setting up..." : "Skip KYC (Demo)"}
+            </button>
           </div>
 
           {/* Content */}

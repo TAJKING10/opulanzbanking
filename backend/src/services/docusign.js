@@ -57,7 +57,16 @@ class DocuSignService {
 
   async sendEnvelopeForSignature({ documents, signer, emailSubject, emailBody, callbackUrl }) {
     if (!this.isConfigured) {
-      throw new Error('DocuSign is not configured');
+      // Demo/mock mode — return simulated success
+      const mockEnvelopeId = `MOCK-DS-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+      console.log(`📝 DocuSign MOCK: Simulating envelope sent to ${signer.email}`);
+      console.log(`   Envelope ID: ${mockEnvelopeId} | Documents: ${documents.length}`);
+      return {
+        envelopeId: mockEnvelopeId,
+        status: 'sent',
+        statusDateTime: new Date().toISOString(),
+        isMock: true,
+      };
     }
 
     await this.initializeClient();

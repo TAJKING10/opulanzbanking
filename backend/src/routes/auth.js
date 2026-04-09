@@ -6,6 +6,9 @@ const nodemailer = require('nodemailer');
 const twilio = require('twilio');
 const { pool } = require('../config/db');
 const { requireAuth } = require('../middleware/auth');
+const { createNarviAccount } = require('../services/narvi');
+
+const IS_DEMO = process.env.NODE_ENV !== 'production';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'opulanz-super-secret-jwt-key-2025-change-in-production';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
@@ -222,6 +225,7 @@ router.post('/signup', async (req, res) => {
       success: true,
       userId: user.id,
       message: 'Account created. A verification code has been sent to your email.',
+      ...(IS_DEMO && { demoOtp: emailOtp, demoNote: 'OTP visible in demo mode only' }),
     });
   } catch (err) {
     console.error('Signup error:', err);
@@ -254,6 +258,7 @@ router.post('/verify-email-otp', async (req, res) => {
       message: smsResult.sent
         ? 'Email verified. SMS code sent to your phone.'
         : 'Email verified. SMS not configured — phone code sent to your email.',
+      ...(IS_DEMO && { demoOtp: phoneOtp, demoNote: 'Phone OTP visible in demo mode only' }),
     });
   } catch (err) {
     console.error('Email OTP verify error:', err);
@@ -294,7 +299,62 @@ router.post('/kyc-complete', requireAuth, async (req, res) => {
     const user = result.rows[0];
     const token = signToken(user, false);
 
-    res.json({ success: true, token });
+    // Auto-create Narvi entity + bank account after KYC
+    let narviAccount = null;
+    try {
+      const isCompany = user.account_type === 'corporate';
+      const narviResult = await createNarviAccount({
+        type: isCompany ? 'company' : 'individual',
+        payload: {
+          // Individual fields
+          firstName: user.first_name || 'Demo',
+          lastName: user.last_name || 'User',
+          dateOfBirth: '1990-01-01',
+          nationality: 'FR',
+          address: '1 Rue de la Paix',
+          postalCode: '75001',
+          city: 'Paris',
+          country: 'FR',
+          sourceOfFunds: 'salary',
+          isPEP: false,
+          // Company fields
+          companyName: user.name || `${user.first_name} ${user.last_name}`,
+          registrationNumber: `RCS${userId}${Date.now().toString().slice(-6)}`,
+          companyCountry: 'FR',
+        },
+      });
+
+      if (narviResult.success) {
+        narviAccount = narviResult.account;
+        console.log(`✅ Narvi account created for user ${userId}: ${narviAccount.iban}`);
+        // Store narvi account PID in applications table if an application exists
+        try {
+          await pool.query(
+            `UPDATE applications SET narvi_customer_id = $1 WHERE id = (
+              SELECT id FROM applications WHERE payload->>'email' = $2 OR payload->>'companyName' IS NOT NULL
+              ORDER BY created_at DESC LIMIT 1
+            )`,
+            [narviResult.entity.pid, user.email]
+          );
+        } catch (_) { /* non-blocking */ }
+      }
+    } catch (narviErr) {
+      console.warn(`⚠️  Narvi account creation skipped: ${narviErr.message}`);
+    }
+
+    res.json({
+      success: true,
+      token,
+      ...(narviAccount && {
+        narviAccount: {
+          pid: narviAccount.pid,
+          iban: narviAccount.iban,
+          bic: narviAccount.bic,
+          currency: narviAccount.currency,
+          status: narviAccount.status,
+        },
+      }),
+    });
   } catch (err) {
     console.error('KYC complete error:', err);
     res.status(500).json({ error: 'Failed to complete KYC' });
@@ -327,6 +387,7 @@ router.post('/signin', async (req, res) => {
       success: true,
       userId: user.id,
       message: 'Verification code sent to your email.',
+      ...(IS_DEMO && { demoOtp: emailOtp, demoNote: 'OTP visible in demo mode only' }),
     });
   } catch (err) {
     console.error('Signin error:', err);
@@ -355,6 +416,7 @@ router.post('/verify-signin-email-otp', async (req, res) => {
       message: smsResult.sent
         ? 'Email verified. SMS code sent to your phone.'
         : 'Email verified. SMS not configured — phone code sent to your email.',
+      ...(IS_DEMO && { demoOtp: phoneOtp, demoNote: 'Phone OTP visible in demo mode only' }),
     });
   } catch (err) {
     console.error('Signin email OTP error:', err);

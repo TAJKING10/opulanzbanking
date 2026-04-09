@@ -79,7 +79,10 @@
       "Bash(npx tsc:*)",
       "Bash(\"C:/Users/Toufi/AndroidStudioProjects/azuree/backend/.env\")",
       "Bash(ls /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/admin/\\\\\\(protected\\\\\\)/)",
-      "Bash(find /c/Users/Toufi/AndroidStudioProjects/azuree -maxdepth 2 -type f \\\\\\(-name .env* -o -name *example* \\\\\\) ! -path *node_modules* ! -path */.git/*)"
+      "Bash(find /c/Users/Toufi/AndroidStudioProjects/azuree -maxdepth 2 -type f \\\\\\(-name .env* -o -name *example* \\\\\\) ! -path *node_modules* ! -path */.git/*)",
+      "Bash(grep:*)",
+      "Bash(npm audit:*)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f''''Accounts: {len\\(d.get\\(\"\"data\"\",d.get\\(\"\"accounts\"\",d if isinstance\\(d,list\\) else []\\)\\)\\)}''''\\); [print\\(f''''  - {a[\"\"number\"\"]} \\({a[\"\"currency\"\"]}\\) balance={a.get\\(\"\"balance\"\",\"\"N/A\"\"\\)}''''\\) for a in \\(d.get\\(''''data'''',d.get\\(''''accounts'''',d if isinstance\\(d,list\\) else []\\)\\)\\)]\")"
     ],
     "deny": [],
     "ask": []

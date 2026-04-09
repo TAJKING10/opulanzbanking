@@ -46,6 +46,8 @@ export default function DashboardPage() {
   const [authUserId, setAuthUserId] = React.useState("dashboard-user-001");
   const [kycType, setKycType] = React.useState<"individual" | "corporate">("individual");
 
+  const [userDisplayName, setUserDisplayName] = React.useState("there");
+
   React.useEffect(() => {
     const user = getCurrentUser();
     if (!user) {
@@ -55,6 +57,7 @@ export default function DashboardPage() {
     setAuthUserId(`user-${user.userId}`);
     setKycType(user.accountType === "corporate" ? "corporate" : "individual");
     setKycVerified(user.kycStatus === "verified");
+    setUserDisplayName(user.email ? user.email.split('@')[0] : "there");
   }, [locale, router]);
 
   function handleSignOut() {
@@ -245,7 +248,7 @@ export default function DashboardPage() {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-2xl font-bold text-gray-900">Good morning, Nordic Solutions</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Good morning, {userDisplayName}</h1>
             <span className="text-2xl">&#128075;</span>
           </div>
           <p className="text-gray-500">Here's what's happening with your accounts today.</p>

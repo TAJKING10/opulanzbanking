@@ -8,6 +8,7 @@ import {
   User,
   Building2,
   Plus,
+  Construction,
   ChevronDown,
   Info,
   Check,
@@ -86,6 +87,15 @@ export default function SendMoneyPage() {
 
   return (
     <div className="p-6 lg:p-8">
+      {/* Coming Soon Banner */}
+      <div className="mb-6 flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
+        <Construction className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="text-sm font-semibold text-amber-900">Preview — Live transfers coming soon</p>
+          <p className="text-xs text-amber-700 mt-0.5">This page is a UI preview. Transfer submission is not yet connected to the banking backend.</p>
+        </div>
+      </div>
+
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Transfer Money</h1>

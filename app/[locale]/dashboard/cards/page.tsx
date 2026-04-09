@@ -17,6 +17,7 @@ import {
   EyeOff,
   ChevronRight,
   MoreHorizontal,
+  Construction,
 } from "lucide-react";
 
 export default function CardsPage() {
@@ -70,6 +71,15 @@ export default function CardsPage() {
 
   return (
     <div className="p-6 lg:p-8">
+      {/* Coming Soon Banner */}
+      <div className="mb-6 flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
+        <Construction className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="text-sm font-semibold text-amber-900">Preview — Card management coming soon</p>
+          <p className="text-xs text-amber-700 mt-0.5">Virtual and physical card issuance will be available when the banking integration is complete.</p>
+        </div>
+      </div>
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>

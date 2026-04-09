@@ -27,6 +27,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/auth";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -54,6 +55,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const locale = params.locale as string;
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
+
+  const user = getCurrentUser();
+  const userEmail = user?.email || '';
+  const userInitials = userEmail ? userEmail.slice(0, 2).toUpperCase() : 'OP';
+  const userDisplayName = userEmail ? userEmail.split('@')[0] : 'My Account';
 
   const isActive = (href: string) => {
     const fullPath = `/${locale}${href}`;
@@ -238,11 +244,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   className="flex items-center gap-3 p-1.5 hover:bg-gray-100 rounded-xl transition-colors"
                 >
                   <div className="w-9 h-9 bg-gradient-to-br from-[#b59354] to-[#886844] rounded-xl flex items-center justify-center shadow-sm">
-                    <span className="text-sm font-bold text-white">NS</span>
+                    <span className="text-sm font-bold text-white">{userInitials}</span>
                   </div>
                   <div className="hidden md:block text-left">
-                    <p className="text-sm font-semibold text-gray-900">Nordic Solutions</p>
-                    <p className="text-xs text-gray-500">Business Pro</p>
+                    <p className="text-sm font-semibold text-gray-900">{userDisplayName}</p>
+                    <p className="text-xs text-gray-500">{user?.accountType === 'corporate' ? 'Business Account' : 'Personal Account'}</p>
                   </div>
                   <ChevronDown className={cn("h-4 w-4 text-gray-400 transition-transform", isProfileOpen && "rotate-180")} />
                 </button>
@@ -253,8 +259,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                     <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 z-50">
                       {/* User Info */}
                       <div className="px-4 py-3 border-b border-gray-100">
-                        <p className="font-semibold text-gray-900">Nordic Solutions OY</p>
-                        <p className="text-sm text-gray-500">admin@nordicsolutions.fi</p>
+                        <p className="font-semibold text-gray-900">{userDisplayName}</p>
+                        <p className="text-sm text-gray-500">{userEmail}</p>
                         <div className="flex items-center gap-1 mt-2">
                           <Shield className="h-3.5 w-3.5 text-green-500" />
                           <span className="text-xs text-green-600 font-medium">Verified Business</span>

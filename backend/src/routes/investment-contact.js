@@ -5,7 +5,7 @@
 
 const express = require('express');
 const nodemailer = require('nodemailer');
-const pool = require('../config/db');
+const { pool } = require('../config/db');
 const router = express.Router();
 
 // Create email transporter

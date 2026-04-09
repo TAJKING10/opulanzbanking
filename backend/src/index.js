@@ -9,6 +9,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const { testConnection } = require('./config/db');
@@ -49,7 +50,31 @@ app.use(helmet({
     },
   },
 })); // Security headers with CSP configured
-app.use(cors()); // Enable CORS for frontend
+
+// CORS — restrict to frontend origin only
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Rate limiting — protect auth and contact endpoints
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20,
+  message: { success: false, error: 'Too many attempts. Please try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
+  message: { success: false, error: 'Too many submissions. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
@@ -67,7 +92,7 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/kyc', kycRoutes);
 app.use('/api/sumsub', sumsubRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/tax-advisory-bookings', taxAdvisoryBookingsRoutes); // Tax advisory service bookings
 app.use('/api/life-insurance-bookings', lifeInsuranceBookingsRoutes); // Life insurance service bookings
 app.use('/api/narvi', narviRoutes); // Narvi banking API
@@ -78,7 +103,7 @@ app.use('/api/investment/investors', investmentInvestorsRoutes);
 app.use('/api/investment/properties', investmentPropertiesRoutes);
 app.use('/api/investment/activity', investmentActivityRoutes);
 app.use('/api/investment/investments', investmentsRoutes);
-app.use('/api/investment/contact', investmentContactRoutes);
+app.use('/api/investment/contact', contactLimiter, investmentContactRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

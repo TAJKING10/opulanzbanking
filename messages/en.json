@@ -12,7 +12,8 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "required": "Required",
-    "explore": "Explore"
+    "explore": "Explore",
+    "readyToStart": "Ready to get started?"
   },
   "nav": {
     "home": "Home",
@@ -1385,8 +1386,14 @@
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome back! Here's your account overview.",
+    "greeting": "Good morning",
+    "greetingSubtitle": "Here's what's happening with your accounts today.",
+    "accountVerified": "Account Verified",
+    "lastLogin": "Last login",
     "balance": {
-      "label": "Total Balance"
+      "label": "Total Balance",
+      "allAccountsCombined": "All Accounts Combined",
+      "vsLastMonth": "vs. last month"
     },
     "buttons": {
       "addFunds": "Add Funds",
@@ -1394,6 +1401,10 @@
     },
     "quickActions": {
       "title": "Quick Actions",
+      "sendMoney": "Send Money",
+      "exchange": "Exchange",
+      "cards": "Cards",
+      "sendAgain": "Send Again",
       "items": {
         "openAccount": "Open New Account",
         "formCompany": "Form Company",
@@ -1401,12 +1412,56 @@
         "viewStatements": "View Statements"
       }
     },
+    "spending": {
+      "title": "Spending Analytics",
+      "totalSpent": "Total Spent",
+      "received": "Received",
+      "transactions": "Transactions",
+      "expenses": "Expenses",
+      "income": "Income",
+      "filters": {
+        "thisWeek": "This Week",
+        "lastWeek": "Last Week",
+        "thisMonth": "This Month"
+      }
+    },
+    "primaryAccount": {
+      "title": "Primary Account",
+      "iban": "IBAN",
+      "bicSwift": "BIC/SWIFT",
+      "currency": "Currency",
+      "copied": "Copied!"
+    },
+    "security": {
+      "title": "Account Protected",
+      "subtitle": "2FA Enabled",
+      "scoreLabel": "Security Score",
+      "scoreValue": "Excellent"
+    },
     "transactions": {
       "title": "Recent Transactions",
-      "viewAll": "View All"
+      "subtitle": "Your latest activity",
+      "viewAll": "View All",
+      "status": {
+        "completed": "Completed",
+        "processing": "Processing"
+      }
     },
     "applications": {
-      "title": "Application Status"
+      "title": "Application Status",
+      "statuses": {
+        "approved": "Your application has been approved",
+        "awaitingNotary": "Awaiting notary certificate",
+        "scheduledNextWeek": "Scheduled for next week"
+      }
+    },
+    "upgrade": {
+      "title": "Opulanz Pro",
+      "description": "Unlock premium features, global payments, and priority support.",
+      "feature1": "Unlimited transactions",
+      "feature2": "Virtual & physical cards",
+      "feature3": "Advanced analytics",
+      "cta": "Upgrade Now"
     },
     "services": {
       "title": "Our Services",
@@ -1958,6 +2013,43 @@
         "never": "Never",
         "back": "Back",
         "backToList": "Back to list"
+      }
+    }
+  },
+  "accountOpening": {
+    "company": {
+      "title": "Open a Business Account",
+      "description": "Complete your business account application in a few steps.",
+      "form": {
+        "companyInfo": "Company Information"
+      },
+      "submitted": {
+        "message": "Your application is under review. You will receive a decision within 2–3 business days."
+      },
+      "approved": {
+        "message": "Congratulations! Your business account has been approved. Your IBAN is ready.",
+        "nextSteps": {
+          "multiUser": "Invite team members and set up multi-user access.",
+          "accounting": "Connect your accounting and invoicing tools.",
+          "corporateCards": "Order corporate cards for your team.",
+          "fundAccount": "Fund your account to start transacting."
+        },
+        "buttons": {
+          "dashboard": "Go to Dashboard",
+          "downloadApp": "Download App",
+          "startNew": "Start a New Application"
+        }
+      }
+    },
+    "warmReferral": {
+      "handoff": {
+        "description": "Based on your profile, we recommend opening your account with {partner}. Opulanz will remain your point of contact throughout the process.",
+        "step1": {
+          "description": "Your profile has been matched to {partner}. Click below to proceed."
+        },
+        "step2": {
+          "description": "You will be redirected to {partner} to complete your account opening."
+        }
       }
     }
   }

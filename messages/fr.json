@@ -12,7 +12,8 @@
     "loading": "Chargement...",
     "error": "Une erreur s'est produite",
     "required": "Requis",
-    "explore": "Explorer"
+    "explore": "Explorer",
+    "readyToStart": "Prêt à commencer ?"
   },
   "nav": {
     "home": "Accueil",
@@ -1385,8 +1386,14 @@
   "dashboard": {
     "title": "Tableau de bord",
     "welcome": "Bienvenue ! Voici un aperçu de votre compte.",
+    "greeting": "Bonjour",
+    "greetingSubtitle": "Voici ce qui se passe avec vos comptes aujourd'hui.",
+    "accountVerified": "Compte vérifié",
+    "lastLogin": "Dernière connexion",
     "balance": {
-      "label": "Solde total"
+      "label": "Solde total",
+      "allAccountsCombined": "Tous les comptes confondus",
+      "vsLastMonth": "vs. le mois dernier"
     },
     "buttons": {
       "addFunds": "Ajouter des fonds",
@@ -1394,6 +1401,10 @@
     },
     "quickActions": {
       "title": "Actions rapides",
+      "sendMoney": "Envoyer de l'argent",
+      "exchange": "Échange",
+      "cards": "Cartes",
+      "sendAgain": "Renvoyer",
       "items": {
         "openAccount": "Ouvrir un nouveau compte",
         "formCompany": "Créer une société",
@@ -1401,12 +1412,56 @@
         "viewStatements": "Voir les relevés"
       }
     },
+    "spending": {
+      "title": "Analytiques de dépenses",
+      "totalSpent": "Total dépensé",
+      "received": "Reçu",
+      "transactions": "Transactions",
+      "expenses": "Dépenses",
+      "income": "Revenus",
+      "filters": {
+        "thisWeek": "Cette semaine",
+        "lastWeek": "La semaine dernière",
+        "thisMonth": "Ce mois-ci"
+      }
+    },
+    "primaryAccount": {
+      "title": "Compte principal",
+      "iban": "IBAN",
+      "bicSwift": "BIC/SWIFT",
+      "currency": "Devise",
+      "copied": "Copié !"
+    },
+    "security": {
+      "title": "Compte protégé",
+      "subtitle": "2FA activé",
+      "scoreLabel": "Score de sécurité",
+      "scoreValue": "Excellent"
+    },
     "transactions": {
       "title": "Transactions récentes",
-      "viewAll": "Voir tout"
+      "subtitle": "Votre dernière activité",
+      "viewAll": "Voir tout",
+      "status": {
+        "completed": "Complété",
+        "processing": "En cours"
+      }
     },
     "applications": {
-      "title": "État des demandes"
+      "title": "État des demandes",
+      "statuses": {
+        "approved": "Votre demande a été approuvée",
+        "awaitingNotary": "En attente du certificat notarial",
+        "scheduledNextWeek": "Planifié pour la semaine prochaine"
+      }
+    },
+    "upgrade": {
+      "title": "Opulanz Pro",
+      "description": "Débloquez des fonctionnalités premium, des paiements mondiaux et une assistance prioritaire.",
+      "feature1": "Transactions illimitées",
+      "feature2": "Cartes virtuelles et physiques",
+      "feature3": "Analytiques avancées",
+      "cta": "Passer à Pro"
     },
     "services": {
       "title": "Nos services",
@@ -1958,6 +2013,43 @@
         "never": "Jamais",
         "back": "Retour",
         "backToList": "Retour à la liste"
+      }
+    }
+  },
+  "accountOpening": {
+    "company": {
+      "title": "Ouvrir un compte professionnel",
+      "description": "Complétez votre demande de compte professionnel en quelques étapes.",
+      "form": {
+        "companyInfo": "Informations sur l'entreprise"
+      },
+      "submitted": {
+        "message": "Votre demande est en cours d'examen. Vous recevrez une décision dans 2 à 3 jours ouvrables."
+      },
+      "approved": {
+        "message": "Félicitations ! Votre compte professionnel a été approuvé. Votre IBAN est prêt.",
+        "nextSteps": {
+          "multiUser": "Invitez des membres de l'équipe et configurez l'accès multi-utilisateurs.",
+          "accounting": "Connectez vos outils de comptabilité et de facturation.",
+          "corporateCards": "Commandez des cartes d'entreprise pour votre équipe.",
+          "fundAccount": "Alimentez votre compte pour commencer à effectuer des transactions."
+        },
+        "buttons": {
+          "dashboard": "Accéder au tableau de bord",
+          "downloadApp": "Télécharger l'application",
+          "startNew": "Démarrer une nouvelle demande"
+        }
+      }
+    },
+    "warmReferral": {
+      "handoff": {
+        "description": "En fonction de votre profil, nous recommandons d'ouvrir votre compte avec {partner}. Opulanz restera votre point de contact tout au long du processus.",
+        "step1": {
+          "description": "Votre profil a été associé à {partner}. Cliquez ci-dessous pour continuer."
+        },
+        "step2": {
+          "description": "Vous serez redirigé vers {partner} pour finaliser l'ouverture de votre compte."
+        }
       }
     }
   }

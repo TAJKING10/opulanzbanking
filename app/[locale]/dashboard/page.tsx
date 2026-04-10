@@ -28,14 +28,39 @@ import {
   Users,
   FileText,
   BarChart3,
+  AlertTriangle,
 } from "lucide-react";
+import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
+import { getCurrentUser, clearAuth } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
   const params = useParams();
   const locale = params.locale as string;
   const t = useTranslations("dashboard");
+  const router = useRouter();
   const [copiedIban, setCopiedIban] = React.useState(false);
   const [showBalance, setShowBalance] = React.useState(true);
+  const [showKyc, setShowKyc] = React.useState(false);
+  const [kycVerified, setKycVerified] = React.useState(false);
+  const [authUserId, setAuthUserId] = React.useState("dashboard-user-001");
+  const [kycType, setKycType] = React.useState<"individual" | "corporate">("individual");
+
+  React.useEffect(() => {
+    const user = getCurrentUser();
+    if (!user) {
+      router.replace(`/${locale}/login`);
+      return;
+    }
+    setAuthUserId(`user-${user.userId}`);
+    setKycType(user.accountType === "corporate" ? "corporate" : "individual");
+    setKycVerified(user.kycStatus === "verified");
+  }, [locale, router]);
+
+  function handleSignOut() {
+    clearAuth();
+    router.push(`/${locale}/login`);
+  }
 
   const handleCopyIban = () => {
     navigator.clipboard.writeText("FI91 1234 5678 9012 34");
@@ -176,8 +201,60 @@ export default function DashboardPage() {
             <Clock className="h-4 w-4" />
             {t("lastLogin")}: Today, 09:45 AM
           </div>
+          <button
+            onClick={handleSignOut}
+            className="px-3 py-1.5 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            Sign Out
+          </button>
         </div>
       </div>
+
+      {/* KYC Verification Banner */}
+      {!kycVerified && (
+        <div className="flex items-center justify-between gap-4 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <AlertTriangle className="h-5 w-5 text-amber-600" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-amber-900">Identity verification required</p>
+              <p className="text-xs text-amber-700">Complete KYC to unlock full account features and increase limits.</p>
+            </div>
+          </div>
+          <button
+            onClick={() => setShowKyc(true)}
+            className="flex-shrink-0 px-4 py-2 bg-[#b59354] text-white text-sm font-medium rounded-lg hover:bg-[#886844] transition-colors"
+          >
+            Verify Now
+          </button>
+        </div>
+      )}
+
+      {kycVerified && (
+        <div className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-xl px-5 py-4">
+          <div className="w-9 h-9 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <CheckCircle className="h-5 w-5 text-green-600" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-green-900">Identity verified</p>
+            <p className="text-xs text-green-700">Your account is fully verified and all features are unlocked.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Sumsub KYC Widget Modal */}
+      {showKyc && (
+        <SumsubKycWidget
+          userId={authUserId}
+          levelName={kycType === "corporate" ? "corporate_signup_kyc" : "individual_signup_kyc"}
+          onClose={() => setShowKyc(false)}
+          onComplete={() => {
+            setKycVerified(true);
+            setShowKyc(false);
+          }}
+        />
+      )}
 
       {/* Quick Stats - HIDDEN: Uncomment to show Income/Expenses/Pending/Invoices Due cards */}
       {/*

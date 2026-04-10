@@ -71,7 +71,13 @@
       "mcp__stitch__get_project",
       "mcp__stitch__get_screen",
       "WebFetch(domain:contribution.usercontent.google.com)",
-      "Bash(\"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/signup/page.tsx\")"
+      "Bash(\"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/signup/page.tsx\")",
+      "Bash(xargs grep:*)",
+      "Bash(grep -r \"narvi\\\\|Narvi\" /c/Users/Toufi/AndroidStudioProjects/azuree/backend/src --include=*.js)",
+      "Bash(cat \"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/admin/\\(protected\\)/layout.tsx\")",
+      "Bash(grep -E \"\\\\.\\(ts|js\\)$\")",
+      "Bash(npx tsc:*)",
+      "Bash(\"C:/Users/Toufi/AndroidStudioProjects/azuree/backend/.env\")"
     ],
     "deny": [],
     "ask": []

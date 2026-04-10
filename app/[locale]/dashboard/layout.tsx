@@ -37,7 +37,7 @@ const navigation = [
   { name: "Accounts", href: "/dashboard/accounts", icon: Wallet },
   { name: "Transactions", href: "/dashboard/transactions", icon: ArrowLeftRight },
   { name: "Cards", href: "/dashboard/cards", icon: CreditCard },
-  { name: "Invoices", href: "/dashboard/invoices", icon: FileText },
+  // { name: "Invoices", href: "/dashboard/invoices", icon: FileText },
   { name: "Send Money", href: "/dashboard/send", icon: Send },
   { name: "Exchange", href: "/dashboard/exchange", icon: RefreshCw },
   // { name: "Add Funds", href: "/dashboard/add-funds", icon: PiggyBank },

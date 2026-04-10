@@ -176,7 +176,7 @@ export default function SpvOfferingDetailPage() {
   }
 
   const config = statusConfig[property.status] || statusConfig.open;
-  const images = property.images?.length > 0
+  const images: string[] = (property.images && property.images.length > 0)
     ? property.images
     : ["https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=800&fit=crop"];
 

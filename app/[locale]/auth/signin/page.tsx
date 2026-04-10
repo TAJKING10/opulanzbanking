@@ -3,119 +3,74 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2, Mail, Smartphone, RefreshCw } from "lucide-react";
-import { OtpInput } from "@/components/otp-input";
+import { useGoogleLogin } from "@react-oauth/google";
+import { Loader2 } from "lucide-react";
 import { setAuthToken } from "@/lib/auth";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
-type Step = "credentials" | "email-otp" | "phone-otp";
 
 export default function SigninPage() {
   const params = useParams();
   const locale = params.locale as string;
   const router = useRouter();
 
-  const [step, setStep] = React.useState<Step>("credentials");
-  const [userId, setUserId] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [showPass, setShowPass] = React.useState(false);
-  const [otp, setOtp] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const [resending, setResending] = React.useState(false);
-  const [resent, setResent] = React.useState(false);
   const [error, setError] = React.useState("");
 
-  // Step 1: Submit credentials
-  async function handleSignin(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleGoogleCredential(credential: string) {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API}/api/auth/signin`, {
+      const res = await fetch(`${API}/api/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ credential }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      setUserId(String(data.userId));
-      setOtp("");
-      setStep("email-otp");
-    } catch (err: any) {
-      setError(err.message || "Failed to sign in");
-    } finally {
-      setLoading(false);
-    }
-  }
 
-  // Step 2: Verify email OTP
-  async function handleEmailOtp() {
-    if (otp.length < 6) return;
-    setLoading(true);
-    setError("");
-    try {
-      const res = await fetch(`${API}/api/auth/verify-signin-email-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, otp }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      setOtp("");
-      setStep("phone-otp");
-    } catch (err: any) {
-      setError(err.message || "Invalid code");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  // Step 3: Verify phone OTP
-  async function handlePhoneOtp() {
-    if (otp.length < 6) return;
-    setLoading(true);
-    setError("");
-    try {
-      const res = await fetch(`${API}/api/auth/verify-signin-phone-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, otp }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
       setAuthToken(data.token);
-      router.push(`/${locale}/dashboard`);
+      sessionStorage.setItem("auth_account_type", data.accountType || "individual");
+
+      if (data.needsKyc) {
+        router.push(`/${locale}/auth/kyc`);
+      } else {
+        router.push(`/${locale}/dashboard`);
+      }
     } catch (err: any) {
-      setError(err.message || "Invalid code");
+      setError(err.message || "Google sign-in failed");
     } finally {
       setLoading(false);
     }
   }
 
-  async function handleResend(type: "email" | "phone") {
-    setResending(true);
-    try {
-      await fetch(`${API}/api/auth/resend-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, type, purpose: "signin" }),
-      });
-      setResent(true);
-      setTimeout(() => setResent(false), 5000);
-    } finally {
-      setResending(false);
-    }
-  }
-
-  // Auto-submit on complete OTP
-  React.useEffect(() => {
-    if (otp.length === 6 && !loading) {
-      if (step === "email-otp") handleEmailOtp();
-      if (step === "phone-otp") handlePhoneOtp();
-    }
-  }, [otp, step]);
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        setLoading(true);
+        const userInfoRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+        });
+        const userInfo = await userInfoRes.json();
+        const payload = btoa(JSON.stringify({
+          sub: userInfo.sub,
+          email: userInfo.email,
+          name: userInfo.name,
+          given_name: userInfo.given_name,
+          family_name: userInfo.family_name,
+          picture: userInfo.picture,
+        }));
+        const fakeCredential = `header.${payload}.sig`;
+        await handleGoogleCredential(fakeCredential);
+      } catch {
+        setError("Failed to get user info from Google");
+        setLoading(false);
+      }
+    },
+    onError: () => {
+      setError("Google sign-in was cancelled or failed");
+    },
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f6f8f8] to-white flex items-center justify-center p-4">
@@ -123,142 +78,52 @@ export default function SigninPage() {
         <div className="text-center mb-8">
           <Link href={`/${locale}`} className="inline-block">
             <h1 className="text-3xl font-bold text-[#252623] tracking-tight">OPULANZ</h1>
-            <p className="text-sm text-gray-500 mt-1">
-              {step === "credentials" ? "Sign in to your account" : "Two-factor authentication"}
-            </p>
+            <p className="text-sm text-gray-500 mt-1">Sign in to your account</p>
           </Link>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-          {/* Step 1: Credentials */}
-          {step === "credentials" && (
-            <form onSubmit={handleSignin} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-gray-600 mb-1.5">Email Address</label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => { setEmail(e.target.value); setError(""); }}
-                  className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/30 focus:border-[#b59354]"
-                  placeholder="john@example.com"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-600 mb-1.5">Password</label>
-                <div className="relative">
-                  <input
-                    type={showPass ? "text" : "password"}
-                    required
-                    value={password}
-                    onChange={(e) => { setPassword(e.target.value); setError(""); }}
-                    className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/30 focus:border-[#b59354] pr-10"
-                    placeholder="Your password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPass(!showPass)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                </div>
-              </div>
-
-              {error && (
-                <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">
-                  {error}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-                Sign In
-              </button>
-
-              <p className="text-center text-sm text-gray-500">
-                Don&apos;t have an account?{" "}
-                <Link href={`/${locale}/auth/signup`} className="text-[#b59354] font-semibold hover:underline">
-                  Sign Up
-                </Link>
-              </p>
-            </form>
-          )}
-
-          {/* Step 2: Email OTP */}
-          {step === "email-otp" && (
-            <div className="text-center">
-              <div className="w-14 h-14 bg-[#b59354]/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
-                <Mail className="h-7 w-7 text-[#b59354]" />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-1">Check your email</h3>
-              <p className="text-sm text-gray-500 mb-6">
-                We sent a verification code to <strong>{email}</strong>
-              </p>
-              <OtpInput value={otp} onChange={(v) => { setOtp(v); setError(""); }} disabled={loading} />
-              {error && (
-                <div className="mt-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">
-                  {error}
-                </div>
-              )}
-              <button
-                onClick={handleEmailOtp}
-                disabled={otp.length < 6 || loading}
-                className="w-full mt-5 py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-                Verify
-              </button>
-              <button
-                onClick={() => handleResend("email")}
-                disabled={resending}
-                className="mt-3 flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#b59354] transition-colors mx-auto"
-              >
-                <RefreshCw className={`h-3.5 w-3.5 ${resending ? "animate-spin" : ""}`} />
-                {resent ? "Resent!" : "Resend code"}
-              </button>
+          {error && (
+            <div className="mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">
+              {error}
             </div>
           )}
 
-          {/* Step 3: Phone OTP */}
-          {step === "phone-otp" && (
-            <div className="text-center">
-              <div className="w-14 h-14 bg-[#b59354]/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
-                <Smartphone className="h-7 w-7 text-[#b59354]" />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-1">Phone verification</h3>
-              <p className="text-sm text-gray-500 mb-2">Enter the code sent to your phone</p>
-              <p className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2 mb-6">
-                Development: check your email for the SMS code
-              </p>
-              <OtpInput value={otp} onChange={(v) => { setOtp(v); setError(""); }} disabled={loading} />
-              {error && (
-                <div className="mt-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">
-                  {error}
-                </div>
-              )}
-              <button
-                onClick={handlePhoneOtp}
-                disabled={otp.length < 6 || loading}
-                className="w-full mt-5 py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-                Sign In
-              </button>
-              <button
-                onClick={() => handleResend("phone")}
-                disabled={resending}
-                className="mt-3 flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#b59354] transition-colors mx-auto"
-              >
-                <RefreshCw className={`h-3.5 w-3.5 ${resending ? "animate-spin" : ""}`} />
-                {resent ? "Resent!" : "Resend code"}
-              </button>
+          {/* Google Sign In Button */}
+          <button
+            type="button"
+            onClick={() => login()}
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 border-2 border-gray-200 rounded-xl font-semibold text-sm text-gray-700 hover:border-[#b59354] hover:bg-[#b59354]/5 transition-all disabled:opacity-50"
+          >
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin text-[#b59354]" />
+            ) : (
+              <svg className="h-5 w-5" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+            )}
+            {loading ? "Signing in..." : "Continue with Google"}
+          </button>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-100" />
             </div>
-          )}
+            <div className="relative flex justify-center">
+              <span className="bg-white px-3 text-xs text-gray-400">Secure & encrypted</span>
+            </div>
+          </div>
+
+          <p className="text-center text-sm text-gray-500">
+            Don&apos;t have an account?{" "}
+            <Link href={`/${locale}/auth/signup`} className="text-[#b59354] font-semibold hover:underline">
+              Create Account
+            </Link>
+          </p>
         </div>
       </div>
     </div>

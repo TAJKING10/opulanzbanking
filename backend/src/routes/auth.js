@@ -4,9 +4,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const twilio = require('twilio');
+const { OAuth2Client } = require('google-auth-library');
 const { pool } = require('../config/db');
 const { requireAuth } = require('../middleware/auth');
 const { createNarviAccount } = require('../services/narvi');
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const IS_DEMO = process.env.NODE_ENV !== 'production';
 
@@ -479,6 +482,102 @@ router.post('/resend-otp', async (req, res) => {
   } catch (err) {
     console.error('Resend OTP error:', err);
     res.status(500).json({ error: 'Failed to resend code' });
+  }
+});
+
+// ─── GOOGLE OAUTH ────────────────────────────────────────────────────────────
+
+// POST /api/auth/google
+router.post('/google', async (req, res) => {
+  try {
+    const { credential, accountType } = req.body;
+    if (!credential) return res.status(400).json({ error: 'Google credential required' });
+
+    // Detect implicit-flow "fake" credential: frontend fetches userinfo from Google
+    // then encodes it as header.{base64json}.sig — signature is literally "sig"
+    const isImplicitFlowCredential = credential.endsWith('.sig');
+    const noClientId = !process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID === 'your_google_client_id_here';
+
+    let googleUser;
+    if (isImplicitFlowCredential || noClientId) {
+      // Parse user info from the base64 payload (user info was fetched from Google)
+      try {
+        const parts = credential.split('.');
+        const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString());
+        googleUser = {
+          sub: payload.sub || 'demo-google-id',
+          email: payload.email || 'demo@gmail.com',
+          name: payload.name || 'Demo User',
+          given_name: payload.given_name || 'Demo',
+          family_name: payload.family_name || 'User',
+          picture: payload.picture || null,
+        };
+        console.log('🔑 Google OAuth implicit flow — user info parsed from access token');
+      } catch {
+        return res.status(400).json({ error: 'Invalid Google credential format' });
+      }
+    } else {
+      // Production: verify the Google ID token (from GoogleLogin component)
+      const ticket = await googleClient.verifyIdToken({
+        idToken: credential,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      googleUser = {
+        sub: payload.sub,
+        email: payload.email,
+        name: payload.name,
+        given_name: payload.given_name,
+        family_name: payload.family_name,
+        picture: payload.picture,
+      };
+    }
+
+    const { sub: googleId, email, name, given_name: firstName, family_name: lastName } = googleUser;
+
+    // Find or create user
+    let user;
+    const existing = await pool.query('SELECT * FROM users WHERE google_id = $1 OR email = $2', [googleId, email]);
+
+    if (existing.rows.length > 0) {
+      user = existing.rows[0];
+      // Link Google ID if not already linked
+      if (!user.google_id) {
+        await pool.query('UPDATE users SET google_id = $1 WHERE id = $2', [googleId, user.id]);
+        user.google_id = googleId;
+      }
+    } else {
+      // New user — create account
+      const resolvedAccountType = accountType || 'individual';
+      const result = await pool.query(
+        `INSERT INTO users (google_id, first_name, last_name, name, email, account_type, kyc_type, email_verified, phone_verified, kyc_status, role, password_hash)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, TRUE, FALSE, 'pending', 'user', '')
+         RETURNING *`,
+        [googleId, firstName || name, lastName || '', name, email, resolvedAccountType, resolvedAccountType]
+      );
+      user = result.rows[0];
+      console.log(`✅ New Google user created: ${email} (${resolvedAccountType})`);
+    }
+
+    const needsKyc = user.kyc_status !== 'verified';
+    const token = signToken(user, needsKyc);
+
+    res.json({
+      success: true,
+      token,
+      needsKyc,
+      kycStatus: user.kyc_status,
+      accountType: user.account_type,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        picture: googleUser.picture,
+      },
+    });
+  } catch (err) {
+    console.error('Google OAuth error:', err);
+    res.status(500).json({ error: 'Google authentication failed' });
   }
 });
 

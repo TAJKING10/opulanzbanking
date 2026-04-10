@@ -2016,6 +2016,119 @@
       }
     }
   },
+  "supportPage": {
+    "hero": {
+      "title": "How Can We Help You?",
+      "subtitle": "Our support team is here for you. Reach out by phone, email, or live chat."
+    },
+    "contactMethods": {
+      "title": "Contact Us",
+      "description": "Choose the support channel that works best for you.",
+      "phone": {
+        "title": "Phone Support",
+        "description": "Speak directly with one of our support specialists.",
+        "number": "+352 28 79 76 26",
+        "hours": "Mon–Fri, 9:00–18:00 CET"
+      },
+      "email": {
+        "title": "Email Support",
+        "description": "Send us a message and we'll get back to you promptly.",
+        "address": "support@opulanz.com",
+        "response": "Response within 24 hours"
+      },
+      "chat": {
+        "title": "Live Chat",
+        "description": "Chat with our team in real time for immediate assistance.",
+        "button": "Start Chat",
+        "availability": "Available during business hours"
+      }
+    },
+    "contactForm": {
+      "title": "Send Us a Message",
+      "description": "Fill in the form below and we will respond as soon as possible.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone Number (optional)",
+      "subject": "Subject",
+      "selectSubject": "Select a subject",
+      "subjects": {
+        "account": "Account Questions",
+        "technical": "Technical Support",
+        "company": "Company Formation",
+        "billing": "Billing & Payments",
+        "other": "Other"
+      },
+      "message": "Message",
+      "messagePlaceholder": "Describe your question or issue in detail...",
+      "submit": "Send Message"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "description": "Quick answers to the most common questions.",
+      "questions": {
+        "openAccount": {
+          "question": "How long does it take to open an account?",
+          "answer": "Individual accounts are typically approved within 24–48 hours. Business accounts take 3–5 business days depending on the complexity of the application."
+        },
+        "documents": {
+          "question": "What documents do I need?",
+          "answer": "For individuals: a valid government-issued ID, proof of address, and a selfie. For businesses: company registration documents, UBO declaration, and director IDs."
+        },
+        "fees": {
+          "question": "What are the monthly fees?",
+          "answer": "Individual accounts start at €10/month. Business accounts start at €25/month. Full fee schedules are available in your account settings."
+        },
+        "currencies": {
+          "question": "Which currencies are supported?",
+          "answer": "We support EUR, USD, GBP, and CHF. Each account comes with a dedicated multi-currency IBAN for seamless international payments."
+        },
+        "contact": {
+          "question": "How do I contact my account manager?",
+          "answer": "Once your account is approved, you will be assigned a dedicated account manager reachable by email or phone during business hours."
+        }
+      }
+    },
+    "resources": {
+      "title": "Additional Resources",
+      "description": "Everything you need to get the most out of Opulanz.",
+      "documentation": {
+        "title": "Documentation",
+        "description": "Detailed guides and API references to help you integrate and use our platform.",
+        "button": "Browse Docs"
+      },
+      "helpCenter": {
+        "title": "Help Center",
+        "description": "Step-by-step articles and tutorials covering all features and services.",
+        "button": "Visit Help Center"
+      },
+      "status": {
+        "title": "Service Status",
+        "description": "Check the real-time status of all Opulanz services and scheduled maintenance.",
+        "button": "View Status"
+      }
+    },
+    "offices": {
+      "title": "Our Offices",
+      "description": "Visit us in Luxembourg or France.",
+      "luxembourg": {
+        "title": "Luxembourg",
+        "address": "1 Avenue de la Liberté",
+        "city": "L-1931 Luxembourg",
+        "country": "Luxembourg",
+        "phone": "Phone",
+        "email": "Email"
+      },
+      "france": {
+        "title": "France",
+        "address": "66 Avenue des Champs-Élysées",
+        "city": "75008 Paris",
+        "country": "France",
+        "phone": "Phone",
+        "email": "Email"
+      }
+    }
+  },
   "accountOpening": {
     "company": {
       "title": "Open a Business Account",

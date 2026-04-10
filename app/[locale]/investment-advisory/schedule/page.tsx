@@ -114,7 +114,7 @@ export default function ScheduleInvestmentMeetingPage() {
       const endDate = new Date(bookingData.eventEndTime);
 
       // Save appointment to database
-      const appointmentResponse = await fetch('http://localhost:5000/api/appointments', {
+      const appointmentResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/`appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -139,7 +139,7 @@ export default function ScheduleInvestmentMeetingPage() {
       }
 
       // Send email notifications
-      const notificationResponse = await fetch('http://localhost:5000/api/notifications/appointment', {
+      const notificationResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/`notifications/appointment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

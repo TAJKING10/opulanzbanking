@@ -85,7 +85,13 @@
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f''''Accounts: {len\\(d.get\\(\"\"data\"\",d.get\\(\"\"accounts\"\",d if isinstance\\(d,list\\) else []\\)\\)\\)}''''\\); [print\\(f''''  - {a[\"\"number\"\"]} \\({a[\"\"currency\"\"]}\\) balance={a.get\\(\"\"balance\"\",\"\"N/A\"\"\\)}''''\\) for a in \\(d.get\\(''''data'''',d.get\\(''''accounts'''',d if isinstance\\(d,list\\) else []\\)\\)\\)]\")",
       "Bash(npm list:*)",
       "Bash(npx kill-port:*)",
-      "Bash(curl.exe -s -X POST http://localhost:5000/api/auth/google -H \"Content-Type: application/json\" -d \"{\\\\\"credential\\\\\":\\\\\"header.eyJzdWIiOiJ0ZXN0MTIzIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwibmFtZSI6IlRlc3QgVXNlciIsImdpdmVuX25hbWUiOiJUZXN0IiwiZmFtaWx5X25hbWUiOiJVc2VyIn0.sig\\\\\"}\" 2>&1)"
+      "Bash(curl.exe -s -X POST http://localhost:5000/api/auth/google -H \"Content-Type: application/json\" -d \"{\\\\\"credential\\\\\":\\\\\"header.eyJzdWIiOiJ0ZXN0MTIzIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwibmFtZSI6IlRlc3QgVXNlciIsImdpdmVuX25hbWUiOiJUZXN0IiwiZmFtaWx5X25hbWUiOiJVc2VyIn0.sig\\\\\"}\" 2>&1)",
+      "Bash(wc:*)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d,indent=2\\)[:1000]\\)\")",
+      "Bash(grep -rn \"t\\(''''\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/invoicing-accounting --include=\"*.tsx\")",
+      "Bash(grep -rn \"t\\(''''\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/invoicing-accounting/confirmation --include=\"*.tsx\")",
+      "Bash(grep -rn \"t\\(''''\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/legal --include=\"*.tsx\")",
+      "Bash(az --version)"
     ],
     "deny": [],
     "ask": []

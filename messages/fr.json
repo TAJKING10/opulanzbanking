@@ -12,7 +12,9 @@
     "loading": "Chargement...",
     "error": "Une erreur s'est produite",
     "required": "Requis",
-    "explore": "Explorer"
+    "explore": "Explorer",
+    "readyToStart": "Prêt à commencer ?",
+    "and": "et"
   },
   "nav": {
     "home": "Accueil",
@@ -278,7 +280,74 @@
     "regulated": "Réglementé par ACPR & AMF (FR)",
     "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
     "mifid": "Services d'investissement soumis aux réglementations MiFID II",
-    "idd": "Distribution d'assurance soumise aux exigences IDD"
+    "idd": "Distribution d'assurance soumise aux exigences IDD",
+    "terms": {
+      "heroTitle": "Conditions d'utilisation",
+      "heroSubtitle": "Informations légales régissant l'utilisation des services Opulanz",
+      "companyIdentification": {
+        "title": "Identification de la société",
+        "companyName": "Raison sociale",
+        "companyNameValue": "Advensys Luxembourg S.A. (Opulanz)",
+        "capital": "Capital social",
+        "capitalValue": "31 000 €",
+        "address": "Adresse du siège",
+        "addressValue": "2 Place de Paris, L-2314 Luxembourg",
+        "phone": "Téléphone",
+        "phoneValue": "+352 27 99 53 50",
+        "email": "E-mail",
+        "emailValue": "contact@opulanz.com",
+        "website": "Site web",
+        "websiteValue": "www.opulanz.com",
+        "siret": "SIRET",
+        "siretValue": "B 244 955",
+        "ape": "Code APE",
+        "apeValue": "6619B",
+        "vatNumber": "Numéro de TVA",
+        "vatNumberValue": "LU35712439",
+        "registration": "Immatriculation",
+        "registrationValue": "Registre de Commerce de Luxembourg (RCS)"
+      },
+      "servicesProvided": {
+        "title": "Services fournis",
+        "investment": "Conseil en investissement (conforme MiFID II)",
+        "insurance": "Courtage d'assurance (conforme IDD)",
+        "banking": "Services de compte de paiement et création d'entreprise"
+      },
+      "professionalInsurance": {
+        "title": "Assurance professionnelle",
+        "description": "Opulanz dispose d'une assurance responsabilité civile professionnelle conformément aux exigences réglementaires luxembourgeoises, couvrant les activités de conseil en investissement et de distribution d'assurance."
+      },
+      "contactInfo": {
+        "title": "Coordonnées",
+        "name": "Représentant légal",
+        "nameValue": "Service juridique Opulanz"
+      },
+      "intellectualProperty": {
+        "title": "Propriété intellectuelle",
+        "trademark": "Le nom Opulanz, le logo et toutes les marques associées sont des marques déposées d'Advensys Luxembourg S.A. Toute utilisation non autorisée est strictement interdite.",
+        "ownership": "Tout le contenu, les logiciels et les matériaux de cette plateforme sont la propriété exclusive d'Advensys Luxembourg S.A. et sont protégés par les lois applicables en matière de propriété intellectuelle."
+      },
+      "generalConditions": {
+        "title": "Conditions générales",
+        "acceptance": "En utilisant les services Opulanz, vous acceptez l'intégralité des présentes conditions. Si vous n'êtes pas d'accord, veuillez cesser immédiatement l'utilisation de nos services.",
+        "disclaimer": "Opulanz fournit ses services « en l'état ». Bien que nous prenions toutes les mesures raisonnables pour garantir l'exactitude, nous ne pouvons garantir l'exhaustivité ou l'actualité des informations fournies.",
+        "modifications": "Opulanz se réserve le droit de modifier ces conditions à tout moment. La poursuite de l'utilisation de nos services après notification des modifications constitue une acceptation des conditions mises à jour.",
+        "jurisdiction": "Ces conditions sont régies par le droit luxembourgeois. Tout litige découlant de l'utilisation de nos services sera soumis à la compétence exclusive des tribunaux luxembourgeois."
+      },
+      "designHosting": {
+        "title": "Conception et hébergement",
+        "design": "Conception du site",
+        "designValue": "Advensys Luxembourg S.A.",
+        "development": "Développement",
+        "developmentValue": "Advensys Luxembourg S.A.",
+        "hosting": "Hébergement",
+        "hostingValue": "Microsoft Azure (Région UE)"
+      },
+      "footer": {
+        "disclaimer": "Ce document constitue les conditions légales régissant l'utilisation de la plateforme Opulanz. Opulanz est réglementée par la CSSF (Luxembourg) et respecte toutes les réglementations financières européennes applicables.",
+        "lastUpdated": "Dernière mise à jour : Avril 2026"
+      }
+    }
   },
   "footer": {
     "sections": {
@@ -1959,6 +2028,189 @@
         "back": "Retour",
         "backToList": "Retour à la liste"
       }
+    }
+  },
+  "accounting": {
+    "onboarding": {
+      "title": "Comptabilité et facturation — Intégration",
+      "subtitle": "Complétez les étapes ci-dessous pour configurer votre service comptable"
+    },
+    "steps": {
+      "company": {
+        "label": "Entreprise",
+        "description": "Informations de base"
+      },
+      "contacts": {
+        "label": "Contacts",
+        "description": "Contacts et adresses"
+      },
+      "activity": {
+        "label": "Activité",
+        "description": "Activité et échelle"
+      },
+      "volume": {
+        "label": "Volume",
+        "description": "Volume de facturation"
+      },
+      "documents": {
+        "label": "Documents",
+        "description": "Télécharger les documents"
+      },
+      "review": {
+        "label": "Révision",
+        "description": "Vérifier et soumettre"
+      }
+    },
+    "companyBasics": {
+      "title": "Informations sur l'entreprise",
+      "subtitle": "Parlez-nous de votre entreprise",
+      "fields": {
+        "companyType": "Type d'entreprise",
+        "companyTypeOther": "Préciser le type d'entreprise",
+        "countryOfIncorporation": "Pays d'immatriculation",
+        "dateOfIncorporation": "Date de création",
+        "shareCapital": "Capital social (€)",
+        "legalName": "Raison sociale",
+        "tradeName": "Nom commercial (optionnel)",
+        "registrationNumber": "Numéro d'immatriculation",
+        "vatNumber": "Numéro de TVA (optionnel)"
+      },
+      "placeholders": {
+        "companyType": "Sélectionner le type",
+        "companyTypeOther": "ex. Entreprise individuelle",
+        "country": "Sélectionner un pays",
+        "date": "JJ/MM/AAAA",
+        "legalName": "ex. Acme Holdings S.A.",
+        "tradeName": "ex. Acme",
+        "registrationNumber": "ex. B123456",
+        "vatNumber": "ex. LU12345678"
+      },
+      "hints": {
+        "tradeName": "Le nom commercial utilisé publiquement, s'il diffère de la raison sociale",
+        "registrationNumber": "Votre numéro d'immatriculation RCS officiel",
+        "vatNumber": "Votre numéro d'identification TVA si vous êtes assujetti à la TVA"
+      }
+    },
+    "contactsAddresses": {
+      "title": "Contacts et adresses",
+      "subtitle": "Fournissez votre adresse enregistrée et les contacts clés",
+      "registeredAddress": "Adresse du siège social",
+      "primaryContact": "Contact principal",
+      "accountingContact": "Contact comptabilité",
+      "addAccountingContact": "Ajouter un contact comptabilité",
+      "sameAsRegistered": "Identique à l'adresse du siège",
+      "fields": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "street": "Adresse",
+        "city": "Ville",
+        "postalCode": "Code postal",
+        "country": "Pays"
+      },
+      "placeholders": {
+        "firstName": "Jean",
+        "lastName": "Dupont",
+        "email": "jean@entreprise.com",
+        "phone": "+352 123 456 789",
+        "street": "1 Rue de la Gare",
+        "city": "Luxembourg",
+        "postalCode": "L-1611",
+        "country": "Sélectionner un pays"
+      }
+    },
+    "activityScale": {
+      "title": "Activité commerciale",
+      "subtitle": "Aidez-nous à comprendre l'échelle de vos opérations",
+      "fields": {
+        "businessActivity": "Activité principale",
+        "turnoverLastFY": "Chiffre d'affaires dernier exercice (€)",
+        "turnoverCurrentFY": "CA prévisionnel exercice en cours (€)",
+        "employees": "Nombre d'employés"
+      },
+      "placeholders": {
+        "businessActivity": "ex. Développement logiciel et conseil"
+      },
+      "hints": {
+        "turnoverLastFY": "Chiffre d'affaires total de l'exercice précédent",
+        "turnoverCurrentFY": "Votre chiffre d'affaires prévisionnel pour l'année en cours",
+        "employees": "Équivalents temps plein"
+      }
+    },
+    "billingVolume": {
+      "title": "Volume de facturation",
+      "subtitle": "Estimez votre volume de facturation mensuel",
+      "fields": {
+        "salesInvoices": "Factures de vente par mois",
+        "purchaseInvoices": "Factures d'achat par mois",
+        "payrollNeeded": "Avez-vous besoin de services de paie ?",
+        "payrollEmployees": "Nombre d'employés sur la paie",
+        "multiCurrency": "Facturation multi-devises ?",
+        "selectCurrencies": "Sélectionner les devises"
+      },
+      "hints": {
+        "salesInvoices": "Nombre approximatif de factures émises aux clients par mois",
+        "purchaseInvoices": "Nombre approximatif de factures fournisseurs reçues par mois"
+      }
+    },
+    "documents": {
+      "title": "Documents justificatifs",
+      "subtitle": "Téléchargez les documents d'entreprise requis",
+      "types": {
+        "incorporation": "Certificat d'immatriculation",
+        "articles": "Statuts de la société",
+        "directorId": "Pièce d'identité du dirigeant",
+        "vat": "Certificat TVA (si applicable)"
+      },
+      "hints": {
+        "incorporation": "Certificat officiel du registre des sociétés",
+        "articles": "Mémorandum et statuts ou équivalent",
+        "directorId": "Pièce d'identité avec photo valide du dirigeant",
+        "vat": "Certificat d'immatriculation TVA si votre société est assujettie"
+      },
+      "note": {
+        "title": "Formats acceptés",
+        "text": "PDF, JPG, PNG — max 10 Mo par fichier"
+      }
+    },
+    "review": {
+      "title": "Vérification et envoi",
+      "subtitle": "Veuillez vérifier vos informations avant de soumettre",
+      "summary": "Récapitulatif",
+      "sections": {
+        "company": "Détails de l'entreprise",
+        "contact": "Contacts et adresse",
+        "activity": "Activité commerciale",
+        "volume": "Volume de facturation",
+        "teamSize": "Effectif",
+        "documents": "Documents"
+      },
+      "incorporated": "Créée le",
+      "lastFY": "CA dernier exercice",
+      "projected": "CA prévisionnel",
+      "employees": "Employés",
+      "fteEmployees": "ETP",
+      "sales": "Factures vente / mois",
+      "purchases": "Factures achat / mois",
+      "payroll": "Paie requise",
+      "multiCurrency": "Multi-devises",
+      "invoices": "factures",
+      "documentsUploaded": "documents téléchargés",
+      "acceptConsent": "J'accepte",
+      "consent": {
+        "title": "Conditions et consentement",
+        "text": "Je confirme l'exactitude des informations et autorise Opulanz à traiter mes données",
+        "label": "J'accepte les",
+        "termsOfService": "Conditions d'utilisation",
+        "privacyPolicy": "Politique de confidentialité",
+        "required": "Vous devez accepter les conditions pour continuer"
+      },
+      "gdpr": {
+        "title": "Protection des données",
+        "text": "Vos données sont traitées conformément au RGPD. Nous les utiliserons uniquement pour fournir des services comptables."
+      },
+      "submit": "Soumettre la demande"
     }
   }
 }

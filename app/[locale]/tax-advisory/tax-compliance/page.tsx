@@ -197,7 +197,7 @@ Contact: opulanz.banking@gmail.com
     try {
       const startDate = new Date(bookingData.eventStartTime);
 
-      await fetch('http://localhost:5000/api/appointments', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/`appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -209,7 +209,7 @@ Contact: opulanz.banking@gmail.com
         })
       });
 
-      await fetch('http://localhost:5000/api/notifications/appointment', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/`notifications/appointment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

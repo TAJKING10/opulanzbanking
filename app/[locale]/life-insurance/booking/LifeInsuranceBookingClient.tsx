@@ -237,7 +237,7 @@ export default function LifeInsuranceBookingClient({ params: { locale } }: { par
       };
 
       // Save booking to database
-      const response = await fetch('http://localhost:5000/api/life-insurance-bookings', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/`life-insurance-bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(completeBookingData),

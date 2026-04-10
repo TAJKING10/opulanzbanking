@@ -13,7 +13,8 @@
     "error": "An error occurred",
     "required": "Required",
     "explore": "Explore",
-    "readyToStart": "Ready to get started?"
+    "readyToStart": "Ready to get started?",
+    "and": "and"
   },
   "nav": {
     "home": "Home",
@@ -2014,6 +2015,174 @@
         "back": "Back",
         "backToList": "Back to list"
       }
+    }
+  },
+  "accounting": {
+    "onboarding": {
+      "title": "Accounting & Invoicing Onboarding",
+      "subtitle": "Set up your accounting profile in a few simple steps."
+    },
+    "steps": {
+      "company":   { "label": "Company Basics",       "description": "Legal identity" },
+      "activity":  { "label": "Activity & Scale",     "description": "Business scope" },
+      "contacts":  { "label": "Contacts & Addresses", "description": "People & locations" },
+      "volume":    { "label": "Billing Volume",       "description": "Invoicing needs" },
+      "documents": { "label": "Documents",            "description": "Upload files" },
+      "review":    { "label": "Review & Submit",      "description": "Confirm & send" }
+    },
+    "companyBasics": {
+      "title": "Company Basics",
+      "subtitle": "Tell us about your company's legal identity and incorporation details.",
+      "fields": {
+        "companyType":       "Company Type",
+        "companyTypeOther":  "Please specify",
+        "countryOfIncorporation": "Country of Incorporation",
+        "dateOfIncorporation":    "Date of Incorporation",
+        "shareCapital":      "Share Capital",
+        "legalName":         "Legal Name",
+        "tradeName":         "Trade Name",
+        "registrationNumber":"Registration Number",
+        "vatNumber":         "VAT Number"
+      },
+      "placeholders": {
+        "companyType":       "Select company type",
+        "companyTypeOther":  "Describe your company type",
+        "country":           "Select country",
+        "date":              "YYYY-MM-DD",
+        "legalName":         "e.g. Acme Holdings S.A.R.L.",
+        "tradeName":         "e.g. Acme",
+        "registrationNumber":"e.g. B123456",
+        "vatNumber":         "e.g. LU12345678"
+      },
+      "hints": {
+        "tradeName":         "Leave blank if the same as the legal name.",
+        "registrationNumber":"As shown on your certificate of incorporation.",
+        "vatNumber":         "Optional — enter if your company is VAT-registered."
+      }
+    },
+    "activityScale": {
+      "title": "Activity & Scale",
+      "subtitle": "Help us understand the size and nature of your business operations.",
+      "fields": {
+        "businessActivity":   "Business Activity",
+        "turnoverLastFY":     "Turnover – Last Financial Year",
+        "turnoverCurrentFY":  "Turnover – Current Financial Year (projected)",
+        "employees":          "Number of Employees (FTE)"
+      },
+      "placeholders": {
+        "businessActivity":   "Describe your main business activity…"
+      },
+      "hints": {
+        "turnoverLastFY":    "Enter 0 if the company was incorporated this year.",
+        "turnoverCurrentFY": "Projected figure is acceptable.",
+        "employees":         "Full-time equivalents."
+      }
+    },
+    "contactsAddresses": {
+      "title": "Contacts & Addresses",
+      "subtitle": "Provide your registered address, operating address, and key contacts.",
+      "registeredAddress":   "Registered Address",
+      "operatingAddress":    "Operating Address",
+      "sameAsRegistered":    "Same as registered address",
+      "primaryContact":      "Primary Contact",
+      "accountingContact":   "Accounting Contact",
+      "addAccountingContact":"Add a separate accounting contact",
+      "fields": {
+        "street":    "Street Address",
+        "city":      "City",
+        "postal":    "Postal Code",
+        "country":   "Country",
+        "firstName": "First Name",
+        "lastName":  "Last Name",
+        "role":      "Role / Title",
+        "email":     "Email Address",
+        "phone":     "Phone Number"
+      },
+      "placeholders": {
+        "street":    "123 Main Street",
+        "city":      "Luxembourg",
+        "postal":    "L-1234",
+        "country":   "Select country",
+        "firstName": "First name",
+        "lastName":  "Last name",
+        "role":      "e.g. CEO, CFO",
+        "email":     "name@company.com",
+        "phone":     "+352 123 456 789"
+      }
+    },
+    "billingVolume": {
+      "title": "Billing Volume",
+      "subtitle": "Tell us about your monthly invoicing volumes and payroll needs.",
+      "fields": {
+        "salesInvoices":    "Sales Invoices per Month",
+        "purchaseInvoices": "Purchase Invoices per Month",
+        "payrollNeeded":    "Do you need payroll processing?",
+        "payrollEmployees": "Number of employees on payroll",
+        "multiCurrency":    "Multi-currency invoicing",
+        "selectCurrencies": "Select currencies"
+      },
+      "hints": {
+        "salesInvoices":    "Estimated number of invoices you issue each month.",
+        "purchaseInvoices": "Estimated number of supplier invoices you receive each month."
+      }
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Upload the required documents to complete your accounting profile.",
+      "types": {
+        "incorporation": "Certificate of Incorporation",
+        "articles":      "Articles of Association",
+        "directorId":    "Director ID / Passport",
+        "vat":           "VAT Registration Certificate"
+      },
+      "hints": {
+        "incorporation": "Official document confirming company registration.",
+        "articles":      "Signed and up-to-date version.",
+        "directorId":    "Valid government-issued ID for each director.",
+        "vat":           "Required only if VAT-registered."
+      },
+      "note": {
+        "title": "Document Requirements",
+        "text":  "Accepted formats: PDF, JPG, PNG, DOCX. Maximum file size: 10 MB per document. All documents must be valid and legible."
+      }
+    },
+    "review": {
+      "title": "Review & Submit",
+      "subtitle": "Please review your information carefully before submitting.",
+      "summary": "Application Summary",
+      "sections": {
+        "company":  "Company Details",
+        "activity": "Activity & Scale",
+        "contact":  "Contacts & Addresses",
+        "volume":   "Billing Volume",
+        "teamSize": "Team Size",
+        "documents":"Documents"
+      },
+      "incorporated":      "Incorporated",
+      "lastFY":            "Last FY turnover",
+      "projected":         "Projected turnover",
+      "fteEmployees":      "FTE employees",
+      "employees":         "employees",
+      "sales":             "Sales invoices / month",
+      "purchases":         "Purchase invoices / month",
+      "payroll":           "Payroll",
+      "multiCurrency":     "Multi-currency",
+      "invoices":          "invoices",
+      "documentsUploaded": "documents uploaded",
+      "consent": {
+        "title":          "Data Processing Consent",
+        "text":           "I consent to Opulanz processing my company data for accounting and invoicing services.",
+        "label":          "I agree to the",
+        "termsOfService": "Terms of Service",
+        "privacyPolicy":  "Privacy Policy",
+        "required":       "You must accept the terms to proceed."
+      },
+      "acceptConsent": "I accept the terms and consent to data processing.",
+      "gdpr": {
+        "title": "GDPR Notice",
+        "text":  "Your data is processed in accordance with EU GDPR. You may request access, rectification, or deletion at any time by contacting privacy@opulanz.com."
+      },
+      "submit": "Submit Application"
     }
   },
   "supportPage": {

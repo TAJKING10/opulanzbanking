@@ -13,7 +13,8 @@
     "error": "Une erreur s'est produite",
     "required": "Requis",
     "explore": "Explorer",
-    "readyToStart": "Prêt à commencer ?"
+    "readyToStart": "Prêt à commencer ?",
+    "and": "et"
   },
   "nav": {
     "home": "Accueil",
@@ -2014,6 +2015,174 @@
         "back": "Retour",
         "backToList": "Retour à la liste"
       }
+    }
+  },
+  "accounting": {
+    "onboarding": {
+      "title": "Comptabilité & Facturation – Inscription",
+      "subtitle": "Configurez votre profil comptable en quelques étapes simples."
+    },
+    "steps": {
+      "company":   { "label": "Informations de base",    "description": "Identité légale" },
+      "activity":  { "label": "Activité & Échelle",      "description": "Périmètre d'activité" },
+      "contacts":  { "label": "Contacts & Adresses",     "description": "Personnes & lieux" },
+      "volume":    { "label": "Volume de facturation",   "description": "Besoins en facturation" },
+      "documents": { "label": "Documents",               "description": "Téléversement" },
+      "review":    { "label": "Révision & Soumission",   "description": "Confirmer & envoyer" }
+    },
+    "companyBasics": {
+      "title": "Informations de base",
+      "subtitle": "Renseignez l'identité juridique et les détails de constitution de votre société.",
+      "fields": {
+        "companyType":            "Forme juridique",
+        "companyTypeOther":       "Précisez",
+        "countryOfIncorporation": "Pays d'immatriculation",
+        "dateOfIncorporation":    "Date de constitution",
+        "shareCapital":           "Capital social",
+        "legalName":              "Dénomination sociale",
+        "tradeName":              "Nom commercial",
+        "registrationNumber":     "Numéro d'immatriculation",
+        "vatNumber":              "Numéro de TVA"
+      },
+      "placeholders": {
+        "companyType":        "Sélectionner la forme juridique",
+        "companyTypeOther":   "Décrivez votre forme juridique",
+        "country":            "Sélectionner le pays",
+        "date":               "AAAA-MM-JJ",
+        "legalName":          "ex. Acme Holdings S.A.R.L.",
+        "tradeName":          "ex. Acme",
+        "registrationNumber": "ex. B123456",
+        "vatNumber":          "ex. LU12345678"
+      },
+      "hints": {
+        "tradeName":          "Laissez vide si identique à la dénomination sociale.",
+        "registrationNumber": "Tel qu'indiqué sur votre certificat d'immatriculation.",
+        "vatNumber":          "Optionnel — à renseigner si votre société est assujettie à la TVA."
+      }
+    },
+    "activityScale": {
+      "title": "Activité & Échelle",
+      "subtitle": "Aidez-nous à comprendre la taille et la nature de vos activités.",
+      "fields": {
+        "businessActivity":  "Activité principale",
+        "turnoverLastFY":    "Chiffre d'affaires – Dernier exercice",
+        "turnoverCurrentFY": "Chiffre d'affaires – Exercice en cours (prévisionnel)",
+        "employees":         "Nombre de salariés (ETP)"
+      },
+      "placeholders": {
+        "businessActivity": "Décrivez votre activité principale…"
+      },
+      "hints": {
+        "turnoverLastFY":    "Entrez 0 si la société a été créée cette année.",
+        "turnoverCurrentFY": "Une estimation prévisionnelle est acceptable.",
+        "employees":         "Équivalents temps plein."
+      }
+    },
+    "contactsAddresses": {
+      "title": "Contacts & Adresses",
+      "subtitle": "Indiquez votre adresse de siège, votre adresse d'exploitation et vos contacts clés.",
+      "registeredAddress":    "Adresse du siège social",
+      "operatingAddress":     "Adresse d'exploitation",
+      "sameAsRegistered":     "Identique à l'adresse du siège",
+      "primaryContact":       "Contact principal",
+      "accountingContact":    "Contact comptable",
+      "addAccountingContact": "Ajouter un contact comptable distinct",
+      "fields": {
+        "street":    "Adresse",
+        "city":      "Ville",
+        "postal":    "Code postal",
+        "country":   "Pays",
+        "firstName": "Prénom",
+        "lastName":  "Nom de famille",
+        "role":      "Fonction / Titre",
+        "email":     "Adresse e-mail",
+        "phone":     "Numéro de téléphone"
+      },
+      "placeholders": {
+        "street":    "123 rue Principale",
+        "city":      "Luxembourg",
+        "postal":    "L-1234",
+        "country":   "Sélectionner le pays",
+        "firstName": "Prénom",
+        "lastName":  "Nom de famille",
+        "role":      "ex. PDG, DAF",
+        "email":     "nom@societe.com",
+        "phone":     "+352 123 456 789"
+      }
+    },
+    "billingVolume": {
+      "title": "Volume de facturation",
+      "subtitle": "Indiquez vos volumes de facturation mensuels et vos besoins en paie.",
+      "fields": {
+        "salesInvoices":    "Factures de vente par mois",
+        "purchaseInvoices": "Factures d'achat par mois",
+        "payrollNeeded":    "Avez-vous besoin de la gestion de la paie ?",
+        "payrollEmployees": "Nombre de salariés en paie",
+        "multiCurrency":    "Facturation multi-devises",
+        "selectCurrencies": "Sélectionner les devises"
+      },
+      "hints": {
+        "salesInvoices":    "Nombre estimé de factures émises chaque mois.",
+        "purchaseInvoices": "Nombre estimé de factures fournisseurs reçues chaque mois."
+      }
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Téléversez les documents requis pour finaliser votre profil comptable.",
+      "types": {
+        "incorporation": "Certificat d'immatriculation",
+        "articles":      "Statuts de la société",
+        "directorId":    "Pièce d'identité / Passeport du dirigeant",
+        "vat":           "Certificat d'enregistrement TVA"
+      },
+      "hints": {
+        "incorporation": "Document officiel confirmant l'immatriculation de la société.",
+        "articles":      "Version signée et à jour.",
+        "directorId":    "Pièce d'identité valide pour chaque dirigeant.",
+        "vat":           "Requis uniquement si la société est assujettie à la TVA."
+      },
+      "note": {
+        "title": "Exigences documentaires",
+        "text":  "Formats acceptés : PDF, JPG, PNG, DOCX. Taille maximale : 10 Mo par document. Tous les documents doivent être valides et lisibles."
+      }
+    },
+    "review": {
+      "title": "Révision & Soumission",
+      "subtitle": "Veuillez vérifier attentivement vos informations avant de soumettre.",
+      "summary": "Récapitulatif de la demande",
+      "sections": {
+        "company":   "Informations de la société",
+        "activity":  "Activité & Échelle",
+        "contact":   "Contacts & Adresses",
+        "volume":    "Volume de facturation",
+        "teamSize":  "Effectif",
+        "documents": "Documents"
+      },
+      "incorporated":      "Constituée le",
+      "lastFY":            "CA dernier exercice",
+      "projected":         "CA prévisionnel",
+      "fteEmployees":      "salariés ETP",
+      "employees":         "salariés",
+      "sales":             "Factures de vente / mois",
+      "purchases":         "Factures d'achat / mois",
+      "payroll":           "Paie",
+      "multiCurrency":     "Multi-devises",
+      "invoices":          "factures",
+      "documentsUploaded": "documents téléversés",
+      "consent": {
+        "title":          "Consentement au traitement des données",
+        "text":           "Je consens à ce qu'Opulanz traite les données de ma société pour les services de comptabilité et de facturation.",
+        "label":          "J'accepte les",
+        "termsOfService": "Conditions d'utilisation",
+        "privacyPolicy":  "Politique de confidentialité",
+        "required":       "Vous devez accepter les conditions pour continuer."
+      },
+      "acceptConsent": "J'accepte les conditions et consens au traitement des données.",
+      "gdpr": {
+        "title": "Avis RGPD",
+        "text":  "Vos données sont traitées conformément au RGPD de l'UE. Vous pouvez demander l'accès, la rectification ou la suppression à tout moment en contactant privacy@opulanz.com."
+      },
+      "submit": "Soumettre la demande"
     }
   },
   "supportPage": {

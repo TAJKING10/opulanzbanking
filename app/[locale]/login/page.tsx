@@ -9,7 +9,7 @@ import { setAuthToken } from "@/lib/auth";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-export default function LoginPage() {
+function LoginForm() {
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string;
@@ -201,5 +201,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <React.Suspense fallback={<div className="flex min-h-screen items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#b59354]" /></div>}>
+      <LoginForm />
+    </React.Suspense>
   );
 }

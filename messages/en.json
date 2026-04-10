@@ -158,29 +158,336 @@
     "nextSteps": "Next Steps"
   },
   "companyFormation": {
-    "title": "Company Formation in Luxembourg",
-    "selectForm": "Select Company Form",
-    "sarl": "SARL - Private Limited Company",
-    "sarls": "SARL-S - Simplified Private Limited Company",
-    "sa": "SA - Public Limited Company",
-    "scsp": "SCSp - Special Limited Partnership",
-    "soleProprietor": "Sole Proprietor",
-    "wizardTitle": "Company Formation Wizard",
-    "companyDetails": "Company Details",
-    "shareholders": "Shareholders",
-    "capitalDeposit": "Capital Deposit",
-    "payment": "Payment",
-    "confirmation": "Confirmation",
-    "companyName": "Company Name",
-    "businessActivity": "Business Activity",
-    "shareCapital": "Share Capital",
-    "addShareholder": "Add Shareholder",
-    "depositCapital": "Deposit share capital with partner bank",
-    "notaryCertificate": "Notary will issue incorporation certificate",
-    "rcsRegistration": "Registration with Luxembourg RCS",
-    "totalFees": "Total Formation Fees",
-    "proceedToPayment": "Proceed to Payment",
-    "saveProgress": "Save & Resume Later"
+    "subtitle": "Company formation assistance, Full service from incorporation to consulting",
+    "description": "Choose the legal structure that best fits your business needs",
+    "heroTitle": "Company Formation in Luxembourg",
+    "heroSubtitle": "Complete company formation services with expert guidance. Choose your structure and start your formation wizard.",
+    "chooseForm": "Choose Your Company Form",
+    "chooseFormDesc": "Select the legal structure that best fits your business needs",
+    "startFormation": "Start Formation",
+    "minCapitalLabel": "Min. Capital:",
+    "shareholdersLabel": "Shareholders:",
+    "minPrefix": "Min.",
+    "liabilityLabel": "Liability:",
+    "processTitle": "Simple 8-Step Formation Process",
+    "processDesc": "We guide you through every step of the company formation",
+    "processSteps": {
+      "companyType": "Company Type",
+      "companyTypeDesc": "Select your legal structure",
+      "generalInfo": "General Info",
+      "generalInfoDesc": "Provide company details",
+      "people": "People",
+      "peopleDesc": "Add shareholders & directors",
+      "capital": "Capital",
+      "capitalDesc": "Define share capital",
+      "activity": "Activity",
+      "activityDesc": "Business activity details",
+      "notary": "Notary",
+      "notaryDesc": "Notary preferences",
+      "documents": "Documents",
+      "documentsDesc": "Upload required docs",
+      "submit": "Submit",
+      "submitDesc": "Review and submit"
+    },
+    "benefitsTitle": "Why Form Your Company with Opulanz?",
+    "benefits": {
+      "expertTitle": "Expert Guidance",
+      "expertDesc": "Our team of Luxembourg corporate law experts guide you through every step of the formation process.",
+      "fastTitle": "Fast & Efficient",
+      "fastDesc": "Complete the online wizard in minutes. Most formations completed within 2-3 weeks.",
+      "fullServiceTitle": "Full Service",
+      "fullServiceDesc": "From notary coordination to RCS registration, we handle everything for you."
+    },
+    "forms": {
+      "sarl": {
+        "fullName": "Private Limited Company",
+        "minCapital": "€12,000",
+        "minShareholders": 1,
+        "liability": "Limited",
+        "features": {
+          "common": "Most common structure",
+          "flexible": "Flexible management",
+          "capital": "Lower capital requirement",
+          "suitable": "Suitable for SMEs"
+        }
+      },
+      "sarls": {
+        "fullName": "Simplified Private Limited Company",
+        "minCapital": "€1",
+        "features": {
+          "capital": "Very low capital requirement",
+          "formation": "Simplified formation",
+          "startups": "Ideal for startups",
+          "max": "Max capital €100,000"
+        }
+      },
+      "sa": {
+        "fullName": "Public Limited Company",
+        "minCapital": "€30,000",
+        "features": {
+          "public": "Can be listed publicly",
+          "board": "Board of directors required",
+          "credibility": "Higher credibility",
+          "suitable": "Suitable for larger businesses"
+        }
+      },
+      "scsp": {
+        "fullName": "Special Limited Partnership",
+        "minCapital": "No minimum",
+        "features": {
+          "transparent": "Tax transparent",
+          "funds": "Popular for funds",
+          "flexible": "Flexible structure",
+          "liability": "General partner liability"
+        }
+      },
+      "sole": {
+        "fullName": "Individual Enterprise",
+        "minCapital": "No minimum",
+        "liability": "Unlimited",
+        "features": {
+          "simplest": "Simplest structure",
+          "noEntity": "No separate legal entity",
+          "control": "Full control",
+          "personal": "Personal liability"
+        }
+      },
+      "soleProprietor": "Sole Proprietor"
+    },
+    "wizard": {
+      "title": "Company Formation Wizard",
+      "formingIn": "Forming a {formType} in Luxembourg",
+      "backToSelection": "Back to selection",
+      "back": "Back",
+      "next": "Next",
+      "saveResume": "Save & Resume Later",
+      "wizardSteps": {
+        "companyType": "Company Type",
+        "generalInfo": "General Info",
+        "people": "People",
+        "capital": "Capital",
+        "activity": "Activity",
+        "notaryDomiciliation": "Notary & Domiciliation",
+        "documents": "Documents",
+        "reviewSubmit": "Review & Submit"
+      },
+      "step1": {
+        "selectedType": "Selected Company Type",
+        "requirementsFor": "Requirements for {formType}",
+        "minCapital": "Minimum capital: {amount}",
+        "noMinCapital": "Minimum capital: No minimum",
+        "maxCapital": "Maximum capital: {amount}",
+        "requiresDirectors": "Requires {count} or more directors",
+        "requiresManagers": "Requires {count} or more managers",
+        "changeNote": "You can change the company type by going back to the selection page."
+      },
+      "step2": {
+        "proposedName": "Proposed Legal Name",
+        "proposedNamePlaceholder": "e.g., Acme Luxembourg S.à r.l.",
+        "proposedNameHelp": "Include the legal form suffix (S.à r.l., S.A., etc.)",
+        "alternateName": "Alternate Name (Optional)",
+        "alternateNamePlaceholder": "e.g., Acme Lux S.à r.l.",
+        "alternateNameHelp": "In case your first choice is not available",
+        "purpose": "Company Purpose / Activities",
+        "purposePlaceholder": "Describe the main business activities and purpose of the company...",
+        "registeredOffice": "Registered Office Address (Luxembourg)",
+        "registeredOfficePlaceholder": "Street address, postal code, city, Luxembourg",
+        "registeredOfficeHelp": "Or select domiciliation service in Step 6",
+        "duration": "Company Duration",
+        "durationDefault": "unlimited",
+        "durationHelp": "Most companies choose \"unlimited\""
+      },
+      "step3": {
+        "shareholders": "Shareholders",
+        "addShareholder": "Add Shareholder",
+        "noShareholders": "No shareholders added yet. Click \"Add Shareholder\" to begin.",
+        "totalOwnership": "Total ownership: {percent}% (should equal 100%)",
+        "directors": "Directors",
+        "addDirector": "Add Director",
+        "noDirectors": "No directors added yet. {formType} requires at least {count} directors.",
+        "managers": "Managers",
+        "addManager": "Add Manager",
+        "noManagers": "No managers added yet. {formType} requires at least {count} manager.",
+        "ubosTitle": "Ultimate Beneficial Owners (UBOs)",
+        "addUbo": "Add UBO",
+        "ubosDesc": "Individuals who own or control more than 25% of the company",
+        "noUbos": "No UBOs added yet.",
+        "editPerson": "Edit",
+        "addPerson": "Add",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "dob": "Date of Birth",
+        "nationality": "Nationality",
+        "address": "Address",
+        "email": "Email",
+        "phone": "Phone",
+        "ownershipPercent": "Ownership Percentage",
+        "isPep": "This person is a Politically Exposed Person (PEP)",
+        "cancel": "Cancel",
+        "save": "Save",
+        "edit": "Edit",
+        "ownership": "ownership",
+        "pep": "PEP"
+      },
+      "step4": {
+        "capitalAmount": "Share Capital Amount (EUR)",
+        "noMinRequired": "No minimum required",
+        "minimum": "Minimum: {amount}",
+        "maximum": "Maximum: {amount}",
+        "capitalError": "Capital amount must be between {min} and {max}",
+        "paidUpPercent": "Paid-Up Percentage",
+        "paidUpHelp": "For SA, at least 25% must be paid up at incorporation",
+        "contributions": "Contributions",
+        "addContribution": "Add Contribution",
+        "noContributions": "No contributions added yet. Add cash or in-kind contributions.",
+        "type": "Type",
+        "cash": "Cash",
+        "inKind": "In-Kind",
+        "amountEur": "Amount (EUR)",
+        "remove": "Remove",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe the contribution...",
+        "totalContributions": "Total Contributions: {amount}",
+        "contributionsMismatch": "Contributions should equal capital amount ({amount})"
+      },
+      "step5": {
+        "naceCode": "NACE Code",
+        "naceCodePlaceholder": "e.g., 62.01 - Computer programming activities",
+        "naceCodeHelp": "Statistical classification of economic activities in the EU.",
+        "findNaceCode": "Find your NACE code",
+        "expectedTurnover": "Expected Annual Turnover (EUR)",
+        "expectedTurnoverPlaceholder": "e.g., 500000",
+        "expectedTurnoverHelp": "Estimated annual revenue for the first year",
+        "numberOfEmployees": "Number of Employees at Launch",
+        "numberOfEmployeesPlaceholder": "e.g., 5",
+        "numberOfEmployeesHelp": "Expected number of employees when starting operations",
+        "whyWeAsk": "Why we ask",
+        "whyWeAskDesc": "This information helps us prepare accurate documentation and advise you on applicable regulations, tax obligations, and reporting requirements."
+      },
+      "step6": {
+        "notaryPreferences": "Notary Preferences",
+        "notaryName": "Preferred Notary Name (Optional)",
+        "notaryNamePlaceholder": "Leave blank to let us choose",
+        "notaryCity": "Preferred City (Optional)",
+        "notaryCityPlaceholder": "e.g., Luxembourg City",
+        "notaryLanguage": "Language for Incorporation Deeds",
+        "english": "English",
+        "french": "French",
+        "german": "German",
+        "registeredOffice": "Registered Office / Domiciliation",
+        "needDomiciliation": "I need a domiciliation / registered address service",
+        "needDomiciliationDesc": "We can provide you with a professional business address in Luxembourg for your registered office.",
+        "domiciliationService": "Domiciliation Service",
+        "domiciliationIncludes": "Our domiciliation service includes:",
+        "domiciliationItem1": "Professional business address in Luxembourg",
+        "domiciliationItem2": "Mail forwarding and scanning",
+        "domiciliationItem3": "Meeting room access",
+        "domiciliationPrice": "From €600/year",
+        "noDomiciliationNote": "If you don't select domiciliation service, you must provide proof of a registered address (lease agreement or property title) in the next step."
+      },
+      "step7": {
+        "idDocuments": "ID/Passport Copies",
+        "idDocumentsDesc": "Upload ID or passport copies for all directors, managers, and UBOs",
+        "uploadIdPassport": "Click to upload ID/Passport",
+        "fileFormats": "PDF, JPG, or PNG - Max 10MB",
+        "leaseTitle": "Lease Agreement / Property Title",
+        "leaseDesc": "Proof of registered office address in Luxembourg",
+        "uploadLease": "Click to upload Lease/Title",
+        "leasePdfOnly": "PDF - Max 10MB",
+        "capitalCertTitle": "Capital Deposit Certificate (Optional)",
+        "capitalCertDesc": "Can be uploaded after payment. Bank certificate confirming capital deposit.",
+        "uploadCertificate": "Click to upload Certificate",
+        "certPdfOnly": "PDF - Max 10MB",
+        "simulationNote": "This is a simulation. In production, files would be uploaded to secure cloud storage."
+      },
+      "step8": {
+        "dossierSummary": "Dossier Summary",
+        "companyType": "Company Type",
+        "companyName": "Company Name",
+        "notProvided": "Not provided",
+        "alternate": "Alternate: {name}",
+        "capital": "Capital",
+        "people": "People",
+        "shareholdersCount": "Shareholders: {count}",
+        "directorsCount": "Directors: {count}",
+        "managersCount": "Managers: {count}",
+        "ubosCount": "UBOs: {count}",
+        "activity": "Activity",
+        "nace": "NACE: {code}",
+        "expectedTurnover": "Expected turnover: {amount}",
+        "documents": "Documents",
+        "idDocuments": "ID documents: {count}",
+        "leaseDomiciliation": "Lease/Domiciliation: {value}",
+        "serviceRequested": "Service requested",
+        "uploaded": "uploaded",
+        "capitalCertificate": "Capital certificate: {value}",
+        "uploadedStatus": "Uploaded",
+        "notYet": "Not yet",
+        "setupFeePayment": "Setup Fee Payment",
+        "opulanzSetupFee": "Opulanz Setup Fee",
+        "feeDescription": "This covers our administrative and coordination services. Notary and registration fees are separate and will be communicated by the notary.",
+        "processing": "Processing...",
+        "paySetupFee": "Pay Setup Fee (Demo)",
+        "paymentComplete": "Payment complete",
+        "requiredConsents": "Required Consents",
+        "accuracyConfirm": "I confirm that all information provided is accurate and complete to the best of my knowledge",
+        "acceptTerms": "I accept the",
+        "termsConditions": "Terms & Conditions",
+        "acceptPrivacy": "I accept the",
+        "privacyPolicy": "Privacy Policy",
+        "submitDossier": "Submit Formation Dossier",
+        "completePaymentFirst": "Please complete payment before submitting",
+        "acceptAllConsents": "Please accept all consents to submit",
+        "submitted": {
+          "title": "Formation Dossier Submitted!",
+          "description": "Your company formation dossier has been created. Our team will review it and contact you within 24-72 hours to proceed with the notarization and registration process.",
+          "reference": "Reference:",
+          "emailConfirmation": "You'll receive an email confirmation shortly.",
+          "returnHome": "Return to Home"
+        }
+      }
+    },
+    "process": {
+      "title": "Simple Formation Process",
+      "description": "We guide you through every step"
+    },
+    "steps": {
+      "details": {
+        "title": "Company Details",
+        "description": "Provide company information"
+      },
+      "shareholders": {
+        "title": "Shareholders",
+        "description": "Add shareholders and structure"
+      },
+      "capital": {
+        "title": "Capital Deposit",
+        "description": "Deposit share capital"
+      },
+      "payment": {
+        "title": "Payment",
+        "description": "Pay formation fees"
+      },
+      "registration": {
+        "title": "Registration",
+        "description": "Complete RCS registration"
+      }
+    },
+    "fields": {
+      "companyName": {
+        "label": "Company Name",
+        "placeholder": "Enter company name"
+      },
+      "fullName": {
+        "placeholder": "Full Name"
+      },
+      "nationality": {
+        "placeholder": "Nationality"
+      },
+      "email": {
+        "placeholder": "Email"
+      }
+    }
   },
   "services": {
     "accounting": {
@@ -798,339 +1105,9 @@
     "buttons": {
       "dashboard": "Go to Dashboard",
       "downloadApp": "Download App"
-    }
-  },
-  "companyFormation": {
-    "subtitle": "Company formation assistance, Full service from incorporation to consulting",
-    "description": "Choose the legal structure that best fits your business needs",
-    "heroTitle": "Company Formation in Luxembourg",
-    "heroSubtitle": "Complete company formation services with expert guidance. Choose your structure and start your formation wizard.",
-    "chooseForm": "Choose Your Company Form",
-    "chooseFormDesc": "Select the legal structure that best fits your business needs",
-    "startFormation": "Start Formation",
-    "minCapitalLabel": "Min. Capital:",
-    "shareholdersLabel": "Shareholders:",
-    "minPrefix": "Min.",
-    "liabilityLabel": "Liability:",
-    "processTitle": "Simple 8-Step Formation Process",
-    "processDesc": "We guide you through every step of the company formation",
-    "processSteps": {
-      "companyType": "Company Type",
-      "companyTypeDesc": "Select your legal structure",
-      "generalInfo": "General Info",
-      "generalInfoDesc": "Provide company details",
-      "people": "People",
-      "peopleDesc": "Add shareholders & directors",
-      "capital": "Capital",
-      "capitalDesc": "Define share capital",
-      "activity": "Activity",
-      "activityDesc": "Business activity details",
-      "notary": "Notary",
-      "notaryDesc": "Notary preferences",
-      "documents": "Documents",
-      "documentsDesc": "Upload required docs",
-      "submit": "Submit",
-      "submitDesc": "Review and submit"
     },
-    "benefitsTitle": "Why Form Your Company with Opulanz?",
-    "benefits": {
-      "expertTitle": "Expert Guidance",
-      "expertDesc": "Our team of Luxembourg corporate law experts guide you through every step of the formation process.",
-      "fastTitle": "Fast & Efficient",
-      "fastDesc": "Complete the online wizard in minutes. Most formations completed within 2-3 weeks.",
-      "fullServiceTitle": "Full Service",
-      "fullServiceDesc": "From notary coordination to RCS registration, we handle everything for you."
-    },
-    "forms": {
-      "sarl": {
-        "fullName": "Private Limited Company",
-        "minCapital": "€12,000",
-        "minShareholders": 1,
-        "liability": "Limited",
-        "features": {
-          "common": "Most common structure",
-          "flexible": "Flexible management",
-          "capital": "Lower capital requirement",
-          "suitable": "Suitable for SMEs"
-        }
-      },
-      "sarls": {
-        "fullName": "Simplified Private Limited Company",
-        "minCapital": "€1",
-        "features": {
-          "capital": "Very low capital requirement",
-          "formation": "Simplified formation",
-          "startups": "Ideal for startups",
-          "max": "Max capital €100,000"
-        }
-      },
-      "sa": {
-        "fullName": "Public Limited Company",
-        "minCapital": "€30,000",
-        "features": {
-          "public": "Can be listed publicly",
-          "board": "Board of directors required",
-          "credibility": "Higher credibility",
-          "suitable": "Suitable for larger businesses"
-        }
-      },
-      "scsp": {
-        "fullName": "Special Limited Partnership",
-        "minCapital": "No minimum",
-        "features": {
-          "transparent": "Tax transparent",
-          "funds": "Popular for funds",
-          "flexible": "Flexible structure",
-          "liability": "General partner liability"
-        }
-      },
-      "sole": {
-        "fullName": "Individual Enterprise",
-        "minCapital": "No minimum",
-        "liability": "Unlimited",
-        "features": {
-          "simplest": "Simplest structure",
-          "noEntity": "No separate legal entity",
-          "control": "Full control",
-          "personal": "Personal liability"
-        }
-      },
-      "soleProprietor": "Sole Proprietor"
-    },
-    "wizard": {
-      "title": "Company Formation Wizard",
-      "formingIn": "Forming a {formType} in Luxembourg",
-      "backToSelection": "Back to selection",
-      "back": "Back",
-      "next": "Next",
-      "saveResume": "Save & Resume Later",
-      "wizardSteps": {
-        "companyType": "Company Type",
-        "generalInfo": "General Info",
-        "people": "People",
-        "capital": "Capital",
-        "activity": "Activity",
-        "notaryDomiciliation": "Notary & Domiciliation",
-        "documents": "Documents",
-        "reviewSubmit": "Review & Submit"
-      },
-      "step1": {
-        "selectedType": "Selected Company Type",
-        "requirementsFor": "Requirements for {formType}",
-        "minCapital": "Minimum capital: {amount}",
-        "noMinCapital": "Minimum capital: No minimum",
-        "maxCapital": "Maximum capital: {amount}",
-        "requiresDirectors": "Requires {count} or more directors",
-        "requiresManagers": "Requires {count} or more managers",
-        "changeNote": "You can change the company type by going back to the selection page."
-      },
-      "step2": {
-        "proposedName": "Proposed Legal Name",
-        "proposedNamePlaceholder": "e.g., Acme Luxembourg S.à r.l.",
-        "proposedNameHelp": "Include the legal form suffix (S.à r.l., S.A., etc.)",
-        "alternateName": "Alternate Name (Optional)",
-        "alternateNamePlaceholder": "e.g., Acme Lux S.à r.l.",
-        "alternateNameHelp": "In case your first choice is not available",
-        "purpose": "Company Purpose / Activities",
-        "purposePlaceholder": "Describe the main business activities and purpose of the company...",
-        "registeredOffice": "Registered Office Address (Luxembourg)",
-        "registeredOfficePlaceholder": "Street address, postal code, city, Luxembourg",
-        "registeredOfficeHelp": "Or select domiciliation service in Step 6",
-        "duration": "Company Duration",
-        "durationDefault": "unlimited",
-        "durationHelp": "Most companies choose \"unlimited\""
-      },
-      "step3": {
-        "shareholders": "Shareholders",
-        "addShareholder": "Add Shareholder",
-        "noShareholders": "No shareholders added yet. Click \"Add Shareholder\" to begin.",
-        "totalOwnership": "Total ownership: {percent}% (should equal 100%)",
-        "directors": "Directors",
-        "addDirector": "Add Director",
-        "noDirectors": "No directors added yet. {formType} requires at least {count} directors.",
-        "managers": "Managers",
-        "addManager": "Add Manager",
-        "noManagers": "No managers added yet. {formType} requires at least {count} manager.",
-        "ubosTitle": "Ultimate Beneficial Owners (UBOs)",
-        "addUbo": "Add UBO",
-        "ubosDesc": "Individuals who own or control more than 25% of the company",
-        "noUbos": "No UBOs added yet.",
-        "editPerson": "Edit",
-        "addPerson": "Add",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "dob": "Date of Birth",
-        "nationality": "Nationality",
-        "address": "Address",
-        "email": "Email",
-        "phone": "Phone",
-        "ownershipPercent": "Ownership Percentage",
-        "isPep": "This person is a Politically Exposed Person (PEP)",
-        "cancel": "Cancel",
-        "save": "Save",
-        "edit": "Edit",
-        "ownership": "ownership",
-        "pep": "PEP"
-      },
-      "step4": {
-        "capitalAmount": "Share Capital Amount (EUR)",
-        "noMinRequired": "No minimum required",
-        "minimum": "Minimum: {amount}",
-        "maximum": "Maximum: {amount}",
-        "capitalError": "Capital amount must be between {min} and {max}",
-        "paidUpPercent": "Paid-Up Percentage",
-        "paidUpHelp": "For SA, at least 25% must be paid up at incorporation",
-        "contributions": "Contributions",
-        "addContribution": "Add Contribution",
-        "noContributions": "No contributions added yet. Add cash or in-kind contributions.",
-        "type": "Type",
-        "cash": "Cash",
-        "inKind": "In-Kind",
-        "amountEur": "Amount (EUR)",
-        "remove": "Remove",
-        "description": "Description",
-        "descriptionPlaceholder": "Describe the contribution...",
-        "totalContributions": "Total Contributions: {amount}",
-        "contributionsMismatch": "Contributions should equal capital amount ({amount})"
-      },
-      "step5": {
-        "naceCode": "NACE Code",
-        "naceCodePlaceholder": "e.g., 62.01 - Computer programming activities",
-        "naceCodeHelp": "Statistical classification of economic activities in the EU.",
-        "findNaceCode": "Find your NACE code",
-        "expectedTurnover": "Expected Annual Turnover (EUR)",
-        "expectedTurnoverPlaceholder": "e.g., 500000",
-        "expectedTurnoverHelp": "Estimated annual revenue for the first year",
-        "numberOfEmployees": "Number of Employees at Launch",
-        "numberOfEmployeesPlaceholder": "e.g., 5",
-        "numberOfEmployeesHelp": "Expected number of employees when starting operations",
-        "whyWeAsk": "Why we ask",
-        "whyWeAskDesc": "This information helps us prepare accurate documentation and advise you on applicable regulations, tax obligations, and reporting requirements."
-      },
-      "step6": {
-        "notaryPreferences": "Notary Preferences",
-        "notaryName": "Preferred Notary Name (Optional)",
-        "notaryNamePlaceholder": "Leave blank to let us choose",
-        "notaryCity": "Preferred City (Optional)",
-        "notaryCityPlaceholder": "e.g., Luxembourg City",
-        "notaryLanguage": "Language for Incorporation Deeds",
-        "english": "English",
-        "french": "French",
-        "german": "German",
-        "registeredOffice": "Registered Office / Domiciliation",
-        "needDomiciliation": "I need a domiciliation / registered address service",
-        "needDomiciliationDesc": "We can provide you with a professional business address in Luxembourg for your registered office.",
-        "domiciliationService": "Domiciliation Service",
-        "domiciliationIncludes": "Our domiciliation service includes:",
-        "domiciliationItem1": "Professional business address in Luxembourg",
-        "domiciliationItem2": "Mail forwarding and scanning",
-        "domiciliationItem3": "Meeting room access",
-        "domiciliationPrice": "From €600/year",
-        "noDomiciliationNote": "If you don't select domiciliation service, you must provide proof of a registered address (lease agreement or property title) in the next step."
-      },
-      "step7": {
-        "idDocuments": "ID/Passport Copies",
-        "idDocumentsDesc": "Upload ID or passport copies for all directors, managers, and UBOs",
-        "uploadIdPassport": "Click to upload ID/Passport",
-        "fileFormats": "PDF, JPG, or PNG - Max 10MB",
-        "leaseTitle": "Lease Agreement / Property Title",
-        "leaseDesc": "Proof of registered office address in Luxembourg",
-        "uploadLease": "Click to upload Lease/Title",
-        "leasePdfOnly": "PDF - Max 10MB",
-        "capitalCertTitle": "Capital Deposit Certificate (Optional)",
-        "capitalCertDesc": "Can be uploaded after payment. Bank certificate confirming capital deposit.",
-        "uploadCertificate": "Click to upload Certificate",
-        "certPdfOnly": "PDF - Max 10MB",
-        "simulationNote": "This is a simulation. In production, files would be uploaded to secure cloud storage."
-      },
-      "step8": {
-        "dossierSummary": "Dossier Summary",
-        "companyType": "Company Type",
-        "companyName": "Company Name",
-        "notProvided": "Not provided",
-        "alternate": "Alternate: {name}",
-        "capital": "Capital",
-        "people": "People",
-        "shareholdersCount": "Shareholders: {count}",
-        "directorsCount": "Directors: {count}",
-        "managersCount": "Managers: {count}",
-        "ubosCount": "UBOs: {count}",
-        "activity": "Activity",
-        "nace": "NACE: {code}",
-        "expectedTurnover": "Expected turnover: {amount}",
-        "documents": "Documents",
-        "idDocuments": "ID documents: {count}",
-        "leaseDomiciliation": "Lease/Domiciliation: {value}",
-        "serviceRequested": "Service requested",
-        "uploaded": "uploaded",
-        "capitalCertificate": "Capital certificate: {value}",
-        "uploadedStatus": "Uploaded",
-        "notYet": "Not yet",
-        "setupFeePayment": "Setup Fee Payment",
-        "opulanzSetupFee": "Opulanz Setup Fee",
-        "feeDescription": "This covers our administrative and coordination services. Notary and registration fees are separate and will be communicated by the notary.",
-        "processing": "Processing...",
-        "paySetupFee": "Pay Setup Fee (Demo)",
-        "paymentComplete": "Payment complete",
-        "requiredConsents": "Required Consents",
-        "accuracyConfirm": "I confirm that all information provided is accurate and complete to the best of my knowledge",
-        "acceptTerms": "I accept the",
-        "termsConditions": "Terms & Conditions",
-        "acceptPrivacy": "I accept the",
-        "privacyPolicy": "Privacy Policy",
-        "submitDossier": "Submit Formation Dossier",
-        "completePaymentFirst": "Please complete payment before submitting",
-        "acceptAllConsents": "Please accept all consents to submit",
-        "submitted": {
-          "title": "Formation Dossier Submitted!",
-          "description": "Your company formation dossier has been created. Our team will review it and contact you within 24-72 hours to proceed with the notarization and registration process.",
-          "reference": "Reference:",
-          "emailConfirmation": "You'll receive an email confirmation shortly.",
-          "returnHome": "Return to Home"
-        }
-      }
-    },
-    "process": {
-      "title": "Simple Formation Process",
-      "description": "We guide you through every step"
-    },
-    "steps": {
-      "details": {
-        "title": "Company Details",
-        "description": "Provide company information"
-      },
-      "shareholders": {
-        "title": "Shareholders",
-        "description": "Add shareholders and structure"
-      },
-      "capital": {
-        "title": "Capital Deposit",
-        "description": "Deposit share capital"
-      },
-      "payment": {
-        "title": "Payment",
-        "description": "Pay formation fees"
-      },
-      "registration": {
-        "title": "Registration",
-        "description": "Complete RCS registration"
-      }
-    },
-    "fields": {
-      "companyName": {
-        "label": "Company Name",
-        "placeholder": "Enter company name"
-      },
-      "fullName": {
-        "placeholder": "Full Name"
-      },
-      "nationality": {
-        "placeholder": "Nationality"
-      },
-      "email": {
-        "placeholder": "Email"
-      }
-    }
+    "title": "Identity Verification",
+    "description": "Complete your KYC to activate your account"
   },
   "taxAdvisory": {
     "hero": {
@@ -2211,6 +2188,49 @@
         "text": "Your data is processed in accordance with GDPR. We will use it solely to provide accounting services."
       },
       "submit": "Submit Application"
+    }
+  },
+  "accountOpening": {
+    "start": {
+      "title": "Open an Account",
+      "subtitle": "Choose the account type that suits you"
+    },
+    "individual": {
+      "title": "Individual Account",
+      "subtitle": "Personal banking for individuals"
+    },
+    "company": {
+      "title": "Company Account",
+      "subtitle": "Business banking for companies"
+    },
+    "warmReferral": {
+      "handoff": {
+        "title": "Referral Application",
+        "subtitle": "Complete your referred application"
+      }
+    }
+  },
+  "supportPage": {
+    "title": "Support",
+    "subtitle": "How can we help you?",
+    "contact": "Contact Us",
+    "faq": "FAQ"
+  },
+  "investmentAdvisory": {
+    "wizard": {
+      "steps": [
+        "Client Type",
+        "Investment Profile",
+        "Schedule",
+        "Confirmation"
+      ]
+    },
+    "clientType": {
+      "title": "Client Type",
+      "contact": {
+        "label": "Contact",
+        "placeholder": "Your contact information"
+      }
     }
   }
 }

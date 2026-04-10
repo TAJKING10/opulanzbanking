@@ -158,29 +158,336 @@
     "nextSteps": "Prochaines étapes"
   },
   "companyFormation": {
-    "title": "Création de société au Luxembourg",
-    "selectForm": "Sélectionner la forme juridique",
-    "sarl": "SARL - Société à responsabilité limitée",
-    "sarls": "SARL-S - SARL simplifiée",
-    "sa": "SA - Société anonyme",
-    "scsp": "SCSp - Société en commandite spéciale",
-    "soleProprietor": "Entreprise individuelle",
-    "wizardTitle": "Assistant de création",
-    "companyDetails": "Détails de la société",
-    "shareholders": "Actionnaires",
-    "capitalDeposit": "Dépôt de capital",
-    "payment": "Paiement",
-    "confirmation": "Confirmation",
-    "companyName": "Nom de la société",
-    "businessActivity": "Activité commerciale",
-    "shareCapital": "Capital social",
-    "addShareholder": "Ajouter un actionnaire",
-    "depositCapital": "Déposer le capital social auprès de la banque partenaire",
-    "notaryCertificate": "Le notaire délivrera le certificat d'incorporation",
-    "rcsRegistration": "Inscription au RCS du Luxembourg",
-    "totalFees": "Frais de création totaux",
-    "proceedToPayment": "Procéder au paiement",
-    "saveProgress": "Enregistrer et reprendre plus tard"
+    "subtitle": "Assistance en montage de sociétés, Service complet du montage au conseil",
+    "description": "Choisissez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
+    "heroTitle": "Création de société au Luxembourg",
+    "heroSubtitle": "Services complets de création de société avec accompagnement expert. Choisissez votre structure et lancez l'assistant de création.",
+    "chooseForm": "Choisissez votre forme juridique",
+    "chooseFormDesc": "Sélectionnez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
+    "startFormation": "Commencer la création",
+    "minCapitalLabel": "Capital min. :",
+    "shareholdersLabel": "Actionnaires :",
+    "minPrefix": "Min.",
+    "liabilityLabel": "Responsabilité :",
+    "processTitle": "Processus de création simple en 8 étapes",
+    "processDesc": "Nous vous guidons à chaque étape de la création de société",
+    "processSteps": {
+      "companyType": "Type de société",
+      "companyTypeDesc": "Sélectionnez votre structure juridique",
+      "generalInfo": "Informations générales",
+      "generalInfoDesc": "Fournissez les détails de la société",
+      "people": "Personnes",
+      "peopleDesc": "Ajoutez actionnaires et dirigeants",
+      "capital": "Capital",
+      "capitalDesc": "Définissez le capital social",
+      "activity": "Activité",
+      "activityDesc": "Détails de l'activité commerciale",
+      "notary": "Notaire",
+      "notaryDesc": "Préférences notariales",
+      "documents": "Documents",
+      "documentsDesc": "Téléchargez les documents requis",
+      "submit": "Soumettre",
+      "submitDesc": "Vérifier et soumettre"
+    },
+    "benefitsTitle": "Pourquoi créer votre société avec Opulanz ?",
+    "benefits": {
+      "expertTitle": "Accompagnement expert",
+      "expertDesc": "Notre équipe d'experts en droit des sociétés luxembourgeois vous guide à chaque étape du processus de création.",
+      "fastTitle": "Rapide et efficace",
+      "fastDesc": "Complétez l'assistant en ligne en quelques minutes. La plupart des créations sont finalisées en 2 à 3 semaines.",
+      "fullServiceTitle": "Service complet",
+      "fullServiceDesc": "De la coordination notariale à l'inscription au RCS, nous nous occupons de tout pour vous."
+    },
+    "forms": {
+      "sarl": {
+        "fullName": "Société à Responsabilité Limitée",
+        "minCapital": "12 000 €",
+        "minShareholders": 1,
+        "liability": "Limitée",
+        "features": {
+          "common": "Structure la plus courante",
+          "flexible": "Gestion flexible",
+          "capital": "Exigence de capital inférieure",
+          "suitable": "Adapté aux PME"
+        }
+      },
+      "sarls": {
+        "fullName": "Société à Responsabilité Limitée Simplifiée",
+        "minCapital": "1 €",
+        "features": {
+          "capital": "Exigence de capital très faible",
+          "formation": "Formation simplifiée",
+          "startups": "Idéal pour les startups",
+          "max": "Capital maximum de 100 000 €"
+        }
+      },
+      "sa": {
+        "fullName": "Société Anonyme",
+        "minCapital": "30 000 €",
+        "features": {
+          "public": "Peut être cotée en bourse",
+          "board": "Conseil d'administration requis",
+          "credibility": "Crédibilité accrue",
+          "suitable": "Adapté aux grandes entreprises"
+        }
+      },
+      "scsp": {
+        "fullName": "Société en Commandite Spéciale",
+        "minCapital": "Aucun minimum",
+        "features": {
+          "transparent": "Transparence fiscale",
+          "funds": "Populaire pour les fonds",
+          "flexible": "Structure flexible",
+          "liability": "Responsabilité du commandité"
+        }
+      },
+      "sole": {
+        "fullName": "Entreprise individuelle",
+        "minCapital": "Aucun minimum",
+        "liability": "Illimitée",
+        "features": {
+          "simplest": "Structure la plus simple",
+          "noEntity": "Pas d'entité juridique distincte",
+          "control": "Contrôle total",
+          "personal": "Responsabilité personnelle"
+        }
+      },
+      "soleProprietor": "Entreprise individuelle"
+    },
+    "wizard": {
+      "title": "Assistant de création de société",
+      "formingIn": "Création d'une {formType} au Luxembourg",
+      "backToSelection": "Retour à la sélection",
+      "back": "Retour",
+      "next": "Suivant",
+      "saveResume": "Enregistrer et reprendre plus tard",
+      "wizardSteps": {
+        "companyType": "Type de société",
+        "generalInfo": "Informations générales",
+        "people": "Personnes",
+        "capital": "Capital",
+        "activity": "Activité",
+        "notaryDomiciliation": "Notaire et domiciliation",
+        "documents": "Documents",
+        "reviewSubmit": "Vérifier et soumettre"
+      },
+      "step1": {
+        "selectedType": "Type de société sélectionné",
+        "requirementsFor": "Exigences pour {formType}",
+        "minCapital": "Capital minimum : {amount}",
+        "noMinCapital": "Capital minimum : Aucun minimum",
+        "maxCapital": "Capital maximum : {amount}",
+        "requiresDirectors": "Nécessite {count} ou plusieurs administrateurs",
+        "requiresManagers": "Nécessite {count} ou plusieurs gérants",
+        "changeNote": "Vous pouvez modifier le type de société en retournant à la page de sélection."
+      },
+      "step2": {
+        "proposedName": "Dénomination sociale proposée",
+        "proposedNamePlaceholder": "ex. Acme Luxembourg S.à r.l.",
+        "proposedNameHelp": "Incluez le suffixe de forme juridique (S.à r.l., S.A., etc.)",
+        "alternateName": "Nom alternatif (optionnel)",
+        "alternateNamePlaceholder": "ex. Acme Lux S.à r.l.",
+        "alternateNameHelp": "Au cas où votre premier choix ne serait pas disponible",
+        "purpose": "Objet social / Activités de la société",
+        "purposePlaceholder": "Décrivez les principales activités commerciales et l'objet de la société...",
+        "registeredOffice": "Adresse du siège social (Luxembourg)",
+        "registeredOfficePlaceholder": "Adresse, code postal, ville, Luxembourg",
+        "registeredOfficeHelp": "Ou sélectionnez le service de domiciliation à l'étape 6",
+        "duration": "Durée de la société",
+        "durationDefault": "illimitée",
+        "durationHelp": "La plupart des sociétés choisissent \"illimitée\""
+      },
+      "step3": {
+        "shareholders": "Actionnaires",
+        "addShareholder": "Ajouter un actionnaire",
+        "noShareholders": "Aucun actionnaire ajouté. Cliquez sur \"Ajouter un actionnaire\" pour commencer.",
+        "totalOwnership": "Détention totale : {percent}% (doit être égale à 100%)",
+        "directors": "Administrateurs",
+        "addDirector": "Ajouter un administrateur",
+        "noDirectors": "Aucun administrateur ajouté. {formType} nécessite au moins {count} administrateurs.",
+        "managers": "Gérants",
+        "addManager": "Ajouter un gérant",
+        "noManagers": "Aucun gérant ajouté. {formType} nécessite au moins {count} gérant.",
+        "ubosTitle": "Bénéficiaires effectifs (UBO)",
+        "addUbo": "Ajouter un UBO",
+        "ubosDesc": "Personnes détenant ou contrôlant plus de 25% de la société",
+        "noUbos": "Aucun UBO ajouté.",
+        "editPerson": "Modifier",
+        "addPerson": "Ajouter",
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "dob": "Date de naissance",
+        "nationality": "Nationalité",
+        "address": "Adresse",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "ownershipPercent": "Pourcentage de détention",
+        "isPep": "Cette personne est une personne politiquement exposée (PPE)",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "edit": "Modifier",
+        "ownership": "détention",
+        "pep": "PPE"
+      },
+      "step4": {
+        "capitalAmount": "Montant du capital social (EUR)",
+        "noMinRequired": "Aucun minimum requis",
+        "minimum": "Minimum : {amount}",
+        "maximum": "Maximum : {amount}",
+        "capitalError": "Le montant du capital doit être compris entre {min} et {max}",
+        "paidUpPercent": "Pourcentage libéré",
+        "paidUpHelp": "Pour une SA, au moins 25% doit être libéré à la constitution",
+        "contributions": "Apports",
+        "addContribution": "Ajouter un apport",
+        "noContributions": "Aucun apport ajouté. Ajoutez des apports en numéraire ou en nature.",
+        "type": "Type",
+        "cash": "Numéraire",
+        "inKind": "En nature",
+        "amountEur": "Montant (EUR)",
+        "remove": "Supprimer",
+        "description": "Description",
+        "descriptionPlaceholder": "Décrivez l'apport...",
+        "totalContributions": "Total des apports : {amount}",
+        "contributionsMismatch": "Les apports doivent être égaux au montant du capital ({amount})"
+      },
+      "step5": {
+        "naceCode": "Code NACE",
+        "naceCodePlaceholder": "ex. 62.01 - Programmation informatique",
+        "naceCodeHelp": "Classification statistique des activités économiques dans l'UE.",
+        "findNaceCode": "Trouvez votre code NACE",
+        "expectedTurnover": "Chiffre d'affaires annuel prévu (EUR)",
+        "expectedTurnoverPlaceholder": "ex. 500000",
+        "expectedTurnoverHelp": "Revenus annuels estimés pour la première année",
+        "numberOfEmployees": "Nombre d'employés au lancement",
+        "numberOfEmployeesPlaceholder": "ex. 5",
+        "numberOfEmployeesHelp": "Nombre prévu d'employés au démarrage des opérations",
+        "whyWeAsk": "Pourquoi nous posons cette question",
+        "whyWeAskDesc": "Ces informations nous aident à préparer une documentation précise et à vous conseiller sur les réglementations applicables, les obligations fiscales et les exigences de déclaration."
+      },
+      "step6": {
+        "notaryPreferences": "Préférences notariales",
+        "notaryName": "Nom du notaire préféré (optionnel)",
+        "notaryNamePlaceholder": "Laissez vide pour que nous choisissions",
+        "notaryCity": "Ville préférée (optionnel)",
+        "notaryCityPlaceholder": "ex. Luxembourg-Ville",
+        "notaryLanguage": "Langue des actes constitutifs",
+        "english": "Anglais",
+        "french": "Français",
+        "german": "Allemand",
+        "registeredOffice": "Siège social / Domiciliation",
+        "needDomiciliation": "J'ai besoin d'un service de domiciliation / adresse de siège social",
+        "needDomiciliationDesc": "Nous pouvons vous fournir une adresse professionnelle au Luxembourg pour votre siège social.",
+        "domiciliationService": "Service de domiciliation",
+        "domiciliationIncludes": "Notre service de domiciliation comprend :",
+        "domiciliationItem1": "Adresse professionnelle au Luxembourg",
+        "domiciliationItem2": "Réexpédition et numérisation du courrier",
+        "domiciliationItem3": "Accès aux salles de réunion",
+        "domiciliationPrice": "À partir de 600 €/an",
+        "noDomiciliationNote": "Si vous ne sélectionnez pas le service de domiciliation, vous devez fournir une preuve d'adresse de siège social (bail ou titre de propriété) à l'étape suivante."
+      },
+      "step7": {
+        "idDocuments": "Copies de pièce d'identité / passeport",
+        "idDocumentsDesc": "Téléchargez les copies de pièce d'identité ou passeport de tous les administrateurs, gérants et UBO",
+        "uploadIdPassport": "Cliquez pour télécharger une pièce d'identité / passeport",
+        "fileFormats": "PDF, JPG ou PNG - Max 10 Mo",
+        "leaseTitle": "Contrat de bail / Titre de propriété",
+        "leaseDesc": "Preuve d'adresse du siège social au Luxembourg",
+        "uploadLease": "Cliquez pour télécharger le bail / titre",
+        "leasePdfOnly": "PDF - Max 10 Mo",
+        "capitalCertTitle": "Certificat de dépôt de capital (optionnel)",
+        "capitalCertDesc": "Peut être téléchargé après paiement. Certificat bancaire confirmant le dépôt de capital.",
+        "uploadCertificate": "Cliquez pour télécharger le certificat",
+        "certPdfOnly": "PDF - Max 10 Mo",
+        "simulationNote": "Ceci est une simulation. En production, les fichiers seraient téléchargés vers un stockage cloud sécurisé."
+      },
+      "step8": {
+        "dossierSummary": "Résumé du dossier",
+        "companyType": "Type de société",
+        "companyName": "Nom de la société",
+        "notProvided": "Non fourni",
+        "alternate": "Alternatif : {name}",
+        "capital": "Capital",
+        "people": "Personnes",
+        "shareholdersCount": "Actionnaires : {count}",
+        "directorsCount": "Administrateurs : {count}",
+        "managersCount": "Gérants : {count}",
+        "ubosCount": "UBO : {count}",
+        "activity": "Activité",
+        "nace": "NACE : {code}",
+        "expectedTurnover": "Chiffre d'affaires prévu : {amount}",
+        "documents": "Documents",
+        "idDocuments": "Pièces d'identité : {count}",
+        "leaseDomiciliation": "Bail / Domiciliation : {value}",
+        "serviceRequested": "Service demandé",
+        "uploaded": "téléchargé(s)",
+        "capitalCertificate": "Certificat de capital : {value}",
+        "uploadedStatus": "Téléchargé",
+        "notYet": "Pas encore",
+        "setupFeePayment": "Paiement des frais de création",
+        "opulanzSetupFee": "Frais de création Opulanz",
+        "feeDescription": "Cela couvre nos services administratifs et de coordination. Les frais de notaire et d'enregistrement sont séparés et seront communiqués par le notaire.",
+        "processing": "Traitement en cours...",
+        "paySetupFee": "Payer les frais de création (Démo)",
+        "paymentComplete": "Paiement effectué",
+        "requiredConsents": "Consentements requis",
+        "accuracyConfirm": "Je confirme que toutes les informations fournies sont exactes et complètes à ma connaissance",
+        "acceptTerms": "J'accepte les",
+        "termsConditions": "Conditions générales",
+        "acceptPrivacy": "J'accepte la",
+        "privacyPolicy": "Politique de confidentialité",
+        "submitDossier": "Soumettre le dossier de création",
+        "completePaymentFirst": "Veuillez effectuer le paiement avant de soumettre",
+        "acceptAllConsents": "Veuillez accepter tous les consentements pour soumettre",
+        "submitted": {
+          "title": "Dossier de création soumis !",
+          "description": "Votre dossier de création de société a été créé. Notre équipe l'examinera et vous contactera dans les 24 à 72 heures pour procéder à la notarisation et à l'enregistrement.",
+          "reference": "Référence :",
+          "emailConfirmation": "Vous recevrez un e-mail de confirmation sous peu.",
+          "returnHome": "Retour à l'accueil"
+        }
+      }
+    },
+    "process": {
+      "title": "Processus de création simple",
+      "description": "Nous vous guidons à chaque étape"
+    },
+    "steps": {
+      "details": {
+        "title": "Détails de la société",
+        "description": "Fournir les informations de la société"
+      },
+      "shareholders": {
+        "title": "Actionnaires",
+        "description": "Ajouter les actionnaires et la structure"
+      },
+      "capital": {
+        "title": "Dépôt de capital",
+        "description": "Déposer le capital social"
+      },
+      "payment": {
+        "title": "Paiement",
+        "description": "Payer les frais de création"
+      },
+      "registration": {
+        "title": "Enregistrement",
+        "description": "Compléter l'enregistrement au RCS"
+      }
+    },
+    "fields": {
+      "companyName": {
+        "label": "Nom de la société",
+        "placeholder": "Entrez le nom de la société"
+      },
+      "fullName": {
+        "placeholder": "Nom complet"
+      },
+      "nationality": {
+        "placeholder": "Nationalité"
+      },
+      "email": {
+        "placeholder": "E-mail"
+      }
+    }
   },
   "services": {
     "accounting": {
@@ -798,339 +1105,9 @@
     "buttons": {
       "dashboard": "Aller au tableau de bord",
       "downloadApp": "Télécharger l'application"
-    }
-  },
-  "companyFormation": {
-    "subtitle": "Assistance en montage de sociétés, Service complet du montage au conseil",
-    "description": "Choisissez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
-    "heroTitle": "Création de société au Luxembourg",
-    "heroSubtitle": "Services complets de création de société avec accompagnement expert. Choisissez votre structure et lancez l'assistant de création.",
-    "chooseForm": "Choisissez votre forme juridique",
-    "chooseFormDesc": "Sélectionnez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
-    "startFormation": "Commencer la création",
-    "minCapitalLabel": "Capital min. :",
-    "shareholdersLabel": "Actionnaires :",
-    "minPrefix": "Min.",
-    "liabilityLabel": "Responsabilité :",
-    "processTitle": "Processus de création simple en 8 étapes",
-    "processDesc": "Nous vous guidons à chaque étape de la création de société",
-    "processSteps": {
-      "companyType": "Type de société",
-      "companyTypeDesc": "Sélectionnez votre structure juridique",
-      "generalInfo": "Informations générales",
-      "generalInfoDesc": "Fournissez les détails de la société",
-      "people": "Personnes",
-      "peopleDesc": "Ajoutez actionnaires et dirigeants",
-      "capital": "Capital",
-      "capitalDesc": "Définissez le capital social",
-      "activity": "Activité",
-      "activityDesc": "Détails de l'activité commerciale",
-      "notary": "Notaire",
-      "notaryDesc": "Préférences notariales",
-      "documents": "Documents",
-      "documentsDesc": "Téléchargez les documents requis",
-      "submit": "Soumettre",
-      "submitDesc": "Vérifier et soumettre"
     },
-    "benefitsTitle": "Pourquoi créer votre société avec Opulanz ?",
-    "benefits": {
-      "expertTitle": "Accompagnement expert",
-      "expertDesc": "Notre équipe d'experts en droit des sociétés luxembourgeois vous guide à chaque étape du processus de création.",
-      "fastTitle": "Rapide et efficace",
-      "fastDesc": "Complétez l'assistant en ligne en quelques minutes. La plupart des créations sont finalisées en 2 à 3 semaines.",
-      "fullServiceTitle": "Service complet",
-      "fullServiceDesc": "De la coordination notariale à l'inscription au RCS, nous nous occupons de tout pour vous."
-    },
-    "forms": {
-      "sarl": {
-        "fullName": "Société à Responsabilité Limitée",
-        "minCapital": "12 000 €",
-        "minShareholders": 1,
-        "liability": "Limitée",
-        "features": {
-          "common": "Structure la plus courante",
-          "flexible": "Gestion flexible",
-          "capital": "Exigence de capital inférieure",
-          "suitable": "Adapté aux PME"
-        }
-      },
-      "sarls": {
-        "fullName": "Société à Responsabilité Limitée Simplifiée",
-        "minCapital": "1 €",
-        "features": {
-          "capital": "Exigence de capital très faible",
-          "formation": "Formation simplifiée",
-          "startups": "Idéal pour les startups",
-          "max": "Capital maximum de 100 000 €"
-        }
-      },
-      "sa": {
-        "fullName": "Société Anonyme",
-        "minCapital": "30 000 €",
-        "features": {
-          "public": "Peut être cotée en bourse",
-          "board": "Conseil d'administration requis",
-          "credibility": "Crédibilité accrue",
-          "suitable": "Adapté aux grandes entreprises"
-        }
-      },
-      "scsp": {
-        "fullName": "Société en Commandite Spéciale",
-        "minCapital": "Aucun minimum",
-        "features": {
-          "transparent": "Transparence fiscale",
-          "funds": "Populaire pour les fonds",
-          "flexible": "Structure flexible",
-          "liability": "Responsabilité du commandité"
-        }
-      },
-      "sole": {
-        "fullName": "Entreprise individuelle",
-        "minCapital": "Aucun minimum",
-        "liability": "Illimitée",
-        "features": {
-          "simplest": "Structure la plus simple",
-          "noEntity": "Pas d'entité juridique distincte",
-          "control": "Contrôle total",
-          "personal": "Responsabilité personnelle"
-        }
-      },
-      "soleProprietor": "Entreprise individuelle"
-    },
-    "wizard": {
-      "title": "Assistant de création de société",
-      "formingIn": "Création d'une {formType} au Luxembourg",
-      "backToSelection": "Retour à la sélection",
-      "back": "Retour",
-      "next": "Suivant",
-      "saveResume": "Enregistrer et reprendre plus tard",
-      "wizardSteps": {
-        "companyType": "Type de société",
-        "generalInfo": "Informations générales",
-        "people": "Personnes",
-        "capital": "Capital",
-        "activity": "Activité",
-        "notaryDomiciliation": "Notaire et domiciliation",
-        "documents": "Documents",
-        "reviewSubmit": "Vérifier et soumettre"
-      },
-      "step1": {
-        "selectedType": "Type de société sélectionné",
-        "requirementsFor": "Exigences pour {formType}",
-        "minCapital": "Capital minimum : {amount}",
-        "noMinCapital": "Capital minimum : Aucun minimum",
-        "maxCapital": "Capital maximum : {amount}",
-        "requiresDirectors": "Nécessite {count} ou plusieurs administrateurs",
-        "requiresManagers": "Nécessite {count} ou plusieurs gérants",
-        "changeNote": "Vous pouvez modifier le type de société en retournant à la page de sélection."
-      },
-      "step2": {
-        "proposedName": "Dénomination sociale proposée",
-        "proposedNamePlaceholder": "ex. Acme Luxembourg S.à r.l.",
-        "proposedNameHelp": "Incluez le suffixe de forme juridique (S.à r.l., S.A., etc.)",
-        "alternateName": "Nom alternatif (optionnel)",
-        "alternateNamePlaceholder": "ex. Acme Lux S.à r.l.",
-        "alternateNameHelp": "Au cas où votre premier choix ne serait pas disponible",
-        "purpose": "Objet social / Activités de la société",
-        "purposePlaceholder": "Décrivez les principales activités commerciales et l'objet de la société...",
-        "registeredOffice": "Adresse du siège social (Luxembourg)",
-        "registeredOfficePlaceholder": "Adresse, code postal, ville, Luxembourg",
-        "registeredOfficeHelp": "Ou sélectionnez le service de domiciliation à l'étape 6",
-        "duration": "Durée de la société",
-        "durationDefault": "illimitée",
-        "durationHelp": "La plupart des sociétés choisissent \"illimitée\""
-      },
-      "step3": {
-        "shareholders": "Actionnaires",
-        "addShareholder": "Ajouter un actionnaire",
-        "noShareholders": "Aucun actionnaire ajouté. Cliquez sur \"Ajouter un actionnaire\" pour commencer.",
-        "totalOwnership": "Détention totale : {percent}% (doit être égale à 100%)",
-        "directors": "Administrateurs",
-        "addDirector": "Ajouter un administrateur",
-        "noDirectors": "Aucun administrateur ajouté. {formType} nécessite au moins {count} administrateurs.",
-        "managers": "Gérants",
-        "addManager": "Ajouter un gérant",
-        "noManagers": "Aucun gérant ajouté. {formType} nécessite au moins {count} gérant.",
-        "ubosTitle": "Bénéficiaires effectifs (UBO)",
-        "addUbo": "Ajouter un UBO",
-        "ubosDesc": "Personnes détenant ou contrôlant plus de 25% de la société",
-        "noUbos": "Aucun UBO ajouté.",
-        "editPerson": "Modifier",
-        "addPerson": "Ajouter",
-        "firstName": "Prénom",
-        "lastName": "Nom de famille",
-        "dob": "Date de naissance",
-        "nationality": "Nationalité",
-        "address": "Adresse",
-        "email": "E-mail",
-        "phone": "Téléphone",
-        "ownershipPercent": "Pourcentage de détention",
-        "isPep": "Cette personne est une personne politiquement exposée (PPE)",
-        "cancel": "Annuler",
-        "save": "Enregistrer",
-        "edit": "Modifier",
-        "ownership": "détention",
-        "pep": "PPE"
-      },
-      "step4": {
-        "capitalAmount": "Montant du capital social (EUR)",
-        "noMinRequired": "Aucun minimum requis",
-        "minimum": "Minimum : {amount}",
-        "maximum": "Maximum : {amount}",
-        "capitalError": "Le montant du capital doit être compris entre {min} et {max}",
-        "paidUpPercent": "Pourcentage libéré",
-        "paidUpHelp": "Pour une SA, au moins 25% doit être libéré à la constitution",
-        "contributions": "Apports",
-        "addContribution": "Ajouter un apport",
-        "noContributions": "Aucun apport ajouté. Ajoutez des apports en numéraire ou en nature.",
-        "type": "Type",
-        "cash": "Numéraire",
-        "inKind": "En nature",
-        "amountEur": "Montant (EUR)",
-        "remove": "Supprimer",
-        "description": "Description",
-        "descriptionPlaceholder": "Décrivez l'apport...",
-        "totalContributions": "Total des apports : {amount}",
-        "contributionsMismatch": "Les apports doivent être égaux au montant du capital ({amount})"
-      },
-      "step5": {
-        "naceCode": "Code NACE",
-        "naceCodePlaceholder": "ex. 62.01 - Programmation informatique",
-        "naceCodeHelp": "Classification statistique des activités économiques dans l'UE.",
-        "findNaceCode": "Trouvez votre code NACE",
-        "expectedTurnover": "Chiffre d'affaires annuel prévu (EUR)",
-        "expectedTurnoverPlaceholder": "ex. 500000",
-        "expectedTurnoverHelp": "Revenus annuels estimés pour la première année",
-        "numberOfEmployees": "Nombre d'employés au lancement",
-        "numberOfEmployeesPlaceholder": "ex. 5",
-        "numberOfEmployeesHelp": "Nombre prévu d'employés au démarrage des opérations",
-        "whyWeAsk": "Pourquoi nous posons cette question",
-        "whyWeAskDesc": "Ces informations nous aident à préparer une documentation précise et à vous conseiller sur les réglementations applicables, les obligations fiscales et les exigences de déclaration."
-      },
-      "step6": {
-        "notaryPreferences": "Préférences notariales",
-        "notaryName": "Nom du notaire préféré (optionnel)",
-        "notaryNamePlaceholder": "Laissez vide pour que nous choisissions",
-        "notaryCity": "Ville préférée (optionnel)",
-        "notaryCityPlaceholder": "ex. Luxembourg-Ville",
-        "notaryLanguage": "Langue des actes constitutifs",
-        "english": "Anglais",
-        "french": "Français",
-        "german": "Allemand",
-        "registeredOffice": "Siège social / Domiciliation",
-        "needDomiciliation": "J'ai besoin d'un service de domiciliation / adresse de siège social",
-        "needDomiciliationDesc": "Nous pouvons vous fournir une adresse professionnelle au Luxembourg pour votre siège social.",
-        "domiciliationService": "Service de domiciliation",
-        "domiciliationIncludes": "Notre service de domiciliation comprend :",
-        "domiciliationItem1": "Adresse professionnelle au Luxembourg",
-        "domiciliationItem2": "Réexpédition et numérisation du courrier",
-        "domiciliationItem3": "Accès aux salles de réunion",
-        "domiciliationPrice": "À partir de 600 €/an",
-        "noDomiciliationNote": "Si vous ne sélectionnez pas le service de domiciliation, vous devez fournir une preuve d'adresse de siège social (bail ou titre de propriété) à l'étape suivante."
-      },
-      "step7": {
-        "idDocuments": "Copies de pièce d'identité / passeport",
-        "idDocumentsDesc": "Téléchargez les copies de pièce d'identité ou passeport de tous les administrateurs, gérants et UBO",
-        "uploadIdPassport": "Cliquez pour télécharger une pièce d'identité / passeport",
-        "fileFormats": "PDF, JPG ou PNG - Max 10 Mo",
-        "leaseTitle": "Contrat de bail / Titre de propriété",
-        "leaseDesc": "Preuve d'adresse du siège social au Luxembourg",
-        "uploadLease": "Cliquez pour télécharger le bail / titre",
-        "leasePdfOnly": "PDF - Max 10 Mo",
-        "capitalCertTitle": "Certificat de dépôt de capital (optionnel)",
-        "capitalCertDesc": "Peut être téléchargé après paiement. Certificat bancaire confirmant le dépôt de capital.",
-        "uploadCertificate": "Cliquez pour télécharger le certificat",
-        "certPdfOnly": "PDF - Max 10 Mo",
-        "simulationNote": "Ceci est une simulation. En production, les fichiers seraient téléchargés vers un stockage cloud sécurisé."
-      },
-      "step8": {
-        "dossierSummary": "Résumé du dossier",
-        "companyType": "Type de société",
-        "companyName": "Nom de la société",
-        "notProvided": "Non fourni",
-        "alternate": "Alternatif : {name}",
-        "capital": "Capital",
-        "people": "Personnes",
-        "shareholdersCount": "Actionnaires : {count}",
-        "directorsCount": "Administrateurs : {count}",
-        "managersCount": "Gérants : {count}",
-        "ubosCount": "UBO : {count}",
-        "activity": "Activité",
-        "nace": "NACE : {code}",
-        "expectedTurnover": "Chiffre d'affaires prévu : {amount}",
-        "documents": "Documents",
-        "idDocuments": "Pièces d'identité : {count}",
-        "leaseDomiciliation": "Bail / Domiciliation : {value}",
-        "serviceRequested": "Service demandé",
-        "uploaded": "téléchargé(s)",
-        "capitalCertificate": "Certificat de capital : {value}",
-        "uploadedStatus": "Téléchargé",
-        "notYet": "Pas encore",
-        "setupFeePayment": "Paiement des frais de création",
-        "opulanzSetupFee": "Frais de création Opulanz",
-        "feeDescription": "Cela couvre nos services administratifs et de coordination. Les frais de notaire et d'enregistrement sont séparés et seront communiqués par le notaire.",
-        "processing": "Traitement en cours...",
-        "paySetupFee": "Payer les frais de création (Démo)",
-        "paymentComplete": "Paiement effectué",
-        "requiredConsents": "Consentements requis",
-        "accuracyConfirm": "Je confirme que toutes les informations fournies sont exactes et complètes à ma connaissance",
-        "acceptTerms": "J'accepte les",
-        "termsConditions": "Conditions générales",
-        "acceptPrivacy": "J'accepte la",
-        "privacyPolicy": "Politique de confidentialité",
-        "submitDossier": "Soumettre le dossier de création",
-        "completePaymentFirst": "Veuillez effectuer le paiement avant de soumettre",
-        "acceptAllConsents": "Veuillez accepter tous les consentements pour soumettre",
-        "submitted": {
-          "title": "Dossier de création soumis !",
-          "description": "Votre dossier de création de société a été créé. Notre équipe l'examinera et vous contactera dans les 24 à 72 heures pour procéder à la notarisation et à l'enregistrement.",
-          "reference": "Référence :",
-          "emailConfirmation": "Vous recevrez un e-mail de confirmation sous peu.",
-          "returnHome": "Retour à l'accueil"
-        }
-      }
-    },
-    "process": {
-      "title": "Processus de création simple",
-      "description": "Nous vous guidons à chaque étape"
-    },
-    "steps": {
-      "details": {
-        "title": "Détails de la société",
-        "description": "Fournir les informations de la société"
-      },
-      "shareholders": {
-        "title": "Actionnaires",
-        "description": "Ajouter les actionnaires et la structure"
-      },
-      "capital": {
-        "title": "Dépôt de capital",
-        "description": "Déposer le capital social"
-      },
-      "payment": {
-        "title": "Paiement",
-        "description": "Payer les frais de création"
-      },
-      "registration": {
-        "title": "Enregistrement",
-        "description": "Compléter l'enregistrement au RCS"
-      }
-    },
-    "fields": {
-      "companyName": {
-        "label": "Nom de la société",
-        "placeholder": "Entrez le nom de la société"
-      },
-      "fullName": {
-        "placeholder": "Nom complet"
-      },
-      "nationality": {
-        "placeholder": "Nationalité"
-      },
-      "email": {
-        "placeholder": "E-mail"
-      }
-    }
+    "title": "Vérification d'identité",
+    "description": "Complétez votre KYC pour activer votre compte"
   },
   "taxAdvisory": {
     "hero": {
@@ -2211,6 +2188,49 @@
         "text": "Vos données sont traitées conformément au RGPD. Nous les utiliserons uniquement pour fournir des services comptables."
       },
       "submit": "Soumettre la demande"
+    }
+  },
+  "accountOpening": {
+    "start": {
+      "title": "Ouvrir un compte",
+      "subtitle": "Choisissez le type de compte qui vous convient"
+    },
+    "individual": {
+      "title": "Compte individuel",
+      "subtitle": "Services bancaires personnels pour les particuliers"
+    },
+    "company": {
+      "title": "Compte entreprise",
+      "subtitle": "Services bancaires pour les entreprises"
+    },
+    "warmReferral": {
+      "handoff": {
+        "title": "Candidature par référence",
+        "subtitle": "Complétez votre candidature référée"
+      }
+    }
+  },
+  "supportPage": {
+    "title": "Support",
+    "subtitle": "Comment pouvons-nous vous aider ?",
+    "contact": "Contactez-nous",
+    "faq": "FAQ"
+  },
+  "investmentAdvisory": {
+    "wizard": {
+      "steps": [
+        "Type de client",
+        "Profil d'investissement",
+        "Planifier",
+        "Confirmation"
+      ]
+    },
+    "clientType": {
+      "title": "Type de client",
+      "contact": {
+        "label": "Contact",
+        "placeholder": "Vos coordonnées"
+      }
     }
   }
 }

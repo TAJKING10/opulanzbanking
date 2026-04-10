@@ -208,7 +208,7 @@ export default function AccountingOnboardingPage() {
       };
 
       // Submit to Azure backend API
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/`applications', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/applications`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -96,7 +96,7 @@ export default function CompanyAccountPage() {
       };
 
       // Submit application to backend API
-      const applicationResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/`applications', {
+      const applicationResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/applications`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ export default function CompanyAccountPage() {
         },
       };
 
-      const companyResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/`companies', {
+      const companyResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/companies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

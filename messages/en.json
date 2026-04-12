@@ -1271,6 +1271,116 @@
       }
     },
     "booking": {
+      "services": {
+        "taxReturnPreparation": {
+          "title": "Tax Return Preparation",
+          "description": "Professional preparation and filing of corporate and individual tax returns"
+        },
+        "internationalTax": {
+          "title": "International Tax",
+          "description": "Expert guidance on cross-border tax matters and transfer pricing"
+        },
+        "corporateTax": {
+          "title": "Corporate Tax",
+          "description": "Comprehensive corporate tax services including M&A due diligence and VAT consulting"
+        },
+        "taxCompliance": {
+          "title": "Tax Compliance",
+          "description": "Ongoing compliance with tax laws and regulations with proactive monitoring"
+        },
+        "personalTaxAdvisory": {
+          "title": "Personal Tax Advisory",
+          "description": "Personalized tax advice for high-net-worth individuals and expatriates"
+        }
+      },
+      "validation": {
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "emailRequired": "Email address is required",
+        "emailInvalid": "Please enter a valid email address",
+        "phoneRequired": "Phone number is required"
+      },
+      "step1": {
+        "heroTitle": "Book Your Tax Advisory Consultation",
+        "heroSubtitle": "Expert tax advice tailored to your individual or business needs",
+        "overline": "STEP 1 OF 4",
+        "title": "Your Contact Information",
+        "description": "Please provide your contact details to get started",
+        "firstName": "First Name",
+        "firstNamePlaceholder": "Enter your first name",
+        "lastName": "Last Name",
+        "lastNamePlaceholder": "Enter your last name",
+        "email": "Email Address",
+        "emailPlaceholder": "Enter your email address",
+        "phone": "Phone Number",
+        "phonePlaceholder": "Enter your phone number",
+        "required": "*",
+        "continue": "Continue to Schedule",
+        "backToTaxAdvisory": "Back to Tax Advisory"
+      },
+      "step2": {
+        "heroTitle": "Schedule Your Consultation",
+        "heroSubtitle": "Choose a convenient time for your 60-minute consultation",
+        "overline": "STEP 2 OF 4",
+        "title": "Pick a Date & Time",
+        "backToContactInfo": "Back to Contact Info"
+      },
+      "step3": {
+        "heroTitle": "Select Your Service",
+        "heroSubtitle": "Choose the tax advisory service you need",
+        "overline": "STEP 3 OF 4",
+        "title": "Select Your Tax Advisory Service",
+        "description": "Choose the service that best matches your needs",
+        "selectService": "Select Service"
+      },
+      "step4": {
+        "heroTitle": "Review & Confirm",
+        "heroSubtitle": "Review your booking details before payment",
+        "overline": "STEP 4 OF 4",
+        "title": "Booking Summary",
+        "contactInfo": "Contact Information",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "appointmentDetails": "Appointment Details",
+        "appointmentConfirmation": "Appointment",
+        "scheduledViaCalendly": "Scheduled via Calendly",
+        "calendlyEmailNotice": "A calendar invite has been sent to your email",
+        "duration": "Duration",
+        "minutes": "minutes",
+        "servicePayment": "Service & Payment",
+        "serviceFeeExclVAT": "Service Fee (excl. VAT)",
+        "vat": "VAT (20%)",
+        "totalInclVAT": "Total (incl. VAT)",
+        "changeService": "Change Service",
+        "proceedToPayment": "Proceed to Payment"
+      },
+      "payment": {
+        "heroTitle": "Complete Payment",
+        "heroSubtitle": "Secure payment to confirm your consultation",
+        "paymentSummary": "Payment Summary",
+        "service": "Service",
+        "client": "Client",
+        "total": "Total",
+        "loadingPaymentOptions": "Loading payment options...",
+        "securePaymentNotice": "Your payment is secured with industry-standard encryption",
+        "paymentFailed": "Payment failed. Please try again.",
+        "paymentSuccessError": "Payment completed but confirmation failed. Please contact support.",
+        "backToSummary": "Back to Summary",
+        "cancelBooking": "Cancel Booking",
+        "title": "Complete Your Payment",
+        "subtitle": "Final step to confirm your consultation",
+        "step": "STEP 4 OF 4",
+        "paymentDetails": "Payment Details",
+        "orderSummary": "Order Summary",
+        "paymentMethod": "Payment Method",
+        "paymentMethodDesc": "To complete your booking, please proceed with the payment using one of the methods below.",
+        "payWithCard": "Pay with Credit/Debit Card",
+        "payWithTransfer": "Pay with Bank Transfer",
+        "payWithPaypal": "Pay with PayPal",
+        "reservedNote": "Your consultation slot is reserved for 15 minutes. Please complete the payment to confirm your booking.",
+        "backToSelection": "Back to Service Selection"
+      },
       "calendly": {
         "title": "Schedule Your Tax Advisory Consultation",
         "subtitle": "Choose a convenient time for your 60-minute consultation"
@@ -1282,22 +1392,59 @@
         "selectTitle": "Select Your Tax Advisory Service",
         "selectDesc": "Choose the service that best matches your needs",
         "selectService": "Select Service"
-      },
-      "payment": {
-        "title": "Complete Your Payment",
-        "subtitle": "Final step to confirm your consultation",
-        "step": "STEP 3 OF 3",
-        "paymentDetails": "Payment Details",
-        "orderSummary": "Order Summary",
-        "paymentMethod": "Payment Method",
-        "paymentMethodDesc": "To complete your booking, please proceed with the payment using one of the methods below.",
-        "payWithCard": "Pay with Credit/Debit Card",
-        "payWithTransfer": "Pay with Bank Transfer",
-        "payWithPaypal": "Pay with PayPal",
-        "reservedNote": "Your consultation slot is reserved for 15 minutes. Please complete the payment to confirm your booking.",
-        "backToSelection": "Back to Service Selection",
-        "cancelBooking": "Cancel Booking"
       }
+    },
+    "confirmation": {
+      "heroTitle": "Booking Confirmed!",
+      "heroSubtitle": "Your tax advisory consultation has been successfully booked",
+      "confirmationLabel": "Booking Reference",
+      "confirmationNumber": "Confirmation Number",
+      "clientName": "Client Name",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "service": "Service",
+      "serviceTitle": "Service",
+      "serviceDetails": "Service Details",
+      "date": "Date",
+      "time": "Time",
+      "price": "Price",
+      "inclVAT": "(incl. VAT)",
+      "duration": "{minutes} minutes",
+      "consultation": "{minutes}-minute consultation",
+      "appointmentDetails": "Appointment Details",
+      "scheduledViaCalendly": "Scheduled via Calendly",
+      "calendlyConfirmationNotice": "A calendar invite has been sent to your email",
+      "checkEmailForDetails": "Check your email for full booking details",
+      "emailSent": {
+        "title": "Confirmation Email Sent",
+        "description": "A confirmation email has been sent to {email}"
+      },
+      "whatHappensNext": {
+        "title": "What Happens Next?",
+        "step1": {
+          "title": "Check Your Email",
+          "description": "You'll receive a confirmation email with your appointment details and joining instructions"
+        },
+        "step2": {
+          "title": "Prepare Your Documents",
+          "description": "Gather any relevant financial documents and questions for your consultation"
+        },
+        "step3": {
+          "title": "Join the Consultation",
+          "description": "Connect with our tax advisor at your scheduled time via video conference"
+        },
+        "step4": {
+          "title": "Receive Your Report",
+          "description": "Get a detailed tax advisory report following your consultation"
+        }
+      },
+      "rescheduleQuestion": "Need to reschedule?",
+      "supportContact": "Contact our support team",
+      "backToTaxAdvisory": "Back to Tax Advisory",
+      "goToDashboard": "Go to Dashboard",
+      "downloadPDFReceipt": "Download Receipt",
+      "addToCalendar": "Add to Calendar"
     },
     "taxReturn": {
       "title": "Tax Return Preparation",
@@ -2197,11 +2344,44 @@
     },
     "individual": {
       "title": "Individual Account",
-      "subtitle": "Personal banking for individuals"
+      "subtitle": "Personal banking for individuals",
+      "description": "Complete the form below to open your personal account",
+      "form": {
+        "personalInfo": "Personal Information",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "dateOfBirth": "Date of Birth",
+        "nationality": "Nationality",
+        "selectNationality": "Select nationality",
+        "phoneNumber": "Phone Number",
+        "address": "Address",
+        "streetAddress": "Street Address",
+        "city": "City",
+        "postalCode": "Postal Code",
+        "country": "Country",
+        "selectCountry": "Select country",
+        "activityInfo": "Activity Information",
+        "isPEP": "Are you a Politically Exposed Person (PEP)?",
+        "yes": "Yes",
+        "no": "No",
+        "expectedMonthlyVolume": "Expected Monthly Transaction Volume",
+        "selectRange": "Select a range",
+        "sourceOfFunds": "Source of Funds",
+        "sourceOfFundsPlaceholder": "e.g. salary, business income, investments...",
+        "consents": "Consents & Agreements",
+        "consentKYC": "I consent to the collection and processing of my personal data for KYC/AML compliance purposes",
+        "consentTerms": "I have read and agree to the",
+        "termsLink": "Terms & Conditions",
+        "privacyLink": "Privacy Policy"
+      }
     },
     "company": {
       "title": "Company Account",
-      "subtitle": "Business banking for companies"
+      "subtitle": "Business banking for companies",
+      "description": "Complete the form below to open your company account",
+      "form": {
+        "companyInfo": "Company Information"
+      }
     },
     "warmReferral": {
       "handoff": {
@@ -2218,18 +2398,124 @@
   },
   "investmentAdvisory": {
     "wizard": {
-      "steps": [
-        "Client Type",
-        "Investment Profile",
-        "Schedule",
-        "Confirmation"
-      ]
+      "steps": {
+        "clientType": "Client Type",
+        "information": "Investment Profile",
+        "review": "Review",
+        "complete": "Confirmation"
+      }
     },
     "clientType": {
       "title": "Client Type",
       "contact": {
         "label": "Contact",
         "placeholder": "Your contact information"
+      }
+    }
+  },
+  "lifeInsurance": {
+    "booking": {
+      "services": {
+        "termLife": {
+          "title": "Term Life Insurance",
+          "description": "Affordable coverage for a specific period, providing financial protection for your family"
+        },
+        "wholeLife": {
+          "title": "Whole Life Insurance",
+          "description": "Permanent coverage with a cash value component that grows over time"
+        },
+        "universalLife": {
+          "title": "Universal Life Insurance",
+          "description": "Flexible permanent coverage with adjustable premiums and death benefits"
+        },
+        "variableLife": {
+          "title": "Variable Life Insurance",
+          "description": "Investment-linked coverage allowing you to grow your policy's cash value"
+        },
+        "groupLife": {
+          "title": "Group Life Insurance",
+          "description": "Cost-effective coverage for employees or members of an organization"
+        }
+      },
+      "validation": {
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "emailRequired": "Email address is required",
+        "emailInvalid": "Please enter a valid email address",
+        "phoneRequired": "Phone number is required"
+      },
+      "form": {
+        "firstName": "First Name",
+        "firstNamePlaceholder": "Enter your first name",
+        "lastName": "Last Name",
+        "lastNamePlaceholder": "Enter your last name",
+        "email": "Email Address",
+        "emailPlaceholder": "Enter your email address",
+        "phone": "Phone Number",
+        "phonePlaceholder": "Enter your phone number",
+        "continueToSchedule": "Continue to Schedule",
+        "backToLifeInsurance": "Back to Life Insurance"
+      },
+      "step1": {
+        "heroTitle": "Book Your Life Insurance Consultation",
+        "heroSubtitle": "Protect what matters most with expert insurance advice",
+        "overline": "STEP 1 OF 4",
+        "title": "Your Contact Information",
+        "description": "Please provide your contact details to get started"
+      },
+      "step2": {
+        "heroTitle": "Schedule Your Consultation",
+        "heroSubtitle": "Choose a convenient time for your 60-minute consultation",
+        "overline": "STEP 2 OF 4",
+        "title": "Pick a Date & Time",
+        "bookingFor": "Booking for",
+        "selectedService": "Selected service",
+        "backButton": "Back to Contact Info"
+      },
+      "step3": {
+        "heroTitle": "Select Your Insurance Plan",
+        "heroSubtitle": "Choose the life insurance product that best fits your needs",
+        "overline": "STEP 3 OF 4",
+        "title": "Select Your Insurance Plan",
+        "description": "Choose the plan that best matches your protection goals",
+        "consultationFee": "consultation fee",
+        "selectService": "Select Plan"
+      },
+      "step4": {
+        "heroTitle": "Review & Confirm",
+        "heroSubtitle": "Review your booking details before payment",
+        "overline": "STEP 4 OF 4",
+        "title": "Booking Summary",
+        "contactInfo": "Contact Information",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "appointmentDetails": "Appointment Details",
+        "appointmentConfirmation": "Appointment",
+        "scheduledViaCalendly": "Scheduled via Calendly",
+        "appointmentEmailNote": "A calendar invite has been sent to your email",
+        "duration": "Duration",
+        "minutes": "60 minutes",
+        "servicePayment": "Insurance Plan & Payment",
+        "consultationFeeExclVat": "Consultation Fee (excl. VAT)",
+        "vat": "VAT (20%)",
+        "totalInclVat": "Total (incl. VAT)",
+        "changeService": "Change Plan",
+        "proceedToPayment": "Proceed to Payment"
+      },
+      "payment": {
+        "heroTitle": "Complete Payment",
+        "heroSubtitle": "Secure payment to confirm your consultation",
+        "paymentSummary": "Payment Summary",
+        "service": "Insurance Plan",
+        "client": "Client",
+        "total": "Total",
+        "loadingPayment": "Loading payment options...",
+        "securePaymentNote": "Your payment is secured with industry-standard encryption",
+        "paymentFailed": "Payment failed. Please try again.",
+        "paymentSuccessError": "Payment completed but confirmation failed. Please contact support.",
+        "backToSummary": "Back to Summary",
+        "cancelBooking": "Cancel Booking"
       }
     }
   }

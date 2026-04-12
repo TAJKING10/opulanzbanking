@@ -91,7 +91,21 @@
       "Bash(grep -rn \"t\\(''''\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/invoicing-accounting --include=\"*.tsx\")",
       "Bash(grep -rn \"t\\(''''\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/invoicing-accounting/confirmation --include=\"*.tsx\")",
       "Bash(grep -rn \"t\\(''''\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/legal --include=\"*.tsx\")",
-      "Bash(az --version)"
+      "Bash(az --version)",
+      "Bash(az webapp:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File deploy-frontend.ps1)",
+      "Bash(az resource:*)",
+      "Bash(az account:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -Command \":*)",
+      "Bash(while read:*)",
+      "Bash(do if:*)",
+      "Bash(then echo:*)",
+      "Bash(fi)",
+      "Bash(sed \"s/'''' *$//\")",
+      "Bash(grep -n \"t\\(\"\"\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/life-insurance/booking/LifeInsuranceBookingClient.tsx)",
+      "Bash(grep -n \"t\\(\"\"\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/tax-advisory/booking/BookingClient.tsx)",
+      "Bash(grep -n 't\\(\"\"\"\"' /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/life-insurance/booking/LifeInsuranceBookingClient.tsx)",
+      "Bash(grep -n \"tAccount\\(\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/open-account/company/page.tsx)"
     ],
     "deny": [],
     "ask": []

@@ -1271,6 +1271,116 @@
       }
     },
     "booking": {
+      "services": {
+        "taxReturnPreparation": {
+          "title": "Préparation des Déclarations Fiscales",
+          "description": "Préparation et dépôt professionnels des déclarations fiscales des entreprises et des particuliers"
+        },
+        "internationalTax": {
+          "title": "Fiscalité Internationale",
+          "description": "Expertise en matière fiscale transfrontalière et en prix de transfert"
+        },
+        "corporateTax": {
+          "title": "Fiscalité des Entreprises",
+          "description": "Services fiscaux complets pour les entreprises, y compris due diligence M&A et conseil TVA"
+        },
+        "taxCompliance": {
+          "title": "Conformité Fiscale",
+          "description": "Conformité continue aux lois et réglementations fiscales avec surveillance proactive"
+        },
+        "personalTaxAdvisory": {
+          "title": "Conseil Fiscal Personnel",
+          "description": "Conseils fiscaux personnalisés pour les personnes fortunées et les expatriés"
+        }
+      },
+      "validation": {
+        "firstNameRequired": "Le prénom est obligatoire",
+        "lastNameRequired": "Le nom de famille est obligatoire",
+        "emailRequired": "L'adresse e-mail est obligatoire",
+        "emailInvalid": "Veuillez saisir une adresse e-mail valide",
+        "phoneRequired": "Le numéro de téléphone est obligatoire"
+      },
+      "step1": {
+        "heroTitle": "Réservez votre consultation fiscale",
+        "heroSubtitle": "Des conseils fiscaux experts adaptés à vos besoins individuels ou professionnels",
+        "overline": "ÉTAPE 1 SUR 4",
+        "title": "Vos coordonnées",
+        "description": "Veuillez fournir vos coordonnées pour commencer",
+        "firstName": "Prénom",
+        "firstNamePlaceholder": "Entrez votre prénom",
+        "lastName": "Nom de famille",
+        "lastNamePlaceholder": "Entrez votre nom de famille",
+        "email": "Adresse e-mail",
+        "emailPlaceholder": "Entrez votre adresse e-mail",
+        "phone": "Numéro de téléphone",
+        "phonePlaceholder": "Entrez votre numéro de téléphone",
+        "required": "*",
+        "continue": "Continuer vers la planification",
+        "backToTaxAdvisory": "Retour au conseil fiscal"
+      },
+      "step2": {
+        "heroTitle": "Planifiez votre consultation",
+        "heroSubtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes",
+        "overline": "ÉTAPE 2 SUR 4",
+        "title": "Choisissez une date et une heure",
+        "backToContactInfo": "Retour aux coordonnées"
+      },
+      "step3": {
+        "heroTitle": "Sélectionnez votre service",
+        "heroSubtitle": "Choisissez le service de conseil fiscal dont vous avez besoin",
+        "overline": "ÉTAPE 3 SUR 4",
+        "title": "Sélectionnez votre service fiscal",
+        "description": "Choisissez le service qui correspond le mieux à vos besoins",
+        "selectService": "Sélectionner le service"
+      },
+      "step4": {
+        "heroTitle": "Vérifier et confirmer",
+        "heroSubtitle": "Vérifiez les détails de votre réservation avant le paiement",
+        "overline": "ÉTAPE 4 SUR 4",
+        "title": "Récapitulatif de la réservation",
+        "contactInfo": "Coordonnées",
+        "name": "Nom",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "appointmentDetails": "Détails du rendez-vous",
+        "appointmentConfirmation": "Rendez-vous",
+        "scheduledViaCalendly": "Planifié via Calendly",
+        "calendlyEmailNotice": "Une invitation de calendrier a été envoyée à votre e-mail",
+        "duration": "Durée",
+        "minutes": "minutes",
+        "servicePayment": "Service et paiement",
+        "serviceFeeExclVAT": "Frais de service (HT)",
+        "vat": "TVA (20%)",
+        "totalInclVAT": "Total (TTC)",
+        "changeService": "Changer de service",
+        "proceedToPayment": "Procéder au paiement"
+      },
+      "payment": {
+        "heroTitle": "Effectuer le paiement",
+        "heroSubtitle": "Paiement sécurisé pour confirmer votre consultation",
+        "paymentSummary": "Récapitulatif du paiement",
+        "service": "Service",
+        "client": "Client",
+        "total": "Total",
+        "loadingPaymentOptions": "Chargement des options de paiement...",
+        "securePaymentNotice": "Votre paiement est sécurisé par un chiffrement standard du secteur",
+        "paymentFailed": "Paiement échoué. Veuillez réessayer.",
+        "paymentSuccessError": "Paiement effectué mais la confirmation a échoué. Veuillez contacter le support.",
+        "backToSummary": "Retour au récapitulatif",
+        "cancelBooking": "Annuler la réservation",
+        "title": "Effectuez votre paiement",
+        "subtitle": "Dernière étape pour confirmer votre consultation",
+        "step": "ÉTAPE 4 SUR 4",
+        "paymentDetails": "Détails du paiement",
+        "orderSummary": "Résumé de la commande",
+        "paymentMethod": "Mode de paiement",
+        "paymentMethodDesc": "Pour finaliser votre réservation, veuillez procéder au paiement en utilisant l'une des méthodes ci-dessous.",
+        "payWithCard": "Payer par carte bancaire",
+        "payWithTransfer": "Payer par virement bancaire",
+        "payWithPaypal": "Payer avec PayPal",
+        "reservedNote": "Votre créneau de consultation est réservé pendant 15 minutes. Veuillez effectuer le paiement pour confirmer votre réservation.",
+        "backToSelection": "Retour à la sélection du service"
+      },
       "calendly": {
         "title": "Planifiez votre consultation fiscale",
         "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes"
@@ -1282,22 +1392,59 @@
         "selectTitle": "Sélectionnez votre service de conseil fiscal",
         "selectDesc": "Choisissez le service qui correspond le mieux à vos besoins",
         "selectService": "Sélectionner le service"
-      },
-      "payment": {
-        "title": "Effectuez votre paiement",
-        "subtitle": "Dernière étape pour confirmer votre consultation",
-        "step": "ÉTAPE 3 SUR 3",
-        "paymentDetails": "Détails du paiement",
-        "orderSummary": "Résumé de la commande",
-        "paymentMethod": "Mode de paiement",
-        "paymentMethodDesc": "Pour finaliser votre réservation, veuillez procéder au paiement en utilisant l'une des méthodes ci-dessous.",
-        "payWithCard": "Payer par carte bancaire",
-        "payWithTransfer": "Payer par virement bancaire",
-        "payWithPaypal": "Payer avec PayPal",
-        "reservedNote": "Votre créneau de consultation est réservé pendant 15 minutes. Veuillez effectuer le paiement pour confirmer votre réservation.",
-        "backToSelection": "Retour à la sélection du service",
-        "cancelBooking": "Annuler la réservation"
       }
+    },
+    "confirmation": {
+      "heroTitle": "Réservation confirmée !",
+      "heroSubtitle": "Votre consultation de conseil fiscal a été réservée avec succès",
+      "confirmationLabel": "Référence de réservation",
+      "confirmationNumber": "Numéro de confirmation",
+      "clientName": "Nom du client",
+      "name": "Nom",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "service": "Service",
+      "serviceTitle": "Service",
+      "serviceDetails": "Détails du service",
+      "date": "Date",
+      "time": "Heure",
+      "price": "Prix",
+      "inclVAT": "(TTC)",
+      "duration": "{minutes} minutes",
+      "consultation": "Consultation de {minutes} minutes",
+      "appointmentDetails": "Détails du rendez-vous",
+      "scheduledViaCalendly": "Planifié via Calendly",
+      "calendlyConfirmationNotice": "Une invitation de calendrier a été envoyée à votre e-mail",
+      "checkEmailForDetails": "Vérifiez votre e-mail pour les détails complets de la réservation",
+      "emailSent": {
+        "title": "E-mail de confirmation envoyé",
+        "description": "Un e-mail de confirmation a été envoyé à {email}"
+      },
+      "whatHappensNext": {
+        "title": "Que se passe-t-il ensuite ?",
+        "step1": {
+          "title": "Vérifiez votre e-mail",
+          "description": "Vous recevrez un e-mail de confirmation avec les détails de votre rendez-vous et les instructions pour le rejoindre"
+        },
+        "step2": {
+          "title": "Préparez vos documents",
+          "description": "Rassemblez tous les documents financiers pertinents et vos questions pour votre consultation"
+        },
+        "step3": {
+          "title": "Rejoignez la consultation",
+          "description": "Connectez-vous avec notre conseiller fiscal à l'heure prévue via vidéoconférence"
+        },
+        "step4": {
+          "title": "Recevez votre rapport",
+          "description": "Obtenez un rapport de conseil fiscal détaillé après votre consultation"
+        }
+      },
+      "rescheduleQuestion": "Besoin de reporter ?",
+      "supportContact": "Contactez notre équipe de support",
+      "backToTaxAdvisory": "Retour au conseil fiscal",
+      "goToDashboard": "Aller au tableau de bord",
+      "downloadPDFReceipt": "Télécharger le reçu",
+      "addToCalendar": "Ajouter au calendrier"
     },
     "taxReturn": {
       "title": "Préparation des déclarations fiscales",
@@ -2197,11 +2344,44 @@
     },
     "individual": {
       "title": "Compte individuel",
-      "subtitle": "Services bancaires personnels pour les particuliers"
+      "subtitle": "Services bancaires personnels pour les particuliers",
+      "description": "Remplissez le formulaire ci-dessous pour ouvrir votre compte personnel",
+      "form": {
+        "personalInfo": "Informations personnelles",
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "dateOfBirth": "Date de naissance",
+        "nationality": "Nationalité",
+        "selectNationality": "Sélectionner une nationalité",
+        "phoneNumber": "Numéro de téléphone",
+        "address": "Adresse",
+        "streetAddress": "Adresse postale",
+        "city": "Ville",
+        "postalCode": "Code postal",
+        "country": "Pays",
+        "selectCountry": "Sélectionner un pays",
+        "activityInfo": "Informations sur l'activité",
+        "isPEP": "Êtes-vous une Personne Politiquement Exposée (PPE) ?",
+        "yes": "Oui",
+        "no": "Non",
+        "expectedMonthlyVolume": "Volume mensuel de transactions prévu",
+        "selectRange": "Sélectionner une plage",
+        "sourceOfFunds": "Source des fonds",
+        "sourceOfFundsPlaceholder": "ex. salaire, revenus d'entreprise, investissements...",
+        "consents": "Consentements et accords",
+        "consentKYC": "Je consens à la collecte et au traitement de mes données personnelles à des fins de conformité KYC/AML",
+        "consentTerms": "J'ai lu et j'accepte les",
+        "termsLink": "Conditions générales",
+        "privacyLink": "Politique de confidentialité"
+      }
     },
     "company": {
       "title": "Compte entreprise",
-      "subtitle": "Services bancaires pour les entreprises"
+      "subtitle": "Services bancaires pour les entreprises",
+      "description": "Remplissez le formulaire ci-dessous pour ouvrir votre compte entreprise",
+      "form": {
+        "companyInfo": "Informations sur l'entreprise"
+      }
     },
     "warmReferral": {
       "handoff": {
@@ -2218,18 +2398,124 @@
   },
   "investmentAdvisory": {
     "wizard": {
-      "steps": [
-        "Type de client",
-        "Profil d'investissement",
-        "Planifier",
-        "Confirmation"
-      ]
+      "steps": {
+        "clientType": "Type de Client",
+        "information": "Profil d'Investissement",
+        "review": "Révision",
+        "complete": "Confirmation"
+      }
     },
     "clientType": {
       "title": "Type de client",
       "contact": {
         "label": "Contact",
         "placeholder": "Vos coordonnées"
+      }
+    }
+  },
+  "lifeInsurance": {
+    "booking": {
+      "services": {
+        "termLife": {
+          "title": "Assurance Vie Temporaire",
+          "description": "Couverture abordable pour une période spécifique, offrant une protection financière à votre famille"
+        },
+        "wholeLife": {
+          "title": "Assurance Vie Entière",
+          "description": "Couverture permanente avec une composante de valeur de rachat qui croît avec le temps"
+        },
+        "universalLife": {
+          "title": "Assurance Vie Universelle",
+          "description": "Couverture permanente flexible avec des primes et des prestations de décès ajustables"
+        },
+        "variableLife": {
+          "title": "Assurance Vie Variable",
+          "description": "Couverture liée aux investissements permettant de faire croître la valeur de rachat de votre police"
+        },
+        "groupLife": {
+          "title": "Assurance Vie Collective",
+          "description": "Couverture économique pour les employés ou membres d'une organisation"
+        }
+      },
+      "validation": {
+        "firstNameRequired": "Le prénom est obligatoire",
+        "lastNameRequired": "Le nom de famille est obligatoire",
+        "emailRequired": "L'adresse e-mail est obligatoire",
+        "emailInvalid": "Veuillez saisir une adresse e-mail valide",
+        "phoneRequired": "Le numéro de téléphone est obligatoire"
+      },
+      "form": {
+        "firstName": "Prénom",
+        "firstNamePlaceholder": "Entrez votre prénom",
+        "lastName": "Nom de famille",
+        "lastNamePlaceholder": "Entrez votre nom de famille",
+        "email": "Adresse e-mail",
+        "emailPlaceholder": "Entrez votre adresse e-mail",
+        "phone": "Numéro de téléphone",
+        "phonePlaceholder": "Entrez votre numéro de téléphone",
+        "continueToSchedule": "Continuer vers la planification",
+        "backToLifeInsurance": "Retour à l'assurance vie"
+      },
+      "step1": {
+        "heroTitle": "Réservez votre consultation en assurance vie",
+        "heroSubtitle": "Protégez ce qui compte le plus avec des conseils d'experts en assurance",
+        "overline": "ÉTAPE 1 SUR 4",
+        "title": "Vos coordonnées",
+        "description": "Veuillez fournir vos coordonnées pour commencer"
+      },
+      "step2": {
+        "heroTitle": "Planifiez votre consultation",
+        "heroSubtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes",
+        "overline": "ÉTAPE 2 SUR 4",
+        "title": "Choisissez une date et une heure",
+        "bookingFor": "Réservation pour",
+        "selectedService": "Service sélectionné",
+        "backButton": "Retour aux coordonnées"
+      },
+      "step3": {
+        "heroTitle": "Sélectionnez votre plan d'assurance",
+        "heroSubtitle": "Choisissez le produit d'assurance vie qui correspond le mieux à vos besoins",
+        "overline": "ÉTAPE 3 SUR 4",
+        "title": "Sélectionnez votre plan d'assurance",
+        "description": "Choisissez le plan qui correspond le mieux à vos objectifs de protection",
+        "consultationFee": "frais de consultation",
+        "selectService": "Sélectionner le plan"
+      },
+      "step4": {
+        "heroTitle": "Vérifier et confirmer",
+        "heroSubtitle": "Vérifiez les détails de votre réservation avant le paiement",
+        "overline": "ÉTAPE 4 SUR 4",
+        "title": "Récapitulatif de la réservation",
+        "contactInfo": "Coordonnées",
+        "name": "Nom",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "appointmentDetails": "Détails du rendez-vous",
+        "appointmentConfirmation": "Rendez-vous",
+        "scheduledViaCalendly": "Planifié via Calendly",
+        "appointmentEmailNote": "Une invitation de calendrier a été envoyée à votre e-mail",
+        "duration": "Durée",
+        "minutes": "60 minutes",
+        "servicePayment": "Plan d'assurance et paiement",
+        "consultationFeeExclVat": "Frais de consultation (HT)",
+        "vat": "TVA (20%)",
+        "totalInclVat": "Total (TTC)",
+        "changeService": "Changer de plan",
+        "proceedToPayment": "Procéder au paiement"
+      },
+      "payment": {
+        "heroTitle": "Effectuer le paiement",
+        "heroSubtitle": "Paiement sécurisé pour confirmer votre consultation",
+        "paymentSummary": "Récapitulatif du paiement",
+        "service": "Plan d'assurance",
+        "client": "Client",
+        "total": "Total",
+        "loadingPayment": "Chargement des options de paiement...",
+        "securePaymentNote": "Votre paiement est sécurisé par un chiffrement standard du secteur",
+        "paymentFailed": "Paiement échoué. Veuillez réessayer.",
+        "paymentSuccessError": "Paiement effectué mais la confirmation a échoué. Veuillez contacter le support.",
+        "backToSummary": "Retour au récapitulatif",
+        "cancelBooking": "Annuler la réservation"
       }
     }
   }

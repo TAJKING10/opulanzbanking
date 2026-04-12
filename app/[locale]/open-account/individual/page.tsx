@@ -62,6 +62,7 @@ export default function IndividualAccountPage() {
   } = useForm<WhitelabelKYCFormData>({
     resolver: zodResolver(whitelabelKYCSchema),
     defaultValues: {
+      email: "",
       isPEP: false,
       activityCountries: [],
       consentKYC: false,
@@ -84,7 +85,7 @@ export default function IndividualAccountPage() {
 
   const onSubmit = async (data: WhitelabelKYCFormData) => {
     try {
-      console.log("Submitting KYC data:", data);
+      const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
       // Prepare the payload for the backend
       const applicationPayload = {
@@ -94,6 +95,7 @@ export default function IndividualAccountPage() {
           // Personal Information
           firstName: data.firstName,
           lastName: data.lastName,
+          email: data.email,
           dateOfBirth: data.dateOfBirth,
           nationality: data.nationality,
           phoneNumber: data.phoneNumber,
@@ -107,6 +109,7 @@ export default function IndividualAccountPage() {
 
           // Activity Information
           isPEP: data.isPEP,
+          activityCountries: data.activityCountries,
           expectedMonthlyVolume: data.expectedMonthlyVolume,
           sourceOfFunds: data.sourceOfFunds,
 
@@ -120,11 +123,9 @@ export default function IndividualAccountPage() {
       };
 
       // Submit to backend API
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/applications`, {
+      const response = await fetch(`${API}/api/applications`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(applicationPayload),
       });
 
@@ -133,6 +134,20 @@ export default function IndividualAccountPage() {
       }
 
       const result = await response.json();
+
+      // Send confirmation notification
+      fetch(`${API}/api/notifications/appointment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: `${data.firstName} ${data.lastName}`,
+          customerEmail: data.email,
+          meetingType: 'Individual Account Application',
+          appointmentDate: new Date().toLocaleDateString(),
+          appointmentTime: new Date().toLocaleTimeString(),
+          price: 0,
+        }),
+      }).catch(() => {}); // non-blocking
 
       // Open Sumsub KYC widget for identity verification
       setApplicationId(`individual-${result.id || Date.now()}`);
@@ -261,6 +276,23 @@ export default function IndividualAccountPage() {
                   {errors.lastName && (
                     <p className="text-xs text-red-600">
                       {errors.lastName.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="indv_email">
+                    Email Address<span className="text-red-600">*</span>
+                  </Label>
+                  <Input
+                    id="indv_email"
+                    type="email"
+                    placeholder="your@email.com"
+                    {...register("email")}
+                  />
+                  {errors.email && (
+                    <p className="text-xs text-red-600">
+                      {errors.email.message}
                     </p>
                   )}
                 </div>
@@ -474,6 +506,33 @@ export default function IndividualAccountPage() {
                       <span className="text-sm">{tAccount("form.yes")}</span>
                     </label>
                   </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="indv_activityCountries">
+                    Countries of Activity<span className="text-red-600">*</span>
+                  </Label>
+                  <select
+                    id="indv_activityCountries"
+                    {...register("activityCountries")}
+                    multiple
+                    size={5}
+                    className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+                  >
+                    {COUNTRIES.map((country) => (
+                      <option key={country.code} value={country.code}>
+                        {country.name}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-brand-grayMed">
+                    Hold Ctrl (Windows) or Cmd (Mac) to select multiple countries
+                  </p>
+                  {errors.activityCountries && (
+                    <p className="text-xs text-red-600">
+                      {errors.activityCountries.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">

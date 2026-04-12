@@ -50,7 +50,34 @@ export default function WarmReferralPage() {
   const consentPartner = watch("consentPartner");
 
   const onSubmit = async (data: WarmReferralFormData) => {
-    // Simulate partner matching logic
+    // Save referral lead to backend
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/applications`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'individual',
+          status: 'submitted',
+          payload: {
+            referralType: 'warm',
+            email: data.email,
+            clientType: data.clientType,
+            country: data.country,
+            legalForm: data.legalForm || null,
+            expectedVolume: data.expectedVolume,
+            consentDataSharing: data.consentDataSharing,
+            consentTerms: data.consentTerms,
+            consentPartner: data.consentPartner,
+            submittedAt: new Date().toISOString(),
+          },
+        }),
+      });
+    } catch (err) {
+      console.error('Failed to save warm referral lead:', err);
+      // Non-blocking: continue to partner handoff even if save fails
+    }
+
+    // Partner matching logic
     const matchedPartner =
       data.country === "LU" ? "Banque Partner LU" : "Banque Partner FR";
     setPartner(matchedPartner);

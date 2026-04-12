@@ -41,11 +41,13 @@ export default function CompanyAccountPage() {
     register,
     handleSubmit,
     setValue,
+    watch,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<WhitelabelKYBFormData>({
     resolver: zodResolver(whitelabelKYBSchema),
     defaultValues: {
+      contactEmail: "",
       activityCountries: [],
       consentKYB: false,
       consentTerms: false,
@@ -62,7 +64,7 @@ export default function CompanyAccountPage() {
 
   const onSubmit = async (data: WhitelabelKYBFormData) => {
     try {
-      console.log("Submitting KYB data:", data);
+      const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
       // Prepare the payload for the backend
       const applicationPayload = {
@@ -74,6 +76,7 @@ export default function CompanyAccountPage() {
           registrationNumber: data.registrationNumber,
           dateOfIncorporation: data.dateOfIncorporation,
           legalForm: data.legalForm,
+          contactEmail: data.contactEmail,
 
           // Company Address
           companyAddress: data.companyAddress,
@@ -96,11 +99,9 @@ export default function CompanyAccountPage() {
       };
 
       // Submit application to backend API
-      const applicationResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/applications`, {
+      const applicationResponse = await fetch(`${API}/api/applications`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(applicationPayload),
       });
 
@@ -125,17 +126,25 @@ export default function CompanyAccountPage() {
         },
       };
 
-      const companyResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/companies`, {
+      await fetch(`${API}/api/companies`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(companyPayload),
-      });
+      }).catch(() => {}); // non-blocking
 
-      if (!companyResponse.ok) {
-        console.warn('Failed to create company record, but application was saved');
-      }
+      // Send confirmation notification
+      fetch(`${API}/api/notifications/appointment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: data.companyName,
+          customerEmail: data.contactEmail,
+          meetingType: 'Company Account Application',
+          appointmentDate: new Date().toLocaleDateString(),
+          appointmentTime: new Date().toLocaleTimeString(),
+          price: 0,
+        }),
+      }).catch(() => {}); // non-blocking
 
       // Open Sumsub KYC widget for corporate identity verification
       setApplicationId(`company-${applicationResult.id || Date.now()}`);
@@ -308,6 +317,24 @@ export default function CompanyAccountPage() {
                 </div>
               </div>
 
+              {/* Contact Email */}
+              <div className="space-y-2">
+                <Label htmlFor="comp_contactEmail">
+                  Contact Email<span className="text-red-600">*</span>
+                </Label>
+                <Input
+                  id="comp_contactEmail"
+                  type="email"
+                  placeholder="contact@company.com"
+                  {...register("contactEmail")}
+                />
+                {errors.contactEmail && (
+                  <p className="text-xs text-red-600">
+                    {errors.contactEmail.message}
+                  </p>
+                )}
+              </div>
+
               {/* Company Address */}
               <div className="space-y-6">
                 <h3 className="text-lg font-bold text-brand-dark">Company Address</h3>
@@ -453,7 +480,7 @@ export default function CompanyAccountPage() {
                 <h3 className="font-bold text-brand-dark">Consents</h3>
                 <ConsentCheckbox
                   id="comp_consentKYB"
-                  checked={false}
+                  checked={watch("consentKYB")}
                   onCheckedChange={(checked) =>
                     setValue("consentKYB", checked as boolean)
                   }
@@ -463,7 +490,7 @@ export default function CompanyAccountPage() {
                 />
                 <ConsentCheckbox
                   id="comp_consentTerms"
-                  checked={false}
+                  checked={watch("consentTerms")}
                   onCheckedChange={(checked) =>
                     setValue("consentTerms", checked as boolean)
                   }

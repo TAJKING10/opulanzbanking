@@ -3,6 +3,7 @@
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
+import Script from "next/script";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
@@ -11,7 +12,7 @@ import {
   X,
   FileText,
   AlertCircle,
-  CreditCard,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,8 @@ import {
   CompanyFormationDossier,
   UploadedFile,
 } from "@/types/company-formation";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 type StepProps = {
   dossier: Partial<CompanyFormationDossier>;
@@ -231,13 +234,20 @@ export function Step6NotaryDomiciliation({ dossier, updateDossier }: StepProps) 
   );
 }
 
-// Step 7: Documents
+// Step 7: Documents — real Azure Blob Storage uploads
 export function Step7Documents({ dossier, updateDossier }: StepProps) {
   const t = useTranslations("companyFormation.wizard.step7");
 
   const [idDocs, setIdDocs] = React.useState<UploadedFile[]>(dossier.uploads?.ids || []);
   const [leaseDocs, setLeaseDocs] = React.useState<UploadedFile[]>(dossier.uploads?.leaseOrDomiciliation || []);
   const [capitalCert, setCapitalCert] = React.useState<UploadedFile | null>(dossier.uploads?.capitalCertificate || null);
+
+  const [uploading, setUploading] = React.useState<Record<string, boolean>>({
+    id: false, lease: false, capital: false,
+  });
+  const [uploadErrors, setUploadErrors] = React.useState<Record<string, string | null>>({
+    id: null, lease: null, capital: null,
+  });
 
   React.useEffect(() => {
     updateDossier({
@@ -249,31 +259,69 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
     });
   }, [idDocs, leaseDocs, capitalCert]);
 
-  const simulateUpload = (type: "id" | "lease" | "capital") => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const uploadedFile: UploadedFile = {
-      id: uuidv4(),
-      filename: file.name,
-      size: file.size,
-      type: file.type,
-      uploadedAt: new Date().toISOString(),
-    };
-
-    switch (type) {
-      case "id":
-        setIdDocs([...idDocs, uploadedFile]);
-        break;
-      case "lease":
-        setLeaseDocs([...leaseDocs, uploadedFile]);
-        break;
-      case "capital":
-        setCapitalCert(uploadedFile);
-        break;
+  const handleUpload = async (type: "id" | "lease" | "capital", file: File) => {
+    const allowed = ["application/pdf", "image/png", "image/jpeg", "image/jpg"];
+    if (!allowed.includes(file.type)) {
+      setUploadErrors(prev => ({ ...prev, [type]: "Only PDF, PNG, and JPG files are allowed." }));
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setUploadErrors(prev => ({ ...prev, [type]: "File too large. Maximum 10 MB." }));
+      return;
     }
 
-    // Reset input
+    setUploading(prev => ({ ...prev, [type]: true }));
+    setUploadErrors(prev => ({ ...prev, [type]: null }));
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", type === "id" ? "director_id" : type === "lease" ? "other" : "other");
+
+      const response = await fetch(`${API}/api/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || `Upload failed (${response.status})`);
+      }
+
+      const result = await response.json();
+      const { fileId, fileName, fileSize, fileUrl, blobName } = result.data;
+
+      const uploadedFile: UploadedFile = {
+        id: fileId || uuidv4(),
+        filename: fileName || file.name,
+        size: fileSize || file.size,
+        type: file.type,
+        uploadedAt: new Date().toISOString(),
+        fileUrl,
+        blobName,
+      };
+
+      switch (type) {
+        case "id":
+          setIdDocs(prev => [...prev, uploadedFile]);
+          break;
+        case "lease":
+          setLeaseDocs(prev => [...prev, uploadedFile]);
+          break;
+        case "capital":
+          setCapitalCert(uploadedFile);
+          break;
+      }
+    } catch (err: any) {
+      setUploadErrors(prev => ({ ...prev, [type]: err.message || "Upload failed. Please try again." }));
+    } finally {
+      setUploading(prev => ({ ...prev, [type]: false }));
+    }
+  };
+
+  const handleFileInput = (type: "id" | "lease" | "capital") => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleUpload(type, file);
     e.target.value = "";
   };
 
@@ -305,19 +353,14 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
           {idDocs.map((file) => (
             <FileCard key={file.id} file={file} onRemove={() => removeFile("id", file.id)} />
           ))}
-          <label className="flex cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-brand-grayLight p-6 transition-colors hover:border-brand-gold hover:bg-brand-goldLight/10">
-            <input
-              type="file"
-              className="hidden"
-              accept=".pdf,.jpg,.jpeg,.png"
-              onChange={simulateUpload("id")}
-            />
-            <div className="text-center">
-              <Upload className="mx-auto mb-2 h-8 w-8 text-brand-grayMed" />
-              <p className="text-sm font-semibold text-brand-dark">{t("uploadIdPassport")}</p>
-              <p className="text-xs text-brand-grayMed">{t("fileFormats")}</p>
-            </div>
-          </label>
+          <UploadZone
+            isUploading={uploading.id}
+            error={uploadErrors.id}
+            accept=".pdf,.jpg,.jpeg,.png"
+            onFileSelect={handleFileInput("id")}
+            label={t("uploadIdPassport")}
+            hint={t("fileFormats")}
+          />
         </div>
       </div>
 
@@ -334,19 +377,14 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
             {leaseDocs.map((file) => (
               <FileCard key={file.id} file={file} onRemove={() => removeFile("lease", file.id)} />
             ))}
-            <label className="flex cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-brand-grayLight p-6 transition-colors hover:border-brand-gold hover:bg-brand-goldLight/10">
-              <input
-                type="file"
-                className="hidden"
-                accept=".pdf"
-                onChange={simulateUpload("lease")}
-              />
-              <div className="text-center">
-                <Upload className="mx-auto mb-2 h-8 w-8 text-brand-grayMed" />
-                <p className="text-sm font-semibold text-brand-dark">{t("uploadLease")}</p>
-                <p className="text-xs text-brand-grayMed">{t("leasePdfOnly")}</p>
-              </div>
-            </label>
+            <UploadZone
+              isUploading={uploading.lease}
+              error={uploadErrors.lease}
+              accept=".pdf"
+              onFileSelect={handleFileInput("lease")}
+              label={t("uploadLease")}
+              hint={t("leasePdfOnly")}
+            />
           </div>
         </div>
       )}
@@ -363,42 +401,85 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
           {capitalCert ? (
             <FileCard file={capitalCert} onRemove={() => removeFile("capital")} />
           ) : (
-            <label className="flex cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-brand-grayLight p-6 transition-colors hover:border-brand-gold hover:bg-brand-goldLight/10">
-              <input
-                type="file"
-                className="hidden"
-                accept=".pdf"
-                onChange={simulateUpload("capital")}
-              />
-              <div className="text-center">
-                <Upload className="mx-auto mb-2 h-8 w-8 text-brand-grayMed" />
-                <p className="text-sm font-semibold text-brand-dark">{t("uploadCertificate")}</p>
-                <p className="text-xs text-brand-grayMed">{t("certPdfOnly")}</p>
-              </div>
-            </label>
+            <UploadZone
+              isUploading={uploading.capital}
+              error={uploadErrors.capital}
+              accept=".pdf"
+              onFileSelect={handleFileInput("capital")}
+              label={t("uploadCertificate")}
+              hint={t("certPdfOnly")}
+            />
           )}
         </div>
-      </div>
-
-      <div className="rounded-xl bg-yellow-50 p-4">
-        <p className="text-sm text-yellow-900">
-          <AlertCircle className="inline h-4 w-4 mr-1" />
-          <strong>Note:</strong> {t("simulationNote")}
-        </p>
       </div>
     </div>
   );
 }
 
-function FileCard({ file, onRemove }: { file: UploadedFile; onRemove: () => void }) {
+function UploadZone({
+  isUploading,
+  error,
+  accept,
+  onFileSelect,
+  label,
+  hint,
+}: {
+  isUploading: boolean;
+  error: string | null;
+  accept: string;
+  onFileSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+  hint: string;
+}) {
   return (
-    <div className="flex items-center justify-between rounded-xl border border-brand-grayLight p-4">
+    <div className="space-y-2">
+      <label className={`flex cursor-pointer items-center justify-center rounded-xl border-2 border-dashed p-6 transition-colors ${isUploading ? "pointer-events-none border-brand-gold/50 bg-brand-goldLight/10" : "border-brand-grayLight hover:border-brand-gold hover:bg-brand-goldLight/10"}`}>
+        <input
+          type="file"
+          className="hidden"
+          accept={accept}
+          onChange={onFileSelect}
+          disabled={isUploading}
+        />
+        <div className="text-center">
+          {isUploading ? (
+            <>
+              <Loader2 className="mx-auto mb-2 h-8 w-8 animate-spin text-brand-gold" />
+              <p className="text-sm font-semibold text-brand-dark">Uploading to Azure…</p>
+            </>
+          ) : (
+            <>
+              <Upload className="mx-auto mb-2 h-8 w-8 text-brand-grayMed" />
+              <p className="text-sm font-semibold text-brand-dark">{label}</p>
+              <p className="text-xs text-brand-grayMed">{hint}</p>
+            </>
+          )}
+        </div>
+      </label>
+      {error && (
+        <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3">
+          <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-500" />
+          <p className="text-sm text-red-700">{error}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FileCard({ file, onRemove }: { file: UploadedFile; onRemove: () => void }) {
+  const sizeLabel = file.size < 1024 * 1024
+    ? `${(file.size / 1024).toFixed(1)} KB`
+    : `${(file.size / (1024 * 1024)).toFixed(1)} MB`;
+
+  return (
+    <div className="flex items-center justify-between rounded-xl border border-green-200 bg-green-50 p-4">
       <div className="flex items-center gap-3">
         <FileText className="h-8 w-8 text-brand-gold" />
         <div>
           <p className="font-semibold text-brand-dark">{file.filename}</p>
           <p className="text-xs text-brand-grayMed">
-            {(file.size / 1024).toFixed(1)} KB • {new Date(file.uploadedAt).toLocaleDateString()}
+            {sizeLabel} • {new Date(file.uploadedAt).toLocaleDateString()}
+            {file.fileUrl && <span className="ml-2 text-green-600">• Saved to Azure</span>}
           </p>
         </div>
       </div>
@@ -409,7 +490,7 @@ function FileCard({ file, onRemove }: { file: UploadedFile; onRemove: () => void
   );
 }
 
-// Step 8: Review & Submit
+// Step 8: Review & Submit — real PayPal payment
 export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
   const t = useTranslations("companyFormation.wizard.step8");
   const params = useParams();
@@ -421,8 +502,10 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [isPaymentComplete, setIsPaymentComplete] = React.useState(dossier.paymentStatus === "PAID");
   const [isProcessing, setIsProcessing] = React.useState(false);
+  const [paypalLoaded, setPaypalLoaded] = React.useState(false);
+  const paypalRef = React.useRef<HTMLDivElement>(null);
 
-  const setupFee = 1500; // Demo amount
+  const setupFee = 1500;
 
   React.useEffect(() => {
     updateDossier({
@@ -431,14 +514,45 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
     });
   }, [termsAccepted, privacyAccepted, accuracyConfirmed]);
 
-  const handlePayment = async () => {
-    setIsProcessing(true);
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setIsProcessing(false);
-    setIsPaymentComplete(true);
-    updateDossier({ paymentStatus: "PAID" });
-  };
+  // Render PayPal buttons once SDK and DOM ref are both ready
+  React.useEffect(() => {
+    if (isPaymentComplete) return;
+
+    function tryRender(): boolean {
+      if (!paypalRef.current || !(window as any).paypal) return false;
+      paypalRef.current.innerHTML = "";
+      (window as any).paypal.Buttons({
+        createOrder: (_data: any, actions: any) =>
+          actions.order.create({
+            purchase_units: [{
+              amount: { value: setupFee.toFixed(2), currency_code: "EUR" },
+              description: `Opulanz Company Formation — ${dossier.formType}`,
+            }],
+          }),
+        onApprove: async (_data: any, actions: any) => {
+          const order = await actions.order.capture();
+          updateDossier({
+            paymentStatus: "PAID",
+            paypalOrderId: order.id,
+            paypalPaymentDetails: order,
+          });
+          setIsPaymentComplete(true);
+        },
+        onError: () => {
+          updateDossier({ paymentStatus: "FAILED" });
+        },
+        style: { layout: "vertical", color: "gold", shape: "rect", label: "pay" },
+      }).render(paypalRef.current);
+      return true;
+    }
+
+    if (!tryRender()) {
+      const poll = setInterval(() => {
+        if (tryRender()) clearInterval(poll);
+      }, 300);
+      return () => clearInterval(poll);
+    }
+  }, [isPaymentComplete, paypalLoaded]);
 
   const handleSubmit = async () => {
     if (!termsAccepted || !privacyAccepted || !accuracyConfirmed) {
@@ -449,11 +563,9 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
     setIsProcessing(true);
 
     try {
-      // Build final payload
       const finalDossier: CompanyFormationDossier = dossier as CompanyFormationDossier;
       finalDossier.updatedAt = new Date().toISOString();
 
-      // Save to backend database
       const applicationPayload = {
         type: "company_formation",
         status: "submitted",
@@ -480,16 +592,15 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
           consents: finalDossier.consents,
           setupFeeAmount: finalDossier.setupFeeAmount,
           paymentStatus: finalDossier.paymentStatus,
+          paypalOrderId: finalDossier.paypalOrderId,
           userRef: finalDossier.userRef,
           submittedAt: new Date().toISOString(),
         },
       };
 
-      const response = await fetch("http://localhost:5000/api/applications", {
+      const response = await fetch(`${API}/api/applications`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(applicationPayload),
       });
 
@@ -497,21 +608,30 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
         throw new Error("Failed to submit application");
       }
 
-      const result = await response.json();
-      console.log("Company Formation Dossier saved to backend:", result);
+      await response.json();
 
-      // Save to localStorage (backup)
-      const existingDossiers = localStorage.getItem("opulanz_company_formations");
-      const dossiers = existingDossiers ? JSON.parse(existingDossiers) : [];
-      dossiers.push(finalDossier);
-      localStorage.setItem("opulanz_company_formations", JSON.stringify(dossiers));
+      // Send admin notification
+      fetch(`${API}/api/notifications/appointment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName: finalDossier.proposedNames?.[0] || "Company Formation",
+          customerEmail: "opulanz.banking@gmail.com",
+          meetingType: `Company Formation — ${finalDossier.formType}`,
+          appointmentDate: new Date().toLocaleDateString(),
+          appointmentTime: new Date().toLocaleTimeString(),
+          price: setupFee,
+        }),
+      }).catch(() => {});
+
+      // Clear localStorage draft
+      if (finalDossier.userRef) {
+        localStorage.removeItem(`opulanz_company_formation_${finalDossier.userRef}`);
+      }
 
       setIsSubmitted(true);
     } catch (error) {
-      console.error("Error submitting company formation:", error);
-      alert(
-        "Failed to submit company formation. Please try again or contact support."
-      );
+      alert("Failed to submit company formation. Please try again or contact support.");
     } finally {
       setIsProcessing(false);
     }
@@ -537,7 +657,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
             {t("submitted.emailConfirmation")}
           </p>
         </div>
-        <Button onClick={() => window.location.href = "/"}>
+        <Button onClick={() => (window.location.href = `/${locale}`)}>
           {t("submitted.returnHome")}
         </Button>
       </div>
@@ -562,7 +682,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
           </SummarySection>
 
           <SummarySection title={t("capital")}>
-            <p>{"\u20AC"}{dossier.capitalAmount?.toLocaleString() || 0} EUR</p>
+            <p>€{dossier.capitalAmount?.toLocaleString() || 0} EUR</p>
           </SummarySection>
 
           <SummarySection title={t("people")}>
@@ -578,7 +698,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
 
           <SummarySection title={t("activity")}>
             <p>{t("nace", { code: dossier.naceCode || t("notProvided") })}</p>
-            <p>{t("expectedTurnover", { amount: `\u20AC${dossier.expectedTurnover?.toLocaleString() || 0}` })}</p>
+            <p>{t("expectedTurnover", { amount: `€${dossier.expectedTurnover?.toLocaleString() || 0}` })}</p>
           </SummarySection>
 
           <SummarySection title={t("documents")}>
@@ -589,32 +709,24 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
         </div>
       </div>
 
-      {/* Payment */}
+      {/* Payment — real PayPal */}
       {!isPaymentComplete && (
         <div className="rounded-xl border-2 border-brand-gold p-6">
           <h3 className="mb-4 text-lg font-bold text-brand-dark">{t("setupFeePayment")}</h3>
           <div className="mb-4 flex items-center justify-between rounded-xl bg-brand-goldLight/20 p-4">
             <span className="font-semibold text-brand-dark">{t("opulanzSetupFee")}</span>
-            <span className="text-2xl font-bold text-brand-gold">{"\u20AC"}{setupFee}</span>
+            <span className="text-2xl font-bold text-brand-gold">€{setupFee}</span>
           </div>
           <p className="mb-4 text-sm text-brand-grayMed">
             {t("feeDescription")}
           </p>
-          <Button
-            onClick={handlePayment}
-            disabled={isProcessing}
-            className="w-full"
-            size="lg"
-          >
-            {isProcessing ? (
-              <>{t("processing")}</>
-            ) : (
-              <>
-                <CreditCard className="mr-2 h-5 w-5" />
-                {t("paySetupFee")}
-              </>
+          <div ref={paypalRef} className="min-h-[50px]">
+            {!paypalLoaded && (
+              <div className="flex items-center justify-center py-4">
+                <Loader2 className="h-6 w-6 animate-spin text-brand-gold" />
+              </div>
             )}
-          </Button>
+          </div>
         </div>
       )}
 
@@ -675,11 +787,15 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
       {/* Submit */}
       <Button
         onClick={handleSubmit}
-        disabled={!termsAccepted || !privacyAccepted || !accuracyConfirmed || !isPaymentComplete}
+        disabled={!termsAccepted || !privacyAccepted || !accuracyConfirmed || !isPaymentComplete || isProcessing}
         size="lg"
         className="w-full"
       >
-        {t("submitDossier")}
+        {isProcessing ? (
+          <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("processing")}</>
+        ) : (
+          t("submitDossier")
+        )}
       </Button>
 
       {(!termsAccepted || !privacyAccepted || !accuracyConfirmed || !isPaymentComplete) && (
@@ -689,6 +805,13 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
             : t("acceptAllConsents")}
         </p>
       )}
+
+      {/* PayPal SDK */}
+      <Script
+        src={`https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo"}&currency=EUR`}
+        strategy="lazyOnload"
+        onLoad={() => setPaypalLoaded(true)}
+      />
     </div>
   );
 }

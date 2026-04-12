@@ -39,6 +39,8 @@ export interface UploadedFile {
   size: number;
   type: string;
   uploadedAt: string;
+  fileUrl?: string;
+  blobName?: string;
 }
 
 export interface CompanyFormationDossier {

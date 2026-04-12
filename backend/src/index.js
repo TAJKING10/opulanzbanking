@@ -26,6 +26,7 @@ const authRoutes = require('./routes/auth');
 const taxAdvisoryBookingsRoutes = require('./routes/tax-advisory-bookings');
 const lifeInsuranceBookingsRoutes = require('./routes/life-insurance-bookings');
 
+const uploadRoutes = require('./routes/upload');
 const narviRoutes = require('./routes/narvi');
 
 // Investment Portal Routes
@@ -51,9 +52,19 @@ app.use(helmet({
   },
 })); // Security headers with CSP configured
 
-// CORS — restrict to frontend origin only
+// CORS — allow frontend on any local port (3000-3010) for development
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:3002',
+  'http://localhost:3003',
+];
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g., curl, Postman) and whitelisted origins
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -95,6 +106,7 @@ app.use('/api/sumsub', sumsubRoutes);
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/tax-advisory-bookings', taxAdvisoryBookingsRoutes); // Tax advisory service bookings
 app.use('/api/life-insurance-bookings', lifeInsuranceBookingsRoutes); // Life insurance service bookings
+app.use('/api/upload', uploadRoutes); // Azure Blob Storage file uploads
 app.use('/api/narvi', narviRoutes); // Narvi banking API
 
 // Investment Portal Routes

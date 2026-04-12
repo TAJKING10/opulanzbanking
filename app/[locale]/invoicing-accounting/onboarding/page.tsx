@@ -193,9 +193,12 @@ export default function AccountingOnboardingPage() {
 
           // Documents
           documents: formData.documents?.map((doc: any) => ({
-            name: doc.name,
-            type: doc.type,
-            size: doc.size
+            fileId:   doc.fileId,
+            fileName: doc.fileName,
+            fileSize: doc.fileSize,
+            fileUrl:  doc.fileUrl  || null,
+            blobName: doc.blobName || null,
+            type:     doc.type,
           })) || [],
 
           // Consent

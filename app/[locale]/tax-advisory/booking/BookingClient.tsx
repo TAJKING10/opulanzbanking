@@ -147,14 +147,17 @@ export default function BookingClient() {
     return () => window.removeEventListener("message", handleCalendlyEvent);
   }, []);
 
-  // Render PayPal buttons when step = payment
+  // Render PayPal buttons when step = payment — poll until SDK + ref are both ready
   useEffect(() => {
-    if (step === "payment" && paypalLoaded && paypalRef.current) {
+    if (step !== "payment") return;
+
+    function tryRender(): boolean {
+      // @ts-ignore
+      if (!paypalRef.current || !window.paypal) return false;
       paypalRef.current.innerHTML = "";
       // @ts-ignore
-      if (window.paypal) {
-        // @ts-ignore
-        window.paypal.Buttons({
+      window.paypal
+        .Buttons({
           style: { layout: "vertical", color: "gold", shape: "rect", label: "pay", height: 50 },
           createOrder: (_data: any, actions: any) =>
             actions.order.create({
@@ -171,8 +174,16 @@ export default function BookingClient() {
             console.error("PayPal error:", err);
             alert("Payment failed. Please try again.");
           },
-        }).render(paypalRef.current);
-      }
+        })
+        .render(paypalRef.current);
+      return true;
+    }
+
+    if (!tryRender()) {
+      const poll = setInterval(() => {
+        if (tryRender()) clearInterval(poll);
+      }, 300);
+      return () => clearInterval(poll);
     }
   }, [step, paypalLoaded]);
 
@@ -540,6 +551,12 @@ export default function BookingClient() {
 
                     <div className="mx-auto mt-8 max-w-md">
                       <div ref={paypalRef} id="paypal-button-container" />
+                      {!paypalLoaded && !paymentCompleted && (
+                        <div className="flex flex-col items-center gap-3 py-6">
+                          <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-brand-gold border-r-transparent" />
+                          <p className="text-sm text-brand-grayMed">Loading payment options…</p>
+                        </div>
+                      )}
                     </div>
 
                     {paymentCompleted && (

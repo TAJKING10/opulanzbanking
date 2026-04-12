@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const speakeasy = require('speakeasy');
+const QRCode = require('qrcode');
 const nodemailer = require('nodemailer');
 const twilio = require('twilio');
 const { OAuth2Client } = require('google-auth-library');
@@ -578,6 +580,228 @@ router.post('/google', async (req, res) => {
   } catch (err) {
     console.error('Google OAuth error:', err);
     res.status(500).json({ error: 'Google authentication failed' });
+  }
+});
+
+// ─── POST /api/auth/register-post-kyc ────────────────────────────────────────
+// Called after Sumsub KYC completes. Creates the user, generates a TOTP secret
+// for Google Authenticator, and returns a QR code + temp token.
+// The user must verify a TOTP code (POST /verify-totp-setup) to get the full JWT.
+router.post('/register-post-kyc', async (req, res) => {
+  try {
+    const { firstName, lastName, email, phone, password, accountType, applicationId } = req.body;
+
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({ error: 'firstName, lastName, email and password are required' });
+    }
+    if (password.length < 8) {
+      return res.status(400).json({ error: 'Password must be at least 8 characters' });
+    }
+
+    // Check if user already exists
+    const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+    if (existing.rows.length > 0) {
+      return res.status(409).json({ error: 'An account with this email already exists. Please sign in.' });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 12);
+    const fullName = `${firstName} ${lastName}`;
+
+    // Generate TOTP secret for Google Authenticator
+    const totpSecret = speakeasy.generateSecret({
+      name: `Opulanz (${email})`,
+      issuer: 'Opulanz Banking',
+      length: 20,
+    });
+
+    const result = await pool.query(
+      `INSERT INTO users
+         (name, first_name, last_name, email, phone, password_hash,
+          account_type, kyc_status, email_verified, phone_verified, totp_secret, created_at, updated_at)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,'verified',TRUE,TRUE,$8,NOW(),NOW())
+       RETURNING id, email, account_type, kyc_status`,
+      [fullName, firstName, lastName, email, phone || null, passwordHash, accountType || 'individual', totpSecret.base32]
+    );
+
+    const user = result.rows[0];
+
+    // Link application to user if applicationId provided
+    if (applicationId) {
+      await pool.query(
+        'UPDATE applications SET payload = payload || $1 WHERE id = $2',
+        [JSON.stringify({ userId: user.id }), applicationId]
+      ).catch(() => {});
+    }
+
+    // Generate QR code as base64 data URL
+    const totpQrCode = await QRCode.toDataURL(totpSecret.otpauth_url);
+
+    // Issue a short-lived temp token for the TOTP setup verification step
+    const tempToken = jwt.sign(
+      { userId: user.id, purpose: '2fa-setup' },
+      JWT_SECRET,
+      { expiresIn: '10m' }
+    );
+
+    res.status(201).json({
+      success: true,
+      tempToken,
+      totpQrCode,
+      totpSecret: totpSecret.base32, // manual entry fallback
+      user: { id: user.id, email: user.email, firstName, accountType: user.account_type },
+    });
+  } catch (err) {
+    console.error('register-post-kyc error:', err);
+    res.status(500).json({ error: 'Failed to create account' });
+  }
+});
+
+// ─── POST /api/auth/verify-totp-setup ────────────────────────────────────────
+// Verifies the first TOTP code after account creation (confirms Google Authenticator
+// is set up correctly). Returns the full JWT on success.
+router.post('/verify-totp-setup', async (req, res) => {
+  try {
+    const { tempToken, code } = req.body;
+    if (!tempToken || !code) return res.status(400).json({ error: 'tempToken and code are required' });
+
+    let payload;
+    try {
+      payload = jwt.verify(tempToken, JWT_SECRET);
+    } catch {
+      return res.status(401).json({ error: 'Setup session expired. Please start over.' });
+    }
+    if (payload.purpose !== '2fa-setup') return res.status(401).json({ error: 'Invalid setup token' });
+
+    const result = await pool.query(
+      'SELECT id, email, first_name, last_name, account_type, kyc_status, totp_secret FROM users WHERE id = $1',
+      [payload.userId]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+
+    const user = result.rows[0];
+    const verified = speakeasy.totp.verify({
+      secret: user.totp_secret,
+      encoding: 'base32',
+      token: code,
+      window: 1,
+    });
+    if (!verified) return res.status(400).json({ error: 'Invalid code. Please check Google Authenticator and try again.' });
+
+    // Send welcome email
+    emailTransporter.sendMail({
+      from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+      to: user.email,
+      subject: 'Welcome to Opulanz — Your Account is Ready',
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+          <div style="background:linear-gradient(135deg,#b59354,#886844);padding:32px;text-align:center;border-radius:12px 12px 0 0">
+            <h1 style="color:white;margin:0;font-size:28px">Welcome to Opulanz</h1>
+          </div>
+          <div style="background:#fff;padding:32px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px">
+            <p style="font-size:16px;color:#374151">Dear ${user.first_name},</p>
+            <p style="color:#6b7280">Your identity has been verified and your Opulanz account is now active. Two-factor authentication is enabled for your security.</p>
+            <p style="color:#6b7280;font-size:14px">Sign in at <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}" style="color:#b59354">opulanz.com</a> to access your dashboard.</p>
+            <p style="color:#9ca3af;font-size:12px;margin-top:32px">© 2026 Opulanz. All rights reserved.</p>
+          </div>
+        </div>`,
+    }).catch(() => {});
+
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, accountType: user.account_type, kycStatus: user.kyc_status },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    res.json({ success: true, token, user: { id: user.id, email: user.email, accountType: user.account_type } });
+  } catch (err) {
+    console.error('verify-totp-setup error:', err);
+    res.status(500).json({ error: 'Verification failed' });
+  }
+});
+
+// ─── POST /api/auth/signin-password ─────────────────────────────────────────
+// Email + password sign in. If user has Google Authenticator (totp_secret),
+// returns { requires2FA: true, tempToken } instead of a full JWT.
+router.post('/signin-password', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ error: 'Email and password are required' });
+
+    const result = await pool.query(
+      'SELECT id, email, first_name, last_name, password_hash, account_type, kyc_status, totp_secret FROM users WHERE email = $1',
+      [email]
+    );
+    if (result.rows.length === 0) return res.status(401).json({ error: 'Invalid email or password' });
+
+    const user = result.rows[0];
+    if (!user.password_hash) return res.status(401).json({ error: 'This account uses Google sign-in. Please use "Continue with Google".' });
+
+    const valid = await bcrypt.compare(password, user.password_hash);
+    if (!valid) return res.status(401).json({ error: 'Invalid email or password' });
+
+    // If user has 2FA set up, require Google Authenticator code
+    if (user.totp_secret) {
+      const tempToken = jwt.sign(
+        { userId: user.id, purpose: '2fa-signin' },
+        JWT_SECRET,
+        { expiresIn: '5m' }
+      );
+      return res.json({ success: true, requires2FA: true, tempToken });
+    }
+
+    // No 2FA — return full JWT directly (Google OAuth users without TOTP)
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, accountType: user.account_type, kycStatus: user.kyc_status },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+    res.json({ success: true, token, user: { id: user.id, email: user.email, firstName: user.first_name, accountType: user.account_type } });
+  } catch (err) {
+    console.error('signin-password error:', err);
+    res.status(500).json({ error: 'Sign in failed' });
+  }
+});
+
+// ─── POST /api/auth/verify-totp ─────────────────────────────────────────────
+// Verifies Google Authenticator code during sign in.
+router.post('/verify-totp', async (req, res) => {
+  try {
+    const { tempToken, code } = req.body;
+    if (!tempToken || !code) return res.status(400).json({ error: 'tempToken and code are required' });
+
+    let payload;
+    try {
+      payload = jwt.verify(tempToken, JWT_SECRET);
+    } catch {
+      return res.status(401).json({ error: 'Session expired. Please sign in again.' });
+    }
+    if (payload.purpose !== '2fa-signin') return res.status(401).json({ error: 'Invalid token' });
+
+    const result = await pool.query(
+      'SELECT id, email, first_name, account_type, kyc_status, totp_secret FROM users WHERE id = $1',
+      [payload.userId]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+
+    const user = result.rows[0];
+    const verified = speakeasy.totp.verify({
+      secret: user.totp_secret,
+      encoding: 'base32',
+      token: code,
+      window: 1,
+    });
+    if (!verified) return res.status(400).json({ error: 'Invalid code. Please check Google Authenticator.' });
+
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, accountType: user.account_type, kycStatus: user.kyc_status },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    res.json({ success: true, token, user: { id: user.id, email: user.email, accountType: user.account_type } });
+  } catch (err) {
+    console.error('verify-totp error:', err);
+    res.status(500).json({ error: 'Verification failed' });
   }
 });
 

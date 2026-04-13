@@ -158,29 +158,336 @@
     "nextSteps": "Next Steps"
   },
   "companyFormation": {
-    "title": "Company Formation in Luxembourg",
-    "selectForm": "Select Company Form",
-    "sarl": "SARL - Private Limited Company",
-    "sarls": "SARL-S - Simplified Private Limited Company",
-    "sa": "SA - Public Limited Company",
-    "scsp": "SCSp - Special Limited Partnership",
-    "soleProprietor": "Sole Proprietor",
-    "wizardTitle": "Company Formation Wizard",
-    "companyDetails": "Company Details",
-    "shareholders": "Shareholders",
-    "capitalDeposit": "Capital Deposit",
-    "payment": "Payment",
-    "confirmation": "Confirmation",
-    "companyName": "Company Name",
-    "businessActivity": "Business Activity",
-    "shareCapital": "Share Capital",
-    "addShareholder": "Add Shareholder",
-    "depositCapital": "Deposit share capital with partner bank",
-    "notaryCertificate": "Notary will issue incorporation certificate",
-    "rcsRegistration": "Registration with Luxembourg RCS",
-    "totalFees": "Total Formation Fees",
-    "proceedToPayment": "Proceed to Payment",
-    "saveProgress": "Save & Resume Later"
+    "subtitle": "Company formation assistance, Full service from incorporation to consulting",
+    "description": "Choose the legal structure that best fits your business needs",
+    "heroTitle": "Company Formation in Luxembourg",
+    "heroSubtitle": "Complete company formation services with expert guidance. Choose your structure and start your formation wizard.",
+    "chooseForm": "Choose Your Company Form",
+    "chooseFormDesc": "Select the legal structure that best fits your business needs",
+    "startFormation": "Start Formation",
+    "minCapitalLabel": "Min. Capital:",
+    "shareholdersLabel": "Shareholders:",
+    "minPrefix": "Min.",
+    "liabilityLabel": "Liability:",
+    "processTitle": "Simple 8-Step Formation Process",
+    "processDesc": "We guide you through every step of the company formation",
+    "processSteps": {
+      "companyType": "Company Type",
+      "companyTypeDesc": "Select your legal structure",
+      "generalInfo": "General Info",
+      "generalInfoDesc": "Provide company details",
+      "people": "People",
+      "peopleDesc": "Add shareholders & directors",
+      "capital": "Capital",
+      "capitalDesc": "Define share capital",
+      "activity": "Activity",
+      "activityDesc": "Business activity details",
+      "notary": "Notary",
+      "notaryDesc": "Notary preferences",
+      "documents": "Documents",
+      "documentsDesc": "Upload required docs",
+      "submit": "Submit",
+      "submitDesc": "Review and submit"
+    },
+    "benefitsTitle": "Why Form Your Company with Opulanz?",
+    "benefits": {
+      "expertTitle": "Expert Guidance",
+      "expertDesc": "Our team of Luxembourg corporate law experts guide you through every step of the formation process.",
+      "fastTitle": "Fast & Efficient",
+      "fastDesc": "Complete the online wizard in minutes. Most formations completed within 2-3 weeks.",
+      "fullServiceTitle": "Full Service",
+      "fullServiceDesc": "From notary coordination to RCS registration, we handle everything for you."
+    },
+    "forms": {
+      "sarl": {
+        "fullName": "Private Limited Company",
+        "minCapital": "â‚¬12,000",
+        "minShareholders": 1,
+        "liability": "Limited",
+        "features": {
+          "common": "Most common structure",
+          "flexible": "Flexible management",
+          "capital": "Lower capital requirement",
+          "suitable": "Suitable for SMEs"
+        }
+      },
+      "sarls": {
+        "fullName": "Simplified Private Limited Company",
+        "minCapital": "â‚¬1",
+        "features": {
+          "capital": "Very low capital requirement",
+          "formation": "Simplified formation",
+          "startups": "Ideal for startups",
+          "max": "Max capital â‚¬100,000"
+        }
+      },
+      "sa": {
+        "fullName": "Public Limited Company",
+        "minCapital": "â‚¬30,000",
+        "features": {
+          "public": "Can be listed publicly",
+          "board": "Board of directors required",
+          "credibility": "Higher credibility",
+          "suitable": "Suitable for larger businesses"
+        }
+      },
+      "scsp": {
+        "fullName": "Special Limited Partnership",
+        "minCapital": "No minimum",
+        "features": {
+          "transparent": "Tax transparent",
+          "funds": "Popular for funds",
+          "flexible": "Flexible structure",
+          "liability": "General partner liability"
+        }
+      },
+      "sole": {
+        "fullName": "Individual Enterprise",
+        "minCapital": "No minimum",
+        "liability": "Unlimited",
+        "features": {
+          "simplest": "Simplest structure",
+          "noEntity": "No separate legal entity",
+          "control": "Full control",
+          "personal": "Personal liability"
+        }
+      },
+      "soleProprietor": "Sole Proprietor"
+    },
+    "wizard": {
+      "title": "Company Formation Wizard",
+      "formingIn": "Forming a {formType} in Luxembourg",
+      "backToSelection": "Back to selection",
+      "back": "Back",
+      "next": "Next",
+      "saveResume": "Save & Resume Later",
+      "wizardSteps": {
+        "companyType": "Company Type",
+        "generalInfo": "General Info",
+        "people": "People",
+        "capital": "Capital",
+        "activity": "Activity",
+        "notaryDomiciliation": "Notary & Domiciliation",
+        "documents": "Documents",
+        "reviewSubmit": "Review & Submit"
+      },
+      "step1": {
+        "selectedType": "Selected Company Type",
+        "requirementsFor": "Requirements for {formType}",
+        "minCapital": "Minimum capital: {amount}",
+        "noMinCapital": "Minimum capital: No minimum",
+        "maxCapital": "Maximum capital: {amount}",
+        "requiresDirectors": "Requires {count} or more directors",
+        "requiresManagers": "Requires {count} or more managers",
+        "changeNote": "You can change the company type by going back to the selection page."
+      },
+      "step2": {
+        "proposedName": "Proposed Legal Name",
+        "proposedNamePlaceholder": "e.g., Acme Luxembourg S.Ã  r.l.",
+        "proposedNameHelp": "Include the legal form suffix (S.Ã  r.l., S.A., etc.)",
+        "alternateName": "Alternate Name (Optional)",
+        "alternateNamePlaceholder": "e.g., Acme Lux S.Ã  r.l.",
+        "alternateNameHelp": "In case your first choice is not available",
+        "purpose": "Company Purpose / Activities",
+        "purposePlaceholder": "Describe the main business activities and purpose of the company...",
+        "registeredOffice": "Registered Office Address (Luxembourg)",
+        "registeredOfficePlaceholder": "Street address, postal code, city, Luxembourg",
+        "registeredOfficeHelp": "Or select domiciliation service in Step 6",
+        "duration": "Company Duration",
+        "durationDefault": "unlimited",
+        "durationHelp": "Most companies choose \"unlimited\""
+      },
+      "step3": {
+        "shareholders": "Shareholders",
+        "addShareholder": "Add Shareholder",
+        "noShareholders": "No shareholders added yet. Click \"Add Shareholder\" to begin.",
+        "totalOwnership": "Total ownership: {percent}% (should equal 100%)",
+        "directors": "Directors",
+        "addDirector": "Add Director",
+        "noDirectors": "No directors added yet. {formType} requires at least {count} directors.",
+        "managers": "Managers",
+        "addManager": "Add Manager",
+        "noManagers": "No managers added yet. {formType} requires at least {count} manager.",
+        "ubosTitle": "Ultimate Beneficial Owners (UBOs)",
+        "addUbo": "Add UBO",
+        "ubosDesc": "Individuals who own or control more than 25% of the company",
+        "noUbos": "No UBOs added yet.",
+        "editPerson": "Edit",
+        "addPerson": "Add",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "dob": "Date of Birth",
+        "nationality": "Nationality",
+        "address": "Address",
+        "email": "Email",
+        "phone": "Phone",
+        "ownershipPercent": "Ownership Percentage",
+        "isPep": "This person is a Politically Exposed Person (PEP)",
+        "cancel": "Cancel",
+        "save": "Save",
+        "edit": "Edit",
+        "ownership": "ownership",
+        "pep": "PEP"
+      },
+      "step4": {
+        "capitalAmount": "Share Capital Amount (EUR)",
+        "noMinRequired": "No minimum required",
+        "minimum": "Minimum: {amount}",
+        "maximum": "Maximum: {amount}",
+        "capitalError": "Capital amount must be between {min} and {max}",
+        "paidUpPercent": "Paid-Up Percentage",
+        "paidUpHelp": "For SA, at least 25% must be paid up at incorporation",
+        "contributions": "Contributions",
+        "addContribution": "Add Contribution",
+        "noContributions": "No contributions added yet. Add cash or in-kind contributions.",
+        "type": "Type",
+        "cash": "Cash",
+        "inKind": "In-Kind",
+        "amountEur": "Amount (EUR)",
+        "remove": "Remove",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe the contribution...",
+        "totalContributions": "Total Contributions: {amount}",
+        "contributionsMismatch": "Contributions should equal capital amount ({amount})"
+      },
+      "step5": {
+        "naceCode": "NACE Code",
+        "naceCodePlaceholder": "e.g., 62.01 - Computer programming activities",
+        "naceCodeHelp": "Statistical classification of economic activities in the EU.",
+        "findNaceCode": "Find your NACE code",
+        "expectedTurnover": "Expected Annual Turnover (EUR)",
+        "expectedTurnoverPlaceholder": "e.g., 500000",
+        "expectedTurnoverHelp": "Estimated annual revenue for the first year",
+        "numberOfEmployees": "Number of Employees at Launch",
+        "numberOfEmployeesPlaceholder": "e.g., 5",
+        "numberOfEmployeesHelp": "Expected number of employees when starting operations",
+        "whyWeAsk": "Why we ask",
+        "whyWeAskDesc": "This information helps us prepare accurate documentation and advise you on applicable regulations, tax obligations, and reporting requirements."
+      },
+      "step6": {
+        "notaryPreferences": "Notary Preferences",
+        "notaryName": "Preferred Notary Name (Optional)",
+        "notaryNamePlaceholder": "Leave blank to let us choose",
+        "notaryCity": "Preferred City (Optional)",
+        "notaryCityPlaceholder": "e.g., Luxembourg City",
+        "notaryLanguage": "Language for Incorporation Deeds",
+        "english": "English",
+        "french": "French",
+        "german": "German",
+        "registeredOffice": "Registered Office / Domiciliation",
+        "needDomiciliation": "I need a domiciliation / registered address service",
+        "needDomiciliationDesc": "We can provide you with a professional business address in Luxembourg for your registered office.",
+        "domiciliationService": "Domiciliation Service",
+        "domiciliationIncludes": "Our domiciliation service includes:",
+        "domiciliationItem1": "Professional business address in Luxembourg",
+        "domiciliationItem2": "Mail forwarding and scanning",
+        "domiciliationItem3": "Meeting room access",
+        "domiciliationPrice": "From â‚¬600/year",
+        "noDomiciliationNote": "If you don't select domiciliation service, you must provide proof of a registered address (lease agreement or property title) in the next step."
+      },
+      "step7": {
+        "idDocuments": "ID/Passport Copies",
+        "idDocumentsDesc": "Upload ID or passport copies for all directors, managers, and UBOs",
+        "uploadIdPassport": "Click to upload ID/Passport",
+        "fileFormats": "PDF, JPG, or PNG - Max 10MB",
+        "leaseTitle": "Lease Agreement / Property Title",
+        "leaseDesc": "Proof of registered office address in Luxembourg",
+        "uploadLease": "Click to upload Lease/Title",
+        "leasePdfOnly": "PDF - Max 10MB",
+        "capitalCertTitle": "Capital Deposit Certificate (Optional)",
+        "capitalCertDesc": "Can be uploaded after payment. Bank certificate confirming capital deposit.",
+        "uploadCertificate": "Click to upload Certificate",
+        "certPdfOnly": "PDF - Max 10MB",
+        "simulationNote": "This is a simulation. In production, files would be uploaded to secure cloud storage."
+      },
+      "step8": {
+        "dossierSummary": "Dossier Summary",
+        "companyType": "Company Type",
+        "companyName": "Company Name",
+        "notProvided": "Not provided",
+        "alternate": "Alternate: {name}",
+        "capital": "Capital",
+        "people": "People",
+        "shareholdersCount": "Shareholders: {count}",
+        "directorsCount": "Directors: {count}",
+        "managersCount": "Managers: {count}",
+        "ubosCount": "UBOs: {count}",
+        "activity": "Activity",
+        "nace": "NACE: {code}",
+        "expectedTurnover": "Expected turnover: {amount}",
+        "documents": "Documents",
+        "idDocuments": "ID documents: {count}",
+        "leaseDomiciliation": "Lease/Domiciliation: {value}",
+        "serviceRequested": "Service requested",
+        "uploaded": "uploaded",
+        "capitalCertificate": "Capital certificate: {value}",
+        "uploadedStatus": "Uploaded",
+        "notYet": "Not yet",
+        "setupFeePayment": "Setup Fee Payment",
+        "opulanzSetupFee": "Opulanz Setup Fee",
+        "feeDescription": "This covers our administrative and coordination services. Notary and registration fees are separate and will be communicated by the notary.",
+        "processing": "Processing...",
+        "paySetupFee": "Pay Setup Fee (Demo)",
+        "paymentComplete": "Payment complete",
+        "requiredConsents": "Required Consents",
+        "accuracyConfirm": "I confirm that all information provided is accurate and complete to the best of my knowledge",
+        "acceptTerms": "I accept the",
+        "termsConditions": "Terms & Conditions",
+        "acceptPrivacy": "I accept the",
+        "privacyPolicy": "Privacy Policy",
+        "submitDossier": "Submit Formation Dossier",
+        "completePaymentFirst": "Please complete payment before submitting",
+        "acceptAllConsents": "Please accept all consents to submit",
+        "submitted": {
+          "title": "Formation Dossier Submitted!",
+          "description": "Your company formation dossier has been created. Our team will review it and contact you within 24-72 hours to proceed with the notarization and registration process.",
+          "reference": "Reference:",
+          "emailConfirmation": "You'll receive an email confirmation shortly.",
+          "returnHome": "Return to Home"
+        }
+      }
+    },
+    "process": {
+      "title": "Simple Formation Process",
+      "description": "We guide you through every step"
+    },
+    "steps": {
+      "details": {
+        "title": "Company Details",
+        "description": "Provide company information"
+      },
+      "shareholders": {
+        "title": "Shareholders",
+        "description": "Add shareholders and structure"
+      },
+      "capital": {
+        "title": "Capital Deposit",
+        "description": "Deposit share capital"
+      },
+      "payment": {
+        "title": "Payment",
+        "description": "Pay formation fees"
+      },
+      "registration": {
+        "title": "Registration",
+        "description": "Complete RCS registration"
+      }
+    },
+    "fields": {
+      "companyName": {
+        "label": "Company Name",
+        "placeholder": "Enter company name"
+      },
+      "fullName": {
+        "placeholder": "Full Name"
+      },
+      "nationality": {
+        "placeholder": "Nationality"
+      },
+      "email": {
+        "placeholder": "Email"
+      }
+    }
   },
   "services": {
     "accounting": {
@@ -276,7 +583,278 @@
       "contactUs": "Contact Us"
     }
   },
+  "investmentAdvisory": {
+    "wizard": {
+      "steps": {
+        "clientType": "Client Type",
+        "information": "Your Information",
+        "review": "Review",
+        "complete": "Complete"
+      },
+      "progress": {
+        "step": "Step",
+        "of": "of",
+        "complete": "complete"
+      }
+    },
+    "clientType": {
+      "welcome": "Welcome to Investment Advisory",
+      "subtitle": "Complete our onboarding process to access personalised investment advisory services.",
+      "question": "Please select your investor type:",
+      "individual": {
+        "title": "Individual Investor",
+        "description": "For private individuals seeking personal investment advice and portfolio management."
+      },
+      "company": {
+        "title": "Corporate Investor",
+        "description": "For companies and institutional investors seeking professional investment advisory services."
+      },
+      "contact": {
+        "email": "Email Address",
+        "emailPlaceholder": "Enter your email address",
+        "mobile": "Mobile Number",
+        "mobilePlaceholder": "Enter your mobile number",
+        "language": "Preferred Language"
+      }
+    },
+    "company": {
+      "title": "Company Information",
+      "subtitle": "Please provide detailed information about your company to proceed with the KYC verification.",
+      "sectionTitles": {
+        "companyIdentity": "Company Identity",
+        "representatives": "Legal Representatives & Beneficial Owners",
+        "financial": "Financial Profile",
+        "origin": "Origin of Funds",
+        "investment": "Investment Profile",
+        "mission": "Investment Mission",
+        "consents": "Consents & Declarations"
+      },
+      "subsections": {
+        "registeredAddress": "Registered Address",
+        "mainContact": "Main Contact / Legal Representative",
+        "ubo": "Ultimate Beneficial Owner (UBO)",
+        "fatcaCrs": "FATCA / CRS Declaration",
+        "investmentKnowledge": "Investment Knowledge & Experience",
+        "investmentObjectives": "Investment Objectives"
+      },
+      "fields": {
+        "legalName": "Legal Company Name",
+        "tradingName": "Trading Name",
+        "legalForm": "Legal Form",
+        "dateOfIncorporation": "Date of Incorporation",
+        "registrationNumber": "Registration Number",
+        "registrationCountry": "Country of Registration",
+        "taxIdentificationNumber": "Tax Identification Number",
+        "numberOfEmployees": "Number of Employees",
+        "industrySector": "Industry / Sector",
+        "website": "Website",
+        "addressLine1": "Address Line 1",
+        "addressLine2": "Address Line 2",
+        "city": "City",
+        "postalCode": "Postal Code",
+        "country": "Country",
+        "title": "Title",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "position": "Position / Function",
+        "dateOfBirth": "Date of Birth",
+        "nationality": "Nationality",
+        "email": "Email Address",
+        "mobile": "Mobile Number",
+        "uboFullName": "UBO Full Name",
+        "ownershipPercentage": "Ownership Percentage (%)",
+        "taxResidentCountries": "Tax Resident Countries",
+        "annualRevenue": "Annual Revenue (â‚¬)",
+        "totalAssets": "Total Assets (â‚¬)",
+        "primarySourceOfRevenue": "Primary Source of Revenue",
+        "primaryOriginOfFunds": "Primary Origin of Funds",
+        "additionalDetails": "Additional Details",
+        "investmentExperience": "Investment Experience",
+        "riskTolerance": "Risk Tolerance",
+        "investmentHorizon": "Investment Horizon",
+        "primaryObjective": "Primary Investment Objective",
+        "expectedAnnualReturn": "Expected Annual Return (%)",
+        "maxAcceptableLoss": "Maximum Acceptable Loss (%)",
+        "typeOfService": "Type of Service",
+        "initialInvestmentAmount": "Initial Investment Amount (â‚¬)"
+      },
+      "placeholders": {
+        "tradingName": "Enter trading name if different from legal name",
+        "registrationNumber": "Enter company registration number",
+        "industrySector": "e.g. Technology, Finance, Real Estate",
+        "website": "https://www.yourcompany.com",
+        "position": "e.g. CEO, Director, CFO",
+        "taxResidentCountries": "e.g. France, Luxembourg",
+        "annualRevenue": "Enter annual revenue in EUR",
+        "originDetails": "Provide additional details about the origin of funds",
+        "expectedReturn": "e.g. 8",
+        "maxLoss": "e.g. 20",
+        "initialInvestment": "Minimum â‚¬100,000"
+      },
+      "options": {
+        "legalForm": {
+          "select": "Select legal form",
+          "sarl": "SARL",
+          "sas": "SAS",
+          "sa": "SA",
+          "sci": "SCI",
+          "gmbh": "GmbH",
+          "ltd": "Ltd",
+          "llc": "LLC",
+          "other": "Other"
+        },
+        "title": {
+          "select": "Select title",
+          "mr": "Mr.",
+          "mrs": "Mrs.",
+          "ms": "Ms.",
+          "dr": "Dr."
+        },
+        "sourceOfRevenue": {
+          "select": "Select primary source",
+          "products": "Products Sales",
+          "services": "Services Revenue",
+          "trading": "Trading",
+          "investments": "Investment Returns",
+          "realEstate": "Real Estate",
+          "other": "Other"
+        },
+        "originOfFunds": {
+          "select": "Select origin",
+          "retainedEarnings": "Retained Earnings",
+          "shareholderContributions": "Shareholder Contributions",
+          "businessOperations": "Business Operations",
+          "saleOfAssets": "Sale of Assets",
+          "financing": "External Financing",
+          "other": "Other"
+        },
+        "investmentExperience": {
+          "beginner": "Beginner (< 2 years)",
+          "intermediate": "Intermediate (2â€“5 years)",
+          "advanced": "Advanced (5â€“10 years)",
+          "expert": "Expert (10+ years)"
+        },
+        "riskTolerance": {
+          "conservative": "Conservative",
+          "moderate": "Moderate",
+          "aggressive": "Aggressive"
+        },
+        "investmentHorizon": {
+          "select": "Select horizon",
+          "short": "Short-term (< 3 years)",
+          "medium": "Medium-term (3â€“7 years)",
+          "long": "Long-term (7+ years)"
+        },
+        "investmentObjective": {
+          "select": "Select objective",
+          "capitalPreservation": "Capital Preservation",
+          "incomeGeneration": "Income Generation",
+          "capitalGrowth": "Capital Growth",
+          "balanced": "Balanced Growth & Income"
+        },
+        "missionType": {
+          "advisory": "Advisory (you retain decision-making)",
+          "management": "Discretionary Management (we manage on your behalf)"
+        }
+      },
+      "helpers": {
+        "uboDescription": "A UBO is any individual who directly or indirectly owns or controls 25% or more of the company.",
+        "usPersonCheckbox": "I confirm this company is not a US person under FATCA regulations.",
+        "advisoryHelper": "In advisory mode, we provide recommendations but you retain full decision-making authority over your portfolio.",
+        "managementHelper": "In discretionary management mode, we manage your portfolio on your behalf within agreed parameters.",
+        "minimumInvestment": "Minimum initial investment: â‚¬100,000"
+      },
+      "consents": {
+        "dataProcessing": {
+          "label": "Data Processing Consent",
+          "text": "I consent to the collection, processing, and storage of my personal and company data for KYC/AML compliance, account management, and regulatory reporting purposes."
+        },
+        "kycCompliance": {
+          "label": "KYC Compliance",
+          "text": "I confirm that all information provided is accurate and complete. I understand that any false declaration may result in the termination of services."
+        },
+        "electronicSignature": {
+          "label": "Electronic Signature",
+          "text": "I agree to the use of electronic signatures and digital document submission for this application."
+        },
+        "marketingCommunications": {
+          "label": "Marketing Communications",
+          "text": "I agree to receive updates about Opulanz investment products, market insights, and promotional offers."
+        }
+      },
+      "navigation": {
+        "continueToReview": "Continue to Review"
+      }
+    }
+  },
   "legal": {
+    "terms": {
+      "heroTitle": "Legal Terms & Conditions",
+      "heroSubtitle": "Please read the following terms carefully before using our services.",
+      "companyIdentification": {
+        "title": "Company Identification",
+        "companyName": "Company Name",
+        "companyNameValue": "Advensys Luxembourg S.A.",
+        "capital": "Share Capital",
+        "capitalValue": "â‚¬31,000",
+        "address": "Registered Address",
+        "addressValue": "2 Rue Edward Steichen, L-2540 Luxembourg",
+        "phone": "Phone",
+        "phoneValue": "+352 20 33 10 70",
+        "email": "Email",
+        "emailValue": "info@advensys.lu",
+        "website": "Website",
+        "websiteValue": "www.opulanz.com",
+        "siret": "SIRET",
+        "siretValue": "N/A â€“ Luxembourg Entity",
+        "ape": "APE Code",
+        "apeValue": "6419Z â€“ Other Monetary Intermediation",
+        "vatNumber": "VAT Number",
+        "vatNumberValue": "LU30956782",
+        "registration": "Trade Register",
+        "registrationValue": "RCS Luxembourg B 252 345"
+      },
+      "servicesProvided": {
+        "title": "Services Provided",
+        "investment": "Investment advisory and portfolio management services (MiFID II compliant)",
+        "insurance": "Insurance brokerage and life insurance products",
+        "banking": "Payment services and account management (EMI regulated)"
+      },
+      "professionalInsurance": {
+        "title": "Professional Insurance",
+        "description": "Advensys Luxembourg S.A. holds professional indemnity insurance covering all services provided through the Opulanz platform, as required by applicable Luxembourg and EU financial regulations."
+      },
+      "contactInfo": {
+        "title": "Contact Information",
+        "name": "Contact Name",
+        "nameValue": "Compliance Department â€“ Advensys Luxembourg S.A."
+      },
+      "intellectualProperty": {
+        "title": "Intellectual Property",
+        "trademark": "The Opulanz brand, logo, and all associated trademarks are the exclusive property of Advensys Luxembourg S.A. Unauthorized use is strictly prohibited.",
+        "ownership": "All content on this website, including text, graphics, logos, and software, is the property of Advensys Luxembourg S.A. and is protected by Luxembourg and international copyright laws."
+      },
+      "generalConditions": {
+        "title": "General Terms & Conditions",
+        "acceptance": "By accessing and using the Opulanz platform, you agree to be bound by these Terms and Conditions and all applicable laws and regulations.",
+        "disclaimer": "The information provided on this platform is for general informational purposes only and does not constitute financial, legal, or tax advice.",
+        "modifications": "Advensys Luxembourg S.A. reserves the right to modify these terms at any time. Continued use of the platform constitutes acceptance of the updated terms.",
+        "jurisdiction": "These terms are governed by the laws of the Grand Duchy of Luxembourg. Any disputes shall be subject to the exclusive jurisdiction of the courts of Luxembourg."
+      },
+      "designHosting": {
+        "title": "Design & Hosting",
+        "design": "Website Design",
+        "designValue": "Advensys Internal Development Team",
+        "development": "Platform Development",
+        "developmentValue": "Advensys Technology Division",
+        "hosting": "Cloud Hosting",
+        "hostingValue": "Microsoft Azure â€“ European Data Centers"
+      },
+      "footer": {
+        "disclaimer": "This document was last reviewed and approved by the Legal & Compliance Department of Advensys Luxembourg S.A.",
+        "lastUpdated": "Last updated: January 2025"
+      }
+    },
     "regulated": "Regulated by ACPR & AMF (FR)",
     "disclaimer": "Opulanz is a digital banking platform. Banking services provided by licensed partners.",
     "mifid": "Investment services subject to MiFID II regulations",
@@ -322,7 +900,7 @@
       "instagram": "Instagram"
     },
     "description": "The All-in-One Financial Platform for Businesses. Member of the Advensys Luxembourg S.A. Group, with over 19 years of experience in comprehensive business solutions in Europe.",
-    "copyright": "© {year} Opulanz. All rights reserved.",
+    "copyright": "Â© {year} Opulanz. All rights reserved.",
     "regulated": "Regulated by ACPR & AMF (FR)"
   },
   "home": {
@@ -344,8 +922,8 @@
     },
     "regulatory": {
       "france": "France",
-      "acpr": "Autorité de Contrôle Prudentiel et de Résolution",
-      "amf": "Autorité des Marchés Financiers"
+      "acpr": "AutoritÃ© de ContrÃ´le Prudentiel et de RÃ©solution",
+      "amf": "AutoritÃ© des MarchÃ©s Financiers"
     },
     "cta": {
       "title": "Ready to get started?",
@@ -533,7 +1111,7 @@
         "whyNeeded": "Why we need this information",
         "whyNeededDesc": "Based on your residence status and location, we'll match you with Opulanz Partner Bank that can best serve your needs and comply with local banking regulations.",
         "privateBankingNotice": "Private Banking Selected",
-        "privateBankingNoticeDesc": "Private banking typically requires a minimum deposit (€100,000+) and provides dedicated relationship management, wealth advisory, and investment services.",
+        "privateBankingNoticeDesc": "Private banking typically requires a minimum deposit (â‚¬100,000+) and provides dedicated relationship management, wealth advisory, and investment services.",
         "otherEuCountry": "Other EU Country"
       },
       "documents": {
@@ -610,11 +1188,11 @@
         "jurisdictionHelp": "This determines which banking partner and regulatory framework will apply",
         "jurisdictionInfo": "Jurisdiction Information",
         "luxembourgInfo": "Luxembourg: Premier financial center with favorable tax regime for holding companies. Corporate tax rate: ~24%.",
-        "luxembourgCapital": "Minimum share capital: €12,000 for S.à r.l. (limited liability company)",
+        "luxembourgCapital": "Minimum share capital: â‚¬12,000 for S.Ã  r.l. (limited liability company)",
         "franceInfo": "France: Large economy with access to EU market. Corporate tax rate: ~25%.",
-        "franceCapital": "Minimum share capital: €1 for SAS/SARL (most common structures)",
+        "franceCapital": "Minimum share capital: â‚¬1 for SAS/SARL (most common structures)",
         "finlandInfo": "Finland: Stable Nordic economy with strong digital infrastructure. Corporate tax rate: 20%.",
-        "finlandCapital": "Minimum share capital: €2,500 for Oy (limited company)",
+        "finlandCapital": "Minimum share capital: â‚¬2,500 for Oy (limited company)",
         "otherInfo": "We'll match you with Opulanz Partner Bank that serves companies in your selected jurisdiction. Specific requirements and timelines will be provided after application review.",
         "formationTimeline": "Company Formation Timeline",
         "formationTimelineDesc": "Company formation typically takes 2-4 weeks. We'll guide you through the entire process and help you open your bank account simultaneously.",
@@ -645,11 +1223,11 @@
         "businessActivity": "Business Activity / Description",
         "businessActivityPlaceholder": "Describe your business activities (e.g., software development, consulting, e-commerce)",
         "shareCapital": "Initial Share Capital",
-        "shareCapitalPlaceholder": "e.g., €12,000",
+        "shareCapitalPlaceholder": "e.g., â‚¬12,000",
         "shareCapitalHelp": "Minimum requirements vary by jurisdiction",
-        "luxembourgMin": "(Luxembourg: €12,000 for S.à r.l.)",
-        "franceMin": "(France: €1 for SAS/SARL)",
-        "finlandMin": "(Finland: €2,500 for Oy)",
+        "luxembourgMin": "(Luxembourg: â‚¬12,000 for S.Ã  r.l.)",
+        "franceMin": "(France: â‚¬1 for SAS/SARL)",
+        "finlandMin": "(Finland: â‚¬2,500 for Oy)",
         "whatsIncluded": "What's Included",
         "included1": "Company name reservation and registration",
         "included2": "Articles of association preparation",
@@ -707,10 +1285,10 @@
       "yes": "Yes"
     },
     "volumeOptions": {
-      "0_5k": "€0 - €5,000",
-      "5k_20k": "€5,000 - €20,000",
-      "20k_50k": "€20,000 - €50,000",
-      "50k_plus": "€50,000+"
+      "0_5k": "â‚¬0 - â‚¬5,000",
+      "5k_20k": "â‚¬5,000 - â‚¬20,000",
+      "20k_50k": "â‚¬20,000 - â‚¬50,000",
+      "50k_plus": "â‚¬50,000+"
     },
     "sourceOfFunds": {
       "placeholder": "Please describe the origin of your funds..."
@@ -733,339 +1311,54 @@
       "downloadApp": "Download App"
     }
   },
-  "companyFormation": {
-    "subtitle": "Company formation assistance, Full service from incorporation to consulting",
-    "description": "Choose the legal structure that best fits your business needs",
-    "heroTitle": "Company Formation in Luxembourg",
-    "heroSubtitle": "Complete company formation services with expert guidance. Choose your structure and start your formation wizard.",
-    "chooseForm": "Choose Your Company Form",
-    "chooseFormDesc": "Select the legal structure that best fits your business needs",
-    "startFormation": "Start Formation",
-    "minCapitalLabel": "Min. Capital:",
-    "shareholdersLabel": "Shareholders:",
-    "minPrefix": "Min.",
-    "liabilityLabel": "Liability:",
-    "processTitle": "Simple 8-Step Formation Process",
-    "processDesc": "We guide you through every step of the company formation",
-    "processSteps": {
-      "companyType": "Company Type",
-      "companyTypeDesc": "Select your legal structure",
-      "generalInfo": "General Info",
-      "generalInfoDesc": "Provide company details",
-      "people": "People",
-      "peopleDesc": "Add shareholders & directors",
-      "capital": "Capital",
-      "capitalDesc": "Define share capital",
-      "activity": "Activity",
-      "activityDesc": "Business activity details",
-      "notary": "Notary",
-      "notaryDesc": "Notary preferences",
-      "documents": "Documents",
-      "documentsDesc": "Upload required docs",
-      "submit": "Submit",
-      "submitDesc": "Review and submit"
-    },
-    "benefitsTitle": "Why Form Your Company with Opulanz?",
-    "benefits": {
-      "expertTitle": "Expert Guidance",
-      "expertDesc": "Our team of Luxembourg corporate law experts guide you through every step of the formation process.",
-      "fastTitle": "Fast & Efficient",
-      "fastDesc": "Complete the online wizard in minutes. Most formations completed within 2-3 weeks.",
-      "fullServiceTitle": "Full Service",
-      "fullServiceDesc": "From notary coordination to RCS registration, we handle everything for you."
-    },
-    "forms": {
-      "sarl": {
-        "fullName": "Private Limited Company",
-        "minCapital": "€12,000",
-        "minShareholders": 1,
-        "liability": "Limited",
-        "features": {
-          "common": "Most common structure",
-          "flexible": "Flexible management",
-          "capital": "Lower capital requirement",
-          "suitable": "Suitable for SMEs"
-        }
-      },
-      "sarls": {
-        "fullName": "Simplified Private Limited Company",
-        "minCapital": "€1",
-        "features": {
-          "capital": "Very low capital requirement",
-          "formation": "Simplified formation",
-          "startups": "Ideal for startups",
-          "max": "Max capital €100,000"
-        }
-      },
-      "sa": {
-        "fullName": "Public Limited Company",
-        "minCapital": "€30,000",
-        "features": {
-          "public": "Can be listed publicly",
-          "board": "Board of directors required",
-          "credibility": "Higher credibility",
-          "suitable": "Suitable for larger businesses"
-        }
-      },
-      "scsp": {
-        "fullName": "Special Limited Partnership",
-        "minCapital": "No minimum",
-        "features": {
-          "transparent": "Tax transparent",
-          "funds": "Popular for funds",
-          "flexible": "Flexible structure",
-          "liability": "General partner liability"
-        }
-      },
-      "sole": {
-        "fullName": "Individual Enterprise",
-        "minCapital": "No minimum",
-        "liability": "Unlimited",
-        "features": {
-          "simplest": "Simplest structure",
-          "noEntity": "No separate legal entity",
-          "control": "Full control",
-          "personal": "Personal liability"
-        }
-      },
-      "soleProprietor": "Sole Proprietor"
-    },
-    "wizard": {
-      "title": "Company Formation Wizard",
-      "formingIn": "Forming a {formType} in Luxembourg",
-      "backToSelection": "Back to selection",
-      "back": "Back",
-      "next": "Next",
-      "saveResume": "Save & Resume Later",
-      "wizardSteps": {
-        "companyType": "Company Type",
-        "generalInfo": "General Info",
-        "people": "People",
-        "capital": "Capital",
-        "activity": "Activity",
-        "notaryDomiciliation": "Notary & Domiciliation",
-        "documents": "Documents",
-        "reviewSubmit": "Review & Submit"
-      },
-      "step1": {
-        "selectedType": "Selected Company Type",
-        "requirementsFor": "Requirements for {formType}",
-        "minCapital": "Minimum capital: {amount}",
-        "noMinCapital": "Minimum capital: No minimum",
-        "maxCapital": "Maximum capital: {amount}",
-        "requiresDirectors": "Requires {count} or more directors",
-        "requiresManagers": "Requires {count} or more managers",
-        "changeNote": "You can change the company type by going back to the selection page."
-      },
-      "step2": {
-        "proposedName": "Proposed Legal Name",
-        "proposedNamePlaceholder": "e.g., Acme Luxembourg S.à r.l.",
-        "proposedNameHelp": "Include the legal form suffix (S.à r.l., S.A., etc.)",
-        "alternateName": "Alternate Name (Optional)",
-        "alternateNamePlaceholder": "e.g., Acme Lux S.à r.l.",
-        "alternateNameHelp": "In case your first choice is not available",
-        "purpose": "Company Purpose / Activities",
-        "purposePlaceholder": "Describe the main business activities and purpose of the company...",
-        "registeredOffice": "Registered Office Address (Luxembourg)",
-        "registeredOfficePlaceholder": "Street address, postal code, city, Luxembourg",
-        "registeredOfficeHelp": "Or select domiciliation service in Step 6",
-        "duration": "Company Duration",
-        "durationDefault": "unlimited",
-        "durationHelp": "Most companies choose \"unlimited\""
-      },
-      "step3": {
-        "shareholders": "Shareholders",
-        "addShareholder": "Add Shareholder",
-        "noShareholders": "No shareholders added yet. Click \"Add Shareholder\" to begin.",
-        "totalOwnership": "Total ownership: {percent}% (should equal 100%)",
-        "directors": "Directors",
-        "addDirector": "Add Director",
-        "noDirectors": "No directors added yet. {formType} requires at least {count} directors.",
-        "managers": "Managers",
-        "addManager": "Add Manager",
-        "noManagers": "No managers added yet. {formType} requires at least {count} manager.",
-        "ubosTitle": "Ultimate Beneficial Owners (UBOs)",
-        "addUbo": "Add UBO",
-        "ubosDesc": "Individuals who own or control more than 25% of the company",
-        "noUbos": "No UBOs added yet.",
-        "editPerson": "Edit",
-        "addPerson": "Add",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "dob": "Date of Birth",
-        "nationality": "Nationality",
-        "address": "Address",
-        "email": "Email",
-        "phone": "Phone",
-        "ownershipPercent": "Ownership Percentage",
-        "isPep": "This person is a Politically Exposed Person (PEP)",
-        "cancel": "Cancel",
-        "save": "Save",
-        "edit": "Edit",
-        "ownership": "ownership",
-        "pep": "PEP"
-      },
-      "step4": {
-        "capitalAmount": "Share Capital Amount (EUR)",
-        "noMinRequired": "No minimum required",
-        "minimum": "Minimum: {amount}",
-        "maximum": "Maximum: {amount}",
-        "capitalError": "Capital amount must be between {min} and {max}",
-        "paidUpPercent": "Paid-Up Percentage",
-        "paidUpHelp": "For SA, at least 25% must be paid up at incorporation",
-        "contributions": "Contributions",
-        "addContribution": "Add Contribution",
-        "noContributions": "No contributions added yet. Add cash or in-kind contributions.",
-        "type": "Type",
-        "cash": "Cash",
-        "inKind": "In-Kind",
-        "amountEur": "Amount (EUR)",
-        "remove": "Remove",
-        "description": "Description",
-        "descriptionPlaceholder": "Describe the contribution...",
-        "totalContributions": "Total Contributions: {amount}",
-        "contributionsMismatch": "Contributions should equal capital amount ({amount})"
-      },
-      "step5": {
-        "naceCode": "NACE Code",
-        "naceCodePlaceholder": "e.g., 62.01 - Computer programming activities",
-        "naceCodeHelp": "Statistical classification of economic activities in the EU.",
-        "findNaceCode": "Find your NACE code",
-        "expectedTurnover": "Expected Annual Turnover (EUR)",
-        "expectedTurnoverPlaceholder": "e.g., 500000",
-        "expectedTurnoverHelp": "Estimated annual revenue for the first year",
-        "numberOfEmployees": "Number of Employees at Launch",
-        "numberOfEmployeesPlaceholder": "e.g., 5",
-        "numberOfEmployeesHelp": "Expected number of employees when starting operations",
-        "whyWeAsk": "Why we ask",
-        "whyWeAskDesc": "This information helps us prepare accurate documentation and advise you on applicable regulations, tax obligations, and reporting requirements."
-      },
-      "step6": {
-        "notaryPreferences": "Notary Preferences",
-        "notaryName": "Preferred Notary Name (Optional)",
-        "notaryNamePlaceholder": "Leave blank to let us choose",
-        "notaryCity": "Preferred City (Optional)",
-        "notaryCityPlaceholder": "e.g., Luxembourg City",
-        "notaryLanguage": "Language for Incorporation Deeds",
-        "english": "English",
-        "french": "French",
-        "german": "German",
-        "registeredOffice": "Registered Office / Domiciliation",
-        "needDomiciliation": "I need a domiciliation / registered address service",
-        "needDomiciliationDesc": "We can provide you with a professional business address in Luxembourg for your registered office.",
-        "domiciliationService": "Domiciliation Service",
-        "domiciliationIncludes": "Our domiciliation service includes:",
-        "domiciliationItem1": "Professional business address in Luxembourg",
-        "domiciliationItem2": "Mail forwarding and scanning",
-        "domiciliationItem3": "Meeting room access",
-        "domiciliationPrice": "From €600/year",
-        "noDomiciliationNote": "If you don't select domiciliation service, you must provide proof of a registered address (lease agreement or property title) in the next step."
-      },
-      "step7": {
-        "idDocuments": "ID/Passport Copies",
-        "idDocumentsDesc": "Upload ID or passport copies for all directors, managers, and UBOs",
-        "uploadIdPassport": "Click to upload ID/Passport",
-        "fileFormats": "PDF, JPG, or PNG - Max 10MB",
-        "leaseTitle": "Lease Agreement / Property Title",
-        "leaseDesc": "Proof of registered office address in Luxembourg",
-        "uploadLease": "Click to upload Lease/Title",
-        "leasePdfOnly": "PDF - Max 10MB",
-        "capitalCertTitle": "Capital Deposit Certificate (Optional)",
-        "capitalCertDesc": "Can be uploaded after payment. Bank certificate confirming capital deposit.",
-        "uploadCertificate": "Click to upload Certificate",
-        "certPdfOnly": "PDF - Max 10MB",
-        "simulationNote": "This is a simulation. In production, files would be uploaded to secure cloud storage."
-      },
-      "step8": {
-        "dossierSummary": "Dossier Summary",
-        "companyType": "Company Type",
-        "companyName": "Company Name",
-        "notProvided": "Not provided",
-        "alternate": "Alternate: {name}",
-        "capital": "Capital",
-        "people": "People",
-        "shareholdersCount": "Shareholders: {count}",
-        "directorsCount": "Directors: {count}",
-        "managersCount": "Managers: {count}",
-        "ubosCount": "UBOs: {count}",
-        "activity": "Activity",
-        "nace": "NACE: {code}",
-        "expectedTurnover": "Expected turnover: {amount}",
-        "documents": "Documents",
-        "idDocuments": "ID documents: {count}",
-        "leaseDomiciliation": "Lease/Domiciliation: {value}",
-        "serviceRequested": "Service requested",
-        "uploaded": "uploaded",
-        "capitalCertificate": "Capital certificate: {value}",
-        "uploadedStatus": "Uploaded",
-        "notYet": "Not yet",
-        "setupFeePayment": "Setup Fee Payment",
-        "opulanzSetupFee": "Opulanz Setup Fee",
-        "feeDescription": "This covers our administrative and coordination services. Notary and registration fees are separate and will be communicated by the notary.",
-        "processing": "Processing...",
-        "paySetupFee": "Pay Setup Fee (Demo)",
-        "paymentComplete": "Payment complete",
-        "requiredConsents": "Required Consents",
-        "accuracyConfirm": "I confirm that all information provided is accurate and complete to the best of my knowledge",
-        "acceptTerms": "I accept the",
-        "termsConditions": "Terms & Conditions",
-        "acceptPrivacy": "I accept the",
-        "privacyPolicy": "Privacy Policy",
-        "submitDossier": "Submit Formation Dossier",
-        "completePaymentFirst": "Please complete payment before submitting",
-        "acceptAllConsents": "Please accept all consents to submit",
-        "submitted": {
-          "title": "Formation Dossier Submitted!",
-          "description": "Your company formation dossier has been created. Our team will review it and contact you within 24-72 hours to proceed with the notarization and registration process.",
-          "reference": "Reference:",
-          "emailConfirmation": "You'll receive an email confirmation shortly.",
-          "returnHome": "Return to Home"
-        }
-      }
-    },
-    "process": {
-      "title": "Simple Formation Process",
-      "description": "We guide you through every step"
-    },
-    "steps": {
-      "details": {
-        "title": "Company Details",
-        "description": "Provide company information"
-      },
-      "shareholders": {
-        "title": "Shareholders",
-        "description": "Add shareholders and structure"
-      },
-      "capital": {
-        "title": "Capital Deposit",
-        "description": "Deposit share capital"
-      },
-      "payment": {
-        "title": "Payment",
-        "description": "Pay formation fees"
-      },
-      "registration": {
-        "title": "Registration",
-        "description": "Complete RCS registration"
-      }
-    },
-    "fields": {
-      "companyName": {
-        "label": "Company Name",
-        "placeholder": "Enter company name"
-      },
-      "fullName": {
-        "placeholder": "Full Name"
-      },
-      "nationality": {
-        "placeholder": "Nationality"
-      },
-      "email": {
-        "placeholder": "Email"
-      }
-    }
-  },
   "taxAdvisory": {
+    "confirmation": {
+      "heroTitle": "Booking Confirmed!",
+      "heroSubtitle": "Your tax advisory consultation has been successfully booked.",
+      "confirmationLabel": "Confirmation #",
+      "emailSent": {
+        "title": "Confirmation Email Sent",
+        "description": "A confirmation has been sent to {email}. Please check your inbox."
+      },
+      "appointmentDetails": "Appointment Details",
+      "clientName": "Client Name",
+      "email": "Email",
+      "phone": "Phone",
+      "date": "Date",
+      "time": "Time",
+      "duration": "{minutes}-minute consultation",
+      "scheduledViaCalendly": "Appointment Scheduled via Calendly",
+      "checkEmailForDetails": "Check your email for the appointment details.",
+      "calendlyConfirmationNotice": "You will receive a calendar invite from Calendly in your inbox.",
+      "serviceDetails": "Service Details",
+      "consultation": "{minutes}-minute consultation",
+      "inclVAT": "incl. VAT",
+      "addToCalendar": "Add to Calendar",
+      "downloadPDFReceipt": "Download PDF Receipt",
+      "whatHappensNext": {
+        "title": "What Happens Next?",
+        "step1": {
+          "title": "Check Your Email",
+          "description": "You will receive a confirmation email with all the details of your appointment."
+        },
+        "step2": {
+          "title": "Prepare Your Documents",
+          "description": "Gather any relevant financial documents, tax returns, or statements that may be discussed during the consultation."
+        },
+        "step3": {
+          "title": "Join Your Consultation",
+          "description": "Join the video call or in-person meeting at the scheduled time. Our advisor will be ready to assist you."
+        },
+        "step4": {
+          "title": "Receive Your Report",
+          "description": "After the consultation, you will receive a detailed report and recommendations by email within 48 hours."
+        }
+      },
+      "rescheduleQuestion": "Need to reschedule or have a question?",
+      "backToTaxAdvisory": "Back to Tax Advisory",
+      "goToDashboard": "Go to Dashboard",
+      "supportContact": "For support, contact us at"
+    },
     "hero": {
       "primaryCta": "Schedule a Consultation",
       "secondaryCta": "View Services"
@@ -1473,8 +1766,8 @@
   },
   "compliance": {
     "FR": {
-      "banking": "Opulanz is a digital banking platform. Banking services are provided by licensed partners regulated by ACPR (Autorité de Contrôle Prudentiel et de Résolution).",
-      "investment": "Investment services are subject to MiFID II regulations and provided by advisors authorized by AMF (Autorité des Marchés Financiers).",
+      "banking": "Opulanz is a digital banking platform. Banking services are provided by licensed partners regulated by ACPR (AutoritÃ© de ContrÃ´le Prudentiel et de RÃ©solution).",
+      "investment": "Investment services are subject to MiFID II regulations and provided by advisors authorized by AMF (AutoritÃ© des MarchÃ©s Financiers).",
       "insurance": "Insurance distribution is subject to IDD (Insurance Distribution Directive) requirements. Opulanz acts as an insurance intermediary.",
       "mortgage": "Mortgage services are provided by licensed credit intermediaries. Subject to responsible lending requirements."
     },
@@ -1855,11 +2148,11 @@
           "imagePlaceholder": "https://...",
           "financials": "Financial Details",
           "totalValue": "Total Property Value",
-          "totalValuePlaceholder": "e.g., €2,500,000",
+          "totalValuePlaceholder": "e.g., â‚¬2,500,000",
           "spvShares": "SPV Shares Available",
           "spvSharesPlaceholder": "e.g., 100 shares",
           "minimumInvestment": "Minimum Investment",
-          "minimumPlaceholder": "e.g., €25,000",
+          "minimumPlaceholder": "e.g., â‚¬25,000",
           "targetReturn": "Target Return",
           "returnPlaceholder": "e.g., 6-8% p.a.",
           "investmentTerm": "Investment Term",
@@ -1868,7 +2161,7 @@
           "frequencyPlaceholder": "e.g., Quarterly",
           "bankTransfer": "Bank Transfer Details",
           "bankName": "Bank Name",
-          "bankNamePlaceholder": "e.g., Banque Internationale à Luxembourg",
+          "bankNamePlaceholder": "e.g., Banque Internationale Ã  Luxembourg",
           "iban": "IBAN",
           "ibanPlaceholder": "e.g., LU00 0000 0000 0000 0000",
           "bic": "BIC/SWIFT",
@@ -2023,106 +2316,124 @@
       "subtitle": "Set up your accounting profile in a few simple steps."
     },
     "steps": {
-      "company":   { "label": "Company Basics",       "description": "Legal identity" },
-      "activity":  { "label": "Activity & Scale",     "description": "Business scope" },
-      "contacts":  { "label": "Contacts & Addresses", "description": "People & locations" },
-      "volume":    { "label": "Billing Volume",       "description": "Invoicing needs" },
-      "documents": { "label": "Documents",            "description": "Upload files" },
-      "review":    { "label": "Review & Submit",      "description": "Confirm & send" }
+      "company": {
+        "label": "Company Basics",
+        "description": "Legal identity"
+      },
+      "activity": {
+        "label": "Activity & Scale",
+        "description": "Business scope"
+      },
+      "contacts": {
+        "label": "Contacts & Addresses",
+        "description": "People & locations"
+      },
+      "volume": {
+        "label": "Billing Volume",
+        "description": "Invoicing needs"
+      },
+      "documents": {
+        "label": "Documents",
+        "description": "Upload files"
+      },
+      "review": {
+        "label": "Review & Submit",
+        "description": "Confirm & send"
+      }
     },
     "companyBasics": {
       "title": "Company Basics",
       "subtitle": "Tell us about your company's legal identity and incorporation details.",
       "fields": {
-        "companyType":       "Company Type",
-        "companyTypeOther":  "Please specify",
+        "companyType": "Company Type",
+        "companyTypeOther": "Please specify",
         "countryOfIncorporation": "Country of Incorporation",
-        "dateOfIncorporation":    "Date of Incorporation",
-        "shareCapital":      "Share Capital",
-        "legalName":         "Legal Name",
-        "tradeName":         "Trade Name",
-        "registrationNumber":"Registration Number",
-        "vatNumber":         "VAT Number"
+        "dateOfIncorporation": "Date of Incorporation",
+        "shareCapital": "Share Capital",
+        "legalName": "Legal Name",
+        "tradeName": "Trade Name",
+        "registrationNumber": "Registration Number",
+        "vatNumber": "VAT Number"
       },
       "placeholders": {
-        "companyType":       "Select company type",
-        "companyTypeOther":  "Describe your company type",
-        "country":           "Select country",
-        "date":              "YYYY-MM-DD",
-        "legalName":         "e.g. Acme Holdings S.A.R.L.",
-        "tradeName":         "e.g. Acme",
-        "registrationNumber":"e.g. B123456",
-        "vatNumber":         "e.g. LU12345678"
+        "companyType": "Select company type",
+        "companyTypeOther": "Describe your company type",
+        "country": "Select country",
+        "date": "YYYY-MM-DD",
+        "legalName": "e.g. Acme Holdings S.A.R.L.",
+        "tradeName": "e.g. Acme",
+        "registrationNumber": "e.g. B123456",
+        "vatNumber": "e.g. LU12345678"
       },
       "hints": {
-        "tradeName":         "Leave blank if the same as the legal name.",
-        "registrationNumber":"As shown on your certificate of incorporation.",
-        "vatNumber":         "Optional — enter if your company is VAT-registered."
+        "tradeName": "Leave blank if the same as the legal name.",
+        "registrationNumber": "As shown on your certificate of incorporation.",
+        "vatNumber": "Optional â€” enter if your company is VAT-registered."
       }
     },
     "activityScale": {
       "title": "Activity & Scale",
       "subtitle": "Help us understand the size and nature of your business operations.",
       "fields": {
-        "businessActivity":   "Business Activity",
-        "turnoverLastFY":     "Turnover – Last Financial Year",
-        "turnoverCurrentFY":  "Turnover – Current Financial Year (projected)",
-        "employees":          "Number of Employees (FTE)"
+        "businessActivity": "Business Activity",
+        "turnoverLastFY": "Turnover â€“ Last Financial Year",
+        "turnoverCurrentFY": "Turnover â€“ Current Financial Year (projected)",
+        "employees": "Number of Employees (FTE)"
       },
       "placeholders": {
-        "businessActivity":   "Describe your main business activity…"
+        "businessActivity": "Describe your main business activityâ€¦"
       },
       "hints": {
-        "turnoverLastFY":    "Enter 0 if the company was incorporated this year.",
+        "turnoverLastFY": "Enter 0 if the company was incorporated this year.",
         "turnoverCurrentFY": "Projected figure is acceptable.",
-        "employees":         "Full-time equivalents."
+        "employees": "Full-time equivalents."
       }
     },
     "contactsAddresses": {
       "title": "Contacts & Addresses",
       "subtitle": "Provide your registered address, operating address, and key contacts.",
-      "registeredAddress":   "Registered Address",
-      "operatingAddress":    "Operating Address",
-      "sameAsRegistered":    "Same as registered address",
-      "primaryContact":      "Primary Contact",
-      "accountingContact":   "Accounting Contact",
-      "addAccountingContact":"Add a separate accounting contact",
+      "registeredAddress": "Registered Address",
+      "operatingAddress": "Operating Address",
+      "sameAsRegistered": "Same as registered address",
+      "primaryContact": "Primary Contact",
+      "accountingContact": "Accounting Contact",
+      "addAccountingContact": "Add a separate accounting contact",
       "fields": {
-        "street":    "Street Address",
-        "city":      "City",
-        "postal":    "Postal Code",
-        "country":   "Country",
+        "street": "Street Address",
+        "city": "City",
+        "postal": "Postal Code",
+        "country": "Country",
         "firstName": "First Name",
-        "lastName":  "Last Name",
-        "role":      "Role / Title",
-        "email":     "Email Address",
-        "phone":     "Phone Number"
+        "lastName": "Last Name",
+        "role": "Role / Title",
+        "email": "Email Address",
+        "phone": "Phone Number"
       },
       "placeholders": {
-        "street":    "123 Main Street",
-        "city":      "Luxembourg",
-        "postal":    "L-1234",
-        "country":   "Select country",
+        "street": "123 Main Street",
+        "city": "Luxembourg",
+        "postal": "L-1234",
+        "country": "Select country",
         "firstName": "First name",
-        "lastName":  "Last name",
-        "role":      "e.g. CEO, CFO",
-        "email":     "name@company.com",
-        "phone":     "+352 123 456 789"
+        "lastName": "Last name",
+        "role": "e.g. CEO, CFO",
+        "email": "name@company.com",
+        "phone": "+352 123 456 789"
       }
     },
     "billingVolume": {
       "title": "Billing Volume",
       "subtitle": "Tell us about your monthly invoicing volumes and payroll needs.",
       "fields": {
-        "salesInvoices":    "Sales Invoices per Month",
+        "salesInvoices": "Sales Invoices per Month",
         "purchaseInvoices": "Purchase Invoices per Month",
-        "payrollNeeded":    "Do you need payroll processing?",
+        "payrollNeeded": "Do you need payroll processing?",
         "payrollEmployees": "Number of employees on payroll",
-        "multiCurrency":    "Multi-currency invoicing",
+        "multiCurrency": "Multi-currency invoicing",
         "selectCurrencies": "Select currencies"
       },
       "hints": {
-        "salesInvoices":    "Estimated number of invoices you issue each month.",
+        "salesInvoices": "Estimated number of invoices you issue each month.",
         "purchaseInvoices": "Estimated number of supplier invoices you receive each month."
       }
     },
@@ -2131,19 +2442,19 @@
       "subtitle": "Upload the required documents to complete your accounting profile.",
       "types": {
         "incorporation": "Certificate of Incorporation",
-        "articles":      "Articles of Association",
-        "directorId":    "Director ID / Passport",
-        "vat":           "VAT Registration Certificate"
+        "articles": "Articles of Association",
+        "directorId": "Director ID / Passport",
+        "vat": "VAT Registration Certificate"
       },
       "hints": {
         "incorporation": "Official document confirming company registration.",
-        "articles":      "Signed and up-to-date version.",
-        "directorId":    "Valid government-issued ID for each director.",
-        "vat":           "Required only if VAT-registered."
+        "articles": "Signed and up-to-date version.",
+        "directorId": "Valid government-issued ID for each director.",
+        "vat": "Required only if VAT-registered."
       },
       "note": {
         "title": "Document Requirements",
-        "text":  "Accepted formats: PDF, JPG, PNG, DOCX. Maximum file size: 10 MB per document. All documents must be valid and legible."
+        "text": "Accepted formats: PDF, JPG, PNG, DOCX. Maximum file size: 10 MB per document. All documents must be valid and legible."
       }
     },
     "review": {
@@ -2151,36 +2462,36 @@
       "subtitle": "Please review your information carefully before submitting.",
       "summary": "Application Summary",
       "sections": {
-        "company":  "Company Details",
+        "company": "Company Details",
         "activity": "Activity & Scale",
-        "contact":  "Contacts & Addresses",
-        "volume":   "Billing Volume",
+        "contact": "Contacts & Addresses",
+        "volume": "Billing Volume",
         "teamSize": "Team Size",
-        "documents":"Documents"
+        "documents": "Documents"
       },
-      "incorporated":      "Incorporated",
-      "lastFY":            "Last FY turnover",
-      "projected":         "Projected turnover",
-      "fteEmployees":      "FTE employees",
-      "employees":         "employees",
-      "sales":             "Sales invoices / month",
-      "purchases":         "Purchase invoices / month",
-      "payroll":           "Payroll",
-      "multiCurrency":     "Multi-currency",
-      "invoices":          "invoices",
+      "incorporated": "Incorporated",
+      "lastFY": "Last FY turnover",
+      "projected": "Projected turnover",
+      "fteEmployees": "FTE employees",
+      "employees": "employees",
+      "sales": "Sales invoices / month",
+      "purchases": "Purchase invoices / month",
+      "payroll": "Payroll",
+      "multiCurrency": "Multi-currency",
+      "invoices": "invoices",
       "documentsUploaded": "documents uploaded",
       "consent": {
-        "title":          "Data Processing Consent",
-        "text":           "I consent to Opulanz processing my company data for accounting and invoicing services.",
-        "label":          "I agree to the",
+        "title": "Data Processing Consent",
+        "text": "I consent to Opulanz processing my company data for accounting and invoicing services.",
+        "label": "I agree to the",
         "termsOfService": "Terms of Service",
-        "privacyPolicy":  "Privacy Policy",
-        "required":       "You must accept the terms to proceed."
+        "privacyPolicy": "Privacy Policy",
+        "required": "You must accept the terms to proceed."
       },
       "acceptConsent": "I accept the terms and consent to data processing.",
       "gdpr": {
         "title": "GDPR Notice",
-        "text":  "Your data is processed in accordance with EU GDPR. You may request access, rectification, or deletion at any time by contacting privacy@opulanz.com."
+        "text": "Your data is processed in accordance with EU GDPR. You may request access, rectification, or deletion at any time by contacting privacy@opulanz.com."
       },
       "submit": "Submit Application"
     }
@@ -2197,7 +2508,7 @@
         "title": "Phone Support",
         "description": "Speak directly with one of our support specialists.",
         "number": "+352 28 79 76 26",
-        "hours": "Mon–Fri, 9:00–18:00 CET"
+        "hours": "Monâ€“Fri, 9:00â€“18:00 CET"
       },
       "email": {
         "title": "Email Support",
@@ -2238,7 +2549,7 @@
       "questions": {
         "openAccount": {
           "question": "How long does it take to open an account?",
-          "answer": "Individual accounts are typically approved within 24–48 hours. Business accounts take 3–5 business days depending on the complexity of the application."
+          "answer": "Individual accounts are typically approved within 24â€“48 hours. Business accounts take 3â€“5 business days depending on the complexity of the application."
         },
         "documents": {
           "question": "What documents do I need?",
@@ -2246,7 +2557,7 @@
         },
         "fees": {
           "question": "What are the monthly fees?",
-          "answer": "Individual accounts start at €10/month. Business accounts start at €25/month. Full fee schedules are available in your account settings."
+          "answer": "Individual accounts start at â‚¬10/month. Business accounts start at â‚¬25/month. Full fee schedules are available in your account settings."
         },
         "currencies": {
           "question": "Which currencies are supported?",
@@ -2282,7 +2593,7 @@
       "description": "Visit us in Luxembourg or France.",
       "luxembourg": {
         "title": "Luxembourg",
-        "address": "1 Avenue de la Liberté",
+        "address": "1 Avenue de la LibertÃ©",
         "city": "L-1931 Luxembourg",
         "country": "Luxembourg",
         "phone": "Phone",
@@ -2290,7 +2601,7 @@
       },
       "france": {
         "title": "France",
-        "address": "66 Avenue des Champs-Élysées",
+        "address": "66 Avenue des Champs-Ã‰lysÃ©es",
         "city": "75008 Paris",
         "country": "France",
         "phone": "Phone",
@@ -2299,6 +2610,255 @@
     }
   },
   "accountOpening": {
+    "start": {
+      "loading": "Loading..."
+    },
+    "individual": {
+      "title": "Individual Account Application",
+      "description": "Complete the form below to apply for your personal banking account.",
+      "approved": {
+        "message": "Congratulations! Your individual account application has been approved. Your IBAN is ready.",
+        "nextSteps": {
+          "mobileApp": "Download the Opulanz mobile app to manage your account on the go.",
+          "security": "Set up two-factor authentication to secure your account.",
+          "debitCard": "Your debit card will be mailed to your registered address within 5-7 business days.",
+          "fundAccount": "Fund your account via bank transfer to start transacting."
+        },
+        "buttons": {
+          "dashboard": "Go to Dashboard",
+          "downloadApp": "Download App",
+          "startNew": "Start New Application"
+        }
+      },
+      "submitted": {
+        "message": "Your application has been submitted and is under review. We will notify you by email once a decision has been made."
+      },
+      "form": {
+        "personalInfo": "Personal Information",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "dateOfBirth": "Date of Birth",
+        "nationality": "Nationality",
+        "selectNationality": "Select your nationality",
+        "phoneNumber": "Phone Number",
+        "address": "Address",
+        "streetAddress": "Street Address",
+        "city": "City",
+        "postalCode": "Postal Code",
+        "country": "Country",
+        "selectCountry": "Select your country",
+        "documentVerification": "Document Verification",
+        "documentDescription": "Please upload clear, legible copies of the following documents.",
+        "activityInfo": "Activity Information",
+        "isPEP": "Are you a Politically Exposed Person (PEP)?",
+        "no": "No",
+        "yes": "Yes",
+        "expectedMonthlyVolume": "Expected Monthly Transaction Volume",
+        "selectRange": "Select a range",
+        "sourceOfFunds": "Source of Funds",
+        "sourceOfFundsPlaceholder": "Describe the origin of your funds (e.g. salary, business income, investments)",
+        "consents": "Consents & Declarations",
+        "consentKYC": "I consent to the collection and processing of my personal data for KYC/AML verification purposes.",
+        "consentTerms": "I have read and agree to the",
+        "termsLink": "Terms & Conditions",
+        "privacyLink": "Privacy Policy"
+      }
+    },
+    "personal": {
+      "personalFunnel": {
+        "steps": {
+          "welcome": {
+            "label": "Welcome",
+            "shortLabel": "Welcome"
+          },
+          "identity": {
+            "label": "Identity",
+            "shortLabel": "Identity"
+          },
+          "intent": {
+            "label": "Account Intent",
+            "shortLabel": "Intent"
+          },
+          "eligibility": {
+            "label": "Documents",
+            "shortLabel": "Documents"
+          },
+          "review": {
+            "label": "Review",
+            "shortLabel": "Review"
+          },
+          "submission": {
+            "label": "Submitted",
+            "shortLabel": "Done"
+          }
+        },
+        "welcome": {
+          "title": "Open Your Personal Account",
+          "subtitle": "A premium banking experience tailored for individuals across Europe.",
+          "startButton": "Start Application",
+          "disclaimer": "By continuing, you agree to our Terms & Conditions and Privacy Policy.",
+          "timeline": {
+            "title": "How long will it take?",
+            "totalTime": "Total: approximately 10 minutes",
+            "step1": {
+              "title": "Personal Details",
+              "description": "2 minutes"
+            },
+            "step2": {
+              "title": "Account Preferences",
+              "description": "2 minutes"
+            },
+            "step3": {
+              "title": "Document Upload",
+              "description": "3 minutes"
+            },
+            "step4": {
+              "title": "Review & Submit",
+              "description": "2 minutes"
+            }
+          },
+          "eligibility": {
+            "title": "Eligibility Requirements",
+            "requirement1": "Must be 18 years of age or older",
+            "requirement2": "Must be a resident of France or Luxembourg",
+            "requirement3": "Must have a valid government-issued photo ID",
+            "requirement4": "Must have a valid proof of address (utility bill, bank statement, etc.)",
+            "requirement5": "Must not be subject to financial sanctions"
+          },
+          "documents": {
+            "title": "Documents You Will Need",
+            "document1": "Valid passport or national ID card",
+            "document2": "Recent utility bill or bank statement (less than 3 months old)",
+            "document3": "Tax identification number (if applicable)",
+            "document4": "Selfie or live photo for identity verification"
+          },
+          "howItWorks": {
+            "title": "How It Works",
+            "smartMatching": {
+              "title": "Smart Matching:",
+              "description": "We match your profile to the best banking solution available."
+            },
+            "warmReferral": {
+              "title": "Warm Referral:",
+              "description": "In some cases, we may refer you to a partner bank best suited to your needs."
+            },
+            "dataSecurity": {
+              "title": "Data Security:",
+              "description": "All your data is encrypted and stored securely in compliance with GDPR."
+            },
+            "noCommitment": {
+              "title": "No Commitment:",
+              "description": "You can withdraw your application at any time before submission."
+            }
+          },
+          "features": {
+            "title": "What You Get",
+            "feature1": "Multi-currency IBAN account",
+            "feature2": "Visa debit card",
+            "feature3": "Mobile banking app",
+            "feature4": "SEPA transfers",
+            "feature5": "24/7 online access",
+            "feature6": "Dedicated account manager"
+          }
+        },
+        "identity": {
+          "title": "Your Identity",
+          "subtitle": "Please provide your personal details as they appear on your official documents.",
+          "required": "*",
+          "firstName": "First Name",
+          "firstNamePlaceholder": "Enter your first name",
+          "lastName": "Last Name",
+          "lastNamePlaceholder": "Enter your last name",
+          "email": "Email Address",
+          "emailPlaceholder": "Enter your email address",
+          "mobile": "Mobile Number",
+          "mobilePlaceholder": "Enter your mobile number",
+          "dateOfBirth": "Date of Birth",
+          "nationality": "Nationality",
+          "nationalityPlaceholder": "Select your nationality",
+          "countryOfResidence": "Country of Residence",
+          "countryOfResidencePlaceholder": "Enter your country of residence",
+          "taxResidency": "Country of Tax Residency",
+          "taxResidencyPlaceholder": "Enter your tax residency country",
+          "taxId": "Tax Identification Number (optional)",
+          "taxIdPlaceholder": "Enter your tax ID number",
+          "errors": {
+            "firstNameRequired": "First name is required",
+            "lastNameRequired": "Last name is required",
+            "invalidEmail": "Please enter a valid email address",
+            "countryCodeRequired": "Country code is required",
+            "invalidPhone": "Please enter a valid phone number",
+            "countryRequired": "Country of residence is required",
+            "taxResidencyRequired": "Tax residency country is required",
+            "dateOfBirthRequired": "Date of birth is required",
+            "nationalityRequired": "Nationality is required"
+          }
+        },
+        "intent": {
+          "title": "Account Preferences",
+          "subtitle": "Tell us how you plan to use your account.",
+          "required": "*",
+          "accountType": "Account Type",
+          "currentAccount": "Current Account",
+          "privateBanking": "Private Banking",
+          "jurisdictions": "Preferred Jurisdictions",
+          "currencies": "Preferred Currencies",
+          "estimatedMonthlyIncoming": "Estimated Monthly Incoming",
+          "sourceOfFunds": "Source of Funds",
+          "sourceOfFundsPlaceholder": "Select your primary source of funds",
+          "sourceOfFundsDetails": "Source of Funds Details",
+          "sourceOfFundsDetailsPlaceholder": "Please describe your source of funds in more detail",
+          "pepLabel": "Politically Exposed Person (PEP) Declaration",
+          "pepCheckbox": "I confirm that I am not a Politically Exposed Person (PEP) or a close associate of a PEP.",
+          "sourceOptions": {
+            "salary": "Salary / Employment Income",
+            "dividends": "Dividends",
+            "businessIncome": "Business Income",
+            "assetSale": "Asset Sale",
+            "savings": "Savings",
+            "other": "Other"
+          }
+        },
+        "eligibility": {
+          "title": "Document Upload",
+          "subtitle": "Please upload the required documents for your application.",
+          "validId": "Valid Government-Issued Photo ID",
+          "validIdDescription": "Passport or national identity card (both sides if applicable).",
+          "proofOfAddress": "Proof of Address",
+          "proofOfAddressDescription": "Recent utility bill, bank statement, or official letter (less than 3 months old).",
+          "taxIdDocument": "Tax Identification Document (optional)",
+          "taxIdDocumentDescription": "Official document showing your tax identification number.",
+          "uploadId": "Upload ID Document",
+          "uploadProof": "Upload Proof of Address",
+          "uploadTaxId": "Upload Tax ID Document",
+          "uploaded": "Uploaded"
+        },
+        "review": {
+          "title": "Review Your Application",
+          "subtitle": "Please review your information before submitting.",
+          "summaryTitle": "Application Summary",
+          "name": "Full Name",
+          "email": "Email Address",
+          "mobile": "Mobile Number",
+          "accountType": "Account Type",
+          "preferredJurisdictions": "Preferred Jurisdictions",
+          "dataProcessingConsent": "I consent to the processing of my personal data for account opening and KYC/AML compliance purposes.",
+          "dataSharingConsent": "I consent to the sharing of my data with our banking partners solely for the purpose of account provisioning.",
+          "marketingOptIn": "I would like to receive updates about Opulanz products, services, and promotions. (Optional)"
+        },
+        "submission": {
+          "title": "Application Submitted!",
+          "message": "Thank you for submitting your application. Our team will review your documents and get back to you within 2-3 business days.",
+          "applicationNumberLabel": "Application Reference Number",
+          "saveNumberMessage": "Please save this reference number for your records.",
+          "nextStepsTitle": "What Happens Next?",
+          "nextStep1": "Our compliance team will verify your identity documents.",
+          "nextStep2": "You will receive an email with the outcome of your application.",
+          "nextStep3": "Once approved, your IBAN will be generated and sent to your email.",
+          "backToHomepage": "Back to Homepage"
+        }
+      }
+    },
     "company": {
       "title": "Open a Business Account",
       "description": "Complete your business account application in a few steps.",
@@ -2306,7 +2866,7 @@
         "companyInfo": "Company Information"
       },
       "submitted": {
-        "message": "Your application is under review. You will receive a decision within 2–3 business days."
+        "message": "Your application is under review. You will receive a decision within 2â€“3 business days."
       },
       "approved": {
         "message": "Congratulations! Your business account has been approved. Your IBAN is ready.",

@@ -58,6 +58,9 @@ const allowedOrigins = [
   'http://localhost:3001',
   'http://localhost:3002',
   'http://localhost:3003',
+  'https://frontend.opulanz.com',
+  'https://www.opulanz.com',
+  'https://opulanz.com',
 ];
 app.use(cors({
   origin: (origin, callback) => {

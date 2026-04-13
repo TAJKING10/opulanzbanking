@@ -9,7 +9,7 @@ const twilio = require('twilio');
 const { OAuth2Client } = require('google-auth-library');
 const { pool } = require('../config/db');
 const { requireAuth } = require('../middleware/auth');
-const { createNarviAccount } = require('../services/narvi');
+const { createNarviAccount, provisionBankAccount } = require('../services/narvi');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -687,7 +687,28 @@ router.post('/verify-totp-setup', async (req, res) => {
     });
     if (!verified) return res.status(400).json({ error: 'Invalid code. Please check Google Authenticator and try again.' });
 
-    // Send welcome email
+    // ── Provision bank account (mock Narvi) ──────────────────────────────────
+    let iban = null, bic = null;
+    try {
+      const appResult = await pool.query(
+        "SELECT * FROM applications WHERE payload->>'userId' = $1 OR (payload->>'email' = $2) LIMIT 1",
+        [String(user.id), user.email]
+      );
+      const appData = appResult.rows[0] || { type: user.account_type === 'corporate' ? 'company' : 'individual', payload: {} };
+
+      const banking = await provisionBankAccount(appData);
+      iban = banking.iban;
+      bic = banking.bic;
+
+      await pool.query(
+        'UPDATE users SET iban=$1, bic=$2, narvi_customer_pid=$3, narvi_account_pid=$4, bank_account_status=$5 WHERE id=$6',
+        [iban, bic, banking.narviCustomerPid, banking.narviAccountPid, 'active', user.id]
+      );
+    } catch (provErr) {
+      console.error('Bank provisioning error (non-blocking):', provErr.message);
+    }
+
+    // Send welcome email with IBAN
     emailTransporter.sendMail({
       from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
       to: user.email,
@@ -699,7 +720,13 @@ router.post('/verify-totp-setup', async (req, res) => {
           </div>
           <div style="background:#fff;padding:32px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px">
             <p style="font-size:16px;color:#374151">Dear ${user.first_name},</p>
-            <p style="color:#6b7280">Your identity has been verified and your Opulanz account is now active. Two-factor authentication is enabled for your security.</p>
+            <p style="color:#6b7280">Your identity has been verified and your Opulanz account is now active.</p>
+            ${iban ? `
+            <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:20px;margin:24px 0">
+              <p style="margin:0 0 8px;font-weight:600;color:#111827">Your Bank Account Details:</p>
+              <p style="margin:4px 0;color:#374151"><strong>IBAN:</strong> ${iban}</p>
+              <p style="margin:4px 0;color:#374151"><strong>BIC/SWIFT:</strong> ${bic}</p>
+            </div>` : ''}
             <p style="color:#6b7280;font-size:14px">Sign in at <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}" style="color:#b59354">opulanz.com</a> to access your dashboard.</p>
             <p style="color:#9ca3af;font-size:12px;margin-top:32px">© 2026 Opulanz. All rights reserved.</p>
           </div>
@@ -712,7 +739,13 @@ router.post('/verify-totp-setup', async (req, res) => {
       { expiresIn: JWT_EXPIRES_IN }
     );
 
-    res.json({ success: true, token, user: { id: user.id, email: user.email, accountType: user.account_type } });
+    res.json({
+      success: true,
+      token,
+      iban,
+      bic,
+      user: { id: user.id, email: user.email, accountType: user.account_type },
+    });
   } catch (err) {
     console.error('verify-totp-setup error:', err);
     res.status(500).json({ error: 'Verification failed' });

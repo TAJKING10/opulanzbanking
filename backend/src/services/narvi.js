@@ -515,10 +515,63 @@ function mapSourceOfFunds(sourceOfFunds) {
   return mapping[sourceOfFunds?.toLowerCase()] || 'SALARY';
 }
 
+/**
+ * Generate a valid Luxembourg IBAN (mock)
+ * Format: LU + 2 check digits + 3-digit bank code + 13-digit account number
+ */
+function generateMockLuxIBAN() {
+  const bankCode = '004'; // BCL mock bank code
+  const accountNum = Math.floor(Math.random() * 9e12 + 1e12).toString(); // 13 digits
+  const bban = bankCode + accountNum;
+
+  // Calculate IBAN check digits: move LU + 00 to end, convert to numbers, mod 97
+  const rearranged = bban + '212700'; // LU=21, 27=U... wait, L=21, U=30 → 2130 + 00
+  // Correct: L=21, U=30 → "2130" + "00" appended
+  const numStr = bban + '213000';
+  let remainder = 0n;
+  for (const ch of numStr) {
+    remainder = (remainder * 10n + BigInt(ch)) % 97n;
+  }
+  const check = String(98n - remainder).padStart(2, '0');
+  return `LU${check}${bban}`;
+}
+
+/**
+ * Provision a bank account for a user — uses real Narvi if configured, otherwise mock.
+ * Returns { iban, bic, narviCustomerPid, narviAccountPid }
+ */
+async function provisionBankAccount(applicationData) {
+  const useReal = !USE_MOCK_NARVI && privateKey && NARVI_API_KEY_ID;
+
+  if (useReal) {
+    const result = await createNarviAccount(applicationData);
+    if (!result.success) throw new Error(result.error || 'Narvi provisioning failed');
+    return {
+      iban: result.account.iban,
+      bic: result.account.bic || 'OPULLU22',
+      narviCustomerPid: result.entity.pid,
+      narviAccountPid: result.account.pid,
+    };
+  }
+
+  // ── MOCK ─────────────────────────────────────────────────────────────────
+  const { v4: uuidv4Local } = require('uuid');
+  await new Promise(r => setTimeout(r, 300)); // simulate latency
+  return {
+    iban: generateMockLuxIBAN(),
+    bic: 'OPULLU22',
+    narviCustomerPid: 'mock-entity-' + uuidv4Local().slice(0, 8),
+    narviAccountPid: 'mock-account-' + uuidv4Local().slice(0, 8),
+  };
+}
+
 module.exports = {
   // Core API functions
   makeNarviRequest,
   generateSignature,
+
+  // Account provisioning (real or mock)
+  provisionBankAccount,
 
   // Account management (REST API)
   listAccounts,

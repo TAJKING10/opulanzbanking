@@ -48,6 +48,8 @@ export default function IndividualAccountPage() {
   const [totpCode, setTotpCode] = React.useState("");
   const [totpLoading, setTotpLoading] = React.useState(false);
   const [totpError, setTotpError] = React.useState("");
+  const [accountIban, setAccountIban] = React.useState("");
+  const [accountBic, setAccountBic] = React.useState("");
   const [selectedPhoneCode, setSelectedPhoneCode] = React.useState<string>("+33");
   const [isDropdownOpen, setIsDropdownOpen] = React.useState<boolean>(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -296,6 +298,8 @@ export default function IndividualAccountPage() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
         setAuthToken(data.token);
+        if (data.iban) setAccountIban(data.iban);
+        if (data.bic) setAccountBic(data.bic);
         setStatus("approved");
       } catch (err: any) {
         setTotpError(err.message || "Invalid code. Please try again.");
@@ -377,28 +381,53 @@ export default function IndividualAccountPage() {
                 Account Created!
               </h1>
               <p className="mb-8 text-lg text-brand-grayMed">
-                Your identity has been verified and your account is active. A welcome email has been sent to <strong>{submittedEmail}</strong>.
+                Your identity has been verified and your account is active. Account details have been sent to <strong>{submittedEmail}</strong>.
               </p>
 
-              <div className="mb-8 rounded-xl bg-amber-50 border border-amber-200 p-6">
-                <p className="text-sm font-semibold text-amber-800">Application Under Review</p>
-                <p className="mt-1 text-sm text-amber-700">Our compliance team will review your application within 1-2 business days and activate your IBAN.</p>
-              </div>
+              {/* IBAN Card */}
+              {accountIban && (
+                <div className="mb-8 rounded-xl bg-brand-dark p-6 text-left text-white">
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-brand-goldLight">Your Bank Account</p>
+                  <p className="mb-4 text-sm text-white/60">Luxembourg SEPA Account · EUR</p>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-xs text-white/50 mb-0.5">IBAN</p>
+                      <p className="text-lg font-mono font-bold tracking-wider text-brand-gold">
+                        {accountIban.replace(/(.{4})/g, "$1 ").trim()}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-white/50 mb-0.5">BIC / SWIFT</p>
+                      <p className="font-mono font-semibold">{accountBic}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-white/50 mb-0.5">Account Holder</p>
+                      <p className="font-semibold">{submittedFirstName} {submittedLastName}</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-green-500/20 px-3 py-1 text-xs font-semibold text-green-300">
+                      ● Active
+                    </span>
+                    <span className="text-xs text-white/50">SEPA transfers enabled</span>
+                  </div>
+                </div>
+              )}
 
               <div className="space-y-4 text-left">
-                <h3 className="text-xl font-bold text-brand-dark">What happens next?</h3>
+                <h3 className="text-xl font-bold text-brand-dark">What you can do now</h3>
                 <ul className="space-y-3 text-brand-grayMed">
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Welcome email sent to {submittedEmail}</span>
+                    <span>Receive SEPA transfers to your IBAN</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Our team will review your application within 1-2 business days</span>
+                    <span>Send payments across 36 SEPA countries</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Once approved, you will receive your IBAN and account details</span>
+                    <span>Access your account dashboard and transaction history</span>
                   </li>
                 </ul>
               </div>

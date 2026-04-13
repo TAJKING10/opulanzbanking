@@ -65,7 +65,7 @@ export default function OpenAccountPage() {
                   size="lg"
                   className="w-full group-hover:bg-brand-goldDark"
                 >
-                  <Link href={`/${locale}/open-account/start?mode=personal`}>
+                  <Link href={`/${locale}/open-account/individual`}>
                     {t("openAccount.getStarted")}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
@@ -109,7 +109,7 @@ export default function OpenAccountPage() {
                   size="lg"
                   className="w-full group-hover:bg-brand-goldDark"
                 >
-                  <Link href={`/${locale}/open-account/start?mode=business`}>
+                  <Link href={`/${locale}/open-account/company`}>
                     {t("openAccount.getStarted")}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>

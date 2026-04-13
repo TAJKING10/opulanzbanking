@@ -177,8 +177,11 @@ Contact: opulanz.banking@gmail.com
     }
     setLoading(true);
     try {
-      if (!bookingData) throw new Error('No booking data available');
-      await fetch('http://localhost:5000/api/appointments', {
+      if (!bookingData) {
+        throw new Error('No booking data available');
+      }
+
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

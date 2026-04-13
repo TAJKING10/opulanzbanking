@@ -3,6 +3,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { Poppins } from 'next/font/google';
 import { Header } from '@/components/header';
 import { Footer } from '@/shared/components/footer';
+import { GoogleProvider } from '@/components/google-provider';
 import { routing } from '@/i18n/routing';
 import { generateSEOMetadata } from './metadata';
 import '@/app/globals.css';
@@ -62,11 +63,13 @@ export default async function LocaleLayout({
         />
       </head>
       <body className="flex min-h-screen flex-col">
-        <NextIntlClientProvider messages={messages}>
-          <Header locale={locale} />
-          <main className="flex-1 pt-20">{children}</main>
-          <Footer locale={locale} />
-        </NextIntlClientProvider>
+        <GoogleProvider>
+          <NextIntlClientProvider messages={messages}>
+            <Header locale={locale} />
+            <main className="flex-1 pt-20">{children}</main>
+            <Footer locale={locale} />
+          </NextIntlClientProvider>
+        </GoogleProvider>
       </body>
     </html>
   );

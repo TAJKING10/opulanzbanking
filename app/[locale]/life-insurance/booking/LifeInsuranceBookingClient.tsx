@@ -1,803 +1,508 @@
 "use client";
 
 import * as React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Clock, Heart, TrendingUp, DollarSign, Briefcase, CheckCircle, ArrowRight, ArrowLeft, User, Mail, Phone } from "lucide-react";
+import { useLocale } from "next-intl";
+import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Script from "next/script";
-import { useTranslations } from "next-intl";
+import { useState, useEffect, useRef } from "react";
+import { CheckCircle, Clock, Video, Shield, ArrowLeft, ArrowRight, Calendar } from "lucide-react";
 
-export const dynamic = 'force-dynamic';
-
-interface BookingData {
-  // Customer info
+interface ContactData {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  // Calendly info
-  calendlyEventUrl?: string;
-  calendlyInviteeUrl?: string;
-  appointmentDate?: string;
-  appointmentTime?: string;
-  // Service info
-  serviceId?: string;
-  serviceTitle?: string;
-  servicePrice?: number;
-  // Payment info
-  paypalOrderId?: string;
-  paymentStatus?: string;
 }
 
-export default function LifeInsuranceBookingClient({ params: { locale } }: { params: { locale: string } }) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const t = useTranslations("lifeInsurance.booking");
-  const [step, setStep] = React.useState<"info" | "calendly" | "service-selection" | "summary" | "payment">("info");
-  const [bookingData, setBookingData] = React.useState<BookingData>({
+interface BookingData extends ContactData {
+  eventUri?: string;
+  inviteeUri?: string;
+  eventStartTime?: string;
+  eventEndTime?: string;
+  appointmentScheduled: boolean;
+}
+
+function formatDate(isoString?: string): string {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+function formatTime(isoString?: string): string {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+}
+
+export default function LifeInsuranceBookingClient() {
+  const locale = useLocale();
+
+  const [step, setStep] = useState<"contact" | "calendar" | "confirmation">("contact");
+  const [contactData, setContactData] = useState<ContactData>({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
   });
-  const [errors, setErrors] = React.useState<Partial<BookingData>>({});
-  const [isPayPalLoaded, setIsPayPalLoaded] = React.useState(false);
+  const [contactErrors, setContactErrors] = useState<Partial<ContactData>>({});
+  const [bookingData, setBookingData] = useState<BookingData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    appointmentScheduled: false,
+  });
+  const [loading, setLoading] = useState(false);
+  const [calendlyScriptLoaded, setCalendlyScriptLoaded] = useState(false);
+  const calendlyRef = useRef<HTMLDivElement>(null);
 
-  const services = [
-    {
-      id: "term-life-insurance",
-      icon: Clock,
-      title: t("services.termLife.title"),
-      description: t("services.termLife.description"),
-      price: 199,
-    },
-    {
-      id: "whole-life-insurance",
-      icon: Heart,
-      title: t("services.wholeLife.title"),
-      description: t("services.wholeLife.description"),
-      price: 349,
-    },
-    {
-      id: "universal-life-insurance",
-      icon: TrendingUp,
-      title: t("services.universalLife.title"),
-      description: t("services.universalLife.description"),
-      price: 299,
-    },
-    {
-      id: "variable-life-insurance",
-      icon: DollarSign,
-      title: t("services.variableLife.title"),
-      description: t("services.variableLife.description"),
-      price: 399,
-    },
-    {
-      id: "group-life-insurance",
-      icon: Briefcase,
-      title: t("services.groupLife.title"),
-      description: t("services.groupLife.description"),
-      price: 149,
-    },
-  ];
+  // Init Calendly widget when script is ready and step is calendar
+  useEffect(() => {
+    if (step !== "calendar") return;
+    const fullName = `${bookingData.firstName} ${bookingData.lastName}`.trim();
 
-  // Check for pre-selected service from URL
-  React.useEffect(() => {
-    const preSelectedServiceId = searchParams.get('service');
-    if (preSelectedServiceId) {
-      const service = services.find(s => s.id === preSelectedServiceId);
-      if (service) {
-        setBookingData(prev => ({
-          ...prev,
-          serviceId: service.id,
-          serviceTitle: service.title,
-          servicePrice: service.price,
-        }));
+    function initWidget() {
+      // @ts-ignore
+      if (window.Calendly && calendlyRef.current) {
+        calendlyRef.current.innerHTML = "";
+        // @ts-ignore
+        window.Calendly.initInlineWidget({
+          url: `https://calendly.com/opulanz-banking/life-insurance-consultation?hide_event_type_details=1&primary_color=b59354`,
+          parentElement: calendlyRef.current,
+          prefill: {
+            name: fullName,
+            email: bookingData.email,
+          },
+        });
       }
     }
-  }, [searchParams]);
 
-  // Load Calendly script
-  React.useEffect(() => {
-    if (step === "calendly") {
-      const script = document.createElement("script");
-      script.src = "https://assets.calendly.com/assets/external/widget.js";
-      script.async = true;
-      document.body.appendChild(script);
-
-      // Listen for Calendly events
-      const handleCalendlyEvent = (e: MessageEvent) => {
-        if (e.data.event === "calendly.event_scheduled") {
-          // Extract event details
-          const eventData = e.data.payload;
-          setBookingData(prev => {
-            const updated = {
-              ...prev,
-              calendlyEventUrl: eventData.event?.uri || "",
-              calendlyInviteeUrl: eventData.invitee?.uri || "",
-              appointmentDate: eventData.event?.start_time ? new Date(eventData.event.start_time).toISOString() : "",
-              appointmentTime: eventData.event?.start_time ? new Date(eventData.event.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "",
-            };
-
-            // If service is already selected, go directly to summary
-            // Otherwise, go to service selection
-            if (updated.serviceId) {
-              setTimeout(() => setStep("summary"), 100);
-            } else {
-              setTimeout(() => setStep("service-selection"), 100);
-            }
-
-            return updated;
-          });
+    // @ts-ignore
+    if (window.Calendly) {
+      initWidget();
+    } else {
+      const interval = setInterval(() => {
+        // @ts-ignore
+        if (window.Calendly) {
+          clearInterval(interval);
+          initWidget();
         }
-      };
-
-      window.addEventListener("message", handleCalendlyEvent);
-
-      return () => {
-        window.removeEventListener("message", handleCalendlyEvent);
-      };
+      }, 200);
+      return () => clearInterval(interval);
     }
-  }, [step]);
+  }, [step, calendlyScriptLoaded]);
 
-  const validateCustomerInfo = () => {
-    const newErrors: Partial<BookingData> = {};
+  // Listen for Calendly booking confirmation → save + notify → confirmation
+  useEffect(() => {
+    const handleCalendlyEvent = async (e: MessageEvent) => {
+      if (e.data?.event?.indexOf?.("calendly") === 0) {
+        if (e.data.event === "calendly.event_scheduled") {
+          const payload = e.data.payload || {};
 
-    if (!bookingData.firstName.trim()) {
-      newErrors.firstName = t("validation.firstNameRequired");
-    }
+          const updated: BookingData = {
+            ...bookingData,
+            eventUri: payload.event?.uri,
+            inviteeUri: payload.invitee?.uri,
+            eventStartTime: payload.event?.start_time,
+            eventEndTime: payload.event?.end_time,
+            appointmentScheduled: true,
+          };
 
-    if (!bookingData.lastName.trim()) {
-      newErrors.lastName = t("validation.lastNameRequired");
-    }
+          setBookingData(updated);
+          setLoading(true);
 
-    if (!bookingData.email.trim()) {
-      newErrors.email = t("validation.emailRequired");
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bookingData.email)) {
-      newErrors.email = t("validation.emailInvalid");
-    }
+          const API = "http://localhost:5000";
+          const name = `${updated.firstName} ${updated.lastName}`.trim();
+          const now = new Date().toISOString();
+          const startTime = updated.eventStartTime || now;
+          const endTime = updated.eventEndTime || new Date(Date.now() + 60 * 60 * 1000).toISOString();
+          const startDate = new Date(startTime);
 
-    if (!bookingData.phone.trim()) {
-      newErrors.phone = t("validation.phoneRequired");
-    }
+          // Save appointment
+          try {
+            await fetch(`${API}/api/appointments`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                full_name: name,
+                email: updated.email,
+                phone: updated.phone,
+                calendly_event_uri: updated.eventUri || null,
+                meeting_type: "Life Insurance",
+                status: "confirmed",
+                start_time: startTime,
+                end_time: endTime,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                location: "Video Conference",
+                notes: "Free life insurance consultation",
+              }),
+            });
+          } catch (err) {
+            console.warn("Appointment save failed (non-blocking):", err);
+          }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+          // Send notification email
+          try {
+            await fetch(`${API}/api/notifications/appointment`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                customerName: name,
+                customerEmail: updated.email,
+                appointmentDate: updated.eventStartTime
+                  ? startDate.toLocaleDateString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "Scheduled via Calendly — check your confirmation email",
+                appointmentTime: updated.eventStartTime
+                  ? startDate.toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : "See Calendly confirmation",
+                meetingType: "Life Insurance Consultation",
+                price: "Free",
+              }),
+            });
+          } catch (err) {
+            console.warn("Notification send failed (non-blocking):", err);
+          }
 
-  const handleCustomerInfoSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateCustomerInfo()) {
-      setStep("calendly");
-    }
-  };
-
-  const handleServiceSelect = (serviceId: string) => {
-    const service = services.find(s => s.id === serviceId);
-    if (service) {
-      setBookingData(prev => ({
-        ...prev,
-        serviceId: service.id,
-        serviceTitle: service.title,
-        servicePrice: service.price,
-      }));
-      setStep("summary");
-    }
-  };
-
-  const handleProceedToPayment = () => {
-    setStep("payment");
-  };
-
-  const handleBackToServiceSelection = () => {
-    setStep("service-selection");
-  };
-
-  const handleBackToInfo = () => {
-    setStep("info");
-  };
-
-  const handlePaymentSuccess = async (details: any) => {
-    try {
-      // Prepare complete booking data
-      const completeBookingData = {
-        type: 'life_insurance',
-        status: 'confirmed',
-        customer_info: {
-          firstName: bookingData.firstName,
-          lastName: bookingData.lastName,
-          email: bookingData.email,
-          phone: bookingData.phone,
-        },
-        service: {
-          id: bookingData.serviceId,
-          title: bookingData.serviceTitle,
-          price: bookingData.servicePrice,
-        },
-        appointment: {
-          date: bookingData.appointmentDate,
-          time: bookingData.appointmentTime,
-          calendlyEventUrl: bookingData.calendlyEventUrl,
-          calendlyInviteeUrl: bookingData.calendlyInviteeUrl,
-        },
-        payment: {
-          method: 'paypal',
-          orderId: details.id,
-          status: details.status,
-          payer: details.payer,
-          amount: bookingData.servicePrice,
-          currency: 'EUR',
-          paymentDate: new Date().toISOString(),
-        },
-        created_at: new Date().toISOString(),
-      };
-
-      // Save booking to database
-      const response = await fetch('http://localhost:5000/api/life-insurance-bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(completeBookingData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to save booking');
+          setLoading(false);
+          setStep("confirmation");
+        }
       }
+    };
 
-      const savedBooking = await response.json();
-      const confirmationNumber = savedBooking.data?.confirmation_number || `LIFE-${Date.now().toString(36).toUpperCase()}`;
+    window.addEventListener("message", handleCalendlyEvent);
+    return () => window.removeEventListener("message", handleCalendlyEvent);
+  }, [bookingData]);
 
-      // Store complete data in sessionStorage for confirmation page
-      const confirmationData = {
-        confirmationNumber,
-        firstName: bookingData.firstName,
-        lastName: bookingData.lastName,
-        email: bookingData.email,
-        phone: bookingData.phone,
-        appointmentDate: bookingData.appointmentDate,
-        appointmentTime: bookingData.appointmentTime,
-        serviceId: bookingData.serviceId,
-        serviceTitle: bookingData.serviceTitle,
-        servicePrice: bookingData.servicePrice,
-        paypalOrderId: details.id,
-        paypalStatus: details.status,
-        paypalPayer: details.payer,
-        paymentDate: new Date().toISOString(),
-      };
+  function handleContactSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const errs: Partial<ContactData> = {};
+    if (!contactData.firstName.trim()) errs.firstName = "First name is required";
+    if (!contactData.lastName.trim()) errs.lastName = "Last name is required";
+    if (!contactData.email.trim()) errs.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email))
+      errs.email = "Enter a valid email";
+    if (!contactData.phone.trim()) errs.phone = "Phone number is required";
+    setContactErrors(errs);
+    if (Object.keys(errs).length) return;
 
-      sessionStorage.setItem('life-insurance-booking', JSON.stringify(confirmationData));
+    setBookingData((prev) => ({ ...prev, ...contactData }));
+    setStep("calendar");
+  }
 
-      // Redirect to confirmation page
-      router.push(`/${locale}/life-insurance/confirmation?confirmation=${confirmationNumber}`);
-    } catch (error) {
-      console.error('Error saving booking:', error);
-      alert(t("payment.paymentSuccessError"));
-    }
-  };
+  const fullName = `${bookingData.firstName} ${bookingData.lastName}`.trim();
+  const dateDisplay = formatDate(bookingData.eventStartTime);
+  const timeDisplay = formatTime(bookingData.eventStartTime);
 
-  // STEP 1: Customer Information
-  if (step === "info") {
-    return (
-      <>
-        <section className="hero-gradient py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl px-6">
-            <div className="text-center">
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                {t("step1.heroTitle")}
-              </h1>
-              <p className="text-lg text-white/90">
-                {t("step1.heroSubtitle")}
-              </p>
-            </div>
-          </div>
-        </section>
+  return (
+    <>
+      <Hero
+        title="Schedule Your Life Insurance Consultation"
+        subtitle="Book a free consultation with our expert insurance advisors"
+      />
 
-        <section className="bg-white py-12 md:py-16">
-          <div className="container mx-auto max-w-2xl px-6">
-            <SectionHeading
-              overline={t("step1.overline")}
-              title={t("step1.title")}
-              description={t("step1.description")}
-              align="center"
-              className="mb-12"
-            />
+      <section className="bg-white py-12">
+        <div className="container mx-auto max-w-4xl px-6">
 
-            <Card className="border-2 border-brand-grayLight">
-              <CardContent className="pt-8">
-                <form onSubmit={handleCustomerInfoSubmit} className="space-y-6">
-                  <div className="grid gap-6 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">{t("form.firstName")} *</Label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
+          {/* ─── STEP 1: CONTACT INFO ─────────────────────────────────── */}
+          {step === "contact" && (
+            <>
+              <SectionHeading
+                overline="STEP 1 OF 3"
+                title="Your Contact Information"
+                description="Please provide your details before scheduling your consultation"
+              />
+
+              <Card className="mt-8 border-none shadow-lg">
+                <CardContent className="p-8">
+                  <form onSubmit={handleContactSubmit} className="space-y-6">
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      <div>
+                        <Label htmlFor="firstName">
+                          First Name <span className="text-red-500">*</span>
+                        </Label>
                         <Input
                           id="firstName"
-                          type="text"
-                          placeholder={t("form.firstNamePlaceholder")}
-                          className="pl-10"
-                          value={bookingData.firstName}
-                          onChange={(e) => setBookingData(prev => ({ ...prev, firstName: e.target.value }))}
+                          value={contactData.firstName}
+                          onChange={(e) =>
+                            setContactData((p) => ({ ...p, firstName: e.target.value }))
+                          }
+                          placeholder="Enter your first name"
+                          className={`mt-1 ${contactErrors.firstName ? "border-red-500" : ""}`}
                         />
+                        {contactErrors.firstName && (
+                          <p className="mt-1 text-sm text-red-500">{contactErrors.firstName}</p>
+                        )}
                       </div>
-                      {errors.firstName && (
-                        <p className="text-sm text-red-600">{errors.firstName}</p>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">{t("form.lastName")} *</Label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
+                      <div>
+                        <Label htmlFor="lastName">
+                          Last Name <span className="text-red-500">*</span>
+                        </Label>
                         <Input
                           id="lastName"
-                          type="text"
-                          placeholder={t("form.lastNamePlaceholder")}
-                          className="pl-10"
-                          value={bookingData.lastName}
-                          onChange={(e) => setBookingData(prev => ({ ...prev, lastName: e.target.value }))}
+                          value={contactData.lastName}
+                          onChange={(e) =>
+                            setContactData((p) => ({ ...p, lastName: e.target.value }))
+                          }
+                          placeholder="Enter your last name"
+                          className={`mt-1 ${contactErrors.lastName ? "border-red-500" : ""}`}
                         />
+                        {contactErrors.lastName && (
+                          <p className="mt-1 text-sm text-red-500">{contactErrors.lastName}</p>
+                        )}
                       </div>
-                      {errors.lastName && (
-                        <p className="text-sm text-red-600">{errors.lastName}</p>
-                      )}
                     </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email">{t("form.email")} *</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
+                    <div>
+                      <Label htmlFor="email">
+                        Email Address <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         id="email"
                         type="email"
-                        placeholder={t("form.emailPlaceholder")}
-                        className="pl-10"
-                        value={bookingData.email}
-                        onChange={(e) => setBookingData(prev => ({ ...prev, email: e.target.value }))}
+                        value={contactData.email}
+                        onChange={(e) =>
+                          setContactData((p) => ({ ...p, email: e.target.value }))
+                        }
+                        placeholder="Enter your email address"
+                        className={`mt-1 ${contactErrors.email ? "border-red-500" : ""}`}
                       />
+                      {contactErrors.email && (
+                        <p className="mt-1 text-sm text-red-500">{contactErrors.email}</p>
+                      )}
                     </div>
-                    {errors.email && (
-                      <p className="text-sm text-red-600">{errors.email}</p>
-                    )}
-                  </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">{t("form.phone")} *</Label>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-3 h-5 w-5 text-brand-grayMed" />
+                    <div>
+                      <Label htmlFor="phone">
+                        Phone Number <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         id="phone"
                         type="tel"
-                        placeholder={t("form.phonePlaceholder")}
-                        className="pl-10"
-                        value={bookingData.phone}
-                        onChange={(e) => setBookingData(prev => ({ ...prev, phone: e.target.value }))}
+                        value={contactData.phone}
+                        onChange={(e) =>
+                          setContactData((p) => ({ ...p, phone: e.target.value }))
+                        }
+                        placeholder="Enter your phone number"
+                        className={`mt-1 ${contactErrors.phone ? "border-red-500" : ""}`}
                       />
+                      {contactErrors.phone && (
+                        <p className="mt-1 text-sm text-red-500">{contactErrors.phone}</p>
+                      )}
                     </div>
-                    {errors.phone && (
-                      <p className="text-sm text-red-600">{errors.phone}</p>
-                    )}
-                  </div>
 
-                  <div className="pt-4">
-                    <Button type="submit" className="w-full bg-brand-gold text-white hover:bg-brand-goldDark h-12 text-lg">
-                      {t("form.continueToSchedule")}
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-
-            <div className="mt-8 text-center">
-              <Button
-                variant="link"
-                onClick={() => router.push(`/${locale}/life-insurance`)}
-                className="text-brand-grayMed hover:text-brand-gold"
-              >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("form.backToLifeInsurance")}
-              </Button>
-            </div>
-          </div>
-        </section>
-      </>
-    );
-  }
-
-  // STEP 2: Calendly Scheduling
-  if (step === "calendly") {
-    return (
-      <>
-        <section className="hero-gradient py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl px-6">
-            <div className="text-center">
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                {t("step2.heroTitle")}
-              </h1>
-              <p className="text-lg text-white/90">
-                {t("step2.heroSubtitle")}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white py-12 md:py-16">
-          <div className="container mx-auto max-w-5xl px-6">
-            <SectionHeading
-              overline={t("step2.overline")}
-              title={t("step2.title")}
-              description={`${t("step2.bookingFor")}: ${bookingData.firstName} ${bookingData.lastName} (${bookingData.email})`}
-              align="center"
-              className="mb-8"
-            />
-
-            {bookingData.serviceTitle && (
-              <div className="mb-8 p-4 bg-brand-goldLight/20 rounded-lg border-2 border-brand-gold">
-                <div className="flex items-center justify-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-brand-gold" />
-                  <p className="text-brand-dark font-semibold">
-                    {t("step2.selectedService")}: {bookingData.serviceTitle} (€{bookingData.servicePrice})
-                  </p>
-                </div>
-              </div>
-            )}
-
-            <div
-              className="calendly-inline-widget"
-              data-url={`https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=b59354&name=${encodeURIComponent(bookingData.firstName + ' ' + bookingData.lastName)}&email=${encodeURIComponent(bookingData.email)}`}
-              style={{ minWidth: "320px", height: "700px" }}
-            />
-
-            <div className="mt-8 text-center">
-              <Button
-                variant="outline"
-                onClick={handleBackToInfo}
-                className="border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
-              >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("step2.backButton")}
-              </Button>
-            </div>
-          </div>
-        </section>
-      </>
-    );
-  }
-
-  // STEP 3: Service Selection
-  if (step === "service-selection") {
-    return (
-      <>
-        <section className="hero-gradient py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl px-6">
-            <div className="text-center">
-              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
-                <CheckCircle className="h-10 w-10 text-white" />
-              </div>
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                {t("step3.heroTitle")}
-              </h1>
-              <p className="text-lg text-white/90">
-                {t("step3.heroSubtitle")}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white py-12 md:py-16">
-          <div className="container mx-auto max-w-7xl px-6">
-            <SectionHeading
-              overline={t("step3.overline")}
-              title={t("step3.title")}
-              description={t("step3.description")}
-              align="center"
-              className="mb-12"
-            />
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {services.map((service) => {
-                const Icon = service.icon;
-                return (
-                  <Card
-                    key={service.id}
-                    className="border-2 border-brand-grayLight hover:border-brand-gold cursor-pointer transition-all"
-                    onClick={() => handleServiceSelect(service.id)}
-                  >
-                    <CardHeader>
-                      <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-gold/10">
-                        <Icon className="h-6 w-6 text-brand-gold" />
-                      </div>
-                      <CardTitle className="text-xl">{service.title}</CardTitle>
-                      <div className="mt-2">
-                        <span className="text-2xl font-bold text-brand-gold">€{service.price}</span>
-                        <span className="text-sm text-brand-grayMed ml-2">{t("step3.consultationFee")}</span>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-brand-grayMed mb-4">{service.description}</p>
-                      <Button className="w-full bg-brand-gold text-white hover:bg-brand-goldDark">
-                        {t("step3.selectService")}
+                    <div className="flex items-center justify-between pt-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => (window.location.href = `/${locale}/life-insurance`)}
+                        className="flex items-center gap-2"
+                      >
+                        <ArrowLeft className="h-4 w-4" /> Back to Life Insurance
                       </Button>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      </>
-    );
-  }
-
-  // STEP 4: Summary
-  if (step === "summary") {
-    const selectedService = services.find(s => s.id === bookingData.serviceId);
-
-    return (
-      <>
-        <section className="hero-gradient py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl px-6">
-            <div className="text-center">
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                {t("step4.heroTitle")}
-              </h1>
-              <p className="text-lg text-white/90">
-                {t("step4.heroSubtitle")}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white py-12 md:py-16">
-          <div className="container mx-auto max-w-3xl px-6">
-            <SectionHeading
-              overline={t("step4.overline")}
-              title={t("step4.title")}
-              align="center"
-              className="mb-12"
-            />
-
-            {/* Contact Information */}
-            <Card className="border-2 border-brand-grayLight mb-6">
-              <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-xl">{t("step4.contactInfo")}</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div>
-                    <p className="text-sm text-brand-grayMed mb-1">{t("step4.name")}</p>
-                    <p className="font-semibold text-brand-dark">{bookingData.firstName} {bookingData.lastName}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-brand-grayMed mb-1">{t("step4.email")}</p>
-                    <p className="font-semibold text-brand-dark break-all">{bookingData.email}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-brand-grayMed mb-1">{t("step4.phone")}</p>
-                    <p className="font-semibold text-brand-dark">{bookingData.phone}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Appointment Details */}
-            <Card className="border-2 border-brand-grayLight mb-6">
-              <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-xl">{t("step4.appointmentDetails")}</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-sm text-brand-grayMed mb-1">{t("step4.appointmentConfirmation")}</p>
-                    <p className="font-semibold text-brand-dark">
-                      {t("step4.scheduledViaCalendly")}
-                    </p>
-                    <p className="text-sm text-brand-grayMed mt-1">
-                      {t("step4.appointmentEmailNote")}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-brand-grayMed mb-1">{t("step4.duration")}</p>
-                    <p className="font-semibold text-brand-dark">{t("step4.minutes")}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Service & Payment */}
-            <Card className="border-2 border-brand-grayLight mb-8">
-              <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-2xl">{t("step4.servicePayment")}</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  {selectedService && (
-                    <div className="flex items-start gap-4">
-                      {(() => {
-                        const Icon = selectedService.icon;
-                        return (
-                          <div className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-brand-gold/10">
-                            <Icon className="h-6 w-6 text-brand-gold" />
-                          </div>
-                        );
-                      })()}
-                      <div className="flex-1">
-                        <h3 className="text-xl font-bold text-brand-dark">{selectedService.title}</h3>
-                        <p className="text-sm text-brand-grayMed mt-1">{selectedService.description}</p>
-                      </div>
+                      <Button
+                        type="submit"
+                        className="flex items-center gap-2 bg-brand-gold text-white hover:bg-brand-goldDark"
+                      >
+                        Continue to Schedule <ArrowRight className="h-4 w-4" />
+                      </Button>
                     </div>
+                  </form>
+                </CardContent>
+              </Card>
+
+              {/* Info cards */}
+              <div className="mt-12 grid gap-8 md:grid-cols-3">
+                {[
+                  {
+                    icon: Clock,
+                    title: "60-Minute Consultation",
+                    desc: "Comprehensive session covering your insurance needs",
+                  },
+                  {
+                    icon: Video,
+                    title: "Video Conference",
+                    desc: "Secure online meeting via your preferred platform",
+                  },
+                  {
+                    icon: Shield,
+                    title: "Free & Confidential",
+                    desc: "No obligation — all discussions are strictly confidential",
+                  },
+                ].map(({ icon: Icon, title, desc }) => (
+                  <div key={title} className="text-center">
+                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
+                      <Icon className="h-6 w-6 text-brand-goldDark" />
+                    </div>
+                    <h3 className="mb-2 text-lg font-bold text-brand-dark">{title}</h3>
+                    <p className="text-sm text-brand-grayMed">{desc}</p>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* ─── STEP 2: CALENDLY CALENDAR ───────────────────────────── */}
+          {step === "calendar" && (
+            <>
+              <SectionHeading
+                overline="STEP 2 OF 3"
+                title="Pick a Date & Time"
+                description={`Booking for ${fullName} (${bookingData.email})`}
+              />
+
+              <Card className="mt-8 border-none shadow-lg">
+                <CardContent className="p-4 md:p-8">
+                  {loading ? (
+                    <div className="flex flex-col items-center justify-center gap-4 py-20">
+                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-solid border-brand-gold border-r-transparent" />
+                      <p className="text-brand-grayMed">Confirming your appointment…</p>
+                    </div>
+                  ) : (
+                    <div
+                      ref={calendlyRef}
+                      style={{ minWidth: "320px", height: "700px" }}
+                    />
                   )}
+                </CardContent>
+              </Card>
 
-                  <div className="border-t border-brand-grayLight pt-4 mt-4">
-                    <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">{t("step4.consultationFeeExclVat")}:</span>
-                      <span className="font-semibold text-brand-dark">
-                        €{((bookingData.servicePrice || 0) / 1.17).toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center text-lg mb-2">
-                      <span className="text-brand-grayMed">{t("step4.vat")}:</span>
-                      <span className="font-semibold text-brand-dark">
-                        €{((bookingData.servicePrice || 0) - ((bookingData.servicePrice || 0) / 1.17)).toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="border-t border-brand-grayLight pt-4 mt-4">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold text-brand-dark">{t("step4.totalInclVat")}:</span>
-                        <span className="text-3xl font-bold text-brand-gold">
-                          €{(bookingData.servicePrice || 0).toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              <div className="mt-6 flex justify-start">
+                <Button
+                  variant="outline"
+                  onClick={() => setStep("contact")}
+                  className="flex items-center gap-2"
+                >
+                  <ArrowLeft className="h-4 w-4" /> Back to Contact Info
+                </Button>
+              </div>
+            </>
+          )}
 
-            <div className="flex gap-4">
-              <Button
-                variant="outline"
-                onClick={handleBackToServiceSelection}
-                className="flex-1 border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
-              >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("step4.changeService")}
-              </Button>
-              <Button
-                onClick={handleProceedToPayment}
-                className="flex-1 bg-brand-gold text-white hover:bg-brand-goldDark h-12 text-lg"
-              >
-                {t("step4.proceedToPayment")}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </section>
-      </>
-    );
-  }
-
-  // STEP 5: Payment
-  if (step === "payment") {
-    return (
-      <>
-        <Script
-          src={`https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test'}&currency=EUR`}
-          onLoad={() => {
-            setIsPayPalLoaded(true);
-
-            // Initialize PayPal Buttons
-            if (window.paypal && bookingData.servicePrice) {
-              window.paypal.Buttons({
-                createOrder: function(data: any, actions: any) {
-                  return actions.order.create({
-                    purchase_units: [{
-                      description: bookingData.serviceTitle || 'Life Insurance Consultation',
-                      amount: {
-                        currency_code: 'EUR',
-                        value: (bookingData.servicePrice || 0).toFixed(2)
-                      }
-                    }]
-                  });
-                },
-                onApprove: async function(data: any, actions: any) {
-                  const order = await actions.order.capture();
-                  await handlePaymentSuccess(order);
-                },
-                onError: function(err: any) {
-                  console.error('PayPal error:', err);
-                  alert(t("payment.paymentFailed"));
-                }
-              }).render('#paypal-button-container');
-            }
-          }}
-        />
-
-        <section className="hero-gradient py-16 md:py-20">
-          <div className="container mx-auto max-w-4xl px-6">
+          {/* ─── STEP 3: CONFIRMATION ────────────────────────────────── */}
+          {step === "confirmation" && (
             <div className="text-center">
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-                {t("payment.heroTitle")}
-              </h1>
-              <p className="text-lg text-white/90">
-                {t("payment.heroSubtitle")}
+              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+                <CheckCircle className="h-10 w-10 text-green-600" />
+              </div>
+              <h2 className="mb-4 text-3xl font-bold text-brand-dark">
+                Consultation Confirmed!
+              </h2>
+              <p className="mb-10 text-brand-grayMed">
+                Your consultation has been scheduled. We've sent confirmation details to
+                your email.
               </p>
-            </div>
-          </div>
-        </section>
 
-        <section className="bg-white py-12 md:py-16">
-          <div className="container mx-auto max-w-3xl px-6">
-            <div className="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-sm text-blue-900">
-                {t("payment.securePaymentNote")}
-              </p>
-            </div>
-
-            <Card className="border-2 border-brand-grayLight mb-8">
-              <CardHeader className="bg-brand-goldLight/10">
-                <CardTitle className="text-2xl">{t("payment.paymentSummary")}</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="space-y-3 mb-6">
-                  <div className="flex justify-between">
-                    <span className="text-brand-grayMed">{t("payment.service")}:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.serviceTitle}</span>
+              <Card className="mb-8 border-brand-gold/30 text-left shadow-lg">
+                <CardContent className="p-8">
+                  <h3 className="mb-6 text-xl font-bold text-brand-dark">
+                    Confirmed Appointment
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
+                      <span className="text-brand-grayMed">Service:</span>
+                      <span className="font-semibold text-brand-dark">
+                        Life Insurance Consultation
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
+                      <span className="text-brand-grayMed">Name:</span>
+                      <span className="font-semibold text-brand-dark">{fullName}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
+                      <span className="text-brand-grayMed">Email:</span>
+                      <span className="font-semibold text-brand-dark">{bookingData.email}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
+                      <span className="text-brand-grayMed">Date:</span>
+                      <span className="font-semibold text-brand-dark">
+                        {dateDisplay || "Check your Calendly confirmation email"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
+                      <span className="text-brand-grayMed">Time:</span>
+                      <span className="font-semibold text-brand-dark">
+                        {timeDisplay || "Scheduled via Calendly"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
+                      <span className="text-brand-grayMed">Duration:</span>
+                      <span className="font-semibold text-brand-dark">60 minutes</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-brand-grayMed">Consultation Fee:</span>
+                      <span className="font-bold text-green-600">Free</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-brand-grayMed">{t("payment.client")}:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.firstName} {bookingData.lastName}</span>
-                  </div>
-                  <div className="flex justify-between text-xl font-bold border-t pt-3">
-                    <span className="text-brand-dark">{t("payment.total")}:</span>
-                    <span className="text-brand-gold">€{(bookingData.servicePrice || 0).toFixed(2)}</span>
-                  </div>
-                </div>
+                </CardContent>
+              </Card>
 
-                <div id="paypal-button-container" className="mt-6"></div>
+              <div className="rounded-lg bg-brand-goldLight/20 p-6 text-left">
+                <h4 className="mb-4 font-semibold text-brand-dark">What's Next?</h4>
+                <ul className="space-y-3 text-sm text-brand-grayMed">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-gold" />
+                    <span>
+                      Check your email ({bookingData.email}) for the meeting link and
+                      calendar invite
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-gold" />
+                    <span>
+                      Think about your coverage needs, dependants, and any existing
+                      policies
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-gold" />
+                    <span>Join the video conference at your scheduled time</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-gold" />
+                    <span>
+                      Our team at opulanz.banking@gmail.com has been notified
+                    </span>
+                  </li>
+                </ul>
+              </div>
 
-                {!isPayPalLoaded && (
-                  <div className="text-center py-8">
-                    <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-brand-gold border-r-transparent"></div>
-                    <p className="mt-4 text-brand-grayMed">{t("payment.loadingPayment")}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <div className="flex gap-4">
               <Button
-                variant="outline"
-                onClick={() => setStep("summary")}
-                className="flex-1 border-brand-grayMed text-brand-grayMed hover:bg-gray-50"
+                onClick={() => (window.location.href = `/${locale}`)}
+                className="mt-8 bg-brand-gold text-white hover:bg-brand-goldDark"
               >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("payment.backToSummary")}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => router.push(`/${locale}/life-insurance`)}
-                className="flex-1"
-              >
-                {t("payment.cancelBooking")}
+                Return to Home
               </Button>
             </div>
-          </div>
-        </section>
-      </>
-    );
-  }
+          )}
 
-  return null;
-}
+        </div>
+      </section>
 
-// Extend Window interface for PayPal
-declare global {
-  interface Window {
-    paypal?: any;
-  }
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="afterInteractive"
+        onLoad={() => setCalendlyScriptLoaded(true)}
+      />
+    </>
+  );
 }

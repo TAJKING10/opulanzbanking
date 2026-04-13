@@ -198,7 +198,7 @@ Contact: opulanz.banking@gmail.com
     if (!paymentCompleted) { alert(tCommon('payment.completePaypalFirst')); return; }
     setLoading(true);
     try {
-      await fetch('http://localhost:5000/api/appointments', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

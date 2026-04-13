@@ -9,6 +9,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const { testConnection } = require('./config/db');
@@ -20,14 +21,21 @@ const companyRoutes = require('./routes/companies');
 const appointmentRoutes = require('./routes/appointments');
 const notificationRoutes = require('./routes/notifications');
 const kycRoutes = require('./routes/kyc');
+const sumsubRoutes = require('./routes/sumsub');
+const authRoutes = require('./routes/auth');
 const taxAdvisoryBookingsRoutes = require('./routes/tax-advisory-bookings');
 const lifeInsuranceBookingsRoutes = require('./routes/life-insurance-bookings');
+
+const uploadRoutes = require('./routes/upload');
+const narviRoutes = require('./routes/narvi');
 
 // Investment Portal Routes
 const investmentAdminsRoutes = require('./routes/investment-admins');
 const investmentInvestorsRoutes = require('./routes/investment-investors');
 const investmentPropertiesRoutes = require('./routes/investment-properties');
 const investmentActivityRoutes = require('./routes/investment-activity');
+const investmentsRoutes = require('./routes/investments');
+const investmentContactRoutes = require('./routes/investment-contact');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -43,7 +51,44 @@ app.use(helmet({
     },
   },
 })); // Security headers with CSP configured
-app.use(cors()); // Enable CORS for frontend
+
+// CORS — allow frontend on any local port (3000-3010) for development
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:3002',
+  'http://localhost:3003',
+  'https://frontend.opulanz.com',
+  'https://www.opulanz.com',
+  'https://opulanz.com',
+];
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g., curl, Postman) and whitelisted origins
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Rate limiting — protect auth and contact endpoints
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20,
+  message: { success: false, error: 'Too many attempts. Please try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
+  message: { success: false, error: 'Too many submissions. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
@@ -60,14 +105,20 @@ app.use('/api/companies', companyRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/kyc', kycRoutes);
+app.use('/api/sumsub', sumsubRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/tax-advisory-bookings', taxAdvisoryBookingsRoutes); // Tax advisory service bookings
 app.use('/api/life-insurance-bookings', lifeInsuranceBookingsRoutes); // Life insurance service bookings
+app.use('/api/upload', uploadRoutes); // Azure Blob Storage file uploads
+app.use('/api/narvi', narviRoutes); // Narvi banking API
 
 // Investment Portal Routes
 app.use('/api/investment/admins', investmentAdminsRoutes);
 app.use('/api/investment/investors', investmentInvestorsRoutes);
 app.use('/api/investment/properties', investmentPropertiesRoutes);
 app.use('/api/investment/activity', investmentActivityRoutes);
+app.use('/api/investment/investments', investmentsRoutes);
+app.use('/api/investment/contact', contactLimiter, investmentContactRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

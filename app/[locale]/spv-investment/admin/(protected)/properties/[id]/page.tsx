@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowLeft, Save, Trash2, Plus, X, ImageIcon, MapPin,
-  Building2, Calendar, DollarSign, Landmark, Check
+  Building2, Calendar, DollarSign, Landmark, Check, UserPlus, Lock, Users
 } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +18,11 @@ import {
   updateProperty,
   deleteProperty,
   getCurrentAdmin,
+  getInvestors,
+  createInvestment,
+  getPropertyInvestments,
   type Property,
+  type Investor,
 } from "@/lib/investment-api";
 
 type PropertyStatus = "open" | "closing" | "closed" | "coming";
@@ -63,6 +67,14 @@ export default function PropertyEditPage() {
   const [isLoading, setIsLoading] = React.useState(!isNew);
   const [error, setError] = React.useState<string | null>(null);
 
+  // Investor assignment state
+  const [investors, setInvestors] = React.useState<Investor[]>([]);
+  const [selectedInvestorId, setSelectedInvestorId] = React.useState<string>("");
+  const [ownershipPercentage, setOwnershipPercentage] = React.useState("100");
+  const [isAssigning, setIsAssigning] = React.useState(false);
+  const [assignmentSuccess, setAssignmentSuccess] = React.useState<string | null>(null);
+  const [currentOwner, setCurrentOwner] = React.useState<{ investor: Investor; ownership: number } | null>(null);
+
   // Load existing property
   React.useEffect(() => {
     const fetchProperty = async () => {
@@ -102,6 +114,106 @@ export default function PropertyEditPage() {
     };
     fetchProperty();
   }, [id, isNew]);
+
+  // Load investors list and current ownership
+  React.useEffect(() => {
+    const fetchInvestorsAndOwnership = async () => {
+      try {
+        // Fetch all active investors
+        const investorsResult = await getInvestors({ status: "active" });
+        const investorsList = investorsResult.data || [];
+        setInvestors(investorsList);
+
+        // If editing existing property, check for current owner
+        if (!isNew) {
+          const propertyInvestments = await getPropertyInvestments(parseInt(id));
+          if (propertyInvestments && propertyInvestments.data && propertyInvestments.data.length > 0) {
+            // Find the primary owner (highest ownership percentage)
+            const primaryInvestment = propertyInvestments.data.reduce((max, inv) =>
+              (inv.ownership_percentage || 0) > (max.ownership_percentage || 0) ? inv : max
+            );
+
+            // Find the investor details
+            const ownerInvestor = investorsList.find(inv => inv.id === primaryInvestment.investor_id);
+            if (ownerInvestor) {
+              setCurrentOwner({
+                investor: ownerInvestor,
+                ownership: primaryInvestment.ownership_percentage || 100
+              });
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching investors:", err);
+      }
+    };
+    fetchInvestorsAndOwnership();
+  }, [id, isNew]);
+
+  // Handle investor assignment
+  const handleAssignInvestor = async () => {
+    if (!selectedInvestorId) {
+      setError("Please select an investor");
+      return;
+    }
+
+    setIsAssigning(true);
+    setError(null);
+    setAssignmentSuccess(null);
+
+    try {
+      const admin = getCurrentAdmin();
+      const percentage = parseFloat(ownershipPercentage) || 100;
+      const totalValue = parseFloat(formData.total_value.replace(/[^0-9.]/g, "")) || 0;
+      const investmentAmount = (totalValue * percentage) / 100;
+
+      // Create the investment linking investor to property
+      const result = await createInvestment({
+        investor_id: parseInt(selectedInvestorId),
+        property_id: parseInt(id),
+        amount_invested: investmentAmount,
+        ownership_percentage: percentage,
+        number_of_shares: parseInt(formData.total_shares) || 1,
+        createdBy: admin?.id,
+      });
+
+      if (result.success) {
+        // If 100% ownership, automatically close the property
+        if (percentage >= 100) {
+          setFormData({ ...formData, status: "closed" });
+          // Update property status in database
+          await updateProperty(parseInt(id), { status: "closed" });
+        }
+
+        const assignedInvestor = investors.find((inv: Investor) => inv.id === parseInt(selectedInvestorId));
+        setCurrentOwner({
+          investor: assignedInvestor!,
+          ownership: percentage
+        });
+        setAssignmentSuccess(`Property successfully assigned to ${assignedInvestor?.name} with ${percentage}% ownership`);
+        setSelectedInvestorId("");
+      } else {
+        setError(result.error || "Failed to assign investor");
+      }
+    } catch (err) {
+      console.error("Error assigning investor:", err);
+      setError("An error occurred while assigning the investor");
+    } finally {
+      setIsAssigning(false);
+    }
+  };
+
+  // Handle quick close property
+  const handleCloseProperty = async () => {
+    try {
+      setFormData({ ...formData, status: "closed" });
+      await updateProperty(parseInt(id), { status: "closed" });
+      setAssignmentSuccess("Property has been closed and will no longer appear to other investors");
+    } catch (err) {
+      console.error("Error closing property:", err);
+      setError("Failed to close property");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -545,6 +657,124 @@ export default function PropertyEditPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Ownership Assignment - Only show for existing properties */}
+          {!isNew && (
+            <Card className="border-none shadow-sm border-l-4 border-l-indigo-600">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <UserPlus className="h-5 w-5 text-indigo-600" />
+                  Ownership Assignment
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Current Owner Display */}
+                {currentOwner && (
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold">
+                        {currentOwner.investor.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-green-900">{currentOwner.investor.name}</p>
+                        <p className="text-sm text-green-700">
+                          Current Owner • {currentOwner.ownership}% Ownership
+                        </p>
+                      </div>
+                      <div className="ml-auto">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-600 text-white text-sm font-medium">
+                          <Check className="h-4 w-4 mr-1" />
+                          Assigned
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Assignment Success Message */}
+                {assignmentSuccess && (
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
+                    <div className="flex items-center gap-2">
+                      <Check className="h-5 w-5" />
+                      {assignmentSuccess}
+                    </div>
+                  </div>
+                )}
+
+                {/* Assign New Investor Form */}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="md:col-span-2 space-y-2">
+                      <Label htmlFor="investor">Select Investor</Label>
+                      <select
+                        id="investor"
+                        value={selectedInvestorId}
+                        onChange={(e) => setSelectedInvestorId(e.target.value)}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      >
+                        <option value="">-- Select an investor --</option>
+                        {investors.map((investor) => (
+                          <option key={investor.id} value={investor.id.toString()}>
+                            {investor.name} ({investor.email}) - {investor.investor_type}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="ownership">Ownership %</Label>
+                      <Input
+                        id="ownership"
+                        type="number"
+                        min="1"
+                        max="100"
+                        value={ownershipPercentage}
+                        onChange={(e) => setOwnershipPercentage(e.target.value)}
+                        placeholder="100"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <Button
+                      type="button"
+                      onClick={handleAssignInvestor}
+                      disabled={isAssigning || !selectedInvestorId}
+                      className="bg-indigo-600 hover:bg-indigo-700"
+                    >
+                      {isAssigning ? (
+                        <div className="flex items-center gap-2">
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                          Assigning...
+                        </div>
+                      ) : (
+                        <>
+                          <UserPlus className="mr-2 h-4 w-4" />
+                          Assign to Investor
+                        </>
+                      )}
+                    </Button>
+
+                    {formData.status !== "closed" && (
+                      <Button
+                        type="button"
+                        onClick={handleCloseProperty}
+                        variant="outline"
+                        className="text-orange-600 border-orange-200 hover:bg-orange-50"
+                      >
+                        <Lock className="mr-2 h-4 w-4" />
+                        Close Property
+                      </Button>
+                    )}
+                  </div>
+
+                  <p className="text-xs text-slate-500">
+                    <Users className="inline h-3 w-3 mr-1" />
+                    Assigning 100% ownership will automatically close the property, hiding it from other investors.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Actions */}
           <div className="flex justify-end gap-3 pb-8">

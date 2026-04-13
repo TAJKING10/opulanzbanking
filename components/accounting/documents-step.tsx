@@ -42,8 +42,12 @@ export function DocumentsStep({
     return documents.find((d) => d.type === type);
   };
 
+  // Documents are optional — mark step valid immediately so parent nav also works
+  React.useEffect(() => {
+    onUpdate({ isStep5Valid: true });
+  }, []);
+
   const handleContinue = () => {
-    // Documents are optional, so no validation needed
     onNext();
   };
 

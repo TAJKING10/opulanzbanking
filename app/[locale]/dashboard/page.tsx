@@ -1,246 +1,728 @@
 "use client";
 
 import * as React from "react";
-import { CreditCard, TrendingUp, FileText, Plus, ArrowUpRight, ArrowDownLeft } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { StatusChip } from "@/components/status-chip";
-import { Timeline, type TimelineItem } from "@/components/timeline";
-import { SectionHeading } from "@/components/section-heading";
-import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import {
+  TrendingUp,
+  TrendingDown,
+  Send,
+  Plus,
+  RefreshCw,
+  Copy,
+  ChevronRight,
+  Rocket,
+  Calendar,
+  CreditCard,
+  Building2,
+  Globe,
+  Shield,
+  CheckCircle,
+  ArrowUpRight,
+  ArrowDownLeft,
+  Eye,
+  EyeOff,
+  Sparkles,
+  Clock,
+  Users,
+  FileText,
+  BarChart3,
+  AlertTriangle,
+} from "lucide-react";
+import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
+import { getCurrentUser, clearAuth, getAuthToken, setAuthToken } from "@/lib/auth";
+import { useRouter } from "next/navigation";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+interface NarviAccount {
+  pid: string;
+  number: string;
+  bic?: string;
+  currency: string;
+  balance?: number;
+  status: string;
+}
+
+interface NarviTransaction {
+  pid: string;
+  type: string;
+  amount: number;
+  currency: string;
+  status: string;
+  createdAt?: string;
+  reference?: string;
+  counterpartName?: string;
+  counterpartIban?: string;
+}
 
 export default function DashboardPage() {
-  const t = useTranslations('dashboard');
-  const accountBalance = "45,234.50";
-  const currency = "EUR";
+  const params = useParams();
+  const locale = params.locale as string;
+  const router = useRouter();
+  const [copiedIban, setCopiedIban] = React.useState(false);
+  const [showBalance, setShowBalance] = React.useState(true);
+  const [showKyc, setShowKyc] = React.useState(false);
+  const [kycVerified, setKycVerified] = React.useState(false);
+  const [authUserId, setAuthUserId] = React.useState("dashboard-user-001");
+  const [kycType, setKycType] = React.useState<"individual" | "corporate">("individual");
 
-  const applications: TimelineItem[] = [
-    {
-      id: "1",
-      title: "Business Account Opening",
-      description: "Your application has been approved",
-      status: "completed",
-      date: "2025-10-15",
-    },
-    {
-      id: "2",
-      title: "Company Formation - SARL",
-      description: "Awaiting notary certificate",
-      status: "in_progress",
-      date: "2025-10-18",
-    },
-    {
-      id: "3",
-      title: "Tax Advisory Consultation",
-      description: "Scheduled for next week",
-      status: "pending",
-      date: "2025-10-25",
-    },
+  // Narvi live data
+  const [narviAccounts, setNarviAccounts] = React.useState<NarviAccount[]>([]);
+  const [narviTransactions, setNarviTransactions] = React.useState<NarviTransaction[]>([]);
+  const [narviLoading, setNarviLoading] = React.useState(true);
+
+  const [userDisplayName, setUserDisplayName] = React.useState("there");
+
+  React.useEffect(() => {
+    const user = getCurrentUser();
+    if (!user) {
+      router.replace(`/${locale}/login`);
+      return;
+    }
+    setAuthUserId(`user-${user.userId}`);
+    setKycType(user.accountType === "corporate" ? "corporate" : "individual");
+    setKycVerified(user.kycStatus === "verified");
+    setUserDisplayName(user.email ? user.email.split('@')[0] : "there");
+
+    // Fetch Narvi accounts and transactions
+    fetchNarviData();
+  }, [locale, router]);
+
+  async function fetchNarviData() {
+    setNarviLoading(true);
+    try {
+      const [accRes, txRes] = await Promise.all([
+        fetch(`${API}/api/narvi/accounts`),
+        fetch(`${API}/api/narvi/transactions?limit=10`),
+      ]);
+      if (accRes.ok) {
+        const accData = await accRes.json();
+        const list = accData.data || accData.accounts || accData || [];
+        setNarviAccounts(Array.isArray(list) ? list : []);
+      }
+      if (txRes.ok) {
+        const txData = await txRes.json();
+        const list = txData.data || txData.transactions || txData || [];
+        setNarviTransactions(Array.isArray(list) ? list.slice(0, 8) : []);
+      }
+    } catch (e) {
+      console.warn("Narvi data fetch failed:", e);
+    } finally {
+      setNarviLoading(false);
+    }
+  }
+
+  function handleSignOut() {
+    clearAuth();
+    router.push(`/${locale}/login`);
+  }
+
+  async function handleKycComplete() {
+    try {
+      const token = getAuthToken();
+      const res = await fetch(`${API}/api/auth/kyc-complete`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAuthToken(data.token);
+      }
+    } catch (err) {
+      console.error("KYC complete error:", err);
+    } finally {
+      setKycVerified(true);
+      setShowKyc(false);
+    }
+  }
+
+  const primaryIban = narviAccounts[0]?.number || "Pending...";
+  const primaryBic = narviAccounts[0]?.bic || "OPULFR2H";
+
+  const handleCopyIban = () => {
+    navigator.clipboard.writeText(primaryIban);
+    setCopiedIban(true);
+    setTimeout(() => setCopiedIban(false), 2000);
+  };
+
+  // Map Narvi accounts to display format (fall back to demo data if API not ready)
+  const ICON_COLORS = ["bg-blue-500","bg-green-500","bg-purple-500","bg-orange-500","bg-teal-500","bg-pink-500"];
+  const currencySymbols: Record<string, string> = { EUR: "€", USD: "$", GBP: "£", CHF: "Fr", SEK: "kr" };
+
+  const accounts = narviAccounts.length > 0
+    ? narviAccounts.map((acc, i) => ({
+        name: acc.currency === "EUR" ? "Main Account (EUR)" : `${acc.currency} Account`,
+        type: acc.currency,
+        balance: `${currencySymbols[acc.currency] || acc.currency} ${(acc.balance ?? 0).toLocaleString("en-EU", { minimumFractionDigits: 2 })}`,
+        iban: acc.number || "—",
+        change: "+0.0%",
+        isUp: true,
+        flag: acc.currency === "EUR" ? "EU" : acc.currency === "USD" ? "US" : acc.currency === "GBP" ? "GB" : "—",
+        pid: acc.pid,
+      }))
+    : [
+        { name: "Main Account (EUR)", type: "EUR", balance: "€0.00", iban: "Pending account setup...", change: "+0.0%", isUp: true, flag: "EU", pid: "" },
+      ];
+
+  const totalBalance = narviAccounts.reduce((sum, a) => sum + (a.currency === "EUR" ? (a.balance ?? 0) : 0), 0);
+  const totalBalanceDisplay = narviLoading ? "Loading..." : `€${totalBalance.toLocaleString("en-EU", { minimumFractionDigits: 2 })}`;
+
+  const transactions = narviTransactions.length > 0
+    ? narviTransactions.map((tx, i) => {
+        const isCredit = tx.type === "CREDIT" || tx.amount > 0;
+        const counterpart = tx.counterpartName || (isCredit ? "Incoming Transfer" : "Outgoing Transfer");
+        return {
+          id: tx.pid || String(i),
+          name: counterpart,
+          category: tx.reference || tx.type || "Transfer",
+          date: tx.createdAt ? new Date(tx.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—",
+          time: tx.createdAt ? new Date(tx.createdAt).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "",
+          amount: `${isCredit ? "+" : "-"}€${Math.abs(tx.amount ?? 0).toLocaleString("en-EU", { minimumFractionDigits: 2 })}`,
+          isCredit,
+          status: tx.status?.toLowerCase() === "completed" || tx.status?.toLowerCase() === "processed" ? "completed" : "processing",
+          icon: counterpart.charAt(0).toUpperCase(),
+          color: ICON_COLORS[i % ICON_COLORS.length],
+        };
+      })
+    : [];
+
+  const quickStats = [
+    { label: "Income (Mar)", value: "€48,500", change: "+12%", isUp: true, icon: ArrowDownLeft },
+    { label: "Expenses (Mar)", value: "€23,450", change: "+5%", isUp: false, icon: ArrowUpRight },
+    { label: "Pending", value: "€3,200", change: "3 items", isUp: null, icon: Clock },
+    { label: "Invoices Due", value: "€8,750", change: "5 unpaid", isUp: null, icon: FileText },
   ];
 
-  const recentTransactions = [
-    {
-      id: "1",
-      type: "credit",
-      description: "Wire Transfer from Client ABC",
-      amount: "+5,000.00",
-      date: "2025-10-19",
-      status: "completed",
-    },
-    {
-      id: "2",
-      type: "debit",
-      description: "Payment to Supplier XYZ",
-      amount: "-2,345.67",
-      date: "2025-10-18",
-      status: "completed",
-    },
-    {
-      id: "3",
-      type: "debit",
-      description: "Monthly Subscription",
-      amount: "-99.00",
-      date: "2025-10-17",
-      status: "completed",
-    },
+  const recurringPayments = [
+    { name: "Adobe Creative Cloud", amount: "€54.99", date: "Apr 1", logo: "AD", color: "bg-red-500" },
+    { name: "GitHub Enterprise", amount: "€1,200.00", date: "Apr 5", logo: "GH", color: "bg-gray-800" },
+    { name: "Microsoft 365", amount: "€299.00", date: "Apr 10", logo: "MS", color: "bg-blue-600" },
   ];
 
-  const quickActions = [
-    { label: t('actions.openNewAccount'), href: "/open-account", icon: Plus },
-    { label: t('actions.formCompany'), href: "/company-formation", icon: FileText },
-    { label: t('actions.bookAdvisory'), href: "/tax-advisory", icon: TrendingUp },
-    { label: t('actions.viewStatements'), href: "/dashboard/statements", icon: FileText },
+  const recentBeneficiaries = [
+    { name: "TechCorp Ltd", initials: "TC", color: "bg-blue-500" },
+    { name: "Design Studio", initials: "DS", color: "bg-pink-500" },
+    { name: "Cloud Services", initials: "CS", color: "bg-purple-500" },
+    { name: "Marketing Pro", initials: "MP", color: "bg-green-500" },
   ];
+
+  // ── KYC GATE ─────────────────────────────────────────────────────────────
+  if (!kycVerified) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+        <div className="w-full max-w-lg text-center">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-10">
+            <div className="w-16 h-16 bg-[#b59354]/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <Shield className="h-8 w-8 text-[#b59354]" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Identity Verification Required</h2>
+            <p className="text-gray-600 mb-8">
+              To access your dashboard and start using Opulanz, you need to complete identity verification. This only takes a few minutes.
+            </p>
+            <button
+              onClick={() => setShowKyc(true)}
+              className="w-full py-3 bg-[#b59354] hover:bg-[#886844] text-white font-semibold rounded-xl transition-colors mb-4"
+            >
+              Start Verification
+            </button>
+            <button
+              onClick={handleSignOut}
+              className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              Sign out
+            </button>
+          </div>
+          {showKyc && (
+            <SumsubKycWidget
+              userId={authUserId}
+              levelName={kycType === "corporate" ? "corporate_signup_kyc" : "individual_signup_kyc"}
+              onClose={() => setShowKyc(false)}
+              onComplete={handleKycComplete}
+            />
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-brand-off py-12">
-      <div className="container mx-auto max-w-7xl px-6">
-        <div className="mb-12">
-          <h1 className="mb-2 text-3xl font-bold text-brand-dark">{t('title')}</h1>
-          <p className="text-brand-grayMed">
-            {t('subtitle')}
-          </p>
+    <div className="p-6 lg:p-8 space-y-6">
+      {/* Header with Greeting */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3 mb-1">
+            <h1 className="text-2xl font-bold text-gray-900">Good morning, {userDisplayName}</h1>
+            <span className="text-2xl">&#128075;</span>
+          </div>
+          <p className="text-gray-500">Here's what's happening with your accounts today.</p>
         </div>
-
-        {/* Account Balance Card */}
-        <div className="mb-8">
-          <Card className="border-none bg-gradient-to-br from-brand-goldDark to-brand-gold shadow-elevated">
-            <CardContent className="p-8">
-              <div className="flex items-start justify-between">
-                <div className="text-white">
-                  <p className="mb-2 text-sm opacity-90">{t('totalBalance')}</p>
-                  <p className="mb-6 text-4xl font-bold">
-                    {currency} {accountBalance}
-                  </p>
-                  <div className="flex gap-4">
-                    <Button
-                      variant="default"
-                      size="sm"
-                      className="bg-white text-brand-dark hover:bg-brand-off"
-                    >
-                      <Plus className="mr-2 h-4 w-4" />
-                      {t('addFunds')}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="border border-white/30 text-white hover:bg-white/10"
-                    >
-                      {t('transfer')}
-                    </Button>
-                  </div>
-                </div>
-                <CreditCard className="h-12 w-12 text-white/50" />
-              </div>
-            </CardContent>
-          </Card>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-medium">
+            <CheckCircle className="h-4 w-4" />
+            Account Verified
+          </div>
+          <div className="hidden md:flex items-center gap-2 text-sm text-gray-500">
+            <Clock className="h-4 w-4" />
+            Last login: Today, 09:45 AM
+          </div>
+          <button
+            onClick={handleSignOut}
+            className="px-3 py-1.5 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            Sign Out
+          </button>
         </div>
+      </div>
 
-        <div className="grid gap-8 lg:grid-cols-3">
-          {/* Main Content - 2 cols */}
-          <div className="space-y-8 lg:col-span-2">
-            {/* Quick Actions */}
+      {/* KYC Verification Banner */}
+      {!kycVerified && (
+        <div className="flex items-center justify-between gap-4 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <AlertTriangle className="h-5 w-5 text-amber-600" />
+            </div>
             <div>
-              <h2 className="mb-4 text-xl font-bold text-brand-dark">
-                {t('quickActions')}
-              </h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {quickActions.map((action) => {
-                  const Icon = action.icon;
-                  return (
-                    <Card
-                      key={action.label}
-                      className="card-hover cursor-pointer border-brand-grayLight transition-all hover:border-brand-gold"
-                    >
-                      <CardContent className="flex items-center gap-4 p-6">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
-                          <Icon className="h-6 w-6 text-brand-goldDark" />
-                        </div>
-                        <span className="font-semibold text-brand-dark">
-                          {action.label}
-                        </span>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+              <p className="text-sm font-semibold text-amber-900">Identity verification required</p>
+              <p className="text-xs text-amber-700">Complete KYC to unlock full account features and increase limits.</p>
+            </div>
+          </div>
+          <button
+            onClick={() => setShowKyc(true)}
+            className="flex-shrink-0 px-4 py-2 bg-[#b59354] text-white text-sm font-medium rounded-lg hover:bg-[#886844] transition-colors"
+          >
+            Verify Now
+          </button>
+        </div>
+      )}
+
+      {kycVerified && (
+        <div className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-xl px-5 py-4">
+          <div className="w-9 h-9 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <CheckCircle className="h-5 w-5 text-green-600" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-green-900">Identity verified</p>
+            <p className="text-xs text-green-700">Your account is fully verified and all features are unlocked.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Sumsub KYC Widget Modal */}
+      {showKyc && (
+        <SumsubKycWidget
+          userId={authUserId}
+          levelName={kycType === "corporate" ? "corporate_signup_kyc" : "individual_signup_kyc"}
+          onClose={() => setShowKyc(false)}
+          onComplete={handleKycComplete}
+        />
+      )}
+
+      {/* Quick Stats - HIDDEN: Uncomment to show Income/Expenses/Pending/Invoices Due cards */}
+      {/*
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {quickStats.map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <div key={stat.label} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-3">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                  stat.isUp === true ? "bg-green-100" : stat.isUp === false ? "bg-red-100" : "bg-gray-100"
+                }`}>
+                  <Icon className={`h-5 w-5 ${
+                    stat.isUp === true ? "text-green-600" : stat.isUp === false ? "text-red-600" : "text-gray-600"
+                  }`} />
+                </div>
+                {stat.isUp !== null && (
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                    stat.isUp ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                  }`}>
+                    {stat.change}
+                  </span>
+                )}
+                {stat.isUp === null && (
+                  <span className="text-xs font-medium text-gray-500">{stat.change}</span>
+                )}
               </div>
+              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+              <p className="text-sm text-gray-500 mt-1">{stat.label}</p>
+            </div>
+          );
+        })}
+      </div>
+      */}
+
+      {/* Main Balance Card & Quick Actions */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Main Balance */}
+        <div className="lg:col-span-2 bg-gradient-to-br from-[#b59354] via-[#c9a86c] to-[#886844] rounded-2xl p-6 text-white relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
+          </div>
+
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                  <Building2 className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="text-white/80 text-sm">Total Balance</p>
+                  <p className="text-xs text-white/60">All Accounts Combined</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowBalance(!showBalance)}
+                className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+              >
+                {showBalance ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
+              </button>
             </div>
 
-            {/* Recent Transactions */}
-            <div>
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-brand-dark">
-                  {t('recentTransactions')}
+            <div className="mb-6">
+              <div className="flex items-baseline gap-3">
+                <h2 className="text-4xl lg:text-5xl font-bold">
+                  {showBalance ? totalBalanceDisplay : "€•••••••"}
                 </h2>
-                <Button variant="link" className="text-brand-gold">
-                  {t('viewAll')}
-                </Button>
+                <div className="flex items-center gap-1 text-green-300 text-sm font-medium bg-green-500/20 px-2 py-1 rounded-full">
+                  <TrendingUp className="h-4 w-4" />
+                  <span>+5.2%</span>
+                </div>
               </div>
-              <Card className="border-brand-grayLight">
-                <CardContent className="p-0">
-                  <div className="divide-y divide-brand-grayLight">
-                    {recentTransactions.map((transaction) => (
-                      <div
-                        key={transaction.id}
-                        className="flex items-center justify-between p-6 transition-colors hover:bg-brand-off"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div
-                            className={`flex h-10 w-10 items-center justify-center rounded-full ${
-                              transaction.type === "credit"
-                                ? "bg-green-100"
-                                : "bg-red-100"
-                            }`}
-                          >
-                            {transaction.type === "credit" ? (
-                              <ArrowDownLeft className="h-5 w-5 text-green-600" />
-                            ) : (
-                              <ArrowUpRight className="h-5 w-5 text-red-600" />
-                            )}
-                          </div>
-                          <div>
-                            <p className="font-semibold text-brand-dark">
-                              {transaction.description}
-                            </p>
-                            <p className="text-sm text-brand-grayMed">
-                              {transaction.date}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p
-                            className={`text-lg font-bold ${
-                              transaction.type === "credit"
-                                ? "text-green-600"
-                                : "text-brand-dark"
-                            }`}
-                          >
-                            {transaction.amount} {currency}
-                          </p>
-                          <StatusChip status={transaction.status as any} />
-                        </div>
-                      </div>
-                    ))}
+              <p className="text-white/60 text-sm mt-2">vs. last month</p>
+            </div>
+
+            {/* Quick Account Switcher */}
+            <div className="flex gap-3 overflow-x-auto pb-2">
+              {accounts.map((account, i) => (
+                <div
+                  key={account.type}
+                  className={`flex-shrink-0 px-4 py-3 rounded-xl cursor-pointer transition-all ${
+                    i === 0 ? "bg-white/20 backdrop-blur-sm" : "bg-white/10 hover:bg-white/15"
+                  }`}
+                >
+                  <p className="text-xs text-white/70">{account.type}</p>
+                  <p className="font-semibold">{showBalance ? account.balance : "•••••"}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <div className="grid grid-cols-2 gap-3">
+            <Link
+              href={`/${locale}/dashboard/send`}
+              className="flex flex-col items-center gap-2 p-4 bg-[#b59354] text-white rounded-xl hover:bg-[#886844] transition-colors"
+            >
+              <Send className="h-6 w-6" />
+              <span className="text-sm font-medium">Send Money</span>
+            </Link>
+            {/* Add Funds – hidden for now
+            <Link
+              href={`/${locale}/dashboard/add-funds`}
+              className="flex flex-col items-center gap-2 p-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"
+            >
+              <Plus className="h-6 w-6" />
+              <span className="text-sm font-medium">Add Funds</span>
+            </Link>
+            */}
+            <Link
+              href={`/${locale}/dashboard/exchange`}
+              className="flex flex-col items-center gap-2 p-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"
+            >
+              <RefreshCw className="h-6 w-6" />
+              <span className="text-sm font-medium">Exchange</span>
+            </Link>
+            <Link
+              href={`/${locale}/dashboard/cards`}
+              className="flex flex-col items-center gap-2 p-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"
+            >
+              <CreditCard className="h-6 w-6" />
+              <span className="text-sm font-medium">Cards</span>
+            </Link>
+          </div>
+
+          {/* Recent Beneficiaries */}
+          <div className="mt-6 pt-4 border-t border-gray-100">
+            <p className="text-sm text-gray-500 mb-3">Send Again</p>
+            <div className="flex items-center gap-3">
+              {recentBeneficiaries.map((ben) => (
+                <button
+                  key={ben.name}
+                  className="flex flex-col items-center gap-1 group"
+                  title={ben.name}
+                >
+                  <div className={`w-10 h-10 ${ben.color} text-white rounded-full flex items-center justify-center text-xs font-bold group-hover:scale-110 transition-transform`}>
+                    {ben.initials}
                   </div>
-                </CardContent>
-              </Card>
+                </button>
+              ))}
+              <button className="w-10 h-10 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center text-gray-400 hover:border-[#b59354] hover:text-[#b59354] transition-colors">
+                <Plus className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Chart and IBAN Section */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Weekly Spending Chart */}
+        <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="font-semibold text-gray-900">Spending Analytics</h3>
+              <p className="text-sm text-gray-500">March 2026</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <select className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#b59354]/20">
+                <option>This Week</option>
+                <option>Last Week</option>
+                <option>This Month</option>
+              </select>
             </div>
           </div>
 
-          {/* Sidebar - 1 col */}
-          <div className="space-y-8">
-            {/* Application Status */}
-            <div>
-              <h2 className="mb-4 text-xl font-bold text-brand-dark">
-                {t('applicationStatus')}
-              </h2>
-              <Card className="border-brand-grayLight">
-                <CardContent className="p-6">
-                  <Timeline items={applications} />
-                </CardContent>
-              </Card>
+          {/* Stats Row */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="text-center p-3 bg-gray-50 rounded-xl">
+              <p className="text-2xl font-bold text-gray-900">€3,519</p>
+              <p className="text-xs text-gray-500">Total Spent</p>
             </div>
+            <div className="text-center p-3 bg-green-50 rounded-xl">
+              <p className="text-2xl font-bold text-green-600">€12,500</p>
+              <p className="text-xs text-gray-500">Received</p>
+            </div>
+            <div className="text-center p-3 bg-blue-50 rounded-xl">
+              <p className="text-2xl font-bold text-blue-600">42</p>
+              <p className="text-xs text-gray-500">Transactions</p>
+            </div>
+          </div>
 
-            {/* Services */}
-            <div>
-              <h2 className="mb-4 text-xl font-bold text-brand-dark">
-                {t('ourServices')}
-              </h2>
-              <Card className="border-brand-grayLight">
-                <CardContent className="space-y-4 p-6">
-                  <div>
-                    <h4 className="mb-2 font-semibold text-brand-dark">
-                      {t('needHelp')}
-                    </h4>
-                    <p className="mb-4 text-sm text-brand-grayMed">
-                      {t('bookConsultationDescription')}
-                    </p>
-                    <Button variant="outline" size="sm" className="w-full">
-                      {t('bookConsultation')}
-                    </Button>
+          {/* Bar Chart */}
+          <div className="h-48 flex items-end justify-between gap-3 px-2">
+            {[
+              { day: "Mon", spent: 850, received: 0 },
+              { day: "Tue", spent: 1240, received: 5000 },
+              { day: "Wed", spent: 450, received: 0 },
+              { day: "Thu", spent: 620, received: 7500 },
+              { day: "Fri", spent: 89, received: 0 },
+              { day: "Sat", spent: 180, received: 0 },
+              { day: "Sun", spent: 90, received: 0 },
+            ].map((item) => {
+              const maxValue = 7500;
+              const spentHeight = (item.spent / maxValue) * 100;
+              const receivedHeight = (item.received / maxValue) * 100;
+              return (
+                <div key={item.day} className="flex-1 flex flex-col items-center gap-2">
+                  <div className="w-full flex flex-col items-center justify-end h-36 gap-1">
+                    {item.received > 0 && (
+                      <div
+                        className="w-full max-w-[32px] bg-gradient-to-t from-green-500 to-green-400 rounded-t transition-all"
+                        style={{ height: `${receivedHeight}%`, minHeight: '4px' }}
+                      />
+                    )}
+                    <div
+                      className="w-full max-w-[32px] bg-gradient-to-t from-[#b59354] to-[#d4b878] rounded-t transition-all hover:from-[#886844] hover:to-[#b59354] cursor-pointer"
+                      style={{ height: `${Math.max(spentHeight, 3)}%`, minHeight: '4px' }}
+                    />
                   </div>
-                </CardContent>
-              </Card>
+                  <span className="text-xs text-gray-500 font-medium">{item.day}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Legend */}
+          <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-[#b59354] rounded" />
+              <span className="text-xs text-gray-500">Expenses</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-green-500 rounded" />
+              <span className="text-xs text-gray-500">Income</span>
+            </div>
+          </div>
+        </div>
+
+        {/* IBAN & Account Info */}
+        <div className="space-y-4">
+          {/* Primary Account IBAN */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center gap-2 mb-4">
+              <Globe className="h-5 w-5 text-[#b59354]" />
+              <h3 className="font-semibold text-gray-900">Primary Account</h3>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs text-gray-500 mb-1">IBAN</p>
+                <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                  <p className="font-mono text-sm text-gray-900">{primaryIban}</p>
+                  <button
+                    onClick={handleCopyIban}
+                    className="p-1.5 text-[#b59354] hover:bg-[#b59354]/10 rounded-lg transition-colors"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </button>
+                </div>
+                {copiedIban && (
+                  <p className="text-green-500 text-xs mt-1">Copied!</p>
+                )}
+              </div>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p className="text-xs text-gray-500">BIC/SWIFT</p>
+                  <p className="font-mono text-gray-900">{primaryBic}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Currency</p>
+                  <p className="text-gray-900">EUR</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Security Status */}
+          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-5 text-white">
+            <div className="flex items-center gap-3 mb-3">
+              <Shield className="h-6 w-6" />
+              <div>
+                <p className="font-semibold">Account Protected</p>
+                <p className="text-xs text-white/80">2FA Enabled</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-white/80">Security Score</span>
+              <span className="font-semibold">Excellent</span>
+            </div>
+            <div className="mt-2 h-2 bg-white/20 rounded-full overflow-hidden">
+              <div className="h-full w-[95%] bg-white rounded-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Transactions & Side Panels */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Recent Transactions */}
+        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-lg text-gray-900">Recent Transactions</h3>
+              <p className="text-sm text-gray-500">Your latest activity</p>
+            </div>
+            <Link
+              href={`/${locale}/dashboard/transactions`}
+              className="flex items-center gap-1 text-[#b59354] text-sm font-medium hover:underline"
+            >
+              View All
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {narviLoading && (
+              <div className="p-8 text-center text-gray-400 text-sm">Loading transactions...</div>
+            )}
+            {!narviLoading && transactions.length === 0 && (
+              <div className="p-8 text-center text-gray-400 text-sm">No transactions yet. Your activity will appear here.</div>
+            )}
+            {transactions.map((tx) => (
+              <div key={tx.id} className="p-4 hover:bg-gray-50 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 ${tx.color} text-white rounded-xl flex items-center justify-center font-bold`}>
+                      {tx.icon}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">{tx.name}</p>
+                      <p className="text-sm text-gray-500">{tx.category}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className={`font-semibold ${tx.isCredit ? "text-green-600" : "text-gray-900"}`}>
+                      {tx.amount}
+                    </p>
+                    <div className="flex items-center justify-end gap-2 mt-1">
+                      <span className="text-xs text-gray-400">{tx.date}</span>
+                      <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${
+                        tx.status === "completed"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}>
+                        {tx.status === "completed" ? "Completed" : "Processing"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Sidebar */}
+        <div className="space-y-4">
+          {/* Upcoming Payments - HIDDEN: Uncomment to show recurring payments */}
+          {/*
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-[#b59354]" />
+                <h3 className="font-semibold text-gray-900">Upcoming Payments</h3>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {recurringPayments.map((payment) => (
+                <div key={payment.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 ${payment.color} text-white rounded-lg flex items-center justify-center text-xs font-bold`}>
+                      {payment.logo}
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm text-gray-900">{payment.name}</p>
+                      <p className="text-xs text-gray-500">{payment.date}</p>
+                    </div>
+                  </div>
+                  <p className="font-semibold text-sm text-gray-900">{payment.amount}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          */}
+
+          {/* Upgrade Card */}
+          <div className="bg-gradient-to-br from-[#b59354] to-[#886844] rounded-2xl p-6 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="h-5 w-5" />
+                <h3 className="font-semibold">Opulanz Pro</h3>
+              </div>
+              <p className="text-sm text-white/80 mb-4">
+                Unlock premium features, global payments, and priority support.
+              </p>
+              <ul className="text-sm text-white/90 space-y-2 mb-4">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-300" />
+                  Unlimited transactions
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-300" />
+                  Virtual & physical cards
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-300" />
+                  Advanced analytics
+                </li>
+              </ul>
+              <button className="w-full bg-white text-[#b59354] px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-100 transition-colors">
+                Upgrade Now
+              </button>
             </div>
           </div>
         </div>

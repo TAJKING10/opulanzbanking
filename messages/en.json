@@ -2468,116 +2468,99 @@
     "faq": "FAQ"
   },
   "lifeInsurance": {
-    "booking": {
-      "services": {
-        "termLife": {
-          "title": "Term Life Insurance",
-          "description": "Affordable coverage for a specific period, providing financial protection for your family"
-        },
-        "wholeLife": {
-          "title": "Whole Life Insurance",
-          "description": "Permanent coverage with a cash value component that grows over time"
-        },
-        "universalLife": {
-          "title": "Universal Life Insurance",
-          "description": "Flexible permanent coverage with adjustable premiums and death benefits"
-        },
-        "variableLife": {
-          "title": "Variable Life Insurance",
-          "description": "Investment-linked coverage allowing you to grow your policy's cash value"
-        },
-        "groupLife": {
-          "title": "Group Life Insurance",
-          "description": "Cost-effective coverage for employees or members of an organization"
-        }
+    "hero": {
+      "title": "Life Insurance Brokerage Services",
+      "subtitle": "As your trusted insurance broker, we connect you with comprehensive life insurance solutions to financially protect your loved ones",
+      "primaryCta": "Get a Quote"
+    },
+    "overview": {
+      "overline": "Overview",
+      "title": "Your Trusted Life Insurance Broker",
+      "description": "As an independent insurance broker, we work on your behalf to find and connect you with the best life insurance solutions from leading providers, ensuring your loved ones are financially protected.",
+      "badge1": "Unbiased Advice",
+      "badge2": "Multiple Providers",
+      "badge3": "Family Protection",
+      "whyBrokerTitle": "Why Choose a Broker?",
+      "benefit1": "Independent broker representing your interests",
+      "benefit2": "Access to policies from multiple leading insurance providers",
+      "benefit3": "Personalized needs analysis and coverage recommendations",
+      "benefit4": "Expert guidance on advanced features and estate planning",
+      "benefit5": "Ongoing policy management and support"
+    },
+    "products": {
+      "overline": "Our Services",
+      "title": "Life Insurance Products We Broker",
+      "description": "We help you access a wide range of life insurance solutions from trusted providers to meet your specific protection needs.",
+      "term": {
+        "title": "Term Life Insurance",
+        "description": "10, 20, or 30-year term options with level premiums for affordable protection during your most critical years."
       },
-      "validation": {
-        "firstNameRequired": "First name is required",
-        "lastNameRequired": "Last name is required",
-        "emailRequired": "Email address is required",
-        "emailInvalid": "Please enter a valid email address",
-        "phoneRequired": "Phone number is required"
+      "whole": {
+        "title": "Whole Life Insurance",
+        "description": "Lifetime coverage with cash value accumulation that provides permanent protection and financial growth."
       },
-      "form": {
-        "firstName": "First Name",
-        "firstNamePlaceholder": "Enter your first name",
-        "lastName": "Last Name",
-        "lastNamePlaceholder": "Enter your last name",
-        "email": "Email Address",
-        "emailPlaceholder": "Enter your email address",
-        "phone": "Phone Number",
-        "phonePlaceholder": "Enter your phone number",
-        "continueToSchedule": "Continue to Schedule",
-        "backToLifeInsurance": "Back to Life Insurance"
+      "universal": {
+        "title": "Universal Life Insurance",
+        "description": "Flexible premiums and adjustable death benefits that adapt to your changing financial situation."
       },
+      "variable": {
+        "title": "Variable Life Insurance",
+        "description": "Investment-linked cash value growth that allows you to potentially increase your policy value over time."
+      },
+      "group": {
+        "title": "Group Life Insurance",
+        "description": "Employer-sponsored life insurance plans that provide coverage at competitive group rates."
+      }
+    },
+    "howItWorks": {
+      "overline": "Simple Process",
+      "title": "How We Help You Find the Right Coverage",
       "step1": {
-        "heroTitle": "Book Your Life Insurance Consultation",
-        "heroSubtitle": "Protect what matters most with expert insurance advice",
-        "overline": "STEP 1 OF 4",
-        "title": "Your Contact Information",
-        "description": "Please provide your contact details to get started"
+        "title": "Free Consultation",
+        "description": "Schedule a no-obligation meeting to discuss your needs"
       },
       "step2": {
-        "heroTitle": "Schedule Your Consultation",
-        "heroSubtitle": "Choose a convenient time for your 60-minute consultation",
-        "overline": "STEP 2 OF 4",
-        "title": "Pick a Date & Time",
-        "bookingFor": "Booking for",
-        "selectedService": "Selected service",
-        "backButton": "Back to Contact Info"
+        "title": "Compare Options",
+        "description": "We present policies from multiple top providers"
       },
       "step3": {
-        "heroTitle": "Select Your Insurance Plan",
-        "heroSubtitle": "Choose the life insurance product that best fits your needs",
-        "overline": "STEP 3 OF 4",
-        "title": "Select Your Insurance Plan",
-        "description": "Choose the plan that best matches your protection goals",
-        "consultationFee": "consultation fee",
-        "selectService": "Select Plan"
+        "title": "Expert Guidance",
+        "description": "Get unbiased recommendations tailored to you"
       },
       "step4": {
-        "heroTitle": "Review & Confirm",
-        "heroSubtitle": "Review your booking details before payment",
-        "overline": "STEP 4 OF 4",
-        "title": "Booking Summary",
-        "contactInfo": "Contact Information",
-        "name": "Name",
-        "email": "Email",
-        "phone": "Phone",
-        "appointmentDetails": "Appointment Details",
-        "appointmentConfirmation": "Appointment",
-        "scheduledViaCalendly": "Scheduled via Calendly",
-        "appointmentEmailNote": "A calendar invite has been sent to your email",
-        "duration": "Duration",
-        "minutes": "60 minutes",
-        "servicePayment": "Insurance Plan & Payment",
-        "consultationFeeExclVat": "Consultation Fee (excl. VAT)",
-        "vat": "VAT (20%)",
-        "totalInclVat": "Total (incl. VAT)",
-        "changeService": "Change Plan",
-        "proceedToPayment": "Proceed to Payment"
-      },
-      "payment": {
-        "heroTitle": "Complete Payment",
-        "heroSubtitle": "Secure payment to confirm your consultation",
-        "paymentSummary": "Payment Summary",
-        "service": "Insurance Plan",
-        "client": "Client",
-        "total": "Total",
-        "loadingPayment": "Loading payment options...",
-        "securePaymentNote": "Your payment is secured with industry-standard encryption",
-        "paymentFailed": "Payment failed. Please try again.",
-        "paymentSuccessError": "Payment completed but confirmation failed. Please contact support.",
-        "backToSummary": "Back to Summary",
-        "cancelBooking": "Cancel Booking",
-        "description": "Based on your profile, we recommend opening your account with {partner}. Opulanz will remain your point of contact throughout the process.",
-        "step1": {
-          "description": "Your profile has been matched to {partner}. Click below to proceed."
-        },
-        "step2": {
-          "description": "You will be redirected to {partner} to complete your account opening."
-        }
+        "title": "Ongoing Support",
+        "description": "Continuous assistance throughout your policy lifecycle"
       }
+    },
+    "features": {
+      "overline": "Why We Are Different",
+      "title": "Professional Insurance Brokerage Expertise",
+      "description": "As independent brokers, we provide unbiased advice and access to the best insurance solutions for your needs.",
+      "brokers": {
+        "title": "Expert Brokers",
+        "description": "Specialized knowledge to connect you with the right insurance products"
+      },
+      "analysis": {
+        "title": "Needs Analysis",
+        "description": "Personalized assessment to find the perfect coverage from multiple providers"
+      },
+      "wealth": {
+        "title": "Wealth Building",
+        "description": "Guidance on tax-advantaged strategies for long-term financial growth"
+      },
+      "support": {
+        "title": "Ongoing Support",
+        "description": "Continuous policy management and brokerage support"
+      }
+    },
+    "cta": {
+      "title": "Protect Your Family Future Today",
+      "subtitle": "Get started with a personalized consultation. We will help you compare options from leading insurance providers to find the solution that best fits your family needs and financial goals.",
+      "badge1": "Free Consultation",
+      "badge2": "Compare Multiple Providers",
+      "badge3": "Expert Guidance",
+      "primaryButton": "Get Free Quote",
+      "secondaryButton": "Talk to an Advisor"
     }
   },
   "invoicingAccounting": {

@@ -2468,109 +2468,99 @@
     }
   },
   "lifeInsurance": {
-    "booking": {
-      "services": {
-        "termLife": {
-          "title": "Assurance Vie Temporaire",
-          "description": "Couverture abordable pour une période spécifique, offrant une protection financière à votre famille"
-        },
-        "wholeLife": {
-          "title": "Assurance Vie Entière",
-          "description": "Couverture permanente avec une composante de valeur de rachat qui croît avec le temps"
-        },
-        "universalLife": {
-          "title": "Assurance Vie Universelle",
-          "description": "Couverture permanente flexible avec des primes et des prestations de décès ajustables"
-        },
-        "variableLife": {
-          "title": "Assurance Vie Variable",
-          "description": "Couverture liée aux investissements permettant de faire croître la valeur de rachat de votre police"
-        },
-        "groupLife": {
-          "title": "Assurance Vie Collective",
-          "description": "Couverture économique pour les employés ou membres d'une organisation"
-        }
+    "hero": {
+      "title": "Services de Courtage en Assurance Vie",
+      "subtitle": "En tant que courtier de confiance, nous vous connectons avec des solutions assurance vie completes pour proteger financierement vos proches",
+      "primaryCta": "Obtenir un devis"
+    },
+    "overview": {
+      "overline": "Presentation",
+      "title": "Votre Courtier en Assurance Vie de Confiance",
+      "description": "En tant que courtier independant, nous travaillons en votre nom pour trouver et vous connecter avec les meilleures solutions assurance vie des principaux fournisseurs, en veillant a la protection financiere de vos proches.",
+      "badge1": "Conseils impartiaux",
+      "badge2": "Plusieurs fournisseurs",
+      "badge3": "Protection familiale",
+      "whyBrokerTitle": "Pourquoi choisir un courtier",
+      "benefit1": "Courtier independant representant vos interets",
+      "benefit2": "Acces aux polices de plusieurs grands assureurs",
+      "benefit3": "Analyse personnalisee de vos besoins et recommandations de couverture",
+      "benefit4": "Conseils experts sur les fonctionnalites avancees et la planification successorale",
+      "benefit5": "Gestion continue des polices et assistance"
+    },
+    "products": {
+      "overline": "Nos Services",
+      "title": "Produits Assurance Vie que Nous Courtisons",
+      "description": "Nous vous aidons a acceder a une large gamme de solutions assurance vie de fournisseurs de confiance pour repondre a vos besoins specifiques de protection.",
+      "term": {
+        "title": "Assurance Vie Temporaire",
+        "description": "Options a terme de 10, 20 ou 30 ans avec des primes fixes pour une protection abordable pendant vos annees les plus cruciales."
       },
-      "validation": {
-        "firstNameRequired": "Le prénom est obligatoire",
-        "lastNameRequired": "Le nom de famille est obligatoire",
-        "emailRequired": "L'adresse e-mail est obligatoire",
-        "emailInvalid": "Veuillez saisir une adresse e-mail valide",
-        "phoneRequired": "Le numéro de téléphone est obligatoire"
+      "whole": {
+        "title": "Assurance Vie Entiere",
+        "description": "Couverture a vie avec accumulation de valeur de rachat offrant une protection permanente et une croissance financiere."
       },
-      "form": {
-        "firstName": "Prénom",
-        "firstNamePlaceholder": "Entrez votre prénom",
-        "lastName": "Nom de famille",
-        "lastNamePlaceholder": "Entrez votre nom de famille",
-        "email": "Adresse e-mail",
-        "emailPlaceholder": "Entrez votre adresse e-mail",
-        "phone": "Numéro de téléphone",
-        "phonePlaceholder": "Entrez votre numéro de téléphone",
-        "continueToSchedule": "Continuer vers la planification",
-        "backToLifeInsurance": "Retour à l'assurance vie"
+      "universal": {
+        "title": "Assurance Vie Universelle",
+        "description": "Primes flexibles et garanties deces ajustables qui adaptent a evolution de votre situation financiere."
       },
+      "variable": {
+        "title": "Assurance Vie Variable",
+        "description": "Croissance de la valeur de rachat liee aux investissements vous permettant potentiellement augmenter la valeur de votre contrat."
+      },
+      "group": {
+        "title": "Assurance Vie Collective",
+        "description": "Plans assurance vie collectifs parraines par employeur offrant une couverture a des tarifs de groupe competitifs."
+      }
+    },
+    "howItWorks": {
+      "overline": "Processus simple",
+      "title": "Comment nous vous aidons a trouver la bonne couverture",
       "step1": {
-        "heroTitle": "Réservez votre consultation en assurance vie",
-        "heroSubtitle": "Protégez ce qui compte le plus avec des conseils d'experts en assurance",
-        "overline": "ÉTAPE 1 SUR 4",
-        "title": "Vos coordonnées",
-        "description": "Veuillez fournir vos coordonnées pour commencer"
+        "title": "Consultation gratuite",
+        "description": "Planifiez une reunion sans engagement pour discuter de vos besoins"
       },
       "step2": {
-        "heroTitle": "Planifiez votre consultation",
-        "heroSubtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes",
-        "overline": "ÉTAPE 2 SUR 4",
-        "title": "Choisissez une date et une heure",
-        "bookingFor": "Réservation pour",
-        "selectedService": "Service sélectionné",
-        "backButton": "Retour aux coordonnées"
+        "title": "Comparer les options",
+        "description": "Nous vous presentons des polices de plusieurs grands assureurs"
       },
       "step3": {
-        "heroTitle": "Sélectionnez votre plan d'assurance",
-        "heroSubtitle": "Choisissez le produit d'assurance vie qui correspond le mieux à vos besoins",
-        "overline": "ÉTAPE 3 SUR 4",
-        "title": "Sélectionnez votre plan d'assurance",
-        "description": "Choisissez le plan qui correspond le mieux à vos objectifs de protection",
-        "consultationFee": "frais de consultation",
-        "selectService": "Sélectionner le plan"
+        "title": "Conseils experts",
+        "description": "Obtenez des recommandations impartiales adaptees a votre profil"
       },
       "step4": {
-        "heroTitle": "Vérifier et confirmer",
-        "heroSubtitle": "Vérifiez les détails de votre réservation avant le paiement",
-        "overline": "ÉTAPE 4 SUR 4",
-        "title": "Récapitulatif de la réservation",
-        "contactInfo": "Coordonnées",
-        "name": "Nom",
-        "email": "E-mail",
-        "phone": "Téléphone",
-        "appointmentDetails": "Détails du rendez-vous",
-        "appointmentConfirmation": "Rendez-vous",
-        "scheduledViaCalendly": "Planifié via Calendly",
-        "appointmentEmailNote": "Une invitation de calendrier a été envoyée à votre e-mail",
-        "duration": "Durée",
-        "minutes": "60 minutes",
-        "servicePayment": "Plan d'assurance et paiement",
-        "consultationFeeExclVat": "Frais de consultation (HT)",
-        "vat": "TVA (20%)",
-        "totalInclVat": "Total (TTC)",
-        "changeService": "Changer de plan",
-        "proceedToPayment": "Procéder au paiement"
-      },
-      "payment": {
-        "heroTitle": "Effectuer le paiement",
-        "heroSubtitle": "Paiement sécurisé pour confirmer votre consultation",
-        "paymentSummary": "Récapitulatif du paiement",
-        "service": "Plan d'assurance",
-        "client": "Client",
-        "total": "Total",
-        "loadingPayment": "Chargement des options de paiement...",
-        "securePaymentNote": "Votre paiement est sécurisé par un chiffrement standard du secteur",
-        "paymentFailed": "Paiement échoué. Veuillez réessayer.",
-        "paymentSuccessError": "Paiement effectué mais la confirmation a échoué. Veuillez contacter le support.",
-        "backToSummary": "Retour au récapitulatif",
-        "cancelBooking": "Annuler la réservation"
+        "title": "Assistance continue",
+        "description": "Accompagnement tout au long du cycle de vie de votre contrat"
       }
+    },
+    "features": {
+      "overline": "Ce qui nous differencie",
+      "title": "Expertise Professionnelle en Courtage Assurance",
+      "description": "En tant que courtiers independants, nous fournissons des conseils impartiaux et acces aux meilleures solutions assurance pour vos besoins.",
+      "brokers": {
+        "title": "Courtiers experts",
+        "description": "Expertise specialisee pour vous connecter avec les bons produits assurance"
+      },
+      "analysis": {
+        "title": "Analyse des besoins",
+        "description": "Evaluation personnalisee pour trouver la couverture ideale aupres de plusieurs fournisseurs"
+      },
+      "wealth": {
+        "title": "Constitution de patrimoine",
+        "description": "Conseils sur les strategies fiscalement avantageuses pour la croissance financiere a long terme"
+      },
+      "support": {
+        "title": "Assistance continue",
+        "description": "Gestion continue des polices et support de courtage"
+      }
+    },
+    "cta": {
+      "title": "Protegez avenir de votre famille des maintenant",
+      "subtitle": "Commencez par une consultation personnalisee. Nous vous aiderons a comparer les options des principaux assureurs pour trouver la solution qui correspond le mieux aux besoins de votre famille.",
+      "badge1": "Consultation gratuite",
+      "badge2": "Comparer plusieurs fournisseurs",
+      "badge3": "Conseils experts",
+      "primaryButton": "Obtenir un devis gratuit",
+      "secondaryButton": "Parler a un conseiller"
     }
   },
   "invoicingAccounting": {

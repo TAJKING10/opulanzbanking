@@ -7,7 +7,7 @@ export const whitelabelKYCSchema = z.object({
   email: z.string().email('Valid email address required'),
   dateOfBirth: z.string().min(1, 'Date of birth is required'),
   nationality: z.string().min(1, 'Nationality is required'),
-  phoneNumber: z.string().min(10, 'Valid phone number required'),
+  phoneNumber: z.string().min(6, 'Valid phone number required'),
   address: z.string().min(5, 'Address is required'),
   city: z.string().min(2, 'City is required'),
   postalCode: z.string().min(4, 'Postal code is required'),
@@ -17,7 +17,7 @@ export const whitelabelKYCSchema = z.object({
   isPEP: z.boolean(),
   activityCountries: z.array(z.string()).min(1, 'Select at least one country'),
   expectedMonthlyVolume: z.string().min(1, 'Expected volume required'),
-  sourceOfFunds: z.string().min(10, 'Please describe source of funds'),
+  sourceOfFunds: z.string().min(3, 'Please describe source of funds'),
 
   // Consents
   consentKYC: z.boolean().refine((val) => val === true, {

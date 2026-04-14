@@ -11,7 +11,7 @@ import ReactCountryFlag from "react-country-flag";
 import {
   whitelabelKYCSchema,
   type WhitelabelKYCFormData,
-} from "@/shared/lib/validators/whitelabel";
+} from "@/lib/validators/whitelabel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -123,7 +123,7 @@ export default function IndividualAccountPage() {
           // Address Information
           address: data.address,
           city: data.city,
-          postalCode: data.postal,
+          postalCode: data.postalCode,
           country: data.country,
 
           // Activity Information
@@ -618,10 +618,11 @@ export default function IndividualAccountPage() {
                       id="indv_phoneNumber"
                       type="tel"
                       placeholder="123456789"
-                      className="pl-32"
+                      className="pl-36"
                       {...register("phoneNumber")}
                     />
                   </div>
+                  <p className="text-xs text-brand-grayMed">Enter local number only, without country code</p>
                   {errors.phoneNumber && (
                     <p className="text-xs text-red-600">
                       {errors.phoneNumber.message}
@@ -662,10 +663,10 @@ export default function IndividualAccountPage() {
                     <Label htmlFor="indv_postalCode">
                       {tAccount("form.postalCode")}<span className="text-red-600">*</span>
                     </Label>
-                    <Input id="indv_postalCode" {...register("postal")} />
-                    {errors.postal && (
+                    <Input id="indv_postalCode" {...register("postalCode")} />
+                    {errors.postalCode && (
                       <p className="text-xs text-red-600">
-                        {errors.postal.message}
+                        {errors.postalCode.message}
                       </p>
                     )}
                   </div>
@@ -806,7 +807,7 @@ export default function IndividualAccountPage() {
                   id="indv_consentKYC"
                   checked={consentKYC}
                   onCheckedChange={(checked) =>
-                    setValue("consentKYC", checked as boolean)
+                    setValue("consentKYC", checked as boolean, { shouldValidate: true })
                   }
                   label={tAccount("form.consentKYC")}
                   required
@@ -816,7 +817,7 @@ export default function IndividualAccountPage() {
                   id="indv_consentTerms"
                   checked={consentTerms}
                   onCheckedChange={(checked) =>
-                    setValue("consentTerms", checked as boolean)
+                    setValue("consentTerms", checked as boolean, { shouldValidate: true })
                   }
                   label={tAccount("form.consentTerms")}
                   required

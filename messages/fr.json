@@ -586,204 +586,17 @@
   "investmentAdvisory": {
     "wizard": {
       "steps": {
-        "clientType": "Type de client",
-        "information": "Vos informations",
-        "review": "RÃ©vision",
-        "complete": "TerminÃ©"
-      },
-      "progress": {
-        "step": "Ã‰tape",
-        "of": "sur",
-        "complete": "complÃ©tÃ©"
+        "clientType": "Type de Client",
+        "information": "Profil d'Investissement",
+        "review": "Révision",
+        "complete": "Confirmation"
       }
     },
     "clientType": {
-      "welcome": "Bienvenue au Conseil en Investissement",
-      "subtitle": "ComplÃ©tez notre processus d'intÃ©gration pour accÃ©der Ã  des services de conseil en investissement personnalisÃ©s.",
-      "question": "Veuillez sÃ©lectionner votre type d'investisseur :",
-      "individual": {
-        "title": "Investisseur particulier",
-        "description": "Pour les personnes physiques souhaitant un conseil en investissement personnel et une gestion de portefeuille."
-      },
-      "company": {
-        "title": "Investisseur institutionnel",
-        "description": "Pour les entreprises et les investisseurs institutionnels souhaitant des services de conseil en investissement professionnels."
-      },
+      "title": "Type de client",
       "contact": {
-        "email": "Adresse e-mail",
-        "emailPlaceholder": "Entrez votre adresse e-mail",
-        "mobile": "NumÃ©ro de mobile",
-        "mobilePlaceholder": "Entrez votre numÃ©ro de mobile",
-        "language": "Langue prÃ©fÃ©rÃ©e"
-      }
-    },
-    "company": {
-      "title": "Informations sur la sociÃ©tÃ©",
-      "subtitle": "Veuillez fournir des informations dÃ©taillÃ©es sur votre sociÃ©tÃ© pour procÃ©der Ã  la vÃ©rification KYC.",
-      "sectionTitles": {
-        "companyIdentity": "IdentitÃ© de la sociÃ©tÃ©",
-        "representatives": "ReprÃ©sentants lÃ©gaux et bÃ©nÃ©ficiaires effectifs",
-        "financial": "Profil financier",
-        "origin": "Origine des fonds",
-        "investment": "Profil d'investissement",
-        "mission": "Mission d'investissement",
-        "consents": "Consentements et dÃ©clarations"
-      },
-      "subsections": {
-        "registeredAddress": "Adresse du siÃ¨ge social",
-        "mainContact": "Contact principal / ReprÃ©sentant lÃ©gal",
-        "ubo": "BÃ©nÃ©ficiaire effectif ultime (BEU)",
-        "fatcaCrs": "DÃ©claration FATCA / CRS",
-        "investmentKnowledge": "Connaissances et expÃ©rience en investissement",
-        "investmentObjectives": "Objectifs d'investissement"
-      },
-      "fields": {
-        "legalName": "Raison sociale",
-        "tradingName": "Nom commercial",
-        "legalForm": "Forme juridique",
-        "dateOfIncorporation": "Date de constitution",
-        "registrationNumber": "NumÃ©ro d'immatriculation",
-        "registrationCountry": "Pays d'immatriculation",
-        "taxIdentificationNumber": "NumÃ©ro d'identification fiscale",
-        "numberOfEmployees": "Nombre d'employÃ©s",
-        "industrySector": "Secteur d'activitÃ©",
-        "website": "Site web",
-        "addressLine1": "Adresse ligne 1",
-        "addressLine2": "Adresse ligne 2",
-        "city": "Ville",
-        "postalCode": "Code postal",
-        "country": "Pays",
-        "title": "Titre",
-        "firstName": "PrÃ©nom",
-        "lastName": "Nom de famille",
-        "position": "Poste / Fonction",
-        "dateOfBirth": "Date de naissance",
-        "nationality": "NationalitÃ©",
-        "email": "Adresse e-mail",
-        "mobile": "NumÃ©ro de mobile",
-        "uboFullName": "Nom complet du BEU",
-        "ownershipPercentage": "Pourcentage de dÃ©tention (%)",
-        "taxResidentCountries": "Pays de rÃ©sidence fiscale",
-        "annualRevenue": "Chiffre d'affaires annuel (â‚¬)",
-        "totalAssets": "Total des actifs (â‚¬)",
-        "primarySourceOfRevenue": "Source principale de revenus",
-        "primaryOriginOfFunds": "Origine principale des fonds",
-        "additionalDetails": "DÃ©tails supplÃ©mentaires",
-        "investmentExperience": "ExpÃ©rience en investissement",
-        "riskTolerance": "TolÃ©rance au risque",
-        "investmentHorizon": "Horizon d'investissement",
-        "primaryObjective": "Objectif principal d'investissement",
-        "expectedAnnualReturn": "Rendement annuel attendu (%)",
-        "maxAcceptableLoss": "Perte maximale acceptable (%)",
-        "typeOfService": "Type de service",
-        "initialInvestmentAmount": "Montant d'investissement initial (â‚¬)"
-      },
-      "placeholders": {
-        "tradingName": "Entrez le nom commercial si diffÃ©rent de la raison sociale",
-        "registrationNumber": "Entrez le numÃ©ro d'immatriculation",
-        "industrySector": "ex. Technologie, Finance, Immobilier",
-        "website": "https://www.votresociete.com",
-        "position": "ex. PDG, Directeur, DAF",
-        "taxResidentCountries": "ex. France, Luxembourg",
-        "annualRevenue": "Entrez le chiffre d'affaires en EUR",
-        "originDetails": "Fournissez des dÃ©tails supplÃ©mentaires sur l'origine des fonds",
-        "expectedReturn": "ex. 8",
-        "maxLoss": "ex. 20",
-        "initialInvestment": "Minimum 100 000 â‚¬"
-      },
-      "options": {
-        "legalForm": {
-          "select": "SÃ©lectionnez la forme juridique",
-          "sarl": "SARL",
-          "sas": "SAS",
-          "sa": "SA",
-          "sci": "SCI",
-          "gmbh": "GmbH",
-          "ltd": "Ltd",
-          "llc": "LLC",
-          "other": "Autre"
-        },
-        "title": {
-          "select": "SÃ©lectionnez le titre",
-          "mr": "M.",
-          "mrs": "Mme",
-          "ms": "Mme",
-          "dr": "Dr."
-        },
-        "sourceOfRevenue": {
-          "select": "SÃ©lectionnez la source principale",
-          "products": "Ventes de produits",
-          "services": "Revenus de services",
-          "trading": "NÃ©goce",
-          "investments": "Rendements d'investissement",
-          "realEstate": "Immobilier",
-          "other": "Autre"
-        },
-        "originOfFunds": {
-          "select": "SÃ©lectionnez l'origine",
-          "retainedEarnings": "BÃ©nÃ©fices non distribuÃ©s",
-          "shareholderContributions": "Apports des actionnaires",
-          "businessOperations": "ActivitÃ©s commerciales",
-          "saleOfAssets": "Vente d'actifs",
-          "financing": "Financement externe",
-          "other": "Autre"
-        },
-        "investmentExperience": {
-          "beginner": "DÃ©butant (< 2 ans)",
-          "intermediate": "IntermÃ©diaire (2â€“5 ans)",
-          "advanced": "AvancÃ© (5â€“10 ans)",
-          "expert": "Expert (10+ ans)"
-        },
-        "riskTolerance": {
-          "conservative": "Conservateur",
-          "moderate": "ModÃ©rÃ©",
-          "aggressive": "Agressif"
-        },
-        "investmentHorizon": {
-          "select": "SÃ©lectionnez l'horizon",
-          "short": "Court terme (< 3 ans)",
-          "medium": "Moyen terme (3â€“7 ans)",
-          "long": "Long terme (7+ ans)"
-        },
-        "investmentObjective": {
-          "select": "SÃ©lectionnez l'objectif",
-          "capitalPreservation": "PrÃ©servation du capital",
-          "incomeGeneration": "GÃ©nÃ©ration de revenus",
-          "capitalGrowth": "Croissance du capital",
-          "balanced": "Croissance Ã©quilibrÃ©e et revenus"
-        },
-        "missionType": {
-          "advisory": "Conseil (vous gardez le pouvoir de dÃ©cision)",
-          "management": "Gestion discrÃ©tionnaire (nous gÃ©rons en votre nom)"
-        }
-      },
-      "helpers": {
-        "uboDescription": "Un BEU est toute personne physique qui dÃ©tient ou contrÃ´le directement ou indirectement 25% ou plus du capital de la sociÃ©tÃ©.",
-        "usPersonCheckbox": "Je confirme que cette sociÃ©tÃ© n'est pas une personne amÃ©ricaine au sens de la rÃ©glementation FATCA.",
-        "advisoryHelper": "En mode conseil, nous formulons des recommandations mais vous conservez l'intÃ©gralitÃ© du pouvoir de dÃ©cision sur votre portefeuille.",
-        "managementHelper": "En mode gestion discrÃ©tionnaire, nous gÃ©rons votre portefeuille en votre nom dans le cadre des paramÃ¨tres convenus.",
-        "minimumInvestment": "Investissement initial minimum : 100 000 â‚¬"
-      },
-      "consents": {
-        "dataProcessing": {
-          "label": "Consentement au traitement des donnÃ©es",
-          "text": "Je consens Ã  la collecte, au traitement et au stockage de mes donnÃ©es personnelles et d'entreprise Ã  des fins de conformitÃ© KYC/LCB-FT, de gestion de compte et de reporting rÃ©glementaire."
-        },
-        "kycCompliance": {
-          "label": "ConformitÃ© KYC",
-          "text": "Je confirme que toutes les informations fournies sont exactes et complÃ¨tes. Je comprends que toute fausse dÃ©claration peut entraÃ®ner la rÃ©siliation des services."
-        },
-        "electronicSignature": {
-          "label": "Signature Ã©lectronique",
-          "text": "J'accepte l'utilisation de signatures Ã©lectroniques et la soumission de documents numÃ©riques pour cette demande."
-        },
-        "marketingCommunications": {
-          "label": "Communications marketing",
-          "text": "J'accepte de recevoir des informations sur les produits d'investissement Opulanz, les analyses de marchÃ© et les offres promotionnelles."
-        }
-      },
-      "navigation": {
-        "continueToReview": "Continuer vers la rÃ©vision"
+        "label": "Contact",
+        "placeholder": "Vos coordonnées"
       }
     }
   },
@@ -1315,51 +1128,56 @@
   },
   "taxAdvisory": {
     "confirmation": {
-      "heroTitle": "RÃ©servation confirmÃ©e !",
-      "heroSubtitle": "Votre consultation en conseil fiscal a Ã©tÃ© rÃ©servÃ©e avec succÃ¨s.",
-      "confirmationLabel": "Confirmation nÂ°",
-      "emailSent": {
-        "title": "E-mail de confirmation envoyÃ©",
-        "description": "Une confirmation a Ã©tÃ© envoyÃ©e Ã  {email}. Veuillez vÃ©rifier votre boÃ®te de rÃ©ception."
-      },
-      "appointmentDetails": "DÃ©tails du rendez-vous",
+      "heroTitle": "Réservation confirmée !",
+      "heroSubtitle": "Votre consultation de conseil fiscal a été réservée avec succès",
+      "confirmationLabel": "Référence de réservation",
+      "confirmationNumber": "Numéro de confirmation",
       "clientName": "Nom du client",
+      "name": "Nom",
       "email": "E-mail",
-      "phone": "TÃ©lÃ©phone",
+      "phone": "Téléphone",
+      "service": "Service",
+      "serviceTitle": "Service",
+      "serviceDetails": "Détails du service",
       "date": "Date",
       "time": "Heure",
-      "duration": "Consultation de {minutes} minutes",
-      "scheduledViaCalendly": "Rendez-vous planifiÃ© via Calendly",
-      "checkEmailForDetails": "VÃ©rifiez votre e-mail pour les dÃ©tails du rendez-vous.",
-      "calendlyConfirmationNotice": "Vous recevrez une invitation Calendly dans votre boÃ®te de rÃ©ception.",
-      "serviceDetails": "DÃ©tails du service",
+      "price": "Prix",
+      "inclVAT": "(TTC)",
+      "duration": "{minutes} minutes",
       "consultation": "Consultation de {minutes} minutes",
-      "inclVAT": "TVA incluse",
-      "addToCalendar": "Ajouter au calendrier",
-      "downloadPDFReceipt": "TÃ©lÃ©charger le reÃ§u PDF",
+      "appointmentDetails": "Détails du rendez-vous",
+      "scheduledViaCalendly": "Planifié via Calendly",
+      "calendlyConfirmationNotice": "Une invitation de calendrier a été envoyée à votre e-mail",
+      "checkEmailForDetails": "Vérifiez votre e-mail pour les détails complets de la réservation",
+      "emailSent": {
+        "title": "E-mail de confirmation envoyé",
+        "description": "Un e-mail de confirmation a été envoyé à {email}"
+      },
       "whatHappensNext": {
-        "title": "Et maintenant ?",
+        "title": "Que se passe-t-il ensuite ?",
         "step1": {
-          "title": "VÃ©rifiez votre e-mail",
-          "description": "Vous recevrez un e-mail de confirmation avec tous les dÃ©tails de votre rendez-vous."
+          "title": "Vérifiez votre e-mail",
+          "description": "Vous recevrez un e-mail de confirmation avec les détails de votre rendez-vous et les instructions pour le rejoindre"
         },
         "step2": {
-          "title": "PrÃ©parez vos documents",
-          "description": "Rassemblez tous les documents financiers, dÃ©clarations fiscales ou relevÃ©s pertinents qui pourraient Ãªtre discutÃ©s lors de la consultation."
+          "title": "Préparez vos documents",
+          "description": "Rassemblez tous les documents financiers pertinents et vos questions pour votre consultation"
         },
         "step3": {
-          "title": "Rejoignez votre consultation",
-          "description": "Rejoignez l'appel vidÃ©o ou la rÃ©union en personne Ã  l'heure prÃ©vue. Notre conseiller sera prÃªt Ã  vous aider."
+          "title": "Rejoignez la consultation",
+          "description": "Connectez-vous avec notre conseiller fiscal à l'heure prévue via vidéoconférence"
         },
         "step4": {
           "title": "Recevez votre rapport",
-          "description": "AprÃ¨s la consultation, vous recevrez un rapport dÃ©taillÃ© et des recommandations par e-mail dans les 48 heures."
+          "description": "Obtenez un rapport de conseil fiscal détaillé après votre consultation"
         }
       },
-      "rescheduleQuestion": "Vous avez besoin de reporter ou une question ?",
+      "rescheduleQuestion": "Besoin de reporter ?",
+      "supportContact": "Contactez notre équipe de support",
       "backToTaxAdvisory": "Retour au conseil fiscal",
-      "goToDashboard": "AccÃ©der au tableau de bord",
-      "supportContact": "Pour obtenir de l'aide, contactez-nous Ã "
+      "goToDashboard": "Aller au tableau de bord",
+      "downloadPDFReceipt": "Télécharger le reçu",
+      "addToCalendar": "Ajouter au calendrier"
     },
     "hero": {
       "primaryCta": "Planifier une consultation",
@@ -1644,58 +1462,6 @@
         "selectDesc": "Choisissez le service qui correspond le mieux à vos besoins",
         "selectService": "Sélectionner le service"
       }
-    },
-    "confirmation": {
-      "heroTitle": "Réservation confirmée !",
-      "heroSubtitle": "Votre consultation de conseil fiscal a été réservée avec succès",
-      "confirmationLabel": "Référence de réservation",
-      "confirmationNumber": "Numéro de confirmation",
-      "clientName": "Nom du client",
-      "name": "Nom",
-      "email": "E-mail",
-      "phone": "Téléphone",
-      "service": "Service",
-      "serviceTitle": "Service",
-      "serviceDetails": "Détails du service",
-      "date": "Date",
-      "time": "Heure",
-      "price": "Prix",
-      "inclVAT": "(TTC)",
-      "duration": "{minutes} minutes",
-      "consultation": "Consultation de {minutes} minutes",
-      "appointmentDetails": "Détails du rendez-vous",
-      "scheduledViaCalendly": "Planifié via Calendly",
-      "calendlyConfirmationNotice": "Une invitation de calendrier a été envoyée à votre e-mail",
-      "checkEmailForDetails": "Vérifiez votre e-mail pour les détails complets de la réservation",
-      "emailSent": {
-        "title": "E-mail de confirmation envoyé",
-        "description": "Un e-mail de confirmation a été envoyé à {email}"
-      },
-      "whatHappensNext": {
-        "title": "Que se passe-t-il ensuite ?",
-        "step1": {
-          "title": "Vérifiez votre e-mail",
-          "description": "Vous recevrez un e-mail de confirmation avec les détails de votre rendez-vous et les instructions pour le rejoindre"
-        },
-        "step2": {
-          "title": "Préparez vos documents",
-          "description": "Rassemblez tous les documents financiers pertinents et vos questions pour votre consultation"
-        },
-        "step3": {
-          "title": "Rejoignez la consultation",
-          "description": "Connectez-vous avec notre conseiller fiscal à l'heure prévue via vidéoconférence"
-        },
-        "step4": {
-          "title": "Recevez votre rapport",
-          "description": "Obtenez un rapport de conseil fiscal détaillé après votre consultation"
-        }
-      },
-      "rescheduleQuestion": "Besoin de reporter ?",
-      "supportContact": "Contactez notre équipe de support",
-      "backToTaxAdvisory": "Retour au conseil fiscal",
-      "goToDashboard": "Aller au tableau de bord",
-      "downloadPDFReceipt": "Télécharger le reçu",
-      "addToCalendar": "Ajouter au calendrier"
     },
     "taxReturn": {
       "title": "PrÃ©paration des dÃ©clarations fiscales",
@@ -2461,591 +2227,6 @@
   },
   "accounting": {
     "onboarding": {
-      "title": "ComptabilitÃ© & Facturation â€“ Inscription",
-      "subtitle": "Configurez votre profil comptable en quelques Ã©tapes simples."
-    },
-    "steps": {
-      "company": {
-        "label": "Informations de base",
-        "description": "IdentitÃ© lÃ©gale"
-      },
-      "activity": {
-        "label": "ActivitÃ© & Ã‰chelle",
-        "description": "PÃ©rimÃ¨tre d'activitÃ©"
-      },
-      "contacts": {
-        "label": "Contacts & Adresses",
-        "description": "Personnes & lieux"
-      },
-      "volume": {
-        "label": "Volume de facturation",
-        "description": "Besoins en facturation"
-      },
-      "documents": {
-        "label": "Documents",
-        "description": "TÃ©lÃ©versement"
-      },
-      "review": {
-        "label": "RÃ©vision & Soumission",
-        "description": "Confirmer & envoyer"
-      }
-    },
-    "companyBasics": {
-      "title": "Informations de base",
-      "subtitle": "Renseignez l'identitÃ© juridique et les dÃ©tails de constitution de votre sociÃ©tÃ©.",
-      "fields": {
-        "companyType": "Forme juridique",
-        "companyTypeOther": "PrÃ©cisez",
-        "countryOfIncorporation": "Pays d'immatriculation",
-        "dateOfIncorporation": "Date de constitution",
-        "shareCapital": "Capital social",
-        "legalName": "DÃ©nomination sociale",
-        "tradeName": "Nom commercial",
-        "registrationNumber": "NumÃ©ro d'immatriculation",
-        "vatNumber": "NumÃ©ro de TVA"
-      },
-      "placeholders": {
-        "companyType": "SÃ©lectionner la forme juridique",
-        "companyTypeOther": "DÃ©crivez votre forme juridique",
-        "country": "SÃ©lectionner le pays",
-        "date": "AAAA-MM-JJ",
-        "legalName": "ex. Acme Holdings S.A.R.L.",
-        "tradeName": "ex. Acme",
-        "registrationNumber": "ex. B123456",
-        "vatNumber": "ex. LU12345678"
-      },
-      "hints": {
-        "tradeName": "Laissez vide si identique Ã  la dÃ©nomination sociale.",
-        "registrationNumber": "Tel qu'indiquÃ© sur votre certificat d'immatriculation.",
-        "vatNumber": "Optionnel â€” Ã  renseigner si votre sociÃ©tÃ© est assujettie Ã  la TVA."
-      }
-    },
-    "activityScale": {
-      "title": "ActivitÃ© & Ã‰chelle",
-      "subtitle": "Aidez-nous Ã  comprendre la taille et la nature de vos activitÃ©s.",
-      "fields": {
-        "businessActivity": "ActivitÃ© principale",
-        "turnoverLastFY": "Chiffre d'affaires â€“ Dernier exercice",
-        "turnoverCurrentFY": "Chiffre d'affaires â€“ Exercice en cours (prÃ©visionnel)",
-        "employees": "Nombre de salariÃ©s (ETP)"
-      },
-      "placeholders": {
-        "businessActivity": "DÃ©crivez votre activitÃ© principaleâ€¦"
-      },
-      "hints": {
-        "turnoverLastFY": "Entrez 0 si la sociÃ©tÃ© a Ã©tÃ© crÃ©Ã©e cette annÃ©e.",
-        "turnoverCurrentFY": "Une estimation prÃ©visionnelle est acceptable.",
-        "employees": "Ã‰quivalents temps plein."
-      }
-    },
-    "contactsAddresses": {
-      "title": "Contacts & Adresses",
-      "subtitle": "Indiquez votre adresse de siÃ¨ge, votre adresse d'exploitation et vos contacts clÃ©s.",
-      "registeredAddress": "Adresse du siÃ¨ge social",
-      "operatingAddress": "Adresse d'exploitation",
-      "sameAsRegistered": "Identique Ã  l'adresse du siÃ¨ge",
-      "primaryContact": "Contact principal",
-      "accountingContact": "Contact comptable",
-      "addAccountingContact": "Ajouter un contact comptable distinct",
-      "fields": {
-        "street": "Adresse",
-        "city": "Ville",
-        "postal": "Code postal",
-        "country": "Pays",
-        "firstName": "PrÃ©nom",
-        "lastName": "Nom de famille",
-        "role": "Fonction / Titre",
-        "email": "Adresse e-mail",
-        "phone": "NumÃ©ro de tÃ©lÃ©phone"
-      },
-      "placeholders": {
-        "street": "123 rue Principale",
-        "city": "Luxembourg",
-        "postal": "L-1234",
-        "country": "SÃ©lectionner le pays",
-        "firstName": "PrÃ©nom",
-        "lastName": "Nom de famille",
-        "role": "ex. PDG, DAF",
-        "email": "nom@societe.com",
-        "phone": "+352 123 456 789"
-      }
-    },
-    "billingVolume": {
-      "title": "Volume de facturation",
-      "subtitle": "Indiquez vos volumes de facturation mensuels et vos besoins en paie.",
-      "fields": {
-        "salesInvoices": "Factures de vente par mois",
-        "purchaseInvoices": "Factures d'achat par mois",
-        "payrollNeeded": "Avez-vous besoin de la gestion de la paie ?",
-        "payrollEmployees": "Nombre de salariÃ©s en paie",
-        "multiCurrency": "Facturation multi-devises",
-        "selectCurrencies": "SÃ©lectionner les devises"
-      },
-      "hints": {
-        "salesInvoices": "Nombre estimÃ© de factures Ã©mises chaque mois.",
-        "purchaseInvoices": "Nombre estimÃ© de factures fournisseurs reÃ§ues chaque mois."
-      }
-    },
-    "documents": {
-      "title": "Documents",
-      "subtitle": "TÃ©lÃ©versez les documents requis pour finaliser votre profil comptable.",
-      "types": {
-        "incorporation": "Certificat d'immatriculation",
-        "articles": "Statuts de la sociÃ©tÃ©",
-        "directorId": "PiÃ¨ce d'identitÃ© / Passeport du dirigeant",
-        "vat": "Certificat d'enregistrement TVA"
-      },
-      "hints": {
-        "incorporation": "Document officiel confirmant l'immatriculation de la sociÃ©tÃ©.",
-        "articles": "Version signÃ©e et Ã  jour.",
-        "directorId": "PiÃ¨ce d'identitÃ© valide pour chaque dirigeant.",
-        "vat": "Requis uniquement si la sociÃ©tÃ© est assujettie Ã  la TVA."
-      },
-      "note": {
-        "title": "Exigences documentaires",
-        "text": "Formats acceptÃ©s : PDF, JPG, PNG, DOCX. Taille maximale : 10 Mo par document. Tous les documents doivent Ãªtre valides et lisibles."
-      }
-    },
-    "review": {
-      "title": "RÃ©vision & Soumission",
-      "subtitle": "Veuillez vÃ©rifier attentivement vos informations avant de soumettre.",
-      "summary": "RÃ©capitulatif de la demande",
-      "sections": {
-        "company": "Informations de la sociÃ©tÃ©",
-        "activity": "ActivitÃ© & Ã‰chelle",
-        "contact": "Contacts & Adresses",
-        "volume": "Volume de facturation",
-        "teamSize": "Effectif",
-        "documents": "Documents"
-      },
-      "incorporated": "ConstituÃ©e le",
-      "lastFY": "CA dernier exercice",
-      "projected": "CA prÃ©visionnel",
-      "fteEmployees": "salariÃ©s ETP",
-      "employees": "salariÃ©s",
-      "sales": "Factures de vente / mois",
-      "purchases": "Factures d'achat / mois",
-      "payroll": "Paie",
-      "multiCurrency": "Multi-devises",
-      "invoices": "factures",
-      "documentsUploaded": "documents tÃ©lÃ©versÃ©s",
-      "consent": {
-        "title": "Consentement au traitement des donnÃ©es",
-        "text": "Je consens Ã  ce qu'Opulanz traite les donnÃ©es de ma sociÃ©tÃ© pour les services de comptabilitÃ© et de facturation.",
-        "label": "J'accepte les",
-        "termsOfService": "Conditions d'utilisation",
-        "privacyPolicy": "Politique de confidentialitÃ©",
-        "required": "Vous devez accepter les conditions pour continuer."
-      },
-      "acceptConsent": "J'accepte les conditions et consens au traitement des donnÃ©es.",
-      "gdpr": {
-        "title": "Avis RGPD",
-        "text": "Vos donnÃ©es sont traitÃ©es conformÃ©ment au RGPD de l'UE. Vous pouvez demander l'accÃ¨s, la rectification ou la suppression Ã  tout moment en contactant privacy@opulanz.com."
-      },
-      "submit": "Soumettre la demande"
-    }
-  },
-  "supportPage": {
-    "hero": {
-      "title": "Comment pouvons-nous vous aider ?",
-      "subtitle": "Notre Ã©quipe d'assistance est lÃ  pour vous. Contactez-nous par tÃ©lÃ©phone, e-mail ou chat en direct."
-    },
-    "contactMethods": {
-      "title": "Nous contacter",
-      "description": "Choisissez le canal d'assistance qui vous convient le mieux.",
-      "phone": {
-        "title": "Assistance tÃ©lÃ©phonique",
-        "description": "Parlez directement avec l'un de nos spÃ©cialistes du support.",
-        "number": "+352 28 79 76 26",
-        "hours": "Lunâ€“Ven, 9h00â€“18h00 CET"
-      },
-      "email": {
-        "title": "Assistance par e-mail",
-        "description": "Envoyez-nous un message et nous vous rÃ©pondrons rapidement.",
-        "address": "support@opulanz.com",
-        "response": "RÃ©ponse sous 24 heures"
-      },
-      "chat": {
-        "title": "Chat en direct",
-        "description": "Discutez avec notre Ã©quipe en temps rÃ©el pour une assistance immÃ©diate.",
-        "button": "DÃ©marrer le chat",
-        "availability": "Disponible pendant les heures de bureau"
-      }
-    },
-    "contactForm": {
-      "title": "Envoyez-nous un message",
-      "description": "Remplissez le formulaire ci-dessous et nous vous rÃ©pondrons dans les plus brefs dÃ©lais.",
-      "firstName": "PrÃ©nom",
-      "lastName": "Nom de famille",
-      "email": "Adresse e-mail",
-      "phone": "NumÃ©ro de tÃ©lÃ©phone (optionnel)",
-      "subject": "Sujet",
-      "selectSubject": "SÃ©lectionner un sujet",
-      "subjects": {
-        "account": "Questions sur le compte",
-        "technical": "Support technique",
-        "company": "CrÃ©ation de sociÃ©tÃ©",
-        "billing": "Facturation et paiements",
-        "other": "Autre"
-      },
-      "message": "Message",
-      "messagePlaceholder": "DÃ©crivez votre question ou problÃ¨me en dÃ©tail...",
-      "submit": "Envoyer le message"
-    },
-    "faq": {
-      "title": "Questions frÃ©quemment posÃ©es",
-      "description": "RÃ©ponses rapides aux questions les plus courantes.",
-      "questions": {
-        "openAccount": {
-          "question": "Combien de temps faut-il pour ouvrir un compte ?",
-          "answer": "Les comptes individuels sont gÃ©nÃ©ralement approuvÃ©s dans les 24 Ã  48 heures. Les comptes professionnels prennent 3 Ã  5 jours ouvrables selon la complexitÃ© du dossier."
-        },
-        "documents": {
-          "question": "Quels documents sont nÃ©cessaires ?",
-          "answer": "Pour les particuliers : une piÃ¨ce d'identitÃ© valide, un justificatif de domicile et un selfie. Pour les entreprises : les documents d'immatriculation, la dÃ©claration UBO et les piÃ¨ces d'identitÃ© des dirigeants."
-        },
-        "fees": {
-          "question": "Quels sont les frais mensuels ?",
-          "answer": "Les comptes individuels dÃ©butent Ã  10 â‚¬/mois. Les comptes professionnels dÃ©butent Ã  25 â‚¬/mois. Les grilles tarifaires complÃ¨tes sont disponibles dans les paramÃ¨tres de votre compte."
-        },
-        "currencies": {
-          "question": "Quelles devises sont prises en charge ?",
-          "answer": "Nous prenons en charge l'EUR, l'USD, la GBP et le CHF. Chaque compte est associÃ© Ã  un IBAN multi-devises dÃ©diÃ© pour des paiements internationaux simplifiÃ©s."
-        },
-        "contact": {
-          "question": "Comment contacter mon gestionnaire de compte ?",
-          "answer": "Une fois votre compte approuvÃ©, un gestionnaire de compte dÃ©diÃ© vous sera attribuÃ©, joignable par e-mail ou tÃ©lÃ©phone pendant les heures de bureau."
-        }
-      }
-    },
-    "resources": {
-      "title": "Ressources supplÃ©mentaires",
-      "description": "Tout ce dont vous avez besoin pour tirer le meilleur parti d'Opulanz.",
-      "documentation": {
-        "title": "Documentation",
-        "description": "Guides dÃ©taillÃ©s et rÃ©fÃ©rences API pour vous aider Ã  intÃ©grer et utiliser notre plateforme.",
-        "button": "Parcourir la documentation"
-      },
-      "helpCenter": {
-        "title": "Centre d'aide",
-        "description": "Articles et tutoriels pas Ã  pas couvrant toutes les fonctionnalitÃ©s et services.",
-        "button": "Visiter le centre d'aide"
-      },
-      "status": {
-        "title": "Ã‰tat des services",
-        "description": "Consultez l'Ã©tat en temps rÃ©el de tous les services Opulanz et les maintenances planifiÃ©es.",
-        "button": "Voir l'Ã©tat"
-      }
-    },
-    "offices": {
-      "title": "Nos bureaux",
-      "description": "Rendez-nous visite au Luxembourg ou en France.",
-      "luxembourg": {
-        "title": "Luxembourg",
-        "address": "1 Avenue de la LibertÃ©",
-        "city": "L-1931 Luxembourg",
-        "country": "Luxembourg",
-        "phone": "TÃ©lÃ©phone",
-        "email": "E-mail"
-      },
-      "france": {
-        "title": "France",
-        "address": "66 Avenue des Champs-Ã‰lysÃ©es",
-        "city": "75008 Paris",
-        "country": "France",
-        "phone": "TÃ©lÃ©phone",
-        "email": "E-mail"
-      }
-    }
-  },
-  "accountOpening": {
-    "start": {
-      "loading": "Chargement..."
-    },
-    "individual": {
-      "title": "Demande de compte particulier",
-      "description": "Remplissez le formulaire ci-dessous pour ouvrir votre compte bancaire personnel.",
-      "approved": {
-        "message": "FÃ©licitations ! Votre demande de compte particulier a Ã©tÃ© approuvÃ©e. Votre IBAN est prÃªt.",
-        "nextSteps": {
-          "mobileApp": "TÃ©lÃ©chargez l'application mobile Opulanz pour gÃ©rer votre compte oÃ¹ que vous soyez.",
-          "security": "Activez l'authentification Ã  deux facteurs pour sÃ©curiser votre compte.",
-          "debitCard": "Votre carte de dÃ©bit sera envoyÃ©e Ã  votre adresse dans un dÃ©lai de 5 Ã  7 jours ouvrables.",
-          "fundAccount": "Alimentez votre compte par virement bancaire pour commencer Ã  effectuer des transactions."
-        },
-        "buttons": {
-          "dashboard": "AccÃ©der au tableau de bord",
-          "downloadApp": "TÃ©lÃ©charger l'appli",
-          "startNew": "Nouvelle demande"
-        }
-      },
-      "submitted": {
-        "message": "Votre demande a Ã©tÃ© soumise et est en cours d'examen. Vous serez notifiÃ© par e-mail dÃ¨s qu'une dÃ©cision sera prise."
-      },
-      "form": {
-        "personalInfo": "Informations personnelles",
-        "firstName": "PrÃ©nom",
-        "lastName": "Nom de famille",
-        "dateOfBirth": "Date de naissance",
-        "nationality": "NationalitÃ©",
-        "selectNationality": "SÃ©lectionnez votre nationalitÃ©",
-        "phoneNumber": "NumÃ©ro de tÃ©lÃ©phone",
-        "address": "Adresse",
-        "streetAddress": "Adresse postale",
-        "city": "Ville",
-        "postalCode": "Code postal",
-        "country": "Pays",
-        "selectCountry": "SÃ©lectionnez votre pays",
-        "documentVerification": "VÃ©rification des documents",
-        "documentDescription": "Veuillez tÃ©lÃ©charger des copies lisibles et claires des documents suivants.",
-        "activityInfo": "Informations sur l'activitÃ©",
-        "isPEP": "ÃŠtes-vous une Personne Politiquement ExposÃ©e (PPE) ?",
-        "no": "Non",
-        "yes": "Oui",
-        "expectedMonthlyVolume": "Volume mensuel de transactions prÃ©vu",
-        "selectRange": "SÃ©lectionnez une tranche",
-        "sourceOfFunds": "Origine des fonds",
-        "sourceOfFundsPlaceholder": "DÃ©crivez l'origine de vos fonds (ex : salaire, revenus d'entreprise, investissements)",
-        "consents": "Consentements et dÃ©clarations",
-        "consentKYC": "Je consens Ã  la collecte et au traitement de mes donnÃ©es personnelles Ã  des fins de vÃ©rification KYC/LCB-FT.",
-        "consentTerms": "J'ai lu et j'accepte les",
-        "termsLink": "Conditions gÃ©nÃ©rales",
-        "privacyLink": "Politique de confidentialitÃ©"
-      }
-    },
-    "personal": {
-      "personalFunnel": {
-        "steps": {
-          "welcome": {
-            "label": "Bienvenue",
-            "shortLabel": "Bienvenue"
-          },
-          "identity": {
-            "label": "IdentitÃ©",
-            "shortLabel": "IdentitÃ©"
-          },
-          "intent": {
-            "label": "PrÃ©fÃ©rences",
-            "shortLabel": "PrÃ©fÃ©rences"
-          },
-          "eligibility": {
-            "label": "Documents",
-            "shortLabel": "Documents"
-          },
-          "review": {
-            "label": "RÃ©vision",
-            "shortLabel": "RÃ©vision"
-          },
-          "submission": {
-            "label": "Soumis",
-            "shortLabel": "TerminÃ©"
-          }
-        },
-        "welcome": {
-          "title": "Ouvrez votre compte personnel",
-          "subtitle": "Une expÃ©rience bancaire premium adaptÃ©e aux particuliers Ã  travers l'Europe.",
-          "startButton": "Commencer la demande",
-          "disclaimer": "En continuant, vous acceptez nos Conditions gÃ©nÃ©rales et notre Politique de confidentialitÃ©.",
-          "timeline": {
-            "title": "Combien de temps cela prendra-t-il ?",
-            "totalTime": "Total : environ 10 minutes",
-            "step1": {
-              "title": "Informations personnelles",
-              "description": "2 minutes"
-            },
-            "step2": {
-              "title": "PrÃ©fÃ©rences du compte",
-              "description": "2 minutes"
-            },
-            "step3": {
-              "title": "TÃ©lÃ©chargement des documents",
-              "description": "3 minutes"
-            },
-            "step4": {
-              "title": "RÃ©vision et soumission",
-              "description": "2 minutes"
-            }
-          },
-          "eligibility": {
-            "title": "Conditions d'Ã©ligibilitÃ©",
-            "requirement1": "Doit avoir 18 ans ou plus",
-            "requirement2": "Doit Ãªtre rÃ©sident en France ou au Luxembourg",
-            "requirement3": "Doit possÃ©der une piÃ¨ce d'identitÃ© officielle avec photo valide",
-            "requirement4": "Doit fournir une preuve de domicile rÃ©cente (facture, relevÃ© bancaire, etc.)",
-            "requirement5": "Ne doit pas faire l'objet de sanctions financiÃ¨res"
-          },
-          "documents": {
-            "title": "Documents nÃ©cessaires",
-            "document1": "Passeport ou carte d'identitÃ© nationale valide",
-            "document2": "Facture rÃ©cente ou relevÃ© bancaire (datant de moins de 3 mois)",
-            "document3": "NumÃ©ro d'identification fiscale (si applicable)",
-            "document4": "Selfie ou photo en direct pour la vÃ©rification d'identitÃ©"
-          },
-          "howItWorks": {
-            "title": "Comment Ã§a fonctionne",
-            "smartMatching": {
-              "title": "Correspondance intelligente :",
-              "description": "Nous associons votre profil Ã  la meilleure solution bancaire disponible."
-            },
-            "warmReferral": {
-              "title": "RÃ©fÃ©rence chaleureuse :",
-              "description": "Dans certains cas, nous pouvons vous orienter vers une banque partenaire la mieux adaptÃ©e Ã  vos besoins."
-            },
-            "dataSecurity": {
-              "title": "SÃ©curitÃ© des donnÃ©es :",
-              "description": "Toutes vos donnÃ©es sont chiffrÃ©es et stockÃ©es de maniÃ¨re sÃ©curisÃ©e conformÃ©ment au RGPD."
-            },
-            "noCommitment": {
-              "title": "Sans engagement :",
-              "description": "Vous pouvez retirer votre demande Ã  tout moment avant la soumission."
-            }
-          },
-          "features": {
-            "title": "Ce que vous obtenez",
-            "feature1": "Compte IBAN multi-devises",
-            "feature2": "Carte de dÃ©bit Visa",
-            "feature3": "Application bancaire mobile",
-            "feature4": "Virements SEPA",
-            "feature5": "AccÃ¨s en ligne 24h/24 et 7j/7",
-            "feature6": "Gestionnaire de compte dÃ©diÃ©"
-          }
-        },
-        "identity": {
-          "title": "Votre identitÃ©",
-          "subtitle": "Veuillez fournir vos informations personnelles telles qu'elles apparaissent sur vos documents officiels.",
-          "required": "*",
-          "firstName": "PrÃ©nom",
-          "firstNamePlaceholder": "Entrez votre prÃ©nom",
-          "lastName": "Nom de famille",
-          "lastNamePlaceholder": "Entrez votre nom de famille",
-          "email": "Adresse e-mail",
-          "emailPlaceholder": "Entrez votre adresse e-mail",
-          "mobile": "NumÃ©ro de mobile",
-          "mobilePlaceholder": "Entrez votre numÃ©ro de mobile",
-          "dateOfBirth": "Date de naissance",
-          "nationality": "NationalitÃ©",
-          "nationalityPlaceholder": "SÃ©lectionnez votre nationalitÃ©",
-          "countryOfResidence": "Pays de rÃ©sidence",
-          "countryOfResidencePlaceholder": "Entrez votre pays de rÃ©sidence",
-          "taxResidency": "Pays de rÃ©sidence fiscale",
-          "taxResidencyPlaceholder": "Entrez votre pays de rÃ©sidence fiscale",
-          "taxId": "NumÃ©ro d'identification fiscale (optionnel)",
-          "taxIdPlaceholder": "Entrez votre numÃ©ro d'identification fiscale",
-          "errors": {
-            "firstNameRequired": "Le prÃ©nom est obligatoire",
-            "lastNameRequired": "Le nom de famille est obligatoire",
-            "invalidEmail": "Veuillez entrer une adresse e-mail valide",
-            "countryCodeRequired": "L'indicatif pays est obligatoire",
-            "invalidPhone": "Veuillez entrer un numÃ©ro de tÃ©lÃ©phone valide",
-            "countryRequired": "Le pays de rÃ©sidence est obligatoire",
-            "taxResidencyRequired": "Le pays de rÃ©sidence fiscale est obligatoire",
-            "dateOfBirthRequired": "La date de naissance est obligatoire",
-            "nationalityRequired": "La nationalitÃ© est obligatoire"
-          }
-        },
-        "intent": {
-          "title": "PrÃ©fÃ©rences du compte",
-          "subtitle": "Dites-nous comment vous prÃ©voyez d'utiliser votre compte.",
-          "required": "*",
-          "accountType": "Type de compte",
-          "currentAccount": "Compte courant",
-          "privateBanking": "Banque privÃ©e",
-          "jurisdictions": "Juridictions prÃ©fÃ©rÃ©es",
-          "currencies": "Devises prÃ©fÃ©rÃ©es",
-          "estimatedMonthlyIncoming": "EntrÃ©es mensuelles estimÃ©es",
-          "sourceOfFunds": "Origine des fonds",
-          "sourceOfFundsPlaceholder": "SÃ©lectionnez votre principale source de fonds",
-          "sourceOfFundsDetails": "DÃ©tails sur l'origine des fonds",
-          "sourceOfFundsDetailsPlaceholder": "Veuillez dÃ©crire l'origine de vos fonds plus en dÃ©tail",
-          "pepLabel": "DÃ©claration de Personne Politiquement ExposÃ©e (PPE)",
-          "pepCheckbox": "Je confirme que je ne suis pas une Personne Politiquement ExposÃ©e (PPE) ni un proche associÃ© d'une PPE.",
-          "sourceOptions": {
-            "salary": "Salaire / Revenus d'emploi",
-            "dividends": "Dividendes",
-            "businessIncome": "Revenus d'entreprise",
-            "assetSale": "Vente d'actifs",
-            "savings": "Ã‰pargne",
-            "other": "Autre"
-          }
-        },
-        "eligibility": {
-          "title": "TÃ©lÃ©chargement des documents",
-          "subtitle": "Veuillez tÃ©lÃ©charger les documents requis pour votre demande.",
-          "validId": "PiÃ¨ce d'identitÃ© officielle avec photo valide",
-          "validIdDescription": "Passeport ou carte d'identitÃ© nationale (recto-verso si applicable).",
-          "proofOfAddress": "Justificatif de domicile",
-          "proofOfAddressDescription": "Facture rÃ©cente, relevÃ© bancaire ou courrier officiel (datant de moins de 3 mois).",
-          "taxIdDocument": "Document d'identification fiscale (optionnel)",
-          "taxIdDocumentDescription": "Document officiel indiquant votre numÃ©ro d'identification fiscale.",
-          "uploadId": "TÃ©lÃ©charger la piÃ¨ce d'identitÃ©",
-          "uploadProof": "TÃ©lÃ©charger le justificatif de domicile",
-          "uploadTaxId": "TÃ©lÃ©charger le document fiscal",
-          "uploaded": "TÃ©lÃ©chargÃ©"
-        },
-        "review": {
-          "title": "VÃ©rifiez votre demande",
-          "subtitle": "Veuillez vÃ©rifier vos informations avant de soumettre.",
-          "summaryTitle": "RÃ©capitulatif de la demande",
-          "name": "Nom complet",
-          "email": "Adresse e-mail",
-          "mobile": "NumÃ©ro de mobile",
-          "accountType": "Type de compte",
-          "preferredJurisdictions": "Juridictions prÃ©fÃ©rÃ©es",
-          "dataProcessingConsent": "Je consens au traitement de mes donnÃ©es personnelles aux fins d'ouverture de compte et de conformitÃ© KYC/LCB-FT.",
-          "dataSharingConsent": "Je consens au partage de mes donnÃ©es avec nos partenaires bancaires uniquement aux fins d'ouverture de compte.",
-          "marketingOptIn": "Je souhaite recevoir des informations sur les produits, services et promotions d'Opulanz. (Optionnel)"
-        },
-        "submission": {
-          "title": "Demande soumise !",
-          "message": "Merci d'avoir soumis votre demande. Notre Ã©quipe examinera vos documents et vous contactera dans un dÃ©lai de 2 Ã  3 jours ouvrables.",
-          "applicationNumberLabel": "NumÃ©ro de rÃ©fÃ©rence de la demande",
-          "saveNumberMessage": "Veuillez conserver ce numÃ©ro de rÃ©fÃ©rence pour vos dossiers.",
-          "nextStepsTitle": "Et maintenant ?",
-          "nextStep1": "Notre Ã©quipe de conformitÃ© vÃ©rifiera vos documents d'identitÃ©.",
-          "nextStep2": "Vous recevrez un e-mail avec le rÃ©sultat de votre demande.",
-          "nextStep3": "Une fois approuvÃ©, votre IBAN sera gÃ©nÃ©rÃ© et envoyÃ© Ã  votre adresse e-mail.",
-          "backToHomepage": "Retour Ã  l'accueil"
-        }
-      }
-    },
-    "company": {
-      "title": "Ouvrir un compte professionnel",
-      "description": "ComplÃ©tez votre demande de compte professionnel en quelques Ã©tapes.",
-      "form": {
-        "companyInfo": "Informations sur l'entreprise"
-      },
-      "submitted": {
-        "message": "Votre demande est en cours d'examen. Vous recevrez une dÃ©cision dans 2 Ã  3 jours ouvrables."
-      },
-      "approved": {
-        "message": "FÃ©licitations ! Votre compte professionnel a Ã©tÃ© approuvÃ©. Votre IBAN est prÃªt.",
-        "nextSteps": {
-          "multiUser": "Invitez des membres de l'Ã©quipe et configurez l'accÃ¨s multi-utilisateurs.",
-          "accounting": "Connectez vos outils de comptabilitÃ© et de facturation.",
-          "corporateCards": "Commandez des cartes d'entreprise pour votre Ã©quipe.",
-          "fundAccount": "Alimentez votre compte pour commencer Ã  effectuer des transactions."
-        },
-        "buttons": {
-          "dashboard": "AccÃ©der au tableau de bord",
-          "downloadApp": "TÃ©lÃ©charger l'application",
-          "startNew": "DÃ©marrer une nouvelle demande"
-        }
-      }
-    },
-    "warmReferral": {
-      "handoff": {
-        "description": "En fonction de votre profil, nous recommandons d'ouvrir votre compte avec {partner}. Opulanz restera votre point de contact tout au long du processus.",
-        "step1": {
-          "description": "Votre profil a Ã©tÃ© associÃ© Ã  {partner}. Cliquez ci-dessous pour continuer."
-        },
-        "step2": {
-          "description": "Vous serez redirigÃ© vers {partner} pour finaliser l'ouverture de votre compte."
-        }
-      }
-    }
-  },
-  "accounting": {
-    "onboarding": {
       "title": "Comptabilité et facturation — Intégration",
       "subtitle": "Complétez les étapes ci-dessous pour configurer votre service comptable"
     },
@@ -3227,6 +2408,12 @@
       "submit": "Soumettre la demande"
     }
   },
+  "supportPage": {
+    "title": "Support",
+    "subtitle": "Comment pouvons-nous vous aider ?",
+    "contact": "Contactez-nous",
+    "faq": "FAQ"
+  },
   "accountOpening": {
     "start": {
       "title": "Ouvrir un compte",
@@ -3277,29 +2464,6 @@
       "handoff": {
         "title": "Candidature par référence",
         "subtitle": "Complétez votre candidature référée"
-      }
-    }
-  },
-  "supportPage": {
-    "title": "Support",
-    "subtitle": "Comment pouvons-nous vous aider ?",
-    "contact": "Contactez-nous",
-    "faq": "FAQ"
-  },
-  "investmentAdvisory": {
-    "wizard": {
-      "steps": {
-        "clientType": "Type de Client",
-        "information": "Profil d'Investissement",
-        "review": "Révision",
-        "complete": "Confirmation"
-      }
-    },
-    "clientType": {
-      "title": "Type de client",
-      "contact": {
-        "label": "Contact",
-        "placeholder": "Vos coordonnées"
       }
     }
   },
@@ -3407,6 +2571,53 @@
         "backToSummary": "Retour au récapitulatif",
         "cancelBooking": "Annuler la réservation"
       }
+    }
+  },
+  "invoicingAccounting": {
+    "getStarted": "Commencer",
+    "features": {
+      "overline": "CE QUE NOUS OFFRONS",
+      "title": "Tout ce dont votre entreprise a besoin",
+      "description": "Des outils de comptabilite et de facturation complets pour les entreprises modernes en France et au Luxembourg.",
+      "invoicing": {
+        "title": "Facturation intelligente",
+        "description": "Creez, envoyez et suivez des factures professionnelles en quelques secondes. Automatisez les relances et soyez paye plus vite."
+      },
+      "bookkeeping": {
+        "title": "Comptabilite",
+        "description": "Categorisation automatique des transactions et comptabilite en temps reel pour que vos comptes soient toujours a jour."
+      },
+      "reporting": {
+        "title": "Rapports financiers",
+        "description": "Comptes de resultats, bilans et rapports de tresorerie instantanes, disponibles quand vous en avez besoin."
+      },
+      "payroll": {
+        "title": "Gestion de la paie",
+        "description": "Traitez les salaires avec precision et dans les delais, en conformite avec le droit du travail francais et luxembourgeois."
+      },
+      "compliance": {
+        "title": "Conformite fiscale",
+        "description": "Restez conforme aux declarations de TVA, aux obligations fiscales des entreprises et aux exigences reglementaires."
+      },
+      "planning": {
+        "title": "Planification financiere",
+        "description": "Outils de budgetisation et de prevision pour planifier votre avenir et developper votre activite en toute confiance."
+      }
+    },
+    "benefits": {
+      "title": "Pourquoi choisir Opulanz Comptabilite ?",
+      "description": "Nous gerons les chiffres pour que vous puissiez vous concentrer sur la croissance de votre entreprise.",
+      "1": "Economisez jusqu a 80 % du temps consacre aux taches comptables manuelles",
+      "2": "Visibilite financiere en temps reel sur tous vos comptes",
+      "3": "Entierement conforme aux normes ACPR francaises et CSSF luxembourgeoises",
+      "4": "Comptable dedie assigne a votre entreprise",
+      "5": "Integration transparente avec votre compte professionnel Opulanz",
+      "6": "Stockage securise dans le cloud de tous vos documents financiers"
+    },
+    "cta": {
+      "title": "Pret a simplifier votre comptabilite ?",
+      "description": "Rejoignez des centaines d entreprises qui utilisent Opulanz pour gerer leurs finances de maniere plus intelligente et plus rapide.",
+      "contactSales": "Contacter les ventes"
     }
   }
 }

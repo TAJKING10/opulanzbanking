@@ -587,278 +587,20 @@
     "wizard": {
       "steps": {
         "clientType": "Client Type",
-        "information": "Your Information",
+        "information": "Investment Profile",
         "review": "Review",
-        "complete": "Complete"
-      },
-      "progress": {
-        "step": "Step",
-        "of": "of",
-        "complete": "complete"
+        "complete": "Confirmation"
       }
     },
     "clientType": {
-      "welcome": "Welcome to Investment Advisory",
-      "subtitle": "Complete our onboarding process to access personalised investment advisory services.",
-      "question": "Please select your investor type:",
-      "individual": {
-        "title": "Individual Investor",
-        "description": "For private individuals seeking personal investment advice and portfolio management."
-      },
-      "company": {
-        "title": "Corporate Investor",
-        "description": "For companies and institutional investors seeking professional investment advisory services."
-      },
+      "title": "Client Type",
       "contact": {
-        "email": "Email Address",
-        "emailPlaceholder": "Enter your email address",
-        "mobile": "Mobile Number",
-        "mobilePlaceholder": "Enter your mobile number",
-        "language": "Preferred Language"
-      }
-    },
-    "company": {
-      "title": "Company Information",
-      "subtitle": "Please provide detailed information about your company to proceed with the KYC verification.",
-      "sectionTitles": {
-        "companyIdentity": "Company Identity",
-        "representatives": "Legal Representatives & Beneficial Owners",
-        "financial": "Financial Profile",
-        "origin": "Origin of Funds",
-        "investment": "Investment Profile",
-        "mission": "Investment Mission",
-        "consents": "Consents & Declarations"
-      },
-      "subsections": {
-        "registeredAddress": "Registered Address",
-        "mainContact": "Main Contact / Legal Representative",
-        "ubo": "Ultimate Beneficial Owner (UBO)",
-        "fatcaCrs": "FATCA / CRS Declaration",
-        "investmentKnowledge": "Investment Knowledge & Experience",
-        "investmentObjectives": "Investment Objectives"
-      },
-      "fields": {
-        "legalName": "Legal Company Name",
-        "tradingName": "Trading Name",
-        "legalForm": "Legal Form",
-        "dateOfIncorporation": "Date of Incorporation",
-        "registrationNumber": "Registration Number",
-        "registrationCountry": "Country of Registration",
-        "taxIdentificationNumber": "Tax Identification Number",
-        "numberOfEmployees": "Number of Employees",
-        "industrySector": "Industry / Sector",
-        "website": "Website",
-        "addressLine1": "Address Line 1",
-        "addressLine2": "Address Line 2",
-        "city": "City",
-        "postalCode": "Postal Code",
-        "country": "Country",
-        "title": "Title",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "position": "Position / Function",
-        "dateOfBirth": "Date of Birth",
-        "nationality": "Nationality",
-        "email": "Email Address",
-        "mobile": "Mobile Number",
-        "uboFullName": "UBO Full Name",
-        "ownershipPercentage": "Ownership Percentage (%)",
-        "taxResidentCountries": "Tax Resident Countries",
-        "annualRevenue": "Annual Revenue (â‚¬)",
-        "totalAssets": "Total Assets (â‚¬)",
-        "primarySourceOfRevenue": "Primary Source of Revenue",
-        "primaryOriginOfFunds": "Primary Origin of Funds",
-        "additionalDetails": "Additional Details",
-        "investmentExperience": "Investment Experience",
-        "riskTolerance": "Risk Tolerance",
-        "investmentHorizon": "Investment Horizon",
-        "primaryObjective": "Primary Investment Objective",
-        "expectedAnnualReturn": "Expected Annual Return (%)",
-        "maxAcceptableLoss": "Maximum Acceptable Loss (%)",
-        "typeOfService": "Type of Service",
-        "initialInvestmentAmount": "Initial Investment Amount (â‚¬)"
-      },
-      "placeholders": {
-        "tradingName": "Enter trading name if different from legal name",
-        "registrationNumber": "Enter company registration number",
-        "industrySector": "e.g. Technology, Finance, Real Estate",
-        "website": "https://www.yourcompany.com",
-        "position": "e.g. CEO, Director, CFO",
-        "taxResidentCountries": "e.g. France, Luxembourg",
-        "annualRevenue": "Enter annual revenue in EUR",
-        "originDetails": "Provide additional details about the origin of funds",
-        "expectedReturn": "e.g. 8",
-        "maxLoss": "e.g. 20",
-        "initialInvestment": "Minimum â‚¬100,000"
-      },
-      "options": {
-        "legalForm": {
-          "select": "Select legal form",
-          "sarl": "SARL",
-          "sas": "SAS",
-          "sa": "SA",
-          "sci": "SCI",
-          "gmbh": "GmbH",
-          "ltd": "Ltd",
-          "llc": "LLC",
-          "other": "Other"
-        },
-        "title": {
-          "select": "Select title",
-          "mr": "Mr.",
-          "mrs": "Mrs.",
-          "ms": "Ms.",
-          "dr": "Dr."
-        },
-        "sourceOfRevenue": {
-          "select": "Select primary source",
-          "products": "Products Sales",
-          "services": "Services Revenue",
-          "trading": "Trading",
-          "investments": "Investment Returns",
-          "realEstate": "Real Estate",
-          "other": "Other"
-        },
-        "originOfFunds": {
-          "select": "Select origin",
-          "retainedEarnings": "Retained Earnings",
-          "shareholderContributions": "Shareholder Contributions",
-          "businessOperations": "Business Operations",
-          "saleOfAssets": "Sale of Assets",
-          "financing": "External Financing",
-          "other": "Other"
-        },
-        "investmentExperience": {
-          "beginner": "Beginner (< 2 years)",
-          "intermediate": "Intermediate (2â€“5 years)",
-          "advanced": "Advanced (5â€“10 years)",
-          "expert": "Expert (10+ years)"
-        },
-        "riskTolerance": {
-          "conservative": "Conservative",
-          "moderate": "Moderate",
-          "aggressive": "Aggressive"
-        },
-        "investmentHorizon": {
-          "select": "Select horizon",
-          "short": "Short-term (< 3 years)",
-          "medium": "Medium-term (3â€“7 years)",
-          "long": "Long-term (7+ years)"
-        },
-        "investmentObjective": {
-          "select": "Select objective",
-          "capitalPreservation": "Capital Preservation",
-          "incomeGeneration": "Income Generation",
-          "capitalGrowth": "Capital Growth",
-          "balanced": "Balanced Growth & Income"
-        },
-        "missionType": {
-          "advisory": "Advisory (you retain decision-making)",
-          "management": "Discretionary Management (we manage on your behalf)"
-        }
-      },
-      "helpers": {
-        "uboDescription": "A UBO is any individual who directly or indirectly owns or controls 25% or more of the company.",
-        "usPersonCheckbox": "I confirm this company is not a US person under FATCA regulations.",
-        "advisoryHelper": "In advisory mode, we provide recommendations but you retain full decision-making authority over your portfolio.",
-        "managementHelper": "In discretionary management mode, we manage your portfolio on your behalf within agreed parameters.",
-        "minimumInvestment": "Minimum initial investment: â‚¬100,000"
-      },
-      "consents": {
-        "dataProcessing": {
-          "label": "Data Processing Consent",
-          "text": "I consent to the collection, processing, and storage of my personal and company data for KYC/AML compliance, account management, and regulatory reporting purposes."
-        },
-        "kycCompliance": {
-          "label": "KYC Compliance",
-          "text": "I confirm that all information provided is accurate and complete. I understand that any false declaration may result in the termination of services."
-        },
-        "electronicSignature": {
-          "label": "Electronic Signature",
-          "text": "I agree to the use of electronic signatures and digital document submission for this application."
-        },
-        "marketingCommunications": {
-          "label": "Marketing Communications",
-          "text": "I agree to receive updates about Opulanz investment products, market insights, and promotional offers."
-        }
-      },
-      "navigation": {
-        "continueToReview": "Continue to Review"
+        "label": "Contact",
+        "placeholder": "Your contact information"
       }
     }
   },
   "legal": {
-    "terms": {
-      "heroTitle": "Legal Terms & Conditions",
-      "heroSubtitle": "Please read the following terms carefully before using our services.",
-      "companyIdentification": {
-        "title": "Company Identification",
-        "companyName": "Company Name",
-        "companyNameValue": "Advensys Luxembourg S.A.",
-        "capital": "Share Capital",
-        "capitalValue": "â‚¬31,000",
-        "address": "Registered Address",
-        "addressValue": "2 Rue Edward Steichen, L-2540 Luxembourg",
-        "phone": "Phone",
-        "phoneValue": "+352 20 33 10 70",
-        "email": "Email",
-        "emailValue": "info@advensys.lu",
-        "website": "Website",
-        "websiteValue": "www.opulanz.com",
-        "siret": "SIRET",
-        "siretValue": "N/A â€“ Luxembourg Entity",
-        "ape": "APE Code",
-        "apeValue": "6419Z â€“ Other Monetary Intermediation",
-        "vatNumber": "VAT Number",
-        "vatNumberValue": "LU30956782",
-        "registration": "Trade Register",
-        "registrationValue": "RCS Luxembourg B 252 345"
-      },
-      "servicesProvided": {
-        "title": "Services Provided",
-        "investment": "Investment advisory and portfolio management services (MiFID II compliant)",
-        "insurance": "Insurance brokerage and life insurance products",
-        "banking": "Payment services and account management (EMI regulated)"
-      },
-      "professionalInsurance": {
-        "title": "Professional Insurance",
-        "description": "Advensys Luxembourg S.A. holds professional indemnity insurance covering all services provided through the Opulanz platform, as required by applicable Luxembourg and EU financial regulations."
-      },
-      "contactInfo": {
-        "title": "Contact Information",
-        "name": "Contact Name",
-        "nameValue": "Compliance Department â€“ Advensys Luxembourg S.A."
-      },
-      "intellectualProperty": {
-        "title": "Intellectual Property",
-        "trademark": "The Opulanz brand, logo, and all associated trademarks are the exclusive property of Advensys Luxembourg S.A. Unauthorized use is strictly prohibited.",
-        "ownership": "All content on this website, including text, graphics, logos, and software, is the property of Advensys Luxembourg S.A. and is protected by Luxembourg and international copyright laws."
-      },
-      "generalConditions": {
-        "title": "General Terms & Conditions",
-        "acceptance": "By accessing and using the Opulanz platform, you agree to be bound by these Terms and Conditions and all applicable laws and regulations.",
-        "disclaimer": "The information provided on this platform is for general informational purposes only and does not constitute financial, legal, or tax advice.",
-        "modifications": "Advensys Luxembourg S.A. reserves the right to modify these terms at any time. Continued use of the platform constitutes acceptance of the updated terms.",
-        "jurisdiction": "These terms are governed by the laws of the Grand Duchy of Luxembourg. Any disputes shall be subject to the exclusive jurisdiction of the courts of Luxembourg."
-      },
-      "designHosting": {
-        "title": "Design & Hosting",
-        "design": "Website Design",
-        "designValue": "Advensys Internal Development Team",
-        "development": "Platform Development",
-        "developmentValue": "Advensys Technology Division",
-        "hosting": "Cloud Hosting",
-        "hostingValue": "Microsoft Azure â€“ European Data Centers"
-      },
-      "footer": {
-        "disclaimer": "This document was last reviewed and approved by the Legal & Compliance Department of Advensys Luxembourg S.A.",
-        "lastUpdated": "Last updated: January 2025"
-      }
-    },
-    "regulated": "Regulated by ACPR & AMF (FR)",
-    "disclaimer": "Opulanz is a digital banking platform. Banking services provided by licensed partners.",
-    "mifid": "Investment services subject to MiFID II regulations",
-    "idd": "Insurance distribution subject to IDD requirements",
     "terms": {
       "heroTitle": "Terms of Service",
       "heroSubtitle": "Legal information and terms governing the use of Opulanz services",
@@ -925,7 +667,11 @@
         "disclaimer": "This document constitutes the legal terms governing the use of the Opulanz platform. Opulanz is regulated by the CSSF (Luxembourg) and complies with all applicable EU financial regulations.",
         "lastUpdated": "Last updated: April 2026"
       }
-    }
+    },
+    "regulated": "Regulated by ACPR & AMF (FR)",
+    "disclaimer": "Opulanz is a digital banking platform. Banking services provided by licensed partners.",
+    "mifid": "Investment services subject to MiFID II regulations",
+    "idd": "Insurance distribution subject to IDD requirements"
   },
   "footer": {
     "sections": {
@@ -1383,50 +1129,55 @@
   "taxAdvisory": {
     "confirmation": {
       "heroTitle": "Booking Confirmed!",
-      "heroSubtitle": "Your tax advisory consultation has been successfully booked.",
-      "confirmationLabel": "Confirmation #",
-      "emailSent": {
-        "title": "Confirmation Email Sent",
-        "description": "A confirmation has been sent to {email}. Please check your inbox."
-      },
-      "appointmentDetails": "Appointment Details",
+      "heroSubtitle": "Your tax advisory consultation has been successfully booked",
+      "confirmationLabel": "Booking Reference",
+      "confirmationNumber": "Confirmation Number",
       "clientName": "Client Name",
+      "name": "Name",
       "email": "Email",
       "phone": "Phone",
+      "service": "Service",
+      "serviceTitle": "Service",
+      "serviceDetails": "Service Details",
       "date": "Date",
       "time": "Time",
-      "duration": "{minutes}-minute consultation",
-      "scheduledViaCalendly": "Appointment Scheduled via Calendly",
-      "checkEmailForDetails": "Check your email for the appointment details.",
-      "calendlyConfirmationNotice": "You will receive a calendar invite from Calendly in your inbox.",
-      "serviceDetails": "Service Details",
+      "price": "Price",
+      "inclVAT": "(incl. VAT)",
+      "duration": "{minutes} minutes",
       "consultation": "{minutes}-minute consultation",
-      "inclVAT": "incl. VAT",
-      "addToCalendar": "Add to Calendar",
-      "downloadPDFReceipt": "Download PDF Receipt",
+      "appointmentDetails": "Appointment Details",
+      "scheduledViaCalendly": "Scheduled via Calendly",
+      "calendlyConfirmationNotice": "A calendar invite has been sent to your email",
+      "checkEmailForDetails": "Check your email for full booking details",
+      "emailSent": {
+        "title": "Confirmation Email Sent",
+        "description": "A confirmation email has been sent to {email}"
+      },
       "whatHappensNext": {
         "title": "What Happens Next?",
         "step1": {
           "title": "Check Your Email",
-          "description": "You will receive a confirmation email with all the details of your appointment."
+          "description": "You'll receive a confirmation email with your appointment details and joining instructions"
         },
         "step2": {
           "title": "Prepare Your Documents",
-          "description": "Gather any relevant financial documents, tax returns, or statements that may be discussed during the consultation."
+          "description": "Gather any relevant financial documents and questions for your consultation"
         },
         "step3": {
-          "title": "Join Your Consultation",
-          "description": "Join the video call or in-person meeting at the scheduled time. Our advisor will be ready to assist you."
+          "title": "Join the Consultation",
+          "description": "Connect with our tax advisor at your scheduled time via video conference"
         },
         "step4": {
           "title": "Receive Your Report",
-          "description": "After the consultation, you will receive a detailed report and recommendations by email within 48 hours."
+          "description": "Get a detailed tax advisory report following your consultation"
         }
       },
-      "rescheduleQuestion": "Need to reschedule or have a question?",
+      "rescheduleQuestion": "Need to reschedule?",
+      "supportContact": "Contact our support team",
       "backToTaxAdvisory": "Back to Tax Advisory",
       "goToDashboard": "Go to Dashboard",
-      "supportContact": "For support, contact us at"
+      "downloadPDFReceipt": "Download Receipt",
+      "addToCalendar": "Add to Calendar"
     },
     "hero": {
       "primaryCta": "Schedule a Consultation",
@@ -1711,58 +1462,6 @@
         "selectDesc": "Choose the service that best matches your needs",
         "selectService": "Select Service"
       }
-    },
-    "confirmation": {
-      "heroTitle": "Booking Confirmed!",
-      "heroSubtitle": "Your tax advisory consultation has been successfully booked",
-      "confirmationLabel": "Booking Reference",
-      "confirmationNumber": "Confirmation Number",
-      "clientName": "Client Name",
-      "name": "Name",
-      "email": "Email",
-      "phone": "Phone",
-      "service": "Service",
-      "serviceTitle": "Service",
-      "serviceDetails": "Service Details",
-      "date": "Date",
-      "time": "Time",
-      "price": "Price",
-      "inclVAT": "(incl. VAT)",
-      "duration": "{minutes} minutes",
-      "consultation": "{minutes}-minute consultation",
-      "appointmentDetails": "Appointment Details",
-      "scheduledViaCalendly": "Scheduled via Calendly",
-      "calendlyConfirmationNotice": "A calendar invite has been sent to your email",
-      "checkEmailForDetails": "Check your email for full booking details",
-      "emailSent": {
-        "title": "Confirmation Email Sent",
-        "description": "A confirmation email has been sent to {email}"
-      },
-      "whatHappensNext": {
-        "title": "What Happens Next?",
-        "step1": {
-          "title": "Check Your Email",
-          "description": "You'll receive a confirmation email with your appointment details and joining instructions"
-        },
-        "step2": {
-          "title": "Prepare Your Documents",
-          "description": "Gather any relevant financial documents and questions for your consultation"
-        },
-        "step3": {
-          "title": "Join the Consultation",
-          "description": "Connect with our tax advisor at your scheduled time via video conference"
-        },
-        "step4": {
-          "title": "Receive Your Report",
-          "description": "Get a detailed tax advisory report following your consultation"
-        }
-      },
-      "rescheduleQuestion": "Need to reschedule?",
-      "supportContact": "Contact our support team",
-      "backToTaxAdvisory": "Back to Tax Advisory",
-      "goToDashboard": "Go to Dashboard",
-      "downloadPDFReceipt": "Download Receipt",
-      "addToCalendar": "Add to Calendar"
     },
     "taxReturn": {
       "title": "Tax Return Preparation",
@@ -2768,23 +2467,6 @@
     "contact": "Contact Us",
     "faq": "FAQ"
   },
-  "investmentAdvisory": {
-    "wizard": {
-      "steps": {
-        "clientType": "Client Type",
-        "information": "Investment Profile",
-        "review": "Review",
-        "complete": "Confirmation"
-      }
-    },
-    "clientType": {
-      "title": "Client Type",
-      "contact": {
-        "label": "Contact",
-        "placeholder": "Your contact information"
-      }
-    }
-  },
   "lifeInsurance": {
     "booking": {
       "services": {
@@ -2887,8 +2569,7 @@
         "paymentFailed": "Payment failed. Please try again.",
         "paymentSuccessError": "Payment completed but confirmation failed. Please contact support.",
         "backToSummary": "Back to Summary",
-        "cancelBooking": "Cancel Booking"
-,
+        "cancelBooking": "Cancel Booking",
         "description": "Based on your profile, we recommend opening your account with {partner}. Opulanz will remain your point of contact throughout the process.",
         "step1": {
           "description": "Your profile has been matched to {partner}. Click below to proceed."
@@ -2897,6 +2578,53 @@
           "description": "You will be redirected to {partner} to complete your account opening."
         }
       }
+    }
+  },
+  "invoicingAccounting": {
+    "getStarted": "Get Started",
+    "features": {
+      "overline": "WHAT WE OFFER",
+      "title": "Everything your business needs",
+      "description": "Comprehensive accounting and invoicing tools designed for modern businesses in France and Luxembourg.",
+      "invoicing": {
+        "title": "Smart Invoicing",
+        "description": "Create, send, and track professional invoices in seconds. Automate reminders and get paid faster."
+      },
+      "bookkeeping": {
+        "title": "Bookkeeping",
+        "description": "Automated transaction categorisation and real-time bookkeeping so your accounts are always up to date."
+      },
+      "reporting": {
+        "title": "Financial Reporting",
+        "description": "Instant profit & loss statements, balance sheets, and cash flow reports - ready when you need them."
+      },
+      "payroll": {
+        "title": "Payroll Management",
+        "description": "Process payroll accurately and on time, with full compliance with French and Luxembourg labour law."
+      },
+      "compliance": {
+        "title": "Tax Compliance",
+        "description": "Stay compliant with VAT filings, corporate tax obligations, and all regulatory requirements."
+      },
+      "planning": {
+        "title": "Financial Planning",
+        "description": "Budgeting tools and forecasting to help you plan ahead and grow your business with confidence."
+      }
+    },
+    "benefits": {
+      "title": "Why choose Opulanz Accounting?",
+      "description": "We handle the numbers so you can focus on growing your business.",
+      "1": "Save up to 80% of the time spent on manual accounting tasks",
+      "2": "Real-time financial visibility across all your accounts",
+      "3": "Fully compliant with French ACPR and Luxembourg CSSF standards",
+      "4": "Dedicated accountant assigned to your business",
+      "5": "Seamless integration with your Opulanz business account",
+      "6": "Secure cloud storage for all your financial documents"
+    },
+    "cta": {
+      "title": "Ready to simplify your accounting?",
+      "description": "Join hundreds of businesses using Opulanz to manage their finances smarter and faster.",
+      "contactSales": "Contact Sales"
     }
   }
 }

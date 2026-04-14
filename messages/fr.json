@@ -2894,5 +2894,101 @@
         }
       }
     }
+  },
+  "lifeInsurance": {
+    "hero": {
+      "title": "Services de Courtage en Assurance Vie",
+      "subtitle": "En tant que courtier de confiance, nous vous connectons avec des solutions d'assurance vie completes pour proteger financierement vos proches",
+      "primaryCta": "Obtenir un devis"
+    },
+    "overview": {
+      "overline": "Presentation",
+      "title": "Votre Courtier en Assurance Vie de Confiance",
+      "description": "En tant que courtier independant, nous travaillons en votre nom pour trouver et vous connecter avec les meilleures solutions d'assurance vie des principaux fournisseurs, en veillant a la protection financiere de vos proches.",
+      "badge1": "Conseils impartiaux",
+      "badge2": "Plusieurs fournisseurs",
+      "badge3": "Protection familiale",
+      "whyBrokerTitle": "Pourquoi choisir un courtier ?",
+      "benefit1": "Courtier independant representant vos interets",
+      "benefit2": "Acces aux polices de plusieurs grands assureurs",
+      "benefit3": "Analyse personnalisee de vos besoins et recommandations de couverture",
+      "benefit4": "Conseils experts sur les fonctionnalites avancees et la planification successorale",
+      "benefit5": "Gestion continue des polices et assistance"
+    },
+    "products": {
+      "overline": "Nos Services",
+      "title": "Produits d'Assurance Vie que Nous Courtisons",
+      "description": "Nous vous aidons a acceder a une large gamme de solutions d'assurance vie de fournisseurs de confiance pour repondre a vos besoins specifiques de protection.",
+      "term": {
+        "title": "Assurance Vie Temporaire",
+        "description": "Options a terme de 10, 20 ou 30 ans avec des primes fixes pour une protection abordable pendant vos annees les plus cruciales."
+      },
+      "whole": {
+        "title": "Assurance Vie Entiere",
+        "description": "Couverture a vie avec accumulation de valeur de rachat offrant une protection permanente et une croissance financiere."
+      },
+      "universal": {
+        "title": "Assurance Vie Universelle",
+        "description": "Primes flexibles et garanties deces ajustables qui s'adaptent a l'evolution de votre situation financiere."
+      },
+      "variable": {
+        "title": "Assurance Vie Variable",
+        "description": "Croissance de la valeur de rachat liee aux investissements vous permettant potentiellement d'augmenter la valeur de votre contrat."
+      },
+      "group": {
+        "title": "Assurance Vie Collective",
+        "description": "Plans d'assurance vie collectifs parraines par l'employeur offrant une couverture a des tarifs de groupe competitifs."
+      }
+    },
+    "howItWorks": {
+      "overline": "Processus simple",
+      "title": "Comment nous vous aidons a trouver la bonne couverture",
+      "step1": {
+        "title": "Consultation gratuite",
+        "description": "Planifiez une reunion sans engagement pour discuter de vos besoins"
+      },
+      "step2": {
+        "title": "Comparer les options",
+        "description": "Nous vous presentons des polices de plusieurs grands assureurs"
+      },
+      "step3": {
+        "title": "Conseils experts",
+        "description": "Obtenez des recommandations impartiales adaptees a votre profil"
+      },
+      "step4": {
+        "title": "Assistance continue",
+        "description": "Accompagnement tout au long du cycle de vie de votre contrat"
+      }
+    },
+    "features": {
+      "overline": "Ce qui nous differencie",
+      "title": "Expertise Professionnelle en Courtage d'Assurance",
+      "description": "En tant que courtiers independants, nous fournissons des conseils impartiaux et l'acces aux meilleures solutions d'assurance pour vos besoins.",
+      "brokers": {
+        "title": "Courtiers experts",
+        "description": "Expertise specialisee pour vous connecter avec les bons produits d'assurance"
+      },
+      "analysis": {
+        "title": "Analyse des besoins",
+        "description": "Evaluation personnalisee pour trouver la couverture ideale aupres de plusieurs fournisseurs"
+      },
+      "wealth": {
+        "title": "Constitution de patrimoine",
+        "description": "Conseils sur les strategies fiscalement avantageuses pour la croissance financiere a long terme"
+      },
+      "support": {
+        "title": "Assistance continue",
+        "description": "Gestion continue des polices et support de courtage"
+      }
+    },
+    "cta": {
+      "title": "Protegez l'avenir de votre famille des aujourd'hui",
+      "subtitle": "Commencez par une consultation personnalisee. Nous vous aiderons a comparer les options des principaux assureurs pour trouver la solution qui correspond le mieux aux besoins de votre famille.",
+      "badge1": "Consultation gratuite",
+      "badge2": "Comparer plusieurs fournisseurs",
+      "badge3": "Conseils experts",
+      "primaryButton": "Obtenir un devis gratuit",
+      "secondaryButton": "Parler a un conseiller"
+    }
   }
 }

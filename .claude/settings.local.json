@@ -110,7 +110,8 @@
       "Bash(python3 -m json.tool)",
       "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run build)",
       "Bash(unzip -p /tmp/azlogs.zip)",
-      "Bash(python3 -c \":*)"
+      "Bash(python3 -c \":*)",
+      "Bash(cd:*)"
     ],
     "deny": [],
     "ask": []

@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   TrendingUp,
   TrendingDown,
@@ -59,6 +60,7 @@ interface NarviTransaction {
 export default function DashboardPage() {
   const params = useParams();
   const locale = params.locale as string;
+  const t = useTranslations("dashboard");
   const router = useRouter();
   const [copiedIban, setCopiedIban] = React.useState(false);
   const [showBalance, setShowBalance] = React.useState(true);
@@ -252,19 +254,19 @@ export default function DashboardPage() {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-2xl font-bold text-gray-900">Good morning, {userDisplayName}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t("greeting")}, {userDisplayName}</h1>
             <span className="text-2xl">&#128075;</span>
           </div>
-          <p className="text-gray-500">Here's what's happening with your accounts today.</p>
+          <p className="text-gray-500">{t("greetingSubtitle")}</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-medium">
             <CheckCircle className="h-4 w-4" />
-            Account Verified
+            {t("accountVerified")}
           </div>
           <div className="hidden md:flex items-center gap-2 text-sm text-gray-500">
             <Clock className="h-4 w-4" />
-            Last login: Today, 09:45 AM
+            {t("lastLogin")}: Today, 09:45 AM
           </div>
           <button
             onClick={handleSignOut}
@@ -369,8 +371,8 @@ export default function DashboardPage() {
                   <Building2 className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-white/80 text-sm">Total Balance</p>
-                  <p className="text-xs text-white/60">All Accounts Combined</p>
+                  <p className="text-white/80 text-sm">{t("balance.label")}</p>
+                  <p className="text-xs text-white/60">{t("balance.allAccountsCombined")}</p>
                 </div>
               </div>
               <button
@@ -391,7 +393,7 @@ export default function DashboardPage() {
                   <span>+5.2%</span>
                 </div>
               </div>
-              <p className="text-white/60 text-sm mt-2">vs. last month</p>
+              <p className="text-white/60 text-sm mt-2">{t("balance.vsLastMonth")}</p>
             </div>
 
             {/* Quick Account Switcher */}
@@ -413,14 +415,14 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <h3 className="font-semibold text-gray-900 mb-4">{t("quickActions.title")}</h3>
           <div className="grid grid-cols-2 gap-3">
             <Link
               href={`/${locale}/dashboard/send`}
               className="flex flex-col items-center gap-2 p-4 bg-[#b59354] text-white rounded-xl hover:bg-[#886844] transition-colors"
             >
               <Send className="h-6 w-6" />
-              <span className="text-sm font-medium">Send Money</span>
+              <span className="text-sm font-medium">{t("quickActions.sendMoney")}</span>
             </Link>
             {/* Add Funds – hidden for now
             <Link
@@ -436,20 +438,20 @@ export default function DashboardPage() {
               className="flex flex-col items-center gap-2 p-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"
             >
               <RefreshCw className="h-6 w-6" />
-              <span className="text-sm font-medium">Exchange</span>
+              <span className="text-sm font-medium">{t("quickActions.exchange")}</span>
             </Link>
             <Link
               href={`/${locale}/dashboard/cards`}
               className="flex flex-col items-center gap-2 p-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"
             >
               <CreditCard className="h-6 w-6" />
-              <span className="text-sm font-medium">Cards</span>
+              <span className="text-sm font-medium">{t("quickActions.cards")}</span>
             </Link>
           </div>
 
           {/* Recent Beneficiaries */}
           <div className="mt-6 pt-4 border-t border-gray-100">
-            <p className="text-sm text-gray-500 mb-3">Send Again</p>
+            <p className="text-sm text-gray-500 mb-3">{t("quickActions.sendAgain")}</p>
             <div className="flex items-center gap-3">
               {recentBeneficiaries.map((ben) => (
                 <button
@@ -476,14 +478,14 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="font-semibold text-gray-900">Spending Analytics</h3>
+              <h3 className="font-semibold text-gray-900">{t("spending.title")}</h3>
               <p className="text-sm text-gray-500">March 2026</p>
             </div>
             <div className="flex items-center gap-2">
               <select className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#b59354]/20">
-                <option>This Week</option>
-                <option>Last Week</option>
-                <option>This Month</option>
+                <option>{t("spending.filters.thisWeek")}</option>
+                <option>{t("spending.filters.lastWeek")}</option>
+                <option>{t("spending.filters.thisMonth")}</option>
               </select>
             </div>
           </div>
@@ -492,15 +494,15 @@ export default function DashboardPage() {
           <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="text-center p-3 bg-gray-50 rounded-xl">
               <p className="text-2xl font-bold text-gray-900">€3,519</p>
-              <p className="text-xs text-gray-500">Total Spent</p>
+              <p className="text-xs text-gray-500">{t("spending.totalSpent")}</p>
             </div>
             <div className="text-center p-3 bg-green-50 rounded-xl">
               <p className="text-2xl font-bold text-green-600">€12,500</p>
-              <p className="text-xs text-gray-500">Received</p>
+              <p className="text-xs text-gray-500">{t("spending.received")}</p>
             </div>
             <div className="text-center p-3 bg-blue-50 rounded-xl">
               <p className="text-2xl font-bold text-blue-600">42</p>
-              <p className="text-xs text-gray-500">Transactions</p>
+              <p className="text-xs text-gray-500">{t("spending.transactions")}</p>
             </div>
           </div>
 
@@ -542,11 +544,11 @@ export default function DashboardPage() {
           <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-gray-100">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-[#b59354] rounded" />
-              <span className="text-xs text-gray-500">Expenses</span>
+              <span className="text-xs text-gray-500">{t("spending.expenses")}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-green-500 rounded" />
-              <span className="text-xs text-gray-500">Income</span>
+              <span className="text-xs text-gray-500">{t("spending.income")}</span>
             </div>
           </div>
         </div>
@@ -557,11 +559,11 @@ export default function DashboardPage() {
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center gap-2 mb-4">
               <Globe className="h-5 w-5 text-[#b59354]" />
-              <h3 className="font-semibold text-gray-900">Primary Account</h3>
+              <h3 className="font-semibold text-gray-900">{t("primaryAccount.title")}</h3>
             </div>
             <div className="space-y-3">
               <div>
-                <p className="text-xs text-gray-500 mb-1">IBAN</p>
+                <p className="text-xs text-gray-500 mb-1">{t("primaryAccount.iban")}</p>
                 <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
                   <p className="font-mono text-sm text-gray-900">{primaryIban}</p>
                   <button
@@ -572,16 +574,16 @@ export default function DashboardPage() {
                   </button>
                 </div>
                 {copiedIban && (
-                  <p className="text-green-500 text-xs mt-1">Copied!</p>
+                  <p className="text-green-500 text-xs mt-1">{t("primaryAccount.copied")}</p>
                 )}
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <p className="text-xs text-gray-500">BIC/SWIFT</p>
+                  <p className="text-xs text-gray-500">{t("primaryAccount.bicSwift")}</p>
                   <p className="font-mono text-gray-900">{primaryBic}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500">Currency</p>
+                  <p className="text-xs text-gray-500">{t("primaryAccount.currency")}</p>
                   <p className="text-gray-900">EUR</p>
                 </div>
               </div>
@@ -593,13 +595,13 @@ export default function DashboardPage() {
             <div className="flex items-center gap-3 mb-3">
               <Shield className="h-6 w-6" />
               <div>
-                <p className="font-semibold">Account Protected</p>
-                <p className="text-xs text-white/80">2FA Enabled</p>
+                <p className="font-semibold">{t("security.title")}</p>
+                <p className="text-xs text-white/80">{t("security.subtitle")}</p>
               </div>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="text-white/80">Security Score</span>
-              <span className="font-semibold">Excellent</span>
+              <span className="text-white/80">{t("security.scoreLabel")}</span>
+              <span className="font-semibold">{t("security.scoreValue")}</span>
             </div>
             <div className="mt-2 h-2 bg-white/20 rounded-full overflow-hidden">
               <div className="h-full w-[95%] bg-white rounded-full" />
@@ -614,14 +616,14 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100 flex items-center justify-between">
             <div>
-              <h3 className="font-semibold text-lg text-gray-900">Recent Transactions</h3>
-              <p className="text-sm text-gray-500">Your latest activity</p>
+              <h3 className="font-semibold text-lg text-gray-900">{t("transactions.title")}</h3>
+              <p className="text-sm text-gray-500">{t("transactions.subtitle")}</p>
             </div>
             <Link
               href={`/${locale}/dashboard/transactions`}
               className="flex items-center gap-1 text-[#b59354] text-sm font-medium hover:underline"
             >
-              View All
+              {t("transactions.viewAll")}
               <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
@@ -655,7 +657,7 @@ export default function DashboardPage() {
                           ? "bg-green-100 text-green-700"
                           : "bg-yellow-100 text-yellow-700"
                       }`}>
-                        {tx.status === "completed" ? "Completed" : "Processing"}
+                        {tx.status === "completed" ? t("transactions.status.completed") : t("transactions.status.processing")}
                       </span>
                     </div>
                   </div>
@@ -701,27 +703,27 @@ export default function DashboardPage() {
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="h-5 w-5" />
-                <h3 className="font-semibold">Opulanz Pro</h3>
+                <h3 className="font-semibold">{t("upgrade.title")}</h3>
               </div>
               <p className="text-sm text-white/80 mb-4">
-                Unlock premium features, global payments, and priority support.
+                {t("upgrade.description")}
               </p>
               <ul className="text-sm text-white/90 space-y-2 mb-4">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-300" />
-                  Unlimited transactions
+                  {t("upgrade.feature1")}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-300" />
-                  Virtual & physical cards
+                  {t("upgrade.feature2")}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-300" />
-                  Advanced analytics
+                  {t("upgrade.feature3")}
                 </li>
               </ul>
               <button className="w-full bg-white text-[#b59354] px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-100 transition-colors">
-                Upgrade Now
+                {t("upgrade.cta")}
               </button>
             </div>
           </div>

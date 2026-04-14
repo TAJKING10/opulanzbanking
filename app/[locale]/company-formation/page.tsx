@@ -128,7 +128,7 @@ export default function CompanyFormationPage() {
             {companyForms.map((form) => (
               <Card
                 key={form.id}
-                className="card-hover group flex flex-col cursor-pointer border-2 border-brand-grayLight transition-all hover:border-brand-gold hover:shadow-lg"
+                className="card-hover group flex h-full cursor-pointer flex-col border-2 border-brand-grayLight transition-all hover:border-brand-gold hover:shadow-lg"
                 onClick={() => setSelectedForm(form.id)}
               >
                 <CardHeader>
@@ -138,7 +138,7 @@ export default function CompanyFormationPage() {
                   <CardTitle className="text-xl">{form.name}</CardTitle>
                   <p className="text-sm text-brand-grayMed">{form.fullName}</p>
                 </CardHeader>
-                <CardContent className="flex flex-1 flex-col space-y-4">
+                <CardContent className="flex flex-1 flex-col gap-4">
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-brand-grayMed">{t("minCapitalLabel")}</span>

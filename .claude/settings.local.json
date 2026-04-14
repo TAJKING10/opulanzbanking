@@ -106,7 +106,9 @@
       "Bash(grep -n \"t\\(\"\"\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/tax-advisory/booking/BookingClient.tsx)",
       "Bash(grep -n 't\\(\"\"\"\"' /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/life-insurance/booking/LifeInsuranceBookingClient.tsx)",
       "Bash(grep -n \"tAccount\\(\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/open-account/company/page.tsx)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(python3 -m json.tool)",
+      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run build)"
     ],
     "deny": [],
     "ask": []

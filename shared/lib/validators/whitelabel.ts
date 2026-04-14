@@ -37,6 +37,7 @@ export const whitelabelKYBSchema = z.object({
   registrationNumber: z.string().min(5, 'Registration number required'),
   dateOfIncorporation: z.string().min(1, 'Date of incorporation required'),
   legalForm: z.string().min(1, 'Legal form required'),
+  contactEmail: z.string().email('Valid contact email required'),
   companyAddress: z.string().min(5, 'Company address required'),
   companyCity: addressFields.city,
   companyPostalCode: addressFields.postal,

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Menu, X, Globe, ChevronDown } from "lucide-react";
@@ -62,12 +63,13 @@ export function Header({ locale }: HeaderProps) {
           href={`/${locale}`}
           className="flex items-center gap-3 transition-opacity hover:opacity-80"
         >
-          <img
-            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/opulanz-logo.png`}
+          <Image
+            src="/images/opulanz-logo.png"
             alt="Opulanz Logo"
             width={60}
             height={60}
             className="h-16 w-auto"
+            priority
           />
         </Link>
 

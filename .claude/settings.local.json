@@ -108,7 +108,9 @@
       "Bash(grep -n \"tAccount\\(\" /c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/open-account/company/page.tsx)",
       "Bash(git reset:*)",
       "Bash(python3 -m json.tool)",
-      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run build)"
+      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run build)",
+      "Bash(unzip -p /tmp/azlogs.zip)",
+      "Bash(python3 -c \":*)"
     ],
     "deny": [],
     "ask": []

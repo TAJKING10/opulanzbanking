@@ -35,7 +35,8 @@ Copy-Item $STANDALONE_SRC $DEPLOY_DIR -Recurse -Force
 Write-Host "  Copying .next/static..." -ForegroundColor Gray
 $staticDst = "$DEPLOY_DIR\.next\static"
 if (-not (Test-Path $staticDst)) { New-Item -ItemType Directory -Path $staticDst | Out-Null }
-Copy-Item "$FRONTEND_PATH\.next\static" $staticDst -Recurse -Force
+# Use \* to copy CONTENTS of static/, not the folder itself (avoids nested static/static/)
+Copy-Item "$FRONTEND_PATH\.next\static\*" $staticDst -Recurse -Force
 
 # Copy public folder
 Write-Host "  Copying public..." -ForegroundColor Gray
@@ -43,13 +44,26 @@ Copy-Item "$FRONTEND_PATH\public" "$DEPLOY_DIR\public" -Recurse -Force
 
 Write-Host "Files assembled." -ForegroundColor Green
 
-# ── STEP 3: Zip ───────────────────────────────────────────────
+# ── STEP 3: Zip (with forward slashes for Linux compatibility) ─
 Write-Host "`nStep 3: Creating zip..." -ForegroundColor Cyan
 if (Test-Path $ZIP_PATH) { Remove-Item $ZIP_PATH }
+Add-Type -Assembly "System.IO.Compression"
 Add-Type -Assembly "System.IO.Compression.FileSystem"
-[System.IO.Compression.ZipFile]::CreateFromDirectory($DEPLOY_DIR, $ZIP_PATH)
+$zipStream = [System.IO.File]::Create($ZIP_PATH)
+$archive = New-Object System.IO.Compression.ZipArchive($zipStream, [System.IO.Compression.ZipArchiveMode]::Create)
+Get-ChildItem -Path $DEPLOY_DIR -Recurse -File | ForEach-Object {
+    $relativePath = $_.FullName.Substring($DEPLOY_DIR.Length + 1).Replace('\', '/')
+    $entry = $archive.CreateEntry($relativePath, [System.IO.Compression.CompressionLevel]::Fastest)
+    $entryStream = $entry.Open()
+    $fileStream = [System.IO.File]::OpenRead($_.FullName)
+    $fileStream.CopyTo($entryStream)
+    $fileStream.Close()
+    $entryStream.Close()
+}
+$archive.Dispose()
+$zipStream.Close()
 $zipMB = [math]::Round((Get-Item $ZIP_PATH).Length / 1MB, 0)
-Write-Host "Zip created: $zipMB MB" -ForegroundColor Green
+Write-Host "Zip created: $zipMB MB (forward-slash paths)" -ForegroundColor Green
 Remove-Item $DEPLOY_DIR -Recurse -Force
 
 # ── STEP 4: Configure + Upload ────────────────────────────────
@@ -74,11 +88,7 @@ Write-Host "  Setting startup command (node server.js)..." -ForegroundColor Gray
 $webBody = @{ properties = @{ appCommandLine = "node server.js" } } | ConvertTo-Json
 Invoke-RestMethod -Uri "$baseUrl/config/web?api-version=2022-03-01" -Method Patch -Headers $mgmtHeaders -Body $webBody | Out-Null
 
-# Step 4c: Restart to apply settings
-Write-Host "  Restarting app..." -ForegroundColor Gray
-Invoke-RestMethod -Uri "$baseUrl/restart?api-version=2022-03-01" -Method Post -Headers $mgmtHeaders | Out-Null
-Write-Host "  Waiting 20s..." -ForegroundColor Gray
-Start-Sleep -Seconds 20
+# (no pre-deploy restart — it kills the Kudu SCM container mid-upload)
 
 # Step 4d: Get Kudu credentials and upload
 Write-Host "`nStep 4d: Getting Kudu publishing credentials..." -ForegroundColor Cyan

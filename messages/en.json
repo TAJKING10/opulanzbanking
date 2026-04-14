@@ -713,7 +713,7 @@
       "instagram": "Instagram"
     },
     "description": "The All-in-One Financial Platform for Businesses. Member of the Advensys Luxembourg S.A. Group, with over 19 years of experience in comprehensive business solutions in Europe.",
-    "copyright": "Â© {year} Opulanz. All rights reserved.",
+    "copyright": "© {year} Opulanz. All rights reserved.",
     "regulated": "Regulated by ACPR & AMF (FR)"
   },
   "home": {
@@ -2578,6 +2578,109 @@
           "description": "You will be redirected to {partner} to complete your account opening."
         }
       }
+    },
+    "hero": {
+      "title": "Life Insurance Solutions",
+      "subtitle": "Protect what matters most. Expert guidance to find the right coverage for you and your family.",
+      "primaryCta": "Book a Consultation",
+      "secondaryCta": "Explore Plans"
+    },
+    "overview": {
+      "overline": "WHY LIFE INSURANCE",
+      "title": "Peace of mind for you and your loved ones",
+      "description": "Life insurance is one of the most important financial decisions you will make. Our independent advisors compare plans from leading providers to find the perfect coverage tailored to your needs.",
+      "badges": {
+        "unbiased": "Independent Advice",
+        "multipleProviders": "Multiple Providers",
+        "familyProtection": "Family Protection"
+      },
+      "whyChoose": "Why choose Opulanz?",
+      "benefits": {
+        "1": "Access to leading European insurance providers",
+        "2": "Personalised coverage recommendations based on your profile",
+        "3": "Transparent pricing with no hidden fees",
+        "4": "Dedicated advisor throughout your entire journey",
+        "5": "Fast approval process — coverage in days, not weeks"
+      }
+    },
+    "products": {
+      "overline": "OUR PLANS",
+      "title": "Find the right life insurance plan",
+      "description": "We offer a full range of life insurance products to match every stage of life and every financial goal.",
+      "termLife": {
+        "title": "Term Life Insurance",
+        "description": "Affordable coverage for a fixed period. Ideal for protecting your family during key life stages such as raising children or paying off a mortgage."
+      },
+      "wholeLife": {
+        "title": "Whole Life Insurance",
+        "description": "Permanent coverage that lasts a lifetime, combined with a cash value component that grows over time and can be accessed as a financial asset."
+      },
+      "universalLife": {
+        "title": "Universal Life Insurance",
+        "description": "Flexible permanent coverage with adjustable premiums and death benefits. Adapts to your changing financial circumstances."
+      },
+      "variableLife": {
+        "title": "Variable Life Insurance",
+        "description": "Investment-linked coverage that lets you grow your policy cash value through market investments while maintaining life protection."
+      },
+      "groupLife": {
+        "title": "Group Life Insurance",
+        "description": "Cost-effective coverage for businesses looking to protect their employees and strengthen their benefits package."
+      }
+    },
+    "process": {
+      "overline": "HOW IT WORKS",
+      "title": "Your coverage in 4 simple steps",
+      "steps": {
+        "1": {
+          "title": "Book a Consultation",
+          "description": "Schedule a free consultation with one of our certified insurance advisors at a time that suits you."
+        },
+        "2": {
+          "title": "Needs Assessment",
+          "description": "We analyse your financial situation, family needs, and goals to identify the most suitable coverage options."
+        },
+        "3": {
+          "title": "Compare Plans",
+          "description": "We present tailored proposals from multiple top-rated insurers with clear comparisons and transparent pricing."
+        },
+        "4": {
+          "title": "Get Covered",
+          "description": "Choose your plan, complete the application, and receive your policy documents. Coverage begins immediately."
+        }
+      }
+    },
+    "features": {
+      "overline": "OUR ADVANTAGES",
+      "title": "The Opulanz insurance difference",
+      "description": "We combine expert advice, market access, and dedicated support to deliver the best insurance outcomes for our clients.",
+      "expertBrokers": {
+        "title": "Certified Advisors",
+        "description": "All our advisors hold professional insurance qualifications and are regulated by the relevant authorities in France and Luxembourg."
+      },
+      "needsAnalysis": {
+        "title": "In-Depth Analysis",
+        "description": "We take the time to understand your complete financial picture before recommending any coverage."
+      },
+      "wealthBuilding": {
+        "title": "Wealth Building",
+        "description": "Many of our insurance products include savings and investment components to help you build long-term wealth."
+      },
+      "ongoingSupport": {
+        "title": "Ongoing Support",
+        "description": "Your advisor remains your point of contact for policy reviews, claims assistance, and life changes that affect your coverage."
+      }
+    },
+    "cta": {
+      "title": "Ready to protect your family?",
+      "description": "Book a free consultation today and let our experts find the right plan for you.",
+      "benefits": {
+        "consultation": "Free initial consultation",
+        "compare": "Compare multiple providers",
+        "guidance": "Expert guidance throughout"
+      },
+      "primaryButton": "Book a Free Consultation",
+      "secondaryButton": "View All Plans"
     }
   },
   "invoicingAccounting": {

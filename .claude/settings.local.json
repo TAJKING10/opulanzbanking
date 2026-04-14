@@ -111,7 +111,8 @@
       "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run build)",
       "Bash(unzip -p /tmp/azlogs.zip)",
       "Bash(python3 -c \":*)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(python -c \":*)"
     ],
     "deny": [],
     "ask": []

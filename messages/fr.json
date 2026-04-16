@@ -2409,10 +2409,117 @@
     }
   },
   "supportPage": {
-    "title": "Support",
-    "subtitle": "Comment pouvons-nous vous aider ?",
-    "contact": "Contactez-nous",
-    "faq": "FAQ"
+    "hero": {
+      "title": "Comment pouvons-nous vous aider ?",
+      "subtitle": "Notre équipe d'assistance est là pour vous. Contactez-nous par téléphone, e-mail ou chat en direct."
+    },
+    "contactMethods": {
+      "title": "Nous contacter",
+      "description": "Choisissez le canal d'assistance qui vous convient le mieux.",
+      "phone": {
+        "title": "Assistance téléphonique",
+        "description": "Parlez directement avec l'un de nos spécialistes du support.",
+        "number": "+352 28 79 76 26",
+        "hours": "Lun–Ven, 9h00–18h00 CET"
+      },
+      "email": {
+        "title": "Assistance par e-mail",
+        "description": "Envoyez-nous un message et nous vous répondrons rapidement.",
+        "address": "support@opulanz.com",
+        "response": "Réponse sous 24 heures"
+      },
+      "chat": {
+        "title": "Chat en direct",
+        "description": "Discutez avec notre équipe en temps réel pour une assistance immédiate.",
+        "button": "Démarrer le chat",
+        "availability": "Disponible pendant les heures de bureau"
+      }
+    },
+    "contactForm": {
+      "title": "Envoyez-nous un message",
+      "description": "Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "email": "Adresse e-mail",
+      "phone": "Numéro de téléphone (optionnel)",
+      "subject": "Sujet",
+      "selectSubject": "Sélectionner un sujet",
+      "subjects": {
+        "account": "Questions sur le compte",
+        "technical": "Support technique",
+        "company": "Création de société",
+        "billing": "Facturation et paiements",
+        "other": "Autre"
+      },
+      "message": "Message",
+      "messagePlaceholder": "Décrivez votre question ou problème en détail...",
+      "submit": "Envoyer le message"
+    },
+    "faq": {
+      "title": "Questions fréquemment posées",
+      "description": "Réponses rapides aux questions les plus courantes.",
+      "questions": {
+        "openAccount": {
+          "question": "Combien de temps faut-il pour ouvrir un compte ?",
+          "answer": "Les comptes individuels sont généralement approuvés dans les 24 à 48 heures. Les comptes professionnels prennent 3 à 5 jours ouvrables selon la complexité du dossier."
+        },
+        "documents": {
+          "question": "Quels documents sont nécessaires ?",
+          "answer": "Pour les particuliers : une pièce d'identité valide, un justificatif de domicile et un selfie. Pour les entreprises : les documents d'immatriculation, la déclaration UBO et les pièces d'identité des dirigeants."
+        },
+        "fees": {
+          "question": "Quels sont les frais mensuels ?",
+          "answer": "Les comptes individuels débutent à 10 €/mois. Les comptes professionnels débutent à 25 €/mois. Les grilles tarifaires complètes sont disponibles dans les paramètres de votre compte."
+        },
+        "currencies": {
+          "question": "Quelles devises sont prises en charge ?",
+          "answer": "Nous prenons en charge l'EUR, l'USD, la GBP et le CHF. Chaque compte est associé à un IBAN multi-devises dédié pour des paiements internationaux simplifiés."
+        },
+        "contact": {
+          "question": "Comment contacter mon gestionnaire de compte ?",
+          "answer": "Une fois votre compte approuvé, un gestionnaire de compte dédié vous sera attribué, joignable par e-mail ou téléphone pendant les heures de bureau."
+        }
+      }
+    },
+    "resources": {
+      "title": "Ressources supplémentaires",
+      "description": "Tout ce dont vous avez besoin pour tirer le meilleur parti d'Opulanz.",
+      "documentation": {
+        "title": "Documentation",
+        "description": "Guides détaillés et références API pour vous aider à intégrer et utiliser notre plateforme.",
+        "button": "Parcourir la documentation"
+      },
+      "helpCenter": {
+        "title": "Centre d'aide",
+        "description": "Articles et tutoriels pas à pas couvrant toutes les fonctionnalités et services.",
+        "button": "Visiter le centre d'aide"
+      },
+      "status": {
+        "title": "État des services",
+        "description": "Consultez l'état en temps réel de tous les services Opulanz et les maintenances planifiées.",
+        "button": "Voir l'état"
+      }
+    },
+    "offices": {
+      "title": "Nos bureaux",
+      "description": "Rendez-nous visite au Luxembourg ou en France.",
+      "luxembourg": {
+        "title": "Luxembourg",
+        "address": "1 Avenue de la Liberté",
+        "city": "L-1931 Luxembourg",
+        "country": "Luxembourg",
+        "phone": "Téléphone",
+        "email": "E-mail"
+      },
+      "france": {
+        "title": "France",
+        "address": "66 Avenue des Champs-Élysées",
+        "city": "75008 Paris",
+        "country": "France",
+        "phone": "Téléphone",
+        "email": "E-mail"
+      }
+    }
   },
   "accountOpening": {
     "start": {

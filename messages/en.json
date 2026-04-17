@@ -590,13 +590,203 @@
         "information": "Investment Profile",
         "review": "Review",
         "complete": "Confirmation"
+      },
+      "progress": {
+        "step": "Step",
+        "of": "of",
+        "complete": "complete"
       }
     },
     "clientType": {
       "title": "Client Type",
       "contact": {
         "label": "Contact",
-        "placeholder": "Your contact information"
+        "placeholder": "Your contact information",
+        "email": "Email Address",
+        "emailPlaceholder": "Enter your email address",
+        "mobile": "Mobile Number",
+        "mobilePlaceholder": "Enter your mobile number",
+        "language": "Preferred Language"
+      },
+      "welcome": "Welcome to Investment Advisory",
+      "subtitle": "Complete our onboarding process to access personalised investment advisory services.",
+      "question": "Please select your investor type:",
+      "individual": {
+        "title": "Individual Investor",
+        "description": "For private individuals seeking personal investment advice and portfolio management."
+      },
+      "company": {
+        "title": "Corporate Investor",
+        "description": "For companies and institutional investors seeking professional investment advisory services."
+      }
+    },
+    "company": {
+      "title": "Company Information",
+      "subtitle": "Please provide detailed information about your company to proceed with the KYC verification.",
+      "sectionTitles": {
+        "companyIdentity": "Company Identity",
+        "representatives": "Legal Representatives & Beneficial Owners",
+        "financial": "Financial Profile",
+        "origin": "Origin of Funds",
+        "investment": "Investment Profile",
+        "mission": "Investment Mission",
+        "consents": "Consents & Declarations"
+      },
+      "subsections": {
+        "registeredAddress": "Registered Address",
+        "mainContact": "Main Contact / Legal Representative",
+        "ubo": "Ultimate Beneficial Owner (UBO)",
+        "fatcaCrs": "FATCA / CRS Declaration",
+        "investmentKnowledge": "Investment Knowledge & Experience",
+        "investmentObjectives": "Investment Objectives"
+      },
+      "fields": {
+        "legalName": "Legal Company Name",
+        "tradingName": "Trading Name",
+        "legalForm": "Legal Form",
+        "dateOfIncorporation": "Date of Incorporation",
+        "registrationNumber": "Registration Number",
+        "registrationCountry": "Country of Registration",
+        "taxIdentificationNumber": "Tax Identification Number",
+        "numberOfEmployees": "Number of Employees",
+        "industrySector": "Industry / Sector",
+        "website": "Website",
+        "addressLine1": "Address Line 1",
+        "addressLine2": "Address Line 2",
+        "city": "City",
+        "postalCode": "Postal Code",
+        "country": "Country",
+        "title": "Title",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "position": "Position / Function",
+        "dateOfBirth": "Date of Birth",
+        "nationality": "Nationality",
+        "email": "Email Address",
+        "mobile": "Mobile Number",
+        "uboFullName": "UBO Full Name",
+        "ownershipPercentage": "Ownership Percentage (%)",
+        "taxResidentCountries": "Tax Resident Countries",
+        "annualRevenue": "Annual Revenue (â‚¬)",
+        "totalAssets": "Total Assets (â‚¬)",
+        "primarySourceOfRevenue": "Primary Source of Revenue",
+        "primaryOriginOfFunds": "Primary Origin of Funds",
+        "additionalDetails": "Additional Details",
+        "investmentExperience": "Investment Experience",
+        "riskTolerance": "Risk Tolerance",
+        "investmentHorizon": "Investment Horizon",
+        "primaryObjective": "Primary Investment Objective",
+        "expectedAnnualReturn": "Expected Annual Return (%)",
+        "maxAcceptableLoss": "Maximum Acceptable Loss (%)",
+        "typeOfService": "Type of Service",
+        "initialInvestmentAmount": "Initial Investment Amount (â‚¬)"
+      },
+      "placeholders": {
+        "tradingName": "Enter trading name if different from legal name",
+        "registrationNumber": "Enter company registration number",
+        "industrySector": "e.g. Technology, Finance, Real Estate",
+        "website": "https://www.yourcompany.com",
+        "position": "e.g. CEO, Director, CFO",
+        "taxResidentCountries": "e.g. France, Luxembourg",
+        "annualRevenue": "Enter annual revenue in EUR",
+        "originDetails": "Provide additional details about the origin of funds",
+        "expectedReturn": "e.g. 8",
+        "maxLoss": "e.g. 20",
+        "initialInvestment": "Minimum â‚¬100,000"
+      },
+      "options": {
+        "legalForm": {
+          "select": "Select legal form",
+          "sarl": "SARL",
+          "sas": "SAS",
+          "sa": "SA",
+          "sci": "SCI",
+          "gmbh": "GmbH",
+          "ltd": "Ltd",
+          "llc": "LLC",
+          "other": "Other"
+        },
+        "title": {
+          "select": "Select title",
+          "mr": "Mr.",
+          "mrs": "Mrs.",
+          "ms": "Ms.",
+          "dr": "Dr."
+        },
+        "sourceOfRevenue": {
+          "select": "Select primary source",
+          "products": "Products Sales",
+          "services": "Services Revenue",
+          "trading": "Trading",
+          "investments": "Investment Returns",
+          "realEstate": "Real Estate",
+          "other": "Other"
+        },
+        "originOfFunds": {
+          "select": "Select origin",
+          "retainedEarnings": "Retained Earnings",
+          "shareholderContributions": "Shareholder Contributions",
+          "businessOperations": "Business Operations",
+          "saleOfAssets": "Sale of Assets",
+          "financing": "External Financing",
+          "other": "Other"
+        },
+        "investmentExperience": {
+          "beginner": "Beginner (< 2 years)",
+          "intermediate": "Intermediate (2â€“5 years)",
+          "advanced": "Advanced (5â€“10 years)",
+          "expert": "Expert (10+ years)"
+        },
+        "riskTolerance": {
+          "conservative": "Conservative",
+          "moderate": "Moderate",
+          "aggressive": "Aggressive"
+        },
+        "investmentHorizon": {
+          "select": "Select horizon",
+          "short": "Short-term (< 3 years)",
+          "medium": "Medium-term (3â€“7 years)",
+          "long": "Long-term (7+ years)"
+        },
+        "investmentObjective": {
+          "select": "Select objective",
+          "capitalPreservation": "Capital Preservation",
+          "incomeGeneration": "Income Generation",
+          "capitalGrowth": "Capital Growth",
+          "balanced": "Balanced Growth & Income"
+        },
+        "missionType": {
+          "advisory": "Advisory (you retain decision-making)",
+          "management": "Discretionary Management (we manage on your behalf)"
+        }
+      },
+      "helpers": {
+        "uboDescription": "A UBO is any individual who directly or indirectly owns or controls 25% or more of the company.",
+        "usPersonCheckbox": "I confirm this company is not a US person under FATCA regulations.",
+        "advisoryHelper": "In advisory mode, we provide recommendations but you retain full decision-making authority over your portfolio.",
+        "managementHelper": "In discretionary management mode, we manage your portfolio on your behalf within agreed parameters.",
+        "minimumInvestment": "Minimum initial investment: â‚¬100,000"
+      },
+      "consents": {
+        "dataProcessing": {
+          "label": "Data Processing Consent",
+          "text": "I consent to the collection, processing, and storage of my personal and company data for KYC/AML compliance, account management, and regulatory reporting purposes."
+        },
+        "kycCompliance": {
+          "label": "KYC Compliance",
+          "text": "I confirm that all information provided is accurate and complete. I understand that any false declaration may result in the termination of services."
+        },
+        "electronicSignature": {
+          "label": "Electronic Signature",
+          "text": "I agree to the use of electronic signatures and digital document submission for this application."
+        },
+        "marketingCommunications": {
+          "label": "Marketing Communications",
+          "text": "I agree to receive updates about Opulanz investment products, market insights, and promotional offers."
+        }
+      },
+      "navigation": {
+        "continueToReview": "Continue to Review"
       }
     }
   },
@@ -2302,7 +2492,9 @@
         "street": "Street Address",
         "city": "City",
         "postalCode": "Postal Code",
-        "country": "Country"
+        "country": "Country",
+        "postal": "Postal Code",
+        "role": "Role / Title"
       },
       "placeholders": {
         "firstName": "John",
@@ -2312,8 +2504,11 @@
         "street": "1 Rue de la Gare",
         "city": "Luxembourg",
         "postalCode": "L-1611",
-        "country": "Select country"
-      }
+        "country": "Select country",
+        "postal": "L-1234",
+        "role": "e.g. CEO, CFO"
+      },
+      "operatingAddress": "Operating Address"
     },
     "activityScale": {
       "title": "Business Activity",
@@ -2411,7 +2606,8 @@
   "accountOpening": {
     "start": {
       "title": "Open an Account",
-      "subtitle": "Choose the account type that suits you"
+      "subtitle": "Choose the account type that suits you",
+      "loading": "Loading..."
     },
     "individual": {
       "title": "Individual Account",
@@ -2443,7 +2639,26 @@
         "consentKYC": "I consent to the collection and processing of my personal data for KYC/AML compliance purposes",
         "consentTerms": "I have read and agree to the",
         "termsLink": "Terms & Conditions",
-        "privacyLink": "Privacy Policy"
+        "privacyLink": "Privacy Policy",
+        "documentVerification": "Document Verification",
+        "documentDescription": "Please upload clear, legible copies of the following documents."
+      },
+      "approved": {
+        "message": "Congratulations! Your individual account application has been approved. Your IBAN is ready.",
+        "nextSteps": {
+          "mobileApp": "Download the Opulanz mobile app to manage your account on the go.",
+          "security": "Set up two-factor authentication to secure your account.",
+          "debitCard": "Your debit card will be mailed to your registered address within 5-7 business days.",
+          "fundAccount": "Fund your account via bank transfer to start transacting."
+        },
+        "buttons": {
+          "dashboard": "Go to Dashboard",
+          "downloadApp": "Download App",
+          "startNew": "Start New Application"
+        }
+      },
+      "submitted": {
+        "message": "Your application has been submitted and is under review. We will notify you by email once a decision has been made."
       }
     },
     "company": {
@@ -2452,20 +2667,346 @@
       "description": "Complete the form below to open your company account",
       "form": {
         "companyInfo": "Company Information"
+      },
+      "submitted": {
+        "message": "Your application is under review. You will receive a decision within 2â€“3 business days."
+      },
+      "approved": {
+        "message": "Congratulations! Your business account has been approved. Your IBAN is ready.",
+        "nextSteps": {
+          "multiUser": "Invite team members and set up multi-user access.",
+          "accounting": "Connect your accounting and invoicing tools.",
+          "corporateCards": "Order corporate cards for your team.",
+          "fundAccount": "Fund your account to start transacting."
+        },
+        "buttons": {
+          "dashboard": "Go to Dashboard",
+          "downloadApp": "Download App",
+          "startNew": "Start a New Application"
+        }
       }
     },
     "warmReferral": {
       "handoff": {
         "title": "Referral Application",
-        "subtitle": "Complete your referred application"
+        "subtitle": "Complete your referred application",
+        "description": "Based on your profile, we recommend opening your account with {partner}. Opulanz will remain your point of contact throughout the process.",
+        "step1": {
+          "description": "Your profile has been matched to {partner}. Click below to proceed."
+        },
+        "step2": {
+          "description": "You will be redirected to {partner} to complete your account opening."
+        }
+      }
+    },
+    "personal": {
+      "personalFunnel": {
+        "steps": {
+          "welcome": {
+            "label": "Welcome",
+            "shortLabel": "Welcome"
+          },
+          "identity": {
+            "label": "Identity",
+            "shortLabel": "Identity"
+          },
+          "intent": {
+            "label": "Account Intent",
+            "shortLabel": "Intent"
+          },
+          "eligibility": {
+            "label": "Documents",
+            "shortLabel": "Documents"
+          },
+          "review": {
+            "label": "Review",
+            "shortLabel": "Review"
+          },
+          "submission": {
+            "label": "Submitted",
+            "shortLabel": "Done"
+          }
+        },
+        "welcome": {
+          "title": "Open Your Personal Account",
+          "subtitle": "A premium banking experience tailored for individuals across Europe.",
+          "startButton": "Start Application",
+          "disclaimer": "By continuing, you agree to our Terms & Conditions and Privacy Policy.",
+          "timeline": {
+            "title": "How long will it take?",
+            "totalTime": "Total: approximately 10 minutes",
+            "step1": {
+              "title": "Personal Details",
+              "description": "2 minutes"
+            },
+            "step2": {
+              "title": "Account Preferences",
+              "description": "2 minutes"
+            },
+            "step3": {
+              "title": "Document Upload",
+              "description": "3 minutes"
+            },
+            "step4": {
+              "title": "Review & Submit",
+              "description": "2 minutes"
+            }
+          },
+          "eligibility": {
+            "title": "Eligibility Requirements",
+            "requirement1": "Must be 18 years of age or older",
+            "requirement2": "Must be a resident of France or Luxembourg",
+            "requirement3": "Must have a valid government-issued photo ID",
+            "requirement4": "Must have a valid proof of address (utility bill, bank statement, etc.)",
+            "requirement5": "Must not be subject to financial sanctions"
+          },
+          "documents": {
+            "title": "Documents You Will Need",
+            "document1": "Valid passport or national ID card",
+            "document2": "Recent utility bill or bank statement (less than 3 months old)",
+            "document3": "Tax identification number (if applicable)",
+            "document4": "Selfie or live photo for identity verification"
+          },
+          "howItWorks": {
+            "title": "How It Works",
+            "smartMatching": {
+              "title": "Smart Matching:",
+              "description": "We match your profile to the best banking solution available."
+            },
+            "warmReferral": {
+              "title": "Warm Referral:",
+              "description": "In some cases, we may refer you to a partner bank best suited to your needs."
+            },
+            "dataSecurity": {
+              "title": "Data Security:",
+              "description": "All your data is encrypted and stored securely in compliance with GDPR."
+            },
+            "noCommitment": {
+              "title": "No Commitment:",
+              "description": "You can withdraw your application at any time before submission."
+            }
+          },
+          "features": {
+            "title": "What You Get",
+            "feature1": "Multi-currency IBAN account",
+            "feature2": "Visa debit card",
+            "feature3": "Mobile banking app",
+            "feature4": "SEPA transfers",
+            "feature5": "24/7 online access",
+            "feature6": "Dedicated account manager"
+          }
+        },
+        "identity": {
+          "title": "Your Identity",
+          "subtitle": "Please provide your personal details as they appear on your official documents.",
+          "required": "*",
+          "firstName": "First Name",
+          "firstNamePlaceholder": "Enter your first name",
+          "lastName": "Last Name",
+          "lastNamePlaceholder": "Enter your last name",
+          "email": "Email Address",
+          "emailPlaceholder": "Enter your email address",
+          "mobile": "Mobile Number",
+          "mobilePlaceholder": "Enter your mobile number",
+          "dateOfBirth": "Date of Birth",
+          "nationality": "Nationality",
+          "nationalityPlaceholder": "Select your nationality",
+          "countryOfResidence": "Country of Residence",
+          "countryOfResidencePlaceholder": "Enter your country of residence",
+          "taxResidency": "Country of Tax Residency",
+          "taxResidencyPlaceholder": "Enter your tax residency country",
+          "taxId": "Tax Identification Number (optional)",
+          "taxIdPlaceholder": "Enter your tax ID number",
+          "errors": {
+            "firstNameRequired": "First name is required",
+            "lastNameRequired": "Last name is required",
+            "invalidEmail": "Please enter a valid email address",
+            "countryCodeRequired": "Country code is required",
+            "invalidPhone": "Please enter a valid phone number",
+            "countryRequired": "Country of residence is required",
+            "taxResidencyRequired": "Tax residency country is required",
+            "dateOfBirthRequired": "Date of birth is required",
+            "nationalityRequired": "Nationality is required"
+          }
+        },
+        "intent": {
+          "title": "Account Preferences",
+          "subtitle": "Tell us how you plan to use your account.",
+          "required": "*",
+          "accountType": "Account Type",
+          "currentAccount": "Current Account",
+          "privateBanking": "Private Banking",
+          "jurisdictions": "Preferred Jurisdictions",
+          "currencies": "Preferred Currencies",
+          "estimatedMonthlyIncoming": "Estimated Monthly Incoming",
+          "sourceOfFunds": "Source of Funds",
+          "sourceOfFundsPlaceholder": "Select your primary source of funds",
+          "sourceOfFundsDetails": "Source of Funds Details",
+          "sourceOfFundsDetailsPlaceholder": "Please describe your source of funds in more detail",
+          "pepLabel": "Politically Exposed Person (PEP) Declaration",
+          "pepCheckbox": "I confirm that I am not a Politically Exposed Person (PEP) or a close associate of a PEP.",
+          "sourceOptions": {
+            "salary": "Salary / Employment Income",
+            "dividends": "Dividends",
+            "businessIncome": "Business Income",
+            "assetSale": "Asset Sale",
+            "savings": "Savings",
+            "other": "Other"
+          }
+        },
+        "eligibility": {
+          "title": "Document Upload",
+          "subtitle": "Please upload the required documents for your application.",
+          "validId": "Valid Government-Issued Photo ID",
+          "validIdDescription": "Passport or national identity card (both sides if applicable).",
+          "proofOfAddress": "Proof of Address",
+          "proofOfAddressDescription": "Recent utility bill, bank statement, or official letter (less than 3 months old).",
+          "taxIdDocument": "Tax Identification Document (optional)",
+          "taxIdDocumentDescription": "Official document showing your tax identification number.",
+          "uploadId": "Upload ID Document",
+          "uploadProof": "Upload Proof of Address",
+          "uploadTaxId": "Upload Tax ID Document",
+          "uploaded": "Uploaded"
+        },
+        "review": {
+          "title": "Review Your Application",
+          "subtitle": "Please review your information before submitting.",
+          "summaryTitle": "Application Summary",
+          "name": "Full Name",
+          "email": "Email Address",
+          "mobile": "Mobile Number",
+          "accountType": "Account Type",
+          "preferredJurisdictions": "Preferred Jurisdictions",
+          "dataProcessingConsent": "I consent to the processing of my personal data for account opening and KYC/AML compliance purposes.",
+          "dataSharingConsent": "I consent to the sharing of my data with our banking partners solely for the purpose of account provisioning.",
+          "marketingOptIn": "I would like to receive updates about Opulanz products, services, and promotions. (Optional)"
+        },
+        "submission": {
+          "title": "Application Submitted!",
+          "message": "Thank you for submitting your application. Our team will review your documents and get back to you within 2-3 business days.",
+          "applicationNumberLabel": "Application Reference Number",
+          "saveNumberMessage": "Please save this reference number for your records.",
+          "nextStepsTitle": "What Happens Next?",
+          "nextStep1": "Our compliance team will verify your identity documents.",
+          "nextStep2": "You will receive an email with the outcome of your application.",
+          "nextStep3": "Once approved, your IBAN will be generated and sent to your email.",
+          "backToHomepage": "Back to Homepage"
+        }
       }
     }
   },
   "supportPage": {
-    "title": "Support",
-    "subtitle": "How can we help you?",
-    "contact": "Contact Us",
-    "faq": "FAQ"
+    "hero": {
+      "title": "How Can We Help You?",
+      "subtitle": "Our support team is here for you. Reach out by phone, email, or live chat."
+    },
+    "contactMethods": {
+      "title": "Contact Us",
+      "description": "Choose the support channel that works best for you.",
+      "phone": {
+        "title": "Phone Support",
+        "description": "Speak directly with one of our support specialists.",
+        "number": "+352 28 79 76 26",
+        "hours": "Monâ€“Fri, 9:00â€“18:00 CET"
+      },
+      "email": {
+        "title": "Email Support",
+        "description": "Send us a message and we'll get back to you promptly.",
+        "address": "support@opulanz.com",
+        "response": "Response within 24 hours"
+      },
+      "chat": {
+        "title": "Live Chat",
+        "description": "Chat with our team in real time for immediate assistance.",
+        "button": "Start Chat",
+        "availability": "Available during business hours"
+      }
+    },
+    "contactForm": {
+      "title": "Send Us a Message",
+      "description": "Fill in the form below and we will respond as soon as possible.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone Number (optional)",
+      "subject": "Subject",
+      "selectSubject": "Select a subject",
+      "subjects": {
+        "account": "Account Questions",
+        "technical": "Technical Support",
+        "company": "Company Formation",
+        "billing": "Billing & Payments",
+        "other": "Other"
+      },
+      "message": "Message",
+      "messagePlaceholder": "Describe your question or issue in detail...",
+      "submit": "Send Message"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "description": "Quick answers to the most common questions.",
+      "questions": {
+        "openAccount": {
+          "question": "How long does it take to open an account?",
+          "answer": "Individual accounts are typically approved within 24â€“48 hours. Business accounts take 3â€“5 business days depending on the complexity of the application."
+        },
+        "documents": {
+          "question": "What documents do I need?",
+          "answer": "For individuals: a valid government-issued ID, proof of address, and a selfie. For businesses: company registration documents, UBO declaration, and director IDs."
+        },
+        "fees": {
+          "question": "What are the monthly fees?",
+          "answer": "Individual accounts start at â‚¬10/month. Business accounts start at â‚¬25/month. Full fee schedules are available in your account settings."
+        },
+        "currencies": {
+          "question": "Which currencies are supported?",
+          "answer": "We support EUR, USD, GBP, and CHF. Each account comes with a dedicated multi-currency IBAN for seamless international payments."
+        },
+        "contact": {
+          "question": "How do I contact my account manager?",
+          "answer": "Once your account is approved, you will be assigned a dedicated account manager reachable by email or phone during business hours."
+        }
+      }
+    },
+    "resources": {
+      "title": "Additional Resources",
+      "description": "Everything you need to get the most out of Opulanz.",
+      "documentation": {
+        "title": "Documentation",
+        "description": "Detailed guides and API references to help you integrate and use our platform.",
+        "button": "Browse Docs"
+      },
+      "helpCenter": {
+        "title": "Help Center",
+        "description": "Step-by-step articles and tutorials covering all features and services.",
+        "button": "Visit Help Center"
+      },
+      "status": {
+        "title": "Service Status",
+        "description": "Check the real-time status of all Opulanz services and scheduled maintenance.",
+        "button": "View Status"
+      }
+    },
+    "offices": {
+      "title": "Our Offices",
+      "description": "Visit us in Luxembourg or France.",
+      "luxembourg": {
+        "title": "Luxembourg",
+        "address": "1 Avenue de la LibertÃ©",
+        "city": "L-1931 Luxembourg",
+        "country": "Luxembourg",
+        "phone": "Phone",
+        "email": "Email"
+      },
+      "france": {
+        "title": "France",
+        "address": "66 Avenue des Champs-Ã‰lysÃ©es",
+        "city": "75008 Paris",
+        "country": "France",
+        "phone": "Phone",
+        "email": "Email"
+      }
+    }
   },
   "lifeInsurance": {
     "booking": {
@@ -2601,7 +3142,16 @@
         "3": "Transparent pricing with no hidden fees",
         "4": "Dedicated advisor throughout your entire journey",
         "5": "Fast approval process — coverage in days, not weeks"
-      }
+      },
+      "badge1": "Unbiased Advice",
+      "badge2": "Multiple Providers",
+      "badge3": "Family Protection",
+      "whyBrokerTitle": "Why Choose a Broker?",
+      "benefit1": "Independent broker representing your interests",
+      "benefit2": "Access to policies from multiple leading insurance providers",
+      "benefit3": "Personalized needs analysis and coverage recommendations",
+      "benefit4": "Expert guidance on advanced features and estate planning",
+      "benefit5": "Ongoing policy management and support"
     },
     "products": {
       "overline": "OUR PLANS",
@@ -2626,6 +3176,26 @@
       "groupLife": {
         "title": "Group Life Insurance",
         "description": "Cost-effective coverage for businesses looking to protect their employees and strengthen their benefits package."
+      },
+      "term": {
+        "title": "Term Life Insurance",
+        "description": "10, 20, or 30-year term options with level premiums for affordable protection during your most critical years."
+      },
+      "whole": {
+        "title": "Whole Life Insurance",
+        "description": "Lifetime coverage with cash value accumulation that provides permanent protection and financial growth."
+      },
+      "universal": {
+        "title": "Universal Life Insurance",
+        "description": "Flexible premiums and adjustable death benefits that adapt to your changing financial situation."
+      },
+      "variable": {
+        "title": "Variable Life Insurance",
+        "description": "Investment-linked cash value growth that allows you to potentially increase your policy value over time."
+      },
+      "group": {
+        "title": "Group Life Insurance",
+        "description": "Employer-sponsored life insurance plans that provide coverage at competitive group rates."
       }
     },
     "process": {
@@ -2669,6 +3239,22 @@
       "ongoingSupport": {
         "title": "Ongoing Support",
         "description": "Your advisor remains your point of contact for policy reviews, claims assistance, and life changes that affect your coverage."
+      },
+      "brokers": {
+        "title": "Expert Brokers",
+        "description": "Specialized knowledge to connect you with the right insurance products"
+      },
+      "analysis": {
+        "title": "Needs Analysis",
+        "description": "Personalized assessment to find the perfect coverage from multiple providers"
+      },
+      "wealth": {
+        "title": "Wealth Building",
+        "description": "Guidance on tax-advantaged strategies for long-term financial growth"
+      },
+      "support": {
+        "title": "Ongoing Support",
+        "description": "Continuous policy management and brokerage support"
       }
     },
     "cta": {
@@ -2680,7 +3266,31 @@
         "guidance": "Expert guidance throughout"
       },
       "primaryButton": "Book a Free Consultation",
-      "secondaryButton": "View All Plans"
+      "secondaryButton": "View All Plans",
+      "subtitle": "Get started with a personalized consultation. We will help you compare options from leading insurance providers to find the solution that best fits your family needs and financial goals.",
+      "badge1": "Free Consultation",
+      "badge2": "Compare Multiple Providers",
+      "badge3": "Expert Guidance"
+    },
+    "howItWorks": {
+      "overline": "Simple Process",
+      "title": "How We Help You Find the Right Coverage",
+      "step1": {
+        "title": "Free Consultation",
+        "description": "Schedule a no-obligation meeting to discuss your needs"
+      },
+      "step2": {
+        "title": "Compare Options",
+        "description": "We present policies from multiple top providers"
+      },
+      "step3": {
+        "title": "Expert Guidance",
+        "description": "Get unbiased recommendations tailored to you"
+      },
+      "step4": {
+        "title": "Ongoing Support",
+        "description": "Continuous assistance throughout your policy lifecycle"
+      }
     }
   },
   "invoicingAccounting": {

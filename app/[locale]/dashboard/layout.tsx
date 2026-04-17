@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname, useParams } from "next/navigation";
+import { usePathname, useParams, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Wallet,
@@ -27,7 +27,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, clearAuth } from "@/lib/auth";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -53,8 +53,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const params = useParams();
   const locale = params.locale as string;
+  const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
+
+  function handleSignOut() {
+    clearAuth();
+    router.push(`/${locale}/login`);
+  }
 
   const user = getCurrentUser();
   const userEmail = user?.email || '';
@@ -293,14 +299,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       </div>
 
                       <div className="border-t border-gray-100 pt-2">
-                        <Link
-                          href={`/${locale}/login`}
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50"
-                          onClick={() => setIsProfileOpen(false)}
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50"
                         >
                           <LogOut className="h-4 w-4" />
                           Sign Out
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </>

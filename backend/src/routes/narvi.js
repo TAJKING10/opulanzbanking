@@ -67,10 +67,20 @@ router.get('/transactions/:pid', async (req, res) => {
 });
 
 // POST /api/narvi/transactions
-// Body: { amount, currency, recipient_iban, recipient_name, reference }
+// Accepts both snake_case (narvi native) and camelCase (frontend) field names
 router.post('/transactions', async (req, res) => {
-  const result = await narvi.createTransactionWithVop(req.body, {
-    autoAcceptCloseMatch: req.body.autoAcceptCloseMatch || false,
+  const body = req.body;
+  const normalized = {
+    account_pid: body.account_pid || body.accountPid || 'acc_demo_jean_eur',
+    counterparty_iban: body.counterparty_iban || body.counterpartIban || body.recipient_iban || '',
+    counterparty_name: body.counterparty_name || body.counterpartName || body.recipient_name || 'Recipient',
+    amount: body.amount,
+    currency: body.currency || 'EUR',
+    reference: body.reference || 'Transfer',
+    type: body.type || 'DEBIT',
+  };
+  const result = await narvi.createTransactionWithVop(normalized, {
+    autoAcceptCloseMatch: body.autoAcceptCloseMatch !== undefined ? body.autoAcceptCloseMatch : true,
   });
   res.status(result.success ? 201 : 502).json(result);
 });

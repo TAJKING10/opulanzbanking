@@ -842,13 +842,117 @@ router.post('/verify-totp', async (req, res) => {
 router.get('/me', requireAuth, async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, name, first_name, last_name, email, phone, account_type, kyc_status, email_verified, phone_verified FROM users WHERE id = $1',
+      'SELECT id, name, first_name, last_name, email, phone, account_type, kyc_status, email_verified, phone_verified, totp_secret FROM users WHERE id = $1',
       [req.user.userId]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-    res.json(result.rows[0]);
+    const user = result.rows[0];
+    res.json({ ...user, totp_enabled: !!user.totp_secret, totp_secret: undefined });
   } catch (err) {
     res.status(500).json({ error: 'Failed to get user' });
+  }
+});
+
+// ─── POST /api/auth/setup-totp ───────────────────────────────────────────────
+// For existing logged-in users to enable Google Authenticator.
+// Generates (or regenerates) a TOTP secret and returns the QR code.
+router.post('/setup-totp', requireAuth, async (req, res) => {
+  try {
+    const userResult = await pool.query('SELECT id, email FROM users WHERE id = $1', [req.user.userId]);
+    if (userResult.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    const user = userResult.rows[0];
+
+    const totpSecret = speakeasy.generateSecret({
+      name: `Opulanz (${user.email})`,
+      issuer: 'Opulanz Banking',
+      length: 20,
+    });
+
+    // Save secret immediately so verify-totp-enable can read it
+    await pool.query('UPDATE users SET totp_secret = $1 WHERE id = $2', [totpSecret.base32, user.id]);
+
+    const totpQrCode = await QRCode.toDataURL(totpSecret.otpauth_url);
+
+    // Short-lived token for the confirmation step
+    const tempToken = jwt.sign(
+      { userId: user.id, purpose: '2fa-enable' },
+      JWT_SECRET,
+      { expiresIn: '10m' }
+    );
+
+    res.json({
+      success: true,
+      tempToken,
+      totpQrCode,
+      totpSecret: totpSecret.base32,
+    });
+  } catch (err) {
+    console.error('setup-totp error:', err);
+    res.status(500).json({ error: 'Failed to generate 2FA setup' });
+  }
+});
+
+// ─── POST /api/auth/confirm-totp-enable ─────────────────────────────────────
+// Confirms the TOTP code after setup-totp. Returns success (secret already saved).
+router.post('/confirm-totp-enable', async (req, res) => {
+  try {
+    const { tempToken, code } = req.body;
+    if (!tempToken || !code) return res.status(400).json({ error: 'tempToken and code are required' });
+
+    let payload;
+    try {
+      payload = jwt.verify(tempToken, JWT_SECRET);
+    } catch {
+      return res.status(401).json({ error: 'Setup session expired. Please start over.' });
+    }
+    if (payload.purpose !== '2fa-enable') return res.status(401).json({ error: 'Invalid setup token' });
+
+    const result = await pool.query('SELECT id, totp_secret FROM users WHERE id = $1', [payload.userId]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+
+    const user = result.rows[0];
+    const verified = speakeasy.totp.verify({
+      secret: user.totp_secret,
+      encoding: 'base32',
+      token: code,
+      window: 2,
+    });
+
+    if (!verified) return res.status(400).json({ error: 'Invalid code. Please check Google Authenticator and try again.' });
+
+    res.json({ success: true, message: 'Google Authenticator enabled successfully.' });
+  } catch (err) {
+    console.error('confirm-totp-enable error:', err);
+    res.status(500).json({ error: 'Verification failed' });
+  }
+});
+
+// ─── POST /api/auth/disable-totp ────────────────────────────────────────────
+// Disables TOTP for a logged-in user (requires current TOTP code to confirm).
+router.post('/disable-totp', requireAuth, async (req, res) => {
+  try {
+    const { code } = req.body;
+    if (!code) return res.status(400).json({ error: 'TOTP code required to disable 2FA' });
+
+    const result = await pool.query('SELECT id, totp_secret FROM users WHERE id = $1', [req.user.userId]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+
+    const user = result.rows[0];
+    if (!user.totp_secret) return res.status(400).json({ error: '2FA is not enabled' });
+
+    const verified = speakeasy.totp.verify({
+      secret: user.totp_secret,
+      encoding: 'base32',
+      token: code,
+      window: 2,
+    });
+    if (!verified) return res.status(400).json({ error: 'Invalid code' });
+
+    await pool.query('UPDATE users SET totp_secret = NULL WHERE id = $1', [user.id]);
+    res.json({ success: true, message: '2FA disabled.' });
+  } catch (err) {
+    console.error('disable-totp error:', err);
+    res.status(500).json({ error: 'Failed to disable 2FA' });
   }
 });
 

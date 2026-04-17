@@ -383,6 +383,42 @@ export default function TransactionsPage() {
   const [fromCurrency, setFromCurrency] = React.useState("");
   const [toCurrency, setToCurrency] = React.useState("");
   const exportRef = React.useRef<HTMLDivElement>(null);
+  const [mockTransactions, setMockTransactions] = React.useState<Transaction[]>([]);
+
+  // Load mock transactions from localStorage (added by Send Money page)
+  React.useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("mock_transactions") || "[]");
+      const mapped: Transaction[] = stored.map((t: any) => ({
+        id: t.id || t.transactionId,
+        transactionId: t.transactionId || t.id,
+        name: t.name || "Transfer",
+        description: t.description || "Transfer",
+        date: t.date || new Date(t.rawDate).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }),
+        rawDate: new Date(t.rawDate || Date.now()),
+        amount: t.amount,
+        fee: t.fee || 0,
+        currency: t.currency || "EUR",
+        isCredit: t.isCredit || false,
+        type: (t.type as "Credit" | "Debit" | "Fee") || "Debit",
+        senderIBAN: t.senderIBAN || accountHolder.iban,
+        senderBIC: t.senderBIC || accountHolder.bic,
+        senderName: t.senderName || accountHolder.name,
+        senderAddress: t.senderAddress || "",
+        senderCity: t.senderCity || "",
+        senderZip: t.senderZip || "",
+        senderCountry: t.senderCountry || "",
+        recipientIBAN: t.recipientIBAN || "",
+        recipientBIC: t.recipientBIC || "",
+        recipientName: t.recipientName || "",
+        recipientAddress: t.recipientAddress || "",
+        recipientCity: t.recipientCity || "",
+        recipientZip: t.recipientZip || "",
+        recipientCountry: t.recipientCountry || "",
+      }));
+      setMockTransactions(mapped);
+    } catch (_) {}
+  }, []);
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
@@ -395,7 +431,7 @@ export default function TransactionsPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const transactions: Transaction[] = [
+  const seedTransactions: Transaction[] = [
     {
       id: "1",
       transactionId: "OPL6Z6KUA902JQI4",
@@ -559,6 +595,8 @@ export default function TransactionsPage() {
       recipientCountry: "France",
     },
   ];
+
+  const transactions = [...mockTransactions, ...seedTransactions];
 
   const filteredTransactions = transactions.filter((tx) => {
     if (filterType === "incoming" && !tx.isCredit) return false;

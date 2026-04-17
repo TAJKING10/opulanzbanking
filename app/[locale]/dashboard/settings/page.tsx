@@ -13,14 +13,109 @@ import {
   Calendar,
   Lock,
   Smartphone,
-  Key,
   History,
   Monitor,
   Check,
+  Loader2,
 } from "lucide-react";
+import { getAuthToken } from "@/lib/auth";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+type TotpStep = "idle" | "qr" | "verify" | "done" | "disable";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = React.useState<"profile" | "security" | "notifications" | "preferences">("profile");
+
+  // 2FA state
+  const [totpEnabled, setTotpEnabled] = React.useState<boolean | null>(null);
+  const [totpStep, setTotpStep] = React.useState<TotpStep>("idle");
+  const [totpQrCode, setTotpQrCode] = React.useState("");
+  const [totpSecret, setTotpSecret] = React.useState("");
+  const [tempToken, setTempToken] = React.useState("");
+  const [totpCode, setTotpCode] = React.useState("");
+  const [totpLoading, setTotpLoading] = React.useState(false);
+  const [totpError, setTotpError] = React.useState("");
+  const [totpSuccess, setTotpSuccess] = React.useState("");
+
+  // Fetch current 2FA status
+  React.useEffect(() => {
+    const token = getAuthToken();
+    if (!token) return;
+    fetch(`${API}/api/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
+      .then((r) => r.json())
+      .then((d) => setTotpEnabled(!!d.totp_enabled))
+      .catch(() => setTotpEnabled(false));
+  }, []);
+
+  async function handleSetupTotp() {
+    setTotpError("");
+    setTotpLoading(true);
+    try {
+      const token = getAuthToken();
+      const res = await fetch(`${API}/api/auth/setup-totp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setTotpQrCode(data.totpQrCode);
+      setTotpSecret(data.totpSecret);
+      setTempToken(data.tempToken);
+      setTotpCode("");
+      setTotpStep("qr");
+    } catch (err: any) {
+      setTotpError(err.message || "Failed to start 2FA setup");
+    } finally {
+      setTotpLoading(false);
+    }
+  }
+
+  async function handleConfirmTotp(e: React.FormEvent) {
+    e.preventDefault();
+    setTotpError("");
+    setTotpLoading(true);
+    try {
+      const res = await fetch(`${API}/api/auth/confirm-totp-enable`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tempToken, code: totpCode }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setTotpEnabled(true);
+      setTotpSuccess("Google Authenticator enabled! You will need it every time you sign in.");
+      setTotpStep("done");
+    } catch (err: any) {
+      setTotpError(err.message || "Invalid code. Try again.");
+    } finally {
+      setTotpLoading(false);
+    }
+  }
+
+  async function handleDisableTotp(e: React.FormEvent) {
+    e.preventDefault();
+    setTotpError("");
+    setTotpLoading(true);
+    try {
+      const token = getAuthToken();
+      const res = await fetch(`${API}/api/auth/disable-totp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ code: totpCode }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setTotpEnabled(false);
+      setTotpSuccess("2FA has been disabled.");
+      setTotpStep("idle");
+      setTotpCode("");
+    } catch (err: any) {
+      setTotpError(err.message || "Invalid code.");
+    } finally {
+      setTotpLoading(false);
+    }
+  }
 
   const tabs = [
     { id: "profile", name: "Profile", icon: User },
@@ -149,26 +244,121 @@ export default function SettingsPage() {
         <div className="space-y-6">
           {/* Two-Factor Authentication */}
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <Shield className="h-6 w-6 text-green-600" />
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${totpEnabled ? "bg-green-100" : "bg-gray-100"}`}>
+                  <Shield className={`h-6 w-6 ${totpEnabled ? "text-green-600" : "text-gray-400"}`} />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">Two-Factor Authentication</h3>
-                  <p className="text-sm text-gray-500">Add an extra layer of security to your account</p>
+                  <p className="text-sm text-gray-500">
+                    {totpEnabled === null ? "Loading..." : totpEnabled ? "Google Authenticator is active" : "Add an extra layer of security"}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-sm text-green-600 font-medium flex items-center gap-1">
-                  <Check className="h-4 w-4" />
-                  Enabled
-                </span>
-                <button className="relative w-11 h-6 bg-green-500 rounded-full">
-                  <span className="absolute top-1 left-6 w-4 h-4 bg-white rounded-full" />
-                </button>
+                {totpEnabled === null ? (
+                  <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+                ) : totpEnabled ? (
+                  <>
+                    <span className="text-sm text-green-600 font-medium flex items-center gap-1">
+                      <Check className="h-4 w-4" /> Enabled
+                    </span>
+                    <button
+                      onClick={() => { setTotpStep("disable"); setTotpCode(""); setTotpError(""); setTotpSuccess(""); }}
+                      className="px-3 py-1.5 text-xs border border-red-200 text-red-600 rounded-lg hover:bg-red-50"
+                    >
+                      Disable
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={handleSetupTotp}
+                    disabled={totpLoading}
+                    className="px-4 py-2 bg-[#b59354] text-white rounded-lg text-sm font-medium hover:bg-[#886844] disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {totpLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                    Set Up Google Authenticator
+                  </button>
+                )}
               </div>
             </div>
+
+            {/* Error / Success banners */}
+            {totpError && (
+              <div className="mt-3 bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-700">{totpError}</div>
+            )}
+            {totpSuccess && (
+              <div className="mt-3 bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-sm text-green-700">{totpSuccess}</div>
+            )}
+
+            {/* QR Code step */}
+            {totpStep === "qr" && (
+              <div className="mt-5 border-t border-gray-100 pt-5 space-y-4">
+                <p className="text-sm font-semibold text-gray-800">1. Scan this QR code with Google Authenticator</p>
+                <div className="flex justify-center">
+                  {totpQrCode && <img src={totpQrCode} alt="TOTP QR Code" className="h-48 w-48 rounded-xl border border-gray-200 p-2" />}
+                </div>
+                <details className="rounded-lg border border-gray-200 p-3">
+                  <summary className="cursor-pointer text-xs text-gray-500 select-none">Can't scan? Enter the key manually</summary>
+                  <p className="mt-2 break-all rounded bg-gray-50 px-3 py-2 font-mono text-xs text-gray-800">{totpSecret}</p>
+                </details>
+                <p className="text-sm font-semibold text-gray-800">2. Enter the 6-digit code from the app</p>
+                <form onSubmit={handleConfirmTotp} className="flex gap-3">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={6}
+                    autoFocus
+                    value={totpCode}
+                    onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, ""))}
+                    placeholder="000000"
+                    className="w-40 px-4 py-2.5 border border-gray-200 rounded-lg text-center text-xl font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-[#b59354]"
+                  />
+                  <button
+                    type="submit"
+                    disabled={totpLoading || totpCode.length < 6}
+                    className="px-5 py-2.5 bg-[#b59354] text-white rounded-lg text-sm font-semibold hover:bg-[#886844] disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {totpLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                    Verify & Enable
+                  </button>
+                  <button type="button" onClick={() => { setTotpStep("idle"); setTotpError(""); }} className="text-sm text-gray-500 hover:text-gray-700">
+                    Cancel
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {/* Disable step */}
+            {totpStep === "disable" && (
+              <div className="mt-5 border-t border-gray-100 pt-5 space-y-3">
+                <p className="text-sm text-gray-700">Enter your current Google Authenticator code to disable 2FA:</p>
+                <form onSubmit={handleDisableTotp} className="flex gap-3">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={6}
+                    autoFocus
+                    value={totpCode}
+                    onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, ""))}
+                    placeholder="000000"
+                    className="w-40 px-4 py-2.5 border border-gray-200 rounded-lg text-center text-xl font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-red-400"
+                  />
+                  <button
+                    type="submit"
+                    disabled={totpLoading || totpCode.length < 6}
+                    className="px-5 py-2.5 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {totpLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                    Disable 2FA
+                  </button>
+                  <button type="button" onClick={() => { setTotpStep("idle"); setTotpError(""); }} className="text-sm text-gray-500 hover:text-gray-700">
+                    Cancel
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
 
           {/* Change Password */}

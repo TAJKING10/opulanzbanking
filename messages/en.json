@@ -201,7 +201,7 @@
     "forms": {
       "sarl": {
         "fullName": "Private Limited Company",
-        "minCapital": "€12,000",
+        "minCapital": "â‚¬12,000",
         "minShareholders": 1,
         "liability": "Limited",
         "features": {
@@ -213,17 +213,17 @@
       },
       "sarls": {
         "fullName": "Simplified Private Limited Company",
-        "minCapital": "€1",
+        "minCapital": "â‚¬1",
         "features": {
           "capital": "Very low capital requirement",
           "formation": "Simplified formation",
           "startups": "Ideal for startups",
-          "max": "Max capital €100,000"
+          "max": "Max capital â‚¬100,000"
         }
       },
       "sa": {
         "fullName": "Public Limited Company",
-        "minCapital": "€30,000",
+        "minCapital": "â‚¬30,000",
         "features": {
           "public": "Can be listed publicly",
           "board": "Board of directors required",
@@ -283,10 +283,10 @@
       },
       "step2": {
         "proposedName": "Proposed Legal Name",
-        "proposedNamePlaceholder": "e.g., Acme Luxembourg S.à r.l.",
-        "proposedNameHelp": "Include the legal form suffix (S.à r.l., S.A., etc.)",
+        "proposedNamePlaceholder": "e.g., Acme Luxembourg S.Ã  r.l.",
+        "proposedNameHelp": "Include the legal form suffix (S.Ã  r.l., S.A., etc.)",
         "alternateName": "Alternate Name (Optional)",
-        "alternateNamePlaceholder": "e.g., Acme Lux S.à r.l.",
+        "alternateNamePlaceholder": "e.g., Acme Lux S.Ã  r.l.",
         "alternateNameHelp": "In case your first choice is not available",
         "purpose": "Company Purpose / Activities",
         "purposePlaceholder": "Describe the main business activities and purpose of the company...",
@@ -382,7 +382,7 @@
         "domiciliationItem1": "Professional business address in Luxembourg",
         "domiciliationItem2": "Mail forwarding and scanning",
         "domiciliationItem3": "Meeting room access",
-        "domiciliationPrice": "From €600/year",
+        "domiciliationPrice": "From â‚¬600/year",
         "noDomiciliationNote": "If you don't select domiciliation service, you must provide proof of a registered address (lease agreement or property title) in the next step."
       },
       "step7": {
@@ -587,9 +587,9 @@
     "wizard": {
       "steps": {
         "clientType": "Client Type",
-        "information": "Investment Profile",
+        "information": "Your Information",
         "review": "Review",
-        "complete": "Confirmation"
+        "complete": "Complete"
       },
       "progress": {
         "step": "Step",
@@ -598,16 +598,6 @@
       }
     },
     "clientType": {
-      "title": "Client Type",
-      "contact": {
-        "label": "Contact",
-        "placeholder": "Your contact information",
-        "email": "Email Address",
-        "emailPlaceholder": "Enter your email address",
-        "mobile": "Mobile Number",
-        "mobilePlaceholder": "Enter your mobile number",
-        "language": "Preferred Language"
-      },
       "welcome": "Welcome to Investment Advisory",
       "subtitle": "Complete our onboarding process to access personalised investment advisory services.",
       "question": "Please select your investor type:",
@@ -618,6 +608,13 @@
       "company": {
         "title": "Corporate Investor",
         "description": "For companies and institutional investors seeking professional investment advisory services."
+      },
+      "contact": {
+        "email": "Email Address",
+        "emailPlaceholder": "Enter your email address",
+        "mobile": "Mobile Number",
+        "mobilePlaceholder": "Enter your mobile number",
+        "language": "Preferred Language"
       }
     },
     "company": {
@@ -792,70 +789,70 @@
   },
   "legal": {
     "terms": {
-      "heroTitle": "Terms of Service",
-      "heroSubtitle": "Legal information and terms governing the use of Opulanz services",
+      "heroTitle": "Legal Terms & Conditions",
+      "heroSubtitle": "Please read the following terms carefully before using our services.",
       "companyIdentification": {
         "title": "Company Identification",
         "companyName": "Company Name",
-        "companyNameValue": "Advensys Luxembourg S.A. (Opulanz)",
+        "companyNameValue": "Advensys Luxembourg S.A.",
         "capital": "Share Capital",
-        "capitalValue": "€31,000",
+        "capitalValue": "â‚¬31,000",
         "address": "Registered Address",
-        "addressValue": "2 Place de Paris, L-2314 Luxembourg",
+        "addressValue": "2 Rue Edward Steichen, L-2540 Luxembourg",
         "phone": "Phone",
-        "phoneValue": "+352 27 99 53 50",
+        "phoneValue": "+352 20 33 10 70",
         "email": "Email",
-        "emailValue": "contact@opulanz.com",
+        "emailValue": "info@advensys.lu",
         "website": "Website",
         "websiteValue": "www.opulanz.com",
         "siret": "SIRET",
-        "siretValue": "B 244 955",
+        "siretValue": "N/A â€“ Luxembourg Entity",
         "ape": "APE Code",
-        "apeValue": "6619B",
+        "apeValue": "6419Z â€“ Other Monetary Intermediation",
         "vatNumber": "VAT Number",
-        "vatNumberValue": "LU35712439",
-        "registration": "Registration",
-        "registrationValue": "Luxembourg Companies Register (RCS)"
+        "vatNumberValue": "LU30956782",
+        "registration": "Trade Register",
+        "registrationValue": "RCS Luxembourg B 252 345"
       },
       "servicesProvided": {
         "title": "Services Provided",
-        "investment": "Investment advisory services (MiFID II compliant)",
-        "insurance": "Insurance brokerage services (IDD compliant)",
-        "banking": "Payment account services and company formation"
+        "investment": "Investment advisory and portfolio management services (MiFID II compliant)",
+        "insurance": "Insurance brokerage and life insurance products",
+        "banking": "Payment services and account management (EMI regulated)"
       },
       "professionalInsurance": {
         "title": "Professional Insurance",
-        "description": "Opulanz maintains professional liability insurance in accordance with Luxembourg regulatory requirements, covering investment advisory and insurance distribution activities."
+        "description": "Advensys Luxembourg S.A. holds professional indemnity insurance covering all services provided through the Opulanz platform, as required by applicable Luxembourg and EU financial regulations."
       },
       "contactInfo": {
         "title": "Contact Information",
-        "name": "Legal Representative",
-        "nameValue": "Opulanz Legal Department"
+        "name": "Contact Name",
+        "nameValue": "Compliance Department â€“ Advensys Luxembourg S.A."
       },
       "intellectualProperty": {
         "title": "Intellectual Property",
-        "trademark": "The Opulanz name, logo, and all related marks are registered trademarks of Advensys Luxembourg S.A. Unauthorised use is strictly prohibited.",
-        "ownership": "All content, software, and materials on this platform are the exclusive property of Advensys Luxembourg S.A. and are protected by applicable intellectual property laws."
+        "trademark": "The Opulanz brand, logo, and all associated trademarks are the exclusive property of Advensys Luxembourg S.A. Unauthorized use is strictly prohibited.",
+        "ownership": "All content on this website, including text, graphics, logos, and software, is the property of Advensys Luxembourg S.A. and is protected by Luxembourg and international copyright laws."
       },
       "generalConditions": {
-        "title": "General Conditions",
-        "acceptance": "By using Opulanz services, you accept these terms in their entirety. If you do not agree, please discontinue use of our services immediately.",
-        "disclaimer": "Opulanz provides services on an 'as is' basis. While we take all reasonable steps to ensure accuracy, we cannot guarantee the completeness or timeliness of information provided.",
-        "modifications": "Opulanz reserves the right to modify these terms at any time. Continued use of our services following notification of changes constitutes acceptance of the updated terms.",
-        "jurisdiction": "These terms are governed by Luxembourg law. Any disputes arising from the use of our services shall be subject to the exclusive jurisdiction of the Luxembourg courts."
+        "title": "General Terms & Conditions",
+        "acceptance": "By accessing and using the Opulanz platform, you agree to be bound by these Terms and Conditions and all applicable laws and regulations.",
+        "disclaimer": "The information provided on this platform is for general informational purposes only and does not constitute financial, legal, or tax advice.",
+        "modifications": "Advensys Luxembourg S.A. reserves the right to modify these terms at any time. Continued use of the platform constitutes acceptance of the updated terms.",
+        "jurisdiction": "These terms are governed by the laws of the Grand Duchy of Luxembourg. Any disputes shall be subject to the exclusive jurisdiction of the courts of Luxembourg."
       },
       "designHosting": {
         "title": "Design & Hosting",
         "design": "Website Design",
-        "designValue": "Advensys Luxembourg S.A.",
-        "development": "Development",
-        "developmentValue": "Advensys Luxembourg S.A.",
-        "hosting": "Hosting",
-        "hostingValue": "Microsoft Azure (EU Region)"
+        "designValue": "Advensys Internal Development Team",
+        "development": "Platform Development",
+        "developmentValue": "Advensys Technology Division",
+        "hosting": "Cloud Hosting",
+        "hostingValue": "Microsoft Azure â€“ European Data Centers"
       },
       "footer": {
-        "disclaimer": "This document constitutes the legal terms governing the use of the Opulanz platform. Opulanz is regulated by the CSSF (Luxembourg) and complies with all applicable EU financial regulations.",
-        "lastUpdated": "Last updated: April 2026"
+        "disclaimer": "This document was last reviewed and approved by the Legal & Compliance Department of Advensys Luxembourg S.A.",
+        "lastUpdated": "Last updated: January 2025"
       }
     },
     "regulated": "Regulated by ACPR & AMF (FR)",
@@ -903,7 +900,7 @@
       "instagram": "Instagram"
     },
     "description": "The All-in-One Financial Platform for Businesses. Member of the Advensys Luxembourg S.A. Group, with over 19 years of experience in comprehensive business solutions in Europe.",
-    "copyright": "© {year} Opulanz. All rights reserved.",
+    "copyright": "Â© {year} Opulanz. All rights reserved.",
     "regulated": "Regulated by ACPR & AMF (FR)"
   },
   "home": {
@@ -1312,62 +1309,55 @@
     "buttons": {
       "dashboard": "Go to Dashboard",
       "downloadApp": "Download App"
-    },
-    "title": "Identity Verification",
-    "description": "Complete your KYC to activate your account"
+    }
   },
   "taxAdvisory": {
     "confirmation": {
       "heroTitle": "Booking Confirmed!",
-      "heroSubtitle": "Your tax advisory consultation has been successfully booked",
-      "confirmationLabel": "Booking Reference",
-      "confirmationNumber": "Confirmation Number",
-      "clientName": "Client Name",
-      "name": "Name",
-      "email": "Email",
-      "phone": "Phone",
-      "service": "Service",
-      "serviceTitle": "Service",
-      "serviceDetails": "Service Details",
-      "date": "Date",
-      "time": "Time",
-      "price": "Price",
-      "inclVAT": "(incl. VAT)",
-      "duration": "{minutes} minutes",
-      "consultation": "{minutes}-minute consultation",
-      "appointmentDetails": "Appointment Details",
-      "scheduledViaCalendly": "Scheduled via Calendly",
-      "calendlyConfirmationNotice": "A calendar invite has been sent to your email",
-      "checkEmailForDetails": "Check your email for full booking details",
+      "heroSubtitle": "Your tax advisory consultation has been successfully booked.",
+      "confirmationLabel": "Confirmation #",
       "emailSent": {
         "title": "Confirmation Email Sent",
-        "description": "A confirmation email has been sent to {email}"
+        "description": "A confirmation has been sent to {email}. Please check your inbox."
       },
+      "appointmentDetails": "Appointment Details",
+      "clientName": "Client Name",
+      "email": "Email",
+      "phone": "Phone",
+      "date": "Date",
+      "time": "Time",
+      "duration": "{minutes}-minute consultation",
+      "scheduledViaCalendly": "Appointment Scheduled via Calendly",
+      "checkEmailForDetails": "Check your email for the appointment details.",
+      "calendlyConfirmationNotice": "You will receive a calendar invite from Calendly in your inbox.",
+      "serviceDetails": "Service Details",
+      "consultation": "{minutes}-minute consultation",
+      "inclVAT": "incl. VAT",
+      "addToCalendar": "Add to Calendar",
+      "downloadPDFReceipt": "Download PDF Receipt",
       "whatHappensNext": {
         "title": "What Happens Next?",
         "step1": {
           "title": "Check Your Email",
-          "description": "You'll receive a confirmation email with your appointment details and joining instructions"
+          "description": "You will receive a confirmation email with all the details of your appointment."
         },
         "step2": {
           "title": "Prepare Your Documents",
-          "description": "Gather any relevant financial documents and questions for your consultation"
+          "description": "Gather any relevant financial documents, tax returns, or statements that may be discussed during the consultation."
         },
         "step3": {
-          "title": "Join the Consultation",
-          "description": "Connect with our tax advisor at your scheduled time via video conference"
+          "title": "Join Your Consultation",
+          "description": "Join the video call or in-person meeting at the scheduled time. Our advisor will be ready to assist you."
         },
         "step4": {
           "title": "Receive Your Report",
-          "description": "Get a detailed tax advisory report following your consultation"
+          "description": "After the consultation, you will receive a detailed report and recommendations by email within 48 hours."
         }
       },
-      "rescheduleQuestion": "Need to reschedule?",
-      "supportContact": "Contact our support team",
+      "rescheduleQuestion": "Need to reschedule or have a question?",
       "backToTaxAdvisory": "Back to Tax Advisory",
       "goToDashboard": "Go to Dashboard",
-      "downloadPDFReceipt": "Download Receipt",
-      "addToCalendar": "Add to Calendar"
+      "supportContact": "For support, contact us at"
     },
     "hero": {
       "primaryCta": "Schedule a Consultation",
@@ -1530,116 +1520,6 @@
       }
     },
     "booking": {
-      "services": {
-        "taxReturnPreparation": {
-          "title": "Tax Return Preparation",
-          "description": "Professional preparation and filing of corporate and individual tax returns"
-        },
-        "internationalTax": {
-          "title": "International Tax",
-          "description": "Expert guidance on cross-border tax matters and transfer pricing"
-        },
-        "corporateTax": {
-          "title": "Corporate Tax",
-          "description": "Comprehensive corporate tax services including M&A due diligence and VAT consulting"
-        },
-        "taxCompliance": {
-          "title": "Tax Compliance",
-          "description": "Ongoing compliance with tax laws and regulations with proactive monitoring"
-        },
-        "personalTaxAdvisory": {
-          "title": "Personal Tax Advisory",
-          "description": "Personalized tax advice for high-net-worth individuals and expatriates"
-        }
-      },
-      "validation": {
-        "firstNameRequired": "First name is required",
-        "lastNameRequired": "Last name is required",
-        "emailRequired": "Email address is required",
-        "emailInvalid": "Please enter a valid email address",
-        "phoneRequired": "Phone number is required"
-      },
-      "step1": {
-        "heroTitle": "Book Your Tax Advisory Consultation",
-        "heroSubtitle": "Expert tax advice tailored to your individual or business needs",
-        "overline": "STEP 1 OF 4",
-        "title": "Your Contact Information",
-        "description": "Please provide your contact details to get started",
-        "firstName": "First Name",
-        "firstNamePlaceholder": "Enter your first name",
-        "lastName": "Last Name",
-        "lastNamePlaceholder": "Enter your last name",
-        "email": "Email Address",
-        "emailPlaceholder": "Enter your email address",
-        "phone": "Phone Number",
-        "phonePlaceholder": "Enter your phone number",
-        "required": "*",
-        "continue": "Continue to Schedule",
-        "backToTaxAdvisory": "Back to Tax Advisory"
-      },
-      "step2": {
-        "heroTitle": "Schedule Your Consultation",
-        "heroSubtitle": "Choose a convenient time for your 60-minute consultation",
-        "overline": "STEP 2 OF 4",
-        "title": "Pick a Date & Time",
-        "backToContactInfo": "Back to Contact Info"
-      },
-      "step3": {
-        "heroTitle": "Select Your Service",
-        "heroSubtitle": "Choose the tax advisory service you need",
-        "overline": "STEP 3 OF 4",
-        "title": "Select Your Tax Advisory Service",
-        "description": "Choose the service that best matches your needs",
-        "selectService": "Select Service"
-      },
-      "step4": {
-        "heroTitle": "Review & Confirm",
-        "heroSubtitle": "Review your booking details before payment",
-        "overline": "STEP 4 OF 4",
-        "title": "Booking Summary",
-        "contactInfo": "Contact Information",
-        "name": "Name",
-        "email": "Email",
-        "phone": "Phone",
-        "appointmentDetails": "Appointment Details",
-        "appointmentConfirmation": "Appointment",
-        "scheduledViaCalendly": "Scheduled via Calendly",
-        "calendlyEmailNotice": "A calendar invite has been sent to your email",
-        "duration": "Duration",
-        "minutes": "minutes",
-        "servicePayment": "Service & Payment",
-        "serviceFeeExclVAT": "Service Fee (excl. VAT)",
-        "vat": "VAT (20%)",
-        "totalInclVAT": "Total (incl. VAT)",
-        "changeService": "Change Service",
-        "proceedToPayment": "Proceed to Payment"
-      },
-      "payment": {
-        "heroTitle": "Complete Payment",
-        "heroSubtitle": "Secure payment to confirm your consultation",
-        "paymentSummary": "Payment Summary",
-        "service": "Service",
-        "client": "Client",
-        "total": "Total",
-        "loadingPaymentOptions": "Loading payment options...",
-        "securePaymentNotice": "Your payment is secured with industry-standard encryption",
-        "paymentFailed": "Payment failed. Please try again.",
-        "paymentSuccessError": "Payment completed but confirmation failed. Please contact support.",
-        "backToSummary": "Back to Summary",
-        "cancelBooking": "Cancel Booking",
-        "title": "Complete Your Payment",
-        "subtitle": "Final step to confirm your consultation",
-        "step": "STEP 4 OF 4",
-        "paymentDetails": "Payment Details",
-        "orderSummary": "Order Summary",
-        "paymentMethod": "Payment Method",
-        "paymentMethodDesc": "To complete your booking, please proceed with the payment using one of the methods below.",
-        "payWithCard": "Pay with Credit/Debit Card",
-        "payWithTransfer": "Pay with Bank Transfer",
-        "payWithPaypal": "Pay with PayPal",
-        "reservedNote": "Your consultation slot is reserved for 15 minutes. Please complete the payment to confirm your booking.",
-        "backToSelection": "Back to Service Selection"
-      },
       "calendly": {
         "title": "Schedule Your Tax Advisory Consultation",
         "subtitle": "Choose a convenient time for your 60-minute consultation"
@@ -1651,6 +1531,21 @@
         "selectTitle": "Select Your Tax Advisory Service",
         "selectDesc": "Choose the service that best matches your needs",
         "selectService": "Select Service"
+      },
+      "payment": {
+        "title": "Complete Your Payment",
+        "subtitle": "Final step to confirm your consultation",
+        "step": "STEP 3 OF 3",
+        "paymentDetails": "Payment Details",
+        "orderSummary": "Order Summary",
+        "paymentMethod": "Payment Method",
+        "paymentMethodDesc": "To complete your booking, please proceed with the payment using one of the methods below.",
+        "payWithCard": "Pay with Credit/Debit Card",
+        "payWithTransfer": "Pay with Bank Transfer",
+        "payWithPaypal": "Pay with PayPal",
+        "reservedNote": "Your consultation slot is reserved for 15 minutes. Please complete the payment to confirm your booking.",
+        "backToSelection": "Back to Service Selection",
+        "cancelBooking": "Cancel Booking"
       }
     },
     "taxReturn": {
@@ -2418,231 +2313,309 @@
   "accounting": {
     "onboarding": {
       "title": "Accounting & Invoicing Onboarding",
-      "subtitle": "Complete the steps below to set up your accounting service"
+      "subtitle": "Set up your accounting profile in a few simple steps."
     },
     "steps": {
       "company": {
-        "label": "Company",
-        "description": "Basic company information"
-      },
-      "contacts": {
-        "label": "Contacts",
-        "description": "Contacts & addresses"
+        "label": "Company Basics",
+        "description": "Legal identity"
       },
       "activity": {
-        "label": "Activity",
-        "description": "Business activity & scale"
+        "label": "Activity & Scale",
+        "description": "Business scope"
+      },
+      "contacts": {
+        "label": "Contacts & Addresses",
+        "description": "People & locations"
       },
       "volume": {
-        "label": "Volume",
-        "description": "Billing & invoicing volume"
+        "label": "Billing Volume",
+        "description": "Invoicing needs"
       },
       "documents": {
         "label": "Documents",
-        "description": "Upload required documents"
+        "description": "Upload files"
       },
       "review": {
-        "label": "Review",
-        "description": "Review & submit"
+        "label": "Review & Submit",
+        "description": "Confirm & send"
       }
     },
     "companyBasics": {
-      "title": "Company Information",
-      "subtitle": "Tell us about your company",
+      "title": "Company Basics",
+      "subtitle": "Tell us about your company's legal identity and incorporation details.",
       "fields": {
         "companyType": "Company Type",
-        "companyTypeOther": "Specify Company Type",
+        "companyTypeOther": "Please specify",
         "countryOfIncorporation": "Country of Incorporation",
         "dateOfIncorporation": "Date of Incorporation",
-        "shareCapital": "Share Capital (€)",
+        "shareCapital": "Share Capital",
         "legalName": "Legal Name",
-        "tradeName": "Trade Name (optional)",
+        "tradeName": "Trade Name",
         "registrationNumber": "Registration Number",
-        "vatNumber": "VAT Number (optional)"
+        "vatNumber": "VAT Number"
       },
       "placeholders": {
         "companyType": "Select company type",
-        "companyTypeOther": "e.g. Sole Proprietor",
+        "companyTypeOther": "Describe your company type",
         "country": "Select country",
-        "date": "DD/MM/YYYY",
-        "legalName": "e.g. Acme Holdings S.A.",
+        "date": "YYYY-MM-DD",
+        "legalName": "e.g. Acme Holdings S.A.R.L.",
         "tradeName": "e.g. Acme",
         "registrationNumber": "e.g. B123456",
         "vatNumber": "e.g. LU12345678"
       },
       "hints": {
-        "tradeName": "The commercial name used publicly, if different from legal name",
-        "registrationNumber": "Your official company registration / RCS number",
-        "vatNumber": "Your VAT identification number if registered for VAT"
+        "tradeName": "Leave blank if the same as the legal name.",
+        "registrationNumber": "As shown on your certificate of incorporation.",
+        "vatNumber": "Optional â€” enter if your company is VAT-registered."
+      }
+    },
+    "activityScale": {
+      "title": "Activity & Scale",
+      "subtitle": "Help us understand the size and nature of your business operations.",
+      "fields": {
+        "businessActivity": "Business Activity",
+        "turnoverLastFY": "Turnover â€“ Last Financial Year",
+        "turnoverCurrentFY": "Turnover â€“ Current Financial Year (projected)",
+        "employees": "Number of Employees (FTE)"
+      },
+      "placeholders": {
+        "businessActivity": "Describe your main business activityâ€¦"
+      },
+      "hints": {
+        "turnoverLastFY": "Enter 0 if the company was incorporated this year.",
+        "turnoverCurrentFY": "Projected figure is acceptable.",
+        "employees": "Full-time equivalents."
       }
     },
     "contactsAddresses": {
       "title": "Contacts & Addresses",
-      "subtitle": "Provide your registered address and key contacts",
+      "subtitle": "Provide your registered address, operating address, and key contacts.",
       "registeredAddress": "Registered Address",
+      "operatingAddress": "Operating Address",
+      "sameAsRegistered": "Same as registered address",
       "primaryContact": "Primary Contact",
       "accountingContact": "Accounting Contact",
-      "addAccountingContact": "Add accounting contact",
-      "sameAsRegistered": "Same as registered address",
+      "addAccountingContact": "Add a separate accounting contact",
       "fields": {
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "email": "Email",
-        "phone": "Phone",
         "street": "Street Address",
         "city": "City",
-        "postalCode": "Postal Code",
-        "country": "Country",
         "postal": "Postal Code",
-        "role": "Role / Title"
+        "country": "Country",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "role": "Role / Title",
+        "email": "Email Address",
+        "phone": "Phone Number"
       },
       "placeholders": {
-        "firstName": "John",
-        "lastName": "Doe",
-        "email": "john@company.com",
-        "phone": "+352 123 456 789",
-        "street": "1 Rue de la Gare",
+        "street": "123 Main Street",
         "city": "Luxembourg",
-        "postalCode": "L-1611",
-        "country": "Select country",
         "postal": "L-1234",
-        "role": "e.g. CEO, CFO"
-      },
-      "operatingAddress": "Operating Address"
-    },
-    "activityScale": {
-      "title": "Business Activity",
-      "subtitle": "Help us understand the scale of your operations",
-      "fields": {
-        "businessActivity": "Main Business Activity",
-        "turnoverLastFY": "Turnover Last FY (€)",
-        "turnoverCurrentFY": "Projected Turnover Current FY (€)",
-        "employees": "Number of Employees"
-      },
-      "placeholders": {
-        "businessActivity": "e.g. Software development and consulting"
-      },
-      "hints": {
-        "turnoverLastFY": "Total revenue from the previous financial year",
-        "turnoverCurrentFY": "Your projected revenue for the current year",
-        "employees": "Full-time equivalent employees"
+        "country": "Select country",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "role": "e.g. CEO, CFO",
+        "email": "name@company.com",
+        "phone": "+352 123 456 789"
       }
     },
     "billingVolume": {
       "title": "Billing Volume",
-      "subtitle": "Estimate your monthly invoicing volume",
+      "subtitle": "Tell us about your monthly invoicing volumes and payroll needs.",
       "fields": {
         "salesInvoices": "Sales Invoices per Month",
         "purchaseInvoices": "Purchase Invoices per Month",
-        "payrollNeeded": "Do you need payroll services?",
-        "payrollEmployees": "Number of Employees on Payroll",
-        "multiCurrency": "Multi-currency invoicing?",
+        "payrollNeeded": "Do you need payroll processing?",
+        "payrollEmployees": "Number of employees on payroll",
+        "multiCurrency": "Multi-currency invoicing",
         "selectCurrencies": "Select currencies"
       },
       "hints": {
-        "salesInvoices": "Approximate number of invoices you issue to clients per month",
-        "purchaseInvoices": "Approximate number of supplier invoices you receive per month"
+        "salesInvoices": "Estimated number of invoices you issue each month.",
+        "purchaseInvoices": "Estimated number of supplier invoices you receive each month."
       }
     },
     "documents": {
-      "title": "Supporting Documents",
-      "subtitle": "Upload the required company documents",
+      "title": "Documents",
+      "subtitle": "Upload the required documents to complete your accounting profile.",
       "types": {
         "incorporation": "Certificate of Incorporation",
         "articles": "Articles of Association",
-        "directorId": "Director's ID / Passport",
-        "vat": "VAT Certificate (if applicable)"
+        "directorId": "Director ID / Passport",
+        "vat": "VAT Registration Certificate"
       },
       "hints": {
-        "incorporation": "Official certificate from the Companies Registry",
-        "articles": "Memorandum and articles of association or equivalent",
-        "directorId": "Valid government-issued photo ID of the director",
-        "vat": "VAT registration certificate if your company is VAT registered"
+        "incorporation": "Official document confirming company registration.",
+        "articles": "Signed and up-to-date version.",
+        "directorId": "Valid government-issued ID for each director.",
+        "vat": "Required only if VAT-registered."
       },
       "note": {
-        "title": "Accepted formats",
-        "text": "PDF, JPG, PNG — max 10MB per file"
+        "title": "Document Requirements",
+        "text": "Accepted formats: PDF, JPG, PNG, DOCX. Maximum file size: 10 MB per document. All documents must be valid and legible."
       }
     },
     "review": {
       "title": "Review & Submit",
-      "subtitle": "Please review your information before submitting",
-      "summary": "Summary",
+      "subtitle": "Please review your information carefully before submitting.",
+      "summary": "Application Summary",
       "sections": {
         "company": "Company Details",
-        "contact": "Contacts & Address",
-        "activity": "Business Activity",
+        "activity": "Activity & Scale",
+        "contact": "Contacts & Addresses",
         "volume": "Billing Volume",
         "teamSize": "Team Size",
         "documents": "Documents"
       },
       "incorporated": "Incorporated",
-      "lastFY": "Last FY Turnover",
-      "projected": "Projected Turnover",
-      "employees": "Employees",
-      "fteEmployees": "FTE",
-      "sales": "Sales Invoices / mo",
-      "purchases": "Purchase Invoices / mo",
-      "payroll": "Payroll needed",
+      "lastFY": "Last FY turnover",
+      "projected": "Projected turnover",
+      "fteEmployees": "FTE employees",
+      "employees": "employees",
+      "sales": "Sales invoices / month",
+      "purchases": "Purchase invoices / month",
+      "payroll": "Payroll",
       "multiCurrency": "Multi-currency",
       "invoices": "invoices",
       "documentsUploaded": "documents uploaded",
-      "acceptConsent": "I accept",
       "consent": {
-        "title": "Terms & Consent",
-        "text": "I confirm the information provided is accurate and authorise Opulanz to process my data",
+        "title": "Data Processing Consent",
+        "text": "I consent to Opulanz processing my company data for accounting and invoicing services.",
         "label": "I agree to the",
         "termsOfService": "Terms of Service",
         "privacyPolicy": "Privacy Policy",
-        "required": "You must accept the terms to continue"
+        "required": "You must accept the terms to proceed."
       },
+      "acceptConsent": "I accept the terms and consent to data processing.",
       "gdpr": {
-        "title": "Data Protection",
-        "text": "Your data is processed in accordance with GDPR. We will use it solely to provide accounting services."
+        "title": "GDPR Notice",
+        "text": "Your data is processed in accordance with EU GDPR. You may request access, rectification, or deletion at any time by contacting privacy@opulanz.com."
       },
       "submit": "Submit Application"
     }
   },
+  "supportPage": {
+    "hero": {
+      "title": "How Can We Help You?",
+      "subtitle": "Our support team is here for you. Reach out by phone, email, or live chat."
+    },
+    "contactMethods": {
+      "title": "Contact Us",
+      "description": "Choose the support channel that works best for you.",
+      "phone": {
+        "title": "Phone Support",
+        "description": "Speak directly with one of our support specialists.",
+        "number": "+352 28 79 76 26",
+        "hours": "Monâ€“Fri, 9:00â€“18:00 CET"
+      },
+      "email": {
+        "title": "Email Support",
+        "description": "Send us a message and we'll get back to you promptly.",
+        "address": "support@opulanz.com",
+        "response": "Response within 24 hours"
+      },
+      "chat": {
+        "title": "Live Chat",
+        "description": "Chat with our team in real time for immediate assistance.",
+        "button": "Start Chat",
+        "availability": "Available during business hours"
+      }
+    },
+    "contactForm": {
+      "title": "Send Us a Message",
+      "description": "Fill in the form below and we will respond as soon as possible.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone Number (optional)",
+      "subject": "Subject",
+      "selectSubject": "Select a subject",
+      "subjects": {
+        "account": "Account Questions",
+        "technical": "Technical Support",
+        "company": "Company Formation",
+        "billing": "Billing & Payments",
+        "other": "Other"
+      },
+      "message": "Message",
+      "messagePlaceholder": "Describe your question or issue in detail...",
+      "submit": "Send Message"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "description": "Quick answers to the most common questions.",
+      "questions": {
+        "openAccount": {
+          "question": "How long does it take to open an account?",
+          "answer": "Individual accounts are typically approved within 24â€“48 hours. Business accounts take 3â€“5 business days depending on the complexity of the application."
+        },
+        "documents": {
+          "question": "What documents do I need?",
+          "answer": "For individuals: a valid government-issued ID, proof of address, and a selfie. For businesses: company registration documents, UBO declaration, and director IDs."
+        },
+        "fees": {
+          "question": "What are the monthly fees?",
+          "answer": "Individual accounts start at â‚¬10/month. Business accounts start at â‚¬25/month. Full fee schedules are available in your account settings."
+        },
+        "currencies": {
+          "question": "Which currencies are supported?",
+          "answer": "We support EUR, USD, GBP, and CHF. Each account comes with a dedicated multi-currency IBAN for seamless international payments."
+        },
+        "contact": {
+          "question": "How do I contact my account manager?",
+          "answer": "Once your account is approved, you will be assigned a dedicated account manager reachable by email or phone during business hours."
+        }
+      }
+    },
+    "resources": {
+      "title": "Additional Resources",
+      "description": "Everything you need to get the most out of Opulanz.",
+      "documentation": {
+        "title": "Documentation",
+        "description": "Detailed guides and API references to help you integrate and use our platform.",
+        "button": "Browse Docs"
+      },
+      "helpCenter": {
+        "title": "Help Center",
+        "description": "Step-by-step articles and tutorials covering all features and services.",
+        "button": "Visit Help Center"
+      },
+      "status": {
+        "title": "Service Status",
+        "description": "Check the real-time status of all Opulanz services and scheduled maintenance.",
+        "button": "View Status"
+      }
+    },
+    "offices": {
+      "title": "Our Offices",
+      "description": "Visit us in Luxembourg or France.",
+      "luxembourg": {
+        "title": "Luxembourg",
+        "address": "1 Avenue de la LibertÃ©",
+        "city": "L-1931 Luxembourg",
+        "country": "Luxembourg",
+        "phone": "Phone",
+        "email": "Email"
+      },
+      "france": {
+        "title": "France",
+        "address": "66 Avenue des Champs-Ã‰lysÃ©es",
+        "city": "75008 Paris",
+        "country": "France",
+        "phone": "Phone",
+        "email": "Email"
+      }
+    }
+  },
   "accountOpening": {
     "start": {
-      "title": "Open an Account",
-      "subtitle": "Choose the account type that suits you",
       "loading": "Loading..."
     },
     "individual": {
-      "title": "Individual Account",
-      "subtitle": "Personal banking for individuals",
-      "description": "Complete the form below to open your personal account",
-      "form": {
-        "personalInfo": "Personal Information",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "dateOfBirth": "Date of Birth",
-        "nationality": "Nationality",
-        "selectNationality": "Select nationality",
-        "phoneNumber": "Phone Number",
-        "address": "Address",
-        "streetAddress": "Street Address",
-        "city": "City",
-        "postalCode": "Postal Code",
-        "country": "Country",
-        "selectCountry": "Select country",
-        "activityInfo": "Activity Information",
-        "isPEP": "Are you a Politically Exposed Person (PEP)?",
-        "yes": "Yes",
-        "no": "No",
-        "expectedMonthlyVolume": "Expected Monthly Transaction Volume",
-        "selectRange": "Select a range",
-        "sourceOfFunds": "Source of Funds",
-        "sourceOfFundsPlaceholder": "e.g. salary, business income, investments...",
-        "consents": "Consents & Agreements",
-        "consentKYC": "I consent to the collection and processing of my personal data for KYC/AML compliance purposes",
-        "consentTerms": "I have read and agree to the",
-        "termsLink": "Terms & Conditions",
-        "privacyLink": "Privacy Policy",
-        "documentVerification": "Document Verification",
-        "documentDescription": "Please upload clear, legible copies of the following documents."
-      },
+      "title": "Individual Account Application",
+      "description": "Complete the form below to apply for your personal banking account.",
       "approved": {
         "message": "Congratulations! Your individual account application has been approved. Your IBAN is ready.",
         "nextSteps": {
@@ -2659,44 +2632,36 @@
       },
       "submitted": {
         "message": "Your application has been submitted and is under review. We will notify you by email once a decision has been made."
-      }
-    },
-    "company": {
-      "title": "Company Account",
-      "subtitle": "Business banking for companies",
-      "description": "Complete the form below to open your company account",
+      },
       "form": {
-        "companyInfo": "Company Information"
-      },
-      "submitted": {
-        "message": "Your application is under review. You will receive a decision within 2â€“3 business days."
-      },
-      "approved": {
-        "message": "Congratulations! Your business account has been approved. Your IBAN is ready.",
-        "nextSteps": {
-          "multiUser": "Invite team members and set up multi-user access.",
-          "accounting": "Connect your accounting and invoicing tools.",
-          "corporateCards": "Order corporate cards for your team.",
-          "fundAccount": "Fund your account to start transacting."
-        },
-        "buttons": {
-          "dashboard": "Go to Dashboard",
-          "downloadApp": "Download App",
-          "startNew": "Start a New Application"
-        }
-      }
-    },
-    "warmReferral": {
-      "handoff": {
-        "title": "Referral Application",
-        "subtitle": "Complete your referred application",
-        "description": "Based on your profile, we recommend opening your account with {partner}. Opulanz will remain your point of contact throughout the process.",
-        "step1": {
-          "description": "Your profile has been matched to {partner}. Click below to proceed."
-        },
-        "step2": {
-          "description": "You will be redirected to {partner} to complete your account opening."
-        }
+        "personalInfo": "Personal Information",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "dateOfBirth": "Date of Birth",
+        "nationality": "Nationality",
+        "selectNationality": "Select your nationality",
+        "phoneNumber": "Phone Number",
+        "address": "Address",
+        "streetAddress": "Street Address",
+        "city": "City",
+        "postalCode": "Postal Code",
+        "country": "Country",
+        "selectCountry": "Select your country",
+        "documentVerification": "Document Verification",
+        "documentDescription": "Please upload clear, legible copies of the following documents.",
+        "activityInfo": "Activity Information",
+        "isPEP": "Are you a Politically Exposed Person (PEP)?",
+        "no": "No",
+        "yes": "Yes",
+        "expectedMonthlyVolume": "Expected Monthly Transaction Volume",
+        "selectRange": "Select a range",
+        "sourceOfFunds": "Source of Funds",
+        "sourceOfFundsPlaceholder": "Describe the origin of your funds (e.g. salary, business income, investments)",
+        "consents": "Consents & Declarations",
+        "consentKYC": "I consent to the collection and processing of my personal data for KYC/AML verification purposes.",
+        "consentTerms": "I have read and agree to the",
+        "termsLink": "Terms & Conditions",
+        "privacyLink": "Privacy Policy"
       }
     },
     "personal": {
@@ -2893,224 +2858,33 @@
           "backToHomepage": "Back to Homepage"
         }
       }
-    }
-  },
-  "supportPage": {
-    "hero": {
-      "title": "How Can We Help You?",
-      "subtitle": "Our support team is here for you. Reach out by phone, email, or live chat."
     },
-    "contactMethods": {
-      "title": "Contact Us",
-      "description": "Choose the support channel that works best for you.",
-      "phone": {
-        "title": "Phone Support",
-        "description": "Speak directly with one of our support specialists.",
-        "number": "+352 28 79 76 26",
-        "hours": "Monâ€“Fri, 9:00â€“18:00 CET"
-      },
-      "email": {
-        "title": "Email Support",
-        "description": "Send us a message and we'll get back to you promptly.",
-        "address": "support@opulanz.com",
-        "response": "Response within 24 hours"
-      },
-      "chat": {
-        "title": "Live Chat",
-        "description": "Chat with our team in real time for immediate assistance.",
-        "button": "Start Chat",
-        "availability": "Available during business hours"
-      }
-    },
-    "contactForm": {
-      "title": "Send Us a Message",
-      "description": "Fill in the form below and we will respond as soon as possible.",
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "email": "Email Address",
-      "phone": "Phone Number (optional)",
-      "subject": "Subject",
-      "selectSubject": "Select a subject",
-      "subjects": {
-        "account": "Account Questions",
-        "technical": "Technical Support",
-        "company": "Company Formation",
-        "billing": "Billing & Payments",
-        "other": "Other"
-      },
-      "message": "Message",
-      "messagePlaceholder": "Describe your question or issue in detail...",
-      "submit": "Send Message"
-    },
-    "faq": {
-      "title": "Frequently Asked Questions",
-      "description": "Quick answers to the most common questions.",
-      "questions": {
-        "openAccount": {
-          "question": "How long does it take to open an account?",
-          "answer": "Individual accounts are typically approved within 24â€“48 hours. Business accounts take 3â€“5 business days depending on the complexity of the application."
-        },
-        "documents": {
-          "question": "What documents do I need?",
-          "answer": "For individuals: a valid government-issued ID, proof of address, and a selfie. For businesses: company registration documents, UBO declaration, and director IDs."
-        },
-        "fees": {
-          "question": "What are the monthly fees?",
-          "answer": "Individual accounts start at â‚¬10/month. Business accounts start at â‚¬25/month. Full fee schedules are available in your account settings."
-        },
-        "currencies": {
-          "question": "Which currencies are supported?",
-          "answer": "We support EUR, USD, GBP, and CHF. Each account comes with a dedicated multi-currency IBAN for seamless international payments."
-        },
-        "contact": {
-          "question": "How do I contact my account manager?",
-          "answer": "Once your account is approved, you will be assigned a dedicated account manager reachable by email or phone during business hours."
-        }
-      }
-    },
-    "resources": {
-      "title": "Additional Resources",
-      "description": "Everything you need to get the most out of Opulanz.",
-      "documentation": {
-        "title": "Documentation",
-        "description": "Detailed guides and API references to help you integrate and use our platform.",
-        "button": "Browse Docs"
-      },
-      "helpCenter": {
-        "title": "Help Center",
-        "description": "Step-by-step articles and tutorials covering all features and services.",
-        "button": "Visit Help Center"
-      },
-      "status": {
-        "title": "Service Status",
-        "description": "Check the real-time status of all Opulanz services and scheduled maintenance.",
-        "button": "View Status"
-      }
-    },
-    "offices": {
-      "title": "Our Offices",
-      "description": "Visit us in Luxembourg or France.",
-      "luxembourg": {
-        "title": "Luxembourg",
-        "address": "1 Avenue de la LibertÃ©",
-        "city": "L-1931 Luxembourg",
-        "country": "Luxembourg",
-        "phone": "Phone",
-        "email": "Email"
-      },
-      "france": {
-        "title": "France",
-        "address": "66 Avenue des Champs-Ã‰lysÃ©es",
-        "city": "75008 Paris",
-        "country": "France",
-        "phone": "Phone",
-        "email": "Email"
-      }
-    }
-  },
-  "lifeInsurance": {
-    "booking": {
-      "services": {
-        "termLife": {
-          "title": "Term Life Insurance",
-          "description": "Affordable coverage for a specific period, providing financial protection for your family"
-        },
-        "wholeLife": {
-          "title": "Whole Life Insurance",
-          "description": "Permanent coverage with a cash value component that grows over time"
-        },
-        "universalLife": {
-          "title": "Universal Life Insurance",
-          "description": "Flexible permanent coverage with adjustable premiums and death benefits"
-        },
-        "variableLife": {
-          "title": "Variable Life Insurance",
-          "description": "Investment-linked coverage allowing you to grow your policy's cash value"
-        },
-        "groupLife": {
-          "title": "Group Life Insurance",
-          "description": "Cost-effective coverage for employees or members of an organization"
-        }
-      },
-      "validation": {
-        "firstNameRequired": "First name is required",
-        "lastNameRequired": "Last name is required",
-        "emailRequired": "Email address is required",
-        "emailInvalid": "Please enter a valid email address",
-        "phoneRequired": "Phone number is required"
-      },
+    "company": {
+      "title": "Open a Business Account",
+      "description": "Complete your business account application in a few steps.",
       "form": {
-        "firstName": "First Name",
-        "firstNamePlaceholder": "Enter your first name",
-        "lastName": "Last Name",
-        "lastNamePlaceholder": "Enter your last name",
-        "email": "Email Address",
-        "emailPlaceholder": "Enter your email address",
-        "phone": "Phone Number",
-        "phonePlaceholder": "Enter your phone number",
-        "continueToSchedule": "Continue to Schedule",
-        "backToLifeInsurance": "Back to Life Insurance"
+        "companyInfo": "Company Information"
       },
-      "step1": {
-        "heroTitle": "Book Your Life Insurance Consultation",
-        "heroSubtitle": "Protect what matters most with expert insurance advice",
-        "overline": "STEP 1 OF 4",
-        "title": "Your Contact Information",
-        "description": "Please provide your contact details to get started"
+      "submitted": {
+        "message": "Your application is under review. You will receive a decision within 2â€“3 business days."
       },
-      "step2": {
-        "heroTitle": "Schedule Your Consultation",
-        "heroSubtitle": "Choose a convenient time for your 60-minute consultation",
-        "overline": "STEP 2 OF 4",
-        "title": "Pick a Date & Time",
-        "bookingFor": "Booking for",
-        "selectedService": "Selected service",
-        "backButton": "Back to Contact Info"
-      },
-      "step3": {
-        "heroTitle": "Select Your Insurance Plan",
-        "heroSubtitle": "Choose the life insurance product that best fits your needs",
-        "overline": "STEP 3 OF 4",
-        "title": "Select Your Insurance Plan",
-        "description": "Choose the plan that best matches your protection goals",
-        "consultationFee": "consultation fee",
-        "selectService": "Select Plan"
-      },
-      "step4": {
-        "heroTitle": "Review & Confirm",
-        "heroSubtitle": "Review your booking details before payment",
-        "overline": "STEP 4 OF 4",
-        "title": "Booking Summary",
-        "contactInfo": "Contact Information",
-        "name": "Name",
-        "email": "Email",
-        "phone": "Phone",
-        "appointmentDetails": "Appointment Details",
-        "appointmentConfirmation": "Appointment",
-        "scheduledViaCalendly": "Scheduled via Calendly",
-        "appointmentEmailNote": "A calendar invite has been sent to your email",
-        "duration": "Duration",
-        "minutes": "60 minutes",
-        "servicePayment": "Insurance Plan & Payment",
-        "consultationFeeExclVat": "Consultation Fee (excl. VAT)",
-        "vat": "VAT (20%)",
-        "totalInclVat": "Total (incl. VAT)",
-        "changeService": "Change Plan",
-        "proceedToPayment": "Proceed to Payment"
-      },
-      "payment": {
-        "heroTitle": "Complete Payment",
-        "heroSubtitle": "Secure payment to confirm your consultation",
-        "paymentSummary": "Payment Summary",
-        "service": "Insurance Plan",
-        "client": "Client",
-        "total": "Total",
-        "loadingPayment": "Loading payment options...",
-        "securePaymentNote": "Your payment is secured with industry-standard encryption",
-        "paymentFailed": "Payment failed. Please try again.",
-        "paymentSuccessError": "Payment completed but confirmation failed. Please contact support.",
-        "backToSummary": "Back to Summary",
-        "cancelBooking": "Cancel Booking",
+      "approved": {
+        "message": "Congratulations! Your business account has been approved. Your IBAN is ready.",
+        "nextSteps": {
+          "multiUser": "Invite team members and set up multi-user access.",
+          "accounting": "Connect your accounting and invoicing tools.",
+          "corporateCards": "Order corporate cards for your team.",
+          "fundAccount": "Fund your account to start transacting."
+        },
+        "buttons": {
+          "dashboard": "Go to Dashboard",
+          "downloadApp": "Download App",
+          "startNew": "Start a New Application"
+        }
+      }
+    },
+    "warmReferral": {
+      "handoff": {
         "description": "Based on your profile, we recommend opening your account with {partner}. Opulanz will remain your point of contact throughout the process.",
         "step1": {
           "description": "Your profile has been matched to {partner}. Click below to proceed."
@@ -3119,225 +2893,6 @@
           "description": "You will be redirected to {partner} to complete your account opening."
         }
       }
-    },
-    "hero": {
-      "title": "Life Insurance Solutions",
-      "subtitle": "Protect what matters most. Expert guidance to find the right coverage for you and your family.",
-      "primaryCta": "Book a Consultation",
-      "secondaryCta": "Explore Plans"
-    },
-    "overview": {
-      "overline": "WHY LIFE INSURANCE",
-      "title": "Peace of mind for you and your loved ones",
-      "description": "Life insurance is one of the most important financial decisions you will make. Our independent advisors compare plans from leading providers to find the perfect coverage tailored to your needs.",
-      "badges": {
-        "unbiased": "Independent Advice",
-        "multipleProviders": "Multiple Providers",
-        "familyProtection": "Family Protection"
-      },
-      "whyChoose": "Why choose Opulanz?",
-      "benefits": {
-        "1": "Access to leading European insurance providers",
-        "2": "Personalised coverage recommendations based on your profile",
-        "3": "Transparent pricing with no hidden fees",
-        "4": "Dedicated advisor throughout your entire journey",
-        "5": "Fast approval process — coverage in days, not weeks"
-      },
-      "badge1": "Unbiased Advice",
-      "badge2": "Multiple Providers",
-      "badge3": "Family Protection",
-      "whyBrokerTitle": "Why Choose a Broker?",
-      "benefit1": "Independent broker representing your interests",
-      "benefit2": "Access to policies from multiple leading insurance providers",
-      "benefit3": "Personalized needs analysis and coverage recommendations",
-      "benefit4": "Expert guidance on advanced features and estate planning",
-      "benefit5": "Ongoing policy management and support"
-    },
-    "products": {
-      "overline": "OUR PLANS",
-      "title": "Find the right life insurance plan",
-      "description": "We offer a full range of life insurance products to match every stage of life and every financial goal.",
-      "termLife": {
-        "title": "Term Life Insurance",
-        "description": "Affordable coverage for a fixed period. Ideal for protecting your family during key life stages such as raising children or paying off a mortgage."
-      },
-      "wholeLife": {
-        "title": "Whole Life Insurance",
-        "description": "Permanent coverage that lasts a lifetime, combined with a cash value component that grows over time and can be accessed as a financial asset."
-      },
-      "universalLife": {
-        "title": "Universal Life Insurance",
-        "description": "Flexible permanent coverage with adjustable premiums and death benefits. Adapts to your changing financial circumstances."
-      },
-      "variableLife": {
-        "title": "Variable Life Insurance",
-        "description": "Investment-linked coverage that lets you grow your policy cash value through market investments while maintaining life protection."
-      },
-      "groupLife": {
-        "title": "Group Life Insurance",
-        "description": "Cost-effective coverage for businesses looking to protect their employees and strengthen their benefits package."
-      },
-      "term": {
-        "title": "Term Life Insurance",
-        "description": "10, 20, or 30-year term options with level premiums for affordable protection during your most critical years."
-      },
-      "whole": {
-        "title": "Whole Life Insurance",
-        "description": "Lifetime coverage with cash value accumulation that provides permanent protection and financial growth."
-      },
-      "universal": {
-        "title": "Universal Life Insurance",
-        "description": "Flexible premiums and adjustable death benefits that adapt to your changing financial situation."
-      },
-      "variable": {
-        "title": "Variable Life Insurance",
-        "description": "Investment-linked cash value growth that allows you to potentially increase your policy value over time."
-      },
-      "group": {
-        "title": "Group Life Insurance",
-        "description": "Employer-sponsored life insurance plans that provide coverage at competitive group rates."
-      }
-    },
-    "process": {
-      "overline": "HOW IT WORKS",
-      "title": "Your coverage in 4 simple steps",
-      "steps": {
-        "1": {
-          "title": "Book a Consultation",
-          "description": "Schedule a free consultation with one of our certified insurance advisors at a time that suits you."
-        },
-        "2": {
-          "title": "Needs Assessment",
-          "description": "We analyse your financial situation, family needs, and goals to identify the most suitable coverage options."
-        },
-        "3": {
-          "title": "Compare Plans",
-          "description": "We present tailored proposals from multiple top-rated insurers with clear comparisons and transparent pricing."
-        },
-        "4": {
-          "title": "Get Covered",
-          "description": "Choose your plan, complete the application, and receive your policy documents. Coverage begins immediately."
-        }
-      }
-    },
-    "features": {
-      "overline": "OUR ADVANTAGES",
-      "title": "The Opulanz insurance difference",
-      "description": "We combine expert advice, market access, and dedicated support to deliver the best insurance outcomes for our clients.",
-      "expertBrokers": {
-        "title": "Certified Advisors",
-        "description": "All our advisors hold professional insurance qualifications and are regulated by the relevant authorities in France and Luxembourg."
-      },
-      "needsAnalysis": {
-        "title": "In-Depth Analysis",
-        "description": "We take the time to understand your complete financial picture before recommending any coverage."
-      },
-      "wealthBuilding": {
-        "title": "Wealth Building",
-        "description": "Many of our insurance products include savings and investment components to help you build long-term wealth."
-      },
-      "ongoingSupport": {
-        "title": "Ongoing Support",
-        "description": "Your advisor remains your point of contact for policy reviews, claims assistance, and life changes that affect your coverage."
-      },
-      "brokers": {
-        "title": "Expert Brokers",
-        "description": "Specialized knowledge to connect you with the right insurance products"
-      },
-      "analysis": {
-        "title": "Needs Analysis",
-        "description": "Personalized assessment to find the perfect coverage from multiple providers"
-      },
-      "wealth": {
-        "title": "Wealth Building",
-        "description": "Guidance on tax-advantaged strategies for long-term financial growth"
-      },
-      "support": {
-        "title": "Ongoing Support",
-        "description": "Continuous policy management and brokerage support"
-      }
-    },
-    "cta": {
-      "title": "Ready to protect your family?",
-      "description": "Book a free consultation today and let our experts find the right plan for you.",
-      "benefits": {
-        "consultation": "Free initial consultation",
-        "compare": "Compare multiple providers",
-        "guidance": "Expert guidance throughout"
-      },
-      "primaryButton": "Book a Free Consultation",
-      "secondaryButton": "View All Plans",
-      "subtitle": "Get started with a personalized consultation. We will help you compare options from leading insurance providers to find the solution that best fits your family needs and financial goals.",
-      "badge1": "Free Consultation",
-      "badge2": "Compare Multiple Providers",
-      "badge3": "Expert Guidance"
-    },
-    "howItWorks": {
-      "overline": "Simple Process",
-      "title": "How We Help You Find the Right Coverage",
-      "step1": {
-        "title": "Free Consultation",
-        "description": "Schedule a no-obligation meeting to discuss your needs"
-      },
-      "step2": {
-        "title": "Compare Options",
-        "description": "We present policies from multiple top providers"
-      },
-      "step3": {
-        "title": "Expert Guidance",
-        "description": "Get unbiased recommendations tailored to you"
-      },
-      "step4": {
-        "title": "Ongoing Support",
-        "description": "Continuous assistance throughout your policy lifecycle"
-      }
-    }
-  },
-  "invoicingAccounting": {
-    "getStarted": "Get Started",
-    "features": {
-      "overline": "WHAT WE OFFER",
-      "title": "Everything your business needs",
-      "description": "Comprehensive accounting and invoicing tools designed for modern businesses in France and Luxembourg.",
-      "invoicing": {
-        "title": "Smart Invoicing",
-        "description": "Create, send, and track professional invoices in seconds. Automate reminders and get paid faster."
-      },
-      "bookkeeping": {
-        "title": "Bookkeeping",
-        "description": "Automated transaction categorisation and real-time bookkeeping so your accounts are always up to date."
-      },
-      "reporting": {
-        "title": "Financial Reporting",
-        "description": "Instant profit & loss statements, balance sheets, and cash flow reports - ready when you need them."
-      },
-      "payroll": {
-        "title": "Payroll Management",
-        "description": "Process payroll accurately and on time, with full compliance with French and Luxembourg labour law."
-      },
-      "compliance": {
-        "title": "Tax Compliance",
-        "description": "Stay compliant with VAT filings, corporate tax obligations, and all regulatory requirements."
-      },
-      "planning": {
-        "title": "Financial Planning",
-        "description": "Budgeting tools and forecasting to help you plan ahead and grow your business with confidence."
-      }
-    },
-    "benefits": {
-      "title": "Why choose Opulanz Accounting?",
-      "description": "We handle the numbers so you can focus on growing your business.",
-      "1": "Save up to 80% of the time spent on manual accounting tasks",
-      "2": "Real-time financial visibility across all your accounts",
-      "3": "Fully compliant with French ACPR and Luxembourg CSSF standards",
-      "4": "Dedicated accountant assigned to your business",
-      "5": "Seamless integration with your Opulanz business account",
-      "6": "Secure cloud storage for all your financial documents"
-    },
-    "cta": {
-      "title": "Ready to simplify your accounting?",
-      "description": "Join hundreds of businesses using Opulanz to manage their finances smarter and faster.",
-      "contactSales": "Contact Sales"
     }
   },
   "lifeInsurance": {

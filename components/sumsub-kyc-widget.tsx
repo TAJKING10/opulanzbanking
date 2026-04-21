@@ -28,7 +28,7 @@ export function SumsubKycWidget({
 
   const fetchToken = React.useCallback(async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/sumsub/access-token`, {
+      const res = await fetch("http://localhost:5000/api/sumsub/access-token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, levelName }),
@@ -53,10 +53,10 @@ export function SumsubKycWidget({
   }, [fetchToken]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 overflow-y-auto p-4">
-      <div className="relative w-full max-w-2xl rounded-2xl bg-white shadow-2xl my-4 flex flex-col">
-        {/* Header — sticky so it stays visible while scrolling */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white rounded-t-2xl z-10 flex-shrink-0">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+      <div className="relative w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div>
             <h2 className="text-lg font-semibold text-gray-900">Identity Verification</h2>
             <p className="text-sm text-gray-500">Powered by Sumsub</p>
@@ -69,8 +69,8 @@ export function SumsubKycWidget({
           </button>
         </div>
 
-        {/* Content — no height cap so Sumsub can expand freely */}
-        <div className="min-h-[500px] flex items-center justify-center flex-1">
+        {/* Content */}
+        <div className="min-h-[500px] flex items-center justify-center">
           {loading && (
             <div className="flex flex-col items-center gap-3 text-gray-500">
               <Loader2 className="h-8 w-8 animate-spin text-[#b59354]" />

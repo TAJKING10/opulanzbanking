@@ -3,10 +3,7 @@
  * Visual progress indicator for multi-step forms
  */
 
-"use client";
-
 import * as React from "react";
-import { useTranslations } from "next-intl";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +20,6 @@ export interface FormStepperProps {
 }
 
 export function FormStepper({ steps, currentStep, className }: FormStepperProps) {
-  const t = useTranslations("common");
   return (
     <div className={cn("w-full", className)}>
       {/* Desktop View */}
@@ -95,7 +91,7 @@ export function FormStepper({ steps, currentStep, className }: FormStepperProps)
       <div className="md:hidden">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-brand-dark">
-            {t("stepOf", { current: currentStep, total: steps.length })}
+            Step {currentStep} of {steps.length}
           </span>
           <span className="text-sm text-brand-grayMed">
             {steps[currentStep - 1].shortLabel || steps[currentStep - 1].label}

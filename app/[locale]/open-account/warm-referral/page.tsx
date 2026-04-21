@@ -9,7 +9,7 @@ import { CheckCircle2, ArrowRight } from "lucide-react";
 import {
   warmReferralSchema,
   type WarmReferralFormData,
-} from "@/shared/lib/validators/warm-referral";
+} from "@/lib/validators/warm-referral";
 import { generateRedirectUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,34 +50,7 @@ export default function WarmReferralPage() {
   const consentPartner = watch("consentPartner");
 
   const onSubmit = async (data: WarmReferralFormData) => {
-    // Save referral lead to backend
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/applications`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'individual',
-          status: 'submitted',
-          payload: {
-            referralType: 'warm',
-            email: data.email,
-            clientType: data.clientType,
-            country: data.country,
-            legalForm: data.legalForm || null,
-            expectedVolume: data.expectedVolume,
-            consentDataSharing: data.consentDataSharing,
-            consentTerms: data.consentTerms,
-            consentPartner: data.consentPartner,
-            submittedAt: new Date().toISOString(),
-          },
-        }),
-      });
-    } catch (err) {
-      console.error('Failed to save warm referral lead:', err);
-      // Non-blocking: continue to partner handoff even if save fails
-    }
-
-    // Partner matching logic
+    // Simulate partner matching logic
     const matchedPartner =
       data.country === "LU" ? "Banque Partner LU" : "Banque Partner FR";
     setPartner(matchedPartner);

@@ -118,7 +118,13 @@
       "Bash(head -3 grep -r \"NEXT_PUBLIC_API_URL\\\\|localhost:5000\" /c/Users/Toufi/AndroidStudioProjects/azuree/.next/server/app/)",
       "Bash(__NEW_LINE_321f178970d4f370__ echo:*)",
       "Bash(rm fix_fr.js)",
-      "Bash(rm messages/fr.json.draft)"
+      "Bash(rm messages/fr.json.draft)",
+      "Bash(az deployment:*)",
+      "Bash(powershell -File \"C:/Users/Toufi/AndroidStudioProjects/azuree/deploy-frontend.ps1\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"C:/Users/Toufi/AndroidStudioProjects/azuree/deploy-backend.ps1\" 2>&1)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"C:/Users/Toufi/AndroidStudioProjects/azuree/deploy-frontend.ps1\" 2>&1)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)"
     ],
     "deny": [],
     "ask": []

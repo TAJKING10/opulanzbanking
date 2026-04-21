@@ -159,7 +159,7 @@ export default function CompanyFormationPage() {
                       </span>
                     </div>
                   </div>
-                  <ul className="flex-1 space-y-2 border-t border-brand-grayLight pt-4">
+                  <ul className="space-y-2 border-t border-brand-grayLight pt-4">
                     {form.features.map((feature) => (
                       <li
                         key={feature}

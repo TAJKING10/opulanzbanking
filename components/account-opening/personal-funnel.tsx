@@ -197,7 +197,6 @@ interface PersonalFunnelProps {
 }
 
 export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
-  const t = useTranslations("common");
   const tSteps = useTranslations("accountOpening.personal.personalFunnel.steps");
   const tWelcome = useTranslations("accountOpening.personal.personalFunnel.welcome");
   const tIdentity = useTranslations("accountOpening.personal.personalFunnel.identity");
@@ -1071,8 +1070,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 <div className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="font-medium text-brand-dark">{tEligibility("sourceOfFunds")}</p>
-                    <p className="text-sm text-brand-grayMed">{tEligibility("sourceOfFundsDescription")}</p>
+                    <p className="font-medium text-brand-dark">Source of Funds Documentation</p>
+                    <p className="text-sm text-brand-grayMed">Pay slips, investment statements, or other proof</p>
                   </div>
                 </div>
                 <div className="pl-8">
@@ -1091,7 +1090,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {uploadedDocuments.some(d => d.category === "source_of_funds") ? tEligibility("uploaded") : tEligibility("uploadSourceOfFunds")}
+                    {uploadedDocuments.some(d => d.category === "source_of_funds") ? "✓ Uploaded" : "Upload Proof"}
                   </Button>
                 </div>
               </div>
@@ -1103,8 +1102,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     <div className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="font-medium text-brand-dark">{tEligibility("proofOfAssets")}</p>
-                        <p className="text-sm text-brand-grayMed">{tEligibility("proofOfAssetsDescription")}</p>
+                        <p className="font-medium text-brand-dark">Proof of Assets</p>
+                        <p className="text-sm text-brand-grayMed">Bank statements, investment portfolios</p>
                       </div>
                     </div>
                     <div className="pl-8">
@@ -1123,7 +1122,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                         className="w-full sm:w-auto"
                       >
                         <Upload className="mr-2 h-4 w-4" />
-                        {uploadedDocuments.some(d => d.category === "proof_of_assets") ? tEligibility("uploaded") : tEligibility("uploadAssets")}
+                        {uploadedDocuments.some(d => d.category === "proof_of_assets") ? "✓ Uploaded" : "Upload Assets"}
                       </Button>
                     </div>
                   </div>
@@ -1132,8 +1131,8 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                     <div className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-brand-gold mt-0.5 flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="font-medium text-brand-dark">{tEligibility("incomeEvidence")}</p>
-                        <p className="text-sm text-brand-grayMed">{tEligibility("incomeEvidenceDescription")}</p>
+                        <p className="font-medium text-brand-dark">Income Evidence</p>
+                        <p className="text-sm text-brand-grayMed">Tax returns, employment contracts</p>
                       </div>
                     </div>
                     <div className="pl-8">
@@ -1152,7 +1151,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                         className="w-full sm:w-auto"
                       >
                         <Upload className="mr-2 h-4 w-4" />
-                        {uploadedDocuments.some(d => d.category === "income_evidence") ? tEligibility("uploaded") : tEligibility("uploadIncomeProof")}
+                        {uploadedDocuments.some(d => d.category === "income_evidence") ? "✓ Uploaded" : "Upload Income Proof"}
                       </Button>
                     </div>
                   </div>
@@ -1163,7 +1162,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
             {/* Uploaded Documents List */}
             {uploadedDocuments.length > 0 && (
               <div className="space-y-2 pt-6 border-t border-gray-200 mt-6">
-                <Label>{tEligibility("uploadedDocuments", { count: uploadedDocuments.length })}</Label>
+                <Label>Uploaded Documents ({uploadedDocuments.length})</Label>
                 <div className="space-y-2">
                   {uploadedDocuments.map((doc, index) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -1344,7 +1343,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 </a>
               </Button>
               <Button variant="outline" size="lg" onClick={onSwitchMode}>
-                {tSubmission("startBusinessApplication")}
+                Start a Business Application
               </Button>
             </div>
           </div>
@@ -1359,12 +1358,12 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               disabled={isSubmitting}
             >
               <ArrowLeft className="mr-2 h-5 w-5" />
-              {t("back")}
+              Back
             </Button>
 
             {currentStep < 5 && (
               <Button onClick={handleNext} disabled={isSubmitting}>
-                {t("next")}
+                Next
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             )}
@@ -1374,11 +1373,11 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    {t("submitting")}
+                    Submitting...
                   </>
                 ) : (
                   <>
-                    {t("submitApplication")}
+                    Submit Application
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </>
                 )}

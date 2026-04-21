@@ -3,9 +3,12 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { Building2, Briefcase } from "lucide-react";
-import { WelcomeStepProps } from "@/shared/types/step-props";
 
-type BusinessWelcomeStepProps = WelcomeStepProps;
+interface BusinessWelcomeStepProps {
+  data: any;
+  onUpdate: (data: any) => void;
+  onNext: () => void;
+}
 
 export function BusinessWelcomeStep({ data, onUpdate, onNext }: BusinessWelcomeStepProps) {
   const t = useTranslations("accountForms.business.welcome");

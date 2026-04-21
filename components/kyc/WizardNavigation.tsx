@@ -3,7 +3,6 @@
 import React from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from 'next-intl';
 
 interface WizardNavigationProps {
   onNext: () => void;
@@ -19,12 +18,9 @@ export function WizardNavigation({
   onPrev,
   canGoPrev,
   canGoNext,
-  nextLabel,
-  prevLabel,
+  nextLabel = "Next",
+  prevLabel = "Back"
 }: WizardNavigationProps) {
-  const t = useTranslations('common');
-  const displayNext = nextLabel ?? t('next');
-  const displayPrev = prevLabel ?? t('back');
   return (
     <div className="flex justify-between mt-8 pt-6 border-t border-brand-grayLight">
       <Button
@@ -35,7 +31,7 @@ export function WizardNavigation({
         className="flex items-center gap-2"
       >
         <ArrowLeft className="w-4 h-4" />
-        {displayPrev}
+        {prevLabel}
       </Button>
       <Button
         type="button"
@@ -43,7 +39,7 @@ export function WizardNavigation({
         disabled={!canGoNext}
         className="flex items-center gap-2 bg-brand-gold hover:bg-brand-goldDark"
       >
-        {displayNext}
+        {nextLabel}
         <ArrowRight className="w-4 h-4" />
       </Button>
     </div>

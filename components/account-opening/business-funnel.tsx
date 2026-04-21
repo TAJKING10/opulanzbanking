@@ -6,13 +6,9 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { commonPersonFields, taxFields, consentFields } from "@/shared/lib/validators/common-fields";
-import { saveApplicationMetadata } from "@/shared/lib/storage";
-import { processFileUpload, type UploadedDocument } from "@/shared/lib/file-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,40 +26,35 @@ import type {
 } from "@/types/account-opening";
 // Removed: import { generateReferralRouting, saveReferralEntry, getPartnerDisplayName } from "@/lib/referral-routing";
 
+const STEPS: Step[] = [
+  { id: "welcome", label: "Welcome", shortLabel: "Welcome" },
+  { id: "company", label: "Company Status", shortLabel: "Company" },
+  { id: "contact", label: "Contact Person", shortLabel: "Contact" },
+  { id: "intent", label: "Business Intent", shortLabel: "Intent" },
+  { id: "directors", label: "Directors & UBOs", shortLabel: "Directors" },
+  { id: "review", label: "Review & Consents", shortLabel: "Review" },
+  { id: "submission", label: "Submission", shortLabel: "Submit" },
+];
+
 interface BusinessFunnelProps {
   onSwitchMode: () => void;
   locale: string;
 }
 
 export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
-  const t = useTranslations("common");
-  const tSteps = useTranslations("accountOpening.business.businessFunnel.steps");
-  const tWelcome = useTranslations("accountOpening.business.businessFunnel.welcome");
-  const tCompany = useTranslations("accountOpening.business.businessFunnel.company");
-  const tContact = useTranslations("accountOpening.business.businessFunnel.contact");
-  const tIntent = useTranslations("accountOpening.business.businessFunnel.intent");
-  const tDirectors = useTranslations("accountOpening.business.businessFunnel.directors");
-  const tReview = useTranslations("accountOpening.business.businessFunnel.review");
-  const tSubmission = useTranslations("accountOpening.business.businessFunnel.submission");
-
-  const STEPS: Step[] = [
-    { id: "welcome", label: tSteps("welcome.label"), shortLabel: tSteps("welcome.shortLabel") },
-    { id: "company", label: tSteps("company.label"), shortLabel: tSteps("company.shortLabel") },
-    { id: "contact", label: tSteps("contact.label"), shortLabel: tSteps("contact.shortLabel") },
-    { id: "intent", label: tSteps("intent.label"), shortLabel: tSteps("intent.shortLabel") },
-    { id: "directors", label: tSteps("directors.label"), shortLabel: tSteps("directors.shortLabel") },
-    { id: "review", label: tSteps("review.label"), shortLabel: tSteps("review.shortLabel") },
-    { id: "submission", label: tSteps("submission.label"), shortLabel: tSteps("submission.shortLabel") },
-  ];
-
   const [currentStep, setCurrentStep] = React.useState(1);
   const [formData, setFormData] = React.useState<Partial<BusinessApplication>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [applicationId, setApplicationId] = React.useState<string>("");
 
   // Document uploads state
-  const [uploadedDocuments, setUploadedDocuments] = React.useState<UploadedDocument[]>([]);
-  const [uploadedFiles, setUploadedFiles] = React.useState<Map<string, File>>(new Map());
+  const [uploadedDocuments, setUploadedDocuments] = React.useState<Array<{
+    name: string;
+    type: string;
+    size: number;
+    data: string; // base64 encoded
+    category: string;
+  }>>([]);
 
   // Scroll to top whenever step changes
   React.useEffect(() => {
@@ -92,12 +83,13 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
     email: z.string().email("Invalid email address"),
-    dateOfBirth: z.string().min(1, "Date of birth is required"),
-    nationality: z.string().min(1, "Nationality is required"),
-    mobile: z.string().min(6, "Invalid phone number"),
+    countryCode: z.string().min(1, "Country code is required"),
+    mobile: z.string().min(10, "Invalid phone number"),
     countryOfResidence: z.string().min(1, "Country is required"),
     taxCountry: z.string().min(1, "Tax residency is required"),
     taxId: z.string().optional(),
+    dateOfBirth: z.string().min(1, "Date of birth is required"),
+    nationality: z.string().min(1, "Nationality is required"),
   });
 
   const contactForm = useForm({
@@ -159,20 +151,6 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
     if (currentStep === 3) {
       isValid = await contactForm.trigger();
-      console.log('Step 3 (Contact) validation:', isValid, contactForm.formState.errors);
-      console.log('Step 3 form values:', contactForm.getValues());
-      
-      if (!isValid) {
-        console.error('Validation failed for contact form');
-        const firstError = Object.keys(contactForm.formState.errors)[0];
-        if (firstError) {
-          const element = document.getElementById(firstError);
-          element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          element?.focus();
-        }
-        return;
-      }
-      
       if (isValid) {
         const values = contactForm.getValues();
         const contactPerson: PersonalIdentity = {
@@ -202,7 +180,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
     if (currentStep === 5) {
       // Directors validation (at least one)
       if (directors.length === 0) {
-        alert(tDirectors("atLeastOneRequired"));
+        alert("Please add at least one director or UBO");
         return;
       }
       setFormData((prev) => ({ ...prev, directorsAndUBOs: directors }));
@@ -235,24 +213,29 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
     if (!files || files.length === 0) return;
 
     const file = files[0];
-    
-    const result = await processFileUpload(file, category);
-    if (!result.success) {
-      alert(result.error);
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (file.size > maxSize) {
+      alert("File size must be less than 5MB");
       return;
     }
 
-    setUploadedDocuments(prev => [...prev, result.document]);
-    setUploadedFiles(prev => new Map(prev).set(result.document.id, file));
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target?.result as string;
+      setUploadedDocuments(prev => [...prev, {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        data: base64,
+        category: category
+      }]);
+    };
+    reader.readAsDataURL(file);
   };
 
-  const removeDocument = (documentId: string) => {
-    setUploadedDocuments(prev => prev.filter(doc => doc.id !== documentId));
-    setUploadedFiles(prev => {
-      const newMap = new Map(prev);
-      newMap.delete(documentId);
-      return newMap;
-    });
+  const removeDocument = (index: number) => {
+    setUploadedDocuments(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async () => {
@@ -273,44 +256,16 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
         createdAt: new Date().toISOString(),
       };
 
-      // Save complete application data with all details
-      try {
-        const completeApplication = {
-          id: appId,
-          type: "business",
-          submittedAt: new Date().toISOString(),
-          status: "submitted",
-          data: application, // Store complete application data
-          documents: uploadedDocuments, // Store document metadata
-        };
-        
-        const storageKey = `application_${appId}`;
-        localStorage.setItem(storageKey, JSON.stringify(completeApplication));
-        
-        console.log("✅ Full business application saved to localStorage");
-        console.log(`Key: ${storageKey}`);
-        console.log("Full data:", completeApplication);
-      } catch (error) {
-        console.error("Failed to save full application:", error);
-      }
-
-      // Save application metadata only (no file content) to prevent quota errors
-      const saveResult = saveApplicationMetadata({
+      // Save application to localStorage with unique ID
+      const applications = JSON.parse(localStorage.getItem("opulanz_applications") || "[]");
+      applications.push({
         id: appId,
         type: "business",
+        application,
+        documents: uploadedDocuments,
         submittedAt: new Date().toISOString(),
-        status: "submitted",
-        summary: {
-          companyName: application.company?.companyName || "N/A",
-          contactName: `${application.contactPerson.firstName} ${application.contactPerson.lastName}`,
-          contactEmail: application.contactPerson.email,
-          documentsCount: uploadedDocuments.length,
-        },
       });
-
-      if (!saveResult.success) {
-        throw new Error(saveResult.error || "Failed to save application");
-      }
+      localStorage.setItem("opulanz_applications", JSON.stringify(applications));
 
       // Store application ID for display
       setApplicationId(appId);
@@ -318,7 +273,6 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
       setCurrentStep(7);
     } catch (error) {
       console.error("Submission error:", error);
-      alert(error instanceof Error ? error.message : "Failed to submit application. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -358,10 +312,10 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
           <div className="space-y-8">
             <div className="text-center space-y-4">
               <h2 className="text-3xl font-bold text-brand-dark">
-                {tWelcome("title")}
+                Open Your Business Account
               </h2>
               <p className="text-lg text-brand-grayMed max-w-2xl mx-auto">
-                {tWelcome("subtitle")}
+                Tell us about your company, and we'll guide you through the right setup with an Opulanz partner bank.
               </p>
             </div>
 
@@ -369,44 +323,44 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
             <div className="bg-brand-goldLight/10 rounded-xl p-6 border border-brand-gold/20">
               <h3 className="text-xl font-bold text-brand-dark mb-4 flex items-center gap-2">
                 <Clock className="h-5 w-5 text-brand-gold" />
-                {tWelcome("timeline.title")}
+                Application Timeline
               </h3>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold flex-shrink-0">1</div>
                   <div className="flex-1">
-                    <div className="font-semibold text-brand-dark">{tWelcome("timeline.step1.title")}</div>
-                    <div className="text-sm text-brand-grayMed">{tWelcome("timeline.step1.description")}</div>
+                    <div className="font-semibold text-brand-dark">Application Submission</div>
+                    <div className="text-sm text-brand-grayMed">Complete the online form (15-20 minutes)</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold flex-shrink-0">2</div>
                   <div className="flex-1">
-                    <div className="font-semibold text-brand-dark">{tWelcome("timeline.step2.title")}</div>
-                    <div className="text-sm text-brand-grayMed">{tWelcome("timeline.step2.description")}</div>
+                    <div className="font-semibold text-brand-dark">Document Review</div>
+                    <div className="text-sm text-brand-grayMed">Partner bank reviews company documents and UBO information (2-5 business days)</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold flex-shrink-0">3</div>
                   <div className="flex-1">
-                    <div className="font-semibold text-brand-dark">{tWelcome("timeline.step3.title")}</div>
-                    <div className="text-sm text-brand-grayMed">{tWelcome("timeline.step3.description")}</div>
+                    <div className="font-semibold text-brand-dark">KYC & Compliance</div>
+                    <div className="text-sm text-brand-grayMed">Enhanced due diligence for business accounts (3-7 business days)</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-gold text-white text-sm font-bold flex-shrink-0">4</div>
                   <div className="flex-1">
-                    <div className="font-semibold text-brand-dark">{tWelcome("timeline.step4.title")}</div>
-                    <div className="text-sm text-brand-grayMed">{tWelcome("timeline.step4.description")}</div>
+                    <div className="font-semibold text-brand-dark">Account Activation</div>
+                    <div className="text-sm text-brand-grayMed">Receive IBAN, credentials, and corporate cards (2-3 business days)</div>
                   </div>
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-brand-gold/20">
                 <p className="text-sm text-brand-dark">
-                  <strong>{tWelcome("timeline.totalTime")}</strong>
+                  <strong>Total estimated time: 7-15 business days</strong>
                 </p>
                 <p className="text-xs text-brand-grayMed mt-1">
-                  {tWelcome("timeline.note")}
+                  Timeline may vary based on company structure complexity and document completeness
                 </p>
               </div>
             </div>
@@ -416,32 +370,32 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               <div className="border border-brand-grayLight rounded-xl p-6">
                 <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-brand-gold" />
-                  {tWelcome("eligibility.title")}
+                  Eligibility Requirements
                 </h3>
                 <ul className="space-y-2 text-sm text-brand-dark">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("eligibility.requirement1")}</span>
+                    <span>Company registered in EU/EEA or select jurisdictions</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("eligibility.requirement2")}</span>
+                    <span>Valid company registration documents</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("eligibility.requirement3")}</span>
+                    <span>Articles of association or equivalent</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("eligibility.requirement4")}</span>
+                    <span>UBO declaration (Ultimate Beneficial Owners)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("eligibility.requirement5")}</span>
+                    <span>All directors/signatories have valid ID</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("eligibility.requirement6")}</span>
+                    <span>Company tax identification number</span>
                   </li>
                 </ul>
               </div>
@@ -449,32 +403,32 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               <div className="border border-brand-grayLight rounded-xl p-6">
                 <h3 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
                   <FileText className="h-5 w-5 text-brand-gold" />
-                  {tWelcome("documents.title")}
+                  Required Documents
                 </h3>
                 <ul className="space-y-2 text-sm text-brand-dark">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("documents.document1")}</span>
+                    <span>Certificate of incorporation (dated within 3 months)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("documents.document2")}</span>
+                    <span>Articles of association / company bylaws</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("documents.document3")}</span>
+                    <span>Register of directors and shareholders</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("documents.document4")}</span>
+                    <span>ID/passport for all directors and UBOs ({'>'}25% ownership)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("documents.document5")}</span>
+                    <span>Proof of business address (utility bill, lease)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>{tWelcome("documents.document6")}</span>
+                    <span>Business plan or activity description</span>
                   </li>
                 </ul>
               </div>
@@ -482,57 +436,57 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
             {/* How It Works */}
             <div className="bg-gray-50 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-brand-dark mb-4">{tWelcome("howItWorks.title")}</h3>
+              <h3 className="text-lg font-bold text-brand-dark mb-4">How It Works</h3>
               <div className="space-y-4 text-sm text-brand-grayMed">
                 <p>
-                  <strong className="text-brand-dark">{tWelcome("howItWorks.smartRouting.title")}</strong> {tWelcome("howItWorks.smartRouting.description")}
+                  <strong className="text-brand-dark">Smart Routing:</strong> Based on your company's jurisdiction, industry, and banking needs, we automatically route your application to the most suitable Opulanz partner bank.
                 </p>
                 <p>
-                  <strong className="text-brand-dark">{tWelcome("howItWorks.priorityProcessing.title")}</strong> {tWelcome("howItWorks.priorityProcessing.description")}
+                  <strong className="text-brand-dark">Priority Processing:</strong> Your application includes a secure signed referral code from Opulanz, ensuring expedited review and preferential commercial terms from our partner banks.
                 </p>
                 <p>
-                  <strong className="text-brand-dark">{tWelcome("howItWorks.enhancedDueDiligence.title")}</strong> {tWelcome("howItWorks.enhancedDueDiligence.description")}
+                  <strong className="text-brand-dark">Enhanced Due Diligence:</strong> Business accounts undergo comprehensive KYC/AML screening including UBO verification, business activity assessment, and source of funds validation to ensure full regulatory compliance.
                 </p>
                 <p>
-                  <strong className="text-brand-dark">{tWelcome("howItWorks.noObligation.title")}</strong> {tWelcome("howItWorks.noObligation.description")}
+                  <strong className="text-brand-dark">No Obligation:</strong> Submitting this application does not commit you to opening an account. You'll receive final terms and can decide whether to proceed after partner bank approval.
                 </p>
               </div>
             </div>
 
             {/* Account Features */}
             <div className="border-2 border-brand-gold/30 rounded-xl p-6 bg-gradient-to-br from-brand-goldLight/5 to-transparent">
-              <h3 className="text-lg font-bold text-brand-dark mb-4">{tWelcome("features.title")}</h3>
+              <h3 className="text-lg font-bold text-brand-dark mb-4">Business Account Features</h3>
               <div className="grid sm:grid-cols-2 gap-3 text-sm text-brand-dark">
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                  <span>{tWelcome("features.feature1")}</span>
+                  <span>Dedicated business IBAN in EUR</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                  <span>{tWelcome("features.feature2")}</span>
+                  <span>SEPA transfers and SWIFT payments</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                  <span>{tWelcome("features.feature3")}</span>
+                  <span>Corporate debit/credit cards</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                  <span>{tWelcome("features.feature4")}</span>
+                  <span>Multi-user access with permissions</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                  <span>{tWelcome("features.feature5")}</span>
+                  <span>Accounting software integration</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                  <span>{tWelcome("features.feature6")}</span>
+                  <span>Dedicated business support</span>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button size="lg" onClick={handleNext}>
-                {tWelcome("startButton")}
+                Start Business Application
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -544,10 +498,10 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
           <form className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                {tCompany("title")}
+                Company Status
               </h2>
               <p className="text-brand-grayMed">
-                {tCompany("subtitle")}
+                Do you have an existing company or need to create one?
               </p>
             </div>
 
@@ -558,13 +512,13 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="existing" id="existing" />
                 <Label htmlFor="existing" className="font-normal cursor-pointer">
-                  {tCompany("existingCompany")}
+                  I already have a company
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="new" id="new" />
                 <Label htmlFor="new" className="font-normal cursor-pointer">
-                  {tCompany("newCompany")}
+                  I need to create a company
                 </Label>
               </div>
             </RadioGroup>
@@ -572,7 +526,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
             {companyForm.watch("status") === "existing" && (
               <div className="space-y-6 mt-6 p-6 bg-gray-50 rounded-lg">
                 <div className="space-y-2">
-                  <Label htmlFor="companyName">{tCompany("companyName")}</Label>
+                  <Label htmlFor="companyName">Company Name</Label>
                   <Input
                     id="companyName"
                     {...companyForm.register("companyName")}
@@ -582,7 +536,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="countryOfIncorporation">{tCompany("countryOfIncorporation")}</Label>
+                    <Label htmlFor="countryOfIncorporation">Country of Incorporation</Label>
                     <Input
                       id="countryOfIncorporation"
                       {...companyForm.register("countryOfIncorporation")}
@@ -591,7 +545,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="registrationNumber">{tCompany("registrationNumber")}</Label>
+                    <Label htmlFor="registrationNumber">Registration Number</Label>
                     <Input
                       id="registrationNumber"
                       {...companyForm.register("registrationNumber")}
@@ -602,7 +556,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="legalForm">{tCompany("legalForm")}</Label>
+                    <Label htmlFor="legalForm">Legal Form</Label>
                     <Input
                       id="legalForm"
                       {...companyForm.register("legalForm")}
@@ -611,7 +565,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="website">{tCompany("website")}</Label>
+                    <Label htmlFor="website">Website (optional)</Label>
                     <Input
                       id="website"
                       type="url"
@@ -626,17 +580,17 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
             {companyForm.watch("status") === "new" && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <p className="text-blue-900 mb-4">
-                  {tCompany("formationService.description")}
+                  We can help you incorporate your company in Luxembourg or other jurisdictions. Our company formation service includes:
                 </p>
                 <ul className="space-y-2 text-sm text-blue-800 mb-4">
-                  <li>• {tCompany("formationService.item1")}</li>
-                  <li>• {tCompany("formationService.item2")}</li>
-                  <li>• {tCompany("formationService.item3")}</li>
-                  <li>• {tCompany("formationService.item4")}</li>
+                  <li>• Legal structure consultation</li>
+                  <li>• Company registration and filing</li>
+                  <li>• Registered office address</li>
+                  <li>• Bank account setup</li>
                 </ul>
                 <Button variant="outline" size="sm" asChild>
                   <a href={`/${locale}/company-formation`} target="_blank">
-                    {tCompany("formationService.learnMore")}
+                    Learn More About Company Formation
                   </a>
                 </Button>
               </div>
@@ -649,17 +603,17 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
           <form className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                {tContact("title")}
+                Contact Person
               </h2>
               <p className="text-brand-grayMed">
-                {tContact("subtitle")}
+                Who will be the main contact for this application?
               </p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="firstName">
-                  {tContact("firstName")} <span className="text-red-500">{tContact("required")}</span>
+                  First Name <span className="text-red-500">*</span>
                 </Label>
                 <Input id="firstName" {...contactForm.register("firstName")} />
                 {contactForm.formState.errors.firstName && (
@@ -671,7 +625,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
               <div className="space-y-2">
                 <Label htmlFor="lastName">
-                  {tContact("lastName")} <span className="text-red-500">{tContact("required")}</span>
+                  Last Name <span className="text-red-500">*</span>
                 </Label>
                 <Input id="lastName" {...contactForm.register("lastName")} />
                 {contactForm.formState.errors.lastName && (
@@ -684,7 +638,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="email">
-                {tContact("email")} <span className="text-red-500">{tContact("required")}</span>
+                Email <span className="text-red-500">*</span>
               </Label>
               <Input id="email" type="email" {...contactForm.register("email")} />
               {contactForm.formState.errors.email && (
@@ -696,7 +650,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="mobile">
-                {tContact("mobile")} <span className="text-red-500">{tContact("required")}</span>
+                Mobile Phone <span className="text-red-500">*</span>
               </Label>
               <Input id="mobile" type="tel" {...contactForm.register("mobile")} />
               {contactForm.formState.errors.mobile && (
@@ -709,32 +663,22 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="dateOfBirth">
-                  {tContact("dateOfBirth")} <span className="text-red-500">{tContact("required")}</span>
+                  Date of Birth <span className="text-red-500">*</span>
                 </Label>
                 <Input id="dateOfBirth" type="date" {...contactForm.register("dateOfBirth")} />
-              {contactForm.formState.errors.dateOfBirth && (
-                  <p className="text-sm text-red-500">
-                    {contactForm.formState.errors.dateOfBirth.message}
-                  </p>
-                )}
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="nationality">
-                  {tContact("nationality")} <span className="text-red-500">{tContact("required")}</span>
+                  Nationality <span className="text-red-500">*</span>
                 </Label>
                 <Input id="nationality" {...contactForm.register("nationality")} />
-              {contactForm.formState.errors.nationality && (
-                  <p className="text-sm text-red-500">
-                    {contactForm.formState.errors.nationality.message}
-                  </p>
-                )}
               </div>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="countryOfResidence">
-                {tContact("countryOfResidence")} <span className="text-red-500">{tContact("required")}</span>
+                Country of Residence <span className="text-red-500">*</span>
               </Label>
               <Input id="countryOfResidence" {...contactForm.register("countryOfResidence")} />
             </div>
@@ -742,13 +686,13 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="taxCountry">
-                  {tContact("taxResidency")} <span className="text-red-500">{tContact("required")}</span>
+                  Tax Residency <span className="text-red-500">*</span>
                 </Label>
                 <Input id="taxCountry" {...contactForm.register("taxCountry" as any)} />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="taxId">{tContact("taxId")}</Label>
+                <Label htmlFor="taxId">Tax ID (Optional)</Label>
                 <Input id="taxId" {...contactForm.register("taxId" as any)} />
               </div>
             </div>
@@ -760,15 +704,15 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
           <form className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                {tIntent("title")}
+                Business Intent & Activity
               </h2>
               <p className="text-brand-grayMed">
-                {tIntent("subtitle")}
+                Tell us about your business operations
               </p>
             </div>
 
             <div className="space-y-4">
-              <Label>{tIntent("jurisdictions")} <span className="text-red-500">{tIntent("required")}</span></Label>
+              <Label>Intended Jurisdictions <span className="text-red-500">*</span></Label>
               <div className="grid grid-cols-2 gap-4">
                 {["Luxembourg", "France", "Finland", "Other EEA"].map((jur) => (
                   <div key={jur} className="flex items-center space-x-2">
@@ -795,12 +739,12 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
             <div className="space-y-2">
               <Label htmlFor="businessActivity">
-                {tIntent("businessActivity")} <span className="text-red-500">{tIntent("required")}</span>
+                Business Activity <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="businessActivity"
                 {...intentForm.register("businessActivity")}
-                placeholder={tIntent("businessActivityPlaceholder")}
+                placeholder="E-commerce, Consulting, etc."
               />
               {intentForm.formState.errors.businessActivity && (
                 <p className="text-sm text-red-500">
@@ -812,7 +756,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="expectedMonthlyVolume">
-                  {tIntent("expectedMonthlyVolume")}
+                  Expected Monthly Volume (€)
                 </Label>
                 <Input
                   id="expectedMonthlyVolume"
@@ -823,7 +767,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
               <div className="space-y-2">
                 <Label htmlFor="averageTicketSize">
-                  {tIntent("averageTicketSize")}
+                  Average Ticket Size (€)
                 </Label>
                 <Input
                   id="averageTicketSize"
@@ -834,7 +778,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
             </div>
 
             <div className="space-y-4">
-              <Label>{tIntent("currencies")} <span className="text-red-500">{tIntent("required")}</span></Label>
+              <Label>Primary Currencies <span className="text-red-500">*</span></Label>
               <div className="grid grid-cols-2 gap-4">
                 {["EUR", "USD", "GBP", "Other"].map((curr) => (
                   <div key={curr} className="flex items-center space-x-2">
@@ -861,9 +805,9 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
             {/* Document Upload Section */}
             <div className="space-y-4 pt-6 border-t border-gray-200">
               <div>
-                <h3 className="text-lg font-semibold text-brand-dark mb-2">{tIntent("supportingDocuments.title")}</h3>
+                <h3 className="text-lg font-semibold text-brand-dark mb-2">Supporting Documents</h3>
                 <p className="text-sm text-brand-grayMed mb-4">
-                  {tIntent("supportingDocuments.subtitle")}
+                  Please upload the following documents to support your business application
                 </p>
               </div>
 
@@ -871,7 +815,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               <div className="space-y-2">
                 <Label className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  {tIntent("supportingDocuments.companyCertificate")} <span className="text-red-500">*</span>
+                  Company Registration Certificate <span className="text-red-500">*</span>
                 </Label>
                 <div className="flex items-center gap-4">
                   <input
@@ -889,7 +833,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {tIntent("supportingDocuments.uploadCertificate")}
+                    Upload Registration Certificate
                   </Button>
                 </div>
               </div>
@@ -898,7 +842,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               <div className="space-y-2">
                 <Label className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  {tIntent("supportingDocuments.articles")} <span className="text-red-500">*</span>
+                  Articles of Association / Statutes <span className="text-red-500">*</span>
                 </Label>
                 <div className="flex items-center gap-4">
                   <input
@@ -916,7 +860,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {tIntent("supportingDocuments.uploadArticles")}
+                    Upload Articles of Association
                   </Button>
                 </div>
               </div>
@@ -925,7 +869,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               <div className="space-y-2">
                 <Label className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  {tIntent("supportingDocuments.shareholderRegister")} <span className="text-red-500">*</span>
+                  Shareholder Register / UBO Declaration <span className="text-red-500">*</span>
                 </Label>
                 <div className="flex items-center gap-4">
                   <input
@@ -943,7 +887,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {tIntent("supportingDocuments.uploadShareholder")}
+                    Upload Shareholder Register
                   </Button>
                 </div>
               </div>
@@ -952,8 +896,8 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               <div className="space-y-2">
                 <Label className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  {tIntent("supportingDocuments.businessPlan")}
-                  <span className="text-xs text-brand-grayMed font-normal">{tIntent("supportingDocuments.recommended")}</span>
+                  Business Plan / Activity Description
+                  <span className="text-xs text-brand-grayMed font-normal">(Recommended)</span>
                 </Label>
                 <div className="flex items-center gap-4">
                   <input
@@ -971,7 +915,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {tIntent("supportingDocuments.uploadBusinessPlan")}
+                    Upload Business Plan
                   </Button>
                 </div>
               </div>
@@ -980,8 +924,8 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               <div className="space-y-2">
                 <Label className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  {tIntent("supportingDocuments.financialStatements")}
-                  <span className="text-xs text-brand-grayMed font-normal">{tIntent("supportingDocuments.ifExisting")}</span>
+                  Recent Financial Statements
+                  <span className="text-xs text-brand-grayMed font-normal">(If existing company)</span>
                 </Label>
                 <div className="flex items-center gap-4">
                   <input
@@ -999,7 +943,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                     className="w-full sm:w-auto"
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {tIntent("supportingDocuments.uploadFinancial")}
+                    Upload Financial Statements
                   </Button>
                 </div>
               </div>
@@ -1007,10 +951,10 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               {/* Uploaded Documents List */}
               {uploadedDocuments.length > 0 && (
                 <div className="space-y-2 pt-4">
-                  <Label>{tIntent("supportingDocuments.uploadedDocuments", { count: uploadedDocuments.length })}</Label>
+                  <Label>Uploaded Documents ({uploadedDocuments.length})</Label>
                   <div className="space-y-2">
-                    {uploadedDocuments.map((doc) => (
-                      <div key={doc.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    {uploadedDocuments.map((doc, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-center gap-3 flex-1 min-w-0">
                           <FileText className="h-5 w-5 text-brand-gold flex-shrink-0" />
                           <div className="min-w-0 flex-1">
@@ -1024,7 +968,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                           type="button"
                           variant="ghost"
                           size="sm"
-                          onClick={() => removeDocument(doc.id)}
+                          onClick={() => removeDocument(index)}
                           className="flex-shrink-0"
                         >
                           <X className="h-4 w-4" />
@@ -1036,7 +980,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               )}
 
               <p className="text-xs text-brand-grayMed">
-                {tIntent("supportingDocuments.fileRequirements")}
+                Accepted formats: JPG, PNG, PDF • Maximum size: 5MB per file
               </p>
             </div>
           </form>
@@ -1047,10 +991,10 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                {tDirectors("title")}
+                Directors & Ultimate Beneficial Owners
               </h2>
               <p className="text-brand-grayMed">
-                {tDirectors("subtitle")}
+                Add key persons associated with the company
               </p>
             </div>
 
@@ -1066,18 +1010,18 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                     <Trash2 className="h-4 w-4" />
                   </Button>
 
-                  <h4 className="font-semibold text-brand-dark">{tDirectors("personLabel", { index: index + 1 })}</h4>
+                  <h4 className="font-semibold text-brand-dark">Person #{index + 1}</h4>
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label>{tDirectors("firstName")}</Label>
+                      <Label>First Name</Label>
                       <Input
                         value={director.firstName}
                         onChange={(e) => updateDirector(index, "firstName", e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>{tDirectors("lastName")}</Label>
+                      <Label>Last Name</Label>
                       <Input
                         value={director.lastName}
                         onChange={(e) => updateDirector(index, "lastName", e.target.value)}
@@ -1087,7 +1031,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
                   <div className="grid gap-4 md:grid-cols-3">
                     <div className="space-y-2">
-                      <Label>{tDirectors("dateOfBirth")}</Label>
+                      <Label>Date of Birth</Label>
                       <Input
                         type="date"
                         value={director.dateOfBirth}
@@ -1095,14 +1039,14 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>{tDirectors("nationality")}</Label>
+                      <Label>Nationality</Label>
                       <Input
                         value={director.nationality}
                         onChange={(e) => updateDirector(index, "nationality", e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>{tDirectors("residency")}</Label>
+                      <Label>Residency</Label>
                       <Input
                         value={director.residencyCountry}
                         onChange={(e) => updateDirector(index, "residencyCountry", e.target.value)}
@@ -1112,7 +1056,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label>{tDirectors("role")}</Label>
+                      <Label>Role</Label>
                       <RadioGroup
                         value={director.role}
                         onValueChange={(value) => updateDirector(index, "role", value)}
@@ -1120,19 +1064,19 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="director" id={`director-${index}`} />
                           <Label htmlFor={`director-${index}`} className="font-normal">
-                            {tDirectors("directorRole")}
+                            Director
                           </Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="ubo" id={`ubo-${index}`} />
                           <Label htmlFor={`ubo-${index}`} className="font-normal">
-                            {tDirectors("uboRole")}
+                            UBO
                           </Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="both" id={`both-${index}`} />
                           <Label htmlFor={`both-${index}`} className="font-normal">
-                            {tDirectors("bothRole")}
+                            Both
                           </Label>
                         </div>
                       </RadioGroup>
@@ -1140,7 +1084,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
                     {(director.role === "ubo" || director.role === "both") && (
                       <div className="space-y-2">
-                        <Label>{tDirectors("ownershipPercent")}</Label>
+                        <Label>Ownership %</Label>
                         <Input
                           type="number"
                           min="0"
@@ -1158,7 +1102,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
               <Button variant="outline" onClick={addDirector} className="w-full">
                 <Plus className="mr-2 h-4 w-4" />
-                {tDirectors("addDirector")}
+                Add Director / UBO
               </Button>
             </div>
           </div>
@@ -1169,42 +1113,42 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-brand-dark mb-2">
-                {tReview("title")}
+                Review & Consents
               </h2>
               <p className="text-brand-grayMed">
-                {tReview("subtitle")}
+                Please review and provide your consent
               </p>
             </div>
 
             <div className="space-y-4 p-6 bg-gray-50 rounded-lg">
-              <h3 className="font-semibold text-brand-dark">{tReview("summaryTitle")}</h3>
+              <h3 className="font-semibold text-brand-dark">Application Summary</h3>
 
               <div className="grid gap-4 text-sm">
                 <div>
-                  <p className="text-brand-grayMed">{tReview("company")}</p>
+                  <p className="text-brand-grayMed">Company</p>
                   <p className="font-medium text-brand-dark">
-                    {formData.company?.companyName || tReview("newCompany")}
+                    {formData.company?.companyName || "New Company"}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">{tReview("contactPerson")}</p>
+                  <p className="text-brand-grayMed">Contact Person</p>
                   <p className="font-medium text-brand-dark">
                     {formData.contactPerson?.firstName} {formData.contactPerson?.lastName}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">{tReview("businessActivity")}</p>
+                  <p className="text-brand-grayMed">Business Activity</p>
                   <p className="font-medium text-brand-dark">
                     {formData.intent?.businessActivity}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-brand-grayMed">{tReview("directorsUbos")}</p>
+                  <p className="text-brand-grayMed">Directors & UBOs</p>
                   <p className="font-medium text-brand-dark">
-                    {tReview("personsCount", { count: formData.directorsAndUBOs?.length || 0 })}
+                    {formData.directorsAndUBOs?.length || 0} person(s)
                   </p>
                 </div>
               </div>
@@ -1220,7 +1164,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                   }
                 />
                 <Label htmlFor="dataProcessing" className="font-normal cursor-pointer leading-tight">
-                  <span className="text-red-500">*</span> {tReview("dataProcessingConsent")}
+                  <span className="text-red-500">*</span> I consent to Opulanz processing company data for partner bank introductions.
                 </Label>
               </div>
 
@@ -1231,7 +1175,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                   onCheckedChange={(checked) => consentsForm.setValue("dataSharing", !!checked)}
                 />
                 <Label htmlFor="dataSharing" className="font-normal cursor-pointer leading-tight">
-                  <span className="text-red-500">*</span> {tReview("dataSharingConsent")}
+                  <span className="text-red-500">*</span> I authorize Opulanz to share information with partner banks for account onboarding.
                 </Label>
               </div>
 
@@ -1244,7 +1188,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                   }
                 />
                 <Label htmlFor="authorizedRepresentative" className="font-normal cursor-pointer leading-tight">
-                  <span className="text-red-500">*</span> {tReview("authorizedRepresentativeConsent")}
+                  <span className="text-red-500">*</span> I confirm I am authorized to submit this application on behalf of the company.
                 </Label>
               </div>
 
@@ -1257,7 +1201,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                   }
                 />
                 <Label htmlFor="marketingOptIn" className="font-normal cursor-pointer leading-tight">
-                  {tReview("marketingOptIn")}
+                  Keep me informed about Opulanz services (optional)
                 </Label>
               </div>
             </form>
@@ -1273,49 +1217,49 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
 
             <div>
               <h2 className="text-3xl font-bold text-brand-dark mb-4">
-                {tSubmission("title")}
+                Application Submitted Successfully!
               </h2>
               <p className="text-lg text-brand-grayMed max-w-2xl mx-auto mb-6">
-                {tSubmission("message")}
+                Thank you for submitting your business account application. Our team will review your information and contact you within 24-72 hours.
               </p>
             </div>
 
             <div className="p-8 bg-gradient-to-br from-brand-goldLight/20 to-brand-gold/10 rounded-2xl border-2 border-brand-gold/30 max-w-md mx-auto">
               <p className="text-sm text-brand-grayMed mb-3 font-semibold uppercase tracking-wide">
-                {tSubmission("applicationNumberLabel")}
+                Your Application Number
               </p>
               <div className="text-3xl font-bold text-brand-dark mb-2 font-mono tracking-tight">
                 {applicationId}
               </div>
               <p className="text-sm text-brand-grayMed">
-                {tSubmission("saveNumberMessage")}
+                Please save this number for your records
               </p>
             </div>
 
             <div className="p-6 bg-blue-50 rounded-lg border border-blue-200 max-w-2xl mx-auto text-left">
-              <h3 className="font-semibold text-brand-dark mb-3">{tSubmission("nextStepsTitle")}</h3>
+              <h3 className="font-semibold text-brand-dark mb-3">What happens next?</h3>
               <ul className="space-y-2 text-sm text-brand-grayMed">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>{tSubmission("nextStep1")}</span>
+                  <span>Our compliance team will review your application and supporting documents</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>{tSubmission("nextStep2")}</span>
+                  <span>We'll match your business with the most suitable Opulanz partner bank</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>{tSubmission("nextStep3")}</span>
+                  <span>You'll receive an email with next steps within 24-72 hours</span>
                 </li>
               </ul>
             </div>
 
             <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
               <Button variant="outline" size="lg" asChild>
-                <a href={`/${locale}`}>{tSubmission("backToHomepage")}</a>
+                <a href={`/${locale}`}>Back to Homepage</a>
               </Button>
               <Button variant="outline" size="lg" onClick={onSwitchMode}>
-                {tSubmission("startPersonalApplication")}
+                Start a Personal Application
               </Button>
             </div>
           </div>
@@ -1326,12 +1270,12 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
           <div className="flex items-center justify-between gap-4 mt-8 pt-8 border-t">
             <Button variant="outline" onClick={handleBack} disabled={isSubmitting}>
               <ArrowLeft className="mr-2 h-5 w-5" />
-              {t("back")}
+              Back
             </Button>
 
             {currentStep < 6 && (
               <Button onClick={handleNext} disabled={isSubmitting}>
-                {t("next")}
+                Next
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             )}
@@ -1341,11 +1285,11 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    {t("submitting")}
+                    Submitting...
                   </>
                 ) : (
                   <>
-                    {t("submitApplication")}
+                    Submit Application
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </>
                 )}

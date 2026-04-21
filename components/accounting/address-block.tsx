@@ -11,9 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Address } from "@/shared/types/person";
 
-export type { Address };
+export interface Address {
+  street: string;
+  city: string;
+  postal: string;
+  country: string;
+}
 
 const COUNTRIES = [
   { code: "LU", name: "Luxembourg" },

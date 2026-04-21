@@ -7,14 +7,11 @@ import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useTranslations } from "next-intl";
 
 import { useState, useEffect, useRef } from "react";
 import emailjs from '@emailjs/browser';
 
 export default function CorporateTaxPage({ params: { locale } }: { params: { locale: string } }) {
-  const t = useTranslations('taxAdvisory.corporateTax');
-  const tCommon = useTranslations('taxAdvisory.internationalTax');
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -39,7 +36,7 @@ export default function CorporateTaxPage({ params: { locale } }: { params: { loc
 OPULANZ BANKING - PAYMENT RECEIPT
 ==================================================
 
-Service: ${t('hero.title')}
+Service: Corporate Tax
 Date: ${new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
 Time: ${new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
 Duration: 60 minutes
@@ -79,7 +76,7 @@ Contact: opulanz.banking@gmail.com
     const templateParams = {
       to_email: bookingData.inviteeEmail,
       to_name: bookingData.inviteeName,
-      service_name: t('hero.title'),
+      service_name: 'Corporate Tax',
       appointment_date: new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
       appointment_time: new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
       order_id: bookingData.paymentDetails.orderId,
@@ -165,7 +162,7 @@ Contact: opulanz.banking@gmail.com
           style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', height: 50 },
           createOrder: function(data: any, actions: any) {
             return actions.order.create({
-              purchase_units: [{ description: t('payment.serviceTitle') + ' - 60 minutes', amount: { currency_code: 'EUR', value: totalPrice.toFixed(2) } }]
+              purchase_units: [{ description: 'Corporate Tax - 60 minutes', amount: { currency_code: 'EUR', value: totalPrice.toFixed(2) } }]
             });
           },
           onApprove: function(data: any, actions: any) {
@@ -187,7 +184,7 @@ Contact: opulanz.banking@gmail.com
             });
           },
           onError: function(err: any) {
-            alert(tCommon('payment.paymentFailed'));
+            alert('Payment failed. Please try again.');
           }
         }).render(paypalRef.current);
       }
@@ -195,15 +192,15 @@ Contact: opulanz.banking@gmail.com
   }, [step, paypalLoaded, bookingData, totalPrice]);
 
   const handlePaymentComplete = async () => {
-    if (!paymentCompleted) { alert(tCommon('payment.completePaypalFirst')); return; }
+    if (!paymentCompleted) { alert('Please complete the PayPal payment first.'); return; }
     setLoading(true);
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/appointments`, {
+      await fetch('http://localhost:5000/api/appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           full_name: bookingData.inviteeName, email: bookingData.inviteeEmail, calendly_id: bookingData.eventUri,
-          calendly_event_uri: bookingData.eventUri, meeting_type: t('hero.title'), status: 'confirmed',
+          calendly_event_uri: bookingData.eventUri, meeting_type: 'Corporate Tax', status: 'confirmed',
           start_time: bookingData.eventStartTime, end_time: bookingData.eventEndTime,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, location: 'Video Conference',
           notes: `Paid consultation - €${totalPrice}`
@@ -213,39 +210,39 @@ Contact: opulanz.banking@gmail.com
 
       setStep('confirmation');
     } catch (error) {
-      alert(tCommon('payment.errorProcessing'));
+      alert('There was an error processing your payment. Please contact support.');
     } finally {
       setLoading(false);
     }
   };
 
   const features = [
-    t('features.feature1'),
-    t('features.feature2'),
-    t('features.feature3'),
-    t('features.feature4'),
-    t('features.feature5'),
-    t('features.feature6'),
+    "Comprehensive corporate tax services and planning",
+    "Tax-efficient corporate restructuring advice",
+    "M&A tax due diligence and advice",
+    "VAT consulting and compliance",
+    "Corporate tax optimization strategies",
+    "Tax implications of business transactions",
   ];
 
   const benefits = [
-    t('benefits.benefit1'),
-    t('benefits.benefit2'),
-    t('benefits.benefit3'),
-    t('benefits.benefit4'),
+    "Optimize corporate tax structure",
+    "Expert guidance on complex tax matters",
+    "Ensure compliance with regulations",
+    "Professional expertise for businesses",
   ];
 
   if (step === 'confirmation' && bookingData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-500">
                 <CheckCircle className="h-12 w-12 text-white" />
               </div>
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">{tCommon('confirmation.title')}</h1>
-              <p className="text-lg text-white/90">{tCommon('confirmation.subtitle')}</p>
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">Payment Confirmed!</h1>
+              <p className="text-lg text-white/90">Thank you for your payment. Your appointment is now confirmed.</p>
             </div>
           </div>
         </section>
@@ -253,50 +250,50 @@ Contact: opulanz.banking@gmail.com
           <div className="container mx-auto max-w-3xl px-6">
             <Card className="mb-8 border-brand-gold/30 shadow-lg">
               <CardContent className="p-8">
-                <h3 className="mb-4 text-xl font-bold text-brand-dark">{tCommon('confirmation.confirmedAppointment')}</h3>
+                <h3 className="mb-4 text-xl font-bold text-brand-dark">Confirmed Appointment</h3>
                 <div className="space-y-3 text-left">
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                    <span className="text-brand-grayMed">{tCommon('confirmation.service')}</span>
-                    <span className="font-semibold text-brand-dark">{t('hero.title')}</span>
+                    <span className="text-brand-grayMed">Service:</span>
+                    <span className="font-semibold text-brand-dark">Corporate Tax</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                    <span className="text-brand-grayMed">{tCommon('payment.name')}</span>
+                    <span className="text-brand-grayMed">Name:</span>
                     <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                    <span className="text-brand-grayMed">{tCommon('payment.email')}</span>
+                    <span className="text-brand-grayMed">Email:</span>
                     <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                    <span className="text-brand-grayMed">{tCommon('payment.date')}</span>
+                    <span className="text-brand-grayMed">Date:</span>
                     <span className="font-semibold text-brand-dark">
                       {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                     </span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                    <span className="text-brand-grayMed">{tCommon('payment.time')}</span>
+                    <span className="text-brand-grayMed">Time:</span>
                     <span className="font-semibold text-brand-dark">
                       {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-brand-grayMed">{tCommon('payment.duration')}</span>
-                    <span className="font-semibold text-brand-dark">{tCommon('payment.minutes60')}</span>
+                    <span className="text-brand-grayMed">Duration:</span>
+                    <span className="font-semibold text-brand-dark">60 minutes</span>
                   </div>
                 </div>
               </CardContent>
             </Card>
             <div className="rounded-lg bg-brand-goldLight/20 p-6 mb-8">
-              <h4 className="mb-3 font-semibold text-brand-dark">{tCommon('confirmation.whatsNext')}</h4>
+              <h4 className="mb-3 font-semibold text-brand-dark">What's Next?</h4>
               <ul className="space-y-2 text-sm text-brand-grayMed">
-                <li>{tCommon('confirmation.checkEmail', { email: bookingData.inviteeEmail })}</li>
-                <li>{tCommon('confirmation.prepareDocuments')}</li>
-                <li>{tCommon('confirmation.joinConference')}</li>
-                <li>{tCommon('confirmation.teamNotified')}</li>
+                <li>✓ Check your email ({bookingData.inviteeEmail}) for the meeting link and calendar invite</li>
+                <li>✓ Prepare your tax documents and questions</li>
+                <li>✓ Join the video conference at your scheduled time</li>
+                <li>✓ Our team has been notified and will be ready for your consultation</li>
               </ul>
             </div>
             <Button onClick={() => window.location.href = `/${locale}`} className="w-full bg-brand-gold text-white hover:bg-brand-goldDark">
-              {tCommon('confirmation.returnToHome')}
+              Return to Home
             </Button>
           </div>
         </section></>
@@ -306,14 +303,14 @@ Contact: opulanz.banking@gmail.com
   if (step === 'payment' && bookingData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
                 <CheckCircle className="h-10 w-10 text-white" />
               </div>
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">{tCommon('payment.timeSlotReserved')}</h1>
-              <p className="text-lg text-white/90">{tCommon('payment.completePayment')}</p>
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">Time Slot Reserved!</h1>
+              <p className="text-lg text-white/90">Complete your payment to confirm your booking</p>
             </div>
           </div>
         </section>
@@ -321,31 +318,31 @@ Contact: opulanz.banking@gmail.com
           <div className="container mx-auto max-w-3xl px-6">
             <Card className="mb-8 border-brand-gold/30 shadow-lg">
               <CardContent className="p-8">
-                <h3 className="mb-4 text-xl font-bold text-brand-dark">{tCommon('payment.appointmentDetails')}</h3>
+                <h3 className="mb-4 text-xl font-bold text-brand-dark">Your Appointment Details</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                    <span className="text-brand-grayMed">{tCommon('payment.name')}</span>
+                    <span className="text-brand-grayMed">Name:</span>
                     <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                    <span className="text-brand-grayMed">{tCommon('payment.email')}</span>
+                    <span className="text-brand-grayMed">Email:</span>
                     <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                    <span className="text-brand-grayMed">{tCommon('payment.date')}</span>
+                    <span className="text-brand-grayMed">Date:</span>
                     <span className="font-semibold text-brand-dark">
                       {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                     </span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                    <span className="text-brand-grayMed">{tCommon('payment.time')}</span>
+                    <span className="text-brand-grayMed">Time:</span>
                     <span className="font-semibold text-brand-dark">
                       {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-brand-grayMed">{tCommon('payment.duration')}</span>
-                    <span className="font-semibold text-brand-dark">{tCommon('payment.minutes60')}</span>
+                    <span className="text-brand-grayMed">Duration:</span>
+                    <span className="font-semibold text-brand-dark">60 minutes</span>
                   </div>
                 </div>
               </CardContent>
@@ -357,23 +354,23 @@ Contact: opulanz.banking@gmail.com
                     <Briefcase className="h-6 w-6 text-brand-gold" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-brand-dark mb-2">{t('payment.serviceTitle')}</h3>
-                    <p className="text-sm text-brand-grayMed mb-2">{t('payment.serviceDesc')}</p>
-                    <p className="text-sm text-brand-grayMed">{tCommon('payment.duration')} {tCommon('payment.minutes60')}</p>
+                    <h3 className="text-xl font-bold text-brand-dark mb-2">Corporate Tax</h3>
+                    <p className="text-sm text-brand-grayMed mb-2">Comprehensive corporate tax services and planning</p>
+                    <p className="text-sm text-brand-grayMed">Duration: 60 minutes</p>
                   </div>
                 </div>
                 <div className="border-t border-brand-grayLight pt-6">
                   <div className="flex justify-between items-center text-lg mb-3">
-                    <span className="text-brand-grayMed">{tCommon('payment.serviceFeeExcl')}</span>
+                    <span className="text-brand-grayMed">Service Fee (excl. VAT):</span>
                     <span className="font-semibold text-brand-dark">€{servicePrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between items-center text-lg mb-3">
-                    <span className="text-brand-grayMed">{tCommon('payment.vat17')}</span>
+                    <span className="text-brand-grayMed">VAT (17%):</span>
                     <span className="font-semibold text-brand-dark">€{vat.toFixed(2)}</span>
                   </div>
                   <div className="border-t border-brand-grayLight pt-4 mt-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-xl font-bold text-brand-dark">{tCommon('payment.totalIncl')}</span>
+                      <span className="text-xl font-bold text-brand-dark">Total (incl. VAT):</span>
                       <span className="text-3xl font-bold text-brand-gold">€{totalPrice.toFixed(2)}</span>
                     </div>
                   </div>
@@ -384,15 +381,15 @@ Contact: opulanz.banking@gmail.com
               <CardContent className="p-8 md:p-12">
                 <div className="text-center">
                   <div className="mb-6">
-                    <h3 className="mb-2 text-xl font-bold text-brand-dark">{tCommon('payment.completeYourPayment')}</h3>
+                    <h3 className="mb-2 text-xl font-bold text-brand-dark">Complete Your Payment</h3>
                     <p className="text-3xl font-bold text-brand-gold">€{totalPrice.toFixed(2)}</p>
-                    <p className="mt-2 text-sm text-brand-grayMed">{tCommon('payment.oneTimePayment')}</p>
+                    <p className="mt-2 text-sm text-brand-grayMed">One-time payment for 60-minute consultation</p>
                   </div>
                   <div className="mx-auto max-w-md">
                     <div ref={paypalRef} id="paypal-button-container"></div>
                     <div className="mt-6 rounded-lg bg-blue-50 p-4">
                       <p className="text-sm text-blue-800">
-                        <strong>{tCommon('payment.testingCard')}</strong> {tCommon('payment.testingCardDesc', { code: '4111 1111 1111 1111' })}
+                        <strong>Testing:</strong> Use card <code className="rounded bg-blue-100 px-2 py-1">4111 1111 1111 1111</code> (Expiry: 12/2030, CVV: 123)
                       </p>
                     </div>
                   </div>
@@ -401,11 +398,11 @@ Contact: opulanz.banking@gmail.com
                       <div className="mb-4 rounded-lg bg-green-50 p-4 text-green-800">
                         <div className="flex items-center justify-center gap-2">
                           <CheckCircle className="h-5 w-5" />
-                          <span className="font-semibold">{tCommon('payment.paymentSuccessful')}</span>
+                          <span className="font-semibold">Payment Successful!</span>
                         </div>
                       </div>
                       <Button type="button" onClick={handlePaymentComplete} disabled={loading} className="bg-brand-gold text-white hover:bg-brand-goldDark">
-                        {loading ? tCommon('payment.processing') : tCommon('payment.continueToConfirmation')}
+                        {loading ? 'Processing...' : 'Continue to Confirmation'}
                       </Button>
                     </div>
                   )}
@@ -420,11 +417,11 @@ Contact: opulanz.banking@gmail.com
   if (step === 'calendar') {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">{t('calendar.title')}</h1>
-              <p className="text-lg text-white/90">{t('calendar.subtitle', { price: totalPrice })}</p>
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">Book Your Corporate Tax Consultation</h1>
+              <p className="text-lg text-white/90">Schedule your 60-minute consultation - €{totalPrice}</p>
             </div>
           </div>
         </section>
@@ -435,22 +432,22 @@ Contact: opulanz.banking@gmail.com
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
                   <Clock className="h-6 w-6 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-brand-dark">{t('calendar.consultation60')}</h3>
-                <p className="text-sm text-brand-grayMed">{t('calendar.consultationDesc')}</p>
+                <h3 className="mb-2 text-lg font-bold text-brand-dark">60-Minute Consultation</h3>
+                <p className="text-sm text-brand-grayMed">Professional consultation session with our expert tax advisor</p>
               </div>
               <div className="text-center">
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
                   <Euro className="h-6 w-6 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-brand-dark">{t('calendar.feeLabel', { price: totalPrice })}</h3>
-                <p className="text-sm text-brand-grayMed">{t('calendar.feeDesc')}</p>
+                <h3 className="mb-2 text-lg font-bold text-brand-dark">€{totalPrice} Fee</h3>
+                <p className="text-sm text-brand-grayMed">Fixed price for corporate tax service</p>
               </div>
               <div className="text-center">
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
                   <Briefcase className="h-6 w-6 text-brand-goldDark" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-brand-dark">{t('calendar.expertService')}</h3>
-                <p className="text-sm text-brand-grayMed">{t('calendar.expertDesc')}</p>
+                <h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Service</h3>
+                <p className="text-sm text-brand-grayMed">Corporate tax planning and compliance</p>
               </div>
             </div>
             <div className="calendly-inline-widget" data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a" style={{ minWidth: '320px', height: '700px' }} />
@@ -461,8 +458,8 @@ Contact: opulanz.banking@gmail.com
 
   return (
     <>
-      <Hero title={t('hero.title')} subtitle={t('hero.subtitle')} />
-      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20 overflow-hidden">
+      <Hero title="Corporate Tax" subtitle="Comprehensive corporate tax services and planning" />
+      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-12 md:py-16 overflow-hidden">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <div className="text-center mb-8">
@@ -472,13 +469,13 @@ Contact: opulanz.banking@gmail.com
                 <div className="flex items-center justify-center gap-3 mb-4">
                   <div className="relative">
                     <div className="absolute inset-0 bg-brand-gold rounded-full blur-xl opacity-40"></div>
-                    <h3 className="relative text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-brand-goldDark">{t('pricing.price')}</h3>
+                    <h3 className="relative text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-brand-goldDark">€{totalPrice}</h3>
                   </div>
                 </div>
-                <p className="text-lg text-brand-grayMed mb-6">{t('pricing.description')}</p>
-                <p className="text-sm text-brand-grayMed mb-6">{t('pricing.duration')}</p>
+                <p className="text-lg text-brand-grayMed mb-6">Fixed fee for corporate tax service</p>
+                <p className="text-sm text-brand-grayMed mb-6">60-minute consultation with expert tax advisor</p>
                 <Button onClick={() => setStep('calendar')} size="lg" className="relative bg-gradient-to-r from-brand-gold to-brand-goldDark text-white hover:from-brand-goldDark hover:to-brand-gold w-full sm:w-auto min-w-64 h-14 text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
-                  <span className="relative z-10">{t('pricing.bookNow')}</span>
+                  <span className="relative z-10">Book Your Consultation Now</span>
                   <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-2xl"></div>
                 </Button>
               </div>
@@ -486,18 +483,18 @@ Contact: opulanz.banking@gmail.com
           </div>
         </div>
       </section>
-      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-white py-12 md:py-16 overflow-hidden">
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div className="relative">
               <div className="relative bg-white rounded-2xl shadow-2xl p-8 border border-brand-grayLight/50">
-                <SectionHeading overline={t('details.overline')} title={t('details.title')} align="left" className="mb-8" />
-                <p className="mb-6 text-lg text-brand-grayMed">{t('details.description1')}</p>
-                <p className="mb-8 text-brand-grayMed">{t('details.description2')}</p>
+                <SectionHeading overline="SERVICE DETAILS" title="Corporate Tax Services" align="left" className="mb-8" />
+                <p className="mb-6 text-lg text-brand-grayMed">Our expert team provides comprehensive corporate tax planning and compliance services to optimize your business's tax position.</p>
+                <p className="mb-8 text-brand-grayMed">From restructuring to M&A tax advice, we ensure your corporate transactions are tax-efficient and compliant.</p>
               </div>
             </div>
             <div>
-              <h3 className="mb-6 text-xl font-bold text-brand-dark">{t('features.title')}</h3>
+              <h3 className="mb-6 text-xl font-bold text-brand-dark">What's Included</h3>
               <div className="space-y-4">
                 {features.map((feature) => (
                   <div key={feature} className="group flex items-start gap-3 p-4 rounded-xl bg-white/60 hover:bg-white hover:shadow-lg transition-all">
@@ -510,9 +507,9 @@ Contact: opulanz.banking@gmail.com
           </div>
         </div>
       </section>
-      <section className="relative bg-gray-50 py-20 md:py-28">
+      <section className="relative bg-gray-50 py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6">
-          <SectionHeading overline={t('benefits.overline')} title={t('benefits.title')} align="center" className="mb-12" />
+          <SectionHeading overline="WHY CHOOSE US" title="Benefits of Professional Corporate Tax Advice" align="center" className="mb-12" />
           <div className="grid gap-6 md:grid-cols-2">
             {benefits.map((benefit) => (
               <Card key={benefit} className="border-none shadow-sm hover:shadow-xl transition-all">
@@ -525,16 +522,16 @@ Contact: opulanz.banking@gmail.com
           </div>
         </div>
       </section>
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
-          <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">{t('cta.title')}</h2>
-          <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">{t('cta.description')}</p>
+          <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">Ready to Optimize Your Corporate Tax?</h2>
+          <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">Book your consultation now and let our experts help you with corporate tax planning.</p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button onClick={() => setStep('calendar')} size="lg" className="bg-white text-brand-dark hover:bg-gray-50 min-w-48">
-              {t('cta.bookConsultation', { price: totalPrice })}
+              Book Consultation - €{totalPrice}
             </Button>
             <Button asChild variant="outline" size="lg" className="border-2 border-white bg-transparent text-white hover:bg-white/10 min-w-48">
-              <Link href={`/${locale}/tax-advisory`}>{t('cta.backToTaxAdvisory')}</Link>
+              <Link href={`/${locale}/tax-advisory`}>Back to Tax Advisory</Link>
             </Button>
           </div>
         </div>

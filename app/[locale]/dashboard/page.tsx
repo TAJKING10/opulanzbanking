@@ -31,31 +31,8 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
-import { getCurrentUser, clearAuth, getAuthToken, setAuthToken } from "@/lib/auth";
+import { getCurrentUser, clearAuth } from "@/lib/auth";
 import { useRouter } from "next/navigation";
-
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
-interface NarviAccount {
-  pid: string;
-  number: string;
-  bic?: string;
-  currency: string;
-  balance?: number;
-  status: string;
-}
-
-interface NarviTransaction {
-  pid: string;
-  type: string;
-  amount: number;
-  currency: string;
-  status: string;
-  createdAt?: string;
-  reference?: string;
-  counterpartName?: string;
-  counterpartIban?: string;
-}
 
 export default function DashboardPage() {
   const params = useParams();
@@ -69,13 +46,6 @@ export default function DashboardPage() {
   const [authUserId, setAuthUserId] = React.useState("dashboard-user-001");
   const [kycType, setKycType] = React.useState<"individual" | "corporate">("individual");
 
-  // Narvi live data
-  const [narviAccounts, setNarviAccounts] = React.useState<NarviAccount[]>([]);
-  const [narviTransactions, setNarviTransactions] = React.useState<NarviTransaction[]>([]);
-  const [narviLoading, setNarviLoading] = React.useState(true);
-
-  const [userDisplayName, setUserDisplayName] = React.useState("there");
-
   React.useEffect(() => {
     const user = getCurrentUser();
     if (!user) {
@@ -85,109 +55,111 @@ export default function DashboardPage() {
     setAuthUserId(`user-${user.userId}`);
     setKycType(user.accountType === "corporate" ? "corporate" : "individual");
     setKycVerified(user.kycStatus === "verified");
-    setUserDisplayName(user.email ? user.email.split('@')[0] : "there");
-
-    // Fetch Narvi accounts and transactions
-    fetchNarviData();
   }, [locale, router]);
-
-  async function fetchNarviData() {
-    setNarviLoading(true);
-    try {
-      const [accRes, txRes] = await Promise.all([
-        fetch(`${API}/api/narvi/accounts`),
-        fetch(`${API}/api/narvi/transactions?limit=10`),
-      ]);
-      if (accRes.ok) {
-        const accData = await accRes.json();
-        const list = accData.data || accData.accounts || accData || [];
-        setNarviAccounts(Array.isArray(list) ? list : []);
-      }
-      if (txRes.ok) {
-        const txData = await txRes.json();
-        const list = txData.data || txData.transactions || txData || [];
-        setNarviTransactions(Array.isArray(list) ? list.slice(0, 8) : []);
-      }
-    } catch (e) {
-      console.warn("Narvi data fetch failed:", e);
-    } finally {
-      setNarviLoading(false);
-    }
-  }
 
   function handleSignOut() {
     clearAuth();
     router.push(`/${locale}/login`);
   }
 
-  async function handleKycComplete() {
-    try {
-      const token = getAuthToken();
-      const res = await fetch(`${API}/api/auth/kyc-complete`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setAuthToken(data.token);
-      }
-    } catch (err) {
-      console.error("KYC complete error:", err);
-    } finally {
-      setKycVerified(true);
-      setShowKyc(false);
-    }
-  }
-
-  const primaryIban = narviAccounts[0]?.number || "Pending...";
-  const primaryBic = narviAccounts[0]?.bic || "OPULFR2H";
-
   const handleCopyIban = () => {
-    navigator.clipboard.writeText(primaryIban);
+    navigator.clipboard.writeText("FI91 1234 5678 9012 34");
     setCopiedIban(true);
     setTimeout(() => setCopiedIban(false), 2000);
   };
 
-  // Map Narvi accounts to display format (fall back to demo data if API not ready)
-  const ICON_COLORS = ["bg-blue-500","bg-green-500","bg-purple-500","bg-orange-500","bg-teal-500","bg-pink-500"];
-  const currencySymbols: Record<string, string> = { EUR: "€", USD: "$", GBP: "£", CHF: "Fr", SEK: "kr" };
+  const accounts = [
+    {
+      name: "Main Business Account",
+      type: "EUR",
+      balance: "€124,560.80",
+      iban: "FI91 1234 5678 9012 34",
+      change: "+2.4%",
+      isUp: true,
+      flag: "EU",
+    },
+    {
+      name: "USD Account",
+      type: "USD",
+      balance: "$45,230.00",
+      iban: "FI91 1234 5678 9012 35",
+      change: "+1.2%",
+      isUp: true,
+      flag: "US",
+    },
+    {
+      name: "GBP Account",
+      type: "GBP",
+      balance: "£12,450.00",
+      iban: "FI91 1234 5678 9012 36",
+      change: "-0.5%",
+      isUp: false,
+      flag: "GB",
+    },
+  ];
 
-  const accounts = narviAccounts.length > 0
-    ? narviAccounts.map((acc, i) => ({
-        name: acc.currency === "EUR" ? "Main Account (EUR)" : `${acc.currency} Account`,
-        type: acc.currency,
-        balance: `${currencySymbols[acc.currency] || acc.currency} ${(acc.balance ?? 0).toLocaleString("en-EU", { minimumFractionDigits: 2 })}`,
-        iban: acc.number || "—",
-        change: "+0.0%",
-        isUp: true,
-        flag: acc.currency === "EUR" ? "EU" : acc.currency === "USD" ? "US" : acc.currency === "GBP" ? "GB" : "—",
-        pid: acc.pid,
-      }))
-    : [
-        { name: "Main Account (EUR)", type: "EUR", balance: "€0.00", iban: "Pending account setup...", change: "+0.0%", isUp: true, flag: "EU", pid: "" },
-      ];
-
-  const totalBalance = narviAccounts.reduce((sum, a) => sum + (a.currency === "EUR" ? (a.balance ?? 0) : 0), 0);
-  const totalBalanceDisplay = narviLoading ? "Loading..." : `€${totalBalance.toLocaleString("en-EU", { minimumFractionDigits: 2 })}`;
-
-  const transactions = narviTransactions.length > 0
-    ? narviTransactions.map((tx, i) => {
-        const isCredit = tx.type === "CREDIT" || tx.amount > 0;
-        const counterpart = tx.counterpartName || (isCredit ? "Incoming Transfer" : "Outgoing Transfer");
-        return {
-          id: tx.pid || String(i),
-          name: counterpart,
-          category: tx.reference || tx.type || "Transfer",
-          date: tx.createdAt ? new Date(tx.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—",
-          time: tx.createdAt ? new Date(tx.createdAt).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "",
-          amount: `${isCredit ? "+" : "-"}€${Math.abs(tx.amount ?? 0).toLocaleString("en-EU", { minimumFractionDigits: 2 })}`,
-          isCredit,
-          status: tx.status?.toLowerCase() === "completed" || tx.status?.toLowerCase() === "processed" ? "completed" : "processing",
-          icon: counterpart.charAt(0).toUpperCase(),
-          color: ICON_COLORS[i % ICON_COLORS.length],
-        };
-      })
-    : [];
+  const transactions = [
+    {
+      id: "1",
+      name: "Amazon Web Services",
+      category: "Cloud Infrastructure",
+      date: "Mar 15, 2026",
+      time: "14:32",
+      amount: "-€1,240.55",
+      isCredit: false,
+      status: "completed",
+      icon: "A",
+      color: "bg-orange-500",
+    },
+    {
+      id: "2",
+      name: "Slack Technologies",
+      category: "Software Subscription",
+      date: "Mar 14, 2026",
+      time: "09:15",
+      amount: "-€89.00",
+      isCredit: false,
+      status: "processing",
+      icon: "S",
+      color: "bg-purple-500",
+    },
+    {
+      id: "3",
+      name: "Google Cloud Platform",
+      category: "Cloud Services",
+      date: "Mar 13, 2026",
+      time: "22:01",
+      amount: "-€450.20",
+      isCredit: false,
+      status: "completed",
+      icon: "G",
+      color: "bg-blue-500",
+    },
+    {
+      id: "4",
+      name: "Client Payment - TechCorp",
+      category: "Invoice #INV-2024-089",
+      date: "Mar 12, 2026",
+      time: "11:45",
+      amount: "+€12,500.00",
+      isCredit: true,
+      status: "completed",
+      icon: "T",
+      color: "bg-green-500",
+    },
+    {
+      id: "5",
+      name: "Office Supplies Co",
+      category: "Office Equipment",
+      date: "Mar 11, 2026",
+      time: "16:20",
+      amount: "-€234.50",
+      isCredit: false,
+      status: "completed",
+      icon: "O",
+      color: "bg-teal-500",
+    },
+  ];
 
   const quickStats = [
     { label: "Income (Mar)", value: "€48,500", change: "+12%", isUp: true, icon: ArrowDownLeft },
@@ -209,52 +181,13 @@ export default function DashboardPage() {
     { name: "Marketing Pro", initials: "MP", color: "bg-green-500" },
   ];
 
-  // ── KYC GATE ─────────────────────────────────────────────────────────────
-  if (!kycVerified) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-        <div className="w-full max-w-lg text-center">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-10">
-            <div className="w-16 h-16 bg-[#b59354]/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <Shield className="h-8 w-8 text-[#b59354]" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Identity Verification Required</h2>
-            <p className="text-gray-600 mb-8">
-              To access your dashboard and start using Opulanz, you need to complete identity verification. This only takes a few minutes.
-            </p>
-            <button
-              onClick={() => setShowKyc(true)}
-              className="w-full py-3 bg-[#b59354] hover:bg-[#886844] text-white font-semibold rounded-xl transition-colors mb-4"
-            >
-              Start Verification
-            </button>
-            <button
-              onClick={handleSignOut}
-              className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              Sign out
-            </button>
-          </div>
-          {showKyc && (
-            <SumsubKycWidget
-              userId={authUserId}
-              levelName={kycType === "corporate" ? "corporate_signup_kyc" : "individual_signup_kyc"}
-              onClose={() => setShowKyc(false)}
-              onComplete={handleKycComplete}
-            />
-          )}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="p-6 lg:p-8 space-y-6">
       {/* Header with Greeting */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-2xl font-bold text-gray-900">{t("greeting")}, {userDisplayName}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t("greeting")}, Nordic Solutions</h1>
             <span className="text-2xl">&#128075;</span>
           </div>
           <p className="text-gray-500">{t("greetingSubtitle")}</p>
@@ -316,7 +249,10 @@ export default function DashboardPage() {
           userId={authUserId}
           levelName={kycType === "corporate" ? "corporate_signup_kyc" : "individual_signup_kyc"}
           onClose={() => setShowKyc(false)}
-          onComplete={handleKycComplete}
+          onComplete={() => {
+            setKycVerified(true);
+            setShowKyc(false);
+          }}
         />
       )}
 
@@ -386,7 +322,7 @@ export default function DashboardPage() {
             <div className="mb-6">
               <div className="flex items-baseline gap-3">
                 <h2 className="text-4xl lg:text-5xl font-bold">
-                  {showBalance ? totalBalanceDisplay : "€•••••••"}
+                  {showBalance ? "€182,240.80" : "€•••••••"}
                 </h2>
                 <div className="flex items-center gap-1 text-green-300 text-sm font-medium bg-green-500/20 px-2 py-1 rounded-full">
                   <TrendingUp className="h-4 w-4" />
@@ -565,7 +501,7 @@ export default function DashboardPage() {
               <div>
                 <p className="text-xs text-gray-500 mb-1">{t("primaryAccount.iban")}</p>
                 <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
-                  <p className="font-mono text-sm text-gray-900">{primaryIban}</p>
+                  <p className="font-mono text-sm text-gray-900">FI91 1234 5678 9012 34</p>
                   <button
                     onClick={handleCopyIban}
                     className="p-1.5 text-[#b59354] hover:bg-[#b59354]/10 rounded-lg transition-colors"
@@ -580,7 +516,7 @@ export default function DashboardPage() {
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
                   <p className="text-xs text-gray-500">{t("primaryAccount.bicSwift")}</p>
-                  <p className="font-mono text-gray-900">{primaryBic}</p>
+                  <p className="font-mono text-gray-900">OPULFI2H</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">{t("primaryAccount.currency")}</p>
@@ -628,12 +564,6 @@ export default function DashboardPage() {
             </Link>
           </div>
           <div className="divide-y divide-gray-50">
-            {narviLoading && (
-              <div className="p-8 text-center text-gray-400 text-sm">Loading transactions...</div>
-            )}
-            {!narviLoading && transactions.length === 0 && (
-              <div className="p-8 text-center text-gray-400 text-sm">No transactions yet. Your activity will appear here.</div>
-            )}
             {transactions.map((tx) => (
               <div key={tx.id} className="p-4 hover:bg-gray-50 transition-colors cursor-pointer">
                 <div className="flex items-center justify-between">

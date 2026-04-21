@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -31,7 +30,6 @@ const COUNTRIES = [
 ];
 
 export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxStepProps) {
-  const t = useTranslations("insurance.policyholderTax");
   const [formState, setFormState] = React.useState({
     title: data.title || "",
     firstName: data.firstName || "",
@@ -94,60 +92,60 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Policyholder Information</h2>
         <p className="text-brand-grayMed">
-          {t("subtitle")}
+          Please provide your personal details and tax residency information.
         </p>
       </div>
 
       {/* Personal Details */}
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-brand-dark">{t("personalDetails")}</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">Personal Details</h3>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
           <div className="space-y-2">
-            <Label htmlFor="title">{t("titleLabel")}</Label>
+            <Label htmlFor="title">Title *</Label>
             <Select value={formState.title} onValueChange={(value) => updateField("title", value)}>
               <SelectTrigger id="title">
-                <SelectValue placeholder={t("select")} />
+                <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Mr">{t("titles.mr")}</SelectItem>
-                <SelectItem value="Mrs">{t("titles.mrs")}</SelectItem>
-                <SelectItem value="Ms">{t("titles.ms")}</SelectItem>
-                <SelectItem value="Dr">{t("titles.dr")}</SelectItem>
+                <SelectItem value="Mr">Mr</SelectItem>
+                <SelectItem value="Mrs">Mrs</SelectItem>
+                <SelectItem value="Ms">Ms</SelectItem>
+                <SelectItem value="Dr">Dr</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2 md:col-span-3">
-            <Label htmlFor="firstName">{t("firstName")}</Label>
+            <Label htmlFor="firstName">First Name *</Label>
             <Input
               id="firstName"
               type="text"
               value={formState.firstName}
               onChange={(e) => updateField("firstName", e.target.value)}
-              placeholder={t("firstNamePlaceholder")}
+              placeholder="Enter your first name"
               required
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="lastName">{t("lastName")}</Label>
+          <Label htmlFor="lastName">Last Name *</Label>
           <Input
             id="lastName"
             type="text"
             value={formState.lastName}
             onChange={(e) => updateField("lastName", e.target.value)}
-            placeholder={t("lastNamePlaceholder")}
+            placeholder="Enter your last name"
             required
           />
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="dateOfBirth">{t("dateOfBirth")}</Label>
+            <Label htmlFor="dateOfBirth">Date of Birth *</Label>
             <Input
               id="dateOfBirth"
               type="date"
@@ -159,23 +157,23 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="placeOfBirth">{t("placeOfBirth")}</Label>
+            <Label htmlFor="placeOfBirth">Place of Birth *</Label>
             <Input
               id="placeOfBirth"
               type="text"
               value={formState.placeOfBirth}
               onChange={(e) => updateField("placeOfBirth", e.target.value)}
-              placeholder={t("placeOfBirthPlaceholder")}
+              placeholder="City, Country"
               required
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="nationality">{t("nationality")}</Label>
+          <Label htmlFor="nationality">Nationality *</Label>
           <Select value={formState.nationality} onValueChange={(value) => updateField("nationality", value)}>
             <SelectTrigger id="nationality">
-              <SelectValue placeholder={t("selectNationality")} />
+              <SelectValue placeholder="Select nationality" />
             </SelectTrigger>
             <SelectContent>
               {COUNTRIES.map((country) => (
@@ -190,11 +188,11 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
 
       {/* Contact Information */}
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-brand-dark">{t("contactInfo")}</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">Contact Information</h3>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="email">{t("email")}</Label>
+            <Label htmlFor="email">Email Address *</Label>
             <Input
               id="email"
               type="email"
@@ -206,7 +204,7 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">{t("phone")}</Label>
+            <Label htmlFor="phone">Phone Number *</Label>
             <Input
               id="phone"
               type="tel"
@@ -221,61 +219,61 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
 
       {/* Address */}
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-brand-dark">{t("residentialAddress")}</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">Residential Address</h3>
 
         <div className="space-y-2">
-          <Label htmlFor="addressLine1">{t("addressLine1")}</Label>
+          <Label htmlFor="addressLine1">Address Line 1 *</Label>
           <Input
             id="addressLine1"
             type="text"
             value={formState.addressLine1}
             onChange={(e) => updateField("addressLine1", e.target.value)}
-            placeholder={t("addressLine1Placeholder")}
+            placeholder="Street address"
             required
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="addressLine2">{t("addressLine2")}</Label>
+          <Label htmlFor="addressLine2">Address Line 2</Label>
           <Input
             id="addressLine2"
             type="text"
             value={formState.addressLine2}
             onChange={(e) => updateField("addressLine2", e.target.value)}
-            placeholder={t("addressLine2Placeholder")}
+            placeholder="Apartment, suite, etc. (optional)"
           />
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="space-y-2">
-            <Label htmlFor="city">{t("city")}</Label>
+            <Label htmlFor="city">City *</Label>
             <Input
               id="city"
               type="text"
               value={formState.city}
               onChange={(e) => updateField("city", e.target.value)}
-              placeholder={t("cityPlaceholder")}
+              placeholder="City"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="postalCode">{t("postalCode")}</Label>
+            <Label htmlFor="postalCode">Postal Code *</Label>
             <Input
               id="postalCode"
               type="text"
               value={formState.postalCode}
               onChange={(e) => updateField("postalCode", e.target.value)}
-              placeholder={t("postalCodePlaceholder")}
+              placeholder="Postal code"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="country">{t("country")}</Label>
+            <Label htmlFor="country">Country *</Label>
             <Select value={formState.country} onValueChange={(value) => updateField("country", value)}>
               <SelectTrigger id="country">
-                <SelectValue placeholder={t("selectCountry")} />
+                <SelectValue placeholder="Select country" />
               </SelectTrigger>
               <SelectContent>
                 {COUNTRIES.map((country) => (
@@ -291,7 +289,7 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
 
       {/* Tax Residency */}
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-brand-dark">{t("taxResidency")}</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">Tax Residency</h3>
 
         <div className="flex items-start space-x-3 rounded-lg border border-brand-grayLight bg-gray-50 p-4">
           <Checkbox
@@ -301,17 +299,17 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
           />
           <div className="space-y-1">
             <Label htmlFor="taxResidentLU" className="cursor-pointer font-medium">
-              {t("taxResidentLU")}
+              I am a tax resident of Luxembourg
             </Label>
             <p className="text-sm text-brand-grayMed">
-              {t("taxResidentLUDesc")}
+              Check this if you are liable to pay taxes in Luxembourg
             </p>
           </div>
         </div>
 
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Label className="font-medium">{t("additionalTaxResidencies")}</Label>
+            <Label className="font-medium">Additional Tax Residencies</Label>
             <Info className="h-4 w-4 text-brand-grayMed" />
           </div>
 
@@ -326,14 +324,14 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
                     <p className="font-medium">
                       {COUNTRIES.find((c) => c.code === residency.country)?.name || residency.country}
                     </p>
-                    <p className="text-sm text-brand-grayMed">{t("tin")}: {residency.tin}</p>
+                    <p className="text-sm text-brand-grayMed">TIN: {residency.tin}</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => removeTaxResidency(index)}
                     className="text-sm text-red-600 hover:text-red-700"
                   >
-                    {t("remove")}
+                    Remove
                   </button>
                 </div>
               ))}
@@ -341,16 +339,16 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
           )}
 
           <div className="rounded-lg border border-brand-grayLight bg-gray-50 p-4">
-            <p className="mb-4 text-sm font-medium text-brand-dark">{t("addTaxResidency")}</p>
+            <p className="mb-4 text-sm font-medium text-brand-dark">Add Tax Residency</p>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="additionalCountry">{t("countryLabel")}</Label>
+                <Label htmlFor="additionalCountry">Country</Label>
                 <Select
                   value={additionalResidency.country}
                   onValueChange={(value) => setAdditionalResidency((prev) => ({ ...prev, country: value }))}
                 >
                   <SelectTrigger id="additionalCountry">
-                    <SelectValue placeholder={t("selectCountry")} />
+                    <SelectValue placeholder="Select country" />
                   </SelectTrigger>
                   <SelectContent>
                     {COUNTRIES.map((country) => (
@@ -363,13 +361,13 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="tin">{t("tinLabel")}</Label>
+                <Label htmlFor="tin">Tax Identification Number (TIN)</Label>
                 <Input
                   id="tin"
                   type="text"
                   value={additionalResidency.tin}
                   onChange={(e) => setAdditionalResidency((prev) => ({ ...prev, tin: e.target.value }))}
-                  placeholder={t("tinPlaceholder")}
+                  placeholder="Enter TIN"
                 />
               </div>
             </div>
@@ -379,7 +377,7 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
               disabled={!additionalResidency.country || !additionalResidency.tin}
               className="mt-4 text-sm font-medium text-brand-gold hover:text-brand-goldDark disabled:text-gray-400"
             >
-              + {t("addTaxResidency")}
+              + Add Tax Residency
             </button>
           </div>
         </div>
@@ -388,9 +386,10 @@ export function PolicyholderTaxStep({ data, onUpdate, onNext }: PolicyholderTaxS
           <div className="flex items-start gap-2">
             <Info className="mt-0.5 h-5 w-5 text-blue-600" />
             <div className="space-y-1 text-sm text-blue-800">
-              <p className="font-semibold">{t("fatcaTitle")}</p>
+              <p className="font-semibold">FATCA & CRS Compliance</p>
               <p>
-                {t("fatcaText")}
+                Luxembourg life insurance companies are required to report to tax authorities under FATCA (US) and
+                CRS (OECD) regulations. Please ensure all tax residency information is accurate and complete.
               </p>
             </div>
           </div>

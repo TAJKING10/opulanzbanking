@@ -1,244 +1,176 @@
 "use client";
 
 import * as React from "react";
-import { useLocale } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Hero } from "@/components/hero";
-import { SectionHeading } from "@/components/section-heading";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Script from "next/script";
 import { useState, useEffect, useRef } from "react";
-import { CheckCircle, Clock, Video, Shield, ArrowLeft, ArrowRight, Calendar } from "lucide-react";
-
-interface ContactData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-}
-
-interface BookingData extends ContactData {
-  eventUri?: string;
-  inviteeUri?: string;
-  eventStartTime?: string;
-  eventEndTime?: string;
-  appointmentScheduled: boolean;
-}
-
-function formatDate(isoString?: string): string {
-  if (!isoString) return "";
-  const d = new Date(isoString);
-  if (isNaN(d.getTime())) return "";
-  return d.toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
-function formatTime(isoString?: string): string {
-  if (!isoString) return "";
-  const d = new Date(isoString);
-  if (isNaN(d.getTime())) return "";
-  return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-}
 
 export default function ScheduleInvestmentMeetingPage() {
+  const t = useTranslations();
   const locale = useLocale();
 
-  const [step, setStep] = useState<"contact" | "calendar" | "payment" | "confirmation">("contact");
-  const [contactData, setContactData] = useState<ContactData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-  });
-  const [contactErrors, setContactErrors] = useState<Partial<ContactData>>({});
-  const [bookingData, setBookingData] = useState<BookingData>({
-    ...contactData,
-    appointmentScheduled: false,
-  });
+  const [step, setStep] = useState<'calendar' | 'payment' | 'confirmation'>('calendar');
+  const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
-  const [calendlyScriptLoaded, setCalendlyScriptLoaded] = useState(false);
   const paypalRef = useRef<HTMLDivElement>(null);
-  const calendlyRef = useRef<HTMLDivElement>(null);
 
-  // Init Calendly widget when script is ready and step is calendar
   useEffect(() => {
-    if (step !== "calendar") return;
-    const fullName = `${bookingData.firstName} ${bookingData.lastName}`.trim();
-
-    function initWidget() {
-      // @ts-ignore
-      if (window.Calendly && calendlyRef.current) {
-        calendlyRef.current.innerHTML = "";
-        // @ts-ignore
-        window.Calendly.initInlineWidget({
-          url: `https://calendly.com/opulanz-banking/tax-advisory-clone?hide_event_type_details=1&primary_color=b59354`,
-          parentElement: calendlyRef.current,
-          prefill: {
-            name: fullName,
-            email: bookingData.email,
-          },
-        });
-      }
-    }
-
-    // @ts-ignore
-    if (window.Calendly) {
-      initWidget();
-    } else {
-      // Poll until Calendly global is available (script still loading)
-      const interval = setInterval(() => {
-        // @ts-ignore
-        if (window.Calendly) {
-          clearInterval(interval);
-          initWidget();
-        }
-      }, 200);
-      return () => clearInterval(interval);
-    }
-  }, [step, calendlyScriptLoaded]);
-
-  // Listen for Calendly booking confirmation
-  useEffect(() => {
+    // Listen for Calendly events
     const handleCalendlyEvent = (e: MessageEvent) => {
-      if (e.data?.event?.indexOf?.("calendly") === 0) {
-        if (e.data.event === "calendly.event_scheduled") {
-          const payload = e.data.payload || {};
-          setBookingData((prev) => ({
-            ...prev,
-            eventUri: payload.event?.uri,
-            inviteeUri: payload.invitee?.uri,
-            // Calendly may or may not include these — captured from form is the source of truth
-            eventStartTime: payload.event?.start_time || prev.eventStartTime,
-            eventEndTime: payload.event?.end_time || prev.eventEndTime,
-            appointmentScheduled: true,
-          }));
-          setStep("payment");
+      if (e.data.event && e.data.event.indexOf('calendly') === 0) {
+        console.log('Calendly Event:', e.data.event);
+
+        // When user completes booking in Calendly
+        if (e.data.event === 'calendly.event_scheduled') {
+          console.log('Booking details:', e.data.payload);
+
+          // Store booking data
+          setBookingData({
+            eventUri: e.data.payload.event.uri,
+            inviteeUri: e.data.payload.invitee.uri,
+            inviteeName: e.data.payload.invitee.name,
+            inviteeEmail: e.data.payload.invitee.email,
+            eventStartTime: e.data.payload.event.start_time,
+            eventEndTime: e.data.payload.event.end_time,
+          });
+
+          // Move to payment step
+          setStep('payment');
         }
       }
     };
-    window.addEventListener("message", handleCalendlyEvent);
-    return () => window.removeEventListener("message", handleCalendlyEvent);
+
+    window.addEventListener('message', handleCalendlyEvent);
+
+    return () => {
+      window.removeEventListener('message', handleCalendlyEvent);
+    };
   }, []);
 
-  // Render PayPal buttons when step = payment
   useEffect(() => {
-    if (step === "payment" && paypalLoaded && paypalRef.current) {
-      paypalRef.current.innerHTML = "";
+    // Initialize PayPal buttons when step changes to payment and PayPal is loaded
+    if (step === 'payment' && paypalLoaded && paypalRef.current && bookingData) {
+      // Clear existing buttons
+      paypalRef.current.innerHTML = '';
+
       // @ts-ignore
       if (window.paypal) {
         // @ts-ignore
         window.paypal.Buttons({
-          style: { layout: "vertical", color: "gold", shape: "rect", label: "pay", height: 50 },
-          createOrder: (_data: any, actions: any) =>
-            actions.order.create({
-              purchase_units: [{
-                description: "Investment Advisory Consultation – 45 minutes",
-                amount: { currency_code: "EUR", value: "99.90" },
-              }],
-            }),
-          onApprove: (_data: any, actions: any) =>
-            actions.order.capture().then(() => setPaymentCompleted(true)),
-          onError: (err: any) => {
-            console.error("PayPal error:", err);
-            alert("Payment failed. Please try again.");
+          style: {
+            layout: 'vertical',
+            color: 'gold',
+            shape: 'rect',
+            label: 'pay',
+            height: 50
           },
+          createOrder: function(data: any, actions: any) {
+            return actions.order.create({
+              purchase_units: [{
+                description: 'Investment Advisory Consultation - 45 minutes',
+                amount: {
+                  currency_code: 'EUR',
+                  value: '99.90'
+                }
+              }]
+            });
+          },
+          onApprove: function(data: any, actions: any) {
+            return actions.order.capture().then(function(details: any) {
+              console.log('Payment completed:', details);
+              setPaymentCompleted(true);
+              // Don't move to confirmation yet - wait for user to click button
+            });
+          },
+          onError: function(err: any) {
+            console.error('PayPal error:', err);
+            alert('Payment failed. Please try again.');
+          }
         }).render(paypalRef.current);
       }
     }
-  }, [step, paypalLoaded]);
+  }, [step, paypalLoaded, bookingData]);
 
-  // ── Step 0: Validate & advance ──────────────────────────────────────────
-  function handleContactSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const errs: Partial<ContactData> = {};
-    if (!contactData.firstName.trim()) errs.firstName = "First name is required";
-    if (!contactData.lastName.trim()) errs.lastName = "Last name is required";
-    if (!contactData.email.trim()) errs.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email)) errs.email = "Enter a valid email";
-    if (!contactData.phone.trim()) errs.phone = "Phone number is required";
-    setContactErrors(errs);
-    if (Object.keys(errs).length) return;
-
-    setBookingData((prev) => ({ ...prev, ...contactData }));
-    setStep("calendar");
-  }
-
-  // ── Step 2: Confirm payment & save ──────────────────────────────────────
-  async function handlePaymentComplete() {
+  const handlePaymentComplete = async () => {
     if (!paymentCompleted) {
-      alert("Please complete the PayPal payment first.");
+      alert('Please complete the PayPal payment first.');
       return;
     }
+
     setLoading(true);
 
-    const API = "http://localhost:5000";
-    const name = `${bookingData.firstName} ${bookingData.lastName}`.trim();
-    const now = new Date().toISOString();
-    const startTime = bookingData.eventStartTime || now;
-    const endTime = bookingData.eventEndTime || new Date(Date.now() + 45 * 60 * 1000).toISOString();
-    const startDate = new Date(startTime);
-
-    // Save appointment — silently continue on failure (payment already taken)
     try {
-      await fetch(`${API}/api/appointments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      if (!bookingData) {
+        throw new Error('No booking data available');
+      }
+
+      // Format date and time for display
+      const startDate = new Date(bookingData.eventStartTime);
+      const endDate = new Date(bookingData.eventEndTime);
+
+      // Save appointment to database
+      const appointmentResponse = await fetch('http://localhost:5000/api/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          full_name: name,
-          email: bookingData.email,
-          phone: bookingData.phone,
-          calendly_event_uri: bookingData.eventUri || null,
-          meeting_type: "Investment Advisory",
-          status: "confirmed",
-          start_time: startTime,
-          end_time: endTime,
+          full_name: bookingData.inviteeName,
+          email: bookingData.inviteeEmail,
+          calendly_id: bookingData.eventUri,
+          calendly_event_uri: bookingData.eventUri,
+          meeting_type: 'Investment Advisory',
+          status: 'confirmed',
+          start_time: bookingData.eventStartTime,
+          end_time: bookingData.eventEndTime,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          location: "Video Conference",
-          notes: "Paid consultation – €99.90",
-        }),
+          location: 'Video Conference',
+          notes: 'Paid consultation - €99.90'
+        })
       });
-    } catch (err) {
-      console.warn("Appointment save failed (non-blocking):", err);
-    }
 
-    // Send notification email — silently continue on failure
-    try {
-      await fetch(`${API}/api/notifications/appointment`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      if (!appointmentResponse.ok) {
+        const errorData = await appointmentResponse.json();
+        console.error('Appointment creation failed:', errorData);
+        // Continue even if appointment creation fails (might be duplicate)
+      }
+
+      // Send email notifications
+      const notificationResponse = await fetch('http://localhost:5000/api/notifications/appointment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          customerName: name,
-          customerEmail: bookingData.email,
-          appointmentDate: bookingData.eventStartTime
-            ? startDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })
-            : "Scheduled via Calendly — check your confirmation email",
-          appointmentTime: bookingData.eventStartTime
-            ? startDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
-            : "See Calendly confirmation",
-          meetingType: "Investment Advisory",
-          price: "99.90",
-        }),
+          customerName: bookingData.inviteeName,
+          customerEmail: bookingData.inviteeEmail,
+          appointmentDate: startDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }),
+          appointmentTime: startDate.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+          }),
+          meetingType: 'Investment Advisory'
+        })
       });
-    } catch (err) {
-      console.warn("Notification send failed (non-blocking):", err);
+
+      if (!notificationResponse.ok) {
+        console.warn('Email notification failed, but appointment was created');
+      }
+
+      setStep('confirmation');
+    } catch (error) {
+      console.error('Error processing payment:', error);
+      alert('There was an error processing your payment. Please contact support.');
+    } finally {
+      setLoading(false);
     }
-
-    // Always proceed to confirmation — payment was successful
-    setLoading(false);
-    setStep("confirmation");
-  }
-
-  const fullName = `${bookingData.firstName} ${bookingData.lastName}`.trim();
-  const dateDisplay = formatDate(bookingData.eventStartTime);
-  const timeDisplay = formatTime(bookingData.eventStartTime);
+  };
 
   return (
     <>
@@ -248,153 +180,118 @@ export default function ScheduleInvestmentMeetingPage() {
       />
 
       <section className="bg-white py-12">
-        <div className="container mx-auto max-w-4xl px-6">
-
-          {/* ─── STEP 1: CONTACT INFO ─────────────────────────────────── */}
-          {step === "contact" && (
+        <div className="container mx-auto max-w-5xl px-6">
+          {/* Step 1: Calendly Calendar */}
+          {step === 'calendar' && (
             <>
-              <SectionHeading
-                overline="STEP 1 OF 3"
-                title="Your Contact Information"
-                description="Please provide your details before scheduling your consultation"
-              />
-
-              <Card className="mt-8 border-none shadow-lg">
-                <CardContent className="p-8">
-                  <form onSubmit={handleContactSubmit} className="space-y-6">
-                    <div className="grid gap-6 sm:grid-cols-2">
-                      <div>
-                        <Label htmlFor="firstName">First Name <span className="text-red-500">*</span></Label>
-                        <Input
-                          id="firstName"
-                          value={contactData.firstName}
-                          onChange={(e) => setContactData((p) => ({ ...p, firstName: e.target.value }))}
-                          placeholder="Enter your first name"
-                          className={`mt-1 ${contactErrors.firstName ? "border-red-500" : ""}`}
-                        />
-                        {contactErrors.firstName && (
-                          <p className="mt-1 text-sm text-red-500">{contactErrors.firstName}</p>
-                        )}
-                      </div>
-                      <div>
-                        <Label htmlFor="lastName">Last Name <span className="text-red-500">*</span></Label>
-                        <Input
-                          id="lastName"
-                          value={contactData.lastName}
-                          onChange={(e) => setContactData((p) => ({ ...p, lastName: e.target.value }))}
-                          placeholder="Enter your last name"
-                          className={`mt-1 ${contactErrors.lastName ? "border-red-500" : ""}`}
-                        />
-                        {contactErrors.lastName && (
-                          <p className="mt-1 text-sm text-red-500">{contactErrors.lastName}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="email">Email Address <span className="text-red-500">*</span></Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={contactData.email}
-                        onChange={(e) => setContactData((p) => ({ ...p, email: e.target.value }))}
-                        placeholder="Enter your email address"
-                        className={`mt-1 ${contactErrors.email ? "border-red-500" : ""}`}
-                      />
-                      {contactErrors.email && (
-                        <p className="mt-1 text-sm text-red-500">{contactErrors.email}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <Label htmlFor="phone">Phone Number <span className="text-red-500">*</span></Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        value={contactData.phone}
-                        onChange={(e) => setContactData((p) => ({ ...p, phone: e.target.value }))}
-                        placeholder="Enter your phone number"
-                        className={`mt-1 ${contactErrors.phone ? "border-red-500" : ""}`}
-                      />
-                      {contactErrors.phone && (
-                        <p className="mt-1 text-sm text-red-500">{contactErrors.phone}</p>
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => window.history.back()}
-                        className="flex items-center gap-2"
-                      >
-                        <ArrowLeft className="h-4 w-4" /> Back to Investment Advisory
-                      </Button>
-                      <Button type="submit" className="flex items-center gap-2 bg-brand-gold text-white hover:bg-brand-goldDark">
-                        Continue to Schedule <ArrowRight className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </form>
-                </CardContent>
-              </Card>
-
-              {/* Info cards */}
-              <div className="mt-12 grid gap-8 md:grid-cols-3">
-                {[
-                  { icon: Clock, title: "45-Minute Consultation", desc: "Comprehensive session covering your investment goals" },
-                  { icon: Video, title: "Video Conference", desc: "Secure online meeting via your preferred platform" },
-                  { icon: Shield, title: "Confidential & Secure", desc: "All discussions are strictly confidential" },
-                ].map(({ icon: Icon, title, desc }) => (
-                  <div key={title} className="text-center">
-                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
-                      <Icon className="h-6 w-6 text-brand-goldDark" />
-                    </div>
-                    <h3 className="mb-2 text-lg font-bold text-brand-dark">{title}</h3>
-                    <p className="text-sm text-brand-grayMed">{desc}</p>
-                  </div>
-                ))}
+              <div className="mb-8 text-center">
+                <h2 className="mb-4 text-2xl font-bold text-brand-dark md:text-3xl">
+                  Choose a Time That Works for You
+                </h2>
+                <p className="text-brand-grayMed">
+                  Select your preferred date and time from the calendar below. Our investment advisors are ready to help you build and grow your wealth.
+                </p>
               </div>
-            </>
-          )}
 
-          {/* ─── STEP 2: CALENDLY CALENDAR ───────────────────────────── */}
-          {step === "calendar" && (
-            <>
-              <SectionHeading
-                overline="STEP 2 OF 3"
-                title="Pick a Date & Time"
-                description={`Booking for ${fullName} (${bookingData.email})`}
-              />
-
-              <Card className="mt-8 border-none shadow-lg">
+              <Card className="border-none shadow-lg">
                 <CardContent className="p-4 md:p-8">
+                  {/* Calendly inline widget */}
                   <div
-                    ref={calendlyRef}
-                    style={{ minWidth: "320px", height: "700px" }}
+                    className="calendly-inline-widget"
+                    data-url="https://calendly.com/opulanz-banking/tax-advisory-clone?hide_event_type_details=1&primary_color=d0ab08"
+                    style={{ minWidth: '320px', height: '700px' }}
                   />
                 </CardContent>
               </Card>
 
-              <div className="mt-6 flex justify-start">
-                <Button
-                  variant="outline"
-                  onClick={() => setStep("contact")}
-                  className="flex items-center gap-2"
-                >
-                  <ArrowLeft className="h-4 w-4" /> Back to Contact Info
-                </Button>
+              {/* Information Section */}
+              <div className="mt-12 grid gap-8 md:grid-cols-3">
+                <div className="text-center">
+                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
+                    <svg className="h-6 w-6 text-brand-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="mb-2 text-lg font-bold text-brand-dark">45-Minute Consultation</h3>
+                  <p className="text-sm text-brand-grayMed">
+                    Comprehensive consultation to understand your investment needs
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
+                    <svg className="h-6 w-6 text-brand-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <h3 className="mb-2 text-lg font-bold text-brand-dark">Video Conference</h3>
+                  <p className="text-sm text-brand-grayMed">
+                    Secure online meeting via your preferred platform
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
+                    <svg className="h-6 w-6 text-brand-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <h3 className="mb-2 text-lg font-bold text-brand-dark">Confidential & Secure</h3>
+                  <p className="text-sm text-brand-grayMed">
+                    All discussions are strictly confidential
+                  </p>
+                </div>
+              </div>
+
+              {/* What to Prepare Section */}
+              <div className="mt-12 rounded-lg bg-brand-off p-8">
+                <h3 className="mb-4 text-xl font-bold text-brand-dark">What to Prepare for Your Meeting</h3>
+                <ul className="space-y-3 text-brand-grayMed">
+                  <li className="flex items-start gap-3">
+                    <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>Overview of your current financial situation and investment portfolio</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>Your short-term and long-term financial goals</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>Information about your risk tolerance and investment timeline</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>List of questions or specific investment concerns you'd like to address</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>Recent account statements (if available)</span>
+                  </li>
+                </ul>
               </div>
             </>
           )}
 
-          {/* ─── STEP 3: PAYMENT ─────────────────────────────────────── */}
-          {step === "payment" && (
+          {/* Step 2: Payment */}
+          {step === 'payment' && bookingData && (
             <>
               <div className="mb-8 text-center">
-                <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-                  <CheckCircle className="h-7 w-7 text-green-600" />
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                  <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
                 </div>
-                <h2 className="mb-2 text-2xl font-bold text-brand-dark md:text-3xl">
+                <h2 className="mb-4 text-2xl font-bold text-brand-dark md:text-3xl">
                   Time Slot Reserved!
                 </h2>
                 <p className="text-brand-grayMed">
@@ -402,37 +299,36 @@ export default function ScheduleInvestmentMeetingPage() {
                 </p>
               </div>
 
-              {/* Appointment details */}
               <Card className="mb-8 border-brand-gold/30 shadow-lg">
                 <CardContent className="p-8">
-                  <h3 className="mb-6 text-xl font-bold text-brand-dark">Your Appointment Details</h3>
-                  <div className="space-y-4">
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
+                  <h3 className="mb-4 text-xl font-bold text-brand-dark">Your Appointment Details</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                       <span className="text-brand-grayMed">Name:</span>
-                      <span className="font-semibold text-brand-dark">{fullName}</span>
+                      <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
                     </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
+                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                       <span className="text-brand-grayMed">Email:</span>
-                      <span className="font-semibold text-brand-dark">{bookingData.email}</span>
+                      <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
                     </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
-                      <span className="text-brand-grayMed">Phone:</span>
-                      <span className="font-semibold text-brand-dark">{bookingData.phone}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
+                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                       <span className="text-brand-grayMed">Date:</span>
                       <span className="font-semibold text-brand-dark">
-                        {dateDisplay || (
-                          <span className="flex items-center gap-1 text-brand-grayMed">
-                            <Calendar className="h-4 w-4" /> Scheduled via Calendly
-                          </span>
-                        )}
+                        {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
                       </span>
                     </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
+                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                       <span className="text-brand-grayMed">Time:</span>
                       <span className="font-semibold text-brand-dark">
-                        {timeDisplay || "Check your Calendly confirmation email"}
+                        {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
                       </span>
                     </div>
                     <div className="flex justify-between">
@@ -443,143 +339,146 @@ export default function ScheduleInvestmentMeetingPage() {
                 </CardContent>
               </Card>
 
-              {/* Payment */}
               <Card className="border-none shadow-lg">
                 <CardContent className="p-8 md:p-12">
                   <div className="text-center">
-                    <h3 className="mb-2 text-xl font-bold text-brand-dark">Complete Your Payment</h3>
-                    <p className="text-3xl font-bold text-brand-gold">€99.90</p>
-                    <p className="mt-2 text-sm text-brand-grayMed">
-                      One-time payment for 45-minute consultation
-                    </p>
+                    <div className="mb-6">
+                      <h3 className="mb-2 text-xl font-bold text-brand-dark">
+                        Complete Your Payment
+                      </h3>
+                      <p className="text-3xl font-bold text-brand-gold">€99.90</p>
+                      <p className="mt-2 text-sm text-brand-grayMed">
+                        One-time payment for 45-minute consultation
+                      </p>
+                    </div>
 
-                    <div className="mx-auto mt-8 max-w-md">
-                      <div ref={paypalRef} id="paypal-button-container" />
+                    {/* PayPal Button Container */}
+                    <div className="mx-auto max-w-md">
+                      <div ref={paypalRef} id="paypal-button-container"></div>
+
+                      <div className="mt-6 rounded-lg bg-blue-50 p-4">
+                        <p className="text-sm text-blue-800">
+                          <strong>Testing:</strong> Use card{' '}
+                          <code className="rounded bg-blue-100 px-2 py-1">4111 1111 1111 1111</code>
+                          {' '}(Expiry: 12/2030, CVV: 123) - No verification!
+                        </p>
+                      </div>
                     </div>
 
                     {paymentCompleted && (
-                      <div className="mt-6 space-y-4">
-                        <div className="rounded-lg bg-green-50 p-4 text-green-800">
+                      <div className="mt-6">
+                        <div className="mb-4 rounded-lg bg-green-50 p-4 text-green-800">
                           <div className="flex items-center justify-center gap-2">
-                            <CheckCircle className="h-5 w-5" />
+                            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
                             <span className="font-semibold">Payment Successful!</span>
                           </div>
                         </div>
+
                         <Button
+                          type="button"
                           onClick={handlePaymentComplete}
                           disabled={loading}
                           className="bg-brand-gold text-white hover:bg-brand-goldDark"
                         >
-                          {loading ? "Processing..." : "Continue to Confirmation"}
+                          {loading ? 'Processing...' : 'Continue to Confirmation'}
                         </Button>
                       </div>
                     )}
-
-                    <Button
-                      variant="outline"
-                      onClick={() => setStep("calendar")}
-                      className="mt-4 flex items-center gap-2"
-                    >
-                      <ArrowLeft className="h-4 w-4" /> Back to Calendar
-                    </Button>
                   </div>
                 </CardContent>
               </Card>
             </>
           )}
 
-          {/* ─── STEP 4: CONFIRMATION ────────────────────────────────── */}
-          {step === "confirmation" && (
-            <div className="text-center">
-              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-                <CheckCircle className="h-10 w-10 text-green-600" />
+          {/* Step 3: Confirmation */}
+          {step === 'confirmation' && bookingData && (
+            <>
+              <div className="text-center">
+                <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+                  <svg className="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="mb-4 text-3xl font-bold text-brand-dark">
+                  Payment Confirmed!
+                </h2>
+                <p className="mb-8 text-brand-grayMed">
+                  Thank you for your payment. Your appointment is now confirmed. We've sent confirmation emails to both you and our team.
+                </p>
+
+                <Card className="mb-8 border-brand-gold/30 shadow-lg">
+                  <CardContent className="p-8">
+                    <h3 className="mb-4 text-xl font-bold text-brand-dark">Confirmed Appointment</h3>
+                    <div className="space-y-3 text-left">
+                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                        <span className="text-brand-grayMed">Service:</span>
+                        <span className="font-semibold text-brand-dark">Investment Advisory</span>
+                      </div>
+                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                        <span className="text-brand-grayMed">Name:</span>
+                        <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                      </div>
+                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                        <span className="text-brand-grayMed">Date:</span>
+                        <span className="font-semibold text-brand-dark">
+                          {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </span>
+                      </div>
+                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                        <span className="text-brand-grayMed">Time:</span>
+                        <span className="font-semibold text-brand-dark">
+                          {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-brand-grayMed">Duration:</span>
+                        <span className="font-semibold text-brand-dark">45 minutes</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <div className="rounded-lg bg-brand-goldLight/20 p-6">
+                  <h4 className="mb-3 font-semibold text-brand-dark">What's Next?</h4>
+                  <ul className="space-y-2 text-sm text-brand-grayMed">
+                    <li>✓ Check your email ({bookingData.inviteeEmail}) for the meeting link and calendar invite</li>
+                    <li>✓ Prepare your financial documents and questions</li>
+                    <li>✓ Join the video conference at your scheduled time</li>
+                    <li>✓ Our team has been notified at opulanz.banking@gmail.com</li>
+                  </ul>
+                </div>
+
+                <Button
+                  onClick={() => window.location.href = `/${locale}`}
+                  className="mt-8 bg-brand-gold text-white hover:bg-brand-goldDark"
+                >
+                  Return to Home
+                </Button>
               </div>
-              <h2 className="mb-4 text-3xl font-bold text-brand-dark">Payment Confirmed!</h2>
-              <p className="mb-10 text-brand-grayMed">
-                Thank you for your payment. Your appointment is now confirmed. We've sent confirmation details to your email.
-              </p>
-
-              <Card className="mb-8 border-brand-gold/30 text-left shadow-lg">
-                <CardContent className="p-8">
-                  <h3 className="mb-6 text-xl font-bold text-brand-dark">Confirmed Appointment</h3>
-                  <div className="space-y-4">
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
-                      <span className="text-brand-grayMed">Service:</span>
-                      <span className="font-semibold text-brand-dark">Investment Advisory</span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
-                      <span className="text-brand-grayMed">Name:</span>
-                      <span className="font-semibold text-brand-dark">{fullName}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
-                      <span className="text-brand-grayMed">Email:</span>
-                      <span className="font-semibold text-brand-dark">{bookingData.email}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
-                      <span className="text-brand-grayMed">Date:</span>
-                      <span className="font-semibold text-brand-dark">
-                        {dateDisplay || "Check your Calendly confirmation email"}
-                      </span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
-                      <span className="text-brand-grayMed">Time:</span>
-                      <span className="font-semibold text-brand-dark">
-                        {timeDisplay || "Scheduled via Calendly"}
-                      </span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-3">
-                      <span className="text-brand-grayMed">Duration:</span>
-                      <span className="font-semibold text-brand-dark">45 minutes</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-brand-grayMed">Amount Paid:</span>
-                      <span className="font-bold text-brand-gold">€99.90</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="rounded-lg bg-brand-goldLight/20 p-6 text-left">
-                <h4 className="mb-4 font-semibold text-brand-dark">What's Next?</h4>
-                <ul className="space-y-3 text-sm text-brand-grayMed">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-gold" />
-                    <span>Check your email ({bookingData.email}) for the meeting link and calendar invite</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-gold" />
-                    <span>Prepare your financial documents and investment questions</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-gold" />
-                    <span>Join the video conference at your scheduled time</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-gold" />
-                    <span>Our team at opulanz.banking@gmail.com has been notified</span>
-                  </li>
-                </ul>
-              </div>
-
-              <Button
-                onClick={() => (window.location.href = `/${locale}`)}
-                className="mt-8 bg-brand-gold text-white hover:bg-brand-goldDark"
-              >
-                Return to Home
-              </Button>
-            </div>
+            </>
           )}
-
         </div>
       </section>
 
+      {/* Load Calendly widget script */}
       <Script
         src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="afterInteractive"
-        onLoad={() => setCalendlyScriptLoaded(true)}
+        strategy="lazyOnload"
       />
+
+      {/* Load PayPal SDK - Using PayPal Sandbox Credentials */}
       <Script
-        src={`https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo"}&currency=EUR`}
+        src="https://www.paypal.com/sdk/js?client-id=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo&currency=EUR"
         strategy="lazyOnload"
         onLoad={() => setPaypalLoaded(true)}
       />

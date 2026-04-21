@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations } from "next-intl";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
@@ -15,7 +14,6 @@ interface InvestmentProfileStepProps {
 }
 
 export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProfileStepProps) {
-  const t = useTranslations("insurance.investmentProfile");
   const [formState, setFormState] = React.useState({
     investmentHorizon: data.investmentHorizon || "",
     investmentKnowledge: data.investmentKnowledge || "",
@@ -30,19 +28,19 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
     setFormState((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Suitability check
+  // Suitability check - warn if horizon doesn't match risk
   const suitabilityWarning = React.useMemo(() => {
     const horizon = formState.investmentHorizon;
     const risk = formState.riskTolerance;
 
     if (horizon === "short" && risk >= 4) {
-      return t("warningHighRiskShort");
+      return "Your high risk tolerance may not align with your short investment horizon. Consider adjusting your approach.";
     }
     if (horizon === "long" && risk <= 2) {
-      return t("warningLowRiskLong");
+      return "A conservative risk approach with a long investment horizon may limit potential returns.";
     }
     return null;
-  }, [formState.investmentHorizon, formState.riskTolerance, t]);
+  }, [formState.investmentHorizon, formState.riskTolerance]);
 
   // Validation
   const isFormValid = React.useMemo(() => {
@@ -67,29 +65,23 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
   }, [formState, isFormValid, suitabilityWarning]);
 
   const getRiskLabel = (value: number) => {
-    const labels = [
-      t("risk.veryConservative"),
-      t("risk.conservative"),
-      t("risk.moderate"),
-      t("risk.growth"),
-      t("risk.aggressive"),
-    ];
-    return labels[value - 1] || t("risk.moderate");
+    const labels = ["Very Conservative", "Conservative", "Moderate", "Growth", "Aggressive"];
+    return labels[value - 1] || "Moderate";
   };
 
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Investment Profile</h2>
         <p className="text-brand-grayMed">
-          {t("subtitle")}
+          Help us understand your investment experience and objectives to recommend suitable products.
         </p>
       </div>
 
       {/* Investment Horizon */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold text-brand-dark">{t("horizon.title")}</h3>
+          <h3 className="text-lg font-semibold text-brand-dark">Investment Horizon *</h3>
           <Info className="h-4 w-4 text-brand-grayMed" />
         </div>
 
@@ -99,10 +91,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="short" id="horizon-short" />
               <div className="flex-1">
                 <Label htmlFor="horizon-short" className="cursor-pointer font-medium">
-                  {t("horizon.short")}
+                  Short-term (0-3 years)
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("horizon.shortDesc")}
+                  I may need access to my funds within 3 years
                 </p>
               </div>
             </div>
@@ -111,10 +103,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="medium" id="horizon-medium" />
               <div className="flex-1">
                 <Label htmlFor="horizon-medium" className="cursor-pointer font-medium">
-                  {t("horizon.medium")}
+                  Medium-term (3-7 years)
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("horizon.mediumDesc")}
+                  I can invest for 3-7 years without needing access
                 </p>
               </div>
             </div>
@@ -123,10 +115,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="long" id="horizon-long" />
               <div className="flex-1">
                 <Label htmlFor="horizon-long" className="cursor-pointer font-medium">
-                  {t("horizon.long")}
+                  Long-term (7+ years)
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("horizon.longDesc")}
+                  I can invest for 7 years or more without needing access
                 </p>
               </div>
             </div>
@@ -136,7 +128,7 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
 
       {/* Investment Knowledge */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-brand-dark">{t("knowledge.title")}</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">Investment Knowledge *</h3>
 
         <RadioGroup value={formState.investmentKnowledge} onValueChange={(value) => updateField("investmentKnowledge", value)}>
           <div className="space-y-3">
@@ -144,10 +136,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="none" id="knowledge-none" />
               <div className="flex-1">
                 <Label htmlFor="knowledge-none" className="cursor-pointer font-medium">
-                  {t("knowledge.none")}
+                  Limited or None
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("knowledge.noneDesc")}
+                  I have little to no knowledge of investment products
                 </p>
               </div>
             </div>
@@ -156,10 +148,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="basic" id="knowledge-basic" />
               <div className="flex-1">
                 <Label htmlFor="knowledge-basic" className="cursor-pointer font-medium">
-                  {t("knowledge.basic")}
+                  Basic
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("knowledge.basicDesc")}
+                  I understand basic investment concepts (stocks, bonds, funds)
                 </p>
               </div>
             </div>
@@ -168,10 +160,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="good" id="knowledge-good" />
               <div className="flex-1">
                 <Label htmlFor="knowledge-good" className="cursor-pointer font-medium">
-                  {t("knowledge.good")}
+                  Good
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("knowledge.goodDesc")}
+                  I have good knowledge of various investment products and strategies
                 </p>
               </div>
             </div>
@@ -180,10 +172,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="advanced" id="knowledge-advanced" />
               <div className="flex-1">
                 <Label htmlFor="knowledge-advanced" className="cursor-pointer font-medium">
-                  {t("knowledge.advanced")}
+                  Advanced
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("knowledge.advancedDesc")}
+                  I have extensive knowledge and experience with complex investment products
                 </p>
               </div>
             </div>
@@ -193,7 +185,7 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
 
       {/* Investment Experience */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-brand-dark">{t("experience.title")}</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">Investment Experience *</h3>
 
         <RadioGroup value={formState.investmentExperience} onValueChange={(value) => updateField("investmentExperience", value)}>
           <div className="space-y-3">
@@ -201,10 +193,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="none" id="experience-none" />
               <div className="flex-1">
                 <Label htmlFor="experience-none" className="cursor-pointer font-medium">
-                  {t("experience.none")}
+                  No Experience
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("experience.noneDesc")}
+                  I have never invested before
                 </p>
               </div>
             </div>
@@ -213,10 +205,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="limited" id="experience-limited" />
               <div className="flex-1">
                 <Label htmlFor="experience-limited" className="cursor-pointer font-medium">
-                  {t("experience.limited")}
+                  Limited (Less than 2 years)
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("experience.limitedDesc")}
+                  I have invested occasionally or for a short period
                 </p>
               </div>
             </div>
@@ -225,10 +217,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="moderate" id="experience-moderate" />
               <div className="flex-1">
                 <Label htmlFor="experience-moderate" className="cursor-pointer font-medium">
-                  {t("experience.moderate")}
+                  Moderate (2-5 years)
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("experience.moderateDesc")}
+                  I have been actively investing for 2-5 years
                 </p>
               </div>
             </div>
@@ -237,10 +229,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="extensive" id="experience-extensive" />
               <div className="flex-1">
                 <Label htmlFor="experience-extensive" className="cursor-pointer font-medium">
-                  {t("experience.extensive")}
+                  Extensive (5+ years)
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("experience.extensiveDesc")}
+                  I have been actively investing for over 5 years
                 </p>
               </div>
             </div>
@@ -251,7 +243,7 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
       {/* Risk Tolerance */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-brand-dark">{t("riskTolerance.title")}</h3>
+          <h3 className="text-lg font-semibold text-brand-dark">Risk Tolerance *</h3>
           <span className="rounded-full bg-brand-gold/10 px-3 py-1 text-sm font-medium text-brand-gold">
             {getRiskLabel(formState.riskTolerance)}
           </span>
@@ -259,7 +251,8 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
 
         <div className="rounded-lg border border-brand-grayLight bg-gray-50 p-6">
           <p className="mb-6 text-sm text-brand-grayMed">
-            {t("riskTolerance.description")}
+            How much risk are you willing to take with your investment? Higher risk can lead to higher potential
+            returns, but also higher potential losses.
           </p>
 
           <div className="space-y-6">
@@ -273,11 +266,11 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
             />
 
             <div className="grid grid-cols-5 gap-2 text-xs text-center">
-              <div className="text-brand-grayMed">{t("risk.veryConservative")}</div>
-              <div className="text-brand-grayMed">{t("risk.conservative")}</div>
-              <div className="text-brand-grayMed">{t("risk.moderate")}</div>
-              <div className="text-brand-grayMed">{t("risk.growth")}</div>
-              <div className="text-brand-grayMed">{t("risk.aggressive")}</div>
+              <div className="text-brand-grayMed">Very Conservative</div>
+              <div className="text-brand-grayMed">Conservative</div>
+              <div className="text-brand-grayMed">Moderate</div>
+              <div className="text-brand-grayMed">Growth</div>
+              <div className="text-brand-grayMed">Aggressive</div>
             </div>
           </div>
         </div>
@@ -294,7 +287,7 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
 
       {/* Investment Objective */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-brand-dark">{t("objective.title")}</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">Investment Objective *</h3>
 
         <RadioGroup value={formState.investmentObjective} onValueChange={(value) => updateField("investmentObjective", value)}>
           <div className="space-y-3">
@@ -302,10 +295,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="preservation" id="objective-preservation" />
               <div className="flex-1">
                 <Label htmlFor="objective-preservation" className="cursor-pointer font-medium">
-                  {t("objective.preservation")}
+                  Capital Preservation
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("objective.preservationDesc")}
+                  Protect my capital with minimal risk, accepting lower returns
                 </p>
               </div>
             </div>
@@ -314,10 +307,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="income" id="objective-income" />
               <div className="flex-1">
                 <Label htmlFor="objective-income" className="cursor-pointer font-medium">
-                  {t("objective.income")}
+                  Income Generation
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("objective.incomeDesc")}
+                  Generate regular income from my investments
                 </p>
               </div>
             </div>
@@ -326,10 +319,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="balanced" id="objective-balanced" />
               <div className="flex-1">
                 <Label htmlFor="objective-balanced" className="cursor-pointer font-medium">
-                  {t("objective.balanced")}
+                  Balanced Growth
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("objective.balancedDesc")}
+                  Balance growth and income with moderate risk
                 </p>
               </div>
             </div>
@@ -338,10 +331,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="growth" id="objective-growth" />
               <div className="flex-1">
                 <Label htmlFor="objective-growth" className="cursor-pointer font-medium">
-                  {t("objective.growth")}
+                  Capital Growth
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("objective.growthDesc")}
+                  Maximize long-term capital appreciation, accepting higher volatility
                 </p>
               </div>
             </div>
@@ -350,10 +343,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="aggressive" id="objective-aggressive" />
               <div className="flex-1">
                 <Label htmlFor="objective-aggressive" className="cursor-pointer font-medium">
-                  {t("objective.aggressive")}
+                  Aggressive Growth
                 </Label>
                 <p className="text-sm text-brand-grayMed">
-                  {t("objective.aggressiveDesc")}
+                  Seek maximum returns with high risk tolerance
                 </p>
               </div>
             </div>
@@ -363,7 +356,7 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
 
       {/* Expected Return */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-brand-dark">{t("expectedReturn.title")}</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">Expected Return *</h3>
 
         <RadioGroup value={formState.expectedReturn} onValueChange={(value) => updateField("expectedReturn", value)}>
           <div className="space-y-3">
@@ -371,9 +364,9 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="low" id="return-low" />
               <div className="flex-1">
                 <Label htmlFor="return-low" className="cursor-pointer font-medium">
-                  {t("expectedReturn.low")}
+                  0-3% per year
                 </Label>
-                <p className="text-sm text-brand-grayMed">{t("expectedReturn.lowDesc")}</p>
+                <p className="text-sm text-brand-grayMed">Low risk, stable returns</p>
               </div>
             </div>
 
@@ -381,9 +374,9 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="moderate" id="return-moderate" />
               <div className="flex-1">
                 <Label htmlFor="return-moderate" className="cursor-pointer font-medium">
-                  {t("expectedReturn.moderate")}
+                  3-6% per year
                 </Label>
-                <p className="text-sm text-brand-grayMed">{t("expectedReturn.moderateDesc")}</p>
+                <p className="text-sm text-brand-grayMed">Moderate risk and returns</p>
               </div>
             </div>
 
@@ -391,9 +384,9 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="high" id="return-high" />
               <div className="flex-1">
                 <Label htmlFor="return-high" className="cursor-pointer font-medium">
-                  {t("expectedReturn.high")}
+                  6-10% per year
                 </Label>
-                <p className="text-sm text-brand-grayMed">{t("expectedReturn.highDesc")}</p>
+                <p className="text-sm text-brand-grayMed">Higher risk for growth potential</p>
               </div>
             </div>
 
@@ -401,9 +394,9 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="very-high" id="return-very-high" />
               <div className="flex-1">
                 <Label htmlFor="return-very-high" className="cursor-pointer font-medium">
-                  {t("expectedReturn.veryHigh")}
+                  10%+ per year
                 </Label>
-                <p className="text-sm text-brand-grayMed">{t("expectedReturn.veryHighDesc")}</p>
+                <p className="text-sm text-brand-grayMed">High risk, high potential returns</p>
               </div>
             </div>
           </div>
@@ -412,7 +405,7 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
 
       {/* Liquidity Needs */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-brand-dark">{t("liquidity.title")}</h3>
+        <h3 className="text-lg font-semibold text-brand-dark">Liquidity Needs *</h3>
 
         <RadioGroup value={formState.liquidityNeeds} onValueChange={(value) => updateField("liquidityNeeds", value)}>
           <div className="space-y-3">
@@ -420,7 +413,7 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="immediate" id="liquidity-immediate" />
               <div className="flex-1">
                 <Label htmlFor="liquidity-immediate" className="cursor-pointer font-medium">
-                  {t("liquidity.high")}
+                  High - I may need access to funds soon
                 </Label>
               </div>
             </div>
@@ -429,7 +422,7 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="medium" id="liquidity-medium" />
               <div className="flex-1">
                 <Label htmlFor="liquidity-medium" className="cursor-pointer font-medium">
-                  {t("liquidity.medium")}
+                  Medium - I might need partial access in a few years
                 </Label>
               </div>
             </div>
@@ -438,7 +431,7 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
               <RadioGroupItem value="low" id="liquidity-low" />
               <div className="flex-1">
                 <Label htmlFor="liquidity-low" className="cursor-pointer font-medium">
-                  {t("liquidity.low")}
+                  Low - I don't need access to these funds
                 </Label>
               </div>
             </div>
@@ -450,9 +443,10 @@ export function InvestmentProfileStep({ data, onUpdate, onNext }: InvestmentProf
         <div className="flex items-start gap-2">
           <Info className="mt-0.5 h-5 w-5 text-blue-600" />
           <div className="space-y-1 text-sm text-blue-800">
-            <p className="font-semibold">{t("mifidTitle")}</p>
+            <p className="font-semibold">MiFID II Suitability Assessment</p>
             <p>
-              {t("mifidText")}
+              This questionnaire helps us assess whether our products are suitable for you based on your investment
+              knowledge, experience, objectives, and financial situation, as required by EU MiFID II regulations.
             </p>
           </div>
         </div>

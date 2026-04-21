@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Upload, X, FileText, AlertCircle, CheckCircle } from "lucide-react";
-import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -30,7 +29,6 @@ export function FileDropzone({
   error,
   className,
 }: FileDropzoneProps) {
-  const t = useTranslations("common.fileDropzone");
   const [files, setFiles] = React.useState<FileWithProgress[]>([]);
   const [isDragging, setIsDragging] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -38,13 +36,13 @@ export function FileDropzone({
   const validateFile = (file: File): string | null => {
     // Size validation
     if (file.size > maxSize * 1024 * 1024) {
-      return t("fileSizeExceeds", { maxSize });
+      return `File size exceeds ${maxSize}MB`;
     }
 
     // Type validation
     const fileExtension = `.${file.name.split(".").pop()?.toLowerCase()}`;
     if (!acceptedTypes.includes(fileExtension)) {
-      return t("fileTypeNotAccepted", { types: acceptedTypes.join(", ") });
+      return `File type not accepted. Accepted types: ${acceptedTypes.join(", ")}`;
     }
 
     return null;
@@ -143,10 +141,10 @@ export function FileDropzone({
           )}
         />
         <p className="mb-1 text-sm font-semibold text-brand-dark">
-          {t("clickToUpload")}
+          Click to upload or drag and drop
         </p>
         <p className="text-xs text-brand-grayMed">
-          {acceptedTypes.join(", ")} ({t("max")} {maxSize}MB)
+          {acceptedTypes.join(", ")} (max {maxSize}MB)
         </p>
       </div>
 

@@ -11,14 +11,13 @@ import { Button } from "@/components/ui/button";
 
 export default function TaxAdvisoryPage({ params: { locale } }: { params: { locale: string } }) {
   const t = useTranslations();
-  const tTax = useTranslations('taxAdvisory');
 
   const services = [
     {
       id: "tax-return-preparation",
       icon: FileCheck,
-      title: tTax('services.taxReturn.title'),
-      description: tTax('services.taxReturn.description'),
+      title: t('taxAdvisory.services.taxReturn.title'),
+      description: t('taxAdvisory.services.taxReturn.description'),
       href: `/${locale}/tax-advisory/booking?service=tax-return-preparation`,
       price: "€299",
       priceValue: 299,
@@ -26,8 +25,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
     {
       id: "international-tax",
       icon: Globe,
-      title: tTax('services.international.title'),
-      description: tTax('services.international.description'),
+      title: t('taxAdvisory.services.international.title'),
+      description: t('taxAdvisory.services.international.description'),
       href: `/${locale}/tax-advisory/booking?service=international-tax`,
       price: "€250",
       priceValue: 250,
@@ -35,8 +34,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
     {
       id: "corporate-tax",
       icon: Briefcase,
-      title: tTax('services.corporate.title'),
-      description: tTax('services.corporate.description'),
+      title: t('taxAdvisory.services.corporate.title'),
+      description: t('taxAdvisory.services.corporate.description'),
       href: `/${locale}/tax-advisory/booking?service=corporate-tax`,
       price: "€150",
       priceValue: 150,
@@ -44,8 +43,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
     {
       id: "tax-compliance",
       icon: Shield,
-      title: tTax('services.compliance.title'),
-      description: tTax('services.compliance.description'),
+      title: t('taxAdvisory.services.compliance.title'),
+      description: t('taxAdvisory.services.compliance.description'),
       href: `/${locale}/tax-advisory/booking?service=tax-compliance`,
       price: "€250",
       priceValue: 250,
@@ -53,8 +52,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
     {
       id: "personal-tax-advisory",
       icon: UserCheck,
-      title: tTax('services.personal.title'),
-      description: tTax('services.personal.description'),
+      title: t('taxAdvisory.services.personal.title'),
+      description: t('taxAdvisory.services.personal.description'),
       href: `/${locale}/tax-advisory/booking?service=personal-tax-advisory`,
       price: "€100",
       priceValue: 100,
@@ -62,13 +61,13 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
   ];
 
   const benefits = [
-    tTax('benefits.1'),
-    tTax('benefits.2'),
-    tTax('benefits.3'),
-    tTax('benefits.4'),
-    tTax('benefits.5'),
-    tTax('benefits.6'),
-    tTax('benefits.7'),
+    t('taxAdvisory.benefits.1'),
+    t('taxAdvisory.benefits.2'),
+    t('taxAdvisory.benefits.3'),
+    t('taxAdvisory.benefits.4'),
+    t('taxAdvisory.benefits.5'),
+    t('taxAdvisory.benefits.6'),
+    t('taxAdvisory.benefits.7'),
   ];
 
   return (
@@ -77,17 +76,17 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
         title={t('services.tax.title')}
         subtitle={t('services.tax.description')}
         primaryCta={{
-          label: tTax('hero.primaryCta'),
+          label: t('taxAdvisory.hero.primaryCta'),
           href: `/${locale}/tax-advisory/booking`,
         }}
         secondaryCta={{
-          label: tTax('hero.secondaryCta'),
+          label: t('taxAdvisory.hero.secondaryCta'),
           href: "#services",
         }}
       />
 
       {/* Services Section */}
-      <section id="services" className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <section id="services" className="relative bg-white py-12 md:py-16 overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-brand-goldLight/10 rounded-full blur-3xl"></div>
@@ -95,9 +94,9 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
 
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <SectionHeading
-            overline={tTax('services.overline')}
-            title={tTax('services.title')}
-            description={tTax('services.description')}
+            overline={t('taxAdvisory.services.overline')}
+            title={t('taxAdvisory.services.title')}
+            description={t('taxAdvisory.services.description')}
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => {
@@ -130,7 +129,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="relative bg-gray-50 py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-gray-50 py-12 md:py-16 overflow-hidden">
         {/* Decorative grid background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30"></div>
 
@@ -141,10 +140,10 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
               <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/20 to-transparent rounded-2xl blur-xl transform translate-x-4 translate-y-4"></div>
               <div className="relative bg-white rounded-2xl shadow-2xl p-8 border border-brand-grayLight/50 backdrop-blur-sm hover:shadow-3xl transition-shadow duration-300">
                 <h2 className="mb-6 text-3xl font-bold text-brand-dark md:text-4xl">
-                  {tTax('whyChoose.title')}
+                  {t('taxAdvisory.whyChoose.title')}
                 </h2>
                 <p className="mb-8 text-lg text-brand-grayMed">
-                  {tTax('whyChoose.description')}
+                  {t('taxAdvisory.whyChoose.description')}
                 </p>
               </div>
             </div>
@@ -168,16 +167,16 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
       </section>
 
       {/* Expertise Section */}
-      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-white py-12 md:py-16 overflow-hidden">
         {/* Animated background orbs */}
         <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-brand-goldLight/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl"></div>
 
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <SectionHeading
-            overline={tTax('expertise.overline')}
-            title={tTax('expertise.title')}
-            description={tTax('expertise.description')}
+            overline={t('taxAdvisory.expertise.overline')}
+            title={t('taxAdvisory.expertise.title')}
+            description={t('taxAdvisory.expertise.description')}
           />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
@@ -188,8 +187,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
                 </div>
               </div>
-              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{tTax('expertise.optimization.title')}</h3>
-              <p className="text-sm text-brand-grayMed">{tTax('expertise.optimization.description')}</p>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('taxAdvisory.expertise.optimization.title')}</h3>
+              <p className="text-sm text-brand-grayMed">{t('taxAdvisory.expertise.optimization.description')}</p>
             </div>
             <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <div className="relative inline-block mb-4">
@@ -199,8 +198,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
                 </div>
               </div>
-              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{tTax('expertise.compliance.title')}</h3>
-              <p className="text-sm text-brand-grayMed">{tTax('expertise.compliance.description')}</p>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('taxAdvisory.expertise.compliance.title')}</h3>
+              <p className="text-sm text-brand-grayMed">{t('taxAdvisory.expertise.compliance.description')}</p>
             </div>
             <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <div className="relative inline-block mb-4">
@@ -210,8 +209,8 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
                 </div>
               </div>
-              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{tTax('expertise.international.title')}</h3>
-              <p className="text-sm text-brand-grayMed">{tTax('expertise.international.description')}</p>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('taxAdvisory.expertise.international.title')}</h3>
+              <p className="text-sm text-brand-grayMed">{t('taxAdvisory.expertise.international.description')}</p>
             </div>
             <div className="group text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <div className="relative inline-block mb-4">
@@ -221,34 +220,34 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/20 to-transparent"></div>
                 </div>
               </div>
-              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{tTax('expertise.personal.title')}</h3>
-              <p className="text-sm text-brand-grayMed">{tTax('expertise.personal.description')}</p>
+              <h3 className="mb-2 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('taxAdvisory.expertise.personal.title')}</h3>
+              <p className="text-sm text-brand-grayMed">{t('taxAdvisory.expertise.personal.description')}</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            {tTax('cta.title')}
+            {t('taxAdvisory.cta.title')}
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
-            {tTax('cta.description')}
+            {t('taxAdvisory.cta.description')}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href={`/${locale}/tax-advisory/booking`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
-              {tTax('cta.schedule')}
+              {t('taxAdvisory.cta.schedule')}
             </Link>
             <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"
             >
-              {tTax('cta.contact')}
+              {t('taxAdvisory.cta.contact')}
             </Link>
           </div>
         </div>

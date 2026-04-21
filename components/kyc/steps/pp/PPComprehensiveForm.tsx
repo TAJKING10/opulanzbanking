@@ -4,11 +4,9 @@ import React, { useState } from 'react';
 import { useKYCWizard } from '@/contexts/KYCWizardContext';
 import { WizardNavigation } from '../../WizardNavigation';
 import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 export function PPComprehensiveForm() {
   const { data, updateData, nextStep, prevStep } = useKYCWizard();
-  const tInd = useTranslations('investmentAdvisory.individual');
 
   // Section collapse states
   const [expandedSections, setExpandedSections] = useState({
@@ -101,6 +99,7 @@ export function PPComprehensiveForm() {
   };
 
   const handleSubmit = () => {
+    // Structure the data according to the KYC type
     const structuredData = {
       holders: {
         holder1: {
@@ -181,32 +180,34 @@ export function PPComprehensiveForm() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-brand-dark mb-6">{tInd('title')}</h2>
-      <p className="text-brand-grayMed mb-8">{tInd('subtitle')}</p>
+      <h2 className="text-2xl font-bold text-brand-dark mb-6">Individual Client Information</h2>
+      <p className="text-brand-grayMed mb-8">
+        Please provide all required information below. All sections must be completed.
+      </p>
 
       <form className="space-y-6">
         {/* IDENTITY SECTION */}
         <div>
-          <SectionHeader title={tInd('sectionTitles.identity')} section="identity" />
+          <SectionHeader title="1. Personal Identity" section="identity" />
           {expandedSections.identity && (
             <div className="bg-white border border-brand-grayLight rounded-xl p-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.title')} *</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Title *</label>
                   <select
                     value={formData.title}
                     onChange={(e) => handleChange('title', e.target.value)}
                     className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                     required
                   >
-                    <option value="Mr.">{tInd('options.titles.mr')}</option>
-                    <option value="Mrs.">{tInd('options.titles.mrs')}</option>
-                    <option value="Ms.">{tInd('options.titles.ms')}</option>
-                    <option value="Dr.">{tInd('options.titles.dr')}</option>
+                    <option value="Mr.">Mr.</option>
+                    <option value="Mrs.">Mrs.</option>
+                    <option value="Ms.">Ms.</option>
+                    <option value="Dr.">Dr.</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.firstName')} *</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">First Name *</label>
                   <input
                     type="text"
                     value={formData.firstName}
@@ -216,7 +217,7 @@ export function PPComprehensiveForm() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.lastName')} *</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Last Name *</label>
                   <input
                     type="text"
                     value={formData.lastName}
@@ -229,7 +230,7 @@ export function PPComprehensiveForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.dateOfBirth')} *</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Date of Birth *</label>
                   <input
                     type="date"
                     value={formData.dateOfBirth}
@@ -239,13 +240,13 @@ export function PPComprehensiveForm() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.placeOfBirth')} *</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Place of Birth *</label>
                   <input
                     type="text"
                     value={formData.placeOfBirth}
                     onChange={(e) => handleChange('placeOfBirth', e.target.value)}
                     className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
-                    placeholder={tInd('helpers.placeOfBirthHint')}
+                    placeholder="City, Country"
                     required
                   />
                 </div>
@@ -253,7 +254,7 @@ export function PPComprehensiveForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.nationality')} *</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Nationality *</label>
                   <input
                     type="text"
                     value={formData.nationality}
@@ -263,27 +264,27 @@ export function PPComprehensiveForm() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.maritalStatus')} *</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Marital Status *</label>
                   <select
                     value={formData.maritalStatus}
                     onChange={(e) => handleChange('maritalStatus', e.target.value)}
                     className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                     required
                   >
-                    <option value="single">{tInd('options.maritalStatus.single')}</option>
-                    <option value="married">{tInd('options.maritalStatus.married')}</option>
-                    <option value="divorced">{tInd('options.maritalStatus.divorced')}</option>
-                    <option value="widowed">{tInd('options.maritalStatus.widowed')}</option>
-                    <option value="civil_partnership">{tInd('options.maritalStatus.civilPartnership')}</option>
+                    <option value="single">Single</option>
+                    <option value="married">Married</option>
+                    <option value="divorced">Divorced</option>
+                    <option value="widowed">Widowed</option>
+                    <option value="civil_partnership">Civil Partnership</option>
                   </select>
                 </div>
               </div>
 
               <div className="pt-4 border-t border-brand-grayLight">
-                <h4 className="font-semibold text-brand-dark mb-3">{tInd('sections.address')}</h4>
+                <h4 className="font-semibold text-brand-dark mb-3">Residential Address</h4>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.addressLine1')} *</label>
+                    <label className="block text-sm font-medium text-brand-dark mb-2">Address Line 1 *</label>
                     <input
                       type="text"
                       value={formData.addressLine1}
@@ -293,7 +294,7 @@ export function PPComprehensiveForm() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.addressLine2')}</label>
+                    <label className="block text-sm font-medium text-brand-dark mb-2">Address Line 2</label>
                     <input
                       type="text"
                       value={formData.addressLine2}
@@ -303,7 +304,7 @@ export function PPComprehensiveForm() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.city')} *</label>
+                      <label className="block text-sm font-medium text-brand-dark mb-2">City *</label>
                       <input
                         type="text"
                         value={formData.city}
@@ -313,7 +314,7 @@ export function PPComprehensiveForm() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.postalCode')} *</label>
+                      <label className="block text-sm font-medium text-brand-dark mb-2">Postal Code *</label>
                       <input
                         type="text"
                         value={formData.postalCode}
@@ -323,7 +324,7 @@ export function PPComprehensiveForm() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.country')} *</label>
+                      <label className="block text-sm font-medium text-brand-dark mb-2">Country *</label>
                       <input
                         type="text"
                         value={formData.country}
@@ -337,10 +338,10 @@ export function PPComprehensiveForm() {
               </div>
 
               <div className="pt-4 border-t border-brand-grayLight">
-                <h4 className="font-semibold text-brand-dark mb-3">{tInd('sections.taxResidency')}</h4>
+                <h4 className="font-semibold text-brand-dark mb-3">Tax Residency</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.taxCountry')} *</label>
+                    <label className="block text-sm font-medium text-brand-dark mb-2">Tax Residence Country *</label>
                     <input
                       type="text"
                       value={formData.taxCountry}
@@ -350,7 +351,7 @@ export function PPComprehensiveForm() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.taxId')} *</label>
+                    <label className="block text-sm font-medium text-brand-dark mb-2">Tax Identification Number *</label>
                     <input
                       type="text"
                       value={formData.taxIdentificationNumber}
@@ -363,39 +364,39 @@ export function PPComprehensiveForm() {
               </div>
 
               <div className="pt-4 border-t border-brand-grayLight">
-                <h4 className="font-semibold text-brand-dark mb-3">{tInd('sections.professional')}</h4>
+                <h4 className="font-semibold text-brand-dark mb-3">Professional Situation</h4>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.professionalStatus')} *</label>
+                      <label className="block text-sm font-medium text-brand-dark mb-2">Professional Status *</label>
                       <select
                         value={formData.professionalStatus}
                         onChange={(e) => handleChange('professionalStatus', e.target.value)}
                         className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                         required
                       >
-                        <option value="">{tInd('options.professionalStatus.select')}</option>
-                        <option value="employed">{tInd('options.professionalStatus.employed')}</option>
-                        <option value="self-employed">{tInd('options.professionalStatus.selfEmployed')}</option>
-                        <option value="retired">{tInd('options.professionalStatus.retired')}</option>
-                        <option value="unemployed">{tInd('options.professionalStatus.unemployed')}</option>
-                        <option value="student">{tInd('options.professionalStatus.student')}</option>
+                        <option value="">Select status</option>
+                        <option value="employed">Employed</option>
+                        <option value="self-employed">Self-Employed</option>
+                        <option value="retired">Retired</option>
+                        <option value="unemployed">Unemployed</option>
+                        <option value="student">Student</option>
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.sector')}</label>
+                      <label className="block text-sm font-medium text-brand-dark mb-2">Sector/Industry</label>
                       <input
                         type="text"
                         value={formData.sector}
                         onChange={(e) => handleChange('sector', e.target.value)}
                         className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
-                        placeholder={tInd('helpers.sectorHint')}
+                        placeholder="e.g., Technology, Finance, Healthcare"
                       />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.employerName')}</label>
+                      <label className="block text-sm font-medium text-brand-dark mb-2">Employer Name</label>
                       <input
                         type="text"
                         value={formData.employerName}
@@ -404,7 +405,7 @@ export function PPComprehensiveForm() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.position')}</label>
+                      <label className="block text-sm font-medium text-brand-dark mb-2">Position/Title</label>
                       <input
                         type="text"
                         value={formData.position}
@@ -421,11 +422,11 @@ export function PPComprehensiveForm() {
 
         {/* FAMILY SECTION */}
         <div>
-          <SectionHeader title={tInd('sectionTitles.family')} section="family" />
+          <SectionHeader title="2. Family Situation" section="family" />
           {expandedSections.family && (
             <div className="bg-white border border-brand-grayLight rounded-xl p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.numberOfDependents')}</label>
+                <label className="block text-sm font-medium text-brand-dark mb-2">Number of Dependents</label>
                 <input
                   type="number"
                   min="0"
@@ -440,12 +441,12 @@ export function PPComprehensiveForm() {
 
         {/* FINANCIAL SECTION */}
         <div>
-          <SectionHeader title={tInd('sectionTitles.financial')} section="financial" />
+          <SectionHeader title="3. Financial Situation" section="financial" />
           {expandedSections.financial && (
             <div className="bg-white border border-brand-grayLight rounded-xl p-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.annualIncome')} *</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Annual Income (EUR) *</label>
                   <input
                     type="number"
                     value={formData.annualIncome}
@@ -456,27 +457,27 @@ export function PPComprehensiveForm() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.incomeSource')} *</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Income Source *</label>
                   <select
                     value={formData.incomeSource}
                     onChange={(e) => handleChange('incomeSource', e.target.value)}
                     className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                     required
                   >
-                    <option value="">{tInd('options.incomeSource.select')}</option>
-                    <option value="salary">{tInd('options.incomeSource.salary')}</option>
-                    <option value="business">{tInd('options.incomeSource.business')}</option>
-                    <option value="investments">{tInd('options.incomeSource.investments')}</option>
-                    <option value="pension">{tInd('options.incomeSource.pension')}</option>
-                    <option value="inheritance">{tInd('options.incomeSource.inheritance')}</option>
-                    <option value="other">{tInd('options.incomeSource.other')}</option>
+                    <option value="">Select source</option>
+                    <option value="salary">Salary</option>
+                    <option value="business">Business Income</option>
+                    <option value="investments">Investment Income</option>
+                    <option value="pension">Pension</option>
+                    <option value="inheritance">Inheritance</option>
+                    <option value="other">Other</option>
                   </select>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.totalAssets')}</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Total Assets (EUR)</label>
                   <input
                     type="number"
                     value={formData.totalAssets}
@@ -486,7 +487,7 @@ export function PPComprehensiveForm() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.liquidAssets')}</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Liquid Assets (EUR)</label>
                   <input
                     type="number"
                     value={formData.liquidAssets}
@@ -499,7 +500,7 @@ export function PPComprehensiveForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.realEstateValue')}</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Real Estate Value (EUR)</label>
                   <input
                     type="number"
                     value={formData.realEstateValue}
@@ -508,7 +509,7 @@ export function PPComprehensiveForm() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.outstandingDebts')}</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Outstanding Debts (EUR)</label>
                   <input
                     type="number"
                     value={formData.outstandingDebts}
@@ -524,34 +525,34 @@ export function PPComprehensiveForm() {
 
         {/* ORIGIN OF FUNDS SECTION */}
         <div>
-          <SectionHeader title={tInd('sectionTitles.origin')} section="origin" />
+          <SectionHeader title="4. Origin of Funds" section="origin" />
           {expandedSections.origin && (
             <div className="bg-white border border-brand-grayLight rounded-xl p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.originOfFunds')} *</label>
+                <label className="block text-sm font-medium text-brand-dark mb-2">Primary Origin of Funds *</label>
                 <select
                   value={formData.originOfFunds}
                   onChange={(e) => handleChange('originOfFunds', e.target.value)}
                   className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                   required
                 >
-                  <option value="">{tInd('options.originOfFunds.select')}</option>
-                  <option value="savings">{tInd('options.originOfFunds.savings')}</option>
-                  <option value="sale_of_assets">{tInd('options.originOfFunds.saleOfAssets')}</option>
-                  <option value="inheritance">{tInd('options.originOfFunds.inheritance')}</option>
-                  <option value="business_income">{tInd('options.originOfFunds.businessIncome')}</option>
-                  <option value="investment_returns">{tInd('options.originOfFunds.investmentReturns')}</option>
-                  <option value="other">{tInd('options.originOfFunds.other')}</option>
+                  <option value="">Select origin</option>
+                  <option value="savings">Savings</option>
+                  <option value="sale_of_assets">Sale of Assets</option>
+                  <option value="inheritance">Inheritance</option>
+                  <option value="business_income">Business Income</option>
+                  <option value="investment_returns">Investment Returns</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.originDetails')}</label>
+                <label className="block text-sm font-medium text-brand-dark mb-2">Additional Details</label>
                 <textarea
                   value={formData.originDetails}
                   onChange={(e) => handleChange('originDetails', e.target.value)}
                   className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                   rows={3}
-                  placeholder={tInd('helpers.originDetailsHint')}
+                  placeholder="Provide additional context about the origin of your investment funds"
                 />
               </div>
             </div>
@@ -560,79 +561,79 @@ export function PPComprehensiveForm() {
 
         {/* INVESTMENT PROFILE SECTION */}
         <div>
-          <SectionHeader title={tInd('sectionTitles.investment')} section="investment" />
+          <SectionHeader title="5. Investment Profile" section="investment" />
           {expandedSections.investment && (
             <div className="bg-white border border-brand-grayLight rounded-xl p-6 space-y-6">
               <div>
-                <h4 className="font-semibold text-brand-dark mb-3">{tInd('sections.investmentKnowledge')}</h4>
+                <h4 className="font-semibold text-brand-dark mb-3">Investment Knowledge & Experience</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.investmentExperience')} *</label>
+                    <label className="block text-sm font-medium text-brand-dark mb-2">Investment Experience *</label>
                     <select
                       value={formData.investmentExperience}
                       onChange={(e) => handleChange('investmentExperience', e.target.value)}
                       className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                       required
                     >
-                      <option value="beginner">{tInd('options.investmentExperience.beginner')}</option>
-                      <option value="intermediate">{tInd('options.investmentExperience.intermediate')}</option>
-                      <option value="advanced">{tInd('options.investmentExperience.advanced')}</option>
-                      <option value="expert">{tInd('options.investmentExperience.expert')}</option>
+                      <option value="beginner">Beginner (Less than 2 years)</option>
+                      <option value="intermediate">Intermediate (2-5 years)</option>
+                      <option value="advanced">Advanced (5-10 years)</option>
+                      <option value="expert">Expert (More than 10 years)</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.riskTolerance')} *</label>
+                    <label className="block text-sm font-medium text-brand-dark mb-2">Risk Tolerance *</label>
                     <select
                       value={formData.riskTolerance}
                       onChange={(e) => handleChange('riskTolerance', e.target.value)}
                       className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                       required
                     >
-                      <option value="conservative">{tInd('options.riskTolerance.conservative')}</option>
-                      <option value="moderate">{tInd('options.riskTolerance.moderate')}</option>
-                      <option value="aggressive">{tInd('options.riskTolerance.aggressive')}</option>
+                      <option value="conservative">Conservative - Preserve capital</option>
+                      <option value="moderate">Moderate - Balanced growth</option>
+                      <option value="aggressive">Aggressive - Maximum growth</option>
                     </select>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h4 className="font-semibold text-brand-dark mb-3">{tInd('sections.investmentObjectives')}</h4>
+                <h4 className="font-semibold text-brand-dark mb-3">Investment Objectives</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.investmentHorizon')} *</label>
+                    <label className="block text-sm font-medium text-brand-dark mb-2">Investment Horizon *</label>
                     <select
                       value={formData.investmentHorizon}
                       onChange={(e) => handleChange('investmentHorizon', e.target.value)}
                       className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                       required
                     >
-                      <option value="">{tInd('options.investmentHorizon.select')}</option>
-                      <option value="short">{tInd('options.investmentHorizon.short')}</option>
-                      <option value="medium">{tInd('options.investmentHorizon.medium')}</option>
-                      <option value="long">{tInd('options.investmentHorizon.long')}</option>
+                      <option value="">Select horizon</option>
+                      <option value="short">Short-term (Less than 3 years)</option>
+                      <option value="medium">Medium-term (3-7 years)</option>
+                      <option value="long">Long-term (More than 7 years)</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.investmentObjective')} *</label>
+                    <label className="block text-sm font-medium text-brand-dark mb-2">Primary Objective *</label>
                     <select
                       value={formData.investmentObjective}
                       onChange={(e) => handleChange('investmentObjective', e.target.value)}
                       className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                       required
                     >
-                      <option value="">{tInd('options.investmentObjective.select')}</option>
-                      <option value="capital_preservation">{tInd('options.investmentObjective.preservation')}</option>
-                      <option value="income_generation">{tInd('options.investmentObjective.income')}</option>
-                      <option value="capital_growth">{tInd('options.investmentObjective.growth')}</option>
-                      <option value="balanced">{tInd('options.investmentObjective.balanced')}</option>
+                      <option value="">Select objective</option>
+                      <option value="capital_preservation">Capital Preservation</option>
+                      <option value="income_generation">Income Generation</option>
+                      <option value="capital_growth">Capital Growth</option>
+                      <option value="balanced">Balanced</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                   <div>
-                    <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.expectedReturn')}</label>
+                    <label className="block text-sm font-medium text-brand-dark mb-2">Expected Annual Return (%)</label>
                     <input
                       type="number"
                       step="0.1"
@@ -643,7 +644,7 @@ export function PPComprehensiveForm() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.maxLoss')}</label>
+                    <label className="block text-sm font-medium text-brand-dark mb-2">Max Acceptable Loss (%)</label>
                     <input
                       type="number"
                       step="0.1"
@@ -661,29 +662,29 @@ export function PPComprehensiveForm() {
 
         {/* MISSION TYPE SECTION */}
         <div>
-          <SectionHeader title={tInd('sectionTitles.mission')} section="mission" />
+          <SectionHeader title="6. Service Type & Initial Investment" section="mission" />
           {expandedSections.mission && (
             <div className="bg-white border border-brand-grayLight rounded-xl p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.missionType')} *</label>
+                <label className="block text-sm font-medium text-brand-dark mb-2">Type of Service *</label>
                 <select
                   value={formData.missionType}
                   onChange={(e) => handleChange('missionType', e.target.value)}
                   className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                   required
                 >
-                  <option value="advisory">{tInd('options.missionType.advisory')}</option>
-                  <option value="management">{tInd('options.missionType.management')}</option>
+                  <option value="advisory">Investment Advisory (Conseil)</option>
+                  <option value="management">Portfolio Management (Gestion sous mandat)</option>
                 </select>
                 <p className="text-xs text-brand-grayMed mt-2">
                   {formData.missionType === 'advisory'
-                    ? tInd('helpers.advisoryDescription')
-                    : tInd('helpers.managementDescription')}
+                    ? 'We provide recommendations, you make the final decisions'
+                    : 'We manage your portfolio with discretionary authority'}
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-brand-dark mb-2">{tInd('fields.initialInvestment')} *</label>
+                <label className="block text-sm font-medium text-brand-dark mb-2">Initial Investment Amount (EUR) *</label>
                 <input
                   type="number"
                   value={formData.initialInvestment}
@@ -692,7 +693,7 @@ export function PPComprehensiveForm() {
                   placeholder="e.g., 50000"
                   required
                 />
-                <p className="text-xs text-brand-grayMed mt-2">{tInd('helpers.minimumInvestment')}</p>
+                <p className="text-xs text-brand-grayMed mt-2">Minimum: €10,000</p>
               </div>
             </div>
           )}
@@ -700,7 +701,7 @@ export function PPComprehensiveForm() {
 
         {/* CONSENTS SECTION */}
         <div>
-          <SectionHeader title={tInd('sectionTitles.consents')} section="consents" />
+          <SectionHeader title="7. Consents & Authorizations" section="consents" />
           {expandedSections.consents && (
             <div className="bg-white border border-brand-grayLight rounded-xl p-6 space-y-4">
               <label className="flex items-start gap-3">
@@ -712,7 +713,7 @@ export function PPComprehensiveForm() {
                   required
                 />
                 <span className="text-sm text-brand-dark">
-                  <strong>Data Processing *:</strong> {tInd('consents.dataProcessing')}
+                  <strong>Data Processing *:</strong> I consent to the processing of my personal data in accordance with GDPR and French data protection laws
                 </span>
               </label>
 
@@ -725,7 +726,7 @@ export function PPComprehensiveForm() {
                   required
                 />
                 <span className="text-sm text-brand-dark">
-                  <strong>KYC/AML *:</strong> {tInd('consents.kyc')}
+                  <strong>KYC/AML Compliance *:</strong> I authorize Opulanz to perform necessary KYC/AML checks and share information with regulatory authorities if required
                 </span>
               </label>
 
@@ -738,7 +739,7 @@ export function PPComprehensiveForm() {
                   required
                 />
                 <span className="text-sm text-brand-dark">
-                  <strong>Electronic Signature *:</strong> {tInd('consents.electronic')}
+                  <strong>Electronic Signature *:</strong> I agree to sign documents electronically via DocuSign and accept that electronic signatures have the same legal validity as handwritten signatures
                 </span>
               </label>
 
@@ -750,7 +751,7 @@ export function PPComprehensiveForm() {
                   className="mt-1 h-4 w-4 text-brand-gold focus:ring-brand-gold rounded"
                 />
                 <span className="text-sm text-brand-dark">
-                  <strong>Marketing:</strong> {tInd('consents.marketing')}
+                  <strong>Marketing Communications:</strong> I agree to receive marketing communications about Opulanz services and products (optional)
                 </span>
               </label>
             </div>
@@ -763,7 +764,7 @@ export function PPComprehensiveForm() {
         onPrev={prevStep}
         canGoPrev={true}
         canGoNext={true}
-        nextLabel={tInd('continueToReview')}
+        nextLabel="Continue to Review"
       />
     </div>
   );

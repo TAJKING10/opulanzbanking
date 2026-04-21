@@ -4,47 +4,28 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { useParams, useRouter } from "next/navigation";
-import { CheckCircle2, Eye, EyeOff, Loader2 } from "lucide-react";
-import { setAuthToken } from "@/lib/auth";
+import { CheckCircle2 } from "lucide-react";
 import {
   whitelabelKYBSchema,
   type WhitelabelKYBFormData,
-} from "@/shared/lib/validators/whitelabel";
+} from "@/lib/validators/whitelabel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConsentCheckbox } from "@/components/form/consent-checkbox";
+import { FileDropzone } from "@/components/form/file-dropzone";
 import { SectionHeading } from "@/components/section-heading";
-import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
+import { StatusChip } from "@/components/status-chip";
 import { COUNTRIES } from "@/shared/lib/countries";
 
-type ApplicationStatus = "form" | "create-login" | "setup-2fa" | "approved" | "declined";
+type ApplicationStatus = "form" | "submitted" | "approved" | "declined";
 
 export default function CompanyAccountPage() {
   const t = useTranslations();
   const tAccount = useTranslations("accountOpening.company");
-  const params = useParams();
-  const router = useRouter();
-  const locale = params.locale as string;
   const [status, setStatus] = React.useState<ApplicationStatus>("form");
-  const [showKyc, setShowKyc] = React.useState(false);
-  const [applicationId, setApplicationId] = React.useState<string>("");
-  const [submittedEmail, setSubmittedEmail] = React.useState("");
-  const [submittedCompanyName, setSubmittedCompanyName] = React.useState("");
-  const [submittedAppId, setSubmittedAppId] = React.useState<string | number>("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [createLoginLoading, setCreateLoginLoading] = React.useState(false);
-  const [createLoginError, setCreateLoginError] = React.useState("");
-  const [totpQrCode, setTotpQrCode] = React.useState("");
-  const [totpSecret, setTotpSecret] = React.useState("");
-  const [totpTempToken, setTotpTempToken] = React.useState("");
-  const [totpCode, setTotpCode] = React.useState("");
-  const [totpLoading, setTotpLoading] = React.useState(false);
-  const [totpError, setTotpError] = React.useState("");
+  const [iban, setIban] = React.useState<string>("");
 
   // Reset status when component mounts to ensure fresh start
   React.useEffect(() => {
@@ -56,30 +37,30 @@ export default function CompanyAccountPage() {
     register,
     handleSubmit,
     setValue,
-    watch,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<WhitelabelKYBFormData>({
     resolver: zodResolver(whitelabelKYBSchema),
     defaultValues: {
-      contactEmail: "",
       activityCountries: [],
       consentKYB: false,
       consentTerms: false,
+      statutes: [],
+      registerExtract: [],
+      uboDeclaration: [],
     },
   });
 
   // Function to reset everything for a new application
   const startNewApplication = () => {
     setStatus("form");
-    setShowKyc(false);
-    setApplicationId("");
+    setIban("");
     reset();
   };
 
   const onSubmit = async (data: WhitelabelKYBFormData) => {
     try {
-      const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      console.log("Submitting KYB data:", data);
 
       // Prepare the payload for the backend
       const applicationPayload = {
@@ -91,7 +72,6 @@ export default function CompanyAccountPage() {
           registrationNumber: data.registrationNumber,
           dateOfIncorporation: data.dateOfIncorporation,
           legalForm: data.legalForm,
-          contactEmail: data.contactEmail,
 
           // Company Address
           companyAddress: data.companyAddress,
@@ -114,9 +94,11 @@ export default function CompanyAccountPage() {
       };
 
       // Submit application to backend API
-      const applicationResponse = await fetch(`${API}/api/applications`, {
+      const applicationResponse = await fetch('http://localhost:5000/api/applications', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(applicationPayload),
       });
 
@@ -125,6 +107,7 @@ export default function CompanyAccountPage() {
       }
 
       const applicationResult = await applicationResponse.json();
+      console.log("Application submitted successfully:", applicationResult);
 
       // Also create a company record
       const companyPayload = {
@@ -141,217 +124,46 @@ export default function CompanyAccountPage() {
         },
       };
 
-      await fetch(`${API}/api/companies`, {
+      const companyResponse = await fetch('http://localhost:5000/api/companies', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(companyPayload),
-      }).catch(() => {}); // non-blocking
+      });
 
-      // Send confirmation notification
-      fetch(`${API}/api/notifications/appointment`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customerName: data.companyName,
-          customerEmail: data.contactEmail,
-          meetingType: 'Company Account Application',
-          appointmentDate: new Date().toLocaleDateString(),
-          appointmentTime: new Date().toLocaleTimeString(),
-          price: 0,
-        }),
-      }).catch(() => {}); // non-blocking
+      if (!companyResponse.ok) {
+        console.warn('Failed to create company record, but application was saved');
+      } else {
+        const companyResult = await companyResponse.json();
+        console.log("Company record created:", companyResult);
+      }
 
-      // Store form data for account creation after KYC
-      setSubmittedEmail(data.contactEmail);
-      setSubmittedCompanyName(data.companyName);
-      setSubmittedAppId(applicationResult.id || "");
+      // TODO: Handle document uploads separately
+      // For now, we'll store document file names in the console
+      if (data.statutes && data.statutes.length > 0) {
+        console.log("Statutes to upload:", data.statutes[0].name);
+      }
+      if (data.registerExtract && data.registerExtract.length > 0) {
+        console.log("Register Extract to upload:", data.registerExtract[0].name);
+      }
+      if (data.uboDeclaration && data.uboDeclaration.length > 0) {
+        console.log("UBO Declaration to upload:", data.uboDeclaration[0].name);
+      }
 
-      // Open Sumsub KYC widget for corporate identity verification
-      setApplicationId(`company-${applicationResult.id || Date.now()}`);
-      setShowKyc(true);
+      // Show submitted status
+      setStatus("submitted");
+
+      // Simulate approval for demo (in production, this would be done by admin)
+      setTimeout(() => {
+        setStatus("approved");
+        setIban("LU28 0019 4006 4475 0001");
+      }, 3000);
     } catch (error) {
       console.error("Error submitting application:", error);
       alert("Failed to submit application. Please try again.");
     }
   };
-
-  if (status === "create-login") {
-    const handleCreateLogin = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setCreateLoginError("");
-      if (password.length < 8) { setCreateLoginError("Password must be at least 8 characters."); return; }
-      if (password !== confirmPassword) { setCreateLoginError("Passwords do not match."); return; }
-      setCreateLoginLoading(true);
-      try {
-        const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-        const res = await fetch(`${API}/api/auth/register-post-kyc`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            firstName: submittedCompanyName,
-            lastName: "",
-            email: submittedEmail,
-            phone: null,
-            password,
-            accountType: "corporate",
-            applicationId: submittedAppId,
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-        setTotpQrCode(data.totpQrCode);
-        setTotpSecret(data.totpSecret);
-        setTotpTempToken(data.tempToken);
-        setStatus("setup-2fa");
-      } catch (err: any) {
-        setCreateLoginError(err.message || "Failed to create account. Please try again.");
-      } finally {
-        setCreateLoginLoading(false);
-      }
-    };
-
-    return (
-      <div className="min-h-screen bg-brand-off py-12">
-        <div className="container mx-auto max-w-md px-6">
-          <Card className="border-none shadow-elevated">
-            <CardContent className="p-10">
-              <div className="mb-6 text-center">
-                <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                  <CheckCircle2 className="h-8 w-8 text-green-600" />
-                </div>
-                <h1 className="text-2xl font-bold text-brand-dark">Verification Complete!</h1>
-                <p className="mt-2 text-brand-grayMed">Set a password to access your Opulanz business account</p>
-              </div>
-
-              <form onSubmit={handleCreateLogin} className="space-y-4">
-                <div className="space-y-1">
-                  <Label>Contact Email</Label>
-                  <Input value={submittedEmail} disabled className="bg-gray-50 text-brand-grayMed" />
-                </div>
-
-                <div className="space-y-1">
-                  <Label htmlFor="comp_password">Password <span className="text-red-500">*</span></Label>
-                  <div className="relative">
-                    <Input
-                      id="comp_password"
-                      type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Min. 8 characters"
-                      className="pr-10"
-                    />
-                    <button type="button" onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-grayMed">
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <Label htmlFor="comp_confirm_password">Confirm Password <span className="text-red-500">*</span></Label>
-                  <Input
-                    id="comp_confirm_password"
-                    type={showPassword ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Repeat your password"
-                  />
-                </div>
-
-                {createLoginError && (
-                  <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 border border-red-200">{createLoginError}</p>
-                )}
-
-                <Button type="submit" variant="primary" size="lg" disabled={createLoginLoading} className="w-full">
-                  {createLoginLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Creating account…</> : "Create Account & Sign In"}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
-  if (status === "setup-2fa") {
-    const handleVerifyTotp = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setTotpError("");
-      setTotpLoading(true);
-      try {
-        const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-        const res = await fetch(`${API}/api/auth/verify-totp-setup`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tempToken: totpTempToken, code: totpCode }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-        setAuthToken(data.token);
-        setStatus("approved");
-      } catch (err: any) {
-        setTotpError(err.message || "Invalid code. Please try again.");
-      } finally {
-        setTotpLoading(false);
-      }
-    };
-
-    return (
-      <div className="min-h-screen bg-brand-off py-12">
-        <div className="container mx-auto max-w-md px-6">
-          <Card className="border-none shadow-elevated">
-            <CardContent className="p-10">
-              <div className="mb-6 text-center">
-                <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-                  <svg className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                </div>
-                <h1 className="text-2xl font-bold text-brand-dark">Set Up Google Authenticator</h1>
-                <p className="mt-2 text-sm text-brand-grayMed">Scan the QR code with the Google Authenticator app to enable two-factor authentication on your business account.</p>
-              </div>
-
-              <div className="mb-6 space-y-4">
-                <div className="flex flex-col items-center gap-3">
-                  <p className="text-sm font-semibold text-brand-dark">1. Install Google Authenticator on your phone</p>
-                  <p className="text-sm font-semibold text-brand-dark">2. Tap "+" and scan this QR code</p>
-                  {totpQrCode && (
-                    <img src={totpQrCode} alt="Google Authenticator QR Code" className="h-48 w-48 rounded-xl border border-brand-grayLight p-2" />
-                  )}
-                </div>
-                <details className="rounded-lg border border-brand-grayLight p-3">
-                  <summary className="cursor-pointer text-xs text-brand-grayMed select-none">Can&apos;t scan? Enter the key manually</summary>
-                  <p className="mt-2 break-all rounded bg-gray-50 px-3 py-2 font-mono text-xs text-brand-dark">{totpSecret}</p>
-                </details>
-              </div>
-
-              <form onSubmit={handleVerifyTotp} className="space-y-4">
-                <div className="space-y-1">
-                  <Label htmlFor="comp_totp_code">3. Enter the 6-digit code from the app <span className="text-red-500">*</span></Label>
-                  <Input
-                    id="comp_totp_code"
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={6}
-                    value={totpCode}
-                    onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, ""))}
-                    placeholder="000000"
-                    className="text-center text-2xl font-mono tracking-widest"
-                  />
-                </div>
-                {totpError && (
-                  <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 border border-red-200">{totpError}</p>
-                )}
-                <Button type="submit" variant="primary" size="lg" disabled={totpLoading || totpCode.length < 6} className="w-full">
-                  {totpLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Verifying…</> : "Verify & Activate Account"}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
 
   if (status === "approved") {
     return (
@@ -363,47 +175,61 @@ export default function CompanyAccountPage() {
                 <CheckCircle2 className="h-10 w-10 text-green-600" />
               </div>
               <h1 className="mb-4 text-3xl font-bold text-brand-dark">
-                Account Created!
+                {t("whitelabel.approved")}
               </h1>
               <p className="mb-8 text-lg text-brand-grayMed">
-                Your company verification is submitted and your account is active. A welcome email has been sent to <strong>{submittedEmail}</strong>.
+                {tAccount("approved.message")}
               </p>
 
-              <div className="mb-8 rounded-xl bg-amber-50 border border-amber-200 p-6">
-                <p className="text-sm font-semibold text-amber-800">Application Under Review</p>
-                <p className="mt-1 text-sm text-amber-700">Corporate applications are reviewed within 2-5 business days due to enhanced due diligence requirements.</p>
+              <div className="mb-8 rounded-xl bg-brand-grayLight/50 p-6">
+                <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-brand-grayMed">
+                  {t("whitelabel.yourIban")}
+                </p>
+                <p className="text-2xl font-bold text-brand-dark">{iban}</p>
               </div>
 
               <div className="space-y-4 text-left">
-                <h3 className="text-xl font-bold text-brand-dark">What happens next?</h3>
+                <h3 className="text-xl font-bold text-brand-dark">
+                  {t("whitelabel.nextSteps")}
+                </h3>
                 <ul className="space-y-3 text-brand-grayMed">
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Welcome email sent to {submittedEmail}</span>
+                    <span>
+                      {tAccount("approved.nextSteps.multiUser")}
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Our compliance team will perform enhanced due diligence on your company</span>
+                    <span>{tAccount("approved.nextSteps.accounting")}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Once approved, you will receive your corporate IBAN and account details</span>
+                    <span>{tAccount("approved.nextSteps.corporateCards")}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-brand-gold">✓</span>
-                    <span>Set up multi-user access and corporate cards for your team</span>
+                    <span>{tAccount("approved.nextSteps.fundAccount")}</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="mt-10">
+              <div className="mt-10 flex flex-col gap-4">
+                <div className="flex gap-4">
+                  <Button variant="primary" size="lg" className="flex-1">
+                    {tAccount("approved.buttons.dashboard")}
+                  </Button>
+                  <Button variant="outline" size="lg" className="flex-1">
+                    {tAccount("approved.buttons.downloadApp")}
+                  </Button>
+                </div>
                 <Button
-                  variant="primary"
+                  variant="ghost"
                   size="lg"
-                  className="w-full"
-                  onClick={() => router.push(`/${locale}/dashboard`)}
+                  onClick={startNewApplication}
+                  className="w-full text-brand-grayMed hover:text-brand-dark"
                 >
-                  Go to Dashboard
+                  {tAccount("approved.buttons.startNew")}
                 </Button>
               </div>
             </CardContent>
@@ -413,19 +239,31 @@ export default function CompanyAccountPage() {
     );
   }
 
+  if (status === "submitted") {
+    return (
+      <div className="min-h-screen bg-brand-off py-12">
+        <div className="container mx-auto max-w-3xl px-6">
+          <Card className="border-none shadow-elevated">
+            <CardContent className="p-12 text-center">
+              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center">
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-grayLight border-t-brand-gold" />
+              </div>
+              <h1 className="mb-4 text-3xl font-bold text-brand-dark">
+                {t("whitelabel.applicationSubmitted")}
+              </h1>
+              <p className="mb-8 text-lg text-brand-grayMed">
+                {tAccount("submitted.message")}
+              </p>
+              <StatusChip status="submitted" />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-brand-off py-12">
-      {showKyc && (
-        <SumsubKycWidget
-          userId={applicationId}
-          levelName="corporate_signup_kyc"
-          onClose={() => setShowKyc(false)}
-          onComplete={() => {
-            setShowKyc(false);
-            setStatus("create-login");
-          }}
-        />
-      )}
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading
           title={tAccount("title")}
@@ -507,24 +345,6 @@ export default function CompanyAccountPage() {
                 </div>
               </div>
 
-              {/* Contact Email */}
-              <div className="space-y-2">
-                <Label htmlFor="comp_contactEmail">
-                  Contact Email<span className="text-red-600">*</span>
-                </Label>
-                <Input
-                  id="comp_contactEmail"
-                  type="email"
-                  placeholder="contact@company.com"
-                  {...register("contactEmail")}
-                />
-                {errors.contactEmail && (
-                  <p className="text-xs text-red-600">
-                    {errors.contactEmail.message}
-                  </p>
-                )}
-              </div>
-
               {/* Company Address */}
               <div className="space-y-6">
                 <h3 className="text-lg font-bold text-brand-dark">Company Address</h3>
@@ -587,6 +407,43 @@ export default function CompanyAccountPage() {
                       </p>
                     )}
                   </div>
+                </div>
+              </div>
+
+              {/* Document Uploads */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-bold text-brand-dark">
+                  Company Documents
+                </h3>
+                <p className="text-sm text-brand-grayMed">
+                  Please upload clear copies of the following documents (max 15MB each)
+                </p>
+
+                <div className="space-y-2">
+                  <Label>{t("whitelabel.uploadStatutes")}*</Label>
+                  <FileDropzone
+                    multiple={false}
+                    onFilesChange={(files) => setValue("statutes", files)}
+                    error={errors.statutes?.message}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>{t("whitelabel.uploadRegister")}*</Label>
+                  <FileDropzone
+                    multiple={false}
+                    onFilesChange={(files) => setValue("registerExtract", files)}
+                    error={errors.registerExtract?.message}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>{t("whitelabel.uploadUbo")}*</Label>
+                  <FileDropzone
+                    multiple={false}
+                    onFilesChange={(files) => setValue("uboDeclaration", files)}
+                    error={errors.uboDeclaration?.message}
+                  />
                 </div>
               </div>
 
@@ -670,7 +527,7 @@ export default function CompanyAccountPage() {
                 <h3 className="font-bold text-brand-dark">Consents</h3>
                 <ConsentCheckbox
                   id="comp_consentKYB"
-                  checked={watch("consentKYB")}
+                  checked={false}
                   onCheckedChange={(checked) =>
                     setValue("consentKYB", checked as boolean)
                   }
@@ -680,7 +537,7 @@ export default function CompanyAccountPage() {
                 />
                 <ConsentCheckbox
                   id="comp_consentTerms"
-                  checked={watch("consentTerms")}
+                  checked={false}
                   onCheckedChange={(checked) =>
                     setValue("consentTerms", checked as boolean)
                   }

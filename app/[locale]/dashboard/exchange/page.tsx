@@ -11,7 +11,6 @@ import {
   ChevronDown,
   ArrowRight,
   Clock,
-  Construction,
 } from "lucide-react";
 
 export default function ExchangePage() {
@@ -73,15 +72,6 @@ export default function ExchangePage() {
 
   return (
     <div className="p-6 lg:p-8">
-      {/* Coming Soon Banner */}
-      <div className="mb-6 flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
-        <Construction className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
-        <div>
-          <p className="text-sm font-semibold text-amber-900">Preview — Live exchange coming soon</p>
-          <p className="text-xs text-amber-700 mt-0.5">Real-time rates and live conversions will be enabled when the banking integration is complete.</p>
-        </div>
-      </div>
-
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Currency Exchange</h1>

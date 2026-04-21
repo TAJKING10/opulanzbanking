@@ -193,12 +193,9 @@ export default function AccountingOnboardingPage() {
 
           // Documents
           documents: formData.documents?.map((doc: any) => ({
-            fileId:   doc.fileId,
-            fileName: doc.fileName,
-            fileSize: doc.fileSize,
-            fileUrl:  doc.fileUrl  || null,
-            blobName: doc.blobName || null,
-            type:     doc.type,
+            name: doc.name,
+            type: doc.type,
+            size: doc.size
           })) || [],
 
           // Consent
@@ -211,7 +208,7 @@ export default function AccountingOnboardingPage() {
       };
 
       // Submit to Azure backend API
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/applications`, {
+      const response = await fetch('http://localhost:5000/api/applications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

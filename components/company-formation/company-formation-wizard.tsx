@@ -74,51 +74,17 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep]);
 
-  const [savedFeedback, setSavedFeedback] = React.useState(false);
-
-  // Save to localStorage on every change
+  // Save to localStorage on changes
   React.useEffect(() => {
     if (dossier.userRef) {
-      localStorage.setItem(`opulanz_company_formation_${dossier.userRef}`, JSON.stringify({ dossier, step: currentStep }));
+      localStorage.setItem(`opulanz_company_formation_${dossier.userRef}`, JSON.stringify(dossier));
     }
-  }, [dossier, currentStep]);
-
-  const validateStep = (): string | null => {
-    switch (currentStep) {
-      case 2:
-        if (!dossier.proposedNames?.[0]?.trim()) return "Please enter the proposed company name.";
-        if (!dossier.purpose?.trim()) return "Please describe the company's purpose.";
-        if (!dossier.registeredOffice?.trim() && !dossier.domiciliationNeeded) return "Please enter the registered office address, or select domiciliation service in Step 6.";
-        return null;
-      case 3:
-        if (!dossier.shareholders?.length) return "Please add at least one shareholder.";
-        return null;
-      case 4: {
-        const rules = dossier.formType ? COMPANY_FORM_RULES[dossier.formType] : null;
-        if (rules && rules.minCapital > 0 && (dossier.capitalAmount || 0) < rules.minCapital) {
-          return `Minimum capital for ${dossier.formType} is €${rules.minCapital.toLocaleString()}.`;
-        }
-        return null;
-      }
-      case 5:
-        if (!dossier.naceCode?.trim()) return "Please enter the NACE code.";
-        if (!dossier.expectedTurnover) return "Please enter the expected annual turnover.";
-        return null;
-      default:
-        return null;
-    }
-  };
+  }, [dossier]);
 
   const handleNext = () => {
-    const error = validateStep();
-    if (error) {
-      alert(error);
-      return;
-    }
     if (currentStep < WIZARD_STEPS.length) {
       setDossier(prev => ({ ...prev, updatedAt: new Date().toISOString() }));
       setCurrentStep(currentStep + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -220,16 +186,7 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
                 {t("back")}
               </Button>
               <div className="flex gap-4">
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    // Draft already auto-saves; just show confirmation
-                    setSavedFeedback(true);
-                    setTimeout(() => setSavedFeedback(false), 2000);
-                  }}
-                >
-                  {savedFeedback ? "✓ Saved!" : t("saveResume")}
-                </Button>
+                <Button variant="ghost">{t("saveResume")}</Button>
                 {currentStep < WIZARD_STEPS.length ? (
                   <Button
                     variant="primary"

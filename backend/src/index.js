@@ -61,6 +61,7 @@ const allowedOrigins = [
   'https://frontend.opulanz.com',
   'https://www.opulanz.com',
   'https://opulanz.com',
+  'https://rg-opulanz-frontend-hdd4ddcvd4gsc6cx.canadacentral-01.azurewebsites.net',
 ];
 app.use(cors({
   origin: (origin, callback) => {

@@ -18,7 +18,7 @@
   },
   "nav": {
     "home": "Accueil",
-    "about": "À propos",
+    "about": "Ã€ propos",
     "openAccount": "Ouvrir un compte",
     "companyFormation": "Création de société",
     "services": "Services",
@@ -41,7 +41,7 @@
       "secondaryCta": "En savoir plus"
     },
     "about": {
-      "title": "À propos d'Opulanz",
+      "title": "Ã€ propos d'Opulanz",
       "subtitle": "La Plateforme d'Entreprise Tout en Un",
       "storyOverline": "NOTRE HISTOIRE",
       "storyTitle": "Transformer la finance d'Entreprise",
@@ -70,8 +70,8 @@
       "licensesOverline": "LICENCES ET CERTIFICATIONS",
       "licensesTitle": "Entièrement licencié et certifié",
       "licensesDescription": "Nous maintenons toutes les licences et certifications nécessaires pour fournir des services financiers aux entreprises à travers l'Europe, en assurant la conformité avec les réglementations et normes du secteur.",
-      "cert1Title": "Agréé par l'État",
-      "cert1Description": "Agents agréés par l'État",
+      "cert1Title": "AgrÃ©Ã© par l'Ã‰tat",
+      "cert1Description": "Agents agrÃ©Ã©s par l'Ã‰tat",
       "cert2Title": "Certifié",
       "cert2Description": "Professionnels certifiés du secteur",
       "cert3Title": "Cautionné",
@@ -201,7 +201,7 @@
     "forms": {
       "sarl": {
         "fullName": "Société à Responsabilité Limitée",
-        "minCapital": "12 000 €",
+        "minCapital": "12 000 â‚¬",
         "minShareholders": 1,
         "liability": "Limitée",
         "features": {
@@ -213,17 +213,17 @@
       },
       "sarls": {
         "fullName": "Société à Responsabilité Limitée Simplifiée",
-        "minCapital": "1 €",
+        "minCapital": "1 â‚¬",
         "features": {
           "capital": "Exigence de capital très faible",
           "formation": "Formation simplifiée",
           "startups": "Idéal pour les startups",
-          "max": "Capital maximum de 100 000 €"
+          "max": "Capital maximum de 100 000 â‚¬"
         }
       },
       "sa": {
         "fullName": "Société Anonyme",
-        "minCapital": "30 000 €",
+        "minCapital": "30 000 â‚¬",
         "features": {
           "public": "Peut être cotée en bourse",
           "board": "Conseil d'administration requis",
@@ -382,7 +382,7 @@
         "domiciliationItem1": "Adresse professionnelle au Luxembourg",
         "domiciliationItem2": "Réexpédition et numérisation du courrier",
         "domiciliationItem3": "Accès aux salles de réunion",
-        "domiciliationPrice": "À partir de 600 €/an",
+        "domiciliationPrice": "Ã€ partir de 600 â‚¬/an",
         "noDomiciliationNote": "Si vous ne sélectionnez pas le service de domiciliation, vous devez fournir une preuve d'adresse de siège social (bail ou titre de propriété) à l'étape suivante."
       },
       "step7": {
@@ -592,20 +592,12 @@
         "complete": "Terminé"
       },
       "progress": {
-        "step": "Étape",
+        "step": "Ã‰tape",
         "of": "sur",
         "complete": "complété"
       }
     },
     "clientType": {
-      "title": "Type de client",
-      "contact": {
-        "email": "Adresse e-mail",
-        "emailPlaceholder": "Entrez votre adresse e-mail",
-        "mobile": "Numéro de mobile",
-        "mobilePlaceholder": "Entrez votre numéro de mobile",
-        "language": "Langue préférée"
-      },
       "welcome": "Bienvenue au Conseil en Investissement",
       "subtitle": "Complétez notre processus d'intégration pour accéder à des services de conseil en investissement personnalisés.",
       "question": "Veuillez sélectionner votre type d'investisseur :",
@@ -616,6 +608,13 @@
       "company": {
         "title": "Investisseur institutionnel",
         "description": "Pour les entreprises et les investisseurs institutionnels souhaitant des services de conseil en investissement professionnels."
+      },
+      "contact": {
+        "email": "Adresse e-mail",
+        "emailPlaceholder": "Entrez votre adresse e-mail",
+        "mobile": "Numéro de mobile",
+        "mobilePlaceholder": "Entrez votre numéro de mobile",
+        "language": "Langue préférée"
       }
     },
     "company": {
@@ -665,8 +664,8 @@
         "uboFullName": "Nom complet du BEU",
         "ownershipPercentage": "Pourcentage de détention (%)",
         "taxResidentCountries": "Pays de résidence fiscale",
-        "annualRevenue": "Chiffre d'affaires annuel (€)",
-        "totalAssets": "Total des actifs (€)",
+        "annualRevenue": "Chiffre d'affaires annuel (â‚¬)",
+        "totalAssets": "Total des actifs (â‚¬)",
         "primarySourceOfRevenue": "Source principale de revenus",
         "primaryOriginOfFunds": "Origine principale des fonds",
         "additionalDetails": "Détails supplémentaires",
@@ -677,7 +676,7 @@
         "expectedAnnualReturn": "Rendement annuel attendu (%)",
         "maxAcceptableLoss": "Perte maximale acceptable (%)",
         "typeOfService": "Type de service",
-        "initialInvestmentAmount": "Montant d'investissement initial (€)"
+        "initialInvestmentAmount": "Montant d'investissement initial (â‚¬)"
       },
       "placeholders": {
         "tradingName": "Entrez le nom commercial si différent de la raison sociale",
@@ -690,7 +689,7 @@
         "originDetails": "Fournissez des détails supplémentaires sur l'origine des fonds",
         "expectedReturn": "ex. 8",
         "maxLoss": "ex. 20",
-        "initialInvestment": "Minimum 100 000 €"
+        "initialInvestment": "Minimum 100 000 â‚¬"
       },
       "options": {
         "legalForm": {
@@ -731,8 +730,8 @@
         },
         "investmentExperience": {
           "beginner": "Débutant (< 2 ans)",
-          "intermediate": "Intermédiaire (2–5 ans)",
-          "advanced": "Avancé (5–10 ans)",
+          "intermediate": "IntermÃ©diaire (2â€“5 ans)",
+          "advanced": "AvancÃ© (5â€“10 ans)",
           "expert": "Expert (10+ ans)"
         },
         "riskTolerance": {
@@ -743,7 +742,7 @@
         "investmentHorizon": {
           "select": "Sélectionnez l'horizon",
           "short": "Court terme (< 3 ans)",
-          "medium": "Moyen terme (3–7 ans)",
+          "medium": "Moyen terme (3â€“7 ans)",
           "long": "Long terme (7+ ans)"
         },
         "investmentObjective": {
@@ -763,7 +762,7 @@
         "usPersonCheckbox": "Je confirme que cette société n'est pas une personne américaine au sens de la réglementation FATCA.",
         "advisoryHelper": "En mode conseil, nous formulons des recommandations mais vous conservez l'intégralité du pouvoir de décision sur votre portefeuille.",
         "managementHelper": "En mode gestion discrétionnaire, nous gérons votre portefeuille en votre nom dans le cadre des paramètres convenus.",
-        "minimumInvestment": "Investissement initial minimum : 100 000 €"
+        "minimumInvestment": "Investissement initial minimum : 100 000 â‚¬"
       },
       "consents": {
         "dataProcessing": {
@@ -789,31 +788,27 @@
     }
   },
   "legal": {
-    "regulated": "Réglementé par ACPR & AMF (FR)",
-    "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
-    "mifid": "Services d'investissement soumis aux réglementations MiFID II",
-    "idd": "Distribution d'assurance soumise aux exigences IDD",
     "terms": {
       "heroTitle": "Conditions générales d'utilisation",
       "heroSubtitle": "Veuillez lire attentivement les conditions suivantes avant d'utiliser nos services.",
       "companyIdentification": {
         "title": "Identification de la société",
         "companyName": "Raison sociale",
-        "companyNameValue": "Advensys Luxembourg S.A. (Opulanz)",
+        "companyNameValue": "Advensys Luxembourg S.A.",
         "capital": "Capital social",
-        "capitalValue": "31 000 €",
+        "capitalValue": "31 000 â‚¬",
         "address": "Adresse du siège social",
         "addressValue": "2 Rue Edward Steichen, L-2540 Luxembourg",
         "phone": "Téléphone",
         "phoneValue": "+352 20 33 10 70",
         "email": "E-mail",
-        "emailValue": "contact@opulanz.com",
+        "emailValue": "info@advensys.lu",
         "website": "Site web",
         "websiteValue": "www.opulanz.com",
         "siret": "SIRET",
-        "siretValue": "N/A – Entité luxembourgeoise",
+        "siretValue": "N/A â€“ EntitÃ© luxembourgeoise",
         "ape": "Code APE",
-        "apeValue": "6419Z – Autres intermédiations monétaires",
+        "apeValue": "6419Z â€“ Autres intermÃ©diations monÃ©taires",
         "vatNumber": "Numéro de TVA",
         "vatNumberValue": "LU30956782",
         "registration": "Registre du commerce",
@@ -832,7 +827,7 @@
       "contactInfo": {
         "title": "Informations de contact",
         "name": "Nom du contact",
-        "nameValue": "Département Conformité – Advensys Luxembourg S.A."
+        "nameValue": "DÃ©partement ConformitÃ© â€“ Advensys Luxembourg S.A."
       },
       "intellectualProperty": {
         "title": "Propriété intellectuelle",
@@ -849,17 +844,21 @@
       "designHosting": {
         "title": "Conception et hébergement",
         "design": "Conception du site web",
-        "designValue": "Équipe de développement interne d'Advensys",
+        "designValue": "Ã‰quipe de dÃ©veloppement interne d'Advensys",
         "development": "Développement de la plateforme",
         "developmentValue": "Division technologique d'Advensys",
         "hosting": "Hébergement cloud",
-        "hostingValue": "Microsoft Azure – Centres de données européens"
+        "hostingValue": "Microsoft Azure â€“ Centres de donnÃ©es europÃ©ens"
       },
       "footer": {
         "disclaimer": "Ce document a été dernièrement examiné et approuvé par le Département Juridique et de Conformité d'Advensys Luxembourg S.A.",
         "lastUpdated": "Dernière mise à jour : janvier 2025"
       }
-    }
+    },
+    "regulated": "Réglementé par ACPR & AMF (FR)",
+    "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
+    "mifid": "Services d'investissement soumis aux réglementations MiFID II",
+    "idd": "Distribution d'assurance soumise aux exigences IDD"
   },
   "footer": {
     "sections": {
@@ -883,7 +882,7 @@
         "businessBanking": "Banque d'affaires"
       },
       "company": {
-        "about": "À propos",
+        "about": "Ã€ propos",
         "support": "Support",
         "contact": "Contact"
       },
@@ -1000,7 +999,7 @@
       "pepScreeningLabel": "Vérification PPE / Sanctions",
       "pepConfirmed": "Confirmé : Pas une Personne Politiquement Exposée",
       "pepNotConfirmed": "Non confirmé",
-      "toBeUploadedLater": "À télécharger ultérieurement",
+      "toBeUploadedLater": "Ã€ tÃ©lÃ©charger ultÃ©rieurement",
       "documentsUploaded": "documents téléchargés",
       "currentAccount": "Compte courant",
       "privateBanking": "Banque privée",
@@ -1010,7 +1009,7 @@
       "dividends": "Dividendes",
       "businessIncome": "Revenus d'entreprise",
       "assetSale": "Vente d'actifs",
-      "savings": "Épargne",
+      "savings": "Ã‰pargne",
       "other": "Autre",
       "applicationSummary": "Résumé de la demande",
       "requiredConsents": "Consentements requis",
@@ -1092,7 +1091,7 @@
         "description": "Aidez-nous à comprendre vos besoins bancaires afin que nous puissions vous mettre en relation avec la bonne banque partenaire.",
         "residenceQuestion": "Quel est votre statut de résidence ?",
         "residentEurope": "Je suis résident d'un pays européen",
-        "residentEuropeDesc": "Vous vivez et payez des impôts dans un État membre de l'Union européenne",
+        "residentEuropeDesc": "Vous vivez et payez des impÃ´ts dans un Ã‰tat membre de l'Union europÃ©enne",
         "nonResident": "Je suis non-résident",
         "nonResidentDesc": "Vous vivez en dehors de l'Europe mais souhaitez un compte bancaire européen",
         "countryQuestion": "Dans quel pays résidez-vous ?",
@@ -1112,11 +1111,11 @@
         "whyNeeded": "Pourquoi nous avons besoin de ces informations",
         "whyNeededDesc": "En fonction de votre statut de résidence et de votre localisation, nous vous mettrons en relation avec la Banque Partenaire Opulanz la mieux adaptée à vos besoins et conforme aux réglementations bancaires locales.",
         "privateBankingNotice": "Banque privée sélectionnée",
-        "privateBankingNoticeDesc": "La banque privée nécessite généralement un dépôt minimum (100 000 € et plus) et offre une gestion de relation dédiée, des conseils en patrimoine et des services d'investissement.",
+        "privateBankingNoticeDesc": "La banque privÃ©e nÃ©cessite gÃ©nÃ©ralement un dÃ©pÃ´t minimum (100 000 â‚¬ et plus) et offre une gestion de relation dÃ©diÃ©e, des conseils en patrimoine et des services d'investissement.",
         "otherEuCountry": "Autre pays de l'UE"
       },
       "documents": {
-        "title": "Éligibilité et documents",
+        "title": "Ã‰ligibilitÃ© et documents",
         "description": "Téléchargez les documents requis pour la vérification d'identité et la conformité.",
         "passport": "Passeport ou carte d'identité valide",
         "addressProof": "Justificatif de domicile (facture, relevé bancaire)",
@@ -1189,11 +1188,11 @@
         "jurisdictionHelp": "Cela détermine quel partenaire bancaire et quel cadre réglementaire s'appliqueront",
         "jurisdictionInfo": "Informations sur la juridiction",
         "luxembourgInfo": "Luxembourg : Centre financier de premier plan avec un régime fiscal favorable pour les sociétés holding. Taux d'imposition : ~24%.",
-        "luxembourgCapital": "Capital social minimum : 12 000 € pour une S.à r.l. (société à responsabilité limitée)",
+        "luxembourgCapital": "Capital social minimum : 12 000 â‚¬ pour une S.Ã  r.l. (sociÃ©tÃ© Ã  responsabilitÃ© limitÃ©e)",
         "franceInfo": "France : Grande économie avec accès au marché de l'UE. Taux d'imposition : ~25%.",
-        "franceCapital": "Capital social minimum : 1 € pour SAS/SARL (structures les plus courantes)",
-        "finlandInfo": "Finlande : Économie nordique stable avec une forte infrastructure numérique. Taux d'imposition : 20%.",
-        "finlandCapital": "Capital social minimum : 2 500 € pour Oy (société à responsabilité limitée)",
+        "franceCapital": "Capital social minimum : 1 â‚¬ pour SAS/SARL (structures les plus courantes)",
+        "finlandInfo": "Finlande : Ã‰conomie nordique stable avec une forte infrastructure numÃ©rique. Taux d'imposition : 20%.",
+        "finlandCapital": "Capital social minimum : 2 500 â‚¬ pour Oy (sociÃ©tÃ© Ã  responsabilitÃ© limitÃ©e)",
         "otherInfo": "Nous vous mettrons en relation avec la Banque Partenaire Opulanz qui dessert les sociétés dans la juridiction sélectionnée. Les exigences et délais spécifiques seront fournis après examen.",
         "formationTimeline": "Délai de création de société",
         "formationTimelineDesc": "La création de société prend généralement 2 à 4 semaines. Nous vous guiderons tout au long du processus et vous aiderons à ouvrir votre compte bancaire simultanément.",
@@ -1224,11 +1223,11 @@
         "businessActivity": "Activité commerciale / Description",
         "businessActivityPlaceholder": "Décrivez vos activités commerciales (ex. développement logiciel, conseil, e-commerce)",
         "shareCapital": "Capital social initial",
-        "shareCapitalPlaceholder": "ex. 12 000 €",
+        "shareCapitalPlaceholder": "ex. 12 000 â‚¬",
         "shareCapitalHelp": "Les exigences minimales varient selon la juridiction",
-        "luxembourgMin": "(Luxembourg : 12 000 € pour S.à r.l.)",
-        "franceMin": "(France : 1 € pour SAS/SARL)",
-        "finlandMin": "(Finlande : 2 500 € pour Oy)",
+        "luxembourgMin": "(Luxembourg : 12 000 â‚¬ pour S.Ã  r.l.)",
+        "franceMin": "(France : 1 â‚¬ pour SAS/SARL)",
+        "finlandMin": "(Finlande : 2 500 â‚¬ pour Oy)",
         "whatsIncluded": "Ce qui est inclus",
         "included1": "Réservation et enregistrement du nom de société",
         "included2": "Préparation des statuts",
@@ -1274,7 +1273,7 @@
       "city": "Ville",
       "postalCode": "Code postal",
       "country": "Pays",
-      "pep": "Êtes-vous une Personne Politiquement Exposée (PPE) ?",
+      "pep": "ÃŠtes-vous une Personne Politiquement ExposÃ©e (PPE) ?",
       "expectedMonthlyVolume": "Volume mensuel prévu",
       "sourceOfFunds": "Origine des fonds"
     },
@@ -1286,10 +1285,10 @@
       "yes": "Oui"
     },
     "volumeOptions": {
-      "0_5k": "0 € - 5 000 €",
-      "5k_20k": "5 000 € - 20 000 €",
-      "20k_50k": "20 000 € - 50 000 €",
-      "50k_plus": "50 000 € +"
+      "0_5k": "0 â‚¬ - 5 000 â‚¬",
+      "5k_20k": "5 000 â‚¬ - 20 000 â‚¬",
+      "20k_50k": "20 000 â‚¬ - 50 000 â‚¬",
+      "50k_plus": "50 000 â‚¬ +"
     },
     "sourceOfFunds": {
       "placeholder": "Veuillez décrire l'origine de vos fonds..."
@@ -1310,9 +1309,7 @@
     "buttons": {
       "dashboard": "Aller au tableau de bord",
       "downloadApp": "Télécharger l'application"
-    },
-    "title": "Vérification d'identité",
-    "description": "Complétez votre KYC pour activer votre compte"
+    }
   },
   "taxAdvisory": {
     "confirmation": {
@@ -1325,7 +1322,6 @@
       },
       "appointmentDetails": "Détails du rendez-vous",
       "clientName": "Nom du client",
-      "name": "Nom",
       "email": "E-mail",
       "phone": "Téléphone",
       "date": "Date",
@@ -1340,7 +1336,7 @@
       "addToCalendar": "Ajouter au calendrier",
       "downloadPDFReceipt": "Télécharger le reçu PDF",
       "whatHappensNext": {
-        "title": "Que se passe-t-il ensuite ?",
+        "title": "Et maintenant ?",
         "step1": {
           "title": "Vérifiez votre e-mail",
           "description": "Vous recevrez un e-mail de confirmation avec tous les détails de votre rendez-vous."
@@ -1358,10 +1354,10 @@
           "description": "Après la consultation, vous recevrez un rapport détaillé et des recommandations par e-mail dans les 48 heures."
         }
       },
-      "rescheduleQuestion": "Besoin de reporter ?",
-      "supportContact": "Pour obtenir de l'aide, contactez-nous à",
+      "rescheduleQuestion": "Vous avez besoin de reporter ou une question ?",
       "backToTaxAdvisory": "Retour au conseil fiscal",
-      "goToDashboard": "Accéder au tableau de bord"
+      "goToDashboard": "Accéder au tableau de bord",
+      "supportContact": "Pour obtenir de l'aide, contactez-nous à"
     },
     "hero": {
       "primaryCta": "Planifier une consultation",
@@ -1492,7 +1488,7 @@
         "expertService": "Service expert",
         "troubleCalendly": "Des problèmes avec Calendly ? Utilisez la réservation manuelle",
         "bookConsultation": "Réservez votre consultation",
-        "enterDetails": "Étape 1 : Entrez vos coordonnées",
+        "enterDetails": "Ã‰tape 1 : Entrez vos coordonnÃ©es",
         "enterYourDetails": "Entrez vos coordonnées",
         "enterDetailsDesc": "Nous les utiliserons pour planifier votre rendez-vous",
         "fullName": "Nom complet *",
@@ -1509,7 +1505,7 @@
         "fixedFee": "Tarif fixe pour le service {service}",
         "sixtyMinConsultation": "Consultation de 60 minutes avec un conseiller fiscal expert",
         "bookNow": "Réservez votre consultation maintenant",
-        "serviceDetails": "DÉTAILS DU SERVICE",
+        "serviceDetails": "DÃ‰TAILS DU SERVICE",
         "whatsIncluded": "Ce qui est inclus",
         "whyChooseUs": "POURQUOI NOUS CHOISIR",
         "bookConsultationPrice": "Réserver - {price}",
@@ -1524,94 +1520,22 @@
       }
     },
     "booking": {
-      "services": {
-        "taxReturnPreparation": {
-          "title": "Préparation des Déclarations Fiscales",
-          "description": "Préparation et dépôt professionnels des déclarations fiscales des entreprises et des particuliers"
-        },
-        "internationalTax": {
-          "title": "Fiscalité Internationale",
-          "description": "Expertise en matière fiscale transfrontalière et en prix de transfert"
-        },
-        "corporateTax": {
-          "title": "Fiscalité des Entreprises",
-          "description": "Services fiscaux complets pour les entreprises, y compris due diligence M&A et conseil TVA"
-        },
-        "taxCompliance": {
-          "title": "Conformité Fiscale",
-          "description": "Conformité continue aux lois et réglementations fiscales avec surveillance proactive"
-        },
-        "personalTaxAdvisory": {
-          "title": "Conseil Fiscal Personnel",
-          "description": "Conseils fiscaux personnalisés pour les personnes fortunées et les expatriés"
-        }
+      "calendly": {
+        "title": "Planifiez votre consultation fiscale",
+        "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes"
       },
-      "validation": {
-        "firstNameRequired": "Le prénom est obligatoire",
-        "lastNameRequired": "Le nom de famille est obligatoire",
-        "emailRequired": "L'adresse e-mail est obligatoire",
-        "emailInvalid": "Veuillez saisir une adresse e-mail valide",
-        "phoneRequired": "Le numéro de téléphone est obligatoire"
-      },
-      "step1": {
-        "heroTitle": "Réservez votre consultation fiscale",
-        "heroSubtitle": "Des conseils fiscaux experts adaptés à vos besoins individuels ou professionnels",
-        "overline": "ÉTAPE 1 SUR 4",
-        "title": "Vos coordonnées",
-        "description": "Veuillez fournir vos coordonnées pour commencer",
-        "firstName": "Prénom",
-        "firstNamePlaceholder": "Entrez votre prénom",
-        "lastName": "Nom de famille",
-        "lastNamePlaceholder": "Entrez votre nom de famille",
-        "email": "Adresse e-mail",
-        "emailPlaceholder": "Entrez votre adresse e-mail",
-        "phone": "Numéro de téléphone",
-        "phonePlaceholder": "Entrez votre numéro de téléphone",
-        "required": "*",
-        "continue": "Continuer vers la planification",
-        "backToTaxAdvisory": "Retour au conseil fiscal"
-      },
-      "step2": {
-        "heroTitle": "Planifiez votre consultation",
-        "heroSubtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes",
-        "overline": "ÉTAPE 2 SUR 4",
-        "title": "Choisissez une date et une heure",
-        "backToContactInfo": "Retour aux coordonnées"
-      },
-      "step3": {
-        "heroTitle": "Sélectionnez votre service",
-        "heroSubtitle": "Choisissez le service de conseil fiscal dont vous avez besoin",
-        "overline": "ÉTAPE 3 SUR 4",
-        "title": "Sélectionnez votre service fiscal",
-        "description": "Choisissez le service qui correspond le mieux à vos besoins",
+      "serviceSelection": {
+        "title": "Consultation planifiée !",
+        "subtitle": "Maintenant, veuillez sélectionner le service dont vous avez besoin",
+        "step": "Ã‰TAPE 2 SUR 3",
+        "selectTitle": "Sélectionnez votre service de conseil fiscal",
+        "selectDesc": "Choisissez le service qui correspond le mieux à vos besoins",
         "selectService": "Sélectionner le service"
-      },
-      "step4": {
-        "heroTitle": "Vérifier et confirmer",
-        "heroSubtitle": "Vérifiez les détails de votre réservation avant le paiement",
-        "overline": "ÉTAPE 4 SUR 4",
-        "title": "Récapitulatif de la réservation",
-        "contactInfo": "Coordonnées",
-        "name": "Nom",
-        "email": "E-mail",
-        "phone": "Téléphone",
-        "appointmentDetails": "Détails du rendez-vous",
-        "appointmentConfirmation": "Rendez-vous",
-        "scheduledViaCalendly": "Planifié via Calendly",
-        "calendlyEmailNotice": "Une invitation de calendrier a été envoyée à votre e-mail",
-        "duration": "Durée",
-        "minutes": "minutes",
-        "servicePayment": "Service et paiement",
-        "serviceFeeExclVAT": "Frais de service (HT)",
-        "vat": "TVA (20%)",
-        "totalInclVAT": "Total (TTC)",
-        "changeService": "Changer de service",
-        "proceedToPayment": "Procéder au paiement"
       },
       "payment": {
         "title": "Effectuez votre paiement",
         "subtitle": "Dernière étape pour confirmer votre consultation",
-        "step": "ÉTAPE 3 SUR 3",
+        "step": "Ã‰TAPE 3 SUR 3",
         "paymentDetails": "Détails du paiement",
         "orderSummary": "Résumé de la commande",
         "paymentMethod": "Mode de paiement",
@@ -1622,18 +1546,6 @@
         "reservedNote": "Votre créneau de consultation est réservé pendant 15 minutes. Veuillez effectuer le paiement pour confirmer votre réservation.",
         "backToSelection": "Retour à la sélection du service",
         "cancelBooking": "Annuler la réservation"
-      },
-      "calendly": {
-        "title": "Planifiez votre consultation fiscale",
-        "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes"
-      },
-      "serviceSelection": {
-        "title": "Consultation planifiée !",
-        "subtitle": "Maintenant, veuillez sélectionner le service dont vous avez besoin",
-        "step": "ÉTAPE 2 SUR 3",
-        "selectTitle": "Sélectionnez votre service de conseil fiscal",
-        "selectDesc": "Choisissez le service qui correspond le mieux à vos besoins",
-        "selectService": "Sélectionner le service"
       }
     },
     "taxReturn": {
@@ -1730,7 +1642,7 @@
       "benefitsTitle": "Avantages",
       "benefits": {
         "1": "Restez conforme aux réglementations en évolution",
-        "2": "Évitez les pénalités et les problèmes juridiques",
+        "2": "Ã‰vitez les pÃ©nalitÃ©s et les problÃ¨mes juridiques",
         "3": "Tranquillité d'esprit avec une surveillance experte",
         "4": "Gestion proactive des risques"
       },
@@ -1784,7 +1696,7 @@
     "quickActions": {
       "title": "Actions rapides",
       "sendMoney": "Envoyer de l'argent",
-      "exchange": "Échange",
+      "exchange": "Ã‰change",
       "cards": "Cartes",
       "sendAgain": "Renvoyer",
       "items": {
@@ -1830,7 +1742,7 @@
       }
     },
     "applications": {
-      "title": "État des demandes",
+      "title": "Ã‰tat des demandes",
       "statuses": {
         "approved": "Votre demande a été approuvée",
         "awaitingNotary": "En attente du certificat notarial",
@@ -1875,7 +1787,7 @@
       "heroTitle": "Investissement Immobilier SPV",
       "heroSubtitle": "Accédez à des opportunités immobilières européennes soigneusement sélectionnées via des structures de Special Purpose Vehicle (SPV) gérées professionnellement, réservées exclusivement aux investisseurs qualifiés.",
       "whatIsSpv": {
-        "overline": "À propos de l'investissement SPV",
+        "overline": "Ã€ propos de l'investissement SPV",
         "title": "Qu'est-ce qu'un SPV ?",
         "description": "Un Special Purpose Vehicle (SPV) est une entité juridique dédiée créée spécifiquement pour détenir et gérer un actif immobilier. Chaque SPV isole l'investissement, offrant une séparation juridique claire, une gouvernance professionnelle et un reporting transparent pour les investisseurs.",
         "benefits": {
@@ -2167,7 +2079,7 @@
         },
         "deleteConfirm": {
           "title": "Supprimer le Client",
-          "message": "Êtes-vous sûr de vouloir supprimer ce client ? Cette action est irréversible."
+          "message": "ÃŠtes-vous sÃ»r de vouloir supprimer ce client ? Cette action est irrÃ©versible."
         },
         "types": {
           "institutional": "Institutionnel",
@@ -2236,11 +2148,11 @@
           "imagePlaceholder": "https://...",
           "financials": "Détails Financiers",
           "totalValue": "Valeur Totale du Bien",
-          "totalValuePlaceholder": "ex: 2 500 000 €",
+          "totalValuePlaceholder": "ex: 2 500 000 â‚¬",
           "spvShares": "Parts SPV Disponibles",
           "spvSharesPlaceholder": "ex: 100 parts",
           "minimumInvestment": "Investissement Minimum",
-          "minimumPlaceholder": "ex: 25 000 €",
+          "minimumPlaceholder": "ex: 25 000 â‚¬",
           "targetReturn": "Rendement Cible",
           "returnPlaceholder": "ex: 6-8% p.a.",
           "investmentTerm": "Durée d'Investissement",
@@ -2259,7 +2171,7 @@
         },
         "deleteConfirm": {
           "title": "Supprimer la Propriété",
-          "message": "Êtes-vous sûr de vouloir supprimer cette propriété ? Cette action est irréversible."
+          "message": "ÃŠtes-vous sÃ»r de vouloir supprimer cette propriÃ©tÃ© ? Cette action est irrÃ©versible."
         }
       },
       "documents": {
@@ -2339,7 +2251,7 @@
           },
           "deleteConfirm": {
             "title": "Supprimer l'Administrateur",
-            "message": "Êtes-vous sûr de vouloir supprimer cet administrateur ? Cette action est irréversible."
+            "message": "ÃŠtes-vous sÃ»r de vouloir supprimer cet administrateur ? Cette action est irrÃ©versible."
           },
           "resetPassword": {
             "title": "Réinitialiser le Code d'Accès",
@@ -2400,7 +2312,7 @@
   },
   "accounting": {
     "onboarding": {
-      "title": "Comptabilité & Facturation – Inscription",
+      "title": "ComptabilitÃ© & Facturation â€“ Inscription",
       "subtitle": "Configurez votre profil comptable en quelques étapes simples."
     },
     "steps": {
@@ -2409,16 +2321,16 @@
         "description": "Identité légale"
       },
       "activity": {
-        "label": "Activité",
-        "description": "Activité et échelle"
+        "label": "ActivitÃ© & Ã‰chelle",
+        "description": "Périmètre d'activité"
       },
       "contacts": {
-        "label": "Contacts",
-        "description": "Contacts et adresses"
+        "label": "Contacts & Adresses",
+        "description": "Personnes & lieux"
       },
       "volume": {
-        "label": "Volume",
-        "description": "Volume de facturation"
+        "label": "Volume de facturation",
+        "description": "Besoins en facturation"
       },
       "documents": {
         "label": "Documents",
@@ -2456,25 +2368,25 @@
       "hints": {
         "tradeName": "Laissez vide si identique à la dénomination sociale.",
         "registrationNumber": "Tel qu'indiqué sur votre certificat d'immatriculation.",
-        "vatNumber": "Optionnel — à renseigner si votre société est assujettie à la TVA."
+        "vatNumber": "Optionnel â€” Ã  renseigner si votre sociÃ©tÃ© est assujettie Ã  la TVA."
       }
     },
     "activityScale": {
-      "title": "Activité & Échelle",
+      "title": "ActivitÃ© & Ã‰chelle",
       "subtitle": "Aidez-nous à comprendre la taille et la nature de vos activités.",
       "fields": {
         "businessActivity": "Activité principale",
-        "turnoverLastFY": "Chiffre d'affaires – Dernier exercice",
-        "turnoverCurrentFY": "Chiffre d'affaires – Exercice en cours (prévisionnel)",
+        "turnoverLastFY": "Chiffre d'affaires â€“ Dernier exercice",
+        "turnoverCurrentFY": "Chiffre d'affaires â€“ Exercice en cours (prÃ©visionnel)",
         "employees": "Nombre de salariés (ETP)"
       },
       "placeholders": {
-        "businessActivity": "Décrivez votre activité principale…"
+        "businessActivity": "DÃ©crivez votre activitÃ© principaleâ€¦"
       },
       "hints": {
         "turnoverLastFY": "Entrez 0 si la société a été créée cette année.",
         "turnoverCurrentFY": "Une estimation prévisionnelle est acceptable.",
-        "employees": "Équivalents temps plein."
+        "employees": "Ã‰quivalents temps plein."
       }
     },
     "contactsAddresses": {
@@ -2484,35 +2396,34 @@
       "operatingAddress": "Adresse d'exploitation",
       "sameAsRegistered": "Identique à l'adresse du siège",
       "primaryContact": "Contact principal",
-      "accountingContact": "Contact comptabilité",
-      "addAccountingContact": "Ajouter un contact comptabilité",
+      "accountingContact": "Contact comptable",
+      "addAccountingContact": "Ajouter un contact comptable distinct",
       "fields": {
-        "firstName": "Prénom",
-        "lastName": "Nom de famille",
-        "email": "Adresse e-mail",
-        "phone": "Numéro de téléphone",
         "street": "Adresse",
         "city": "Ville",
-        "postalCode": "Code postal",
+        "postal": "Code postal",
         "country": "Pays",
-        "role": "Fonction / Titre"
-      },
-      "placeholders": {
         "firstName": "Prénom",
         "lastName": "Nom de famille",
-        "email": "nom@societe.com",
-        "phone": "+352 123 456 789",
-        "street": "1 Rue de la Gare",
+        "role": "Fonction / Titre",
+        "email": "Adresse e-mail",
+        "phone": "Numéro de téléphone"
+      },
+      "placeholders": {
+        "street": "123 rue Principale",
         "city": "Luxembourg",
-        "postalCode": "L-1611",
-        "country": "Sélectionner le pays",
         "postal": "L-1234",
-        "role": "ex. PDG, DAF"
+        "country": "Sélectionner le pays",
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "role": "ex. PDG, DAF",
+        "email": "nom@societe.com",
+        "phone": "+352 123 456 789"
       }
     },
     "billingVolume": {
       "title": "Volume de facturation",
-      "subtitle": "Estimez votre volume de facturation mensuel",
+      "subtitle": "Indiquez vos volumes de facturation mensuels et vos besoins en paie.",
       "fields": {
         "salesInvoices": "Factures de vente par mois",
         "purchaseInvoices": "Factures d'achat par mois",
@@ -2552,7 +2463,7 @@
       "summary": "Récapitulatif de la demande",
       "sections": {
         "company": "Informations de la société",
-        "activity": "Activité & Échelle",
+        "activity": "ActivitÃ© & Ã‰chelle",
         "contact": "Contacts & Adresses",
         "volume": "Volume de facturation",
         "teamSize": "Effectif",
@@ -2597,7 +2508,7 @@
         "title": "Assistance téléphonique",
         "description": "Parlez directement avec l'un de nos spécialistes du support.",
         "number": "+352 28 79 76 26",
-        "hours": "Lun–Ven, 9h00–18h00 CET"
+        "hours": "Lunâ€“Ven, 9h00â€“18h00 CET"
       },
       "email": {
         "title": "Assistance par e-mail",
@@ -2646,7 +2557,7 @@
         },
         "fees": {
           "question": "Quels sont les frais mensuels ?",
-          "answer": "Les comptes individuels débutent à 10 €/mois. Les comptes professionnels débutent à 25 €/mois. Les grilles tarifaires complètes sont disponibles dans les paramètres de votre compte."
+          "answer": "Les comptes individuels dÃ©butent Ã  10 â‚¬/mois. Les comptes professionnels dÃ©butent Ã  25 â‚¬/mois. Les grilles tarifaires complÃ¨tes sont disponibles dans les paramÃ¨tres de votre compte."
         },
         "currencies": {
           "question": "Quelles devises sont prises en charge ?",
@@ -2672,7 +2583,7 @@
         "button": "Visiter le centre d'aide"
       },
       "status": {
-        "title": "État des services",
+        "title": "Ã‰tat des services",
         "description": "Consultez l'état en temps réel de tous les services Opulanz et les maintenances planifiées.",
         "button": "Voir l'état"
       }
@@ -2690,7 +2601,7 @@
       },
       "france": {
         "title": "France",
-        "address": "66 Avenue des Champs-Élysées",
+        "address": "66 Avenue des Champs-Ã‰lysÃ©es",
         "city": "75008 Paris",
         "country": "France",
         "phone": "Téléphone",
@@ -2700,8 +2611,6 @@
   },
   "accountOpening": {
     "start": {
-      "title": "Ouvrir un compte",
-      "subtitle": "Choisissez le type de compte qui vous convient",
       "loading": "Chargement..."
     },
     "individual": {
@@ -2741,7 +2650,7 @@
         "documentVerification": "Vérification des documents",
         "documentDescription": "Veuillez télécharger des copies lisibles et claires des documents suivants.",
         "activityInfo": "Informations sur l'activité",
-        "isPEP": "Êtes-vous une Personne Politiquement Exposée (PPE) ?",
+        "isPEP": "ÃŠtes-vous une Personne Politiquement ExposÃ©e (PPE) ?",
         "no": "Non",
         "yes": "Oui",
         "expectedMonthlyVolume": "Volume mensuel de transactions prévu",
@@ -2906,7 +2815,7 @@
             "dividends": "Dividendes",
             "businessIncome": "Revenus d'entreprise",
             "assetSale": "Vente d'actifs",
-            "savings": "Épargne",
+            "savings": "Ã‰pargne",
             "other": "Autre"
           }
         },
@@ -2982,9 +2891,7 @@
         },
         "step2": {
           "description": "Vous serez redirigé vers {partner} pour finaliser l'ouverture de votre compte."
-        },
-        "title": "Candidature par référence",
-        "subtitle": "Complétez votre candidature référée"
+        }
       }
     }
   },
@@ -3009,7 +2916,7 @@
       "benefit5": "Gestion continue des polices et assistance"
     },
     "products": {
-      "overline": "NOS PLANS",
+      "overline": "Nos Services",
       "title": "Produits d'Assurance Vie que Nous Courtisons",
       "description": "Nous vous aidons a acceder a une large gamme de solutions d'assurance vie de fournisseurs de confiance pour repondre a vos besoins specifiques de protection.",
       "term": {
@@ -3031,26 +2938,6 @@
       "group": {
         "title": "Assurance Vie Collective",
         "description": "Plans d'assurance vie collectifs parraines par l'employeur offrant une couverture a des tarifs de groupe competitifs."
-      },
-      "termLife": {
-        "title": "Assurance temporaire",
-        "description": "Couverture abordable pour une duree determinee. Ideale pour proteger votre famille durant les etapes cles."
-      },
-      "wholeLife": {
-        "title": "Assurance vie entiere",
-        "description": "Couverture permanente combinee a une valeur de rachat qui s'accumule au fil du temps."
-      },
-      "universalLife": {
-        "title": "Assurance vie universelle",
-        "description": "Couverture permanente flexible avec primes et capitaux ajustables selon votre situation financiere."
-      },
-      "variableLife": {
-        "title": "Assurance vie variable",
-        "description": "Couverture liee a des investissements pour faire fructifier la valeur de votre contrat."
-      },
-      "groupLife": {
-        "title": "Assurance groupe",
-        "description": "Couverture economique pour les entreprises souhaitant proteger leurs employes."
       }
     },
     "howItWorks": {
@@ -3074,7 +2961,7 @@
       }
     },
     "features": {
-      "overline": "NOS AVANTAGES",
+      "overline": "Ce qui nous differencie",
       "title": "Expertise Professionnelle en Courtage d'Assurance",
       "description": "En tant que courtiers independants, nous fournissons des conseils impartiaux et l'acces aux meilleures solutions d'assurance pour vos besoins.",
       "brokers": {
@@ -3092,22 +2979,6 @@
       "support": {
         "title": "Assistance continue",
         "description": "Gestion continue des polices et support de courtage"
-      },
-      "expertBrokers": {
-        "title": "Conseillers certifies",
-        "description": "Tous nos conseillers sont qualifies et reglementes par les autorites competentes en France et au Luxembourg."
-      },
-      "needsAnalysis": {
-        "title": "Analyse approfondie",
-        "description": "Nous prenons le temps de comprendre votre situation financiere complete avant toute recommandation."
-      },
-      "wealthBuilding": {
-        "title": "Construction de patrimoine",
-        "description": "Nos produits incluent des composantes epargne et investissement pour constituer un patrimoine durable."
-      },
-      "ongoingSupport": {
-        "title": "Accompagnement continu",
-        "description": "Votre conseiller reste disponible pour les revisions de contrat, l'assistance aux sinistres et les changements de situation."
       }
     },
     "cta": {
@@ -3117,186 +2988,7 @@
       "badge2": "Comparer plusieurs fournisseurs",
       "badge3": "Conseils experts",
       "primaryButton": "Obtenir un devis gratuit",
-      "secondaryButton": "Parler a un conseiller",
-      "description": "Prenez rendez-vous gratuitement et laissez nos experts trouver le plan adapte a vos besoins.",
-      "benefits": {
-        "consultation": "Consultation initiale gratuite",
-        "compare": "Comparaison de plusieurs assureurs",
-        "guidance": "Expertise tout au long du processus"
-      }
-    },
-    "booking": {
-      "services": {
-        "termLife": {
-          "title": "Assurance Vie Temporaire",
-          "description": "Couverture abordable pour une période spécifique, offrant une protection financière à votre famille"
-        },
-        "wholeLife": {
-          "title": "Assurance Vie Entière",
-          "description": "Couverture permanente avec une composante de valeur de rachat qui croît avec le temps"
-        },
-        "universalLife": {
-          "title": "Assurance Vie Universelle",
-          "description": "Couverture permanente flexible avec des primes et des prestations de décès ajustables"
-        },
-        "variableLife": {
-          "title": "Assurance Vie Variable",
-          "description": "Couverture liée aux investissements permettant de faire croître la valeur de rachat de votre police"
-        },
-        "groupLife": {
-          "title": "Assurance Vie Collective",
-          "description": "Couverture économique pour les employés ou membres d'une organisation"
-        }
-      },
-      "validation": {
-        "firstNameRequired": "Le prénom est obligatoire",
-        "lastNameRequired": "Le nom de famille est obligatoire",
-        "emailRequired": "L'adresse e-mail est obligatoire",
-        "emailInvalid": "Veuillez saisir une adresse e-mail valide",
-        "phoneRequired": "Le numéro de téléphone est obligatoire"
-      },
-      "form": {
-        "firstName": "Prénom",
-        "firstNamePlaceholder": "Entrez votre prénom",
-        "lastName": "Nom de famille",
-        "lastNamePlaceholder": "Entrez votre nom de famille",
-        "email": "Adresse e-mail",
-        "emailPlaceholder": "Entrez votre adresse e-mail",
-        "phone": "Numéro de téléphone",
-        "phonePlaceholder": "Entrez votre numéro de téléphone",
-        "continueToSchedule": "Continuer vers la planification",
-        "backToLifeInsurance": "Retour à l'assurance vie"
-      },
-      "step1": {
-        "heroTitle": "Réservez votre consultation en assurance vie",
-        "heroSubtitle": "Protégez ce qui compte le plus avec des conseils d'experts en assurance",
-        "overline": "ÉTAPE 1 SUR 4",
-        "title": "Vos coordonnées",
-        "description": "Veuillez fournir vos coordonnées pour commencer"
-      },
-      "step2": {
-        "heroTitle": "Planifiez votre consultation",
-        "heroSubtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes",
-        "overline": "ÉTAPE 2 SUR 4",
-        "title": "Choisissez une date et une heure",
-        "bookingFor": "Réservation pour",
-        "selectedService": "Service sélectionné",
-        "backButton": "Retour aux coordonnées"
-      },
-      "step3": {
-        "heroTitle": "Sélectionnez votre plan d'assurance",
-        "heroSubtitle": "Choisissez le produit d'assurance vie qui correspond le mieux à vos besoins",
-        "overline": "ÉTAPE 3 SUR 4",
-        "title": "Sélectionnez votre plan d'assurance",
-        "description": "Choisissez le plan qui correspond le mieux à vos objectifs de protection",
-        "consultationFee": "frais de consultation",
-        "selectService": "Sélectionner le plan"
-      },
-      "step4": {
-        "heroTitle": "Vérifier et confirmer",
-        "heroSubtitle": "Vérifiez les détails de votre réservation avant le paiement",
-        "overline": "ÉTAPE 4 SUR 4",
-        "title": "Récapitulatif de la réservation",
-        "contactInfo": "Coordonnées",
-        "name": "Nom",
-        "email": "E-mail",
-        "phone": "Téléphone",
-        "appointmentDetails": "Détails du rendez-vous",
-        "appointmentConfirmation": "Rendez-vous",
-        "scheduledViaCalendly": "Planifié via Calendly",
-        "appointmentEmailNote": "Une invitation de calendrier a été envoyée à votre e-mail",
-        "duration": "Durée",
-        "minutes": "60 minutes",
-        "servicePayment": "Plan d'assurance et paiement",
-        "consultationFeeExclVat": "Frais de consultation (HT)",
-        "vat": "TVA (20%)",
-        "totalInclVat": "Total (TTC)",
-        "changeService": "Changer de plan",
-        "proceedToPayment": "Procéder au paiement"
-      },
-      "payment": {
-        "heroTitle": "Effectuer le paiement",
-        "heroSubtitle": "Paiement sécurisé pour confirmer votre consultation",
-        "paymentSummary": "Récapitulatif du paiement",
-        "service": "Plan d'assurance",
-        "client": "Client",
-        "total": "Total",
-        "loadingPayment": "Chargement des options de paiement...",
-        "securePaymentNote": "Votre paiement est sécurisé par un chiffrement standard du secteur",
-        "paymentFailed": "Paiement échoué. Veuillez réessayer.",
-        "paymentSuccessError": "Paiement effectué mais la confirmation a échoué. Veuillez contacter le support.",
-        "backToSummary": "Retour au récapitulatif",
-        "cancelBooking": "Annuler la réservation"
-      }
-    },
-    "process": {
-      "overline": "COMMENT CA MARCHE",
-      "title": "Votre couverture en 4 etapes simples",
-      "steps": {
-        "1": {
-          "title": "Prendre rendez-vous",
-          "description": "Planifiez une consultation gratuite avec l'un de nos conseillers certifies au moment qui vous convient."
-        },
-        "2": {
-          "title": "Analyse de vos besoins",
-          "description": "Nous analysons votre situation financiere et vos objectifs pour identifier les meilleures options."
-        },
-        "3": {
-          "title": "Comparaison des offres",
-          "description": "Nous vous presentons des propositions personnalisees de plusieurs assureurs avec des tarifs transparents."
-        },
-        "4": {
-          "title": "Etre protege",
-          "description": "Choisissez votre plan, completez votre dossier et recevez vos documents. La couverture commence immediatement."
-        }
-      }
-    }
-  },
-  "invoicingAccounting": {
-    "getStarted": "Commencer",
-    "features": {
-      "overline": "CE QUE NOUS OFFRONS",
-      "title": "Tout ce dont votre entreprise a besoin",
-      "description": "Des outils de comptabilite et de facturation complets pour les entreprises modernes en France et au Luxembourg.",
-      "invoicing": {
-        "title": "Facturation intelligente",
-        "description": "Creez, envoyez et suivez des factures professionnelles en quelques secondes. Automatisez les relances et soyez paye plus vite."
-      },
-      "bookkeeping": {
-        "title": "Comptabilite",
-        "description": "Categorisation automatique des transactions et comptabilite en temps reel pour que vos comptes soient toujours a jour."
-      },
-      "reporting": {
-        "title": "Rapports financiers",
-        "description": "Comptes de resultats, bilans et rapports de tresorerie instantanes, disponibles quand vous en avez besoin."
-      },
-      "payroll": {
-        "title": "Gestion de la paie",
-        "description": "Traitez les salaires avec precision et dans les delais, en conformite avec le droit du travail francais et luxembourgeois."
-      },
-      "compliance": {
-        "title": "Conformite fiscale",
-        "description": "Restez conforme aux declarations de TVA, aux obligations fiscales des entreprises et aux exigences reglementaires."
-      },
-      "planning": {
-        "title": "Planification financiere",
-        "description": "Outils de budgetisation et de prevision pour planifier votre avenir et developper votre activite en toute confiance."
-      }
-    },
-    "benefits": {
-      "1": "Economisez jusqu a 80 % du temps consacre aux taches comptables manuelles",
-      "2": "Visibilite financiere en temps reel sur tous vos comptes",
-      "3": "Entierement conforme aux normes ACPR francaises et CSSF luxembourgeoises",
-      "4": "Comptable dedie assigne a votre entreprise",
-      "5": "Integration transparente avec votre compte professionnel Opulanz",
-      "6": "Stockage securise dans le cloud de tous vos documents financiers",
-      "title": "Pourquoi choisir Opulanz Comptabilite ?",
-      "description": "Nous gerons les chiffres pour que vous puissiez vous concentrer sur la croissance de votre entreprise."
-    },
-    "cta": {
-      "title": "Pret a simplifier votre comptabilite ?",
-      "description": "Rejoignez des centaines d entreprises qui utilisent Opulanz pour gerer leurs finances de maniere plus intelligente et plus rapide.",
-      "contactSales": "Contacter les ventes"
+      "secondaryButton": "Parler a un conseiller"
     }
   }
 }

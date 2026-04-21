@@ -116,7 +116,9 @@
       "Bash(powershell.exe -ExecutionPolicy Bypass -File deploy-frontend.ps1 2>&1)",
       "Bash(/dev/null cat:*)",
       "Bash(head -3 grep -r \"NEXT_PUBLIC_API_URL\\\\|localhost:5000\" /c/Users/Toufi/AndroidStudioProjects/azuree/.next/server/app/)",
-      "Bash(__NEW_LINE_321f178970d4f370__ echo:*)"
+      "Bash(__NEW_LINE_321f178970d4f370__ echo:*)",
+      "Bash(rm fix_fr.js)",
+      "Bash(rm messages/fr.json.draft)"
     ],
     "deny": [],
     "ask": []

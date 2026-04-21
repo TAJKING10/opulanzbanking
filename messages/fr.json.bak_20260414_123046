@@ -586,205 +586,17 @@
   "investmentAdvisory": {
     "wizard": {
       "steps": {
-        "clientType": "Type de client",
-        "information": "Vos informations",
+        "clientType": "Type de Client",
+        "information": "Profil d'Investissement",
         "review": "Révision",
-        "complete": "Terminé"
-      },
-      "progress": {
-        "step": "Étape",
-        "of": "sur",
-        "complete": "complété"
+        "complete": "Confirmation"
       }
     },
     "clientType": {
       "title": "Type de client",
       "contact": {
-        "email": "Adresse e-mail",
-        "emailPlaceholder": "Entrez votre adresse e-mail",
-        "mobile": "Numéro de mobile",
-        "mobilePlaceholder": "Entrez votre numéro de mobile",
-        "language": "Langue préférée"
-      },
-      "welcome": "Bienvenue au Conseil en Investissement",
-      "subtitle": "Complétez notre processus d'intégration pour accéder à des services de conseil en investissement personnalisés.",
-      "question": "Veuillez sélectionner votre type d'investisseur :",
-      "individual": {
-        "title": "Investisseur particulier",
-        "description": "Pour les personnes physiques souhaitant un conseil en investissement personnel et une gestion de portefeuille."
-      },
-      "company": {
-        "title": "Investisseur institutionnel",
-        "description": "Pour les entreprises et les investisseurs institutionnels souhaitant des services de conseil en investissement professionnels."
-      }
-    },
-    "company": {
-      "title": "Informations sur la société",
-      "subtitle": "Veuillez fournir des informations détaillées sur votre société pour procéder à la vérification KYC.",
-      "sectionTitles": {
-        "companyIdentity": "Identité de la société",
-        "representatives": "Représentants légaux et bénéficiaires effectifs",
-        "financial": "Profil financier",
-        "origin": "Origine des fonds",
-        "investment": "Profil d'investissement",
-        "mission": "Mission d'investissement",
-        "consents": "Consentements et déclarations"
-      },
-      "subsections": {
-        "registeredAddress": "Adresse du siège social",
-        "mainContact": "Contact principal / Représentant légal",
-        "ubo": "Bénéficiaire effectif ultime (BEU)",
-        "fatcaCrs": "Déclaration FATCA / CRS",
-        "investmentKnowledge": "Connaissances et expérience en investissement",
-        "investmentObjectives": "Objectifs d'investissement"
-      },
-      "fields": {
-        "legalName": "Raison sociale",
-        "tradingName": "Nom commercial",
-        "legalForm": "Forme juridique",
-        "dateOfIncorporation": "Date de constitution",
-        "registrationNumber": "Numéro d'immatriculation",
-        "registrationCountry": "Pays d'immatriculation",
-        "taxIdentificationNumber": "Numéro d'identification fiscale",
-        "numberOfEmployees": "Nombre d'employés",
-        "industrySector": "Secteur d'activité",
-        "website": "Site web",
-        "addressLine1": "Adresse ligne 1",
-        "addressLine2": "Adresse ligne 2",
-        "city": "Ville",
-        "postalCode": "Code postal",
-        "country": "Pays",
-        "title": "Titre",
-        "firstName": "Prénom",
-        "lastName": "Nom de famille",
-        "position": "Poste / Fonction",
-        "dateOfBirth": "Date de naissance",
-        "nationality": "Nationalité",
-        "email": "Adresse e-mail",
-        "mobile": "Numéro de mobile",
-        "uboFullName": "Nom complet du BEU",
-        "ownershipPercentage": "Pourcentage de détention (%)",
-        "taxResidentCountries": "Pays de résidence fiscale",
-        "annualRevenue": "Chiffre d'affaires annuel (€)",
-        "totalAssets": "Total des actifs (€)",
-        "primarySourceOfRevenue": "Source principale de revenus",
-        "primaryOriginOfFunds": "Origine principale des fonds",
-        "additionalDetails": "Détails supplémentaires",
-        "investmentExperience": "Expérience en investissement",
-        "riskTolerance": "Tolérance au risque",
-        "investmentHorizon": "Horizon d'investissement",
-        "primaryObjective": "Objectif principal d'investissement",
-        "expectedAnnualReturn": "Rendement annuel attendu (%)",
-        "maxAcceptableLoss": "Perte maximale acceptable (%)",
-        "typeOfService": "Type de service",
-        "initialInvestmentAmount": "Montant d'investissement initial (€)"
-      },
-      "placeholders": {
-        "tradingName": "Entrez le nom commercial si différent de la raison sociale",
-        "registrationNumber": "Entrez le numéro d'immatriculation",
-        "industrySector": "ex. Technologie, Finance, Immobilier",
-        "website": "https://www.votresociete.com",
-        "position": "ex. PDG, Directeur, DAF",
-        "taxResidentCountries": "ex. France, Luxembourg",
-        "annualRevenue": "Entrez le chiffre d'affaires en EUR",
-        "originDetails": "Fournissez des détails supplémentaires sur l'origine des fonds",
-        "expectedReturn": "ex. 8",
-        "maxLoss": "ex. 20",
-        "initialInvestment": "Minimum 100 000 €"
-      },
-      "options": {
-        "legalForm": {
-          "select": "Sélectionnez la forme juridique",
-          "sarl": "SARL",
-          "sas": "SAS",
-          "sa": "SA",
-          "sci": "SCI",
-          "gmbh": "GmbH",
-          "ltd": "Ltd",
-          "llc": "LLC",
-          "other": "Autre"
-        },
-        "title": {
-          "select": "Sélectionnez le titre",
-          "mr": "M.",
-          "mrs": "Mme",
-          "ms": "Mme",
-          "dr": "Dr."
-        },
-        "sourceOfRevenue": {
-          "select": "Sélectionnez la source principale",
-          "products": "Ventes de produits",
-          "services": "Revenus de services",
-          "trading": "Négoce",
-          "investments": "Rendements d'investissement",
-          "realEstate": "Immobilier",
-          "other": "Autre"
-        },
-        "originOfFunds": {
-          "select": "Sélectionnez l'origine",
-          "retainedEarnings": "Bénéfices non distribués",
-          "shareholderContributions": "Apports des actionnaires",
-          "businessOperations": "Activités commerciales",
-          "saleOfAssets": "Vente d'actifs",
-          "financing": "Financement externe",
-          "other": "Autre"
-        },
-        "investmentExperience": {
-          "beginner": "Débutant (< 2 ans)",
-          "intermediate": "Intermédiaire (2–5 ans)",
-          "advanced": "Avancé (5–10 ans)",
-          "expert": "Expert (10+ ans)"
-        },
-        "riskTolerance": {
-          "conservative": "Conservateur",
-          "moderate": "Modéré",
-          "aggressive": "Agressif"
-        },
-        "investmentHorizon": {
-          "select": "Sélectionnez l'horizon",
-          "short": "Court terme (< 3 ans)",
-          "medium": "Moyen terme (3–7 ans)",
-          "long": "Long terme (7+ ans)"
-        },
-        "investmentObjective": {
-          "select": "Sélectionnez l'objectif",
-          "capitalPreservation": "Préservation du capital",
-          "incomeGeneration": "Génération de revenus",
-          "capitalGrowth": "Croissance du capital",
-          "balanced": "Croissance équilibrée et revenus"
-        },
-        "missionType": {
-          "advisory": "Conseil (vous gardez le pouvoir de décision)",
-          "management": "Gestion discrétionnaire (nous gérons en votre nom)"
-        }
-      },
-      "helpers": {
-        "uboDescription": "Un BEU est toute personne physique qui détient ou contrôle directement ou indirectement 25% ou plus du capital de la société.",
-        "usPersonCheckbox": "Je confirme que cette société n'est pas une personne américaine au sens de la réglementation FATCA.",
-        "advisoryHelper": "En mode conseil, nous formulons des recommandations mais vous conservez l'intégralité du pouvoir de décision sur votre portefeuille.",
-        "managementHelper": "En mode gestion discrétionnaire, nous gérons votre portefeuille en votre nom dans le cadre des paramètres convenus.",
-        "minimumInvestment": "Investissement initial minimum : 100 000 €"
-      },
-      "consents": {
-        "dataProcessing": {
-          "label": "Consentement au traitement des données",
-          "text": "Je consens à la collecte, au traitement et au stockage de mes données personnelles et d'entreprise à des fins de conformité KYC/LCB-FT, de gestion de compte et de reporting réglementaire."
-        },
-        "kycCompliance": {
-          "label": "Conformité KYC",
-          "text": "Je confirme que toutes les informations fournies sont exactes et complètes. Je comprends que toute fausse déclaration peut entraîner la résiliation des services."
-        },
-        "electronicSignature": {
-          "label": "Signature électronique",
-          "text": "J'accepte l'utilisation de signatures électroniques et la soumission de documents numériques pour cette demande."
-        },
-        "marketingCommunications": {
-          "label": "Communications marketing",
-          "text": "J'accepte de recevoir des informations sur les produits d'investissement Opulanz, les analyses de marché et les offres promotionnelles."
-        }
-      },
-      "navigation": {
-        "continueToReview": "Continuer vers la révision"
+        "label": "Contact",
+        "placeholder": "Vos coordonnées"
       }
     }
   },
@@ -794,70 +606,70 @@
     "mifid": "Services d'investissement soumis aux réglementations MiFID II",
     "idd": "Distribution d'assurance soumise aux exigences IDD",
     "terms": {
-      "heroTitle": "Conditions générales d'utilisation",
-      "heroSubtitle": "Veuillez lire attentivement les conditions suivantes avant d'utiliser nos services.",
+      "heroTitle": "Conditions d'utilisation",
+      "heroSubtitle": "Informations légales régissant l'utilisation des services Opulanz",
       "companyIdentification": {
         "title": "Identification de la société",
         "companyName": "Raison sociale",
         "companyNameValue": "Advensys Luxembourg S.A. (Opulanz)",
         "capital": "Capital social",
         "capitalValue": "31 000 €",
-        "address": "Adresse du siège social",
-        "addressValue": "2 Rue Edward Steichen, L-2540 Luxembourg",
+        "address": "Adresse du siège",
+        "addressValue": "2 Place de Paris, L-2314 Luxembourg",
         "phone": "Téléphone",
-        "phoneValue": "+352 20 33 10 70",
+        "phoneValue": "+352 27 99 53 50",
         "email": "E-mail",
         "emailValue": "contact@opulanz.com",
         "website": "Site web",
         "websiteValue": "www.opulanz.com",
         "siret": "SIRET",
-        "siretValue": "N/A – Entité luxembourgeoise",
+        "siretValue": "B 244 955",
         "ape": "Code APE",
-        "apeValue": "6419Z – Autres intermédiations monétaires",
+        "apeValue": "6619B",
         "vatNumber": "Numéro de TVA",
-        "vatNumberValue": "LU30956782",
-        "registration": "Registre du commerce",
-        "registrationValue": "RCS Luxembourg B 252 345"
+        "vatNumberValue": "LU35712439",
+        "registration": "Immatriculation",
+        "registrationValue": "Registre de Commerce de Luxembourg (RCS)"
       },
       "servicesProvided": {
         "title": "Services fournis",
-        "investment": "Conseil en investissement et gestion de portefeuille (conformément à MiFID II)",
-        "insurance": "Courtage en assurances et produits d'assurance vie",
-        "banking": "Services de paiement et gestion de compte (réglementé par un établissement de monnaie électronique)"
+        "investment": "Conseil en investissement (conforme MiFID II)",
+        "insurance": "Courtage d'assurance (conforme IDD)",
+        "banking": "Services de compte de paiement et création d'entreprise"
       },
       "professionalInsurance": {
         "title": "Assurance professionnelle",
-        "description": "Advensys Luxembourg S.A. détient une assurance responsabilité civile professionnelle couvrant tous les services fournis via la plateforme Opulanz, comme l'exigent les réglementations financières applicables au Luxembourg et dans l'UE."
+        "description": "Opulanz dispose d'une assurance responsabilité civile professionnelle conformément aux exigences réglementaires luxembourgeoises, couvrant les activités de conseil en investissement et de distribution d'assurance."
       },
       "contactInfo": {
-        "title": "Informations de contact",
-        "name": "Nom du contact",
-        "nameValue": "Département Conformité – Advensys Luxembourg S.A."
+        "title": "Coordonnées",
+        "name": "Représentant légal",
+        "nameValue": "Service juridique Opulanz"
       },
       "intellectualProperty": {
         "title": "Propriété intellectuelle",
-        "trademark": "La marque Opulanz, le logo et toutes les marques commerciales associées sont la propriété exclusive d'Advensys Luxembourg S.A. Toute utilisation non autorisée est strictement interdite.",
-        "ownership": "Tout le contenu de ce site, y compris les textes, graphiques, logos et logiciels, est la propriété d'Advensys Luxembourg S.A. et est protégé par les lois luxembourgeoises et internationales sur le droit d'auteur."
+        "trademark": "Le nom Opulanz, le logo et toutes les marques associées sont des marques déposées d'Advensys Luxembourg S.A. Toute utilisation non autorisée est strictement interdite.",
+        "ownership": "Tout le contenu, les logiciels et les matériaux de cette plateforme sont la propriété exclusive d'Advensys Luxembourg S.A. et sont protégés par les lois applicables en matière de propriété intellectuelle."
       },
       "generalConditions": {
         "title": "Conditions générales",
-        "acceptance": "En accédant à la plateforme Opulanz et en l'utilisant, vous acceptez d'être lié par les présentes Conditions et toutes les lois et réglementations applicables.",
-        "disclaimer": "Les informations fournies sur cette plateforme sont uniquement à titre indicatif et ne constituent pas un conseil financier, juridique ou fiscal.",
-        "modifications": "Advensys Luxembourg S.A. se réserve le droit de modifier ces conditions à tout moment. L'utilisation continue de la plateforme constitue une acceptation des conditions mises à jour.",
-        "jurisdiction": "Ces conditions sont régies par les lois du Grand-Duché de Luxembourg. Tout litige sera soumis à la compétence exclusive des tribunaux du Luxembourg."
+        "acceptance": "En utilisant les services Opulanz, vous acceptez l'intégralité des présentes conditions. Si vous n'êtes pas d'accord, veuillez cesser immédiatement l'utilisation de nos services.",
+        "disclaimer": "Opulanz fournit ses services « en l'état ». Bien que nous prenions toutes les mesures raisonnables pour garantir l'exactitude, nous ne pouvons garantir l'exhaustivité ou l'actualité des informations fournies.",
+        "modifications": "Opulanz se réserve le droit de modifier ces conditions à tout moment. La poursuite de l'utilisation de nos services après notification des modifications constitue une acceptation des conditions mises à jour.",
+        "jurisdiction": "Ces conditions sont régies par le droit luxembourgeois. Tout litige découlant de l'utilisation de nos services sera soumis à la compétence exclusive des tribunaux luxembourgeois."
       },
       "designHosting": {
         "title": "Conception et hébergement",
-        "design": "Conception du site web",
-        "designValue": "Équipe de développement interne d'Advensys",
-        "development": "Développement de la plateforme",
-        "developmentValue": "Division technologique d'Advensys",
-        "hosting": "Hébergement cloud",
-        "hostingValue": "Microsoft Azure – Centres de données européens"
+        "design": "Conception du site",
+        "designValue": "Advensys Luxembourg S.A.",
+        "development": "Développement",
+        "developmentValue": "Advensys Luxembourg S.A.",
+        "hosting": "Hébergement",
+        "hostingValue": "Microsoft Azure (Région UE)"
       },
       "footer": {
-        "disclaimer": "Ce document a été dernièrement examiné et approuvé par le Département Juridique et de Conformité d'Advensys Luxembourg S.A.",
-        "lastUpdated": "Dernière mise à jour : janvier 2025"
+        "disclaimer": "Ce document constitue les conditions légales régissant l'utilisation de la plateforme Opulanz. Opulanz est réglementée par la CSSF (Luxembourg) et respecte toutes les réglementations financières européennes applicables.",
+        "lastUpdated": "Dernière mise à jour : Avril 2026"
       }
     }
   },
@@ -901,7 +713,7 @@
       "instagram": "Instagram"
     },
     "description": "La Plateforme financière Tout-en-Un pour les Entreprises. Membre du Groupe Advensys Luxembourg S.A., avec plus de 19 ans d'expérience dans les solutions d'affaires complètes en Europe.",
-    "copyright": "© {year} Opulanz. Tous droits réservés.",
+    "copyright": "© {year} Opulanz. Tous droits rÃ©servÃ©s.",
     "regulated": "Réglementé par ACPR & AMF (FR)"
   },
   "home": {
@@ -1317,51 +1129,55 @@
   "taxAdvisory": {
     "confirmation": {
       "heroTitle": "Réservation confirmée !",
-      "heroSubtitle": "Votre consultation en conseil fiscal a été réservée avec succès.",
-      "confirmationLabel": "Confirmation n°",
-      "emailSent": {
-        "title": "E-mail de confirmation envoyé",
-        "description": "Une confirmation a été envoyée à {email}. Veuillez vérifier votre boîte de réception."
-      },
-      "appointmentDetails": "Détails du rendez-vous",
+      "heroSubtitle": "Votre consultation de conseil fiscal a été réservée avec succès",
+      "confirmationLabel": "Référence de réservation",
+      "confirmationNumber": "Numéro de confirmation",
       "clientName": "Nom du client",
       "name": "Nom",
       "email": "E-mail",
       "phone": "Téléphone",
+      "service": "Service",
+      "serviceTitle": "Service",
+      "serviceDetails": "Détails du service",
       "date": "Date",
       "time": "Heure",
-      "duration": "Consultation de {minutes} minutes",
-      "scheduledViaCalendly": "Rendez-vous planifié via Calendly",
-      "checkEmailForDetails": "Vérifiez votre e-mail pour les détails du rendez-vous.",
-      "calendlyConfirmationNotice": "Vous recevrez une invitation Calendly dans votre boîte de réception.",
-      "serviceDetails": "Détails du service",
+      "price": "Prix",
+      "inclVAT": "(TTC)",
+      "duration": "{minutes} minutes",
       "consultation": "Consultation de {minutes} minutes",
-      "inclVAT": "TVA incluse",
-      "addToCalendar": "Ajouter au calendrier",
-      "downloadPDFReceipt": "Télécharger le reçu PDF",
+      "appointmentDetails": "Détails du rendez-vous",
+      "scheduledViaCalendly": "Planifié via Calendly",
+      "calendlyConfirmationNotice": "Une invitation de calendrier a été envoyée à votre e-mail",
+      "checkEmailForDetails": "Vérifiez votre e-mail pour les détails complets de la réservation",
+      "emailSent": {
+        "title": "E-mail de confirmation envoyé",
+        "description": "Un e-mail de confirmation a été envoyé à {email}"
+      },
       "whatHappensNext": {
         "title": "Que se passe-t-il ensuite ?",
         "step1": {
           "title": "Vérifiez votre e-mail",
-          "description": "Vous recevrez un e-mail de confirmation avec tous les détails de votre rendez-vous."
+          "description": "Vous recevrez un e-mail de confirmation avec les détails de votre rendez-vous et les instructions pour le rejoindre"
         },
         "step2": {
           "title": "Préparez vos documents",
-          "description": "Rassemblez tous les documents financiers, déclarations fiscales ou relevés pertinents qui pourraient être discutés lors de la consultation."
+          "description": "Rassemblez tous les documents financiers pertinents et vos questions pour votre consultation"
         },
         "step3": {
-          "title": "Rejoignez votre consultation",
-          "description": "Rejoignez l'appel vidéo ou la réunion en personne à l'heure prévue. Notre conseiller sera prêt à vous aider."
+          "title": "Rejoignez la consultation",
+          "description": "Connectez-vous avec notre conseiller fiscal à l'heure prévue via vidéoconférence"
         },
         "step4": {
           "title": "Recevez votre rapport",
-          "description": "Après la consultation, vous recevrez un rapport détaillé et des recommandations par e-mail dans les 48 heures."
+          "description": "Obtenez un rapport de conseil fiscal détaillé après votre consultation"
         }
       },
       "rescheduleQuestion": "Besoin de reporter ?",
-      "supportContact": "Pour obtenir de l'aide, contactez-nous à",
+      "supportContact": "Contactez notre équipe de support",
       "backToTaxAdvisory": "Retour au conseil fiscal",
-      "goToDashboard": "Accéder au tableau de bord"
+      "goToDashboard": "Aller au tableau de bord",
+      "downloadPDFReceipt": "Télécharger le reçu",
+      "addToCalendar": "Ajouter au calendrier"
     },
     "hero": {
       "primaryCta": "Planifier une consultation",
@@ -1609,9 +1425,21 @@
         "proceedToPayment": "Procéder au paiement"
       },
       "payment": {
+        "heroTitle": "Effectuer le paiement",
+        "heroSubtitle": "Paiement sécurisé pour confirmer votre consultation",
+        "paymentSummary": "Récapitulatif du paiement",
+        "service": "Service",
+        "client": "Client",
+        "total": "Total",
+        "loadingPaymentOptions": "Chargement des options de paiement...",
+        "securePaymentNotice": "Votre paiement est sécurisé par un chiffrement standard du secteur",
+        "paymentFailed": "Paiement échoué. Veuillez réessayer.",
+        "paymentSuccessError": "Paiement effectué mais la confirmation a échoué. Veuillez contacter le support.",
+        "backToSummary": "Retour au récapitulatif",
+        "cancelBooking": "Annuler la réservation",
         "title": "Effectuez votre paiement",
         "subtitle": "Dernière étape pour confirmer votre consultation",
-        "step": "ÉTAPE 3 SUR 3",
+        "step": "ÉTAPE 4 SUR 4",
         "paymentDetails": "Détails du paiement",
         "orderSummary": "Résumé de la commande",
         "paymentMethod": "Mode de paiement",
@@ -1620,8 +1448,7 @@
         "payWithTransfer": "Payer par virement bancaire",
         "payWithPaypal": "Payer avec PayPal",
         "reservedNote": "Votre créneau de consultation est réservé pendant 15 minutes. Veuillez effectuer le paiement pour confirmer votre réservation.",
-        "backToSelection": "Retour à la sélection du service",
-        "cancelBooking": "Annuler la réservation"
+        "backToSelection": "Retour à la sélection du service"
       },
       "calendly": {
         "title": "Planifiez votre consultation fiscale",
@@ -2400,21 +2227,21 @@
   },
   "accounting": {
     "onboarding": {
-      "title": "Comptabilité & Facturation – Inscription",
-      "subtitle": "Configurez votre profil comptable en quelques étapes simples."
+      "title": "Comptabilité et facturation — Intégration",
+      "subtitle": "Complétez les étapes ci-dessous pour configurer votre service comptable"
     },
     "steps": {
       "company": {
-        "label": "Informations de base",
-        "description": "Identité légale"
-      },
-      "activity": {
-        "label": "Activité",
-        "description": "Activité et échelle"
+        "label": "Entreprise",
+        "description": "Informations de base"
       },
       "contacts": {
         "label": "Contacts",
         "description": "Contacts et adresses"
+      },
+      "activity": {
+        "label": "Activité",
+        "description": "Activité et échelle"
       },
       "volume": {
         "label": "Volume",
@@ -2422,92 +2249,88 @@
       },
       "documents": {
         "label": "Documents",
-        "description": "Téléversement"
+        "description": "Télécharger les documents"
       },
       "review": {
-        "label": "Révision & Soumission",
-        "description": "Confirmer & envoyer"
+        "label": "Révision",
+        "description": "Vérifier et soumettre"
       }
     },
     "companyBasics": {
-      "title": "Informations de base",
-      "subtitle": "Renseignez l'identité juridique et les détails de constitution de votre société.",
+      "title": "Informations sur l'entreprise",
+      "subtitle": "Parlez-nous de votre entreprise",
       "fields": {
-        "companyType": "Forme juridique",
-        "companyTypeOther": "Précisez",
+        "companyType": "Type d'entreprise",
+        "companyTypeOther": "Préciser le type d'entreprise",
         "countryOfIncorporation": "Pays d'immatriculation",
-        "dateOfIncorporation": "Date de constitution",
-        "shareCapital": "Capital social",
-        "legalName": "Dénomination sociale",
-        "tradeName": "Nom commercial",
+        "dateOfIncorporation": "Date de création",
+        "shareCapital": "Capital social (€)",
+        "legalName": "Raison sociale",
+        "tradeName": "Nom commercial (optionnel)",
         "registrationNumber": "Numéro d'immatriculation",
-        "vatNumber": "Numéro de TVA"
+        "vatNumber": "Numéro de TVA (optionnel)"
       },
       "placeholders": {
-        "companyType": "Sélectionner la forme juridique",
-        "companyTypeOther": "Décrivez votre forme juridique",
-        "country": "Sélectionner le pays",
-        "date": "AAAA-MM-JJ",
-        "legalName": "ex. Acme Holdings S.A.R.L.",
+        "companyType": "Sélectionner le type",
+        "companyTypeOther": "ex. Entreprise individuelle",
+        "country": "Sélectionner un pays",
+        "date": "JJ/MM/AAAA",
+        "legalName": "ex. Acme Holdings S.A.",
         "tradeName": "ex. Acme",
         "registrationNumber": "ex. B123456",
         "vatNumber": "ex. LU12345678"
       },
       "hints": {
-        "tradeName": "Laissez vide si identique à la dénomination sociale.",
-        "registrationNumber": "Tel qu'indiqué sur votre certificat d'immatriculation.",
-        "vatNumber": "Optionnel — à renseigner si votre société est assujettie à la TVA."
-      }
-    },
-    "activityScale": {
-      "title": "Activité & Échelle",
-      "subtitle": "Aidez-nous à comprendre la taille et la nature de vos activités.",
-      "fields": {
-        "businessActivity": "Activité principale",
-        "turnoverLastFY": "Chiffre d'affaires – Dernier exercice",
-        "turnoverCurrentFY": "Chiffre d'affaires – Exercice en cours (prévisionnel)",
-        "employees": "Nombre de salariés (ETP)"
-      },
-      "placeholders": {
-        "businessActivity": "Décrivez votre activité principale…"
-      },
-      "hints": {
-        "turnoverLastFY": "Entrez 0 si la société a été créée cette année.",
-        "turnoverCurrentFY": "Une estimation prévisionnelle est acceptable.",
-        "employees": "Équivalents temps plein."
+        "tradeName": "Le nom commercial utilisé publiquement, s'il diffère de la raison sociale",
+        "registrationNumber": "Votre numéro d'immatriculation RCS officiel",
+        "vatNumber": "Votre numéro d'identification TVA si vous êtes assujetti à la TVA"
       }
     },
     "contactsAddresses": {
-      "title": "Contacts & Adresses",
-      "subtitle": "Indiquez votre adresse de siège, votre adresse d'exploitation et vos contacts clés.",
+      "title": "Contacts et adresses",
+      "subtitle": "Fournissez votre adresse enregistrée et les contacts clés",
       "registeredAddress": "Adresse du siège social",
-      "operatingAddress": "Adresse d'exploitation",
-      "sameAsRegistered": "Identique à l'adresse du siège",
       "primaryContact": "Contact principal",
       "accountingContact": "Contact comptabilité",
       "addAccountingContact": "Ajouter un contact comptabilité",
+      "sameAsRegistered": "Identique à l'adresse du siège",
       "fields": {
         "firstName": "Prénom",
-        "lastName": "Nom de famille",
-        "email": "Adresse e-mail",
-        "phone": "Numéro de téléphone",
+        "lastName": "Nom",
+        "email": "E-mail",
+        "phone": "Téléphone",
         "street": "Adresse",
         "city": "Ville",
         "postalCode": "Code postal",
-        "country": "Pays",
-        "role": "Fonction / Titre"
+        "country": "Pays"
       },
       "placeholders": {
-        "firstName": "Prénom",
-        "lastName": "Nom de famille",
-        "email": "nom@societe.com",
+        "firstName": "Jean",
+        "lastName": "Dupont",
+        "email": "jean@entreprise.com",
         "phone": "+352 123 456 789",
         "street": "1 Rue de la Gare",
         "city": "Luxembourg",
         "postalCode": "L-1611",
-        "country": "Sélectionner le pays",
-        "postal": "L-1234",
-        "role": "ex. PDG, DAF"
+        "country": "Sélectionner un pays"
+      }
+    },
+    "activityScale": {
+      "title": "Activité commerciale",
+      "subtitle": "Aidez-nous à comprendre l'échelle de vos opérations",
+      "fields": {
+        "businessActivity": "Activité principale",
+        "turnoverLastFY": "Chiffre d'affaires dernier exercice (€)",
+        "turnoverCurrentFY": "CA prévisionnel exercice en cours (€)",
+        "employees": "Nombre d'employés"
+      },
+      "placeholders": {
+        "businessActivity": "ex. Développement logiciel et conseil"
+      },
+      "hints": {
+        "turnoverLastFY": "Chiffre d'affaires total de l'exercice précédent",
+        "turnoverCurrentFY": "Votre chiffre d'affaires prévisionnel pour l'année en cours",
+        "employees": "Équivalents temps plein"
       }
     },
     "billingVolume": {
@@ -2516,615 +2339,135 @@
       "fields": {
         "salesInvoices": "Factures de vente par mois",
         "purchaseInvoices": "Factures d'achat par mois",
-        "payrollNeeded": "Avez-vous besoin de la gestion de la paie ?",
-        "payrollEmployees": "Nombre de salariés en paie",
-        "multiCurrency": "Facturation multi-devises",
+        "payrollNeeded": "Avez-vous besoin de services de paie ?",
+        "payrollEmployees": "Nombre d'employés sur la paie",
+        "multiCurrency": "Facturation multi-devises ?",
         "selectCurrencies": "Sélectionner les devises"
       },
       "hints": {
-        "salesInvoices": "Nombre estimé de factures émises chaque mois.",
-        "purchaseInvoices": "Nombre estimé de factures fournisseurs reçues chaque mois."
+        "salesInvoices": "Nombre approximatif de factures émises aux clients par mois",
+        "purchaseInvoices": "Nombre approximatif de factures fournisseurs reçues par mois"
       }
     },
     "documents": {
-      "title": "Documents",
-      "subtitle": "Téléversez les documents requis pour finaliser votre profil comptable.",
+      "title": "Documents justificatifs",
+      "subtitle": "Téléchargez les documents d'entreprise requis",
       "types": {
         "incorporation": "Certificat d'immatriculation",
         "articles": "Statuts de la société",
-        "directorId": "Pièce d'identité / Passeport du dirigeant",
-        "vat": "Certificat d'enregistrement TVA"
+        "directorId": "Pièce d'identité du dirigeant",
+        "vat": "Certificat TVA (si applicable)"
       },
       "hints": {
-        "incorporation": "Document officiel confirmant l'immatriculation de la société.",
-        "articles": "Version signée et à jour.",
-        "directorId": "Pièce d'identité valide pour chaque dirigeant.",
-        "vat": "Requis uniquement si la société est assujettie à la TVA."
+        "incorporation": "Certificat officiel du registre des sociétés",
+        "articles": "Mémorandum et statuts ou équivalent",
+        "directorId": "Pièce d'identité avec photo valide du dirigeant",
+        "vat": "Certificat d'immatriculation TVA si votre société est assujettie"
       },
       "note": {
-        "title": "Exigences documentaires",
-        "text": "Formats acceptés : PDF, JPG, PNG, DOCX. Taille maximale : 10 Mo par document. Tous les documents doivent être valides et lisibles."
+        "title": "Formats acceptés",
+        "text": "PDF, JPG, PNG — max 10 Mo par fichier"
       }
     },
     "review": {
-      "title": "Révision & Soumission",
-      "subtitle": "Veuillez vérifier attentivement vos informations avant de soumettre.",
-      "summary": "Récapitulatif de la demande",
+      "title": "Vérification et envoi",
+      "subtitle": "Veuillez vérifier vos informations avant de soumettre",
+      "summary": "Récapitulatif",
       "sections": {
-        "company": "Informations de la société",
-        "activity": "Activité & Échelle",
-        "contact": "Contacts & Adresses",
+        "company": "Détails de l'entreprise",
+        "contact": "Contacts et adresse",
+        "activity": "Activité commerciale",
         "volume": "Volume de facturation",
         "teamSize": "Effectif",
         "documents": "Documents"
       },
-      "incorporated": "Constituée le",
+      "incorporated": "Créée le",
       "lastFY": "CA dernier exercice",
       "projected": "CA prévisionnel",
-      "fteEmployees": "salariés ETP",
-      "employees": "salariés",
-      "sales": "Factures de vente / mois",
-      "purchases": "Factures d'achat / mois",
-      "payroll": "Paie",
+      "employees": "Employés",
+      "fteEmployees": "ETP",
+      "sales": "Factures vente / mois",
+      "purchases": "Factures achat / mois",
+      "payroll": "Paie requise",
       "multiCurrency": "Multi-devises",
       "invoices": "factures",
-      "documentsUploaded": "documents téléversés",
+      "documentsUploaded": "documents téléchargés",
+      "acceptConsent": "J'accepte",
       "consent": {
-        "title": "Consentement au traitement des données",
-        "text": "Je consens à ce qu'Opulanz traite les données de ma société pour les services de comptabilité et de facturation.",
+        "title": "Conditions et consentement",
+        "text": "Je confirme l'exactitude des informations et autorise Opulanz à traiter mes données",
         "label": "J'accepte les",
         "termsOfService": "Conditions d'utilisation",
         "privacyPolicy": "Politique de confidentialité",
-        "required": "Vous devez accepter les conditions pour continuer."
+        "required": "Vous devez accepter les conditions pour continuer"
       },
-      "acceptConsent": "J'accepte les conditions et consens au traitement des données.",
       "gdpr": {
-        "title": "Avis RGPD",
-        "text": "Vos données sont traitées conformément au RGPD de l'UE. Vous pouvez demander l'accès, la rectification ou la suppression à tout moment en contactant privacy@opulanz.com."
+        "title": "Protection des données",
+        "text": "Vos données sont traitées conformément au RGPD. Nous les utiliserons uniquement pour fournir des services comptables."
       },
       "submit": "Soumettre la demande"
     }
   },
   "supportPage": {
-    "hero": {
-      "title": "Comment pouvons-nous vous aider ?",
-      "subtitle": "Notre équipe d'assistance est là pour vous. Contactez-nous par téléphone, e-mail ou chat en direct."
-    },
-    "contactMethods": {
-      "title": "Nous contacter",
-      "description": "Choisissez le canal d'assistance qui vous convient le mieux.",
-      "phone": {
-        "title": "Assistance téléphonique",
-        "description": "Parlez directement avec l'un de nos spécialistes du support.",
-        "number": "+352 28 79 76 26",
-        "hours": "Lun–Ven, 9h00–18h00 CET"
-      },
-      "email": {
-        "title": "Assistance par e-mail",
-        "description": "Envoyez-nous un message et nous vous répondrons rapidement.",
-        "address": "support@opulanz.com",
-        "response": "Réponse sous 24 heures"
-      },
-      "chat": {
-        "title": "Chat en direct",
-        "description": "Discutez avec notre équipe en temps réel pour une assistance immédiate.",
-        "button": "Démarrer le chat",
-        "availability": "Disponible pendant les heures de bureau"
-      }
-    },
-    "contactForm": {
-      "title": "Envoyez-nous un message",
-      "description": "Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.",
-      "firstName": "Prénom",
-      "lastName": "Nom de famille",
-      "email": "Adresse e-mail",
-      "phone": "Numéro de téléphone (optionnel)",
-      "subject": "Sujet",
-      "selectSubject": "Sélectionner un sujet",
-      "subjects": {
-        "account": "Questions sur le compte",
-        "technical": "Support technique",
-        "company": "Création de société",
-        "billing": "Facturation et paiements",
-        "other": "Autre"
-      },
-      "message": "Message",
-      "messagePlaceholder": "Décrivez votre question ou problème en détail...",
-      "submit": "Envoyer le message"
-    },
-    "faq": {
-      "title": "Questions fréquemment posées",
-      "description": "Réponses rapides aux questions les plus courantes.",
-      "questions": {
-        "openAccount": {
-          "question": "Combien de temps faut-il pour ouvrir un compte ?",
-          "answer": "Les comptes individuels sont généralement approuvés dans les 24 à 48 heures. Les comptes professionnels prennent 3 à 5 jours ouvrables selon la complexité du dossier."
-        },
-        "documents": {
-          "question": "Quels documents sont nécessaires ?",
-          "answer": "Pour les particuliers : une pièce d'identité valide, un justificatif de domicile et un selfie. Pour les entreprises : les documents d'immatriculation, la déclaration UBO et les pièces d'identité des dirigeants."
-        },
-        "fees": {
-          "question": "Quels sont les frais mensuels ?",
-          "answer": "Les comptes individuels débutent à 10 €/mois. Les comptes professionnels débutent à 25 €/mois. Les grilles tarifaires complètes sont disponibles dans les paramètres de votre compte."
-        },
-        "currencies": {
-          "question": "Quelles devises sont prises en charge ?",
-          "answer": "Nous prenons en charge l'EUR, l'USD, la GBP et le CHF. Chaque compte est associé à un IBAN multi-devises dédié pour des paiements internationaux simplifiés."
-        },
-        "contact": {
-          "question": "Comment contacter mon gestionnaire de compte ?",
-          "answer": "Une fois votre compte approuvé, un gestionnaire de compte dédié vous sera attribué, joignable par e-mail ou téléphone pendant les heures de bureau."
-        }
-      }
-    },
-    "resources": {
-      "title": "Ressources supplémentaires",
-      "description": "Tout ce dont vous avez besoin pour tirer le meilleur parti d'Opulanz.",
-      "documentation": {
-        "title": "Documentation",
-        "description": "Guides détaillés et références API pour vous aider à intégrer et utiliser notre plateforme.",
-        "button": "Parcourir la documentation"
-      },
-      "helpCenter": {
-        "title": "Centre d'aide",
-        "description": "Articles et tutoriels pas à pas couvrant toutes les fonctionnalités et services.",
-        "button": "Visiter le centre d'aide"
-      },
-      "status": {
-        "title": "État des services",
-        "description": "Consultez l'état en temps réel de tous les services Opulanz et les maintenances planifiées.",
-        "button": "Voir l'état"
-      }
-    },
-    "offices": {
-      "title": "Nos bureaux",
-      "description": "Rendez-nous visite au Luxembourg ou en France.",
-      "luxembourg": {
-        "title": "Luxembourg",
-        "address": "1 Avenue de la Liberté",
-        "city": "L-1931 Luxembourg",
-        "country": "Luxembourg",
-        "phone": "Téléphone",
-        "email": "E-mail"
-      },
-      "france": {
-        "title": "France",
-        "address": "66 Avenue des Champs-Élysées",
-        "city": "75008 Paris",
-        "country": "France",
-        "phone": "Téléphone",
-        "email": "E-mail"
-      }
-    }
+    "title": "Support",
+    "subtitle": "Comment pouvons-nous vous aider ?",
+    "contact": "Contactez-nous",
+    "faq": "FAQ"
   },
   "accountOpening": {
     "start": {
       "title": "Ouvrir un compte",
-      "subtitle": "Choisissez le type de compte qui vous convient",
-      "loading": "Chargement..."
+      "subtitle": "Choisissez le type de compte qui vous convient"
     },
     "individual": {
-      "title": "Demande de compte particulier",
-      "description": "Remplissez le formulaire ci-dessous pour ouvrir votre compte bancaire personnel.",
-      "approved": {
-        "message": "Félicitations ! Votre demande de compte particulier a été approuvée. Votre IBAN est prêt.",
-        "nextSteps": {
-          "mobileApp": "Téléchargez l'application mobile Opulanz pour gérer votre compte où que vous soyez.",
-          "security": "Activez l'authentification à deux facteurs pour sécuriser votre compte.",
-          "debitCard": "Votre carte de débit sera envoyée à votre adresse dans un délai de 5 à 7 jours ouvrables.",
-          "fundAccount": "Alimentez votre compte par virement bancaire pour commencer à effectuer des transactions."
-        },
-        "buttons": {
-          "dashboard": "Accéder au tableau de bord",
-          "downloadApp": "Télécharger l'appli",
-          "startNew": "Nouvelle demande"
-        }
-      },
-      "submitted": {
-        "message": "Votre demande a été soumise et est en cours d'examen. Vous serez notifié par e-mail dès qu'une décision sera prise."
-      },
+      "title": "Compte individuel",
+      "subtitle": "Services bancaires personnels pour les particuliers",
+      "description": "Remplissez le formulaire ci-dessous pour ouvrir votre compte personnel",
       "form": {
         "personalInfo": "Informations personnelles",
         "firstName": "Prénom",
         "lastName": "Nom de famille",
         "dateOfBirth": "Date de naissance",
         "nationality": "Nationalité",
-        "selectNationality": "Sélectionnez votre nationalité",
+        "selectNationality": "Sélectionner une nationalité",
         "phoneNumber": "Numéro de téléphone",
         "address": "Adresse",
         "streetAddress": "Adresse postale",
         "city": "Ville",
         "postalCode": "Code postal",
         "country": "Pays",
-        "selectCountry": "Sélectionnez votre pays",
-        "documentVerification": "Vérification des documents",
-        "documentDescription": "Veuillez télécharger des copies lisibles et claires des documents suivants.",
+        "selectCountry": "Sélectionner un pays",
         "activityInfo": "Informations sur l'activité",
         "isPEP": "Êtes-vous une Personne Politiquement Exposée (PPE) ?",
-        "no": "Non",
         "yes": "Oui",
+        "no": "Non",
         "expectedMonthlyVolume": "Volume mensuel de transactions prévu",
-        "selectRange": "Sélectionnez une tranche",
-        "sourceOfFunds": "Origine des fonds",
-        "sourceOfFundsPlaceholder": "Décrivez l'origine de vos fonds (ex : salaire, revenus d'entreprise, investissements)",
-        "consents": "Consentements et déclarations",
-        "consentKYC": "Je consens à la collecte et au traitement de mes données personnelles à des fins de vérification KYC/LCB-FT.",
+        "selectRange": "Sélectionner une plage",
+        "sourceOfFunds": "Source des fonds",
+        "sourceOfFundsPlaceholder": "ex. salaire, revenus d'entreprise, investissements...",
+        "consents": "Consentements et accords",
+        "consentKYC": "Je consens à la collecte et au traitement de mes données personnelles à des fins de conformité KYC/AML",
         "consentTerms": "J'ai lu et j'accepte les",
         "termsLink": "Conditions générales",
         "privacyLink": "Politique de confidentialité"
       }
     },
-    "personal": {
-      "personalFunnel": {
-        "steps": {
-          "welcome": {
-            "label": "Bienvenue",
-            "shortLabel": "Bienvenue"
-          },
-          "identity": {
-            "label": "Identité",
-            "shortLabel": "Identité"
-          },
-          "intent": {
-            "label": "Préférences",
-            "shortLabel": "Préférences"
-          },
-          "eligibility": {
-            "label": "Documents",
-            "shortLabel": "Documents"
-          },
-          "review": {
-            "label": "Révision",
-            "shortLabel": "Révision"
-          },
-          "submission": {
-            "label": "Soumis",
-            "shortLabel": "Terminé"
-          }
-        },
-        "welcome": {
-          "title": "Ouvrez votre compte personnel",
-          "subtitle": "Une expérience bancaire premium adaptée aux particuliers à travers l'Europe.",
-          "startButton": "Commencer la demande",
-          "disclaimer": "En continuant, vous acceptez nos Conditions générales et notre Politique de confidentialité.",
-          "timeline": {
-            "title": "Combien de temps cela prendra-t-il ?",
-            "totalTime": "Total : environ 10 minutes",
-            "step1": {
-              "title": "Informations personnelles",
-              "description": "2 minutes"
-            },
-            "step2": {
-              "title": "Préférences du compte",
-              "description": "2 minutes"
-            },
-            "step3": {
-              "title": "Téléchargement des documents",
-              "description": "3 minutes"
-            },
-            "step4": {
-              "title": "Révision et soumission",
-              "description": "2 minutes"
-            }
-          },
-          "eligibility": {
-            "title": "Conditions d'éligibilité",
-            "requirement1": "Doit avoir 18 ans ou plus",
-            "requirement2": "Doit être résident en France ou au Luxembourg",
-            "requirement3": "Doit posséder une pièce d'identité officielle avec photo valide",
-            "requirement4": "Doit fournir une preuve de domicile récente (facture, relevé bancaire, etc.)",
-            "requirement5": "Ne doit pas faire l'objet de sanctions financières"
-          },
-          "documents": {
-            "title": "Documents nécessaires",
-            "document1": "Passeport ou carte d'identité nationale valide",
-            "document2": "Facture récente ou relevé bancaire (datant de moins de 3 mois)",
-            "document3": "Numéro d'identification fiscale (si applicable)",
-            "document4": "Selfie ou photo en direct pour la vérification d'identité"
-          },
-          "howItWorks": {
-            "title": "Comment ça fonctionne",
-            "smartMatching": {
-              "title": "Correspondance intelligente :",
-              "description": "Nous associons votre profil à la meilleure solution bancaire disponible."
-            },
-            "warmReferral": {
-              "title": "Référence chaleureuse :",
-              "description": "Dans certains cas, nous pouvons vous orienter vers une banque partenaire la mieux adaptée à vos besoins."
-            },
-            "dataSecurity": {
-              "title": "Sécurité des données :",
-              "description": "Toutes vos données sont chiffrées et stockées de manière sécurisée conformément au RGPD."
-            },
-            "noCommitment": {
-              "title": "Sans engagement :",
-              "description": "Vous pouvez retirer votre demande à tout moment avant la soumission."
-            }
-          },
-          "features": {
-            "title": "Ce que vous obtenez",
-            "feature1": "Compte IBAN multi-devises",
-            "feature2": "Carte de débit Visa",
-            "feature3": "Application bancaire mobile",
-            "feature4": "Virements SEPA",
-            "feature5": "Accès en ligne 24h/24 et 7j/7",
-            "feature6": "Gestionnaire de compte dédié"
-          }
-        },
-        "identity": {
-          "title": "Votre identité",
-          "subtitle": "Veuillez fournir vos informations personnelles telles qu'elles apparaissent sur vos documents officiels.",
-          "required": "*",
-          "firstName": "Prénom",
-          "firstNamePlaceholder": "Entrez votre prénom",
-          "lastName": "Nom de famille",
-          "lastNamePlaceholder": "Entrez votre nom de famille",
-          "email": "Adresse e-mail",
-          "emailPlaceholder": "Entrez votre adresse e-mail",
-          "mobile": "Numéro de mobile",
-          "mobilePlaceholder": "Entrez votre numéro de mobile",
-          "dateOfBirth": "Date de naissance",
-          "nationality": "Nationalité",
-          "nationalityPlaceholder": "Sélectionnez votre nationalité",
-          "countryOfResidence": "Pays de résidence",
-          "countryOfResidencePlaceholder": "Entrez votre pays de résidence",
-          "taxResidency": "Pays de résidence fiscale",
-          "taxResidencyPlaceholder": "Entrez votre pays de résidence fiscale",
-          "taxId": "Numéro d'identification fiscale (optionnel)",
-          "taxIdPlaceholder": "Entrez votre numéro d'identification fiscale",
-          "errors": {
-            "firstNameRequired": "Le prénom est obligatoire",
-            "lastNameRequired": "Le nom de famille est obligatoire",
-            "invalidEmail": "Veuillez entrer une adresse e-mail valide",
-            "countryCodeRequired": "L'indicatif pays est obligatoire",
-            "invalidPhone": "Veuillez entrer un numéro de téléphone valide",
-            "countryRequired": "Le pays de résidence est obligatoire",
-            "taxResidencyRequired": "Le pays de résidence fiscale est obligatoire",
-            "dateOfBirthRequired": "La date de naissance est obligatoire",
-            "nationalityRequired": "La nationalité est obligatoire"
-          }
-        },
-        "intent": {
-          "title": "Préférences du compte",
-          "subtitle": "Dites-nous comment vous prévoyez d'utiliser votre compte.",
-          "required": "*",
-          "accountType": "Type de compte",
-          "currentAccount": "Compte courant",
-          "privateBanking": "Banque privée",
-          "jurisdictions": "Juridictions préférées",
-          "currencies": "Devises préférées",
-          "estimatedMonthlyIncoming": "Entrées mensuelles estimées",
-          "sourceOfFunds": "Origine des fonds",
-          "sourceOfFundsPlaceholder": "Sélectionnez votre principale source de fonds",
-          "sourceOfFundsDetails": "Détails sur l'origine des fonds",
-          "sourceOfFundsDetailsPlaceholder": "Veuillez décrire l'origine de vos fonds plus en détail",
-          "pepLabel": "Déclaration de Personne Politiquement Exposée (PPE)",
-          "pepCheckbox": "Je confirme que je ne suis pas une Personne Politiquement Exposée (PPE) ni un proche associé d'une PPE.",
-          "sourceOptions": {
-            "salary": "Salaire / Revenus d'emploi",
-            "dividends": "Dividendes",
-            "businessIncome": "Revenus d'entreprise",
-            "assetSale": "Vente d'actifs",
-            "savings": "Épargne",
-            "other": "Autre"
-          }
-        },
-        "eligibility": {
-          "title": "Téléchargement des documents",
-          "subtitle": "Veuillez télécharger les documents requis pour votre demande.",
-          "validId": "Pièce d'identité officielle avec photo valide",
-          "validIdDescription": "Passeport ou carte d'identité nationale (recto-verso si applicable).",
-          "proofOfAddress": "Justificatif de domicile",
-          "proofOfAddressDescription": "Facture récente, relevé bancaire ou courrier officiel (datant de moins de 3 mois).",
-          "taxIdDocument": "Document d'identification fiscale (optionnel)",
-          "taxIdDocumentDescription": "Document officiel indiquant votre numéro d'identification fiscale.",
-          "uploadId": "Télécharger la pièce d'identité",
-          "uploadProof": "Télécharger le justificatif de domicile",
-          "uploadTaxId": "Télécharger le document fiscal",
-          "uploaded": "Téléchargé"
-        },
-        "review": {
-          "title": "Vérifiez votre demande",
-          "subtitle": "Veuillez vérifier vos informations avant de soumettre.",
-          "summaryTitle": "Récapitulatif de la demande",
-          "name": "Nom complet",
-          "email": "Adresse e-mail",
-          "mobile": "Numéro de mobile",
-          "accountType": "Type de compte",
-          "preferredJurisdictions": "Juridictions préférées",
-          "dataProcessingConsent": "Je consens au traitement de mes données personnelles aux fins d'ouverture de compte et de conformité KYC/LCB-FT.",
-          "dataSharingConsent": "Je consens au partage de mes données avec nos partenaires bancaires uniquement aux fins d'ouverture de compte.",
-          "marketingOptIn": "Je souhaite recevoir des informations sur les produits, services et promotions d'Opulanz. (Optionnel)"
-        },
-        "submission": {
-          "title": "Demande soumise !",
-          "message": "Merci d'avoir soumis votre demande. Notre équipe examinera vos documents et vous contactera dans un délai de 2 à 3 jours ouvrables.",
-          "applicationNumberLabel": "Numéro de référence de la demande",
-          "saveNumberMessage": "Veuillez conserver ce numéro de référence pour vos dossiers.",
-          "nextStepsTitle": "Et maintenant ?",
-          "nextStep1": "Notre équipe de conformité vérifiera vos documents d'identité.",
-          "nextStep2": "Vous recevrez un e-mail avec le résultat de votre demande.",
-          "nextStep3": "Une fois approuvé, votre IBAN sera généré et envoyé à votre adresse e-mail.",
-          "backToHomepage": "Retour à l'accueil"
-        }
-      }
-    },
     "company": {
-      "title": "Ouvrir un compte professionnel",
-      "description": "Complétez votre demande de compte professionnel en quelques étapes.",
+      "title": "Compte entreprise",
+      "subtitle": "Services bancaires pour les entreprises",
+      "description": "Remplissez le formulaire ci-dessous pour ouvrir votre compte entreprise",
       "form": {
         "companyInfo": "Informations sur l'entreprise"
-      },
-      "submitted": {
-        "message": "Votre demande est en cours d'examen. Vous recevrez une décision dans 2 à 3 jours ouvrables."
-      },
-      "approved": {
-        "message": "Félicitations ! Votre compte professionnel a été approuvé. Votre IBAN est prêt.",
-        "nextSteps": {
-          "multiUser": "Invitez des membres de l'équipe et configurez l'accès multi-utilisateurs.",
-          "accounting": "Connectez vos outils de comptabilité et de facturation.",
-          "corporateCards": "Commandez des cartes d'entreprise pour votre équipe.",
-          "fundAccount": "Alimentez votre compte pour commencer à effectuer des transactions."
-        },
-        "buttons": {
-          "dashboard": "Accéder au tableau de bord",
-          "downloadApp": "Télécharger l'application",
-          "startNew": "Démarrer une nouvelle demande"
-        }
       }
     },
     "warmReferral": {
       "handoff": {
-        "description": "En fonction de votre profil, nous recommandons d'ouvrir votre compte avec {partner}. Opulanz restera votre point de contact tout au long du processus.",
-        "step1": {
-          "description": "Votre profil a été associé à {partner}. Cliquez ci-dessous pour continuer."
-        },
-        "step2": {
-          "description": "Vous serez redirigé vers {partner} pour finaliser l'ouverture de votre compte."
-        },
         "title": "Candidature par référence",
         "subtitle": "Complétez votre candidature référée"
       }
     }
   },
   "lifeInsurance": {
-    "hero": {
-      "title": "Services de Courtage en Assurance Vie",
-      "subtitle": "En tant que courtier de confiance, nous vous connectons avec des solutions d'assurance vie completes pour proteger financierement vos proches",
-      "primaryCta": "Obtenir un devis"
-    },
-    "overview": {
-      "overline": "Presentation",
-      "title": "Votre Courtier en Assurance Vie de Confiance",
-      "description": "En tant que courtier independant, nous travaillons en votre nom pour trouver et vous connecter avec les meilleures solutions d'assurance vie des principaux fournisseurs, en veillant a la protection financiere de vos proches.",
-      "badge1": "Conseils impartiaux",
-      "badge2": "Plusieurs fournisseurs",
-      "badge3": "Protection familiale",
-      "whyBrokerTitle": "Pourquoi choisir un courtier ?",
-      "benefit1": "Courtier independant representant vos interets",
-      "benefit2": "Acces aux polices de plusieurs grands assureurs",
-      "benefit3": "Analyse personnalisee de vos besoins et recommandations de couverture",
-      "benefit4": "Conseils experts sur les fonctionnalites avancees et la planification successorale",
-      "benefit5": "Gestion continue des polices et assistance"
-    },
-    "products": {
-      "overline": "NOS PLANS",
-      "title": "Produits d'Assurance Vie que Nous Courtisons",
-      "description": "Nous vous aidons a acceder a une large gamme de solutions d'assurance vie de fournisseurs de confiance pour repondre a vos besoins specifiques de protection.",
-      "term": {
-        "title": "Assurance Vie Temporaire",
-        "description": "Options a terme de 10, 20 ou 30 ans avec des primes fixes pour une protection abordable pendant vos annees les plus cruciales."
-      },
-      "whole": {
-        "title": "Assurance Vie Entiere",
-        "description": "Couverture a vie avec accumulation de valeur de rachat offrant une protection permanente et une croissance financiere."
-      },
-      "universal": {
-        "title": "Assurance Vie Universelle",
-        "description": "Primes flexibles et garanties deces ajustables qui s'adaptent a l'evolution de votre situation financiere."
-      },
-      "variable": {
-        "title": "Assurance Vie Variable",
-        "description": "Croissance de la valeur de rachat liee aux investissements vous permettant potentiellement d'augmenter la valeur de votre contrat."
-      },
-      "group": {
-        "title": "Assurance Vie Collective",
-        "description": "Plans d'assurance vie collectifs parraines par l'employeur offrant une couverture a des tarifs de groupe competitifs."
-      },
-      "termLife": {
-        "title": "Assurance temporaire",
-        "description": "Couverture abordable pour une duree determinee. Ideale pour proteger votre famille durant les etapes cles."
-      },
-      "wholeLife": {
-        "title": "Assurance vie entiere",
-        "description": "Couverture permanente combinee a une valeur de rachat qui s'accumule au fil du temps."
-      },
-      "universalLife": {
-        "title": "Assurance vie universelle",
-        "description": "Couverture permanente flexible avec primes et capitaux ajustables selon votre situation financiere."
-      },
-      "variableLife": {
-        "title": "Assurance vie variable",
-        "description": "Couverture liee a des investissements pour faire fructifier la valeur de votre contrat."
-      },
-      "groupLife": {
-        "title": "Assurance groupe",
-        "description": "Couverture economique pour les entreprises souhaitant proteger leurs employes."
-      }
-    },
-    "howItWorks": {
-      "overline": "Processus simple",
-      "title": "Comment nous vous aidons a trouver la bonne couverture",
-      "step1": {
-        "title": "Consultation gratuite",
-        "description": "Planifiez une reunion sans engagement pour discuter de vos besoins"
-      },
-      "step2": {
-        "title": "Comparer les options",
-        "description": "Nous vous presentons des polices de plusieurs grands assureurs"
-      },
-      "step3": {
-        "title": "Conseils experts",
-        "description": "Obtenez des recommandations impartiales adaptees a votre profil"
-      },
-      "step4": {
-        "title": "Assistance continue",
-        "description": "Accompagnement tout au long du cycle de vie de votre contrat"
-      }
-    },
-    "features": {
-      "overline": "NOS AVANTAGES",
-      "title": "Expertise Professionnelle en Courtage d'Assurance",
-      "description": "En tant que courtiers independants, nous fournissons des conseils impartiaux et l'acces aux meilleures solutions d'assurance pour vos besoins.",
-      "brokers": {
-        "title": "Courtiers experts",
-        "description": "Expertise specialisee pour vous connecter avec les bons produits d'assurance"
-      },
-      "analysis": {
-        "title": "Analyse des besoins",
-        "description": "Evaluation personnalisee pour trouver la couverture ideale aupres de plusieurs fournisseurs"
-      },
-      "wealth": {
-        "title": "Constitution de patrimoine",
-        "description": "Conseils sur les strategies fiscalement avantageuses pour la croissance financiere a long terme"
-      },
-      "support": {
-        "title": "Assistance continue",
-        "description": "Gestion continue des polices et support de courtage"
-      },
-      "expertBrokers": {
-        "title": "Conseillers certifies",
-        "description": "Tous nos conseillers sont qualifies et reglementes par les autorites competentes en France et au Luxembourg."
-      },
-      "needsAnalysis": {
-        "title": "Analyse approfondie",
-        "description": "Nous prenons le temps de comprendre votre situation financiere complete avant toute recommandation."
-      },
-      "wealthBuilding": {
-        "title": "Construction de patrimoine",
-        "description": "Nos produits incluent des composantes epargne et investissement pour constituer un patrimoine durable."
-      },
-      "ongoingSupport": {
-        "title": "Accompagnement continu",
-        "description": "Votre conseiller reste disponible pour les revisions de contrat, l'assistance aux sinistres et les changements de situation."
-      }
-    },
-    "cta": {
-      "title": "Protegez l'avenir de votre famille des aujourd'hui",
-      "subtitle": "Commencez par une consultation personnalisee. Nous vous aiderons a comparer les options des principaux assureurs pour trouver la solution qui correspond le mieux aux besoins de votre famille.",
-      "badge1": "Consultation gratuite",
-      "badge2": "Comparer plusieurs fournisseurs",
-      "badge3": "Conseils experts",
-      "primaryButton": "Obtenir un devis gratuit",
-      "secondaryButton": "Parler a un conseiller",
-      "description": "Prenez rendez-vous gratuitement et laissez nos experts trouver le plan adapte a vos besoins.",
-      "benefits": {
-        "consultation": "Consultation initiale gratuite",
-        "compare": "Comparaison de plusieurs assureurs",
-        "guidance": "Expertise tout au long du processus"
-      }
-    },
     "booking": {
       "services": {
         "termLife": {
@@ -3229,6 +2572,55 @@
         "cancelBooking": "Annuler la réservation"
       }
     },
+    "hero": {
+      "title": "Solutions d'assurance vie",
+      "subtitle": "Protegez ce qui compte le plus. Nos conseillers experts vous guident pour trouver la couverture adaptee a votre famille.",
+      "primaryCta": "Prendre rendez-vous",
+      "secondaryCta": "Decouvrir les plans"
+    },
+    "overview": {
+      "overline": "POURQUOI L'ASSURANCE VIE",
+      "title": "Tranquillite d'esprit pour vous et vos proches",
+      "description": "L'assurance vie est l'une des decisions financieres les plus importantes. Nos conseillers independants comparent les offres des meilleurs assureurs pour trouver la couverture ideale.",
+      "badges": {
+        "unbiased": "Conseil independant",
+        "multipleProviders": "Plusieurs assureurs",
+        "familyProtection": "Protection familiale"
+      },
+      "whyChoose": "Pourquoi choisir Opulanz ?",
+      "benefits": {
+        "1": "Acces aux principaux assureurs europeens",
+        "2": "Recommandations personnalisees selon votre profil",
+        "3": "Tarifs transparents sans frais caches",
+        "4": "Conseiller dedie tout au long de votre parcours",
+        "5": "Processus d'approbation rapide — couverture en quelques jours"
+      }
+    },
+    "products": {
+      "overline": "NOS PLANS",
+      "title": "Trouvez le plan d'assurance vie adapte",
+      "description": "Nous proposons une gamme complete de produits d'assurance vie pour chaque etape de la vie.",
+      "termLife": {
+        "title": "Assurance temporaire",
+        "description": "Couverture abordable pour une duree determinee. Ideale pour proteger votre famille durant les etapes cles."
+      },
+      "wholeLife": {
+        "title": "Assurance vie entiere",
+        "description": "Couverture permanente combinee a une valeur de rachat qui s'accumule au fil du temps."
+      },
+      "universalLife": {
+        "title": "Assurance vie universelle",
+        "description": "Couverture permanente flexible avec primes et capitaux ajustables selon votre situation financiere."
+      },
+      "variableLife": {
+        "title": "Assurance vie variable",
+        "description": "Couverture liee a des investissements pour faire fructifier la valeur de votre contrat."
+      },
+      "groupLife": {
+        "title": "Assurance groupe",
+        "description": "Couverture economique pour les entreprises souhaitant proteger leurs employes."
+      }
+    },
     "process": {
       "overline": "COMMENT CA MARCHE",
       "title": "Votre couverture en 4 etapes simples",
@@ -3250,6 +2642,38 @@
           "description": "Choisissez votre plan, completez votre dossier et recevez vos documents. La couverture commence immediatement."
         }
       }
+    },
+    "features": {
+      "overline": "NOS AVANTAGES",
+      "title": "La difference Opulanz Assurance",
+      "description": "Expertise, acces au marche et accompagnement dedie pour les meilleures solutions assurance.",
+      "expertBrokers": {
+        "title": "Conseillers certifies",
+        "description": "Tous nos conseillers sont qualifies et reglementes par les autorites competentes en France et au Luxembourg."
+      },
+      "needsAnalysis": {
+        "title": "Analyse approfondie",
+        "description": "Nous prenons le temps de comprendre votre situation financiere complete avant toute recommandation."
+      },
+      "wealthBuilding": {
+        "title": "Construction de patrimoine",
+        "description": "Nos produits incluent des composantes epargne et investissement pour constituer un patrimoine durable."
+      },
+      "ongoingSupport": {
+        "title": "Accompagnement continu",
+        "description": "Votre conseiller reste disponible pour les revisions de contrat, l'assistance aux sinistres et les changements de situation."
+      }
+    },
+    "cta": {
+      "title": "Pret a proteger votre famille ?",
+      "description": "Prenez rendez-vous gratuitement et laissez nos experts trouver le plan adapte a vos besoins.",
+      "benefits": {
+        "consultation": "Consultation initiale gratuite",
+        "compare": "Comparaison de plusieurs assureurs",
+        "guidance": "Expertise tout au long du processus"
+      },
+      "primaryButton": "Prendre rendez-vous gratuitement",
+      "secondaryButton": "Voir tous les plans"
     }
   },
   "invoicingAccounting": {
@@ -3284,14 +2708,14 @@
       }
     },
     "benefits": {
+      "title": "Pourquoi choisir Opulanz Comptabilite ?",
+      "description": "Nous gerons les chiffres pour que vous puissiez vous concentrer sur la croissance de votre entreprise.",
       "1": "Economisez jusqu a 80 % du temps consacre aux taches comptables manuelles",
       "2": "Visibilite financiere en temps reel sur tous vos comptes",
       "3": "Entierement conforme aux normes ACPR francaises et CSSF luxembourgeoises",
       "4": "Comptable dedie assigne a votre entreprise",
       "5": "Integration transparente avec votre compte professionnel Opulanz",
-      "6": "Stockage securise dans le cloud de tous vos documents financiers",
-      "title": "Pourquoi choisir Opulanz Comptabilite ?",
-      "description": "Nous gerons les chiffres pour que vous puissiez vous concentrer sur la croissance de votre entreprise."
+      "6": "Stockage securise dans le cloud de tous vos documents financiers"
     },
     "cta": {
       "title": "Pret a simplifier votre comptabilite ?",

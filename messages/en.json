@@ -1309,7 +1309,9 @@
     "buttons": {
       "dashboard": "Go to Dashboard",
       "downloadApp": "Download App"
-    }
+    },
+    "title": "Identity Verification",
+    "description": "Complete your KYC to activate your account"
   },
   "taxAdvisory": {
     "confirmation": {

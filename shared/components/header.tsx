@@ -56,15 +56,17 @@ export function Header({ locale }: HeaderProps) {
         {/* Logo */}
         <Link
           href={`/${locale}`}
-          className="flex items-center gap-3 transition-opacity hover:opacity-80"
+          className="flex items-center transition-opacity hover:opacity-80"
         >
-          <img
-            src="/images/opulanz-logo-header.png"
-            alt="Opulanz"
-            width={120}
-            height={40}
-            className="h-10 w-auto object-contain"
-          />
+          <div className="bg-white px-2 py-1 rounded">
+            <img
+              src="/images/opulanz-logo-header.png"
+              alt="Opulanz"
+              width={160}
+              height={56}
+              className="h-14 w-auto object-contain"
+            />
+          </div>
         </Link>
 
         {/* Desktop Navigation */}

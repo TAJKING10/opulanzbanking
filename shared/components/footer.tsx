@@ -95,14 +95,7 @@ export function Footer({ locale }: FooterProps) {
                   {t("footer.links.products.lifeInsurance")}
                 </Link>
               </li>
-              <li>
-                <Link
-                  href={`/${locale}/mortgage`}
-                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
-                >
-                  {t("footer.links.products.mortgage")}
-                </Link>
-              </li>
+
               <li>
                 <Link
                   href={`/${locale}/open-account`}

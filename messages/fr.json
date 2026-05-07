@@ -945,7 +945,93 @@
     "regulated": "Réglementé par ACPR & AMF (FR)",
     "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
     "mifid": "Services d'investissement soumis aux réglementations MiFID II",
-    "idd": "Distribution d'assurance soumise aux exigences IDD"
+    "idd": "Distribution d'assurance soumise aux exigences IDD",
+    "disclaimers": {
+      "hero": {
+        "title": "Avertissements",
+        "subtitle": "Informations importantes sur nos services et leurs limites"
+      },
+      "notice": {
+        "title": "Avis important",
+        "description": "Veuillez lire attentivement ces avertissements. En utilisant nos services, vous reconnaissez avoir lu, compris et accepté d'être lié par ces avertissements."
+      },
+      "s1": {
+        "title": "1. Avertissement général",
+        "content": "Les informations fournies sur la plateforme Opulanz sont à titre informatif général uniquement. Bien que nous nous efforcions de maintenir les informations exactes et à jour, nous ne faisons aucune déclaration ni garantie d'aucune sorte, expresse ou implicite, quant à l'exhaustivité, l'exactitude, la fiabilité, la pertinence ou la disponibilité des informations, produits, services ou graphiques connexes contenus sur la plateforme."
+      },
+      "s2": {
+        "title": "2. Avertissement relatif aux conseils financiers",
+        "content": "Le contenu fourni sur notre plateforme ne constitue pas un conseil financier, d'investissement, fiscal ou juridique. Toute information ou recommandation fournie est à titre informatif uniquement et ne doit pas être considérée comme un conseil professionnel. Vous devez consulter des professionnels qualifiés avant de prendre toute décision financière. Les performances passées ne préjugent pas des résultats futurs."
+      },
+      "s3": {
+        "title": "3. Avertissement sur le risque d'investissement",
+        "intro": "Investir dans des produits financiers comporte des risques, y compris la perte potentielle du capital investi. Avant d'investir, vous devez prendre en compte :",
+        "bullets": [
+          "Votre situation financière, vos objectifs d'investissement et votre tolérance au risque",
+          "Les risques associés aux produits d'investissement spécifiques",
+          "La volatilité des marchés et les conditions économiques",
+          "Les fluctuations des taux de change",
+          "Les implications fiscales potentielles"
+        ],
+        "outro": "Nous ne garantissons aucun rendement ou résultat d'investissement spécifique. Vous êtes seul responsable de vos décisions d'investissement et des gains ou pertes qui en résultent."
+      },
+      "s4": {
+        "title": "4. Avertissement sur la disponibilité du service",
+        "content": "Bien que nous nous efforcions de maintenir une disponibilité de 99,9 %, nous ne pouvons garantir un accès ininterrompu ou sans erreur à notre plateforme. Les services peuvent être temporairement indisponibles en raison de maintenance, de problèmes techniques ou de circonstances indépendantes de notre volonté. Nous ne sommes pas responsables des pertes résultant d'interruptions de service ou de retards dans le traitement des transactions."
+      },
+      "s5": {
+        "title": "5. Avertissement relatif aux services tiers",
+        "content": "Notre plateforme peut contenir des liens vers ou s'intégrer à des sites Web, services ou produits tiers. Nous n'approuvons pas et n'assumons aucune responsabilité pour le contenu, les politiques de confidentialité ou les pratiques des services tiers. Vos interactions avec des services tiers sont régies par leurs conditions générales respectives. Nous ne sommes pas responsables des dommages ou pertes résultant de votre utilisation de services tiers."
+      },
+      "s6": {
+        "title": "6. Avertissement réglementaire et juridictionnel",
+        "content": "Opulanz opère sous licences et réglementations dans des juridictions spécifiques. Nos services peuvent ne pas être disponibles dans tous les pays ou régions. Il vous appartient de vous assurer que votre utilisation de nos services est conforme aux lois et réglementations locales de votre juridiction. Nous ne garantissons pas que les documents sur notre plateforme soient appropriés ou disponibles pour une utilisation dans tous les pays."
+      },
+      "s7": {
+        "title": "7. Avertissement sur les taux de change et les devises",
+        "content": "Les taux de change affichés sur notre plateforme sont indicatifs et peuvent ne pas refléter les taux du marché en temps réel. Les taux réels appliqués aux transactions peuvent différer en fonction des conditions du marché, du montant de la transaction et du moment. Le change de devises comporte des risques et les taux peuvent fluctuer de manière significative. Nous ne sommes pas responsables des pertes résultant des variations des taux de change."
+      },
+      "s8": {
+        "title": "8. Avertissement fiscal",
+        "content": "Les informations fournies concernant les questions fiscales sont de nature générale et ne doivent pas être considérées comme des conseils fiscaux. Les lois fiscales varient selon les juridictions et les situations individuelles. Vous êtes responsable de la compréhension et du respect de vos obligations fiscales. Nous vous recommandons de consulter des professionnels fiscaux qualifiés pour des conseils adaptés à votre situation. Opulanz n'est pas responsable des obligations fiscales que vous pourriez encourir."
+      },
+      "s9": {
+        "title": "9. Avertissement sur la couverture d'assurance",
+        "content": "Les produits d'assurance proposés via notre plateforme sont fournis par des compagnies d'assurance agréées. Nous agissons en tant qu'intermédiaire et ne sommes pas le fournisseur d'assurance. Les conditions, modalités et exclusions de couverture sont déterminées par les documents de la police d'assurance. Vous devez examiner attentivement tous les documents de police avant de souscrire une assurance. Nous ne sommes pas responsables des litiges de sinistres ou des problèmes de couverture entre vous et l'assureur."
+      },
+      "s10": {
+        "title": "10. Avertissement relatif à la création d'entreprise",
+        "content": "Les services de création d'entreprise sont fournis à des fins d'information et d'assistance administrative uniquement. Nous ne fournissons pas de conseils juridiques concernant la structure, la gouvernance ou la conformité des entreprises. L'adéquation d'une structure d'entreprise particulière dépend de vos circonstances et objectifs spécifiques. Vous devez consulter des professionnels juridiques et fiscaux avant de créer une entreprise."
+      },
+      "s11": {
+        "title": "11. Avertissement sur la sécurité",
+        "content": "Bien que nous mettions en œuvre des mesures de sécurité conformes aux normes du secteur, aucun système n'est totalement sécurisé. Vous êtes responsable du maintien de la confidentialité de vos identifiants de compte et de toutes les activités effectuées sous votre compte. Nous ne sommes pas responsables des accès non autorisés résultant de votre manque de vigilance en matière de sécurité, de la divulgation de vos identifiants ou de l'utilisation d'appareils ou de réseaux compromis."
+      },
+      "s12": {
+        "title": "12. Avertissement sur les transactions",
+        "content": "Une fois qu'une transaction est exécutée, elle peut être irréversible. Vous êtes responsable de la vérification de tous les détails de la transaction avant confirmation. Nous ne sommes pas responsables des pertes résultant d'informations de destinataire incorrectes, d'erreurs de montant ou de transactions exécutées sur la base de vos instructions. Certaines transactions peuvent être retardées ou rejetées en raison de vérifications de conformité, de problèmes techniques ou de fonds insuffisants."
+      },
+      "s13": {
+        "title": "13. Avertissement sur l'exactitude du contenu",
+        "content": "Nous déployons des efforts raisonnables pour garantir l'exactitude des informations, mais le contenu de notre plateforme peut contenir des erreurs, omissions ou informations obsolètes. Les soldes de comptes, l'historique des transactions et autres données sont fournis « en l'état » sans garantie. Vous devez vérifier les informations critiques de manière indépendante. Nous nous réservons le droit de corriger les erreurs et de mettre à jour les informations sans préavis."
+      },
+      "s14": {
+        "title": "14. Limitation de responsabilité",
+        "content": "Dans toute la mesure permise par la loi, Opulanz, ses dirigeants, employés, partenaires et affiliés ne sauraient être tenus responsables de tout dommage direct, indirect, accessoire, consécutif ou punitif découlant de : votre utilisation ou impossibilité d'utiliser nos services, d'un accès non autorisé à votre compte, d'erreurs ou omissions dans le contenu, de retards ou interruptions de service, ou de décisions prises sur la base d'informations fournies sur notre plateforme."
+      },
+      "s15": {
+        "title": "15. Modifications des avertissements",
+        "content": "Nous nous réservons le droit de modifier ces avertissements à tout moment. Les modifications importantes seront communiquées via notre plateforme ou par e-mail. Votre utilisation continue de nos services après la publication des modifications constitue votre acceptation des avertissements mis à jour. Nous vous recommandons de consulter cette page périodiquement."
+      },
+      "s16": {
+        "title": "16. Coordonnées",
+        "intro": "Si vous avez des questions concernant ces avertissements, veuillez nous contacter :",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "address": "Adresse"
+      },
+      "lastUpdated": "Dernière mise à jour : 28 octobre 2025"
+    }
   },
   "footer": {
     "sections": {

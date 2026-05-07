@@ -945,7 +945,93 @@
     "regulated": "Regulated by ACPR & AMF (FR)",
     "disclaimer": "Opulanz is a digital banking platform. Banking services provided by licensed partners.",
     "mifid": "Investment services subject to MiFID II regulations",
-    "idd": "Insurance distribution subject to IDD requirements"
+    "idd": "Insurance distribution subject to IDD requirements",
+    "disclaimers": {
+      "hero": {
+        "title": "Disclaimers",
+        "subtitle": "Important information about our services and limitations"
+      },
+      "notice": {
+        "title": "Important Notice",
+        "description": "Please read these disclaimers carefully. By using our services, you acknowledge that you have read, understood, and agree to be bound by these disclaimers."
+      },
+      "s1": {
+        "title": "1. General Disclaimer",
+        "content": "The information provided on the Opulanz platform is for general informational purposes only. While we strive to keep the information accurate and up-to-date, we make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the information, products, services, or related graphics contained on the platform."
+      },
+      "s2": {
+        "title": "2. Financial Advice Disclaimer",
+        "content": "The content provided on our platform does not constitute financial, investment, tax, or legal advice. Any information or recommendations provided are for informational purposes only and should not be considered as professional advice. You should consult with qualified professionals before making any financial decisions. Past performance is not indicative of future results."
+      },
+      "s3": {
+        "title": "3. Investment Risk Disclaimer",
+        "intro": "Investing in financial products involves risk, including the potential loss of principal. Before investing, you should consider:",
+        "bullets": [
+          "Your financial situation, investment objectives, and risk tolerance",
+          "The risks associated with specific investment products",
+          "Market volatility and economic conditions",
+          "Currency exchange rate fluctuations",
+          "Potential tax implications"
+        ],
+        "outro": "We do not guarantee any specific investment returns or outcomes. You are solely responsible for your investment decisions and any resulting gains or losses."
+      },
+      "s4": {
+        "title": "4. Service Availability Disclaimer",
+        "content": "While we strive to maintain 99.9% uptime, we cannot guarantee uninterrupted or error-free access to our platform. Services may be temporarily unavailable due to maintenance, technical issues, or circumstances beyond our control. We are not liable for any losses resulting from service interruptions or delays in processing transactions."
+      },
+      "s5": {
+        "title": "5. Third-Party Services Disclaimer",
+        "content": "Our platform may contain links to or integrate with third-party websites, services, or products. We do not endorse or assume responsibility for the content, privacy policies, or practices of third-party services. Your interactions with third-party services are governed by their respective terms and conditions. We are not liable for any damages or losses resulting from your use of third-party services."
+      },
+      "s6": {
+        "title": "6. Regulatory and Jurisdictional Disclaimer",
+        "content": "Opulanz operates under licenses and regulations in specific jurisdictions. Our services may not be available in all countries or regions. It is your responsibility to ensure that your use of our services complies with local laws and regulations in your jurisdiction. We make no representation that materials on our platform are appropriate or available for use in all locations."
+      },
+      "s7": {
+        "title": "7. Exchange Rate and Currency Disclaimer",
+        "content": "Exchange rates displayed on our platform are indicative and may not reflect real-time market rates. Actual rates applied to transactions may differ based on market conditions, transaction size, and timing. Currency exchange involves risk, and rates can fluctuate significantly. We are not responsible for losses resulting from exchange rate movements."
+      },
+      "s8": {
+        "title": "8. Tax Disclaimer",
+        "content": "Information provided regarding tax matters is general in nature and should not be considered as tax advice. Tax laws vary by jurisdiction and individual circumstances. You are responsible for understanding and complying with your tax obligations. We recommend consulting with qualified tax professionals for advice specific to your situation. Opulanz is not responsible for any tax liabilities you may incur."
+      },
+      "s9": {
+        "title": "9. Insurance Coverage Disclaimer",
+        "content": "Insurance products offered through our platform are provided by licensed insurance companies. We act as an intermediary and are not the insurance provider. Coverage terms, conditions, and exclusions are determined by the insurance policy documents. You should carefully review all policy documents before purchasing insurance. We are not liable for claims disputes or coverage issues between you and the insurance provider."
+      },
+      "s10": {
+        "title": "10. Company Formation Disclaimer",
+        "content": "Company formation services are provided for informational and administrative assistance purposes only. We do not provide legal advice regarding corporate structure, governance, or compliance. The suitability of a particular corporate structure depends on your specific circumstances and objectives. You should consult with legal and tax professionals before forming a company."
+      },
+      "s11": {
+        "title": "11. Security Disclaimer",
+        "content": "While we implement industry-standard security measures, no system is completely secure. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account. We are not liable for unauthorized access resulting from your failure to maintain security, disclosure of credentials, or use of compromised devices or networks."
+      },
+      "s12": {
+        "title": "12. Transaction Disclaimer",
+        "content": "Once a transaction is executed, it may not be reversible. You are responsible for verifying all transaction details before confirming. We are not liable for losses resulting from incorrect recipient information, amount errors, or transactions executed based on your instructions. Some transactions may be delayed or rejected due to compliance reviews, technical issues, or insufficient funds."
+      },
+      "s13": {
+        "title": "13. Content Accuracy Disclaimer",
+        "content": "We make reasonable efforts to ensure information accuracy, but content on our platform may contain errors, omissions, or outdated information. Account balances, transaction history, and other data are provided \"as is\" without warranty. You should verify critical information independently. We reserve the right to correct errors and update information without prior notice."
+      },
+      "s14": {
+        "title": "14. Limitation of Liability",
+        "content": "To the maximum extent permitted by law, Opulanz, its directors, employees, partners, and affiliates shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from: your use or inability to use our services, unauthorized access to your account, errors or omissions in content, delays or interruptions in service, or any decisions made based on information provided on our platform."
+      },
+      "s15": {
+        "title": "15. Changes to Disclaimers",
+        "content": "We reserve the right to modify these disclaimers at any time. Material changes will be communicated through our platform or via email. Your continued use of our services after changes are posted constitutes acceptance of the updated disclaimers. We recommend reviewing this page periodically."
+      },
+      "s16": {
+        "title": "16. Contact Information",
+        "intro": "If you have questions about these disclaimers, please contact us:",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address"
+      },
+      "lastUpdated": "Last updated: October 28, 2025"
+    }
   },
   "footer": {
     "sections": {

@@ -59,11 +59,11 @@ export function Header({ locale }: HeaderProps) {
           className="flex items-center gap-3 transition-opacity hover:opacity-80"
         >
           <img
-            src="/images/opulanz-logo.png"
-            alt="Opulanz Logo"
-            width={60}
-            height={60}
-            className="h-16 w-auto"
+            src="/images/opulanz-logo-header.png"
+            alt="Opulanz"
+            width={120}
+            height={40}
+            className="h-10 w-auto object-contain"
           />
         </Link>
 

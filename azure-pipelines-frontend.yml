@@ -6,9 +6,6 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  - group: frontend-env-vars
-
 steps:
 # 1️⃣ Use Node.js 20
 - task: NodeTool@0
@@ -16,47 +13,38 @@ steps:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 2️⃣ Install dependencies for lint/type-check only
+# 2️⃣ Install dependencies
 - script: npm ci
   displayName: 'Install dependencies'
 
-# 3️⃣ Prepare deployment folder (source code + package files)
-- script: |
-    mkdir build_output
-    # Copy all files including hidden ones, excluding unnecessary files
-    rsync -av \
-      --exclude 'node_modules' \
-      --exclude '.next' \
-      --exclude '.git' \
-      --exclude '.github' \
-      --exclude 'out' \
-      --exclude 'build' \
-      --exclude '.env.local' \
-      --exclude '.env.*.local' \
-      --exclude '*.log' \
-      --exclude '.DS_Store' \
-      --exclude 'Thumbs.db' \
-      --exclude 'backend/node_modules' \
-      --exclude 'backend/.next' \
-      ./ build_output/
-    echo "✅ Files prepared for deployment"
-    ls -la build_output/
-  displayName: 'Prepare deploy folder'
+# 3️⃣ Build Next.js (reads .env.production automatically)
+- script: npm run build
+  displayName: 'Build Next.js app'
+  env:
+    NODE_ENV: production
 
-# 4️⃣ Archive deployment folder
+# 4️⃣ Copy public + static assets into standalone output
+- script: |
+    cp -r public .next/standalone/public
+    cp -r .next/static .next/standalone/.next/static
+    echo "✅ Static assets copied into standalone output"
+  displayName: 'Copy static assets to standalone'
+
+# 5️⃣ Archive the standalone output for deployment
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: 'build_output'
+    rootFolderOrFile: '.next/standalone'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
     replaceExistingArchive: true
-  displayName: 'Archive deploy files'
+  displayName: 'Archive standalone build'
 
-# 5️⃣ Deploy ZIP to App Service (let App Service build)
+# 6️⃣ Deploy to Azure App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'
     appName: 'rg-opulanz-frontend'
     package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+    startUpCommand: 'node server.js'
   displayName: 'Deploy to App Service'

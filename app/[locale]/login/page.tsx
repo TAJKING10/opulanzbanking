@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Smartphone, RefreshCw, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OtpInput } from "@/components/otp-input";
@@ -16,6 +17,7 @@ export default function LoginPage() {
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string;
+  const p = useTranslations("login.page");
 
   const [step, setStep] = React.useState<Step>("credentials");
   const [userId, setUserId] = React.useState("");
@@ -46,7 +48,7 @@ export default function LoginPage() {
       setOtp("");
       setStep("email-otp");
     } catch (err: any) {
-      setError(err.message || "Invalid email or password");
+      setError(err.message || p("errors.invalidCredentials"));
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +71,7 @@ export default function LoginPage() {
       setOtp("");
       setStep("phone-otp");
     } catch (err: any) {
-      setError(err.message || "Invalid code");
+      setError(err.message || p("errors.invalidCode"));
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +93,7 @@ export default function LoginPage() {
       setAuthToken(data.token);
       router.push(`/${locale}/dashboard`);
     } catch (err: any) {
-      setError(err.message || "Invalid code");
+      setError(err.message || p("errors.invalidCode"));
     } finally {
       setIsLoading(false);
     }
@@ -104,12 +106,10 @@ export default function LoginPage() {
       setGoogleLoading(true);
       setError("");
       try {
-        // Fetch user info from Google
         const userInfoRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
         const userInfo = await userInfoRes.json();
-        // Encode as implicit-flow credential understood by the backend
         const payload = btoa(JSON.stringify(userInfo));
         const credential = `header.${payload}.sig`;
 
@@ -119,7 +119,7 @@ export default function LoginPage() {
           body: JSON.stringify({ credential }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Google sign-in failed");
+        if (!res.ok) throw new Error(data.error || p("errors.googleFailed"));
         setAuthToken(data.token);
         if (data.needsKyc) {
           router.push(`/${locale}/auth/kyc`);
@@ -127,13 +127,13 @@ export default function LoginPage() {
           router.push(`/${locale}/dashboard`);
         }
       } catch (err: any) {
-        setError(err.message || "Google sign-in failed");
+        setError(err.message || p("errors.googleFailed"));
       } finally {
         setGoogleLoading(false);
       }
     },
     onError: () => {
-      setError("Google sign-in was cancelled or failed.");
+      setError(p("errors.googleCancelled"));
     },
   });
 
@@ -176,33 +176,33 @@ export default function LoginPage() {
 
         <div className="space-y-6">
           <h1 className="text-4xl font-bold leading-tight">
-            Business Banking<br />Made Simple
+            {p("branding.tagline")}
           </h1>
           <p className="text-lg text-white/80 max-w-md">
-            Manage your business finances with powerful tools for payments, invoicing, and multi-currency accounts.
+            {p("branding.description")}
           </p>
           <div className="flex items-center gap-8 pt-8">
             <div>
               <p className="text-3xl font-bold">€2.5B+</p>
-              <p className="text-sm text-white/70">Processed annually</p>
+              <p className="text-sm text-white/70">{p("branding.stats.volume")}</p>
             </div>
             <div>
               <p className="text-3xl font-bold">50K+</p>
-              <p className="text-sm text-white/70">Business clients</p>
+              <p className="text-sm text-white/70">{p("branding.stats.clients")}</p>
             </div>
             <div>
               <p className="text-3xl font-bold">35+</p>
-              <p className="text-sm text-white/70">Countries</p>
+              <p className="text-sm text-white/70">{p("branding.stats.countries")}</p>
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-4 text-sm text-white/60">
-          <span>Regulated by ACPR</span>
+          <span>{p("branding.compliance.acpr")}</span>
           <span>•</span>
-          <span>SEPA Licensed</span>
+          <span>{p("branding.compliance.sepa")}</span>
           <span>•</span>
-          <span>PCI DSS Compliant</span>
+          <span>{p("branding.compliance.pci")}</span>
         </div>
       </div>
 
@@ -225,20 +225,20 @@ export default function LoginPage() {
             {step === "credentials" && (
               <>
                 <div className="text-center mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900">Welcome Back</h2>
-                  <p className="text-gray-600 mt-2">Sign in to your account</p>
+                  <h2 className="text-2xl font-bold text-gray-900">{p("credentials.title")}</h2>
+                  <p className="text-gray-600 mt-2">{p("credentials.subtitle")}</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{p("credentials.emailLabel")}</label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => { setEmail(e.target.value); setError(""); }}
-                        placeholder="name@company.com"
+                        placeholder={p("credentials.emailPlaceholder")}
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b59354] focus:border-transparent outline-none transition"
                         required
                       />
@@ -246,14 +246,14 @@ export default function LoginPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{p("credentials.passwordLabel")}</label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                       <input
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => { setPassword(e.target.value); setError(""); }}
-                        placeholder="Enter your password"
+                        placeholder={p("credentials.passwordPlaceholder")}
                         className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b59354] focus:border-transparent outline-none transition"
                         required
                       />
@@ -268,9 +268,9 @@ export default function LoginPage() {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">Two-factor authentication required</span>
+                    <span className="text-sm text-gray-500">{p("credentials.twoFactor")}</span>
                     <Link href={`/${locale}/forgot-password`} className="text-sm text-[#b59354] hover:underline font-medium">
-                      Forgot Password?
+                      {p("credentials.forgotPassword")}
                     </Link>
                   </div>
 
@@ -288,7 +288,7 @@ export default function LoginPage() {
                     {isLoading ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
                     ) : (
-                      <>Sign In <ArrowRight className="h-5 w-5" /></>
+                      <>{p("credentials.signIn")} <ArrowRight className="h-5 w-5" /></>
                     )}
                   </Button>
                 </form>
@@ -299,7 +299,7 @@ export default function LoginPage() {
                     <div className="w-full border-t border-gray-200" />
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-white text-gray-500">Or continue with</span>
+                    <span className="px-4 bg-white text-gray-500">{p("credentials.orContinueWith")}</span>
                   </div>
                 </div>
 
@@ -321,26 +321,26 @@ export default function LoginPage() {
                         <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                       </svg>
                     )}
-                    <span className="text-sm font-medium text-gray-700">Google</span>
+                    <span className="text-sm font-medium text-gray-700">{p("credentials.google") || "Google"}</span>
                   </button>
                   <button
                     type="button"
-                    title="Apple Sign-In coming soon"
+                    title={p("credentials.appleComingSoon")}
                     className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 cursor-not-allowed opacity-50"
                     disabled
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
                     </svg>
-                    <span className="text-sm font-medium text-gray-500">Apple</span>
+                    <span className="text-sm font-medium text-gray-500">{p("credentials.apple")}</span>
                   </button>
                 </div>
-                <p className="text-center text-xs text-gray-400">Apple Sign-In coming soon</p>
+                <p className="text-center text-xs text-gray-400">{p("credentials.appleComingSoon")}</p>
 
                 <p className="text-center mt-6 text-sm text-gray-600">
-                  Don&apos;t have an account?{" "}
+                  {p("credentials.noAccount")}{" "}
                   <Link href={`/${locale}/auth/signup`} className="text-[#b59354] hover:underline font-semibold">
-                    Sign Up
+                    {p("credentials.signUp")}
                   </Link>
                 </p>
               </>
@@ -352,9 +352,9 @@ export default function LoginPage() {
                 <div className="w-16 h-16 bg-[#b59354]/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
                   <Mail className="h-8 w-8 text-[#b59354]" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Check your email</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">{p("emailOtp.title")}</h2>
                 <p className="text-gray-600 mb-6">
-                  We sent a verification code to<br />
+                  {p("emailOtp.description")}<br />
                   <strong>{email}</strong>
                 </p>
 
@@ -371,7 +371,7 @@ export default function LoginPage() {
                   disabled={otp.length < 6 || isLoading}
                   className="w-full mt-6 bg-[#b59354] hover:bg-[#886844] text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2"
                 >
-                  {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Verify <ArrowRight className="h-5 w-5" /></>}
+                  {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>{p("emailOtp.verify")} <ArrowRight className="h-5 w-5" /></>}
                 </Button>
 
                 <button
@@ -380,11 +380,11 @@ export default function LoginPage() {
                   className="mt-4 flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#b59354] transition mx-auto"
                 >
                   <RefreshCw className={`h-3.5 w-3.5 ${resending ? "animate-spin" : ""}`} />
-                  {resent ? "Code resent!" : "Resend code"}
+                  {resent ? p("emailOtp.resent") : p("emailOtp.resend")}
                 </button>
 
                 <button onClick={() => { setStep("credentials"); setError(""); setOtp(""); }} className="mt-3 text-sm text-gray-400 hover:text-gray-600 transition">
-                  ← Back
+                  {p("emailOtp.back")}
                 </button>
               </div>
             )}
@@ -395,11 +395,11 @@ export default function LoginPage() {
                 <div className="w-16 h-16 bg-[#b59354]/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
                   <Smartphone className="h-8 w-8 text-[#b59354]" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Phone verification</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">{p("phoneOtp.title")}</h2>
                 {smsSent ? (
-                  <p className="text-gray-600 mb-6">Enter the 6-digit code sent to your phone via SMS</p>
+                  <p className="text-gray-600 mb-6">{p("phoneOtp.descriptionSms")}</p>
                 ) : (
-                  <p className="text-gray-600 mb-6">Enter the 6-digit code sent to your phone or email</p>
+                  <p className="text-gray-600 mb-6">{p("phoneOtp.descriptionFallback")}</p>
                 )}
 
                 <OtpInput value={otp} onChange={(v) => { setOtp(v); setError(""); }} disabled={isLoading} />
@@ -415,7 +415,7 @@ export default function LoginPage() {
                   disabled={otp.length < 6 || isLoading}
                   className="w-full mt-6 bg-[#b59354] hover:bg-[#886844] text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2"
                 >
-                  {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Sign In <ArrowRight className="h-5 w-5" /></>}
+                  {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>{p("phoneOtp.signIn")} <ArrowRight className="h-5 w-5" /></>}
                 </Button>
 
                 <button
@@ -424,7 +424,7 @@ export default function LoginPage() {
                   className="mt-4 flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#b59354] transition mx-auto"
                 >
                   <RefreshCw className={`h-3.5 w-3.5 ${resending ? "animate-spin" : ""}`} />
-                  {resent ? "Code resent!" : "Resend code"}
+                  {resent ? p("phoneOtp.resent") : p("phoneOtp.resend")}
                 </button>
               </div>
             )}
@@ -433,7 +433,7 @@ export default function LoginPage() {
           {/* Security Badge */}
           <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
             <Lock className="h-4 w-4" />
-            <span>Secured with 256-bit SSL encryption</span>
+            <span>{p("security")}</span>
           </div>
         </div>
       </div>

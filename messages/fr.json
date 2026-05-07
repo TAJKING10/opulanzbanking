@@ -3222,5 +3222,62 @@
       "addressLabel": "Adresse"
     },
     "lastUpdated": "Dernière mise à jour : 28 octobre 2025"
+  },
+  "login": {
+    "page": {
+      "branding": {
+        "tagline": "La banque d'entreprise simplifiée",
+        "description": "Gérez vos finances d'entreprise avec des outils puissants pour les paiements, la facturation et les comptes multidevises.",
+        "stats": {
+          "volume": "Traité annuellement",
+          "clients": "Clients entreprises",
+          "countries": "Pays"
+        },
+        "compliance": {
+          "acpr": "Régulé par l'ACPR",
+          "sepa": "Agréé SEPA",
+          "pci": "Conforme PCI DSS"
+        }
+      },
+      "credentials": {
+        "title": "Bon retour",
+        "subtitle": "Connectez-vous à votre compte",
+        "emailLabel": "Adresse e-mail",
+        "emailPlaceholder": "nom@entreprise.com",
+        "passwordLabel": "Mot de passe",
+        "passwordPlaceholder": "Entrez votre mot de passe",
+        "twoFactor": "Authentification à deux facteurs requise",
+        "forgotPassword": "Mot de passe oublié ?",
+        "signIn": "Se connecter",
+        "orContinueWith": "Ou continuer avec",
+        "apple": "Apple",
+        "appleComingSoon": "Connexion Apple bientôt disponible",
+        "noAccount": "Vous n'avez pas de compte ?",
+        "signUp": "S'inscrire"
+      },
+      "emailOtp": {
+        "title": "Vérifiez votre e-mail",
+        "description": "Nous avons envoyé un code de vérification à",
+        "verify": "Vérifier",
+        "resend": "Renvoyer le code",
+        "resent": "Code renvoyé !",
+        "back": "← Retour"
+      },
+      "phoneOtp": {
+        "title": "Vérification du téléphone",
+        "descriptionSms": "Entrez le code à 6 chiffres envoyé sur votre téléphone par SMS",
+        "descriptionFallback": "Entrez le code à 6 chiffres envoyé sur votre téléphone ou par e-mail",
+        "signIn": "Se connecter",
+        "resend": "Renvoyer le code",
+        "resent": "Code renvoyé !"
+      },
+      "security": "Sécurisé avec un chiffrement SSL 256 bits",
+      "errors": {
+        "invalidCredentials": "E-mail ou mot de passe invalide",
+        "invalidCode": "Code invalide",
+        "googleFailed": "Échec de la connexion Google",
+        "googleCancelled": "La connexion Google a été annulée ou a échoué."
+      }
+    }
   }
 }

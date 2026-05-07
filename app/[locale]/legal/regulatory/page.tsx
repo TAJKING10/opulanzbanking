@@ -69,9 +69,6 @@ export default function RegulatoryPage() {
                       <p className="mb-1 text-sm font-semibold text-brand-gold">
                         {t(`regulators.${key}.fullName` as any)}
                       </p>
-                      <p className="mb-1 text-xs text-brand-grayMed italic">
-                        {t(`regulators.${key}.fullNameFr` as any)}
-                      </p>
                       <p className="mb-4 text-brand-grayMed">
                         {t(`regulators.${key}.description` as any)}
                       </p>

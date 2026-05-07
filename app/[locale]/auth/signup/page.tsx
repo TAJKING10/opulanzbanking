@@ -149,15 +149,18 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1.5">Phone Number</label>
+              <label className="block text-xs font-semibold text-gray-600 mb-1.5">
+                Phone Number <span className="font-normal text-gray-400">(include country code)</span>
+              </label>
               <input
                 type="tel"
                 required
                 value={form.phone}
                 onChange={(e) => set("phone", e.target.value)}
                 className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/30 focus:border-[#b59354]"
-                placeholder="+33 6 12 34 56 78"
+                placeholder="+352 691 234 567"
               />
+              <p className="text-xs text-gray-400 mt-1">Start with + and your country code (e.g. +352, +33)</p>
             </div>
 
             <div>

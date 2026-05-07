@@ -397,14 +397,9 @@ export default function LoginPage() {
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Phone verification</h2>
                 {smsSent ? (
-                  <p className="text-gray-600 mb-6">Enter the SMS code sent to your phone</p>
+                  <p className="text-gray-600 mb-6">Enter the 6-digit code sent to your phone via SMS</p>
                 ) : (
-                  <>
-                    <p className="text-gray-600 mb-2">Enter your phone verification code</p>
-                    <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-6">
-                      Twilio not configured — check the backend console for your OTP code
-                    </p>
-                  </>
+                  <p className="text-gray-600 mb-6">Enter the 6-digit code sent to your phone or email</p>
                 )}
 
                 <OtpInput value={otp} onChange={(v) => { setOtp(v); setError(""); }} disabled={isLoading} />

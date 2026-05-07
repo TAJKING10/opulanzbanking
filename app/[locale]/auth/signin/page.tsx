@@ -232,9 +232,7 @@ export default function SigninPage() {
               </div>
               <h3 className="font-bold text-gray-900 mb-1">Phone verification</h3>
               <p className="text-sm text-gray-500 mb-2">Enter the code sent to your phone</p>
-              <p className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2 mb-6">
-                Development: check your email for the SMS code
-              </p>
+              <p className="text-sm text-gray-500 mb-6">Enter the 6-digit code sent to your phone or email</p>
               <OtpInput value={otp} onChange={(v) => { setOtp(v); setError(""); }} disabled={loading} />
               {error && (
                 <div className="mt-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">

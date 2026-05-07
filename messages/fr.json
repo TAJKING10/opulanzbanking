@@ -1285,10 +1285,10 @@
       "yes": "Oui"
     },
     "volumeOptions": {
-      "0_5k": "0 € - 5 000 €",
-      "5k_20k": "5 000 € - 20 000 €",
-      "20k_50k": "20 000 € - 50 000 €",
-      "50k_plus": "50 000 € +"
+      "0_5k": "€0 - €5 000",
+      "5k_20k": "€5 000 - €20 000",
+      "20k_50k": "€20 000 - €50 000",
+      "50k_plus": "€50 000+"
     },
     "sourceOfFunds": {
       "placeholder": "Veuillez décrire l'origine de vos fonds..."
@@ -1309,7 +1309,9 @@
     "buttons": {
       "dashboard": "Aller au tableau de bord",
       "downloadApp": "Télécharger l'application"
-    }
+    },
+    "title": "Vérification d'identité",
+    "description": "Complétez votre vérification d'identité pour ouvrir votre compte"
   },
   "taxAdvisory": {
     "confirmation": {

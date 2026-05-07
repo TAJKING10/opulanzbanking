@@ -1285,10 +1285,10 @@
       "yes": "Yes"
     },
     "volumeOptions": {
-      "0_5k": "â‚¬0 - â‚¬5,000",
-      "5k_20k": "â‚¬5,000 - â‚¬20,000",
-      "20k_50k": "â‚¬20,000 - â‚¬50,000",
-      "50k_plus": "â‚¬50,000+"
+      "0_5k": "€0 - €5,000",
+      "5k_20k": "€5,000 - €20,000",
+      "20k_50k": "€20,000 - €50,000",
+      "50k_plus": "€50,000+"
     },
     "sourceOfFunds": {
       "placeholder": "Please describe the origin of your funds..."
@@ -1309,7 +1309,9 @@
     "buttons": {
       "dashboard": "Go to Dashboard",
       "downloadApp": "Download App"
-    }
+    },
+    "title": "Identity Verification",
+    "description": "Complete your identity verification to open your account"
   },
   "taxAdvisory": {
     "confirmation": {

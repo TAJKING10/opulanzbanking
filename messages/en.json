@@ -1009,8 +1009,8 @@
     },
     "regulatory": {
       "france": "France",
-      "acpr": "AutoritÃ© de ContrÃ´le Prudentiel et de RÃ©solution",
-      "amf": "AutoritÃ© des MarchÃ©s Financiers"
+      "acpr": "Prudential Supervision and Resolution Authority",
+      "amf": "Financial Markets Authority"
     },
     "cta": {
       "title": "Ready to get started?",

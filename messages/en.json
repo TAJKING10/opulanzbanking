@@ -1309,9 +1309,7 @@
     "buttons": {
       "dashboard": "Go to Dashboard",
       "downloadApp": "Download App"
-    },
-    "title": "Identity Verification",
-    "description": "Complete your KYC to activate your account"
+    }
   },
   "taxAdvisory": {
     "confirmation": {
@@ -2992,5 +2990,92 @@
       "primaryButton": "Get Free Quote",
       "secondaryButton": "Talk to an Advisor"
     }
+  },
+  "regulatory": {
+    "hero": {
+      "title": "Regulatory Information",
+      "subtitle": "Our commitment to compliance and regulatory oversight"
+    },
+    "intro": "Opulanz operates under strict regulatory oversight to ensure the highest standards of financial integrity, client protection, and operational transparency.",
+    "framework": {
+      "title": "Regulatory Framework",
+      "description": "Opulanz is regulated by leading European financial authorities. Our operations comply with:",
+      "psd2": "EU Payment Services Directive (PSD2)",
+      "mifid2": "Markets in Financial Instruments Directive (MiFID II)",
+      "amld": "Anti-Money Laundering Directives (AMLD5/6)",
+      "gdpr": "General Data Protection Regulation (GDPR)",
+      "french": "Banking and financial services regulations in France"
+    },
+    "regulators": {
+      "title": "Our Regulators",
+      "visitWebsite": "Visit Official Website",
+      "acpr": {
+        "name": "ACPR",
+        "country": "France",
+        "fullName": "Prudential Supervision and Resolution Authority",
+        "fullNameFr": "Autorité de Contrôle Prudentiel et de Résolution",
+        "description": "The French Prudential Supervision and Resolution Authority supervises banks, insurance companies, and financial institutions operating in France.",
+        "website": "https://acpr.banque-france.fr"
+      },
+      "amf": {
+        "name": "AMF",
+        "country": "France",
+        "fullName": "Financial Markets Authority",
+        "fullNameFr": "Autorité des Marchés Financiers",
+        "description": "The French Financial Markets Authority regulates financial markets, investment services, and protects investors.",
+        "website": "https://www.amf-france.org"
+      }
+    },
+    "compliance": {
+      "title": "Compliance Standards",
+      "description": "We maintain the highest compliance standards across all aspects of our operations:",
+      "aml": {
+        "title": "Anti-Money Laundering (AML)",
+        "description": "We implement comprehensive AML policies and procedures to detect and prevent money laundering activities. This includes ongoing transaction monitoring, suspicious activity reporting, and staff training programs."
+      },
+      "kyc": {
+        "title": "Know Your Customer (KYC)",
+        "description": "All clients undergo thorough identity verification and due diligence procedures. We collect and verify personal information, beneficial ownership details, and source of funds to ensure regulatory compliance."
+      },
+      "ctf": {
+        "title": "Counter-Terrorist Financing (CTF)",
+        "description": "We screen all clients and transactions against international sanctions lists and watchlists to prevent terrorist financing and comply with international security regulations."
+      },
+      "dataProtection": {
+        "title": "Data Protection",
+        "description": "We comply with GDPR and implement robust data protection measures to safeguard your personal information. Your data is processed lawfully, transparently, and securely."
+      },
+      "clientFunds": {
+        "title": "Client Fund Protection",
+        "description": "Client funds are held in segregated accounts with licensed banking partners and are protected according to applicable deposit guarantee schemes. Your funds are kept separate from company operational funds."
+      }
+    },
+    "licenses": {
+      "title": "Licenses and Authorizations",
+      "description": "Opulanz holds the necessary licenses and authorizations to provide financial services:",
+      "banking": {
+        "title": "Banking Services - France",
+        "authority": "Licensed and supervised by ACPR (Autorité de Contrôle Prudentiel et de Résolution)",
+        "note": "Our French banking operations are fully compliant with French banking law and European banking directives."
+      },
+      "investment": {
+        "title": "Investment Services - France",
+        "authority": "Regulated by AMF (Autorité des Marchés Financiers)",
+        "note": "Our investment advisory services comply with MiFID II regulations and AMF requirements."
+      },
+      "payment": {
+        "title": "Payment Services",
+        "authority": "Authorized under PSD2 (Payment Services Directive 2)",
+        "note": "We provide secure payment services across the European Economic Area in compliance with PSD2 requirements."
+      }
+    },
+    "contact": {
+      "title": "Questions About Our Regulatory Status?",
+      "description": "For inquiries about our licenses, compliance procedures, or regulatory matters, please contact our compliance team.",
+      "emailLabel": "Compliance Email",
+      "phoneLabel": "General Inquiries",
+      "addressLabel": "Address"
+    },
+    "lastUpdated": "Last updated: October 28, 2025"
   }
 }

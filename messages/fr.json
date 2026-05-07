@@ -598,14 +598,6 @@
       }
     },
     "clientType": {
-      "title": "Type de client",
-      "contact": {
-        "email": "Adresse e-mail",
-        "emailPlaceholder": "Entrez votre adresse e-mail",
-        "mobile": "Numéro de mobile",
-        "mobilePlaceholder": "Entrez votre numéro de mobile",
-        "language": "Langue préférée"
-      },
       "welcome": "Bienvenue au Conseil en Investissement",
       "subtitle": "Complétez notre processus d'intégration pour accéder à des services de conseil en investissement personnalisés.",
       "question": "Veuillez sélectionner votre type d'investisseur :",
@@ -616,6 +608,13 @@
       "company": {
         "title": "Investisseur institutionnel",
         "description": "Pour les entreprises et les investisseurs institutionnels souhaitant des services de conseil en investissement professionnels."
+      },
+      "contact": {
+        "email": "Adresse e-mail",
+        "emailPlaceholder": "Entrez votre adresse e-mail",
+        "mobile": "Numéro de mobile",
+        "mobilePlaceholder": "Entrez votre numéro de mobile",
+        "language": "Langue préférée"
       }
     },
     "company": {
@@ -789,17 +788,13 @@
     }
   },
   "legal": {
-    "regulated": "Réglementé par ACPR & AMF (FR)",
-    "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
-    "mifid": "Services d'investissement soumis aux réglementations MiFID II",
-    "idd": "Distribution d'assurance soumise aux exigences IDD",
     "terms": {
       "heroTitle": "Conditions générales d'utilisation",
       "heroSubtitle": "Veuillez lire attentivement les conditions suivantes avant d'utiliser nos services.",
       "companyIdentification": {
         "title": "Identification de la société",
         "companyName": "Raison sociale",
-        "companyNameValue": "Advensys Luxembourg S.A. (Opulanz)",
+        "companyNameValue": "Advensys Luxembourg S.A.",
         "capital": "Capital social",
         "capitalValue": "31 000 €",
         "address": "Adresse du siège social",
@@ -807,7 +802,7 @@
         "phone": "Téléphone",
         "phoneValue": "+352 20 33 10 70",
         "email": "E-mail",
-        "emailValue": "contact@opulanz.com",
+        "emailValue": "info@advensys.lu",
         "website": "Site web",
         "websiteValue": "www.opulanz.com",
         "siret": "SIRET",
@@ -859,7 +854,11 @@
         "disclaimer": "Ce document a été dernièrement examiné et approuvé par le Département Juridique et de Conformité d'Advensys Luxembourg S.A.",
         "lastUpdated": "Dernière mise à jour : janvier 2025"
       }
-    }
+    },
+    "regulated": "Réglementé par ACPR & AMF (FR)",
+    "disclaimer": "Opulanz est une plateforme bancaire numérique. Services bancaires fournis par des partenaires agréés.",
+    "mifid": "Services d'investissement soumis aux réglementations MiFID II",
+    "idd": "Distribution d'assurance soumise aux exigences IDD"
   },
   "footer": {
     "sections": {
@@ -1310,9 +1309,7 @@
     "buttons": {
       "dashboard": "Aller au tableau de bord",
       "downloadApp": "Télécharger l'application"
-    },
-    "title": "Vérification d'identité",
-    "description": "Complétez votre KYC pour activer votre compte"
+    }
   },
   "taxAdvisory": {
     "confirmation": {
@@ -1325,7 +1322,6 @@
       },
       "appointmentDetails": "Détails du rendez-vous",
       "clientName": "Nom du client",
-      "name": "Nom",
       "email": "E-mail",
       "phone": "Téléphone",
       "date": "Date",
@@ -1340,7 +1336,7 @@
       "addToCalendar": "Ajouter au calendrier",
       "downloadPDFReceipt": "Télécharger le reçu PDF",
       "whatHappensNext": {
-        "title": "Que se passe-t-il ensuite ?",
+        "title": "Et maintenant ?",
         "step1": {
           "title": "Vérifiez votre e-mail",
           "description": "Vous recevrez un e-mail de confirmation avec tous les détails de votre rendez-vous."
@@ -1358,10 +1354,10 @@
           "description": "Après la consultation, vous recevrez un rapport détaillé et des recommandations par e-mail dans les 48 heures."
         }
       },
-      "rescheduleQuestion": "Besoin de reporter ?",
-      "supportContact": "Pour obtenir de l'aide, contactez-nous à",
+      "rescheduleQuestion": "Vous avez besoin de reporter ou une question ?",
       "backToTaxAdvisory": "Retour au conseil fiscal",
-      "goToDashboard": "Accéder au tableau de bord"
+      "goToDashboard": "Accéder au tableau de bord",
+      "supportContact": "Pour obtenir de l'aide, contactez-nous à"
     },
     "hero": {
       "primaryCta": "Planifier une consultation",
@@ -1524,89 +1520,17 @@
       }
     },
     "booking": {
-      "services": {
-        "taxReturnPreparation": {
-          "title": "Préparation des Déclarations Fiscales",
-          "description": "Préparation et dépôt professionnels des déclarations fiscales des entreprises et des particuliers"
-        },
-        "internationalTax": {
-          "title": "Fiscalité Internationale",
-          "description": "Expertise en matière fiscale transfrontalière et en prix de transfert"
-        },
-        "corporateTax": {
-          "title": "Fiscalité des Entreprises",
-          "description": "Services fiscaux complets pour les entreprises, y compris due diligence M&A et conseil TVA"
-        },
-        "taxCompliance": {
-          "title": "Conformité Fiscale",
-          "description": "Conformité continue aux lois et réglementations fiscales avec surveillance proactive"
-        },
-        "personalTaxAdvisory": {
-          "title": "Conseil Fiscal Personnel",
-          "description": "Conseils fiscaux personnalisés pour les personnes fortunées et les expatriés"
-        }
+      "calendly": {
+        "title": "Planifiez votre consultation fiscale",
+        "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes"
       },
-      "validation": {
-        "firstNameRequired": "Le prénom est obligatoire",
-        "lastNameRequired": "Le nom de famille est obligatoire",
-        "emailRequired": "L'adresse e-mail est obligatoire",
-        "emailInvalid": "Veuillez saisir une adresse e-mail valide",
-        "phoneRequired": "Le numéro de téléphone est obligatoire"
-      },
-      "step1": {
-        "heroTitle": "Réservez votre consultation fiscale",
-        "heroSubtitle": "Des conseils fiscaux experts adaptés à vos besoins individuels ou professionnels",
-        "overline": "ÉTAPE 1 SUR 4",
-        "title": "Vos coordonnées",
-        "description": "Veuillez fournir vos coordonnées pour commencer",
-        "firstName": "Prénom",
-        "firstNamePlaceholder": "Entrez votre prénom",
-        "lastName": "Nom de famille",
-        "lastNamePlaceholder": "Entrez votre nom de famille",
-        "email": "Adresse e-mail",
-        "emailPlaceholder": "Entrez votre adresse e-mail",
-        "phone": "Numéro de téléphone",
-        "phonePlaceholder": "Entrez votre numéro de téléphone",
-        "required": "*",
-        "continue": "Continuer vers la planification",
-        "backToTaxAdvisory": "Retour au conseil fiscal"
-      },
-      "step2": {
-        "heroTitle": "Planifiez votre consultation",
-        "heroSubtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes",
-        "overline": "ÉTAPE 2 SUR 4",
-        "title": "Choisissez une date et une heure",
-        "backToContactInfo": "Retour aux coordonnées"
-      },
-      "step3": {
-        "heroTitle": "Sélectionnez votre service",
-        "heroSubtitle": "Choisissez le service de conseil fiscal dont vous avez besoin",
-        "overline": "ÉTAPE 3 SUR 4",
-        "title": "Sélectionnez votre service fiscal",
-        "description": "Choisissez le service qui correspond le mieux à vos besoins",
+      "serviceSelection": {
+        "title": "Consultation planifiée !",
+        "subtitle": "Maintenant, veuillez sélectionner le service dont vous avez besoin",
+        "step": "ÉTAPE 2 SUR 3",
+        "selectTitle": "Sélectionnez votre service de conseil fiscal",
+        "selectDesc": "Choisissez le service qui correspond le mieux à vos besoins",
         "selectService": "Sélectionner le service"
-      },
-      "step4": {
-        "heroTitle": "Vérifier et confirmer",
-        "heroSubtitle": "Vérifiez les détails de votre réservation avant le paiement",
-        "overline": "ÉTAPE 4 SUR 4",
-        "title": "Récapitulatif de la réservation",
-        "contactInfo": "Coordonnées",
-        "name": "Nom",
-        "email": "E-mail",
-        "phone": "Téléphone",
-        "appointmentDetails": "Détails du rendez-vous",
-        "appointmentConfirmation": "Rendez-vous",
-        "scheduledViaCalendly": "Planifié via Calendly",
-        "calendlyEmailNotice": "Une invitation de calendrier a été envoyée à votre e-mail",
-        "duration": "Durée",
-        "minutes": "minutes",
-        "servicePayment": "Service et paiement",
-        "serviceFeeExclVAT": "Frais de service (HT)",
-        "vat": "TVA (20%)",
-        "totalInclVAT": "Total (TTC)",
-        "changeService": "Changer de service",
-        "proceedToPayment": "Procéder au paiement"
       },
       "payment": {
         "title": "Effectuez votre paiement",
@@ -1622,18 +1546,6 @@
         "reservedNote": "Votre créneau de consultation est réservé pendant 15 minutes. Veuillez effectuer le paiement pour confirmer votre réservation.",
         "backToSelection": "Retour à la sélection du service",
         "cancelBooking": "Annuler la réservation"
-      },
-      "calendly": {
-        "title": "Planifiez votre consultation fiscale",
-        "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes"
-      },
-      "serviceSelection": {
-        "title": "Consultation planifiée !",
-        "subtitle": "Maintenant, veuillez sélectionner le service dont vous avez besoin",
-        "step": "ÉTAPE 2 SUR 3",
-        "selectTitle": "Sélectionnez votre service de conseil fiscal",
-        "selectDesc": "Choisissez le service qui correspond le mieux à vos besoins",
-        "selectService": "Sélectionner le service"
       }
     },
     "taxReturn": {
@@ -2409,16 +2321,16 @@
         "description": "Identité légale"
       },
       "activity": {
-        "label": "Activité",
-        "description": "Activité et échelle"
+        "label": "Activité & Échelle",
+        "description": "Périmètre d'activité"
       },
       "contacts": {
-        "label": "Contacts",
-        "description": "Contacts et adresses"
+        "label": "Contacts & Adresses",
+        "description": "Personnes & lieux"
       },
       "volume": {
-        "label": "Volume",
-        "description": "Volume de facturation"
+        "label": "Volume de facturation",
+        "description": "Besoins en facturation"
       },
       "documents": {
         "label": "Documents",
@@ -2484,35 +2396,34 @@
       "operatingAddress": "Adresse d'exploitation",
       "sameAsRegistered": "Identique à l'adresse du siège",
       "primaryContact": "Contact principal",
-      "accountingContact": "Contact comptabilité",
-      "addAccountingContact": "Ajouter un contact comptabilité",
+      "accountingContact": "Contact comptable",
+      "addAccountingContact": "Ajouter un contact comptable distinct",
       "fields": {
-        "firstName": "Prénom",
-        "lastName": "Nom de famille",
-        "email": "Adresse e-mail",
-        "phone": "Numéro de téléphone",
         "street": "Adresse",
         "city": "Ville",
-        "postalCode": "Code postal",
+        "postal": "Code postal",
         "country": "Pays",
-        "role": "Fonction / Titre"
-      },
-      "placeholders": {
         "firstName": "Prénom",
         "lastName": "Nom de famille",
-        "email": "nom@societe.com",
-        "phone": "+352 123 456 789",
-        "street": "1 Rue de la Gare",
+        "role": "Fonction / Titre",
+        "email": "Adresse e-mail",
+        "phone": "Numéro de téléphone"
+      },
+      "placeholders": {
+        "street": "123 rue Principale",
         "city": "Luxembourg",
-        "postalCode": "L-1611",
-        "country": "Sélectionner le pays",
         "postal": "L-1234",
-        "role": "ex. PDG, DAF"
+        "country": "Sélectionner le pays",
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "role": "ex. PDG, DAF",
+        "email": "nom@societe.com",
+        "phone": "+352 123 456 789"
       }
     },
     "billingVolume": {
       "title": "Volume de facturation",
-      "subtitle": "Estimez votre volume de facturation mensuel",
+      "subtitle": "Indiquez vos volumes de facturation mensuels et vos besoins en paie.",
       "fields": {
         "salesInvoices": "Factures de vente par mois",
         "purchaseInvoices": "Factures d'achat par mois",
@@ -2700,8 +2611,6 @@
   },
   "accountOpening": {
     "start": {
-      "title": "Ouvrir un compte",
-      "subtitle": "Choisissez le type de compte qui vous convient",
       "loading": "Chargement..."
     },
     "individual": {
@@ -2982,9 +2891,7 @@
         },
         "step2": {
           "description": "Vous serez redirigé vers {partner} pour finaliser l'ouverture de votre compte."
-        },
-        "title": "Candidature par référence",
-        "subtitle": "Complétez votre candidature référée"
+        }
       }
     }
   },
@@ -3009,7 +2916,7 @@
       "benefit5": "Gestion continue des polices et assistance"
     },
     "products": {
-      "overline": "NOS PLANS",
+      "overline": "Nos Services",
       "title": "Produits d'Assurance Vie que Nous Courtisons",
       "description": "Nous vous aidons a acceder a une large gamme de solutions d'assurance vie de fournisseurs de confiance pour repondre a vos besoins specifiques de protection.",
       "term": {
@@ -3031,26 +2938,6 @@
       "group": {
         "title": "Assurance Vie Collective",
         "description": "Plans d'assurance vie collectifs parraines par l'employeur offrant une couverture a des tarifs de groupe competitifs."
-      },
-      "termLife": {
-        "title": "Assurance temporaire",
-        "description": "Couverture abordable pour une duree determinee. Ideale pour proteger votre famille durant les etapes cles."
-      },
-      "wholeLife": {
-        "title": "Assurance vie entiere",
-        "description": "Couverture permanente combinee a une valeur de rachat qui s'accumule au fil du temps."
-      },
-      "universalLife": {
-        "title": "Assurance vie universelle",
-        "description": "Couverture permanente flexible avec primes et capitaux ajustables selon votre situation financiere."
-      },
-      "variableLife": {
-        "title": "Assurance vie variable",
-        "description": "Couverture liee a des investissements pour faire fructifier la valeur de votre contrat."
-      },
-      "groupLife": {
-        "title": "Assurance groupe",
-        "description": "Couverture economique pour les entreprises souhaitant proteger leurs employes."
       }
     },
     "howItWorks": {
@@ -3074,7 +2961,7 @@
       }
     },
     "features": {
-      "overline": "NOS AVANTAGES",
+      "overline": "Ce qui nous differencie",
       "title": "Expertise Professionnelle en Courtage d'Assurance",
       "description": "En tant que courtiers independants, nous fournissons des conseils impartiaux et l'acces aux meilleures solutions d'assurance pour vos besoins.",
       "brokers": {
@@ -3092,22 +2979,6 @@
       "support": {
         "title": "Assistance continue",
         "description": "Gestion continue des polices et support de courtage"
-      },
-      "expertBrokers": {
-        "title": "Conseillers certifies",
-        "description": "Tous nos conseillers sont qualifies et reglementes par les autorites competentes en France et au Luxembourg."
-      },
-      "needsAnalysis": {
-        "title": "Analyse approfondie",
-        "description": "Nous prenons le temps de comprendre votre situation financiere complete avant toute recommandation."
-      },
-      "wealthBuilding": {
-        "title": "Construction de patrimoine",
-        "description": "Nos produits incluent des composantes epargne et investissement pour constituer un patrimoine durable."
-      },
-      "ongoingSupport": {
-        "title": "Accompagnement continu",
-        "description": "Votre conseiller reste disponible pour les revisions de contrat, l'assistance aux sinistres et les changements de situation."
       }
     },
     "cta": {
@@ -3117,186 +2988,94 @@
       "badge2": "Comparer plusieurs fournisseurs",
       "badge3": "Conseils experts",
       "primaryButton": "Obtenir un devis gratuit",
-      "secondaryButton": "Parler a un conseiller",
-      "description": "Prenez rendez-vous gratuitement et laissez nos experts trouver le plan adapte a vos besoins.",
-      "benefits": {
-        "consultation": "Consultation initiale gratuite",
-        "compare": "Comparaison de plusieurs assureurs",
-        "guidance": "Expertise tout au long du processus"
-      }
-    },
-    "booking": {
-      "services": {
-        "termLife": {
-          "title": "Assurance Vie Temporaire",
-          "description": "Couverture abordable pour une période spécifique, offrant une protection financière à votre famille"
-        },
-        "wholeLife": {
-          "title": "Assurance Vie Entière",
-          "description": "Couverture permanente avec une composante de valeur de rachat qui croît avec le temps"
-        },
-        "universalLife": {
-          "title": "Assurance Vie Universelle",
-          "description": "Couverture permanente flexible avec des primes et des prestations de décès ajustables"
-        },
-        "variableLife": {
-          "title": "Assurance Vie Variable",
-          "description": "Couverture liée aux investissements permettant de faire croître la valeur de rachat de votre police"
-        },
-        "groupLife": {
-          "title": "Assurance Vie Collective",
-          "description": "Couverture économique pour les employés ou membres d'une organisation"
-        }
-      },
-      "validation": {
-        "firstNameRequired": "Le prénom est obligatoire",
-        "lastNameRequired": "Le nom de famille est obligatoire",
-        "emailRequired": "L'adresse e-mail est obligatoire",
-        "emailInvalid": "Veuillez saisir une adresse e-mail valide",
-        "phoneRequired": "Le numéro de téléphone est obligatoire"
-      },
-      "form": {
-        "firstName": "Prénom",
-        "firstNamePlaceholder": "Entrez votre prénom",
-        "lastName": "Nom de famille",
-        "lastNamePlaceholder": "Entrez votre nom de famille",
-        "email": "Adresse e-mail",
-        "emailPlaceholder": "Entrez votre adresse e-mail",
-        "phone": "Numéro de téléphone",
-        "phonePlaceholder": "Entrez votre numéro de téléphone",
-        "continueToSchedule": "Continuer vers la planification",
-        "backToLifeInsurance": "Retour à l'assurance vie"
-      },
-      "step1": {
-        "heroTitle": "Réservez votre consultation en assurance vie",
-        "heroSubtitle": "Protégez ce qui compte le plus avec des conseils d'experts en assurance",
-        "overline": "ÉTAPE 1 SUR 4",
-        "title": "Vos coordonnées",
-        "description": "Veuillez fournir vos coordonnées pour commencer"
-      },
-      "step2": {
-        "heroTitle": "Planifiez votre consultation",
-        "heroSubtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes",
-        "overline": "ÉTAPE 2 SUR 4",
-        "title": "Choisissez une date et une heure",
-        "bookingFor": "Réservation pour",
-        "selectedService": "Service sélectionné",
-        "backButton": "Retour aux coordonnées"
-      },
-      "step3": {
-        "heroTitle": "Sélectionnez votre plan d'assurance",
-        "heroSubtitle": "Choisissez le produit d'assurance vie qui correspond le mieux à vos besoins",
-        "overline": "ÉTAPE 3 SUR 4",
-        "title": "Sélectionnez votre plan d'assurance",
-        "description": "Choisissez le plan qui correspond le mieux à vos objectifs de protection",
-        "consultationFee": "frais de consultation",
-        "selectService": "Sélectionner le plan"
-      },
-      "step4": {
-        "heroTitle": "Vérifier et confirmer",
-        "heroSubtitle": "Vérifiez les détails de votre réservation avant le paiement",
-        "overline": "ÉTAPE 4 SUR 4",
-        "title": "Récapitulatif de la réservation",
-        "contactInfo": "Coordonnées",
-        "name": "Nom",
-        "email": "E-mail",
-        "phone": "Téléphone",
-        "appointmentDetails": "Détails du rendez-vous",
-        "appointmentConfirmation": "Rendez-vous",
-        "scheduledViaCalendly": "Planifié via Calendly",
-        "appointmentEmailNote": "Une invitation de calendrier a été envoyée à votre e-mail",
-        "duration": "Durée",
-        "minutes": "60 minutes",
-        "servicePayment": "Plan d'assurance et paiement",
-        "consultationFeeExclVat": "Frais de consultation (HT)",
-        "vat": "TVA (20%)",
-        "totalInclVat": "Total (TTC)",
-        "changeService": "Changer de plan",
-        "proceedToPayment": "Procéder au paiement"
-      },
-      "payment": {
-        "heroTitle": "Effectuer le paiement",
-        "heroSubtitle": "Paiement sécurisé pour confirmer votre consultation",
-        "paymentSummary": "Récapitulatif du paiement",
-        "service": "Plan d'assurance",
-        "client": "Client",
-        "total": "Total",
-        "loadingPayment": "Chargement des options de paiement...",
-        "securePaymentNote": "Votre paiement est sécurisé par un chiffrement standard du secteur",
-        "paymentFailed": "Paiement échoué. Veuillez réessayer.",
-        "paymentSuccessError": "Paiement effectué mais la confirmation a échoué. Veuillez contacter le support.",
-        "backToSummary": "Retour au récapitulatif",
-        "cancelBooking": "Annuler la réservation"
-      }
-    },
-    "process": {
-      "overline": "COMMENT CA MARCHE",
-      "title": "Votre couverture en 4 etapes simples",
-      "steps": {
-        "1": {
-          "title": "Prendre rendez-vous",
-          "description": "Planifiez une consultation gratuite avec l'un de nos conseillers certifies au moment qui vous convient."
-        },
-        "2": {
-          "title": "Analyse de vos besoins",
-          "description": "Nous analysons votre situation financiere et vos objectifs pour identifier les meilleures options."
-        },
-        "3": {
-          "title": "Comparaison des offres",
-          "description": "Nous vous presentons des propositions personnalisees de plusieurs assureurs avec des tarifs transparents."
-        },
-        "4": {
-          "title": "Etre protege",
-          "description": "Choisissez votre plan, completez votre dossier et recevez vos documents. La couverture commence immediatement."
-        }
-      }
+      "secondaryButton": "Parler a un conseiller"
     }
   },
-  "invoicingAccounting": {
-    "getStarted": "Commencer",
-    "features": {
-      "overline": "CE QUE NOUS OFFRONS",
-      "title": "Tout ce dont votre entreprise a besoin",
-      "description": "Des outils de comptabilite et de facturation complets pour les entreprises modernes en France et au Luxembourg.",
-      "invoicing": {
-        "title": "Facturation intelligente",
-        "description": "Creez, envoyez et suivez des factures professionnelles en quelques secondes. Automatisez les relances et soyez paye plus vite."
+  "regulatory": {
+    "hero": {
+      "title": "Informations Réglementaires",
+      "subtitle": "Notre engagement envers la conformité et la surveillance réglementaire"
+    },
+    "intro": "Opulanz opère sous une surveillance réglementaire stricte afin de garantir les plus hauts standards d'intégrité financière, de protection des clients et de transparence opérationnelle.",
+    "framework": {
+      "title": "Cadre Réglementaire",
+      "description": "Opulanz est régulé par les principales autorités financières européennes. Nos opérations sont conformes à :",
+      "psd2": "Directive européenne sur les services de paiement (DSP2)",
+      "mifid2": "Directive sur les marchés d'instruments financiers (MiFID II)",
+      "amld": "Directives anti-blanchiment (AMLD5/6)",
+      "gdpr": "Règlement général sur la protection des données (RGPD)",
+      "french": "Réglementations bancaires et financières en France"
+    },
+    "regulators": {
+      "title": "Nos Régulateurs",
+      "visitWebsite": "Visiter le site officiel",
+      "acpr": {
+        "name": "ACPR",
+        "country": "France",
+        "fullName": "Autorité de Contrôle Prudentiel et de Résolution",
+        "fullNameFr": "Prudential Supervision and Resolution Authority",
+        "description": "L'Autorité de Contrôle Prudentiel et de Résolution supervise les banques, les compagnies d'assurance et les établissements financiers opérant en France.",
+        "website": "https://acpr.banque-france.fr"
       },
-      "bookkeeping": {
-        "title": "Comptabilite",
-        "description": "Categorisation automatique des transactions et comptabilite en temps reel pour que vos comptes soient toujours a jour."
-      },
-      "reporting": {
-        "title": "Rapports financiers",
-        "description": "Comptes de resultats, bilans et rapports de tresorerie instantanes, disponibles quand vous en avez besoin."
-      },
-      "payroll": {
-        "title": "Gestion de la paie",
-        "description": "Traitez les salaires avec precision et dans les delais, en conformite avec le droit du travail francais et luxembourgeois."
-      },
-      "compliance": {
-        "title": "Conformite fiscale",
-        "description": "Restez conforme aux declarations de TVA, aux obligations fiscales des entreprises et aux exigences reglementaires."
-      },
-      "planning": {
-        "title": "Planification financiere",
-        "description": "Outils de budgetisation et de prevision pour planifier votre avenir et developper votre activite en toute confiance."
+      "amf": {
+        "name": "AMF",
+        "country": "France",
+        "fullName": "Autorité des Marchés Financiers",
+        "fullNameFr": "Financial Markets Authority",
+        "description": "L'Autorité des Marchés Financiers réglemente les marchés financiers, les services d'investissement et protège les investisseurs.",
+        "website": "https://www.amf-france.org"
       }
     },
-    "benefits": {
-      "1": "Economisez jusqu a 80 % du temps consacre aux taches comptables manuelles",
-      "2": "Visibilite financiere en temps reel sur tous vos comptes",
-      "3": "Entierement conforme aux normes ACPR francaises et CSSF luxembourgeoises",
-      "4": "Comptable dedie assigne a votre entreprise",
-      "5": "Integration transparente avec votre compte professionnel Opulanz",
-      "6": "Stockage securise dans le cloud de tous vos documents financiers",
-      "title": "Pourquoi choisir Opulanz Comptabilite ?",
-      "description": "Nous gerons les chiffres pour que vous puissiez vous concentrer sur la croissance de votre entreprise."
+    "compliance": {
+      "title": "Normes de Conformité",
+      "description": "Nous maintenons les plus hauts standards de conformité dans tous les aspects de nos opérations :",
+      "aml": {
+        "title": "Lutte contre le Blanchiment d'Argent (LBA)",
+        "description": "Nous mettons en œuvre des politiques et procédures LBA complètes pour détecter et prévenir les activités de blanchiment d'argent. Cela comprend la surveillance continue des transactions, le signalement des activités suspectes et les programmes de formation du personnel."
+      },
+      "kyc": {
+        "title": "Connaissance du Client (KYC)",
+        "description": "Tous les clients font l'objet d'une vérification d'identité approfondie et de procédures de diligence raisonnable. Nous collectons et vérifions les informations personnelles, les détails de propriété effective et les sources de fonds pour assurer la conformité réglementaire."
+      },
+      "ctf": {
+        "title": "Lutte contre le Financement du Terrorisme (LFT)",
+        "description": "Nous filtrons tous les clients et transactions par rapport aux listes de sanctions internationales et aux listes de surveillance pour prévenir le financement du terrorisme et nous conformer aux réglementations de sécurité internationales."
+      },
+      "dataProtection": {
+        "title": "Protection des Données",
+        "description": "Nous nous conformons au RGPD et mettons en œuvre des mesures robustes de protection des données pour sauvegarder vos informations personnelles. Vos données sont traitées de manière légale, transparente et sécurisée."
+      },
+      "clientFunds": {
+        "title": "Protection des Fonds Clients",
+        "description": "Les fonds des clients sont détenus dans des comptes ségrégués auprès de partenaires bancaires agréés et sont protégés conformément aux systèmes de garantie des dépôts applicables. Vos fonds sont maintenus séparés des fonds opérationnels de la société."
+      }
     },
-    "cta": {
-      "title": "Pret a simplifier votre comptabilite ?",
-      "description": "Rejoignez des centaines d entreprises qui utilisent Opulanz pour gerer leurs finances de maniere plus intelligente et plus rapide.",
-      "contactSales": "Contacter les ventes"
-    }
+    "licenses": {
+      "title": "Licences et Autorisations",
+      "description": "Opulanz détient les licences et autorisations nécessaires pour fournir des services financiers :",
+      "banking": {
+        "title": "Services Bancaires - France",
+        "authority": "Agréé et supervisé par l'ACPR (Autorité de Contrôle Prudentiel et de Résolution)",
+        "note": "Nos opérations bancaires françaises sont entièrement conformes au droit bancaire français et aux directives bancaires européennes."
+      },
+      "investment": {
+        "title": "Services d'Investissement - France",
+        "authority": "Régulé par l'AMF (Autorité des Marchés Financiers)",
+        "note": "Nos services de conseil en investissement sont conformes aux réglementations MiFID II et aux exigences de l'AMF."
+      },
+      "payment": {
+        "title": "Services de Paiement",
+        "authority": "Autorisé en vertu de la DSP2 (Directive sur les services de paiement 2)",
+        "note": "Nous fournissons des services de paiement sécurisés dans l'Espace économique européen conformément aux exigences de la DSP2."
+      }
+    },
+    "contact": {
+      "title": "Questions sur Notre Statut Réglementaire ?",
+      "description": "Pour toute demande concernant nos licences, procédures de conformité ou questions réglementaires, veuillez contacter notre équipe de conformité.",
+      "emailLabel": "Email Conformité",
+      "phoneLabel": "Renseignements généraux",
+      "addressLabel": "Adresse"
+    },
+    "lastUpdated": "Dernière mise à jour : 28 octobre 2025"
   }
 }

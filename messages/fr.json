@@ -2990,5 +2990,92 @@
       "primaryButton": "Obtenir un devis gratuit",
       "secondaryButton": "Parler a un conseiller"
     }
+  },
+  "regulatory": {
+    "hero": {
+      "title": "Informations Réglementaires",
+      "subtitle": "Notre engagement envers la conformité et la surveillance réglementaire"
+    },
+    "intro": "Opulanz opère sous une surveillance réglementaire stricte afin de garantir les plus hauts standards d'intégrité financière, de protection des clients et de transparence opérationnelle.",
+    "framework": {
+      "title": "Cadre Réglementaire",
+      "description": "Opulanz est régulé par les principales autorités financières européennes. Nos opérations sont conformes à :",
+      "psd2": "Directive européenne sur les services de paiement (DSP2)",
+      "mifid2": "Directive sur les marchés d'instruments financiers (MiFID II)",
+      "amld": "Directives anti-blanchiment (AMLD5/6)",
+      "gdpr": "Règlement général sur la protection des données (RGPD)",
+      "french": "Réglementations bancaires et financières en France"
+    },
+    "regulators": {
+      "title": "Nos Régulateurs",
+      "visitWebsite": "Visiter le site officiel",
+      "acpr": {
+        "name": "ACPR",
+        "country": "France",
+        "fullName": "Autorité de Contrôle Prudentiel et de Résolution",
+        "fullNameFr": "Prudential Supervision and Resolution Authority",
+        "description": "L'Autorité de Contrôle Prudentiel et de Résolution supervise les banques, les compagnies d'assurance et les établissements financiers opérant en France.",
+        "website": "https://acpr.banque-france.fr"
+      },
+      "amf": {
+        "name": "AMF",
+        "country": "France",
+        "fullName": "Autorité des Marchés Financiers",
+        "fullNameFr": "Financial Markets Authority",
+        "description": "L'Autorité des Marchés Financiers réglemente les marchés financiers, les services d'investissement et protège les investisseurs.",
+        "website": "https://www.amf-france.org"
+      }
+    },
+    "compliance": {
+      "title": "Normes de Conformité",
+      "description": "Nous maintenons les plus hauts standards de conformité dans tous les aspects de nos opérations :",
+      "aml": {
+        "title": "Lutte contre le Blanchiment d'Argent (LBA)",
+        "description": "Nous mettons en œuvre des politiques et procédures LBA complètes pour détecter et prévenir les activités de blanchiment d'argent. Cela comprend la surveillance continue des transactions, le signalement des activités suspectes et les programmes de formation du personnel."
+      },
+      "kyc": {
+        "title": "Connaissance du Client (KYC)",
+        "description": "Tous les clients font l'objet d'une vérification d'identité approfondie et de procédures de diligence raisonnable. Nous collectons et vérifions les informations personnelles, les détails de propriété effective et les sources de fonds pour assurer la conformité réglementaire."
+      },
+      "ctf": {
+        "title": "Lutte contre le Financement du Terrorisme (LFT)",
+        "description": "Nous filtrons tous les clients et transactions par rapport aux listes de sanctions internationales et aux listes de surveillance pour prévenir le financement du terrorisme et nous conformer aux réglementations de sécurité internationales."
+      },
+      "dataProtection": {
+        "title": "Protection des Données",
+        "description": "Nous nous conformons au RGPD et mettons en œuvre des mesures robustes de protection des données pour sauvegarder vos informations personnelles. Vos données sont traitées de manière légale, transparente et sécurisée."
+      },
+      "clientFunds": {
+        "title": "Protection des Fonds Clients",
+        "description": "Les fonds des clients sont détenus dans des comptes ségrégués auprès de partenaires bancaires agréés et sont protégés conformément aux systèmes de garantie des dépôts applicables. Vos fonds sont maintenus séparés des fonds opérationnels de la société."
+      }
+    },
+    "licenses": {
+      "title": "Licences et Autorisations",
+      "description": "Opulanz détient les licences et autorisations nécessaires pour fournir des services financiers :",
+      "banking": {
+        "title": "Services Bancaires - France",
+        "authority": "Agréé et supervisé par l'ACPR (Autorité de Contrôle Prudentiel et de Résolution)",
+        "note": "Nos opérations bancaires françaises sont entièrement conformes au droit bancaire français et aux directives bancaires européennes."
+      },
+      "investment": {
+        "title": "Services d'Investissement - France",
+        "authority": "Régulé par l'AMF (Autorité des Marchés Financiers)",
+        "note": "Nos services de conseil en investissement sont conformes aux réglementations MiFID II et aux exigences de l'AMF."
+      },
+      "payment": {
+        "title": "Services de Paiement",
+        "authority": "Autorisé en vertu de la DSP2 (Directive sur les services de paiement 2)",
+        "note": "Nous fournissons des services de paiement sécurisés dans l'Espace économique européen conformément aux exigences de la DSP2."
+      }
+    },
+    "contact": {
+      "title": "Questions sur Notre Statut Réglementaire ?",
+      "description": "Pour toute demande concernant nos licences, procédures de conformité ou questions réglementaires, veuillez contacter notre équipe de conformité.",
+      "emailLabel": "Email Conformité",
+      "phoneLabel": "Renseignements généraux",
+      "addressLabel": "Adresse"
+    },
+    "lastUpdated": "Dernière mise à jour : 28 octobre 2025"
   }
 }

@@ -2583,6 +2583,62 @@
         "text": "Vos données sont traitées conformément au RGPD de l'UE. Vous pouvez demander l'accès, la rectification ou la suppression à tout moment en contactant privacy@opulanz.com."
       },
       "submit": "Soumettre la demande"
+    },
+    "page": {
+      "hero": {
+        "getStarted": "Commencer",
+        "learnMore": "En savoir plus"
+      },
+      "features": {
+        "overline": "Nos services",
+        "title": "Solutions comptables complètes pour votre entreprise",
+        "description": "De la facturation aux rapports financiers, nous fournissons des services comptables complets adaptés aux besoins de votre entreprise.",
+        "items": {
+          "invoicing": {
+            "title": "Facturation professionnelle",
+            "description": "Créez et envoyez des factures professionnelles avec des rappels de paiement automatisés et un suivi."
+          },
+          "bookkeeping": {
+            "title": "Services de tenue de livres",
+            "description": "Services de tenue de livres complets pour maintenir vos registres financiers précis et à jour."
+          },
+          "reporting": {
+            "title": "Rapports financiers",
+            "description": "Rapports financiers détaillés et informations pour vous aider à prendre des décisions éclairées."
+          },
+          "payroll": {
+            "title": "Gestion de la paie",
+            "description": "Traitement efficace de la paie avec calculs fiscaux automatisés et conformité réglementaire."
+          },
+          "compliance": {
+            "title": "Conformité et audit",
+            "description": "Assurez la conformité aux réglementations locales et préparez-vous aux audits en toute confiance."
+          },
+          "planning": {
+            "title": "Planification financière",
+            "description": "Planification et analyse financières stratégiques pour soutenir la croissance de votre entreprise."
+          }
+        }
+      },
+      "whyUs": {
+        "title": "Pourquoi choisir nos services comptables ?",
+        "description": "Nous combinons une technologie de pointe et une expertise financière pour vous offrir des services comptables qui font prospérer votre entreprise. Notre équipe de comptables certifiés garantit précision, conformité et vision stratégique.",
+        "cta": "Commencer",
+        "benefits": [
+          "Gagnez du temps grâce à la facturation et à la comptabilité automatisées",
+          "Réduisez les erreurs grâce à une expertise comptable professionnelle",
+          "Restez conforme aux réglementations fiscales locales",
+          "Obtenez des informations en temps réel sur votre santé financière",
+          "Concentrez-vous sur la croissance pendant que nous gérons les chiffres",
+          "Accès sécurisé en ligne à vos données financières à tout moment"
+        ]
+      },
+      "cta": {
+        "title": "Prêt à simplifier vos finances ?",
+        "description": "Rejoignez des milliers d'entreprises qui nous font confiance pour leur comptabilité et leur facturation. Commencez dès aujourd'hui.",
+        "getStarted": "Commencer",
+        "contactSales": "Contacter les ventes"
+      }
     }
   },
   "supportPage": {

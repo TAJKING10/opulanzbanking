@@ -2583,6 +2583,62 @@
         "text": "Your data is processed in accordance with EU GDPR. You may request access, rectification, or deletion at any time by contacting privacy@opulanz.com."
       },
       "submit": "Submit Application"
+    },
+    "page": {
+      "hero": {
+        "getStarted": "Get Started",
+        "learnMore": "Learn More"
+      },
+      "features": {
+        "overline": "Our Services",
+        "title": "Complete Accounting Solutions for Your Business",
+        "description": "From invoicing to financial reporting, we provide comprehensive accounting services tailored to your business needs.",
+        "items": {
+          "invoicing": {
+            "title": "Professional Invoicing",
+            "description": "Create and send professional invoices with automated payment reminders and tracking."
+          },
+          "bookkeeping": {
+            "title": "Bookkeeping Services",
+            "description": "Comprehensive bookkeeping services to keep your financial records accurate and up-to-date."
+          },
+          "reporting": {
+            "title": "Financial Reporting",
+            "description": "Detailed financial reports and insights to help you make informed business decisions."
+          },
+          "payroll": {
+            "title": "Payroll Management",
+            "description": "Efficient payroll processing with automated tax calculations and compliance."
+          },
+          "compliance": {
+            "title": "Compliance & Audit",
+            "description": "Ensure compliance with local regulations and prepare for audits with confidence."
+          },
+          "planning": {
+            "title": "Financial Planning",
+            "description": "Strategic financial planning and analysis to support your business growth."
+          }
+        }
+      },
+      "whyUs": {
+        "title": "Why Choose Our Accounting Services?",
+        "description": "We combine cutting-edge technology with expert financial knowledge to deliver accounting services that help your business thrive. Our team of certified accountants ensures accuracy, compliance, and strategic insights for your financial success.",
+        "cta": "Get Started",
+        "benefits": [
+          "Save time with automated invoicing and bookkeeping",
+          "Reduce errors with professional accounting expertise",
+          "Stay compliant with local tax regulations",
+          "Get real-time insights into your financial health",
+          "Focus on growing your business while we handle the numbers",
+          "Secure cloud-based access to your financial data anytime"
+        ]
+      },
+      "cta": {
+        "title": "Ready to Streamline Your Finances?",
+        "description": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
+        "getStarted": "Get Started",
+        "contactSales": "Contact Sales"
+      }
     }
   },
   "supportPage": {

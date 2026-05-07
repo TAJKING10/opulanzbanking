@@ -785,6 +785,93 @@
       "navigation": {
         "continueToReview": "Continuer vers la révision"
       }
+    },
+    "page": {
+      "hero": {
+        "scheduleMeeting": "Planifier un rendez-vous",
+        "ourServices": "Nos services"
+      },
+      "services": {
+        "overline": "Services d'investissement",
+        "title": "Conseil en investissement professionnel",
+        "description": "Développez votre patrimoine avec des conseils en investissement adaptés à votre situation financière.",
+        "items": {
+          "portfolio": {
+            "title": "Diversification de portefeuille",
+            "description": "Allocation stratégique d'actifs dans plusieurs classes d'investissement pour optimiser les rendements et gérer les risques."
+          },
+          "strategy": {
+            "title": "Stratégie d'investissement",
+            "description": "Stratégies d'investissement personnalisées alignées sur vos objectifs financiers à long terme."
+          },
+          "retirement": {
+            "title": "Planification de la retraite",
+            "description": "Planification stratégique de la retraite pour assurer votre sécurité financière."
+          }
+        }
+      },
+      "whyUs": {
+        "title": "Développez votre patrimoine en toute confiance",
+        "description": "Notre équipe de conseil en investissement possède des décennies d'expérience sur les marchés mondiaux et en planification financière. Nous combinons une analyse approfondie et un service personnalisé pour vous aider à atteindre vos objectifs financiers.",
+        "cta": "Planifier une consultation",
+        "benefits": [
+          "Accès à des opportunités d'investissement exclusives",
+          "Stratégies d'investissement personnalisées",
+          "Rééquilibrage régulier du portefeuille",
+          "Structure de frais transparente",
+          "Analyses de marché expertes",
+          "Solutions d'investissement fiscalement optimisées",
+          "Suivi et reporting continus du portefeuille"
+        ]
+      },
+      "options": {
+        "overline": "Options d'investissement",
+        "title": "Des opportunités d'investissement diversifiées",
+        "description": "Accédez à une large gamme de véhicules d'investissement adaptés à votre tolérance au risque et à vos objectifs.",
+        "riskLabel": "Niveau de risque",
+        "items": {
+          "equities": {
+            "title": "Actions",
+            "description": "Investissements en bourse mondiale avec un potentiel de croissance",
+            "risk": "Moyen à élevé"
+          },
+          "fixedIncome": {
+            "title": "Revenus fixes",
+            "description": "Obligations et autres titres de créance pour des rendements stables",
+            "risk": "Faible à moyen"
+          },
+          "alternative": {
+            "title": "Investissements alternatifs",
+            "description": "Capital-investissement, immobilier et fonds spéculatifs",
+            "risk": "Moyen à élevé"
+          },
+          "sustainable": {
+            "title": "Investissement durable",
+            "description": "Investissements axés sur les critères ESG pour une croissance responsable",
+            "risk": "Moyen"
+          }
+        }
+      },
+      "stats": {
+        "aum": {
+          "value": "€2.5B+",
+          "label": "Actifs sous gestion"
+        },
+        "clients": {
+          "value": "5 000+",
+          "label": "Clients satisfaits"
+        },
+        "experience": {
+          "value": "25+",
+          "label": "Années d'expérience"
+        }
+      },
+      "cta": {
+        "title": "Commencez à construire votre portefeuille d'investissement",
+        "description": "Faites le premier pas vers la liberté financière. Planifiez une consultation avec nos conseillers en investissement.",
+        "scheduleMeeting": "Planifier un rendez-vous",
+        "contactSupport": "En savoir plus"
+      }
     }
   },
   "legal": {

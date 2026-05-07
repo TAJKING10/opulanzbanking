@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useTranslations } from "next-intl";
-import { Phone, Mail, MessageCircle, HelpCircle, FileText, Clock } from "lucide-react";
+import { Phone, Mail, MessageCircle, HelpCircle, FileText, Clock, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import ReactCountryFlag from "react-country-flag";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -12,11 +12,66 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { COUNTRIES } from "@/shared/lib/countries";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export default function SupportPage() {
   const t = useTranslations("supportPage");
   const [selectedPhoneCode, setSelectedPhoneCode] = React.useState<string>("+33");
   const [isDropdownOpen, setIsDropdownOpen] = React.useState<boolean>(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  const [formData, setFormData] = React.useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+  const [submitting, setSubmitting] = React.useState(false);
+  const [submitStatus, setSubmitStatus] = React.useState<"idle" | "success" | "error">("idle");
+  const [submitError, setSubmitError] = React.useState("");
+
+  function setField(field: string, value: string) {
+    setFormData((f) => ({ ...f, [field]: value }));
+    if (submitStatus !== "idle") setSubmitStatus("idle");
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    setSubmitStatus("idle");
+    setSubmitError("");
+    try {
+      const res = await fetch(`${API}/api/support/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          phone: formData.phone ? `${selectedPhoneCode} ${formData.phone}` : "",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to send message");
+      setSubmitStatus("success");
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", subject: "", message: "" });
+    } catch (err: any) {
+      setSubmitStatus("error");
+      setSubmitError(err.message || "Something went wrong. Please email support@opulanz.com directly.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  function handleStartChat() {
+    if (typeof window !== "undefined" && (window as any).$_Tawk) {
+      (window as any).$_Tawk.toggle();
+    } else if (typeof window !== "undefined" && (window as any).Tawk_API) {
+      (window as any).Tawk_API.toggle();
+    } else {
+      window.open("mailto:support@opulanz.com?subject=Live%20Chat%20Request", "_self");
+    }
+  }
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
@@ -117,7 +172,7 @@ export default function SupportPage() {
                 <p className="mb-4 text-sm text-brand-grayMed">
                   {t("contactMethods.chat.description")}
                 </p>
-                <Button variant="primary" className="w-full">
+                <Button variant="primary" className="w-full" onClick={handleStartChat}>
                   {t("contactMethods.chat.button")}
                 </Button>
                 <p className="mt-2 text-xs text-brand-grayMed">
@@ -141,132 +196,153 @@ export default function SupportPage() {
 
           <Card className="border-none shadow-elevated">
             <CardContent className="p-8">
-              <form className="space-y-6">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">
-                      {t("contactForm.firstName")} <span className="text-red-600">*</span>
-                    </Label>
-                    <Input id="firstName" placeholder="John" required />
+              {submitStatus === "success" ? (
+                <div className="text-center py-8">
+                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 mb-4">
+                    <CheckCircle className="h-8 w-8 text-green-600" />
                   </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">
-                      {t("contactForm.lastName")} <span className="text-red-600">*</span>
-                    </Label>
-                    <Input id="lastName" placeholder="Doe" required />
-                  </div>
+                  <h3 className="text-xl font-bold text-brand-dark mb-2">Message sent!</h3>
+                  <p className="text-brand-grayMed mb-2">We've received your message and will reply within 24 hours.</p>
+                  <p className="text-sm text-brand-grayMed">A confirmation email has been sent to you.</p>
+                  <Button variant="outline" className="mt-6" onClick={() => setSubmitStatus("idle")}>
+                    Send another message
+                  </Button>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="email">
-                    {t("contactForm.email")} <span className="text-red-600">*</span>
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="john.doe@example.com"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone">{t("contactForm.phone")}</Label>
-                  <div className="relative">
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-2 z-10">
-                      <div ref={dropdownRef} className="relative">
-                        <button
-                          type="button"
-                          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                          className="flex items-center gap-2 bg-transparent border-none text-sm font-medium focus:outline-none cursor-pointer"
-                        >
-                          <ReactCountryFlag
-                            countryCode={COUNTRIES.find(c => c.phoneCode === selectedPhoneCode)?.code || "FR"}
-                            svg
-                            style={{
-                              width: '1.5em',
-                              height: '1.5em',
-                            }}
-                          />
-                          <span>{selectedPhoneCode}</span>
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </button>
-
-                        {isDropdownOpen && (
-                          <div className="absolute top-full mt-1 left-0 w-64 max-h-60 overflow-y-auto bg-white border border-brand-grayLight rounded-lg shadow-lg z-50">
-                            {COUNTRIES.map((country) => (
-                              <button
-                                key={country.code}
-                                type="button"
-                                onClick={() => {
-                                  setSelectedPhoneCode(country.phoneCode);
-                                  setIsDropdownOpen(false);
-                                }}
-                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 text-left text-sm"
-                              >
-                                <ReactCountryFlag
-                                  countryCode={country.code}
-                                  svg
-                                  style={{
-                                    width: '1.5em',
-                                    height: '1.5em',
-                                  }}
-                                />
-                                <span className="font-medium">{country.phoneCode}</span>
-                                <span className="text-gray-600 text-xs">{country.name}</span>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <span className="text-brand-grayLight">|</span>
+              ) : (
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName">
+                        {t("contactForm.firstName")} <span className="text-red-600">*</span>
+                      </Label>
+                      <Input id="firstName" placeholder="John" required value={formData.firstName} onChange={(e) => setField("firstName", e.target.value)} />
                     </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName">
+                        {t("contactForm.lastName")} <span className="text-red-600">*</span>
+                      </Label>
+                      <Input id="lastName" placeholder="Doe" required value={formData.lastName} onChange={(e) => setField("lastName", e.target.value)} />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email">
+                      {t("contactForm.email")} <span className="text-red-600">*</span>
+                    </Label>
                     <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="123456789"
-                      className="pl-32"
+                      id="email"
+                      type="email"
+                      placeholder="john.doe@example.com"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setField("email", e.target.value)}
                     />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="subject">
-                    {t("contactForm.subject")} <span className="text-red-600">*</span>
-                  </Label>
-                  <select
-                    id="subject"
-                    required
-                    className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-                  >
-                    <option value="">{t("contactForm.selectSubject")}</option>
-                    <option value="account">{t("contactForm.subjects.account")}</option>
-                    <option value="technical">{t("contactForm.subjects.technical")}</option>
-                    <option value="company">{t("contactForm.subjects.company")}</option>
-                    <option value="billing">{t("contactForm.subjects.billing")}</option>
-                    <option value="other">{t("contactForm.subjects.other")}</option>
-                  </select>
-                </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">{t("contactForm.phone")}</Label>
+                    <div className="relative">
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-2 z-10">
+                        <div ref={dropdownRef} className="relative">
+                          <button
+                            type="button"
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            className="flex items-center gap-2 bg-transparent border-none text-sm font-medium focus:outline-none cursor-pointer"
+                          >
+                            <ReactCountryFlag
+                              countryCode={COUNTRIES.find(c => c.phoneCode === selectedPhoneCode)?.code || "FR"}
+                              svg
+                              style={{ width: '1.5em', height: '1.5em' }}
+                            />
+                            <span>{selectedPhoneCode}</span>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
 
-                <div className="space-y-2">
-                  <Label htmlFor="message">
-                    {t("contactForm.message")} <span className="text-red-600">*</span>
-                  </Label>
-                  <textarea
-                    id="message"
-                    rows={6}
-                    required
-                    className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-                    placeholder={t("contactForm.messagePlaceholder")}
-                  />
-                </div>
+                          {isDropdownOpen && (
+                            <div className="absolute top-full mt-1 left-0 w-64 max-h-60 overflow-y-auto bg-white border border-brand-grayLight rounded-lg shadow-lg z-50">
+                              {COUNTRIES.map((country) => (
+                                <button
+                                  key={country.code}
+                                  type="button"
+                                  onClick={() => { setSelectedPhoneCode(country.phoneCode); setIsDropdownOpen(false); }}
+                                  className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 text-left text-sm"
+                                >
+                                  <ReactCountryFlag countryCode={country.code} svg style={{ width: '1.5em', height: '1.5em' }} />
+                                  <span className="font-medium">{country.phoneCode}</span>
+                                  <span className="text-gray-600 text-xs">{country.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <span className="text-brand-grayLight">|</span>
+                      </div>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        placeholder="123456789"
+                        className="pl-32"
+                        value={formData.phone}
+                        onChange={(e) => setField("phone", e.target.value)}
+                      />
+                    </div>
+                  </div>
 
-                <Button type="submit" variant="primary" size="lg" className="w-full">
-                  {t("contactForm.submit")}
-                </Button>
-              </form>
+                  <div className="space-y-2">
+                    <Label htmlFor="subject">
+                      {t("contactForm.subject")} <span className="text-red-600">*</span>
+                    </Label>
+                    <select
+                      id="subject"
+                      required
+                      value={formData.subject}
+                      onChange={(e) => setField("subject", e.target.value)}
+                      className="flex h-12 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+                    >
+                      <option value="">{t("contactForm.selectSubject")}</option>
+                      <option value="account">{t("contactForm.subjects.account")}</option>
+                      <option value="technical">{t("contactForm.subjects.technical")}</option>
+                      <option value="company">{t("contactForm.subjects.company")}</option>
+                      <option value="billing">{t("contactForm.subjects.billing")}</option>
+                      <option value="other">{t("contactForm.subjects.other")}</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="message">
+                      {t("contactForm.message")} <span className="text-red-600">*</span>
+                    </Label>
+                    <textarea
+                      id="message"
+                      rows={6}
+                      required
+                      value={formData.message}
+                      onChange={(e) => setField("message", e.target.value)}
+                      className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+                      placeholder={t("contactForm.messagePlaceholder")}
+                    />
+                  </div>
+
+                  {submitStatus === "error" && (
+                    <div className="flex items-start gap-3 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+                      <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                      <span>{submitError}</span>
+                    </div>
+                  )}
+
+                  <Button type="submit" variant="primary" size="lg" className="w-full" disabled={submitting}>
+                    {submitting ? (
+                      <span className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Sending...
+                      </span>
+                    ) : t("contactForm.submit")}
+                  </Button>
+                </form>
+              )}
             </CardContent>
           </Card>
         </div>

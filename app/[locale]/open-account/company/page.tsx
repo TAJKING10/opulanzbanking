@@ -19,6 +19,8 @@ import { SectionHeading } from "@/components/section-heading";
 import { StatusChip } from "@/components/status-chip";
 import { COUNTRIES } from "@/shared/lib/countries";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 type ApplicationStatus = "form" | "submitted" | "approved" | "declined";
 
 export default function CompanyAccountPage() {
@@ -94,7 +96,7 @@ export default function CompanyAccountPage() {
       };
 
       // Submit application to backend API
-      const applicationResponse = await fetch('http://localhost:5000/api/applications', {
+      const applicationResponse = await fetch(`${API}/api/applications`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +126,7 @@ export default function CompanyAccountPage() {
         },
       };
 
-      const companyResponse = await fetch('http://localhost:5000/api/companies', {
+      const companyResponse = await fetch(`${API}/api/companies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

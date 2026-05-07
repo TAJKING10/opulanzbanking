@@ -13,8 +13,14 @@
 
 const express = require('express');
 const router = express.Router();
+const nodemailer = require('nodemailer');
 const { pool } = require('../config/db');
 const { createNarviAccount } = require('../services/narvi');
+
+const emailTransporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+});
 
 /**
  * POST /api/applications
@@ -105,6 +111,51 @@ router.post('/', async (req, res) => {
       } else {
         console.warn(`⚠️ Application #${application.id} saved but Narvi integration failed:`, narviResponse.error);
       }
+    }
+
+    // Send confirmation email if submitted and email provided
+    if (status === 'submitted' && payload.email) {
+      const firstName = payload.firstName || payload.companyName || 'Client';
+      const isCompany = type === 'company';
+      emailTransporter.sendMail({
+        from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+        to: payload.email,
+        replyTo: 'support@opulanz.com',
+        subject: 'Opulanz — Application Received',
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+            <div style="background:linear-gradient(135deg,#b59354,#886844);padding:32px;text-align:center;border-radius:12px 12px 0 0;">
+              <h1 style="color:white;margin:0;font-size:28px;letter-spacing:2px;">OPULANZ</h1>
+              <p style="color:rgba(255,255,255,0.8);margin:6px 0 0;font-size:13px;">Banking Platform</p>
+            </div>
+            <div style="background:#fff;padding:40px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
+              <h2 style="color:#252623;margin:0 0 16px;">Application Received</h2>
+              <p style="color:#555;font-size:15px;line-height:1.7;">Dear ${firstName},</p>
+              <p style="color:#555;font-size:15px;line-height:1.7;">
+                Thank you for submitting your ${isCompany ? 'company' : 'individual'} account application to Opulanz.
+                We have received your information and our compliance team will review it shortly.
+              </p>
+              <div style="background:#f6f8f8;border-radius:12px;padding:20px;margin:24px 0;border-left:4px solid #b59354;">
+                <p style="margin:0 0 8px;font-weight:600;color:#252623;">Your Reference Number:</p>
+                <p style="margin:0;font-size:22px;font-weight:bold;color:#b59354;letter-spacing:2px;">#${String(application.id).padStart(6, '0')}</p>
+              </div>
+              <p style="color:#555;font-size:14px;line-height:1.7;">
+                You will be notified by email at every stage of the process.
+                If you have any questions, contact us at
+                <a href="mailto:support@opulanz.com" style="color:#b59354;font-weight:600;">support@opulanz.com</a>
+              </p>
+              <p style="color:#9ca3af;font-size:12px;margin-top:32px;">© 2026 Opulanz Banking. All rights reserved.</p>
+            </div>
+          </div>`,
+      }).catch(e => console.error('Confirmation email failed:', e.message));
+
+      // Notify support team
+      emailTransporter.sendMail({
+        from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+        to: 'support@opulanz.com',
+        subject: `[New Application #${application.id}] ${isCompany ? 'Company' : 'Individual'} — ${firstName}`,
+        html: `<p>New ${type} application submitted.</p><p><strong>Ref:</strong> #${application.id}</p><p><strong>Name:</strong> ${firstName}</p><p><strong>Email:</strong> ${payload.email}</p>`,
+      }).catch(() => {});
     }
 
     res.status(201).json({

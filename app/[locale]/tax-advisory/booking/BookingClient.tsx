@@ -210,7 +210,7 @@ export default function BookingClient() {
     }
     setLoading(true);
 
-    const API = "http://localhost:5000";
+    const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
     const name = `${bookingData.firstName} ${bookingData.lastName}`.trim();
     const now = new Date().toISOString();
     const startTime = bookingData.eventStartTime || now;

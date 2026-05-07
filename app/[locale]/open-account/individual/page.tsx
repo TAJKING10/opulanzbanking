@@ -20,6 +20,8 @@ import { SectionHeading } from "@/components/section-heading";
 import { StatusChip } from "@/components/status-chip";
 import { COUNTRIES } from "@/shared/lib/countries";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 type ApplicationStatus = "form" | "submitted" | "approved" | "declined";
 
 export default function IndividualAccountPage() {
@@ -118,7 +120,7 @@ export default function IndividualAccountPage() {
       };
 
       // Submit to backend API
-      const response = await fetch('http://localhost:5000/api/applications', {
+      const response = await fetch(`${API}/api/applications`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

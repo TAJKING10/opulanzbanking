@@ -57,6 +57,7 @@ async function sendEmailOTP(email, otp, purpose) {
   await emailTransporter.sendMail({
     from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
     to: email,
+    replyTo: 'support@opulanz.com',
     subject,
     html: `
       <!DOCTYPE html>
@@ -104,6 +105,7 @@ async function sendSmsOTP(phone, otp, email, purpose) {
       await emailTransporter.sendMail({
         from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
         to: email,
+        replyTo: 'support@opulanz.com',
         subject: 'Opulanz - Phone Verification Code',
         html: `
           <!DOCTYPE html>
@@ -712,6 +714,7 @@ router.post('/verify-totp-setup', async (req, res) => {
     emailTransporter.sendMail({
       from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
       to: user.email,
+      replyTo: 'support@opulanz.com',
       subject: 'Welcome to Opulanz — Your Account is Ready',
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">

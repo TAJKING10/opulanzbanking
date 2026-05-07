@@ -10,6 +10,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import emailjs from '@emailjs/browser';
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export default function InternationalTaxPage({ params: { locale } }: { params: { locale: string } }) {
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
@@ -387,7 +389,7 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
         throw new Error('No booking data available');
       }
 
-      await fetch('http://localhost:5000/api/appointments', {
+      await fetch(`${API}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

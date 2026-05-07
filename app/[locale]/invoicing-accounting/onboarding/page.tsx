@@ -14,6 +14,8 @@ import { BillingVolumeStep } from "@/components/accounting/billing-volume-step";
 import { DocumentsStep } from "@/components/accounting/documents-step";
 import { ReviewSubmitStep } from "@/components/accounting/review-submit-step";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export default function AccountingOnboardingPage() {
   const params = useParams();
   const router = useRouter();
@@ -208,7 +210,7 @@ export default function AccountingOnboardingPage() {
       };
 
       // Submit to Azure backend API
-      const response = await fetch('http://localhost:5000/api/applications', {
+      const response = await fetch(`${API}/api/applications`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import emailjs from '@emailjs/browser';
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export default function TaxReturnPreparationPage({ params: { locale } }: { params: { locale: string } }) {
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
@@ -262,7 +264,7 @@ Contact: opulanz.banking@gmail.com
       }
 
       // Save appointment to database
-      const appointmentResponse = await fetch('http://localhost:5000/api/appointments', {
+      const appointmentResponse = await fetch(`${API}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

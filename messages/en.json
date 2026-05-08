@@ -2738,13 +2738,13 @@
       "phone": {
         "title": "Phone Support",
         "description": "Speak directly with one of our support specialists.",
-        "number": "+352 28 79 76 26",
+        "number": "LU: +352 28 79 76 26  |  FR: +33 6 98 21 44 46",
         "hours": "Monâ€“Fri, 9:00â€“18:00 CET"
       },
       "email": {
         "title": "Email Support",
         "description": "Send us a message and we'll get back to you promptly.",
-        "address": "support@opulanz.com",
+        "address": "contact@opulanz.com",
         "response": "Response within 24 hours"
       },
       "chat": {
@@ -2780,7 +2780,7 @@
       "questions": {
         "openAccount": {
           "question": "How long does it take to open an account?",
-          "answer": "Individual accounts are typically approved within 24â€“48 hours. Business accounts take 3â€“5 business days depending on the complexity of the application."
+          "answer": "Individual accounts are typically approved within 24–48 hours. Business accounts take 3–5 business days depending on the complexity of the application."
         },
         "documents": {
           "question": "What documents do I need?",
@@ -2788,7 +2788,7 @@
         },
         "fees": {
           "question": "What are the monthly fees?",
-          "answer": "Individual accounts start at â‚¬10/month. Business accounts start at â‚¬25/month. Full fee schedules are available in your account settings."
+          "answer": "Individual accounts start at €10/month. Business accounts start at €25/month. Full fee schedules are available in your account settings."
         },
         "currencies": {
           "question": "Which currencies are supported?",
@@ -2824,17 +2824,17 @@
       "description": "Visit us in Luxembourg or France.",
       "luxembourg": {
         "title": "Luxembourg",
-        "address": "1 Avenue de la LibertÃ©",
-        "city": "L-1931 Luxembourg",
+        "address": "34, Grand-rue",
+        "city": "L-9710 Clervaux",
         "country": "Luxembourg",
         "phone": "Phone",
         "email": "Email"
       },
       "france": {
         "title": "France",
-        "address": "66 Avenue des Champs-Ã‰lysÃ©es",
-        "city": "75008 Paris",
-        "country": "France",
+        "address": "34, Grand-rue",
+        "city": "L-9710 Clervaux",
+        "country": "Luxembourg",
         "phone": "Phone",
         "email": "Email"
       }

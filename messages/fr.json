@@ -2738,13 +2738,13 @@
       "phone": {
         "title": "Assistance téléphonique",
         "description": "Parlez directement avec l'un de nos spécialistes du support.",
-        "number": "+352 28 79 76 26",
+        "number": "LU : +352 28 79 76 26  |  FR : +33 6 98 21 44 46",
         "hours": "Lun–Ven, 9h00–18h00 CET"
       },
       "email": {
         "title": "Assistance par e-mail",
         "description": "Envoyez-nous un message et nous vous répondrons rapidement.",
-        "address": "support@opulanz.com",
+        "address": "contact@opulanz.com",
         "response": "Réponse sous 24 heures"
       },
       "chat": {
@@ -2824,17 +2824,17 @@
       "description": "Rendez-nous visite au Luxembourg ou en France.",
       "luxembourg": {
         "title": "Luxembourg",
-        "address": "1 Avenue de la Liberté",
-        "city": "L-1931 Luxembourg",
+        "address": "34, Grand-rue",
+        "city": "L-9710 Clervaux",
         "country": "Luxembourg",
         "phone": "Téléphone",
         "email": "E-mail"
       },
       "france": {
         "title": "France",
-        "address": "66 Avenue des Champs-Élysées",
-        "city": "75008 Paris",
-        "country": "France",
+        "address": "34, Grand-rue",
+        "city": "L-9710 Clervaux",
+        "country": "Luxembourg",
         "phone": "Téléphone",
         "email": "E-mail"
       }

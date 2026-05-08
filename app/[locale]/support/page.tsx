@@ -454,11 +454,11 @@ export default function SupportPage() {
                   <p>{t("offices.luxembourg.city")}</p>
                   <p>{t("offices.luxembourg.country")}</p>
                   <p className="mt-4">
-                    <strong className="text-brand-dark">{t("offices.luxembourg.phone")}:</strong> +352 20 30 40 50
+                    <strong className="text-brand-dark">{t("offices.luxembourg.phone")}:</strong> +352 28 79 76 26
                   </p>
                   <p>
                     <strong className="text-brand-dark">{t("offices.luxembourg.email")}:</strong>{" "}
-                    luxembourg@opulanz.com
+                    contact@opulanz.com
                   </p>
                 </div>
               </CardContent>
@@ -474,11 +474,11 @@ export default function SupportPage() {
                   <p>{t("offices.france.city")}</p>
                   <p>{t("offices.france.country")}</p>
                   <p className="mt-4">
-                    <strong className="text-brand-dark">{t("offices.france.phone")}:</strong> +33 1 23 45 67 89
+                    <strong className="text-brand-dark">{t("offices.france.phone")}:</strong> +33 6 98 21 44 46
                   </p>
                   <p>
                     <strong className="text-brand-dark">{t("offices.france.email")}:</strong>{" "}
-                    france@opulanz.com
+                    contact@opulanz.com
                   </p>
                 </div>
               </CardContent>

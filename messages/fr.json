@@ -3339,7 +3339,8 @@
         "apple": "Apple",
         "appleComingSoon": "Connexion Apple bientôt disponible",
         "noAccount": "Vous n'avez pas de compte ?",
-        "signUp": "S'inscrire"
+        "signUp": "S'inscrire",
+        "google": "Google"
       },
       "emailOtp": {
         "title": "Vérifiez votre e-mail",

@@ -3339,7 +3339,8 @@
         "apple": "Apple",
         "appleComingSoon": "Apple Sign-In coming soon",
         "noAccount": "Don't have an account?",
-        "signUp": "Sign Up"
+        "signUp": "Sign Up",
+        "google": "Google"
       },
       "emailOtp": {
         "title": "Check your email",

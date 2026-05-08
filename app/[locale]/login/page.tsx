@@ -165,14 +165,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen">
       {/* Left Side - Branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#b59354] to-[#886844] text-white flex-col justify-between p-12">
-        <div>
-          <Link href={`/${locale}`} className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-              <span className="text-xl font-bold">O</span>
-            </div>
-            <span className="text-2xl font-bold">Opulanz</span>
-          </Link>
-        </div>
+        <div />
 
         <div className="space-y-6">
           <h1 className="text-4xl font-bold leading-tight">

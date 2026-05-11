@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const speakeasy = require('speakeasy');
-const QRCode = require('qrcode');
 const nodemailer = require('nodemailer');
 const twilio = require('twilio');
 const { OAuth2Client } = require('google-auth-library');
@@ -211,6 +209,19 @@ async function saveOTP(userId, email, otp, type, purpose) {
     `INSERT INTO otps (user_id, email, otp_code, type, purpose, expires_at) VALUES ($1, $2, $3, $4, $5, $6)`,
     [userId || null, email, otp, type, purpose, expiresAt]
   );
+}
+
+async function verifyOTPByEmail(email, otp, type, purpose) {
+  const result = await pool.query(
+    `SELECT * FROM otps
+     WHERE email = $1 AND otp_code = $2 AND type = $3 AND purpose = $4
+       AND user_id IS NULL AND used = FALSE AND expires_at > NOW()
+     ORDER BY created_at DESC LIMIT 1`,
+    [email, otp, type, purpose]
+  );
+  if (result.rows.length === 0) return null;
+  await pool.query(`UPDATE otps SET used = TRUE WHERE id = $1`, [result.rows[0].id]);
+  return result.rows[0];
 }
 
 async function verifyOTP(userId, otp, type, purpose) {
@@ -630,14 +641,27 @@ router.post('/google', async (req, res) => {
   }
 });
 
-// ─── POST /api/auth/register-post-kyc ────────────────────────────────────────
-// Called after Sumsub KYC completes. Creates the user, generates a TOTP secret
-// for Google Authenticator, and returns a QR code + temp token.
-// The user must verify a TOTP code (POST /verify-totp-setup) to get the full JWT.
-router.post('/register-post-kyc', async (req, res) => {
+
+// GET /api/auth/me
+router.get('/me', requireAuth, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, name, first_name, last_name, email, phone, account_type, kyc_status, email_verified, phone_verified FROM users WHERE id = $1',
+      [req.user.userId]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get user' });
+  }
+});
+
+// ─── POST /api/auth/register-no-2fa ──────────────────────────────────────────
+// Creates account after KYC + OTP verification. No TOTP required.
+// Provisions bank account and sends welcome email immediately.
+router.post('/register-no-2fa', async (req, res) => {
   try {
     const { firstName, lastName, email, phone, password, accountType, applicationId } = req.body;
-
     if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ error: 'firstName, lastName, email and password are required' });
     }
@@ -645,7 +669,6 @@ router.post('/register-post-kyc', async (req, res) => {
       return res.status(400).json({ error: 'Password must be at least 8 characters' });
     }
 
-    // Check if user already exists
     const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
     if (existing.rows.length > 0) {
       return res.status(409).json({ error: 'An account with this email already exists. Please sign in.' });
@@ -654,25 +677,18 @@ router.post('/register-post-kyc', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 12);
     const fullName = `${firstName} ${lastName}`;
 
-    // Generate TOTP secret for Google Authenticator
-    const totpSecret = speakeasy.generateSecret({
-      name: `Opulanz (${email})`,
-      issuer: 'Opulanz Banking',
-      length: 20,
-    });
-
     const result = await pool.query(
       `INSERT INTO users
          (name, first_name, last_name, email, phone, password_hash,
-          account_type, kyc_status, email_verified, phone_verified, totp_secret, created_at, updated_at)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,'verified',TRUE,TRUE,$8,NOW(),NOW())
-       RETURNING id, email, account_type, kyc_status`,
-      [fullName, firstName, lastName, email, phone || null, passwordHash, accountType || 'individual', totpSecret.base32]
+          account_type, kyc_status, email_verified, phone_verified, created_at, updated_at)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,'verified',TRUE,TRUE,NOW(),NOW())
+       RETURNING id, email, account_type, kyc_status, first_name`,
+      [fullName, firstName, lastName, email, phone || null, passwordHash, accountType || 'individual']
     );
 
     const user = result.rows[0];
 
-    // Link application to user if applicationId provided
+    // Link application to user
     if (applicationId) {
       await pool.query(
         'UPDATE applications SET payload = payload || $1 WHERE id = $2',
@@ -680,94 +696,38 @@ router.post('/register-post-kyc', async (req, res) => {
       ).catch(() => {});
     }
 
-    // Generate QR code as base64 data URL
-    const totpQrCode = await QRCode.toDataURL(totpSecret.otpauth_url);
-
-    // Issue a short-lived temp token for the TOTP setup verification step
-    const tempToken = jwt.sign(
-      { userId: user.id, purpose: '2fa-setup' },
-      JWT_SECRET,
-      { expiresIn: '10m' }
-    );
-
-    res.status(201).json({
-      success: true,
-      tempToken,
-      totpQrCode,
-      totpSecret: totpSecret.base32, // manual entry fallback
-      user: { id: user.id, email: user.email, firstName, accountType: user.account_type },
-    });
-  } catch (err) {
-    console.error('register-post-kyc error:', err);
-    res.status(500).json({ error: 'Failed to create account' });
-  }
-});
-
-// ─── POST /api/auth/verify-totp-setup ────────────────────────────────────────
-// Verifies the first TOTP code after account creation (confirms Google Authenticator
-// is set up correctly). Returns the full JWT on success.
-router.post('/verify-totp-setup', async (req, res) => {
-  try {
-    const { tempToken, code } = req.body;
-    if (!tempToken || !code) return res.status(400).json({ error: 'tempToken and code are required' });
-
-    let payload;
-    try {
-      payload = jwt.verify(tempToken, JWT_SECRET);
-    } catch {
-      return res.status(401).json({ error: 'Setup session expired. Please start over.' });
-    }
-    if (payload.purpose !== '2fa-setup') return res.status(401).json({ error: 'Invalid setup token' });
-
-    const result = await pool.query(
-      'SELECT id, email, first_name, last_name, account_type, kyc_status, totp_secret FROM users WHERE id = $1',
-      [payload.userId]
-    );
-    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-
-    const user = result.rows[0];
-    const verified = speakeasy.totp.verify({
-      secret: user.totp_secret,
-      encoding: 'base32',
-      token: code,
-      window: 1,
-    });
-    if (!verified) return res.status(400).json({ error: 'Invalid code. Please check Google Authenticator and try again.' });
-
-    // ── Provision bank account (mock Narvi) ──────────────────────────────────
+    // Provision bank account
     let iban = null, bic = null;
     try {
       const appResult = await pool.query(
-        "SELECT * FROM applications WHERE payload->>'userId' = $1 OR (payload->>'email' = $2) LIMIT 1",
-        [String(user.id), user.email]
+        "SELECT * FROM applications WHERE id = $1 OR (payload->>'email' = $2) ORDER BY created_at DESC LIMIT 1",
+        [applicationId || 0, email]
       );
-      const appData = appResult.rows[0] || { type: user.account_type === 'corporate' ? 'company' : 'individual', payload: {} };
-
+      const appData = appResult.rows[0] || { type: accountType === 'corporate' ? 'company' : 'individual', payload: {} };
       const banking = await provisionBankAccount(appData);
       iban = banking.iban;
       bic = banking.bic;
-
       await pool.query(
         'UPDATE users SET iban=$1, bic=$2, narvi_customer_pid=$3, narvi_account_pid=$4, bank_account_status=$5 WHERE id=$6',
         [iban, bic, banking.narviCustomerPid, banking.narviAccountPid, 'active', user.id]
       );
     } catch (provErr) {
-      console.error('Bank provisioning error (non-blocking):', provErr.message);
+      console.warn('Bank provisioning skipped:', provErr.message);
     }
 
-    // Send welcome email with IBAN
+    // Send welcome email
     emailTransporter.sendMail({
       from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
-      to: user.email,
+      to: email,
       replyTo: 'support@opulanz.com',
       subject: 'Welcome to Opulanz — Your Account is Ready',
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
           <div style="background:linear-gradient(135deg,#b59354,#886844);padding:32px;text-align:center;border-radius:12px 12px 0 0">
-            <h1 style="color:white;margin:0;font-size:28px">Welcome to Opulanz</h1>
+            <h1 style="color:white;margin:0;font-size:28px;letter-spacing:2px">OPULANZ</h1>
           </div>
           <div style="background:#fff;padding:32px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px">
-            <p style="font-size:16px;color:#374151">Dear ${user.first_name},</p>
+            <p style="font-size:16px;color:#374151">Dear ${firstName},</p>
             <p style="color:#6b7280">Your identity has been verified and your Opulanz account is now active.</p>
             ${iban ? `
             <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:20px;margin:24px 0">
@@ -776,231 +736,107 @@ router.post('/verify-totp-setup', async (req, res) => {
               <p style="margin:4px 0;color:#374151"><strong>BIC/SWIFT:</strong> ${bic}</p>
             </div>` : ''}
             <p style="color:#6b7280;font-size:14px">Sign in at <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}" style="color:#b59354">opulanz.com</a> to access your dashboard.</p>
-            <p style="color:#9ca3af;font-size:12px;margin-top:32px">© 2026 Opulanz. All rights reserved.</p>
           </div>
         </div>`,
     }).catch(() => {});
 
     const token = jwt.sign(
-      { userId: user.id, email: user.email, accountType: user.account_type, kycStatus: user.kyc_status },
+      { userId: user.id, email: user.email, accountType: user.account_type, kycStatus: 'verified' },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }
     );
 
-    res.json({
-      success: true,
-      token,
-      iban,
-      bic,
-      user: { id: user.id, email: user.email, accountType: user.account_type },
-    });
+    res.status(201).json({ success: true, token, iban, bic, user: { id: user.id, email: user.email, firstName, accountType: user.account_type } });
   } catch (err) {
-    console.error('verify-totp-setup error:', err);
-    res.status(500).json({ error: 'Verification failed' });
+    console.error('register-no-2fa error:', err);
+    res.status(500).json({ error: 'Failed to create account' });
   }
 });
 
-// ─── POST /api/auth/signin-password ─────────────────────────────────────────
-// Email + password sign in. If user has Google Authenticator (totp_secret),
-// returns { requires2FA: true, tempToken } instead of a full JWT.
-router.post('/signin-password', async (req, res) => {
+// ─── PRE-REGISTRATION OTP (no userId required) ───────────────────────────────
+
+// POST /api/auth/pre-register/send-email-otp
+router.post('/pre-register/send-email-otp', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: 'Email and password are required' });
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: 'Email required' });
+    const otp = generateOTP();
+    await saveOTP(null, email, otp, 'email', 'pre-register');
+    await sendEmailOTP(email, otp, 'signup');
+    res.json({ success: true, ...(IS_DEMO && { demoOtp: otp }) });
+  } catch (err) {
+    console.error('pre-register send-email-otp error:', err);
+    res.status(500).json({ error: 'Failed to send verification code' });
+  }
+});
 
-    const result = await pool.query(
-      'SELECT id, email, first_name, last_name, password_hash, account_type, kyc_status, totp_secret FROM users WHERE email = $1',
-      [email]
-    );
-    if (result.rows.length === 0) return res.status(401).json({ error: 'Invalid email or password' });
+// POST /api/auth/pre-register/verify-email-otp
+router.post('/pre-register/verify-email-otp', async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    if (!email || !otp) return res.status(400).json({ error: 'Email and code required' });
+    const valid = await verifyOTPByEmail(email, otp, 'email', 'pre-register');
+    if (!valid) return res.status(400).json({ error: 'Invalid or expired code' });
+    res.json({ success: true });
+  } catch (err) {
+    console.error('pre-register verify-email-otp error:', err);
+    res.status(500).json({ error: 'Failed to verify code' });
+  }
+});
 
-    const user = result.rows[0];
-    if (!user.password_hash) return res.status(401).json({ error: 'This account uses Google sign-in. Please use "Continue with Google".' });
+// POST /api/auth/pre-register/send-sms-otp
+router.post('/pre-register/send-sms-otp', async (req, res) => {
+  try {
+    const { phone, email } = req.body;
+    if (!phone) return res.status(400).json({ error: 'Phone required' });
+    const smsResult = await sendSmsOTP(phone, email, 'pre-register');
+    res.json({
+      success: true,
+      smsSent: smsResult.sent,
+      ...(IS_DEMO && smsResult.fallbackOtp && { demoOtp: smsResult.fallbackOtp }),
+    });
+  } catch (err) {
+    console.error('pre-register send-sms-otp error:', err);
+    res.status(500).json({ error: 'Failed to send SMS code' });
+  }
+});
 
-    const valid = await bcrypt.compare(password, user.password_hash);
-    if (!valid) return res.status(401).json({ error: 'Invalid email or password' });
+// POST /api/auth/pre-register/verify-sms-otp
+router.post('/pre-register/verify-sms-otp', async (req, res) => {
+  try {
+    const { phone, otp, email } = req.body;
+    if (!phone || !otp) return res.status(400).json({ error: 'Phone and code required' });
 
-    // If user has 2FA set up, require Google Authenticator code
-    if (user.totp_secret) {
-      const tempToken = jwt.sign(
-        { userId: user.id, purpose: '2fa-signin' },
-        JWT_SECRET,
-        { expiresIn: '5m' }
+    // Try Twilio Verify first
+    const e164 = normalisePhone(phone);
+    const verify = getTwilioVerifyService();
+    if (verify && e164) {
+      try {
+        const check = await verify.verificationChecks.create({ to: e164, code: otp });
+        if (check.status === 'approved') return res.json({ success: true });
+        return res.status(400).json({ error: 'Invalid or expired code' });
+      } catch (_) { /* fall through to email fallback */ }
+    }
+
+    // Email fallback — code was emailed, stored by email in otps table
+    if (email) {
+      const row = await pool.query(
+        `SELECT * FROM otps WHERE email = $1 AND otp_code = $2
+         AND type = 'phone_fallback' AND purpose = 'pre-register'
+         AND used = FALSE AND expires_at > NOW()
+         ORDER BY created_at DESC LIMIT 1`,
+        [email, otp]
       );
-      return res.json({ success: true, requires2FA: true, tempToken });
+      if (row.rows.length > 0) {
+        await pool.query('UPDATE otps SET used = TRUE WHERE id = $1', [row.rows[0].id]);
+        return res.json({ success: true });
+      }
     }
 
-    // No 2FA — return full JWT directly (Google OAuth users without TOTP)
-    const token = jwt.sign(
-      { userId: user.id, email: user.email, accountType: user.account_type, kycStatus: user.kyc_status },
-      JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
-    );
-    res.json({ success: true, token, user: { id: user.id, email: user.email, firstName: user.first_name, accountType: user.account_type } });
+    return res.status(400).json({ error: 'Invalid or expired code' });
   } catch (err) {
-    console.error('signin-password error:', err);
-    res.status(500).json({ error: 'Sign in failed' });
-  }
-});
-
-// ─── POST /api/auth/verify-totp ─────────────────────────────────────────────
-// Verifies Google Authenticator code during sign in.
-router.post('/verify-totp', async (req, res) => {
-  try {
-    const { tempToken, code } = req.body;
-    if (!tempToken || !code) return res.status(400).json({ error: 'tempToken and code are required' });
-
-    let payload;
-    try {
-      payload = jwt.verify(tempToken, JWT_SECRET);
-    } catch {
-      return res.status(401).json({ error: 'Session expired. Please sign in again.' });
-    }
-    if (payload.purpose !== '2fa-signin') return res.status(401).json({ error: 'Invalid token' });
-
-    const result = await pool.query(
-      'SELECT id, email, first_name, account_type, kyc_status, totp_secret FROM users WHERE id = $1',
-      [payload.userId]
-    );
-    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-
-    const user = result.rows[0];
-    const verified = speakeasy.totp.verify({
-      secret: user.totp_secret,
-      encoding: 'base32',
-      token: code,
-      window: 1,
-    });
-    if (!verified) return res.status(400).json({ error: 'Invalid code. Please check Google Authenticator.' });
-
-    const token = jwt.sign(
-      { userId: user.id, email: user.email, accountType: user.account_type, kycStatus: user.kyc_status },
-      JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
-    );
-
-    res.json({ success: true, token, user: { id: user.id, email: user.email, accountType: user.account_type } });
-  } catch (err) {
-    console.error('verify-totp error:', err);
-    res.status(500).json({ error: 'Verification failed' });
-  }
-});
-
-// GET /api/auth/me
-router.get('/me', requireAuth, async (req, res) => {
-  try {
-    const result = await pool.query(
-      'SELECT id, name, first_name, last_name, email, phone, account_type, kyc_status, email_verified, phone_verified, totp_secret FROM users WHERE id = $1',
-      [req.user.userId]
-    );
-    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-    const user = result.rows[0];
-    res.json({ ...user, totp_enabled: !!user.totp_secret, totp_secret: undefined });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to get user' });
-  }
-});
-
-// ─── POST /api/auth/setup-totp ───────────────────────────────────────────────
-// For existing logged-in users to enable Google Authenticator.
-// Generates (or regenerates) a TOTP secret and returns the QR code.
-router.post('/setup-totp', requireAuth, async (req, res) => {
-  try {
-    const userResult = await pool.query('SELECT id, email FROM users WHERE id = $1', [req.user.userId]);
-    if (userResult.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-    const user = userResult.rows[0];
-
-    const totpSecret = speakeasy.generateSecret({
-      name: `Opulanz (${user.email})`,
-      issuer: 'Opulanz Banking',
-      length: 20,
-    });
-
-    // Save secret immediately so verify-totp-enable can read it
-    await pool.query('UPDATE users SET totp_secret = $1 WHERE id = $2', [totpSecret.base32, user.id]);
-
-    const totpQrCode = await QRCode.toDataURL(totpSecret.otpauth_url);
-
-    // Short-lived token for the confirmation step
-    const tempToken = jwt.sign(
-      { userId: user.id, purpose: '2fa-enable' },
-      JWT_SECRET,
-      { expiresIn: '10m' }
-    );
-
-    res.json({
-      success: true,
-      tempToken,
-      totpQrCode,
-      totpSecret: totpSecret.base32,
-    });
-  } catch (err) {
-    console.error('setup-totp error:', err);
-    res.status(500).json({ error: 'Failed to generate 2FA setup' });
-  }
-});
-
-// ─── POST /api/auth/confirm-totp-enable ─────────────────────────────────────
-// Confirms the TOTP code after setup-totp. Returns success (secret already saved).
-router.post('/confirm-totp-enable', async (req, res) => {
-  try {
-    const { tempToken, code } = req.body;
-    if (!tempToken || !code) return res.status(400).json({ error: 'tempToken and code are required' });
-
-    let payload;
-    try {
-      payload = jwt.verify(tempToken, JWT_SECRET);
-    } catch {
-      return res.status(401).json({ error: 'Setup session expired. Please start over.' });
-    }
-    if (payload.purpose !== '2fa-enable') return res.status(401).json({ error: 'Invalid setup token' });
-
-    const result = await pool.query('SELECT id, totp_secret FROM users WHERE id = $1', [payload.userId]);
-    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-
-    const user = result.rows[0];
-    const verified = speakeasy.totp.verify({
-      secret: user.totp_secret,
-      encoding: 'base32',
-      token: code,
-      window: 2,
-    });
-
-    if (!verified) return res.status(400).json({ error: 'Invalid code. Please check Google Authenticator and try again.' });
-
-    res.json({ success: true, message: 'Google Authenticator enabled successfully.' });
-  } catch (err) {
-    console.error('confirm-totp-enable error:', err);
-    res.status(500).json({ error: 'Verification failed' });
-  }
-});
-
-// ─── POST /api/auth/disable-totp ────────────────────────────────────────────
-// Disables TOTP for a logged-in user (requires current TOTP code to confirm).
-router.post('/disable-totp', requireAuth, async (req, res) => {
-  try {
-    const { code } = req.body;
-    if (!code) return res.status(400).json({ error: 'TOTP code required to disable 2FA' });
-
-    const result = await pool.query('SELECT id, totp_secret FROM users WHERE id = $1', [req.user.userId]);
-    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-
-    const user = result.rows[0];
-    if (!user.totp_secret) return res.status(400).json({ error: '2FA is not enabled' });
-
-    const verified = speakeasy.totp.verify({
-      secret: user.totp_secret,
-      encoding: 'base32',
-      token: code,
-      window: 2,
-    });
-    if (!verified) return res.status(400).json({ error: 'Invalid code' });
-
-    await pool.query('UPDATE users SET totp_secret = NULL WHERE id = $1', [user.id]);
-    res.json({ success: true, message: '2FA disabled.' });
-  } catch (err) {
-    console.error('disable-totp error:', err);
-    res.status(500).json({ error: 'Failed to disable 2FA' });
+    console.error('pre-register verify-sms-otp error:', err);
+    res.status(500).json({ error: 'Failed to verify code' });
   }
 });
 

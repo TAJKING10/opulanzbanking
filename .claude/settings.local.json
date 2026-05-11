@@ -124,7 +124,8 @@
       "Bash(powershell -ExecutionPolicy Bypass -File \"C:/Users/Toufi/AndroidStudioProjects/azuree/deploy-backend.ps1\" 2>&1)",
       "Bash(powershell -ExecutionPolicy Bypass -File \"C:/Users/Toufi/AndroidStudioProjects/azuree/deploy-frontend.ps1\" 2>&1)",
       "Bash(git log:*)",
-      "Bash(git diff:*)"
+      "Bash(git diff:*)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d\\)\")"
     ],
     "deny": [],
     "ask": []

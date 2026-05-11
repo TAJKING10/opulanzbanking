@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS otps (
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     email VARCHAR(255),
     otp_code VARCHAR(6) NOT NULL,
-    type VARCHAR(10) NOT NULL CHECK (type IN ('email', 'phone')),
-    purpose VARCHAR(20) NOT NULL CHECK (purpose IN ('signup', 'signin')),
+    type VARCHAR(20) NOT NULL CHECK (type IN ('email', 'phone', 'phone_fallback')),
+    purpose VARCHAR(20) NOT NULL CHECK (purpose IN ('signup', 'signin', 'pre-register', 'phone_fallback')),
     expires_at TIMESTAMP NOT NULL,
     used BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

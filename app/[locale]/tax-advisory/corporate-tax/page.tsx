@@ -207,7 +207,7 @@ Contact: opulanz.banking@gmail.com
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, location: 'Video Conference',
           notes: `Paid consultation - €${totalPrice}`
         })
-      });
+      }).catch(() => {});
       sendEmailReceipts();
 
       setStep('confirmation');

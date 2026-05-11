@@ -209,22 +209,6 @@ export default function AccountingOnboardingPage() {
         }
       };
 
-      // Submit to Azure backend API
-      const response = await fetch(`${API}/api/applications`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(applicationPayload),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit accounting onboarding to backend');
-      }
-
-      const result = await response.json();
-      console.log("Accounting onboarding saved to Azure database:", result);
-
       // Clear saved progress
       localStorage.removeItem("accounting-onboarding-progress");
 

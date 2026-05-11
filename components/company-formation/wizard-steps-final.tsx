@@ -453,54 +453,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
       const finalDossier: CompanyFormationDossier = dossier as CompanyFormationDossier;
       finalDossier.updatedAt = new Date().toISOString();
 
-      // Save to backend database
-      const applicationPayload = {
-        type: "company_formation",
-        status: "submitted",
-        payload: {
-          formType: finalDossier.formType,
-          country: finalDossier.country,
-          proposedNames: finalDossier.proposedNames,
-          purpose: finalDossier.purpose,
-          registeredOffice: finalDossier.registeredOffice,
-          duration: finalDossier.duration,
-          shareholders: finalDossier.shareholders,
-          directors: finalDossier.directors,
-          managers: finalDossier.managers,
-          ubos: finalDossier.ubos,
-          capitalAmount: finalDossier.capitalAmount,
-          capitalCurrency: finalDossier.capitalCurrency,
-          contributions: finalDossier.contributions,
-          naceCode: finalDossier.naceCode,
-          expectedTurnover: finalDossier.expectedTurnover,
-          numberOfEmployees: finalDossier.numberOfEmployees,
-          notaryPreferences: finalDossier.notaryPreferences,
-          domiciliationNeeded: finalDossier.domiciliationNeeded,
-          uploads: finalDossier.uploads,
-          consents: finalDossier.consents,
-          setupFeeAmount: finalDossier.setupFeeAmount,
-          paymentStatus: finalDossier.paymentStatus,
-          userRef: finalDossier.userRef,
-          submittedAt: new Date().toISOString(),
-        },
-      };
-
-      const response = await fetch("http://localhost:5000/api/applications", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(applicationPayload),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit application");
-      }
-
-      const result = await response.json();
-      console.log("Company Formation Dossier saved to backend:", result);
-
-      // Save to localStorage (backup)
+      // Save to localStorage
       const existingDossiers = localStorage.getItem("opulanz_company_formations");
       const dossiers = existingDossiers ? JSON.parse(existingDossiers) : [];
       dossiers.push(finalDossier);

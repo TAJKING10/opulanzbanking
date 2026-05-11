@@ -209,7 +209,7 @@ Contact: opulanz.banking@gmail.com
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, location: 'Video Conference',
           notes: `Paid consultation - €${totalPrice}`
         })
-      });
+      }).catch(() => {});
 
       await fetch(`${API}/api/notifications/appointment`, {
         method: 'POST',
@@ -223,7 +223,7 @@ Contact: opulanz.banking@gmail.com
           price: totalPrice,
           calendlyLink: bookingData.eventUri
         })
-      });
+      }).catch(() => {});
 
       sendEmailReceipts();
 

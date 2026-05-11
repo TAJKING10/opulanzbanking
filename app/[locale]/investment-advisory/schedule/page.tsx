@@ -132,12 +132,10 @@ export default function ScheduleInvestmentMeetingPage() {
           location: 'Video Conference',
           notes: 'Paid consultation - €99.90'
         })
-      });
+      }).catch(() => null);
 
-      if (!appointmentResponse.ok) {
-        const errorData = await appointmentResponse.json();
-        console.error('Appointment creation failed:', errorData);
-        // Continue even if appointment creation fails (might be duplicate)
+      if (appointmentResponse && !appointmentResponse.ok) {
+        console.error('Appointment creation failed');
       }
 
       // Send email notifications
@@ -159,9 +157,9 @@ export default function ScheduleInvestmentMeetingPage() {
           }),
           meetingType: 'Investment Advisory'
         })
-      });
+      }).catch(() => null);
 
-      if (!notificationResponse.ok) {
+      if (notificationResponse && !notificationResponse.ok) {
         console.warn('Email notification failed, but appointment was created');
       }
 

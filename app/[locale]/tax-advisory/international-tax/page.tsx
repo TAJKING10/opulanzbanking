@@ -405,7 +405,7 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
           location: 'Video Conference',
           notes: `Paid consultation - €${totalPrice} - PayPal Order ID: ${paymentDetails.orderId}`
         })
-      });
+      }).catch(() => {});
 
       // Store payment details in booking data for receipt generation
       const updatedBookingData = {

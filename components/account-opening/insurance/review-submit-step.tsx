@@ -139,22 +139,6 @@ export function ReviewSubmitStep({ data, onUpdate, locale }: ReviewSubmitStepPro
         }
       };
 
-      // Submit to Azure backend API
-      const response = await fetch('http://localhost:5000/api/applications', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(applicationPayload),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit life insurance application to backend');
-      }
-
-      const result = await response.json();
-      console.log("Life insurance application saved to Azure database:", result);
-
       setApplicationId(appId);
 
       // Clear saved progress

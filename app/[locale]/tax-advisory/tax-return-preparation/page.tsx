@@ -280,11 +280,10 @@ Contact: opulanz.banking@gmail.com
           location: 'Video Conference',
           notes: `Paid consultation - €${totalPrice}`
         })
-      });
+      }).catch(() => null);
 
-      if (!appointmentResponse.ok) {
-        const errorData = await appointmentResponse.json();
-        console.error('Appointment creation failed:', errorData);
+      if (appointmentResponse && !appointmentResponse.ok) {
+        console.error('Appointment creation failed');
       }
 
       // Store payment details in booking data for receipt generation

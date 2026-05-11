@@ -3370,5 +3370,43 @@
         "googleCancelled": "La connexion Google a été annulée ou a échoué."
       }
     }
+  },
+  "invoicingAccounting": {
+    "confirmation": {
+      "heroTitle": "Demande soumise avec succès !",
+      "heroSubtitle": "Votre demande de comptabilité et facturation a bien été reçue. Notre équipe l'examinera dans un délai de 1 à 2 jours ouvrés.",
+      "reference": "Référence :",
+      "emailSent": "E-mail de confirmation envoyé",
+      "emailSentDesc": "Une confirmation a été envoyée à",
+      "notProvided": "Non renseigné",
+      "emailSentSuffix": ". Veuillez vérifier votre boîte de réception et vos spams.",
+      "applicationSummary": "Récapitulatif de la demande",
+      "companyName": "Nom de l'entreprise",
+      "yourCompany": "Votre entreprise",
+      "contactEmail": "E-mail de contact",
+      "primaryContact": "Contact principal",
+      "applicationStatus": "Statut de la demande",
+      "submitted": "Soumise",
+      "companyDetails": "Détails de l'entreprise",
+      "companyType": "Forme juridique",
+      "registrationNumber": "Numéro d'immatriculation",
+      "vatNumber": "Numéro de TVA",
+      "downloadPdf": "Télécharger le récapitulatif (PDF)",
+      "goToDashboard": "Aller au tableau de bord",
+      "whatsNext": "Quelles sont les prochaines étapes ?",
+      "step1Title": "Examen de la demande",
+      "step1Desc": "Notre équipe comptable examinera votre dossier dans un délai de 1 à 2 jours ouvrés.",
+      "step2Title": "Confirmation par e-mail",
+      "step2Desc": "Vous recevrez un e-mail de confirmation à l'adresse e-mail fournie.",
+      "step3Title": "Informations complémentaires",
+      "step3Desc": "Nous pourrions vous contacter si des documents ou informations supplémentaires sont nécessaires.",
+      "step4Title": "Approbation et intégration",
+      "step4Desc": "Une fois approuvé, nous vous enverrons les matériaux d'intégration et vos identifiants d'accès.",
+      "step5Title": "Chargé de compte dédié",
+      "step5Desc": "Votre chargé de compte dédié planifiera un appel d'accueil avec vous.",
+      "questionsAbout": "Des questions concernant votre demande ?",
+      "contactTeam": "Contactez notre équipe comptable à",
+      "referenceNumber": "Numéro de référence :"
+    }
   }
 }

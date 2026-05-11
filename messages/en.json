@@ -3370,5 +3370,43 @@
         "googleCancelled": "Google sign-in was cancelled or failed."
       }
     }
+  },
+  "invoicingAccounting": {
+    "confirmation": {
+      "heroTitle": "Application Submitted Successfully!",
+      "heroSubtitle": "Your accounting & invoicing application has been received. Our team will review it within 1-2 business days.",
+      "reference": "Reference:",
+      "emailSent": "Confirmation Email Sent",
+      "emailSentDesc": "A confirmation has been sent to",
+      "notProvided": "Not provided",
+      "emailSentSuffix": ". Please check your inbox and spam folder.",
+      "applicationSummary": "Application Summary",
+      "companyName": "Company Name",
+      "yourCompany": "Your Company",
+      "contactEmail": "Contact Email",
+      "primaryContact": "Primary Contact",
+      "applicationStatus": "Application Status",
+      "submitted": "Submitted",
+      "companyDetails": "Company Details",
+      "companyType": "Company Type",
+      "registrationNumber": "Registration Number",
+      "vatNumber": "VAT Number",
+      "downloadPdf": "Download Summary (PDF)",
+      "goToDashboard": "Go to Dashboard",
+      "whatsNext": "What Happens Next?",
+      "step1Title": "Application Review",
+      "step1Desc": "Our accounting team will review your application within 1-2 business days.",
+      "step2Title": "Email Confirmation",
+      "step2Desc": "You will receive an email confirmation at your registered email address.",
+      "step3Title": "Additional Information",
+      "step3Desc": "We may contact you if we need additional documentation or information.",
+      "step4Title": "Approval & Onboarding",
+      "step4Desc": "Once approved, we will send you onboarding materials and access credentials.",
+      "step5Title": "Dedicated Account Manager",
+      "step5Desc": "Your dedicated account manager will schedule an onboarding call with you.",
+      "questionsAbout": "Questions about your application?",
+      "contactTeam": "Contact our accounting team at",
+      "referenceNumber": "Reference Number:"
+    }
   }
 }

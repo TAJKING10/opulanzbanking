@@ -136,8 +136,15 @@ router.post('/', async (req, res) => {
                 We have received your information and our compliance team will review it shortly.
               </p>
               <div style="background:#f6f8f8;border-radius:12px;padding:20px;margin:24px 0;border-left:4px solid #b59354;">
-                <p style="margin:0 0 8px;font-weight:600;color:#252623;">Your Reference Number:</p>
-                <p style="margin:0;font-size:22px;font-weight:bold;color:#b59354;letter-spacing:2px;">#${String(application.id).padStart(6, '0')}</p>
+                <p style="margin:0 0 8px;font-weight:600;color:#252623;">Your Application Reference:</p>
+                <p style="margin:0;font-size:20px;font-weight:bold;color:#b59354;letter-spacing:1px;">${isCompany ? 'OPL-CORP' : 'OPL-IND'}-${application.id}</p>
+              </div>
+              <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:14px;margin:0 0 20px;">
+                <p style="margin:0;font-size:13px;color:#856404;line-height:1.6;">
+                  <strong>Next step:</strong> Look for a separate email from us with subject<br/>
+                  <strong>"Opulanz - Verify Your Email Address"</strong> — it contains your 6-digit verification code.<br/>
+                  Do <strong>not</strong> use your application reference number as a verification code.
+                </p>
               </div>
               <p style="color:#555;font-size:14px;line-height:1.7;">
                 You will be notified by email at every stage of the process.

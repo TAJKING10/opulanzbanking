@@ -2556,7 +2556,7 @@
         "employees": "Number of Employees (FTE)"
       },
       "placeholders": {
-        "businessActivity": "Describe your main business activityâ€¦"
+        "businessActivity": "Describe your main business activity…"
       },
       "hints": {
         "turnoverLastFY": "Enter 0 if the company was incorporated this year.",

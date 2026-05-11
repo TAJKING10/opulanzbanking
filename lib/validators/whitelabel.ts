@@ -7,9 +7,10 @@ export const whitelabelKYCSchema = z.object({
   // Personal Information
   firstName: z.string().min(2, 'First name is required'),
   lastName: z.string().min(2, 'Last name is required'),
+  email: z.string().email('Valid email address required'),
   dateOfBirth: z.string().min(1, 'Date of birth is required'),
   nationality: z.string().min(1, 'Nationality is required'),
-  phoneNumber: z.string().min(10, 'Valid phone number required'),
+  phoneNumber: z.string().min(6, 'Valid phone number required'),
   address: z.string().min(5, 'Address is required'),
   city: z.string().min(2, 'City is required'),
   postalCode: z.string().min(4, 'Postal code is required'),
@@ -40,6 +41,10 @@ export const whitelabelKYBSchema = z.object({
   // Company Information
   companyName: z.string().min(2, 'Company name is required'),
   registrationNumber: z.string().min(5, 'Registration number required'),
+  contactEmail: z.string().email('Valid email address required'),
+  representativeFirstName: z.string().min(2, 'First name is required'),
+  representativeLastName: z.string().min(2, 'Last name is required'),
+  representativePhone: z.string().min(6, 'Valid phone number required'),
   dateOfIncorporation: z.string().min(1, 'Date of incorporation required'),
   legalForm: z.string().min(1, 'Legal form required'),
   companyAddress: z.string().min(5, 'Company address required'),

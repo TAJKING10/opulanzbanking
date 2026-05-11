@@ -22,6 +22,7 @@ steps:
   displayName: 'Build Next.js app'
   env:
     NODE_ENV: production
+    NODE_TLS_REJECT_UNAUTHORIZED: '0'
 
 # 4️⃣ Copy public + static assets into standalone output
 - script: |

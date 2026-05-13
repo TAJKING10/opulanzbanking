@@ -2832,9 +2832,9 @@
       },
       "france": {
         "title": "France",
-        "address": "34, Grand-rue",
-        "city": "L-9710 Clervaux",
-        "country": "Luxembourg",
+        "address": "66 Avenue des Champs-Élysées",
+        "city": "75008 Paris",
+        "country": "France",
         "phone": "Phone",
         "email": "Email"
       }

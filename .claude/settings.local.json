@@ -130,7 +130,13 @@
       "Bash(powershell.exe -Command \"try { $r = Invoke-WebRequest -Uri 'https://frontend.opulanz.com/en' -UseBasicParsing -TimeoutSec 30; Write-Host $r.StatusCode } catch { Write-Host $_.Exception.Message }\")",
       "Bash(powershell.exe -Command \"Invoke-WebRequest -Uri 'https://frontend.opulanz.com/en' -UseBasicParsing -TimeoutSec 30 | Select-Object StatusCode, StatusDescription\")",
       "Bash(powershell.exe -Command \"Get-Process -Name ''node'' | Where-Object { $_MainWindowTitle -eq '''' } | Stop-Process -Force\")",
-      "Bash(powershell.exe -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")"
+      "Bash(powershell.exe -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")",
+      "Bash(npm ci:*)",
+      "Bash(zip -r backend-deploy.zip backend/ -x \"backend/.env*\" -x \"backend/node_modules/.cache/*\" -x \"backend/*.md\")",
+      "Bash(USER='$rg-opulanz-backend')",
+      "Bash(PASS='aPbM5l21rEYqJ4JDBX1ALB3qDHM2E1dHcp11cgAimqlK5qxcWl4QKDHfJskG')",
+      "Bash(curl -s -u \"$USER:$PASS\" -X POST \"https://rg-opulanz-backend-ffa3bgfze4a4g6gf.scm.canadacentral-01.azurewebsites.net/api/command\" -H \"Content-Type: application/json\" -d \"{\"\"command\"\":\"\"grep -r \\\\\"\"require\\(''uuid''\\)\\\\\"\" /home/site/wwwroot/src/ 2>&1\"\",\"\"dir\"\":\"\"/home/site/wwwroot\"\"}\")",
+      "Bash(/dev/null -o json)"
     ],
     "deny": [],
     "ask": []

@@ -128,7 +128,9 @@
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d\\)\")",
       "Bash(powershell.exe -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\Toufi\\\\AndroidStudioProjects\\\\azuree\\\\deploy-frontend.ps1\" 2>&1)",
       "Bash(powershell.exe -Command \"try { $r = Invoke-WebRequest -Uri 'https://frontend.opulanz.com/en' -UseBasicParsing -TimeoutSec 30; Write-Host $r.StatusCode } catch { Write-Host $_.Exception.Message }\")",
-      "Bash(powershell.exe -Command \"Invoke-WebRequest -Uri 'https://frontend.opulanz.com/en' -UseBasicParsing -TimeoutSec 30 | Select-Object StatusCode, StatusDescription\")"
+      "Bash(powershell.exe -Command \"Invoke-WebRequest -Uri 'https://frontend.opulanz.com/en' -UseBasicParsing -TimeoutSec 30 | Select-Object StatusCode, StatusDescription\")",
+      "Bash(powershell.exe -Command \"Get-Process -Name ''node'' | Where-Object { $_MainWindowTitle -eq '''' } | Stop-Process -Force\")",
+      "Bash(powershell.exe -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")"
     ],
     "deny": [],
     "ask": []

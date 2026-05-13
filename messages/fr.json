@@ -1745,32 +1745,75 @@
       }
     },
     "booking": {
+      "heroTitle": "Planifiez votre consultation fiscale",
+      "heroSubtitle": "Réservez votre session {service} avec nos conseillers fiscaux experts",
+      "step1": {
+        "overline": "ÉTAPE 1 SUR 4",
+        "title": "Vos coordonnées",
+        "description": "Veuillez fournir vos coordonnées avant de planifier votre consultation",
+        "firstName": "Prénom",
+        "firstNamePlaceholder": "Entrez votre prénom",
+        "lastName": "Nom de famille",
+        "lastNamePlaceholder": "Entrez votre nom de famille",
+        "email": "Adresse e-mail",
+        "emailPlaceholder": "Entrez votre adresse e-mail",
+        "phone": "Numéro de téléphone",
+        "phonePlaceholder": "Entrez votre numéro de téléphone",
+        "backToTaxAdvisory": "Retour au conseil fiscal",
+        "continueToSchedule": "Continuer vers la planification",
+        "firstNameRequired": "Le prénom est requis",
+        "lastNameRequired": "Le nom de famille est requis",
+        "emailRequired": "L'adresse e-mail est requise",
+        "emailInvalid": "Entrez une adresse e-mail valide",
+        "phoneRequired": "Le numéro de téléphone est requis",
+        "feature60min": "Consultation de 60 minutes",
+        "feature60minDesc": "Session complète couvrant vos besoins fiscaux",
+        "featureVideo": "Vidéoconférence",
+        "featureVideoDesc": "Réunion en ligne sécurisée via votre plateforme préférée",
+        "featureConfidential": "Confidentiel et sécurisé",
+        "featureConfidentialDesc": "Toutes les discussions sont strictement confidentielles"
+      },
+      "step2": {
+        "overline": "ÉTAPE 2 SUR 4",
+        "title": "Choisissez une date et une heure",
+        "description": "Réservation pour {name} ({email})",
+        "backToContact": "Retour aux coordonnées"
+      },
+      "step3": {
+        "overline": "ÉTAPE 3 SUR 4",
+        "title": "Vérifiez votre réservation",
+        "description": "Veuillez vérifier vos informations avant de procéder au paiement",
+        "service": "Service",
+        "name": "Nom",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "date": "Date",
+        "time": "Heure",
+        "duration": "Durée",
+        "durationValue": "60 minutes",
+        "price": "Prix total",
+        "scheduledViaCalendly": "Planifié via Calendly",
+        "checkCalendlyEmail": "Vérifiez votre e-mail de confirmation Calendly",
+        "proceedToPayment": "Procéder au paiement",
+        "backToCalendar": "Retour au calendrier",
+        "summary": "Récapitulatif de la réservation"
+      },
       "calendly": {
         "title": "Planifiez votre consultation fiscale",
-        "subtitle": "Choisissez un horaire pratique pour votre consultation de 60 minutes"
+        "subtitle": "Choisissez un horaire pour votre consultation de 60 minutes"
       },
-      "serviceSelection": {
-        "title": "Consultation planifiée !",
-        "subtitle": "Maintenant, veuillez sélectionner le service dont vous avez besoin",
-        "step": "ÉTAPE 2 SUR 3",
-        "selectTitle": "Sélectionnez votre service de conseil fiscal",
-        "selectDesc": "Choisissez le service qui correspond le mieux à vos besoins",
-        "selectService": "Sélectionner le service"
-      },
-      "payment": {
-        "title": "Effectuez votre paiement",
-        "subtitle": "Dernière étape pour confirmer votre consultation",
-        "step": "ÉTAPE 3 SUR 3",
-        "paymentDetails": "Détails du paiement",
-        "orderSummary": "Résumé de la commande",
-        "paymentMethod": "Mode de paiement",
-        "paymentMethodDesc": "Pour finaliser votre réservation, veuillez procéder au paiement en utilisant l'une des méthodes ci-dessous.",
-        "payWithCard": "Payer par carte bancaire",
-        "payWithTransfer": "Payer par virement bancaire",
-        "payWithPaypal": "Payer avec PayPal",
-        "reservedNote": "Votre créneau de consultation est réservé pendant 15 minutes. Veuillez effectuer le paiement pour confirmer votre réservation.",
-        "backToSelection": "Retour à la sélection du service",
-        "cancelBooking": "Annuler la réservation"
+      "step4": {
+        "overline": "ÉTAPE 4 SUR 4",
+        "slotReserved": "Créneau réservé !",
+        "slotReservedDesc": "Finalisez votre paiement pour confirmer votre rendez-vous.",
+        "completePayment": "Finalisez votre paiement",
+        "oneTimePayment": "Paiement unique pour une consultation de 60 minutes",
+        "loadingPayment": "Chargement des options de paiement…",
+        "paymentSuccess": "Paiement réussi !",
+        "continueToConfirmation": "Continuer vers la confirmation",
+        "processing": "Traitement en cours...",
+        "backToSummary": "Retour au récapitulatif",
+        "paymentError": "Paiement échoué. Veuillez réessayer."
       }
     },
     "taxReturn": {

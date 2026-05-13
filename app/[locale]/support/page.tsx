@@ -35,14 +35,40 @@ export default function SupportPage() {
     if (submitStatus !== "idle") setSubmitStatus("idle");
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     setSubmitStatus("idle");
     setSubmitError("");
-    setSubmitStatus("success");
-    setFormData({ firstName: "", lastName: "", email: "", phone: "", subject: "", message: "" });
-    setSubmitting(false);
+
+    try {
+      const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const res = await fetch(`${API}/api/notifications/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone ? `${selectedPhoneCode} ${formData.phone}` : "",
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      setSubmitStatus("success");
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", subject: "", message: "" });
+    } catch (err: any) {
+      setSubmitStatus("error");
+      setSubmitError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function handleStartChat() {

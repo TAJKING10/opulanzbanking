@@ -1745,32 +1745,75 @@
       }
     },
     "booking": {
+      "heroTitle": "Schedule Your Tax Advisory Consultation",
+      "heroSubtitle": "Book your {service} session with our expert tax advisors",
+      "step1": {
+        "overline": "STEP 1 OF 4",
+        "title": "Your Contact Information",
+        "description": "Please provide your details before scheduling your consultation",
+        "firstName": "First Name",
+        "firstNamePlaceholder": "Enter your first name",
+        "lastName": "Last Name",
+        "lastNamePlaceholder": "Enter your last name",
+        "email": "Email Address",
+        "emailPlaceholder": "Enter your email address",
+        "phone": "Phone Number",
+        "phonePlaceholder": "Enter your phone number",
+        "backToTaxAdvisory": "Back to Tax Advisory",
+        "continueToSchedule": "Continue to Schedule",
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email",
+        "phoneRequired": "Phone number is required",
+        "feature60min": "60-Minute Consultation",
+        "feature60minDesc": "Comprehensive session covering your tax needs",
+        "featureVideo": "Video Conference",
+        "featureVideoDesc": "Secure online meeting via your preferred platform",
+        "featureConfidential": "Confidential & Secure",
+        "featureConfidentialDesc": "All discussions are strictly confidential"
+      },
+      "step2": {
+        "overline": "STEP 2 OF 4",
+        "title": "Pick a Date & Time",
+        "description": "Booking for {name} ({email})",
+        "backToContact": "Back to Contact Info"
+      },
+      "step3": {
+        "overline": "STEP 3 OF 4",
+        "title": "Review Your Booking",
+        "description": "Please review your details before proceeding to payment",
+        "service": "Service",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "date": "Date",
+        "time": "Time",
+        "duration": "Duration",
+        "durationValue": "60 minutes",
+        "price": "Total Price",
+        "scheduledViaCalendly": "Scheduled via Calendly",
+        "checkCalendlyEmail": "Check your Calendly confirmation email",
+        "proceedToPayment": "Proceed to Payment",
+        "backToCalendar": "Back to Calendar",
+        "summary": "Booking Summary"
+      },
       "calendly": {
         "title": "Schedule Your Tax Advisory Consultation",
         "subtitle": "Choose a convenient time for your 60-minute consultation"
       },
-      "serviceSelection": {
-        "title": "Consultation Scheduled!",
-        "subtitle": "Now, please select which service you need assistance with",
-        "step": "STEP 2 OF 3",
-        "selectTitle": "Select Your Tax Advisory Service",
-        "selectDesc": "Choose the service that best matches your needs",
-        "selectService": "Select Service"
-      },
-      "payment": {
-        "title": "Complete Your Payment",
-        "subtitle": "Final step to confirm your consultation",
-        "step": "STEP 3 OF 3",
-        "paymentDetails": "Payment Details",
-        "orderSummary": "Order Summary",
-        "paymentMethod": "Payment Method",
-        "paymentMethodDesc": "To complete your booking, please proceed with the payment using one of the methods below.",
-        "payWithCard": "Pay with Credit/Debit Card",
-        "payWithTransfer": "Pay with Bank Transfer",
-        "payWithPaypal": "Pay with PayPal",
-        "reservedNote": "Your consultation slot is reserved for 15 minutes. Please complete the payment to confirm your booking.",
-        "backToSelection": "Back to Service Selection",
-        "cancelBooking": "Cancel Booking"
+      "step4": {
+        "overline": "STEP 4 OF 4",
+        "slotReserved": "Time Slot Reserved!",
+        "slotReservedDesc": "Complete your payment to confirm your appointment.",
+        "completePayment": "Complete Your Payment",
+        "oneTimePayment": "One-time payment for 60-minute consultation",
+        "loadingPayment": "Loading payment options…",
+        "paymentSuccess": "Payment Successful!",
+        "continueToConfirmation": "Continue to Confirmation",
+        "processing": "Processing...",
+        "backToSummary": "Back to Summary",
+        "paymentError": "Payment failed. Please try again."
       }
     },
     "taxReturn": {

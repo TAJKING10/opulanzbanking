@@ -20,7 +20,9 @@ export default function ScheduleInvestmentMeetingPage() {
   const [loading, setLoading] = useState(false);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const paypalRef = useRef<HTMLDivElement>(null);
+  const calendlyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
@@ -42,6 +44,17 @@ export default function ScheduleInvestmentMeetingPage() {
     window.addEventListener('message', handleCalendlyEvent);
     return () => window.removeEventListener('message', handleCalendlyEvent);
   }, []);
+
+  useEffect(() => {
+    if (step === 'calendar' && calendlyLoaded && calendlyRef.current) {
+      calendlyRef.current.innerHTML = '';
+      // @ts-ignore
+      window.Calendly?.initInlineWidget({
+        url: `https://calendly.com/opulanz-banking/tax-advisory-clone?hide_event_type_details=1&primary_color=d0ab08&locale=${locale}`,
+        parentElement: calendlyRef.current,
+      });
+    }
+  }, [step, calendlyLoaded, locale]);
 
   useEffect(() => {
     if (step === 'payment' && paypalLoaded && paypalRef.current && bookingData) {
@@ -156,8 +169,7 @@ export default function ScheduleInvestmentMeetingPage() {
               <Card className="border-none shadow-lg">
                 <CardContent className="p-4 md:p-8">
                   <div
-                    className="calendly-inline-widget"
-                    data-url="https://calendly.com/opulanz-banking/tax-advisory-clone?hide_event_type_details=1&primary_color=d0ab08"
+                    ref={calendlyRef}
                     style={{ minWidth: '320px', height: '700px' }}
                   />
                 </CardContent>
@@ -389,7 +401,8 @@ export default function ScheduleInvestmentMeetingPage() {
 
       <Script
         src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
+        onLoad={() => setCalendlyLoaded(true)}
       />
       <Script
         src="https://www.paypal.com/sdk/js?client-id=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo&currency=EUR"

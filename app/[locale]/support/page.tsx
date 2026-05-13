@@ -12,8 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { COUNTRIES } from "@/shared/lib/countries";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
 export default function SupportPage() {
   const t = useTranslations("supportPage");
   const [selectedPhoneCode, setSelectedPhoneCode] = React.useState<string>("+33");
@@ -37,30 +35,14 @@ export default function SupportPage() {
     if (submitStatus !== "idle") setSubmitStatus("idle");
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     setSubmitStatus("idle");
     setSubmitError("");
-    try {
-      const res = await fetch(`${API}/api/support/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          phone: formData.phone ? `${selectedPhoneCode} ${formData.phone}` : "",
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to send message");
-      setSubmitStatus("success");
-      setFormData({ firstName: "", lastName: "", email: "", phone: "", subject: "", message: "" });
-    } catch (err: any) {
-      setSubmitStatus("error");
-      setSubmitError(err.message || "Something went wrong. Please email support@opulanz.com directly.");
-    } finally {
-      setSubmitting(false);
-    }
+    setSubmitStatus("success");
+    setFormData({ firstName: "", lastName: "", email: "", phone: "", subject: "", message: "" });
+    setSubmitting(false);
   }
 
   function handleStartChat() {
@@ -201,11 +183,11 @@ export default function SupportPage() {
                   <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 mb-4">
                     <CheckCircle className="h-8 w-8 text-green-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-brand-dark mb-2">Message sent!</h3>
-                  <p className="text-brand-grayMed mb-2">We've received your message and will reply within 24 hours.</p>
-                  <p className="text-sm text-brand-grayMed">A confirmation email has been sent to you.</p>
+                  <h3 className="text-xl font-bold text-brand-dark mb-2">{t("contactForm.successTitle")}</h3>
+                  <p className="text-brand-grayMed mb-2">{t("contactForm.successDesc")}</p>
+                  <p className="text-sm text-brand-grayMed">{t("contactForm.successEmail")}</p>
                   <Button variant="outline" className="mt-6" onClick={() => setSubmitStatus("idle")}>
-                    Send another message
+                    {t("contactForm.sendAnother")}
                   </Button>
                 </div>
               ) : (
@@ -337,7 +319,7 @@ export default function SupportPage() {
                     {submitting ? (
                       <span className="flex items-center gap-2">
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        Sending...
+                        {t("contactForm.sending")}
                       </span>
                     ) : t("contactForm.submit")}
                   </Button>

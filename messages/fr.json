@@ -2821,7 +2821,12 @@
       },
       "message": "Message",
       "messagePlaceholder": "Décrivez votre question ou problème en détail...",
-      "submit": "Envoyer le message"
+      "submit": "Envoyer le message",
+      "sending": "Envoi en cours...",
+      "successTitle": "Message envoyé !",
+      "successDesc": "Nous avons reçu votre message et vous répondrons dans les 24 heures.",
+      "successEmail": "Un e-mail de confirmation vous a été envoyé.",
+      "sendAnother": "Envoyer un autre message"
     },
     "faq": {
       "title": "Questions fréquemment posées",

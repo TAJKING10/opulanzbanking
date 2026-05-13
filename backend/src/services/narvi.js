@@ -9,7 +9,7 @@
 
 const crypto = require('crypto');
 const axios = require('axios');
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID: uuidv4 } = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const canonicaljson = require('canonicaljson');
@@ -555,7 +555,7 @@ async function provisionBankAccount(applicationData) {
   }
 
   // ── MOCK ─────────────────────────────────────────────────────────────────
-  const { v4: uuidv4Local } = require('uuid');
+  const { randomUUID: uuidv4Local } = require('crypto');
   await new Promise(r => setTimeout(r, 300)); // simulate latency
   return {
     iban: generateMockLuxIBAN(),

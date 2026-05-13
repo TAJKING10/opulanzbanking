@@ -2831,7 +2831,8 @@
       "phone": {
         "title": "Assistance téléphonique",
         "description": "Parlez directement avec l'un de nos spécialistes du support.",
-        "number": "LU : +352 28 79 76 26  |  FR : +33 6 98 21 44 46",
+        "numberLU": "LU : +352 28 79 76 26",
+        "numberFR": "FR : +33 6 98 21 44 46",
         "hours": "Lun–Ven, 9h00–18h00 CET"
       },
       "email": {

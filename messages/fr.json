@@ -118,7 +118,7 @@
     "other": "Autre",
     "expectedVolume": "Volume mensuel prévu",
     "handoffTitle": "Votre partenaire recommandé",
-    "handoffDescription": "En fonction de votre profil, nous recommandons d'ouvrir votre compte avec {partner}. Opulanz restera votre point de contact tout au long du processus.",
+    "handoffDescription": "En fonction de votre profil, nous recommandons d''ouvrir votre compte avec {partner}. Opulanz restera votre point de contact tout au long du processus.",
     "proceedToPartner": "Continuer vers {partner}",
     "thankYouTitle": "Merci !",
     "thankYouDescription": "Vous recevrez un e-mail de confirmation sous peu. Besoin d'aide ? Réservez un appel de 15 minutes avec notre équipe.",
@@ -256,7 +256,7 @@
     },
     "wizard": {
       "title": "Assistant de création de société",
-      "formingIn": "Création d'une {formType} au Luxembourg",
+      "formingIn": "Création d''une {formType} au Luxembourg",
       "backToSelection": "Retour à la sélection",
       "back": "Retour",
       "next": "Suivant",
@@ -414,9 +414,9 @@
         "ubosCount": "UBO : {count}",
         "activity": "Activité",
         "nace": "NACE : {code}",
-        "expectedTurnover": "Chiffre d'affaires prévu : {amount}",
+        "expectedTurnover": "Chiffre d''affaires prévu : {amount}",
         "documents": "Documents",
-        "idDocuments": "Pièces d'identité : {count}",
+        "idDocuments": "Pièces d''identité : {count}",
         "leaseDomiciliation": "Bail / Domiciliation : {value}",
         "serviceRequested": "Service demandé",
         "uploaded": "téléchargé(s)",
@@ -914,7 +914,7 @@
       "confirmedAppointment": "Rendez-vous confirmé",
       "serviceName": "Conseil en investissement",
       "whatsNext": "Et ensuite ?",
-      "next1": "Consultez votre e-mail ({email}) pour le lien de réunion et l'invitation au calendrier",
+      "next1": "Consultez votre e-mail ({email}) pour le lien de réunion et l''invitation au calendrier",
       "next2": "Préparez vos documents financiers et vos questions",
       "next3": "Rejoignez la vidéoconférence à l'heure prévue",
       "next4": "Notre équipe a été notifiée à opulanz.banking@gmail.com",
@@ -1667,7 +1667,7 @@
         "subtitleWithEmail": "Votre rendez-vous est confirmé. E-mails de confirmation envoyés !",
         "confirmedAppointment": "Rendez-vous confirmé",
         "whatsNext": "Et maintenant ?",
-        "checkEmail": "Vérifiez votre e-mail ({email}) pour le lien de réunion et l'invitation au calendrier",
+        "checkEmail": "Vérifiez votre e-mail ({email}) pour le lien de réunion et l''invitation au calendrier",
         "confirmationSent": "E-mail de confirmation envoyé à {email}",
         "teamNotified": "Notre équipe à opulanz.banking@gmail.com a été notifiée",
         "checkMeetLink": "Vérifiez votre e-mail pour le lien Google Meet de Calendly",
@@ -3175,12 +3175,12 @@
     },
     "warmReferral": {
       "handoff": {
-        "description": "En fonction de votre profil, nous recommandons d'ouvrir votre compte avec {partner}. Opulanz restera votre point de contact tout au long du processus.",
+        "description": "En fonction de votre profil, nous recommandons d''ouvrir votre compte avec {partner}. Opulanz restera votre point de contact tout au long du processus.",
         "step1": {
           "description": "Votre profil a été associé à {partner}. Cliquez ci-dessous pour continuer."
         },
         "step2": {
-          "description": "Vous serez redirigé vers {partner} pour finaliser l'ouverture de votre compte."
+          "description": "Vous serez redirigé vers {partner} pour finaliser l''ouverture de votre compte."
         }
       }
     }

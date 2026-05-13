@@ -17,7 +17,7 @@ import { SubmissionStep } from "@/components/account-opening/personal/submission
 export default function PersonalAccountPage() {
   const params = useParams();
   const router = useRouter();
-  const locale = params.locale as string;
+  const locale = (params?.locale as string) || "en";
   const t = useTranslations("accountForms.personal");
 
   const PERSONAL_ACCOUNT_STEPS: Step[] = [

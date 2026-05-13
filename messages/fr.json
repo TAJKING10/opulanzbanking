@@ -444,7 +444,8 @@
           "reference": "Référence :",
           "emailConfirmation": "Vous recevrez un e-mail de confirmation sous peu.",
           "returnHome": "Retour à l'accueil"
-        }
+        },
+        "submitError": "Échec de la soumission du dossier de création. Veuillez réessayer ou contacter le support."
       }
     },
     "process": {

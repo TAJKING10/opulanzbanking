@@ -449,22 +449,40 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
     setIsProcessing(true);
 
     try {
-      // Build final payload
-      const finalDossier: CompanyFormationDossier = dossier as CompanyFormationDossier;
-      finalDossier.updatedAt = new Date().toISOString();
+      const payload = {
+        type: "company_formation",
+        status: "submitted",
+        payload: {
+          ...dossier,
+          updatedAt: new Date().toISOString(),
+        },
+      };
 
-      // Save to localStorage
-      const existingDossiers = localStorage.getItem("opulanz_company_formations");
-      const dossiers = existingDossiers ? JSON.parse(existingDossiers) : [];
-      dossiers.push(finalDossier);
-      localStorage.setItem("opulanz_company_formations", JSON.stringify(dossiers));
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      const response = await fetch(`${apiUrl}/api/applications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      // Save to localStorage as backup (non-fatal)
+      try {
+        const existing = localStorage.getItem("opulanz_company_formations");
+        const list = existing ? JSON.parse(existing) : [];
+        list.push({ ...dossier, updatedAt: new Date().toISOString() });
+        localStorage.setItem("opulanz_company_formations", JSON.stringify(list));
+      } catch {
+        // localStorage failure is non-fatal
+      }
 
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error submitting company formation:", error);
-      alert(
-        "Failed to submit company formation. Please try again or contact support."
-      );
+      alert(t("submitError"));
     } finally {
       setIsProcessing(false);
     }
@@ -628,18 +646,16 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
       {/* Submit */}
       <Button
         onClick={handleSubmit}
-        disabled={!termsAccepted || !privacyAccepted || !accuracyConfirmed || !isPaymentComplete}
+        disabled={!termsAccepted || !privacyAccepted || !accuracyConfirmed || isProcessing}
         size="lg"
         className="w-full"
       >
-        {t("submitDossier")}
+        {isProcessing ? t("processing") : t("submitDossier")}
       </Button>
 
-      {(!termsAccepted || !privacyAccepted || !accuracyConfirmed || !isPaymentComplete) && (
+      {(!termsAccepted || !privacyAccepted || !accuracyConfirmed) && (
         <p className="text-center text-sm text-brand-grayMed">
-          {!isPaymentComplete
-            ? t("completePaymentFirst")
-            : t("acceptAllConsents")}
+          {t("acceptAllConsents")}
         </p>
       )}
     </div>

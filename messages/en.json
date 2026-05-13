@@ -444,7 +444,8 @@
           "reference": "Reference:",
           "emailConfirmation": "You'll receive an email confirmation shortly.",
           "returnHome": "Return to Home"
-        }
+        },
+        "submitError": "Failed to submit the formation dossier. Please try again or contact support."
       }
     },
     "process": {

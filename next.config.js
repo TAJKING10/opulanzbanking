@@ -53,7 +53,13 @@ const nextConfig = {
   },
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
   images: {
-    unoptimized: true,
+    // When NEXT_PUBLIC_CDN_URL is set (e.g. Azure CDN / Cloudflare URL),
+    // Next.js will rewrite image src attributes to load from that origin,
+    // reducing load on the App Service and improving global latency.
+    // To activate: set NEXT_PUBLIC_CDN_URL=https://cdn.opulanz.com in Azure env vars.
+    ...(process.env.NEXT_PUBLIC_CDN_URL
+      ? { loader: 'custom', loaderFile: './lib/cdn-image-loader.js' }
+      : { unoptimized: true }),
     remotePatterns: [
       {
         protocol: 'https',

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import Script from "next/script";
 
 // To enable live chat:
 // 1. Create a free account at https://www.tawk.to
@@ -10,18 +10,16 @@ export function TawkChat() {
   const propertyId = process.env.NEXT_PUBLIC_TAWK_PROPERTY_ID;
   const widgetId = process.env.NEXT_PUBLIC_TAWK_WIDGET_ID || "default";
 
-  useEffect(() => {
-    if (!propertyId) return;
+  if (!propertyId) return null;
 
-    const s1 = document.createElement("script");
-    s1.async = true;
-    s1.src = `https://embed.tawk.to/${propertyId}/${widgetId}`;
-    s1.charset = "UTF-8";
-    s1.setAttribute("crossorigin", "*");
-
-    const s0 = document.getElementsByTagName("script")[0];
-    s0.parentNode?.insertBefore(s1, s0);
-  }, [propertyId, widgetId]);
-
-  return null;
+  // strategy="lazyOnload" defers this until the page is fully interactive,
+  // keeping it out of the critical-path chunk list and reducing initial TBT.
+  return (
+    <Script
+      id="tawk-chat"
+      src={`https://embed.tawk.to/${propertyId}/${widgetId}`}
+      strategy="lazyOnload"
+      crossOrigin="anonymous"
+    />
+  );
 }

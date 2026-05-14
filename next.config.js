@@ -62,8 +62,56 @@ const nextConfig = {
     ],
   },
   experimental: {
-    // Tree-shake heavy packages at compile time
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons', 'date-fns'],
+    // Compile-time tree-shaking for large icon/utility packages —
+    // prevents each icon from becoming its own tiny chunk.
+    optimizePackageImports: [
+      'lucide-react',
+      '@radix-ui/react-icons',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-select',
+      '@radix-ui/react-tabs',
+      '@radix-ui/react-accordion',
+      'date-fns',
+      'next-intl',
+    ],
+  },
+  // Merge small webpack chunks to reduce RTT on initial load.
+  // Chunks smaller than 20 KB are folded into their parent to cut the
+  // 14+ separate script requests flagged by the audit.
+  webpack(config, { isServer }) {
+    if (!isServer) {
+      config.optimization.splitChunks = {
+        ...config.optimization.splitChunks,
+        chunks: 'all',
+        minSize: 20_000,        // don't create chunks smaller than 20 KB
+        maxInitialRequests: 6,  // at most 6 parallel requests per entry point
+        maxAsyncRequests: 8,
+        cacheGroups: {
+          // Vendor bundle: react, react-dom, next internals
+          framework: {
+            name: 'framework',
+            test: /[\\/]node_modules[\\/](react|react-dom|next|scheduler)[\\/]/,
+            priority: 40,
+            chunks: 'all',
+          },
+          // UI library bundle: radix-ui + shadcn primitives
+          ui: {
+            name: 'ui',
+            test: /[\\/]node_modules[\\/](@radix-ui|cmdk|class-variance-authority|clsx|tailwind-merge)[\\/]/,
+            priority: 30,
+            chunks: 'all',
+          },
+          // Everything else from node_modules
+          vendor: {
+            name: 'vendor',
+            test: /[\\/]node_modules[\\/]/,
+            priority: 20,
+            chunks: 'all',
+          },
+        },
+      };
+    }
+    return config;
   },
   // Attach security headers to every response
   async headers() {

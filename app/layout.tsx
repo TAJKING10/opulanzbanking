@@ -5,20 +5,13 @@ export const metadata: Metadata = {
   description: 'Opulanz Banking Platform',
 };
 
-/**
- * Root Layout (Required by Next.js App Router)
- *
- * This is the top-level layout that wraps the entire application.
- * Every Next.js App Router application MUST have a root layout.
- */
+// Minimal pass-through — every real route is handled by app/[locale]/layout.tsx
+// which sets <html lang={locale}> correctly.  Rendering <html lang="en"> here
+// would override that and produce a language-attribute mismatch for /fr routes.
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
+  return children as React.ReactElement;
 }

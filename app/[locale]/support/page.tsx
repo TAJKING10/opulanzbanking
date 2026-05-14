@@ -457,13 +457,15 @@ export default function SupportPage() {
           <div className="grid gap-8 md:grid-cols-2">
             <Card className="border-none">
               <CardContent className="p-8">
-                <h3 className="mb-4 text-xl font-bold text-brand-dark">
+                {/* Unique h3 per card — country name doubled as <p> removed */}
+                <h3 className="mb-1 text-xl font-bold text-brand-dark">
                   {t("offices.luxembourg.title")}
                 </h3>
                 <div className="space-y-2 text-sm text-brand-grayMed">
-                  <p>{t("offices.luxembourg.address")}</p>
-                  <p>{t("offices.luxembourg.city")}</p>
-                  <p>{t("offices.luxembourg.country")}</p>
+                  <address className="not-italic space-y-1">
+                    <p>{t("offices.luxembourg.address")}</p>
+                    <p>{t("offices.luxembourg.city")}</p>
+                  </address>
                   <p className="mt-4">
                     <strong className="text-brand-dark">{t("offices.luxembourg.phone")}:</strong> +352 28 79 76 26
                   </p>
@@ -477,13 +479,15 @@ export default function SupportPage() {
 
             <Card className="border-none">
               <CardContent className="p-8">
-                <h3 className="mb-4 text-xl font-bold text-brand-dark">
+                {/* Unique h3 per card — country name doubled as <p> removed */}
+                <h3 className="mb-1 text-xl font-bold text-brand-dark">
                   {t("offices.france.title")}
                 </h3>
                 <div className="space-y-2 text-sm text-brand-grayMed">
-                  <p>{t("offices.france.address")}</p>
-                  <p>{t("offices.france.city")}</p>
-                  <p>{t("offices.france.country")}</p>
+                  <address className="not-italic space-y-1">
+                    <p>{t("offices.france.address")}</p>
+                    <p>{t("offices.france.city")}</p>
+                  </address>
                   <p className="mt-4">
                     <strong className="text-brand-dark">{t("offices.france.phone")}:</strong> +33 6 98 21 44 46
                   </p>

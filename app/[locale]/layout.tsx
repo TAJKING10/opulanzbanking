@@ -12,7 +12,12 @@ import '@/app/globals.css';
 const poppins = Poppins({
   weight: ['400', '600', '700'],
   subsets: ['latin'],
+  // 'swap' keeps text visible during load; explicit fallback fonts with similar
+  // metrics reduce the cumulative layout shift (CLS) before Poppins arrives.
   display: 'swap',
+  fallback: ['system-ui', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+  adjustFontFallback: true,
+  preload: true,
 });
 
 export function generateStaticParams() {

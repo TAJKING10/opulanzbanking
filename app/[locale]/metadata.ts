@@ -1,7 +1,12 @@
 import { Metadata } from 'next';
 import { routing } from '@/i18n/routing';
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com';
+const rawBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.opulanz.com';
+// Never expose internal Azure App Service hostnames in canonical / OG tags.
+// If the env var still points at the staging host, fall back to the branded domain.
+const baseUrl = rawBaseUrl.includes('azurewebsites.net')
+  ? 'https://www.opulanz.com'
+  : rawBaseUrl;
 
 interface GenerateMetadataProps {
   locale: string;

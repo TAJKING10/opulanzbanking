@@ -458,7 +458,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
         },
       };
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
       const response = await fetch(`${apiUrl}/api/applications`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

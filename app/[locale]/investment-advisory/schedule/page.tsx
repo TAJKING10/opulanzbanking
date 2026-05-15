@@ -24,6 +24,13 @@ export default function ScheduleInvestmentMeetingPage() {
   const paypalRef = useRef<HTMLDivElement>(null);
   const calendlyRef = useRef<HTMLDivElement>(null);
 
+  // If Calendly script was already loaded by a previous page navigation, onLoad won't fire
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).Calendly) {
+      setCalendlyLoaded(true);
+    }
+  }, []);
+
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
       if (e.data.event && e.data.event.indexOf('calendly') === 0) {

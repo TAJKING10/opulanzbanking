@@ -136,7 +136,13 @@
       "Bash(USER='$rg-opulanz-backend')",
       "Bash(PASS='aPbM5l21rEYqJ4JDBX1ALB3qDHM2E1dHcp11cgAimqlK5qxcWl4QKDHfJskG')",
       "Bash(curl -s -u \"$USER:$PASS\" -X POST \"https://rg-opulanz-backend-ffa3bgfze4a4g6gf.scm.canadacentral-01.azurewebsites.net/api/command\" -H \"Content-Type: application/json\" -d \"{\"\"command\"\":\"\"grep -r \\\\\"\"require\\(''uuid''\\)\\\\\"\" /home/site/wwwroot/src/ 2>&1\"\",\"\"dir\"\":\"\"/home/site/wwwroot\"\"}\")",
-      "Bash(/dev/null -o json)"
+      "Bash(/dev/null -o json)",
+      "Bash(KUDU_URL=\"https://rg-opulanz-frontend-hdd4ddcvd4gsc6cx.scm.canadacentral-01.azurewebsites.net\" KUDU_USER='$rg-opulanz-frontend' KUDU_PASS=\"DL8c47cjtmJoaky4jd6CPGp9aYQihpe5nuXAbHY7r04gWNASgir8tgcSd7mY\" __NEW_LINE_a760abb64c19bf77__ curl -s --user \"$KUDU_USER:$KUDU_PASS\" -H \"Content-Type: application/json\" -d '{\"\"\"\"command\"\"\"\":\"\"\"\"node -e \\\\\"\"\"\"try{require\\(\\\\\\\\\\\\\"\"\"\"./server.js\\\\\\\\\\\\\"\"\"\"\\)}catch\\(e\\){console.error\\(e.message\\)}\\\\\"\"\"\" 2>&1 | head -20\"\"\"\",\"\"\"\"dir\"\"\"\":\"\"\"\"/home/site/wwwroot\"\"\"\"}' \"$KUDU_URL/api/command\")",
+      "Bash(KUDU_URL=\"https://rg-opulanz-frontend-hdd4ddcvd4gsc6cx.scm.canadacentral-01.azurewebsites.net\")",
+      "Bash(KUDU_USER='$rg-opulanz-frontend')",
+      "Bash(KUDU_PASS=\"DL8c47cjtmJoaky4jd6CPGp9aYQihpe5nuXAbHY7r04gWNASgir8tgcSd7mY\")",
+      "Bash(__NEW_LINE_286f01421efc2f13__ curl:*)",
+      "Bash(__NEW_LINE_805ac6096a1183b3__ curl:*)"
     ],
     "deny": [],
     "ask": []

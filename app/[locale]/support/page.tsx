@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { COUNTRIES } from "@/shared/lib/countries";
+import { LiveChat } from "@/components/live-chat";
 
 export default function SupportPage() {
   const t = useTranslations("supportPage");
@@ -72,13 +73,7 @@ export default function SupportPage() {
   }
 
   function handleStartChat() {
-    if (typeof window !== "undefined" && (window as any).$_Tawk) {
-      (window as any).$_Tawk.toggle();
-    } else if (typeof window !== "undefined" && (window as any).Tawk_API) {
-      (window as any).Tawk_API.toggle();
-    } else {
-      window.open("mailto:support@opulanz.com?subject=Live%20Chat%20Request", "_self");
-    }
+    window.dispatchEvent(new Event("opulanz:open-chat"));
   }
 
   // Close dropdown when clicking outside
@@ -501,6 +496,8 @@ export default function SupportPage() {
           </div>
         </div>
       </section>
+
+      <LiveChat />
     </>
   );
 }

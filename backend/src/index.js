@@ -105,12 +105,12 @@ app.use('/api', documentRoutes); // Documents routes include /api/applications/:
 app.use('/api/document-generation', documentGenerationRoutes); // Document generation and DocuSign integration
 app.use('/api/companies', companyRoutes);
 app.use('/api/appointments', appointmentRoutes);
-app.use('/api/notifications', notificationRoutes);
+app.use('/api/notifications', contactLimiter, notificationRoutes);
 app.use('/api/kyc', kycRoutes);
 app.use('/api/sumsub', sumsubRoutes);
 app.use('/api/auth', authLimiter, authRoutes);
-app.use('/api/tax-advisory-bookings', taxAdvisoryBookingsRoutes); // Tax advisory service bookings
-app.use('/api/life-insurance-bookings', lifeInsuranceBookingsRoutes); // Life insurance service bookings
+app.use('/api/tax-advisory-bookings', contactLimiter, taxAdvisoryBookingsRoutes); // Tax advisory service bookings
+app.use('/api/life-insurance-bookings', contactLimiter, lifeInsuranceBookingsRoutes); // Life insurance service bookings
 app.use('/api/upload', uploadRoutes); // Azure Blob Storage file uploads
 app.use('/api/narvi', narviRoutes); // Narvi banking API
 

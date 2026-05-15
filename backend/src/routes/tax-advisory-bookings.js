@@ -16,6 +16,17 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/db');
+const nodemailer = require('nodemailer');
+
+function createTransporter() {
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+}
 
 /**
  * Generate a unique confirmation number
@@ -149,9 +160,88 @@ router.post('/', async (req, res) => {
       ]
     );
 
+    // Send confirmation emails (non-blocking — don't fail the booking if email fails)
+    const booking = result.rows[0];
+    const fullName = `${customer_info.firstName} ${customer_info.lastName}`;
+    const teamEmail = process.env.TEAM_EMAIL || 'opulanz.banking@gmail.com';
+    const priceDisplay = `€${service.price}`;
+    const appointmentDate = appointment && appointment.date ? new Date(appointment.date).toLocaleDateString('en-US', { dateStyle: 'long' }) : 'To be confirmed';
+    const appointmentTime = appointment && appointment.time ? appointment.time : '';
+
+    try {
+      const transporter = createTransporter();
+
+      // 1. Confirmation email to customer
+      await transporter.sendMail({
+        from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+        to: customer_info.email,
+        subject: `Booking Confirmed — ${service.title} | Opulanz Banking`,
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+            <div style="background:#b59354;padding:24px;text-align:center;">
+              <h1 style="color:#fff;margin:0;font-size:24px;letter-spacing:2px;">OPULANZ BANKING</h1>
+              <p style="color:#fff;margin:8px 0 0;opacity:0.9;">Booking Confirmed</p>
+            </div>
+            <div style="padding:32px;background:#fff;">
+              <h2 style="color:#252623;margin-top:0;">Your booking is confirmed, ${customer_info.firstName}!</h2>
+              <p style="color:#4b5563;">Thank you for booking with Opulanz Banking. Here are your booking details:</p>
+              <div style="background:#f6f8f8;border-left:4px solid #b59354;padding:20px 24px;margin:24px 0;border-radius:0 8px 8px 0;">
+                <table style="width:100%;border-collapse:collapse;">
+                  <tr><td style="padding:8px 0;color:#6b7280;width:160px;"><strong>Confirmation #:</strong></td><td style="padding:8px 0;font-weight:600;color:#b59354;">${confirmationNumber}</td></tr>
+                  <tr><td style="padding:8px 0;color:#6b7280;"><strong>Service:</strong></td><td style="padding:8px 0;font-weight:600;color:#252623;">${service.title}</td></tr>
+                  <tr><td style="padding:8px 0;color:#6b7280;"><strong>Date:</strong></td><td style="padding:8px 0;">${appointmentDate}</td></tr>
+                  ${appointmentTime ? `<tr><td style="padding:8px 0;color:#6b7280;"><strong>Time:</strong></td><td style="padding:8px 0;">${appointmentTime}</td></tr>` : ''}
+                  <tr><td style="padding:8px 0;color:#6b7280;"><strong>Amount Paid:</strong></td><td style="padding:8px 0;color:#b59354;font-weight:600;">${priceDisplay}</td></tr>
+                  <tr><td style="padding:8px 0;color:#6b7280;"><strong>Format:</strong></td><td style="padding:8px 0;">Video Conference</td></tr>
+                </table>
+              </div>
+              <p style="color:#4b5563;">You will receive a meeting link via Calendly shortly. Please prepare any relevant documents before the session.</p>
+              <p style="color:#4b5563;">Questions? <a href="mailto:support@opulanz.com" style="color:#b59354;">support@opulanz.com</a></p>
+            </div>
+            <div style="padding:16px 32px;background:#f6f8f8;text-align:center;">
+              <p style="color:#9ca3af;font-size:12px;margin:0;">© ${new Date().getFullYear()} Opulanz Banking. All rights reserved.</p>
+              <p style="color:#9ca3af;font-size:12px;margin:4px 0 0;">Luxembourg | France</p>
+            </div>
+          </div>
+        `,
+      });
+
+      // 2. Internal notification to team
+      await transporter.sendMail({
+        from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+        to: teamEmail,
+        subject: `[New Tax Advisory Booking] ${service.title} — ${fullName}`,
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+            <div style="background:#252623;padding:24px;text-align:center;">
+              <h1 style="color:#b59354;margin:0;font-size:20px;">New Tax Advisory Booking</h1>
+            </div>
+            <div style="padding:32px;background:#fff;">
+              <table style="width:100%;border-collapse:collapse;">
+                <tr><td style="padding:8px 0;color:#6b7280;width:160px;"><strong>Confirmation #:</strong></td><td style="padding:8px 0;font-weight:600;">${confirmationNumber}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Customer:</strong></td><td style="padding:8px 0;">${fullName}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Email:</strong></td><td style="padding:8px 0;"><a href="mailto:${customer_info.email}" style="color:#b59354;">${customer_info.email}</a></td></tr>
+                ${customer_info.phone ? `<tr><td style="padding:8px 0;color:#6b7280;"><strong>Phone:</strong></td><td style="padding:8px 0;">${customer_info.phone}</td></tr>` : ''}
+                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Service:</strong></td><td style="padding:8px 0;font-weight:600;">${service.title}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Date:</strong></td><td style="padding:8px 0;">${appointmentDate}</td></tr>
+                ${appointmentTime ? `<tr><td style="padding:8px 0;color:#6b7280;"><strong>Time:</strong></td><td style="padding:8px 0;">${appointmentTime}</td></tr>` : ''}
+                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Amount:</strong></td><td style="padding:8px 0;color:#b59354;font-weight:600;">${priceDisplay}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Payment ID:</strong></td><td style="padding:8px 0;">${payment && payment.orderId ? payment.orderId : 'N/A'}</td></tr>
+              </table>
+            </div>
+          </div>
+        `,
+      });
+
+      console.log(`📧 Tax advisory booking confirmed: ${fullName} <${customer_info.email}> — ${service.title} (${confirmationNumber})`);
+    } catch (emailError) {
+      console.error('Warning: Failed to send tax advisory booking confirmation email:', emailError.message);
+      // Don't fail the request — booking is saved, email is best-effort
+    }
+
     res.status(201).json({
       success: true,
-      data: result.rows[0]
+      data: booking
     });
   } catch (error) {
     console.error('Error creating tax advisory booking:', error);

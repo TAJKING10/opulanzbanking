@@ -183,7 +183,7 @@ export default function AdminSupportPage() {
   const closedChats = chats.filter((c) => c.status === "closed");
 
   return (
-    <div className="flex h-[calc(100vh-64px)] bg-slate-100">
+    <div className="flex bg-slate-100" style={{ height: "calc(100vh - 144px)" }}>
       {/* LEFT: Chat list */}
       <div className="flex w-80 flex-shrink-0 flex-col border-r border-slate-200 bg-white">
         {/* Header */}

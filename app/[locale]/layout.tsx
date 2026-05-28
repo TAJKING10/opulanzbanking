@@ -5,6 +5,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/shared/components/footer';
 import { GoogleProvider } from '@/components/google-provider';
 import { TawkChat } from '@/components/tawk-chat';
+import { LiveChat } from '@/components/live-chat';
 import { routing } from '@/i18n/routing';
 import { generateSEOMetadata } from './metadata';
 import '@/app/globals.css';
@@ -75,6 +76,7 @@ export default async function LocaleLayout({
             <main className="flex-1 pt-20">{children}</main>
             <Footer locale={locale} />
             <TawkChat />
+            <LiveChat />
           </NextIntlClientProvider>
         </GoogleProvider>
       </body>

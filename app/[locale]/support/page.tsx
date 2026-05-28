@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { COUNTRIES } from "@/shared/lib/countries";
-import { LiveChat } from "@/components/live-chat";
+
 
 export default function SupportPage() {
   const t = useTranslations("supportPage");
@@ -497,7 +497,6 @@ export default function SupportPage() {
         </div>
       </section>
 
-      <LiveChat />
     </>
   );
 }

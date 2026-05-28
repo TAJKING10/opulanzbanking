@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getCurrentUser, clearAuth } from "@/lib/auth";
+import { LiveChat } from "@/components/live-chat";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -320,6 +321,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           {children}
         </main>
       </div>
+
+      <LiveChat />
     </div>
   );
 }

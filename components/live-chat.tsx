@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { usePathname } from "next/navigation";
 import {
   MessageCircle,
   Minus,
@@ -13,28 +14,33 @@ import {
   Loader2,
   Users,
   RotateCcw,
+  X,
 } from "lucide-react";
 
 const FAQS = [
   {
-    q: "How long does it take to open an account?",
-    a: "Individual accounts are typically approved within 24–48 hours. Business accounts take 3–5 business days depending on the complexity of the application.",
+    q: "Je suis une société au Luxembourg — comment ouvrir un compte ?",
+    a: "Voici les étapes :\n1. Société non immatriculée ? Commencez par notre service Création d'entreprise (/company-formation).\n2. Allez sur /open-account → « Compte Entreprise ».\n3. Téléchargez : acte d'immatriculation, déclaration UBO, pièces d'identité des dirigeants.\n4. Soumettez → approbation sous 3–5 jours ouvrés.\n5. Recevez votre IBAN multi-devises (EUR, USD, GBP, CHF).",
   },
   {
-    q: "What documents do I need?",
-    a: "For individuals: a valid government-issued ID, proof of address, and a selfie. For businesses: company registration documents, UBO declaration, and director IDs.",
+    q: "Quels services fiscaux proposez-vous et à quel prix ?",
+    a: "5 services de conseil fiscal disponibles :\n1. Déclaration fiscale → €299\n2. Fiscalité internationale → €250\n3. Fiscalité entreprise → €150\n4. Conformité fiscale → €250\n5. Conseil fiscal personnel → €100\nConsultation de 60 min en visio, paiement en ligne. Réservez sur /tax-advisory.",
   },
   {
-    q: "What are the monthly fees?",
-    a: "Individual accounts start at €10/month. Business accounts start at €25/month. Full fee schedules are available in your account settings.",
+    q: "Comment créer une entreprise au Luxembourg ?",
+    a: "Processus complet en 8 étapes :\n1. Choisissez la forme (SARL, SARL-S, SA, SCSp)\n2. Informations de la société\n3. Associés, dirigeants, UBO\n4. Capital social\n5. Activité (code NACE)\n6. Notaire & domiciliation\n7. Documents\n8. Soumission → finalisé en 2–3 semaines !",
   },
   {
-    q: "Which currencies are supported?",
-    a: "We support EUR, USD, GBP, and CHF. Each account comes with a dedicated multi-currency IBAN for seamless international payments.",
+    q: "Quels sont vos tarifs et délais d'approbation ?",
+    a: "Compte individuel : €10/mois, approuvé en 24–48h.\nCompte entreprise : €25/mois, approuvé en 3–5 jours.\nCréation d'entreprise : domiciliation à partir de €600/an, finalisée en 2–3 semaines.",
   },
   {
-    q: "How do I contact my account manager?",
-    a: "Once your account is approved, you will be assigned a dedicated account manager reachable by email or phone during business hours.",
+    q: "What services does Opulanz offer?",
+    a: "Opulanz is an all-in-one platform with 7 services:\n1. Banking accounts (individual & company)\n2. Company formation in Luxembourg\n3. Tax advisory (5 services, from €100 to €299)\n4. Life insurance brokerage (free consultation)\n5. Investment advisory (min €100,000)\n6. Accounting & invoicing\n7. SPV real estate investment (qualified investors)",
+  },
+  {
+    q: "How do I book a tax advisory consultation?",
+    a: "Easy — 4 steps:\n1. Go to /tax-advisory and pick your service\n2. Enter your contact details\n3. Choose a time slot via Calendly\n4. Pay online (PayPal) → instant confirmation by email with video link",
   },
 ];
 
@@ -105,6 +111,7 @@ function MessageContent({ text, streaming }: { text: string; streaming?: boolean
 }
 
 export function LiveChat() {
+  const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const [view, setView] = React.useState<View>("welcome");
   const [messages, setMessages] = React.useState<Message[]>([]);
@@ -114,6 +121,16 @@ export function LiveChat() {
   const [unread, setUnread] = React.useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  // Auto-open on homepage after a short delay
+  const isHomePage = /^\/[a-z]{2}\/?$/.test(pathname ?? "");
+  React.useEffect(() => {
+    if (!isHomePage) return;
+    const timer = setTimeout(() => {
+      setOpen(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [isHomePage]);
 
   // Listen for external open trigger (e.g. "Start Chat" button on support page)
   React.useEffect(() => {
@@ -271,7 +288,7 @@ export function LiveChat() {
               aria-label="Minimize chat"
               title="Minimize"
             >
-              <Minus className="h-5 w-5" />
+              <X className="h-5 w-5" />
             </button>
           </div>
 
@@ -283,12 +300,13 @@ export function LiveChat() {
                   <Bot className="h-4 w-4 text-white" />
                 </div>
                 <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-gray-100 px-4 py-3 text-sm text-gray-800">
-                  Hi! I'm the Opulanz AI assistant. How can I help you today?
+                  Bonjour ! Je suis l'assistant IA d'Opulanz. Comment puis-je vous aider aujourd'hui ? <br className="hidden sm:block" />
+                  <span className="text-gray-500 text-xs">Hello! I'm the Opulanz AI. How can I help you?</span>
                 </div>
               </div>
 
               <p className="pl-12 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                Frequently Asked Questions
+                Questions fréquentes / FAQ
               </p>
 
               <div className="space-y-2 pl-2">
@@ -310,7 +328,7 @@ export function LiveChat() {
                   className="flex w-full items-center gap-2 rounded-xl border border-dashed border-[#b59354] px-3 py-3 text-left text-sm font-medium text-[#b59354] transition-colors hover:bg-amber-50"
                 >
                   <MessageCircle className="h-4 w-4 flex-shrink-0" />
-                  Ask your own question...
+                  Poser votre propre question... / Ask your own question...
                 </button>
               </div>
             </div>
@@ -326,7 +344,7 @@ export function LiveChat() {
                       <Bot className="h-4 w-4 text-white" />
                     </div>
                     <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-gray-100 px-4 py-3 text-sm text-gray-800">
-                      What would you like to know about Opulanz?
+                      Que souhaitez-vous savoir sur Opulanz ? / What would you like to know about Opulanz?
                     </div>
                   </div>
                 )}

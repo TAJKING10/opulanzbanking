@@ -142,7 +142,14 @@
       "Bash(KUDU_USER='$rg-opulanz-frontend')",
       "Bash(KUDU_PASS=\"DL8c47cjtmJoaky4jd6CPGp9aYQihpe5nuXAbHY7r04gWNASgir8tgcSd7mY\")",
       "Bash(__NEW_LINE_286f01421efc2f13__ curl:*)",
-      "Bash(__NEW_LINE_805ac6096a1183b3__ curl:*)"
+      "Bash(__NEW_LINE_805ac6096a1183b3__ curl:*)",
+      "Read(//c/Users/Toufi/Downloads/**)",
+      "Bash(powershell -Command \":*)",
+      "Bash(git status:*)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//c/Users/Toufi/AndroidStudioProjects/azuree/**)",
+      "Bash(node -e \":*)"
     ],
     "deny": [],
     "ask": []

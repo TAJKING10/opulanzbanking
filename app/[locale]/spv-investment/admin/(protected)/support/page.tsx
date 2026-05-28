@@ -76,6 +76,7 @@ export default function AdminSupportPage() {
   const [loadingChats, setLoadingChats] = React.useState(true);
   const [closingId, setClosingId] = React.useState<number | null>(null);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const messagesContainerRef = React.useRef<HTMLDivElement>(null);
   const replyInputRef = React.useRef<HTMLTextAreaElement>(null);
 
   const adminName = React.useMemo(() => getCurrentAdmin()?.name || "Support Agent", []);
@@ -114,14 +115,19 @@ export default function AdminSupportPage() {
     return () => clearInterval(interval);
   }, [selectedId, fetchMessages]);
 
-  // Scroll to bottom on new messages
+  // Scroll to bottom inside the messages container only — never scrolls the page
   React.useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
   }, [messages]);
 
-  // Focus reply input when chat selected
+  // Focus reply input without scrolling the page
   React.useEffect(() => {
-    if (selectedId) setTimeout(() => replyInputRef.current?.focus(), 100);
+    if (selectedId) {
+      setTimeout(() => replyInputRef.current?.focus({ preventScroll: true }), 100);
+    }
   }, [selectedId]);
 
   async function sendReply() {
@@ -342,7 +348,7 @@ export default function AdminSupportPage() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-6 space-y-4">
               {/* System message */}
               <div className="flex justify-center">
                 <span className="rounded-full bg-slate-200 px-3 py-1 text-xs text-slate-500">
@@ -390,7 +396,7 @@ export default function AdminSupportPage() {
                   )}
                 </div>
               ))}
-              <div ref={messagesEndRef} />
+              <div />
             </div>
 
             {/* Reply box */}

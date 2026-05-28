@@ -149,7 +149,8 @@
       "Bash(for f:*)",
       "Bash(do echo:*)",
       "Read(//c/Users/Toufi/AndroidStudioProjects/azuree/**)",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "Bash(cmd //c \"taskkill /PID 4200 /F\")"
     ],
     "deny": [],
     "ask": []

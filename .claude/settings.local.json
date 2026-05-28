@@ -150,7 +150,13 @@
       "Bash(do echo:*)",
       "Read(//c/Users/Toufi/AndroidStudioProjects/azuree/**)",
       "Bash(node -e \":*)",
-      "Bash(cmd //c \"taskkill /PID 4200 /F\")"
+      "Bash(cmd //c \"taskkill /PID 4200 /F\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(x.get\\(''''id'''',''''''''\\)[:8], x.get\\(''''status'''',''''''''\\), x.get\\(''''message'''',''''''''\\)[:50]\\) for x in d[:5]]\")",
+      "Read(//c/tmp/**)",
+      "Bash(unzip -o app_logs.zip -d app_logs)",
+      "Bash(xargs tail:*)",
+      "Bash(unzip -o /tmp/app_logs2.zip -d /tmp/app_logs2)",
+      "Bash(unzip -o /tmp/app_logs3.zip -d /tmp/app_logs3)"
     ],
     "deny": [],
     "ask": []

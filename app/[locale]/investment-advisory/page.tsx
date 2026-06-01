@@ -31,10 +31,9 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
         title="Investment Advisory"
         description="Grow your wealth with personalized investment strategies."
         steps={[
-          "Explore our investment services: portfolio management, strategy, and retirement planning",
-          "Review investment options (equities, bonds, alternatives, ESG)",
-          "Click 'Schedule a Consultation' to meet with an advisor",
-          "Receive a tailored investment plan based on your goals and risk profile",
+          { content: "Welcome to Investment Advisory. Our MiFID II-compliant advisors will build a strategy tailored to your goals and risk profile." },
+          { title: "Our Services", content: "Here are all our investment services — portfolio management, retirement planning, ESG investing, and more. Browse and choose what fits your needs.", target: "#services", position: "top" },
+          { title: "Schedule a Meeting", content: "Ready to get started? Click this button to schedule a free discovery call with one of our certified advisors.", target: "a[href*='investment-advisory/schedule']", position: "bottom" },
         ]}
         tip="All our advisors are MiFID II compliant and regulated by AMF/CSSF."
       />

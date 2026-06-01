@@ -21,19 +21,19 @@ export default function OpenAccountPage() {
         title="Open an Account"
         description="Choose the account type that fits you best."
         steps={[
-          "Select Personal if you are an individual",
-          "Select Business if you are opening for a company",
-          "Fill in the required details and complete identity verification",
-          "Your account will be ready within 24–48 hours",
+          { content: "Welcome to Account Opening. You can open a personal account for yourself, or a business account for your company — both fully online." },
+          { title: "Choose Your Account Type", content: "These two cards are your options. Select 'Personal' if you are an individual, or 'Business' if you are registering a company account.", target: "#account-types", position: "top" },
+          { title: "Personal Account", content: "The Personal account is for individuals. You'll need a valid ID and proof of address. The process takes about 5 minutes.", target: "#account-personal", position: "right" },
+          { title: "Business Account", content: "The Business account is for companies. You'll need company registration documents and a representative ID.", target: "#account-business", position: "left" },
         ]}
-        tip="You will need a valid ID and proof of address to complete verification."
+        tip="You will need a valid ID and proof of address to complete identity verification (KYC)."
       />
       <Hero
         title={t("whitelabel.title")}
         subtitle={t("openAccount.subtitle")}
       />
 
-      <section className="bg-brand-off py-12">
+      <section id="account-types" className="bg-brand-off py-12">
         <div className="container mx-auto max-w-5xl px-6">
           <SectionHeading
             title={t("whitelabel.choiceTitle")}
@@ -43,7 +43,7 @@ export default function OpenAccountPage() {
 
           <div className="grid gap-8 md:grid-cols-2">
             {/* Individual Account */}
-            <Card className="card-hover group border-2 border-brand-grayLight transition-all hover:border-brand-gold">
+            <Card id="account-personal" className="card-hover group border-2 border-brand-grayLight transition-all hover:border-brand-gold">
               <CardContent className="p-8">
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
                   <User className="h-8 w-8 text-brand-goldDark" />
@@ -87,7 +87,7 @@ export default function OpenAccountPage() {
             </Card>
 
             {/* Company Account */}
-            <Card className="card-hover group border-2 border-brand-grayLight transition-all hover:border-brand-gold">
+            <Card id="account-business" className="card-hover group border-2 border-brand-grayLight transition-all hover:border-brand-gold">
               <CardContent className="p-8">
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
                   <Building2 className="h-8 w-8 text-brand-goldDark" />

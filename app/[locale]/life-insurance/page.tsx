@@ -49,12 +49,12 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
         title="Life Insurance"
         description="Explore our life insurance products and find the right coverage for you."
         steps={[
-          "Review the different insurance product types below",
-          "Click a product to see full details and benefits",
-          "Use the 'Get a Quote' button to start your application",
-          "A licensed advisor will contact you to finalize your plan",
+          { content: "Welcome to Life Insurance. We offer term life, whole life, and unit-linked policies tailored for individuals and families in France and Luxembourg." },
+          { title: "What We Offer", content: "This section explains what life insurance covers and how Opulanz's policies are structured — benefits, coverage amounts, and who qualifies.", target: "#overview", position: "bottom" },
+          { title: "Our Products", content: "Browse all available insurance products here. Each card shows the coverage type, key benefits, and pricing range.", target: "#products", position: "top" },
+          { title: "Get a Quote", content: "Ready? Click this button to schedule a call with a licensed advisor who will tailor a plan specifically for you.", target: "a[href*='life-insurance/schedule']", position: "bottom" },
         ]}
-        tip="Term life insurance is the most affordable option for most individuals."
+        tip="Term life is the most affordable option — ideal for individuals aged 25–55 looking for family protection."
       />
       <Hero
         title={t("hero.title")}

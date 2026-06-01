@@ -716,13 +716,13 @@ export default function CompanyAccountPage() {
         title="Company Account Application"
         description="Complete your KYB to open a business Opulanz account."
         steps={[
-          "Enter your company details: name, registration number, legal form, and address",
-          "Describe your business activity, countries of operation, and expected volume",
-          "Complete KYC verification for the company's directors/UBOs",
-          "Verify your email and phone number with OTP codes",
-          "Set a password — your business account will be active within 48 hours",
+          { content: "You're applying for a Business Opulanz account. This form collects your company details required for Know Your Business (KYB) compliance. Have your incorporation documents ready." },
+          { title: "Company Name", content: "Enter your company's full legal name exactly as it appears on your Certificate of Incorporation.", target: "#comp_companyName", position: "bottom" },
+          { title: "Registration Number", content: "Enter your company's official registration number — this is on your incorporation certificate.", target: "#comp_registrationNumber", position: "bottom" },
+          { title: "Legal Form", content: "Select your company's legal structure (SARL, SAS, SA, Ltd, etc.) from this dropdown.", target: "#comp_legalForm", position: "bottom" },
+          { title: "Representative Details", content: "Enter the details of the authorised representative — the person legally acting on behalf of the company.", target: "#comp_repFirstName", position: "bottom" },
         ]}
-        tip="Have your Certificate of Incorporation and a company proof of address ready."
+        tip="Have your Certificate of Incorporation, proof of company address, and a director's ID ready."
       />
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading

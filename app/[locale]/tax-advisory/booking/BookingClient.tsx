@@ -314,12 +314,12 @@ export default function BookingClient() {
         title="Book a Tax Consultation"
         description="Schedule your session with a certified tax advisor in 4 easy steps."
         steps={[
-          "Step 1 – Contact: enter your name, email, and phone number",
-          "Step 2 – Calendar: pick a date and time that suits you",
-          "Step 3 – Summary: review the service, advisor, and slot details",
-          "Step 4 – Payment: complete payment to confirm your booking",
+          { content: "Welcome to the booking flow. Booking your tax consultation takes just 4 steps — contact info, date selection, review, and payment." },
+          { title: "Progress Steps", content: "This progress bar shows where you are in the process. Each step must be completed before moving to the next.", target: ".mb-10.flex.items-center", position: "bottom" },
+          { title: "Your Contact Details", content: "Start by entering your name, email, and phone number so your advisor can confirm your appointment.", target: "#firstName", position: "bottom" },
+          { title: "Complete Payment", content: "On the final step, you'll pay securely with PayPal or debit card. Once paid, your booking is confirmed and a calendar invite is sent.", target: "a[href*='open-account']", position: "top" },
         ]}
-        tip="You'll receive a calendar invite and meeting link by email after payment."
+        tip="You'll receive a calendar invite and meeting link by email immediately after payment."
       />
       <Hero
         title={t("heroTitle")}

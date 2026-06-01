@@ -161,7 +161,12 @@
       "Bash(xargs -I{} taskkill /F /PID {})",
       "Bash(tasklist /FI 'PID eq $pid')",
       "Bash(for pid:*)",
-      "Bash(tasklist)"
+      "Bash(tasklist)",
+      "Bash(head -25 grep -n \"id=\\\\|PageGuidance\\\\|<section\\\\|<h1\\\\|<h2\\\\b\" \"C:\\\\Users\\\\Toufi\\\\AndroidStudioProjects\\\\azuree\\\\app\\\\[locale]\\\\open-account\\\\page.tsx\")",
+      "Bash(head -20 grep -n \"id=\\\\|PageGuidance\\\\|<section\\\\|<h1\\\\|<h2\\\\b\" \"C:\\\\Users\\\\Toufi\\\\AndroidStudioProjects\\\\azuree\\\\app\\\\[locale]\\\\tax-advisory\\\\booking\\\\BookingClient.tsx\")",
+      "Bash(do)",
+      "Read(//c/Users/Toufi/AndroidStudioProjects/azuree/app/**)",
+      "Bash(head -20 grep -n \"id=\\\\|<section\\\\|<form\\\\|<div.*id\" \"C:/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/tax-advisory/booking/BookingClient.tsx\")"
     ],
     "deny": [],
     "ask": []

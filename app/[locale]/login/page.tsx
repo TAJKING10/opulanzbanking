@@ -169,12 +169,12 @@ export default function LoginPage() {
         title="Sign In to Opulanz"
         description="Access your Opulanz account securely with two-step verification."
         steps={[
-          "Enter your registered email address and password",
-          "Click 'Sign In' — a one-time code will be sent to your email",
-          "Enter the 6-digit code to complete verification",
-          "You'll be redirected to your dashboard",
+          { content: "Welcome back. Sign in securely to access your Opulanz dashboard, portfolio, and services." },
+          { title: "Your Email", content: "Enter the email address you registered with. This is used to identify your account.", target: "input[type='email']", position: "bottom" },
+          { title: "Your Password", content: "Enter your password here. It's stored securely and never visible to anyone.", target: "input[type='password']", position: "bottom" },
+          { title: "Sign In", content: "Click this button to sign in. A one-time 6-digit code will be sent to your email to verify it's really you.", target: "button[type='submit']", position: "top" },
         ]}
-        tip="Forgot your password? Click the 'Forgot password?' link below the sign-in form."
+        tip="Forgot your password? Click the 'Forgot password?' link below the sign-in form to reset it."
       />
       {/* Left Side - Branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#b59354] to-[#886844] text-white flex-col justify-between p-12">

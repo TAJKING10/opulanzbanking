@@ -14,6 +14,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   const services = [
     {
+      id: 'svc-accounting',
       title: t('services.accounting.title'),
       description: t('services.accounting.description'),
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=500&fit=crop',
@@ -22,6 +23,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       exploreLabel: t('common.explore'),
     },
     {
+      id: 'svc-open-account',
       title: t('nav.openAccount'),
       description: t('home.services.banking.description'),
       image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=500&fit=crop',
@@ -30,6 +32,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       exploreLabel: t('common.explore'),
     },
     {
+      id: 'svc-company-formation',
       title: t('nav.companyFormation'),
       description: t('home.services.formation.description'),
       image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=500&fit=crop',
@@ -38,6 +41,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       exploreLabel: t('common.explore'),
     },
     {
+      id: 'svc-tax',
       title: t('services.tax.title'),
       description: t('services.tax.description'),
       image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=500&fit=crop',
@@ -46,6 +50,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       exploreLabel: t('common.explore'),
     },
     {
+      id: 'svc-investment',
       title: t('services.investment.title'),
       description: t('services.investment.description'),
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
@@ -54,6 +59,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       exploreLabel: t('common.explore'),
     },
     {
+      id: 'svc-insurance',
       title: t('services.lifeInsurance.title'),
       description: t('services.lifeInsurance.description'),
       image: 'https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800&h=500&fit=crop',
@@ -62,6 +68,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       exploreLabel: t('common.explore'),
     },
     {
+      id: 'svc-spv',
       title: t('services.spvInvestment.title'),
       description: t('services.spvInvestment.description'),
       image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=500&fit=crop',
@@ -72,16 +79,63 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <PageGuidance
-        pageKey="home"
+        pageKey="home-v3"
         title="Welcome to Opulanz"
-        description="Your all-in-one banking and financial services platform."
+        description="Your all-in-one platform for banking, tax, investments, and more."
         steps={[
-          "Browse our services in the section below",
-          "Click a service card to explore or get started",
-          "Open a personal or business account to unlock full features",
-          "Sign in to your dashboard to manage your finances",
+          {
+            content: "Welcome to Opulanz — your complete financial services platform. Let us walk you through everything we offer.",
+          },
+          {
+            title: "Accounting & Invoicing",
+            content: "Professional accounting tools for businesses — automated invoicing, bookkeeping, payroll, VAT reporting, and financial dashboards. Ideal for freelancers and SMEs.",
+            target: "#svc-accounting",
+            position: "right",
+          },
+          {
+            title: "Open an Account",
+            content: "Open a personal or business banking account fully online in under 5 minutes. Includes IBAN, SEPA transfers, cards, and compliance — regulated under ACPR.",
+            target: "#svc-open-account",
+            position: "right",
+          },
+          {
+            title: "Company Formation",
+            content: "Register your company in France or Luxembourg — SARL, SAS, SA, and more. We handle all paperwork: legal filing, registered address, and bank account setup.",
+            target: "#svc-company-formation",
+            position: "right",
+          },
+          {
+            title: "Tax Advisory",
+            content: "Certified tax advisors for individuals and businesses. We handle personal tax returns, corporate tax, VAT compliance, and cross-border tax planning.",
+            target: "#svc-tax",
+            position: "left",
+          },
+          {
+            title: "Investment Advisory",
+            content: "MiFID II-compliant investment advice and portfolio management. Our advisors build personalized strategies covering equities, bonds, ETFs, and ESG investments.",
+            target: "#svc-investment",
+            position: "left",
+          },
+          {
+            title: "Life Insurance",
+            content: "Expert insurance brokerage connecting you with leading providers. Term life, whole life, and unit-linked policies — tailored to individuals and families.",
+            target: "#svc-insurance",
+            position: "left",
+          },
+          {
+            title: "SPV Investment",
+            content: "Exclusive real estate and alternative asset investments through Special Purpose Vehicles. Reserved for qualified and institutional investors seeking premium co-investment opportunities.",
+            target: "#svc-spv",
+            position: "top",
+          },
+          {
+            title: "Ready to Begin?",
+            content: "Use the navigation bar to go anywhere — open an account, book a consultation, or contact our support team. We're here to help.",
+            target: "header nav",
+            position: "bottom",
+          },
         ]}
-        tip="New here? Start by opening an account — it takes less than 5 minutes."
+        tip="New here? Start by opening an account — it's free, fully online, and takes less than 5 minutes."
       />
       <Hero
         title={t('hero.home.title')}
@@ -109,6 +163,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <ServiceCard
                 key={service.title}
                 {...service}
+                id={service.id}
                 style={{ animationDelay: `${index * 100}ms` }}
               />
             ))}

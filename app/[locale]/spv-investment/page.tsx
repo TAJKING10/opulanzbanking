@@ -93,12 +93,11 @@ export default function SpvInvestmentPage() {
         title="SPV Investment Portal"
         description="Invest in premium real estate and alternative assets through SPV structures."
         steps={[
-          "Review the investment overview and available opportunities",
-          "Fill in the interest form with your name, email, and investor type",
-          "Our team will contact you to discuss eligibility and next steps",
-          "Accredited investors gain access to the full investor portal",
+          { content: "Welcome to the SPV Investment Portal. This section is for qualified investors interested in real estate and alternative assets through Special Purpose Vehicles." },
+          { title: "What is an SPV?", content: "This section explains how SPV structures work — how they isolate assets, protect investors, and enable co-investment in premium deals.", target: "#what-is-spv", position: "bottom" },
+          { title: "Express Interest", content: "Use this form to register your interest. Enter your name, email, and investor type — our team will reach out to discuss eligibility.", target: "#contact", position: "top" },
         ]}
-        tip="SPV investments are available to qualified and institutional investors only."
+        tip="SPV investments are reserved for qualified and institutional investors only."
       />
       <Hero
         title={t("spvInvestment.landing.heroTitle")}

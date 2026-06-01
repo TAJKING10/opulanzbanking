@@ -32,10 +32,9 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
         title="Invoicing & Accounting"
         description="Streamline your business finances with our accounting tools."
         steps={[
-          "Browse our accounting features: invoicing, bookkeeping, payroll, reporting",
-          "Click 'Get Started' or 'Request a Demo' to begin onboarding",
-          "Connect your bank account for automated transaction categorization",
-          "Generate reports and manage invoices directly from your dashboard",
+          { content: "Welcome to Invoicing & Accounting. This platform handles your invoices, bookkeeping, payroll, and financial reporting — all in one place." },
+          { title: "Platform Features", content: "These cards highlight the core features — automated invoicing, real-time bookkeeping, payroll management, and tax reporting.", target: "#features", position: "top" },
+          { title: "Get Started", content: "Click 'Get Started' to begin your onboarding. You can import existing data from QuickBooks, Xero, or Excel.", target: "a[href*='onboarding']", position: "bottom" },
         ]}
         tip="You can import existing data from QuickBooks, Xero, or Excel during onboarding."
       />

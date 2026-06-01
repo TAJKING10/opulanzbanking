@@ -76,11 +76,12 @@ export default function AboutPage() {
         title="About Opulanz"
         description="Learn who we are, our mission, and why clients trust us."
         steps={[
-          "Read our story and the values that guide us",
-          "See our key statistics and impact in the industry",
-          "Review our regulatory credentials (ACPR, AMF, CSSF)",
-          "Ready? Open an account or contact us to get started",
+          { content: "Welcome to the About page. Let us walk you through who we are and why clients trust Opulanz." },
+          { title: "Our Story", content: "This section tells the story behind Opulanz — our mission and vision for accessible, premium financial services.", target: "#story", position: "bottom" },
+          { title: "Our Impact", content: "See our key numbers — assets managed, clients served, and countries covered. These stats reflect our real-world impact.", target: "#stats", position: "top" },
+          { title: "Regulatory Trust", content: "Opulanz is regulated by ACPR, AMF, and CSSF. These credentials guarantee your money is safe and protected.", target: "#regulatory", position: "top" },
         ]}
+        tip="Regulated by ACPR, AMF, and CSSF — your money is always safe with Opulanz."
       />
       <Hero
         title={t('hero.about.title')}
@@ -88,7 +89,7 @@ export default function AboutPage() {
       />
 
       {/* Our Story */}
-      <section className="bg-white py-12 md:py-16">
+      <section id="story" className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
             overline={t('hero.about.storyOverline')}
@@ -134,7 +135,7 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="relative bg-gradient-to-br from-brand-dark via-brand-grayDark to-brand-dark py-12 md:py-16 overflow-hidden">
+      <section id="stats" className="relative bg-gradient-to-br from-brand-dark via-brand-grayDark to-brand-dark py-12 md:py-16 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-gold rounded-full filter blur-3xl animate-pulse"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-brand-gold rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -209,7 +210,7 @@ export default function AboutPage() {
       </section>
 
       {/* Licenses & Certifications */}
-      <section className="bg-brand-off py-12 md:py-16">
+      <section id="regulatory" className="bg-brand-off py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline={t('hero.about.licensesOverline')}

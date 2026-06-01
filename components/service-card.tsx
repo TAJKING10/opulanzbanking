@@ -18,6 +18,7 @@ interface ServiceCardProps {
   ctaLabel?: string;
   className?: string;
   style?: React.CSSProperties;
+  id?: string;
 }
 
 export function ServiceCard({
@@ -28,6 +29,7 @@ export function ServiceCard({
   ctaLabel,
   className,
   style,
+  id,
 }: ServiceCardProps) {
   const t = useTranslations();
   const resolvedCtaLabel = ctaLabel || t("common.learnMore");
@@ -65,6 +67,7 @@ export function ServiceCard({
 
   return (
     <motion.div
+      id={id}
       ref={cardRef}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}

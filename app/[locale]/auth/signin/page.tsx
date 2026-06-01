@@ -125,12 +125,12 @@ export default function SigninPage() {
         title="Sign In"
         description="Access your Opulanz account securely."
         steps={[
-          "Enter your registered email address and password",
-          "Click 'Sign In' — you'll receive a one-time code by email",
-          "Enter the 6-digit code to verify your identity",
-          "You'll be redirected to your dashboard once verified",
+          { content: "Welcome back to Opulanz. Signing in is secure and takes just seconds." },
+          { title: "Your Email", content: "Enter the email address you registered with — this identifies your account.", target: "input[type='email']", position: "bottom" },
+          { title: "Your Password", content: "Enter your password. It's encrypted and never visible to anyone, including our team.", target: "input[type='password']", position: "bottom" },
+          { title: "Sign In Button", content: "Click here to sign in. A one-time 6-digit code will be sent to your email to verify your identity.", target: "button[type='submit']", position: "top" },
         ]}
-        tip="Don't have an account yet? Click 'Create account' below the sign-in form."
+        tip="Don't have an account yet? Click 'Create account' below the form to register."
       />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">

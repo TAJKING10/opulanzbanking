@@ -118,12 +118,11 @@ export default function SupportPage() {
         title="Support Center"
         description="We're here to help — reach out through any channel you prefer."
         steps={[
-          "Fill in the contact form with your name, email, and message",
-          "Or use the live chat widget at the bottom-right of the screen",
-          "Check the FAQ section below for quick answers to common questions",
-          "For urgent matters, call our support line directly",
+          { content: "Welcome to the Opulanz Support Center. We're here to help you via form, live chat, or phone — whichever you prefer." },
+          { title: "Contact Methods", content: "These cards show all the ways to reach us — email, phone, and live chat. Choose whatever works best for you.", target: "section.bg-white:first-of-type", position: "bottom" },
+          { title: "Contact Form", content: "Fill in your name, email, and message here to send us a request. We respond within 2 business hours.", target: "#email", position: "top" },
         ]}
-        tip="Most inquiries are resolved within 2 business hours."
+        tip="Most inquiries are resolved within 2 business hours during weekdays."
       />
       <Hero
         title={t("hero.title")}

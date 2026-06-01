@@ -836,13 +836,14 @@ export default function IndividualAccountPage() {
         title="Personal Account Application"
         description="Complete your KYC to open a personal Opulanz account."
         steps={[
-          "Fill in your personal details: name, date of birth, nationality, and address",
-          "Answer the financial questionnaire (source of funds, account purpose)",
-          "Complete identity verification via our secure Sumsub widget",
-          "Verify your email and phone number with OTP codes",
-          "Set a password — your account will be ready within 24 hours",
+          { content: "You're applying for a Personal Opulanz account. This form collects your identity details required by law (KYC). Have your ID and proof of address ready." },
+          { title: "First Name", content: "Start with your legal first name exactly as it appears on your passport or national ID.", target: "#indv_firstName", position: "bottom" },
+          { title: "Date of Birth", content: "Enter your date of birth. You must be at least 18 years old to open an account.", target: "#indv_dateOfBirth", position: "bottom" },
+          { title: "Nationality", content: "Select your nationality from the dropdown. This is required for regulatory compliance.", target: "#indv_nationality", position: "bottom" },
+          { title: "Phone Number", content: "Enter your phone number — it will be used for OTP verification and account security.", target: "#indv_phoneNumber", position: "bottom" },
+          { title: "Home Address", content: "Enter your residential address exactly as it appears on your proof of address document.", target: "#indv_address", position: "bottom" },
         ]}
-        tip="Have your passport or national ID and a proof of address ready before starting."
+        tip="Have your passport or national ID and a recent utility bill or bank statement ready before starting."
       />
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading

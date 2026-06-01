@@ -78,12 +78,12 @@ export default function SignupPage() {
         title="Create Your Account"
         description="Sign up for Opulanz in just a few steps."
         steps={[
-          "Choose your account type: Personal or Business",
-          "Fill in your name, email, phone number, and a strong password",
-          "Click 'Create Account' — you'll receive a verification email",
-          "Verify your email to activate your account and sign in",
+          { content: "Let's create your Opulanz account. The signup process takes less than 2 minutes." },
+          { title: "Account Type", content: "First, choose whether you're signing up as an Individual or as a Business. This determines what features you'll have access to.", target: "select, [role='radiogroup'], .grid.gap-3", position: "bottom" },
+          { title: "Your Email", content: "Enter your email address — this will be your login and where we send notifications and your verification code.", target: "input[type='email']", position: "bottom" },
+          { title: "Create Account", content: "Click this button to submit. You'll receive a verification email — click the link to activate your account and start using Opulanz.", target: "button[type='submit']", position: "top" },
         ]}
-        tip="Use a strong password with uppercase, lowercase, numbers, and symbols."
+        tip="Use a strong password with uppercase letters, numbers, and symbols."
       />
       <div className="w-full max-w-md">
         {/* Logo */}

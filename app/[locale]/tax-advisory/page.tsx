@@ -78,10 +78,9 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
         title="Tax Advisory Services"
         description="Get expert tax support tailored to your personal or business needs."
         steps={[
-          "Browse the available tax services and their prices",
-          "Click a service card to book a consultation",
-          "Select your preferred date, time, and advisor",
-          "Complete payment and receive a confirmation with your meeting link",
+          { content: "Welcome to Tax Advisory. Our certified tax advisors help individuals and businesses with returns, planning, compliance, and more." },
+          { title: "Our Services", content: "These cards show all available tax services with pricing. Each one can be booked directly — click any card to get started.", target: "#services", position: "top" },
+          { title: "Book Now", content: "Click 'Book a Consultation' to go straight to scheduling. You'll pick a date, time, and complete payment online.", target: "a[href*='tax-advisory/booking']", position: "bottom" },
         ]}
         tip="Your first consultation includes a free 15-minute discovery call."
       />

@@ -115,12 +115,12 @@ export default function CompanyFormationPage() {
         title="Company Formation"
         description="Register your company in France or Luxembourg with our guided wizard."
         steps={[
-          "Select the legal structure that fits your business (SARL, SAS, SA, etc.)",
-          "Click on a company type to see details and required capital",
-          "Start the formation wizard and follow the step-by-step process",
-          "Our team reviews your application and handles registration",
+          { content: "Welcome to Company Formation. We'll help you register your business in France or Luxembourg — fully guided and handled by our team." },
+          { title: "Choose Your Structure", content: "These cards show all available legal structures — SARL, SAS, SA, and more. Click any card to see capital requirements and details.", target: "#company-types", position: "top" },
+          { title: "Start the Wizard", content: "Once you've chosen a structure, click 'Start Formation' to begin the step-by-step registration process.", target: "#company-types .grid", position: "bottom" },
+          { title: "Our Services", content: "Below you'll find everything included in our formation service — legal filing, bank account setup, and compliance support.", target: "#services", position: "top" },
         ]}
-        tip="Not sure which structure to choose? SAS is the most flexible for startups and growing businesses."
+        tip="Not sure which structure to choose? SAS is the most flexible option for startups and growing businesses."
       />
       <Hero
         title={t("heroTitle")}
@@ -128,7 +128,7 @@ export default function CompanyFormationPage() {
       />
 
       {/* Company Types Selection */}
-      <section className="bg-white py-12">
+      <section id="company-types" className="bg-white py-12">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             title={t("chooseForm")}

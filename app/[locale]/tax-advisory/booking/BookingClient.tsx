@@ -11,11 +11,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Script from "next/script";
 import { useState, useEffect, useRef } from "react";
+import { PayPalButtons } from "@/components/paypal-buttons";
 import {
   CheckCircle, Clock, Video, Shield,
   ArrowLeft, ArrowRight, Calendar, User, Mail, Phone, CreditCard,
   Download, FileText,
 } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 
 const SERVICE_MAP: Record<string, { title: string; titleFr: string; price: number }> = {
   "tax-return-preparation": { title: "Tax Return Preparation", titleFr: "Préparation de déclaration fiscale", price: 299 },
@@ -62,11 +64,9 @@ export default function BookingClient() {
   const [calendly, setCalendly] = useState<CalendlyData>({});
   const [paypal, setPaypal] = useState<PaypalData>({});
   const [paymentDone, setPaymentDone] = useState(false);
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [confirmationNumber, setConfirmationNumber] = useState("");
-  const paypalRef = useRef<HTMLDivElement>(null);
   const calendlyRef = useRef<HTMLDivElement>(null);
 
   const fullName = `${contact.firstName} ${contact.lastName}`.trim();
@@ -116,41 +116,6 @@ export default function BookingClient() {
     return () => window.removeEventListener("message", handle);
   }, []);
 
-  // ── PayPal render ──────────────────────────────────────────────────────────
-  useEffect(() => {
-    if (step !== "payment") return;
-    function tryRender(): boolean {
-      // @ts-ignore
-      if (!paypalRef.current || !window.paypal) return false;
-      paypalRef.current.innerHTML = "";
-      // @ts-ignore
-      window.paypal.Buttons({
-        style: { layout: "vertical", color: "gold", shape: "rect", label: "pay", height: 50 },
-        createOrder: (_: any, actions: any) =>
-          actions.order.create({
-            purchase_units: [{
-              description: `${serviceTitle} – Tax Advisory Consultation`,
-              amount: { currency_code: "EUR", value: svc.price.toFixed(2) },
-            }],
-          }),
-        onApprove: (_: any, actions: any) =>
-          actions.order.capture().then((details: any) => {
-            setPaypal({ orderId: details.id, status: details.status, payer: details.payer });
-            setPaymentDone(true);
-          }),
-        onError: (err: any) => {
-          console.error("PayPal error:", err);
-          alert(t("step4.paymentError"));
-        },
-      }).render(paypalRef.current);
-      return true;
-    }
-    if (!tryRender()) {
-      const poll = setInterval(() => { if (tryRender()) clearInterval(poll); }, 300);
-      return () => clearInterval(poll);
-    }
-  }, [step, paypalLoaded]);
-
   // ── Step 1: Validate contact ───────────────────────────────────────────────
   function handleContactSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -165,9 +130,19 @@ export default function BookingClient() {
     setStep("calendar");
   }
 
-  // ── Step 4: After PayPal ───────────────────────────────────────────────────
+  // ── Fetch with 5-second timeout ───────────────────────────────────────────
+  async function fetchWithTimeout(url: string, options: RequestInit, ms = 5000) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), ms);
+    try {
+      return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+      clearTimeout(id);
+    }
+  }
+
+  // ── Step 4: After PayPal – auto-proceeds when paymentDone becomes true ────
   async function handlePaymentComplete() {
-    if (!paymentDone) return;
     setLoading(true);
 
     const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -175,7 +150,7 @@ export default function BookingClient() {
     const paymentDate = new Date().toISOString();
 
     try {
-      await fetch(`${API}/api/appointments`, {
+      await fetchWithTimeout(`${API}/api/appointments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -195,7 +170,7 @@ export default function BookingClient() {
     } catch (err) { console.warn("Appointment save failed:", err); }
 
     try {
-      await fetch(`${API}/api/notifications/appointment`, {
+      await fetchWithTimeout(`${API}/api/notifications/appointment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -210,27 +185,36 @@ export default function BookingClient() {
     } catch (err) { console.warn("Notification failed:", err); }
 
     // Save to sessionStorage for confirmation page
-    sessionStorage.setItem("tax-advisory-booking", JSON.stringify({
-      firstName: contact.firstName,
-      lastName: contact.lastName,
-      email: contact.email,
-      phone: contact.phone,
-      serviceId,
-      serviceTitle,
-      servicePrice: svc.price,
-      appointmentDate: calendly.startTime || paymentDate,
-      appointmentTime: calendly.startTime || paymentDate,
-      confirmationNumber: confNum,
-      paypalOrderId: paypal.orderId,
-      paypalStatus: paypal.status,
-      paypalPayer: paypal.payer,
-      paymentDate,
-    }));
+    try {
+      sessionStorage.setItem("tax-advisory-booking", JSON.stringify({
+        firstName: contact.firstName,
+        lastName: contact.lastName,
+        email: contact.email,
+        phone: contact.phone,
+        serviceId,
+        serviceTitle,
+        servicePrice: svc.price,
+        appointmentDate: calendly.startTime || paymentDate,
+        appointmentTime: calendly.startTime || paymentDate,
+        confirmationNumber: confNum,
+        paypalOrderId: paypal.orderId,
+        paypalStatus: paypal.status,
+        paypalPayer: paypal.payer,
+        paymentDate,
+      }));
+    } catch (err) { console.warn("sessionStorage failed:", err); }
 
     setConfirmationNumber(confNum);
     setLoading(false);
     setStep("confirmation");
   }
+
+  // ── Auto-proceed to confirmation once PayPal payment is done ──────────────
+  useEffect(() => {
+    if (!paymentDone) return;
+    const timer = setTimeout(() => { handlePaymentComplete(); }, 1200);
+    return () => clearTimeout(timer);
+  }, [paymentDone]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Download receipt ───────────────────────────────────────────────────────
   function handleDownloadReceipt() {
@@ -325,6 +309,18 @@ export default function BookingClient() {
 
   return (
     <>
+      <PageGuidance
+        pageKey="tax-advisory-booking"
+        title="Book a Tax Consultation"
+        description="Schedule your session with a certified tax advisor in 4 easy steps."
+        steps={[
+          "Step 1 – Contact: enter your name, email, and phone number",
+          "Step 2 – Calendar: pick a date and time that suits you",
+          "Step 3 – Summary: review the service, advisor, and slot details",
+          "Step 4 – Payment: complete payment to confirm your booking",
+        ]}
+        tip="You'll receive a calendar invite and meeting link by email after payment."
+      />
       <Hero
         title={t("heroTitle")}
         subtitle={t("heroSubtitle", { service: serviceTitle })}
@@ -571,13 +567,14 @@ export default function BookingClient() {
                     </div>
 
                     <div className="mx-auto mt-8 max-w-md">
-                      <div ref={paypalRef} id="paypal-button-container" />
-                      {!paypalLoaded && !paymentDone && (
-                        <div className="flex flex-col items-center gap-3 py-6">
-                          <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-brand-gold border-r-transparent" />
-                          <p className="text-sm text-brand-grayMed">{t("step4.loadingPayment")}</p>
-                        </div>
-                      )}
+                      <PayPalButtons
+                        amount={svc.price.toFixed(2)}
+                        description={`${serviceTitle} – Tax Advisory Consultation`}
+                        onSuccess={(orderId, details) => {
+                          setPaypal({ orderId: details.id, status: details.status, payer: details.payer });
+                          setPaymentDone(true);
+                        }}
+                      />
                     </div>
 
                     {paymentDone && (
@@ -588,17 +585,19 @@ export default function BookingClient() {
                             <span className="font-semibold">{t("step4.paymentSuccess")}</span>
                           </div>
                         </div>
-                        <Button onClick={handlePaymentComplete} disabled={loading}
-                          className="bg-brand-gold text-white hover:bg-brand-goldDark">
-                          {loading ? t("step4.processing") : t("step4.continueToConfirmation")}
-                        </Button>
+                        <div className="flex items-center justify-center gap-2 text-sm text-brand-grayMed">
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-brand-gold border-r-transparent" />
+                          <span>{loading ? t("step4.processing") : "Confirming your booking…"}</span>
+                        </div>
                       </div>
                     )}
 
-                    <Button variant="outline" onClick={() => setStep("summary")}
-                      className="mt-4 flex items-center gap-2 mx-auto">
-                      <ArrowLeft className="h-4 w-4" /> {t("step4.backToSummary")}
-                    </Button>
+                    {!paymentDone && (
+                      <Button variant="outline" onClick={() => setStep("summary")}
+                        className="mt-4 flex items-center gap-2 mx-auto">
+                        <ArrowLeft className="h-4 w-4" /> {t("step4.backToSummary")}
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -745,14 +744,6 @@ export default function BookingClient() {
         src="https://assets.calendly.com/assets/external/widget.js"
         strategy="afterInteractive"
         onLoad={() => setCalendlyLoaded(true)}
-      />
-      <Script
-        src={`https://www.paypal.com/sdk/js?client-id=${
-          process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ||
-          "AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo"
-        }&currency=EUR`}
-        strategy="afterInteractive"
-        onLoad={() => setPaypalLoaded(true)}
       />
     </>
   );

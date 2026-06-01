@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { PayPalButtons } from "@/components/paypal-buttons";
 import { Globe, CheckCircle, Clock, Euro } from "lucide-react";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -16,12 +17,10 @@ export default function InternationalTaxPage({ params: { locale } }: { params: {
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState<any>(null);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const [useManualBooking, setUseManualBooking] = useState(false);
-  const paypalRef = useRef<HTMLDivElement>(null);
 
   const totalPrice = 250;
   const servicePrice = totalPrice / 1.17; // Price without VAT
@@ -222,19 +221,6 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
       document.head.appendChild(script);
     }
   }, [step, calendlyLoaded]);
-  // Load PayPal SDK when payment step is active
-  useEffect(() => {
-    if (step === 'payment' && !paypalLoaded) {
-      const script = document.createElement('script');
-      const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo';
-      script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR`;
-      script.async = true;
-      script.onload = () => setPaypalLoaded(true);
-      document.head.appendChild(script);
-    }
-  }, [step, paypalLoaded]);
-
-
   // Listen for Calendly events
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
@@ -318,76 +304,16 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
     return () => window.removeEventListener('message', handleCalendlyEvent);
   }, []);
 
-  // Initialize PayPal buttons
   useEffect(() => {
-    if (step === 'payment' && paypalLoaded && paypalRef.current && bookingData) {
-      paypalRef.current.innerHTML = '';
-
-      // @ts-ignore
-      if (window.paypal) {
-        // @ts-ignore
-        window.paypal.Buttons({
-          style: {
-            layout: 'vertical',
-            color: 'gold',
-            shape: 'rect',
-            label: 'pay',
-            height: 50
-          },
-          createOrder: function(data: any, actions: any) {
-            return actions.order.create({
-              purchase_units: [{
-                description: 'International Tax - 60 minutes',
-                amount: {
-                  currency_code: 'EUR',
-                  value: totalPrice.toFixed(2)
-                }
-              }]
-            });
-          },
-          onApprove: function(data: any, actions: any) {
-            return actions.order.capture().then(function(details: any) {
-              console.log('Payment completed:', details);
-
-              // Extract payment information from PayPal response
-              const paymentInfo = {
-                orderId: details.id,
-                payerId: details.payer.payer_id,
-                payerEmail: details.payer.email_address,
-                payerName: details.payer.name.given_name + ' ' + details.payer.name.surname,
-                amount: details.purchase_units[0].amount.value,
-                currency: details.purchase_units[0].amount.currency_code,
-                status: details.status,
-                timestamp: details.create_time,
-                updateTime: details.update_time
-              };
-
-              console.log('Payment info:', paymentInfo);
-              setPaymentDetails(paymentInfo);
-              setPaymentCompleted(true);
-            });
-          },
-          onError: function(err: any) {
-            console.error('PayPal error:', err);
-            alert('Payment failed. Please try again.');
-          }
-        }).render(paypalRef.current);
-      }
-    }
-  }, [step, paypalLoaded, bookingData, totalPrice]);
+    if (!paymentCompleted) return;
+    const timer = setTimeout(() => { handlePaymentComplete(); }, 1200);
+    return () => clearTimeout(timer);
+  }, [paymentCompleted]);
 
   const handlePaymentComplete = async () => {
-    if (!paymentCompleted || !paymentDetails) {
-      alert('Please complete the PayPal payment first.');
-      return;
-    }
-
     setLoading(true);
-
     try {
-      if (!bookingData) {
-        throw new Error('No booking data available');
-      }
+      if (!bookingData) throw new Error('No booking data available');
 
       await fetch(`${API}/api/appointments`, {
         method: 'POST',
@@ -403,33 +329,27 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
           end_time: bookingData.eventEndTime,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           location: 'Video Conference',
-          notes: `Paid consultation - €${totalPrice} - PayPal Order ID: ${paymentDetails.orderId}`
+          notes: `Paid consultation - €${totalPrice}${paymentDetails ? ` - PayPal Order ID: ${paymentDetails.orderId}` : ''}`
         })
       }).catch(() => {});
 
-      // Store payment details in booking data for receipt generation
-      const updatedBookingData = {
-        ...bookingData,
-        paymentDetails: {
-          orderId: paymentDetails.orderId,
-          payerId: paymentDetails.payerId,
-          payerEmail: paymentDetails.payerEmail,
-          payerName: paymentDetails.payerName,
-          amount: paymentDetails.amount,
-          currency: paymentDetails.currency,
-          status: paymentDetails.status,
-          timestamp: paymentDetails.timestamp,
-          updateTime: paymentDetails.updateTime
-        }
-      };
-      setBookingData(updatedBookingData);
+      if (paymentDetails) {
+        setBookingData((prev: any) => ({
+          ...prev,
+          paymentDetails: {
+            orderId: paymentDetails.orderId, payerId: paymentDetails.payerId,
+            payerEmail: paymentDetails.payerEmail, payerName: paymentDetails.payerName,
+            amount: paymentDetails.amount, currency: paymentDetails.currency,
+            status: paymentDetails.status, timestamp: paymentDetails.timestamp,
+            updateTime: paymentDetails.updateTime
+          }
+        }));
+      }
 
       sendEmailReceipts();
-
       setStep('confirmation');
     } catch (error) {
-      console.error('Error processing payment:', error);
-      alert('There was an error processing your payment. Please contact support.');
+      setStep('confirmation');
     } finally {
       setLoading(false);
     }
@@ -773,8 +693,24 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
                   </div>
 
                   <div className="mx-auto max-w-md">
-                    <div ref={paypalRef} id="paypal-button-container"></div>
-
+                    <PayPalButtons
+                      amount={totalPrice.toFixed(2)}
+                      description="International Tax Advisory - 60 minutes"
+                      onSuccess={(orderId, details) => {
+                        setPaymentDetails({
+                          orderId: details.id || orderId,
+                          payerId: details.payer?.payer_id,
+                          payerEmail: details.payer?.email_address,
+                          payerName: (details.payer?.name?.given_name || '') + ' ' + (details.payer?.name?.surname || ''),
+                          amount: details.purchase_units?.[0]?.amount?.value,
+                          currency: details.purchase_units?.[0]?.amount?.currency_code,
+                          status: details.status,
+                          timestamp: details.create_time,
+                          updateTime: details.update_time
+                        });
+                        setPaymentCompleted(true);
+                      }}
+                    />
                     <div className="mt-6 rounded-lg bg-blue-50 p-4">
                       <p className="text-sm text-blue-800">
                         <strong>Testing:</strong> Use card{' '}
@@ -792,15 +728,10 @@ Receipt Generated: ${new Date().toLocaleString('en-US')}
                           <span className="font-semibold">Payment Successful!</span>
                         </div>
                       </div>
-
-                      <Button
-                        type="button"
-                        onClick={handlePaymentComplete}
-                        disabled={loading}
-                        className="bg-brand-gold text-white hover:bg-brand-goldDark"
-                      >
-                        {loading ? 'Processing...' : 'Continue to Confirmation'}
-                      </Button>
+                      <div className="flex items-center justify-center gap-2 text-brand-grayMed text-sm">
+                        <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+                        {loading ? 'Processing...' : 'Redirecting to confirmation...'}
+                      </div>
                     </div>
                   )}
                 </div>

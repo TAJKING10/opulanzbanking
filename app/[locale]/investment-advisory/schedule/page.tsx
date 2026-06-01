@@ -7,8 +7,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Script from "next/script";
 import { useState, useEffect, useRef } from "react";
+import { PayPalButtons } from "@/components/paypal-buttons";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+function fetchWithTimeout(url: string, options: RequestInit, timeoutMs = 5000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(id));
+}
 
 export default function ScheduleInvestmentMeetingPage() {
   const t = useTranslations("investmentAdvisory.schedule");
@@ -18,10 +25,8 @@ export default function ScheduleInvestmentMeetingPage() {
   const [step, setStep] = useState<'calendar' | 'payment' | 'confirmation'>('calendar');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
-  const paypalRef = useRef<HTMLDivElement>(null);
   const calendlyRef = useRef<HTMLDivElement>(null);
 
   // If Calendly script was already loaded by a previous page navigation, onLoad won't fire
@@ -63,52 +68,22 @@ export default function ScheduleInvestmentMeetingPage() {
     }
   }, [step, calendlyLoaded, locale]);
 
+  // Auto-proceed to confirmation after payment completes
   useEffect(() => {
-    if (step === 'payment' && paypalLoaded && paypalRef.current && bookingData) {
-      paypalRef.current.innerHTML = '';
-      // @ts-ignore
-      if (window.paypal) {
-        // @ts-ignore
-        window.paypal.Buttons({
-          style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', height: 50 },
-          createOrder: function(data: any, actions: any) {
-            return actions.order.create({
-              purchase_units: [{
-                description: 'Investment Advisory Consultation - 45 minutes',
-                amount: { currency_code: 'EUR', value: '99.90' }
-              }]
-            });
-          },
-          onApprove: function(data: any, actions: any) {
-            return actions.order.capture().then(function(details: any) {
-              setPaymentCompleted(true);
-            });
-          },
-          onError: function(err: any) {
-            console.error('PayPal error:', err);
-            alert(t("paymentFailed"));
-          }
-        }).render(paypalRef.current);
-      }
-    }
-  }, [step, paypalLoaded, bookingData]);
+    if (!paymentCompleted) return;
+    const timer = setTimeout(() => { handlePaymentComplete(); }, 1200);
+    return () => clearTimeout(timer);
+  }, [paymentCompleted]);
 
   const handlePaymentComplete = async () => {
-    if (!paymentCompleted) {
-      alert(t("completePaymentFirst"));
-      return;
-    }
-
     setLoading(true);
 
     try {
-      if (!bookingData) {
-        throw new Error('No booking data available');
-      }
+      if (!bookingData) throw new Error('No booking data available');
 
       const startDate = new Date(bookingData.eventStartTime);
 
-      await fetch(`${API}/api/appointments`, {
+      await fetchWithTimeout(`${API}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -126,7 +101,7 @@ export default function ScheduleInvestmentMeetingPage() {
         })
       }).catch(() => null);
 
-      await fetch(`${API}/api/notifications/appointment`, {
+      await fetchWithTimeout(`${API}/api/notifications/appointment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -145,7 +120,7 @@ export default function ScheduleInvestmentMeetingPage() {
       setStep('confirmation');
     } catch (error) {
       console.error('Error processing payment:', error);
-      alert(t("paymentError"));
+      setStep('confirmation');
     } finally {
       setLoading(false);
     }
@@ -293,7 +268,11 @@ export default function ScheduleInvestmentMeetingPage() {
                     </div>
 
                     <div className="mx-auto max-w-md">
-                      <div ref={paypalRef} id="paypal-button-container"></div>
+                      <PayPalButtons
+                        amount="99.90"
+                        description="Investment Advisory Consultation - 45 minutes"
+                        onSuccess={() => setPaymentCompleted(true)}
+                      />
 
                       <div className="mt-6 rounded-lg bg-blue-50 p-4">
                         <p className="text-sm text-blue-800">
@@ -315,15 +294,13 @@ export default function ScheduleInvestmentMeetingPage() {
                             <span className="font-semibold">{t("paymentSuccess")}</span>
                           </div>
                         </div>
-
-                        <Button
-                          type="button"
-                          onClick={handlePaymentComplete}
-                          disabled={loading}
-                          className="bg-brand-gold text-white hover:bg-brand-goldDark"
-                        >
-                          {loading ? t("processing") : t("continueToConfirmation")}
-                        </Button>
+                        <div className="flex items-center justify-center gap-2 text-brand-grayMed text-sm">
+                          <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+                          </svg>
+                          {loading ? t("processing") : 'Redirecting to confirmation...'}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -410,11 +387,6 @@ export default function ScheduleInvestmentMeetingPage() {
         src="https://assets.calendly.com/assets/external/widget.js"
         strategy="afterInteractive"
         onLoad={() => setCalendlyLoaded(true)}
-      />
-      <Script
-        src="https://www.paypal.com/sdk/js?client-id=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo&currency=EUR"
-        strategy="lazyOnload"
-        onLoad={() => setPaypalLoaded(true)}
       />
     </>
   );

@@ -8,8 +8,9 @@ import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import emailjs from '@emailjs/browser';
+import { PayPalButtons } from "@/components/paypal-buttons";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -17,10 +18,8 @@ export default function CorporateTaxPage({ params: { locale } }: { params: { loc
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
-  const paypalRef = useRef<HTMLDivElement>(null);
 
   const totalPrice = 150;
   const servicePrice = totalPrice / 1.17;
@@ -123,19 +122,6 @@ Contact: opulanz.banking@gmail.com
       document.head.appendChild(script);
     }
   }, [step, calendlyLoaded]);
-  // Load PayPal SDK when payment step is active
-  useEffect(() => {
-    if (step === 'payment' && !paypalLoaded) {
-      const script = document.createElement('script');
-      const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo';
-      script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR`;
-      script.async = true;
-      script.onload = () => setPaypalLoaded(true);
-      document.head.appendChild(script);
-    }
-  }, [step, paypalLoaded]);
-
-
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
       if (e.data.event && e.data.event.indexOf('calendly') === 0 && e.data.event === 'calendly.event_scheduled') {
@@ -155,46 +141,12 @@ Contact: opulanz.banking@gmail.com
   }, []);
 
   useEffect(() => {
-    if (step === 'payment' && paypalLoaded && paypalRef.current && bookingData) {
-      paypalRef.current.innerHTML = '';
-      // @ts-ignore
-      if (window.paypal) {
-        // @ts-ignore
-        window.paypal.Buttons({
-          style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', height: 50 },
-          createOrder: function(data: any, actions: any) {
-            return actions.order.create({
-              purchase_units: [{ description: 'Corporate Tax - 60 minutes', amount: { currency_code: 'EUR', value: totalPrice.toFixed(2) } }]
-            });
-          },
-          onApprove: function(data: any, actions: any) {
-            return actions.order.capture().then(function(details: any) {
-              setBookingData((prev: any) => ({
-                ...prev,
-                paymentDetails: {
-                  orderId: data.orderID,
-                  payerId: details.payer.payer_id,
-                  payerEmail: details.payer.email_address,
-                  payerName: details.payer.name.given_name + ' ' + details.payer.name.surname,
-                  amount: details.purchase_units[0].amount.value,
-                  currency: details.purchase_units[0].amount.currency_code,
-                  status: details.status,
-                  timestamp: new Date().toISOString()
-                }
-              }));
-              setPaymentCompleted(true);
-            });
-          },
-          onError: function(err: any) {
-            alert('Payment failed. Please try again.');
-          }
-        }).render(paypalRef.current);
-      }
-    }
-  }, [step, paypalLoaded, bookingData, totalPrice]);
+    if (!paymentCompleted) return;
+    const timer = setTimeout(() => { handlePaymentComplete(); }, 1200);
+    return () => clearTimeout(timer);
+  }, [paymentCompleted]);
 
   const handlePaymentComplete = async () => {
-    if (!paymentCompleted) { alert('Please complete the PayPal payment first.'); return; }
     setLoading(true);
     try {
       await fetch(`${API}/api/appointments`, {
@@ -209,10 +161,9 @@ Contact: opulanz.banking@gmail.com
         })
       }).catch(() => {});
       sendEmailReceipts();
-
       setStep('confirmation');
     } catch (error) {
-      alert('There was an error processing your payment. Please contact support.');
+      setStep('confirmation');
     } finally {
       setLoading(false);
     }
@@ -388,7 +339,26 @@ Contact: opulanz.banking@gmail.com
                     <p className="mt-2 text-sm text-brand-grayMed">One-time payment for 60-minute consultation</p>
                   </div>
                   <div className="mx-auto max-w-md">
-                    <div ref={paypalRef} id="paypal-button-container"></div>
+                    <PayPalButtons
+                      amount={totalPrice.toFixed(2)}
+                      description="Corporate Tax Advisory - 60 minutes"
+                      onSuccess={(orderId, details) => {
+                        setBookingData((prev: any) => ({
+                          ...prev,
+                          paymentDetails: {
+                            orderId: details.id || orderId,
+                            payerId: details.payer?.payer_id,
+                            payerEmail: details.payer?.email_address,
+                            payerName: (details.payer?.name?.given_name || '') + ' ' + (details.payer?.name?.surname || ''),
+                            amount: details.purchase_units?.[0]?.amount?.value,
+                            currency: details.purchase_units?.[0]?.amount?.currency_code,
+                            status: details.status,
+                            timestamp: new Date().toISOString()
+                          }
+                        }));
+                        setPaymentCompleted(true);
+                      }}
+                    />
                     <div className="mt-6 rounded-lg bg-blue-50 p-4">
                       <p className="text-sm text-blue-800">
                         <strong>Testing:</strong> Use card <code className="rounded bg-blue-100 px-2 py-1">4111 1111 1111 1111</code> (Expiry: 12/2030, CVV: 123)
@@ -403,9 +373,13 @@ Contact: opulanz.banking@gmail.com
                           <span className="font-semibold">Payment Successful!</span>
                         </div>
                       </div>
-                      <Button type="button" onClick={handlePaymentComplete} disabled={loading} className="bg-brand-gold text-white hover:bg-brand-goldDark">
-                        {loading ? 'Processing...' : 'Continue to Confirmation'}
-                      </Button>
+                      <div className="flex items-center justify-center gap-2 text-brand-grayMed text-sm">
+                        <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+                        </svg>
+                        {loading ? 'Processing...' : 'Redirecting to confirmation...'}
+                      </div>
                     </div>
                   )}
                 </div>

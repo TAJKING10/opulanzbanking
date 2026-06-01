@@ -6,6 +6,12 @@ const PAYPAL_CLIENT_ID =
   process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ||
   "ASfDlkfY0QexOMLyaQl7LzQP00oDbv3I2j9EkPcBNfSSS6TdwotWY50J3IQWEN17mqpB92UbVY97u3bJ";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+// Sandbox if the Client ID starts with sandbox prefix (all sandbox IDs start with A)
+// We always use sandbox SDK URL when using sandbox credentials
+const SDK_URL = "https://www.sandbox.paypal.com/web-sdk/v6/core";
+
 interface PayPalButtonsProps {
   amount: string;
   description: string;
@@ -28,116 +34,169 @@ export function PayPalButtons({
 
   useEffect(() => {
     let cancelled = false;
+
     setLoading(true);
     setError(null);
 
-    const timeoutId = setTimeout(() => {
-      if (!cancelled && !(window as any).paypal) {
-        setLoading(false);
-        const msg = "PayPal is taking too long to load. Please refresh and try again.";
-        setError(msg);
-        onError?.(msg);
-      }
-    }, 20000);
-
-    function renderButtons() {
-      if (cancelled || !containerRef.current || !(window as any).paypal) return;
-      containerRef.current.innerHTML = "";
-
-      console.log("[PayPal] Rendering buttons — amount:", amount, "currency:", currency, "description:", description);
-
-      (window as any).paypal
-        .Buttons({
-          style: {
-            layout: "vertical",
-            color: "gold",
-            shape: "rect",
-            label: "pay",
-            height: 50,
-          },
-          createOrder: function (data: any, actions: any) {
-            console.log("[PayPal] createOrder called");
-            return actions.order
-              .create({
-                purchase_units: [
-                  {
-                    description,
-                    amount: { currency_code: currency, value: amount },
-                  },
-                ],
-              })
-              .then((orderId: string) => {
-                console.log("[PayPal] Order created:", orderId);
-                return orderId;
-              });
-          },
-          onApprove: function (data: any, actions: any) {
-            console.log("[PayPal] onApprove — orderId:", data.orderID);
-            return actions.order.capture().then((details: any) => {
-              console.log("[PayPal] Capture success:", details);
-              if (!cancelled) {
-                setLoading(false);
-                onSuccess(data.orderID, details);
-              }
-            });
-          },
-          onError: function (err: any) {
-            console.error("[PayPal] onError:", err);
-            if (!cancelled) {
-              const msg = "Payment failed. Please try again or use a different payment method.";
-              setError(msg);
-              setLoading(false);
-              onError?.(msg);
-            }
-          },
-          onCancel: function () {
-            console.log("[PayPal] Payment cancelled by user");
-          },
-        })
-        .render(containerRef.current)
-        .then(() => { if (!cancelled) setLoading(false); })
-        .catch((err: any) => {
-          console.error("[PayPal] render error:", err);
-          if (!cancelled) {
-            setTimeout(() => {
-              if (!cancelled) renderButtons();
-            }, 800);
-          }
-        });
+    async function createOrder(): Promise<{ orderId: string }> {
+      console.log("[PayPal v6] Creating order — amount:", amount, currency, description);
+      const res = await fetch(`${API}/api/paypal/create-order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount, currency, description }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to create PayPal order");
+      console.log("[PayPal v6] Order created:", data.orderId);
+      return { orderId: data.orderId };
     }
 
-    function loadSDK() {
-      if ((window as any).paypal) {
-        console.log("[PayPal] SDK already loaded, rendering buttons");
-        renderButtons();
+    async function captureOrder(orderId: string) {
+      console.log("[PayPal v6] Capturing order:", orderId);
+      const res = await fetch(`${API}/api/paypal/capture-order/${orderId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to capture PayPal order");
+      console.log("[PayPal v6] Capture success:", data.status);
+      return data;
+    }
+
+    async function initPayPal() {
+      if (!containerRef.current) return;
+
+      const paypal = (window as any).paypal;
+      console.log("[PayPal v6] Initializing SDK instance — clientId:", PAYPAL_CLIENT_ID.slice(0, 12) + "...");
+
+      let sdkInstance: any;
+      try {
+        sdkInstance = await paypal.createInstance({
+          clientId: PAYPAL_CLIENT_ID,
+          components: ["paypal-payments"],
+          pageType: "checkout",
+        });
+      } catch (err: any) {
+        console.error("[PayPal v6] createInstance failed:", err);
+        if (!cancelled) {
+          const msg = "PayPal failed to initialize. Please refresh and try again.";
+          setError(msg);
+          setLoading(false);
+          onError?.(msg);
+        }
         return;
       }
 
-      const existing = document.querySelector('script[src*="paypal.com/sdk/js"]');
+      // Check eligibility
+      let eligible = false;
+      try {
+        const methods = await sdkInstance.findEligibleMethods({ currencyCode: currency });
+        eligible = methods.isEligible("paypal");
+        console.log("[PayPal v6] Eligible for PayPal:", eligible);
+      } catch {
+        eligible = true; // proceed anyway
+      }
+
+      if (!eligible) {
+        const msg = "PayPal is not available for your region or currency.";
+        setError(msg);
+        setLoading(false);
+        onError?.(msg);
+        return;
+      }
+
+      // Create payment session
+      const session = sdkInstance.createPayPalOneTimePaymentSession({
+        onApprove: async (data: any) => {
+          if (cancelled) return;
+          console.log("[PayPal v6] onApprove — orderId:", data.orderId);
+          try {
+            const details = await captureOrder(data.orderId);
+            if (!cancelled) onSuccess(data.orderId, details);
+          } catch (err: any) {
+            console.error("[PayPal v6] capture failed:", err);
+            if (!cancelled) {
+              const msg = "Payment approved but capture failed. Please contact support.";
+              setError(msg);
+              onError?.(msg);
+            }
+          }
+        },
+        onCancel: () => {
+          console.log("[PayPal v6] Payment cancelled by user");
+        },
+        onError: (err: any) => {
+          console.error("[PayPal v6] Payment error:", err);
+          if (!cancelled) {
+            const msg = "Payment failed. Please try again.";
+            setError(msg);
+            setLoading(false);
+            onError?.(msg);
+          }
+        },
+      });
+
+      if (cancelled || !containerRef.current) return;
+
+      // Create and mount the <paypal-button> custom element
+      containerRef.current.innerHTML = "";
+      const btn = document.createElement("paypal-button") as any;
+      btn.setAttribute("type", "pay");
+      containerRef.current.appendChild(btn);
+
+      btn.addEventListener("click", async () => {
+        console.log("[PayPal v6] Button clicked — starting session");
+        try {
+          await session.start(
+            { presentationMode: "auto" },
+            createOrder()
+          );
+        } catch (err: any) {
+          console.error("[PayPal v6] session.start error:", err);
+          if (!cancelled) {
+            const msg = "Could not start payment. Please try again.";
+            setError(msg);
+            onError?.(msg);
+          }
+        }
+      });
+
+      if (!cancelled) setLoading(false);
+    }
+
+    function loadSDK() {
+      // If already loaded, init directly
+      if ((window as any).paypal?.createInstance) {
+        console.log("[PayPal v6] SDK already loaded");
+        initPayPal();
+        return;
+      }
+
+      // If script tag exists, poll
+      const existing = document.querySelector('script[src*="web-sdk/v6"]');
       if (existing) {
-        console.log("[PayPal] SDK script tag exists, polling for window.paypal");
+        console.log("[PayPal v6] Script tag exists, polling...");
         const poll = setInterval(() => {
           if (cancelled) { clearInterval(poll); return; }
-          if ((window as any).paypal) {
+          if ((window as any).paypal?.createInstance) {
             clearInterval(poll);
-            renderButtons();
+            initPayPal();
           }
         }, 200);
         return;
       }
 
-      console.log("[PayPal] Loading SDK — clientId:", PAYPAL_CLIENT_ID.slice(0, 12) + "...");
+      // Inject SDK script
+      console.log("[PayPal v6] Loading SDK from:", SDK_URL);
       const script = document.createElement("script");
-      script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=${currency}&components=buttons`;
+      script.src = SDK_URL;
       script.async = true;
       script.onload = () => {
-        console.log("[PayPal] SDK loaded successfully");
-        if (!cancelled) renderButtons();
+        if (!cancelled) initPayPal();
       };
       script.onerror = () => {
-        console.error("[PayPal] SDK failed to load");
         if (!cancelled) {
-          const msg = "Could not load PayPal. Please check your connection and try again.";
+          const msg = "Could not load PayPal. Please check your connection.";
           setError(msg);
           setLoading(false);
           onError?.(msg);
@@ -145,6 +204,16 @@ export function PayPalButtons({
       };
       document.head.appendChild(script);
     }
+
+    // 20-second timeout
+    const timeoutId = setTimeout(() => {
+      if (!cancelled && loading) {
+        const msg = "PayPal is taking too long to load. Please refresh.";
+        setError(msg);
+        setLoading(false);
+        onError?.(msg);
+      }
+    }, 20000);
 
     loadSDK();
 
@@ -179,7 +248,7 @@ export function PayPalButtons({
         </div>
       )}
 
-      {/* Always in DOM and always visible — PayPal SDK fails to render into hidden/zero-height elements */}
+      {/* Always in DOM so PayPal can measure it */}
       <div ref={containerRef} />
     </div>
   );

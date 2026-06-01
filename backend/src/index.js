@@ -38,6 +38,7 @@ const investmentsRoutes = require('./routes/investments');
 const investmentContactRoutes = require('./routes/investment-contact');
 const supportRoutes = require('./routes/support');
 const supportChatsRoutes = require('./routes/support-chats');
+const paypalRoutes = require('./routes/paypal');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -113,6 +114,7 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/tax-advisory-bookings', contactLimiter, taxAdvisoryBookingsRoutes); // Tax advisory service bookings
 app.use('/api/life-insurance-bookings', contactLimiter, lifeInsuranceBookingsRoutes); // Life insurance service bookings
 app.use('/api/upload', uploadRoutes); // Azure Blob Storage file uploads
+app.use('/api/paypal', paypalRoutes); // PayPal order create + capture
 app.use('/api/narvi', narviRoutes); // Narvi banking API
 
 // Investment Portal Routes

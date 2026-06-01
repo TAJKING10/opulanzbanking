@@ -39,6 +39,7 @@ export function PayPalButtons({
 }: PayPalButtonsProps) {
   const sessionRef = useRef<any>(null);
   const createOrderRef = useRef<(() => Promise<{ orderId: string }>) | null>(null);
+  const readyRef = useRef(false);
   const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(true);
   const [paying, setPaying] = useState(false);
@@ -49,6 +50,7 @@ export function PayPalButtons({
     let cancelled = false;
     setLoading(true);
     setReady(false);
+    readyRef.current = false;
     setError(null);
     sessionRef.current = null;
     createOrderRef.current = null;
@@ -144,6 +146,7 @@ export function PayPalButtons({
 
       sessionRef.current = session;
       createOrderRef.current = createOrder;
+      readyRef.current = true;
       setLoading(false);
       setReady(true);
     }
@@ -181,7 +184,7 @@ export function PayPalButtons({
     }
 
     const timeoutId = setTimeout(() => {
-      if (!cancelled && !ready) {
+      if (!cancelled && !readyRef.current) {
         setError("PayPal is taking too long. Please refresh.");
         setLoading(false);
       }

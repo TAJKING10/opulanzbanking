@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// Declare custom element for TypeScript
+// Declare custom element for TypeScript (kept hidden in DOM for SDK internals)
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -18,7 +18,8 @@ const PAYPAL_CLIENT_ID =
   process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ||
   "ASfDlkfY0QexOMLyaQl7LzQP00oDbv3I2j9EkPcBNfSSS6TdwotWY50J3IQWEN17mqpB92UbVY97u3bJ";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+// Use same-origin Next.js proxy routes — avoids all CSP issues on localhost and production
+const PAYPAL_API = "/api/paypal";
 const SDK_URL = "https://www.sandbox.paypal.com/web-sdk/v6/core";
 
 interface PayPalButtonsProps {
@@ -36,20 +37,26 @@ export function PayPalButtons({
   onSuccess,
   onError,
 }: PayPalButtonsProps) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const sessionRef = useRef<any>(null);
+  const createOrderRef = useRef<(() => Promise<{ orderId: string }>) | null>(null);
+  const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [paying, setPaying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
+    setReady(false);
     setError(null);
+    sessionRef.current = null;
+    createOrderRef.current = null;
 
-    // ── Server-side order creation (v6 requires this) ──────────────────────
+    // ── Server-side order creation ─────────────────────────────────────────
     function createOrder(): Promise<{ orderId: string }> {
       console.log("[PayPal v6] createOrder — amount:", amount, currency);
-      return fetch(`${API}/api/paypal/create-order`, {
+      return fetch(`${PAYPAL_API}/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount, currency, description }),
@@ -65,7 +72,7 @@ export function PayPalButtons({
     // ── Server-side capture ────────────────────────────────────────────────
     async function captureOrder(orderId: string) {
       console.log("[PayPal v6] Capturing order:", orderId);
-      const res = await fetch(`${API}/api/paypal/capture-order/${orderId}`, {
+      const res = await fetch(`${PAYPAL_API}/capture-order/${orderId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
@@ -75,9 +82,9 @@ export function PayPalButtons({
       return data;
     }
 
-    // ── SDK init + session setup ───────────────────────────────────────────
+    // ── SDK init ───────────────────────────────────────────────────────────
     async function initPayPal() {
-      if (cancelled || !wrapperRef.current) return;
+      if (cancelled) return;
 
       const paypal = (window as any).paypal;
       console.log("[PayPal v6] createInstance...");
@@ -101,16 +108,19 @@ export function PayPalButtons({
 
       if (cancelled) return;
 
-      // Create payment session — callbacks defined here per docs
       const session = sdkInstance.createPayPalOneTimePaymentSession({
         onApprove: async (data: any) => {
           console.log("[PayPal v6] onApprove — orderId:", data.orderId);
           try {
             const details = await captureOrder(data.orderId);
-            if (!cancelled) onSuccess(data.orderId, details);
+            if (!cancelled) {
+              setPaying(false);
+              onSuccess(data.orderId, details);
+            }
           } catch (err: any) {
             console.error("[PayPal v6] capture error:", err);
             if (!cancelled) {
+              setPaying(false);
               setError("Payment approved but capture failed. Contact support.");
               onError?.(err.message);
             }
@@ -118,35 +128,24 @@ export function PayPalButtons({
         },
         onCancel: () => {
           console.log("[PayPal v6] Cancelled by user");
+          if (!cancelled) setPaying(false);
         },
         onError: (err: any) => {
           console.error("[PayPal v6] Payment error:", err);
           if (!cancelled) {
+            setPaying(false);
             setError("Payment failed. Please try again.");
             onError?.("payment error");
           }
         },
       });
 
-      if (cancelled || !wrapperRef.current) return;
+      if (cancelled) return;
 
-      // Get the pre-rendered <paypal-button> element and unhide it
-      const btn = wrapperRef.current.querySelector("paypal-button") as HTMLElement;
-      if (!btn) return;
-
-      btn.removeAttribute("hidden");
-
-      btn.addEventListener("click", () => {
-        console.log("[PayPal v6] Button clicked — starting session");
-        session
-          .start({ presentationMode: "auto" }, createOrder())
-          .catch((err: any) => {
-            console.error("[PayPal v6] session.start error:", err);
-            if (!cancelled) setError("Could not start payment. Please try again.");
-          });
-      });
-
-      if (!cancelled) setLoading(false);
+      sessionRef.current = session;
+      createOrderRef.current = createOrder;
+      setLoading(false);
+      setReady(true);
     }
 
     // ── Load SDK script ────────────────────────────────────────────────────
@@ -182,7 +181,7 @@ export function PayPalButtons({
     }
 
     const timeoutId = setTimeout(() => {
-      if (!cancelled && loading) {
+      if (!cancelled && !ready) {
         setError("PayPal is taking too long. Please refresh.");
         setLoading(false);
       }
@@ -196,8 +195,21 @@ export function PayPalButtons({
     };
   }, [retryKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  function handlePayClick() {
+    if (!sessionRef.current || !createOrderRef.current) return;
+    setPaying(true);
+    console.log("[PayPal v6] Starting payment session...");
+    sessionRef.current
+      .start({ presentationMode: "auto" }, createOrderRef.current())
+      .catch((err: any) => {
+        console.error("[PayPal v6] session.start error:", err);
+        setPaying(false);
+        setError("Could not start payment. Please try again.");
+      });
+  }
+
   return (
-    <div ref={wrapperRef}>
+    <div>
       {/* Loading spinner */}
       {loading && !error && (
         <div className="flex flex-col items-center justify-center py-8 gap-3">
@@ -211,7 +223,12 @@ export function PayPalButtons({
         <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-center">
           <p className="text-sm text-red-700 mb-3">{error}</p>
           <button
-            onClick={() => { setError(null); setLoading(true); setRetryKey((k) => k + 1); }}
+            onClick={() => {
+              setError(null);
+              setLoading(true);
+              setReady(false);
+              setRetryKey((k) => k + 1);
+            }}
             className="rounded-md bg-[#b59354] px-4 py-2 text-sm font-semibold text-white hover:bg-[#886844] transition-colors"
           >
             Try Again
@@ -219,11 +236,36 @@ export function PayPalButtons({
         </div>
       )}
 
-      {/*
-        Pre-render <paypal-button> hidden in the DOM — exactly as PayPal v6 docs show.
-        The SDK needs it present BEFORE it enhances it. We unhide it after createInstance.
-      */}
-      <paypal-button type="pay" hidden />
+      {/* PayPal pay button — shown once SDK is ready, no conflict with custom element */}
+      {ready && !error && (
+        <button
+          onClick={handlePayClick}
+          disabled={paying}
+          className="w-full rounded-lg bg-[#FFC439] hover:bg-[#f0b429] disabled:opacity-60 disabled:cursor-not-allowed transition-colors py-3 px-6 flex items-center justify-center gap-3 font-bold text-[#003087] text-base shadow-sm"
+        >
+          {paying ? (
+            <>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#003087] border-t-transparent" />
+              Processing...
+            </>
+          ) : (
+            <>
+              <svg height="20" viewBox="0 0 124 33" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M46.2 6.8H38c-.5 0-1 .4-1.1.9L33.6 28c-.1.4.2.7.6.7h3.7c.5 0 1-.4 1.1-.9l1-6.1c.1-.5.5-.9 1.1-.9h2.6c5.4 0 8.5-2.6 9.3-7.8.4-2.3 0-4-.9-5.2-1.1-1.3-3-2-5.9-2zm.9 7.7c-.4 2.8-2.7 2.8-4.8 2.8h-1.2l.9-5.4c0-.3.3-.5.6-.5h.6c1.5 0 2.9 0 3.6.8.4.5.5 1.3.3 2.3z" fill="#003087"/>
+                <path d="M68.3 14.4h-3.7c-.3 0-.6.2-.6.5l-.2 1.1-.3-.4c-.9-1.3-3-1.8-5-1.8-4.6 0-8.6 3.5-9.3 8.4-.4 2.5.2 4.8 1.5 6.4 1.2 1.5 3 2.1 5.1 2.1 3.7 0 5.7-2.4 5.7-2.4l-.2 1.1c-.1.4.2.7.6.7h3.3c.5 0 1-.4 1.1-.9l2-12.1c.1-.4-.2-.7-.6-.7zm-5.1 8.1c-.4 2.3-2.3 3.9-4.7 3.9-1.2 0-2.2-.4-2.8-1.1-.6-.8-.8-1.8-.6-3 .4-2.3 2.3-3.9 4.6-3.9 1.2 0 2.1.4 2.7 1.1.7.8.9 1.8.8 3z" fill="#003087"/>
+                <path d="M87.5 14.4h-3.7c-.4 0-.7.2-.9.5l-5.1 7.5-2.2-7.2c-.1-.5-.6-.8-1-.8h-3.7c-.4 0-.7.4-.6.8l4.1 12-3.9 5.5c-.3.4 0 .9.5.9h3.7c.4 0 .7-.2.9-.5L88 15.3c.3-.4 0-.9-.5-.9z" fill="#003087"/>
+                <path d="M98.9 6.8h-8.2c-.5 0-1 .4-1.1.9L86.3 28c-.1.4.2.7.6.7h4c.3 0 .6-.2.7-.5l1-6.5c.1-.5.5-.9 1.1-.9h2.6c5.4 0 8.5-2.6 9.3-7.8.4-2.3 0-4-.9-5.2-1.2-1.3-3.1-2-5.9-2zm.9 7.7c-.4 2.8-2.7 2.8-4.8 2.8h-1.2l.9-5.4c0-.3.3-.5.6-.5h.6c1.5 0 2.9 0 3.6.8.4.5.5 1.3.3 2.3z" fill="#009cde"/>
+                <path d="M120.6 14.4h-3.7c-.3 0-.6.2-.6.5l-.2 1.1-.3-.4c-.9-1.3-3-1.8-5-1.8-4.6 0-8.6 3.5-9.3 8.4-.4 2.5.2 4.8 1.5 6.4 1.2 1.5 3 2.1 5.1 2.1 3.7 0 5.7-2.4 5.7-2.4l-.2 1.1c-.1.4.2.7.6.7h3.3c.5 0 1-.4 1.1-.9l2-12.1c.1-.4-.2-.7-.6-.7zm-5.1 8.1c-.4 2.3-2.3 3.9-4.7 3.9-1.2 0-2.2-.4-2.8-1.1-.6-.8-.8-1.8-.6-3 .4-2.3 2.3-3.9 4.6-3.9 1.2 0 2.1.4 2.7 1.1.7.8.9 1.8.8 3z" fill="#009cde"/>
+                <path d="M124 7.2l-3.3 20.9c-.1.4.2.7.6.7h3.2c.5 0 1-.4 1.1-.9L128.9 7c.1-.4-.2-.7-.6-.7h-3.6c-.3 0-.6.2-.7.9z" fill="#009cde"/>
+              </svg>
+              Pay with PayPal
+            </>
+          )}
+        </button>
+      )}
+
+      {/* Hidden paypal-button element — stays in DOM for SDK internals, never shown */}
+      <paypal-button type="pay" hidden style={{ display: "none" }} />
     </div>
   );
 }

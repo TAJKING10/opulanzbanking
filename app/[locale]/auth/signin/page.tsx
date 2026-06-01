@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2, Mail, Smartphone, RefreshCw } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { OtpInput } from "@/components/otp-input";
 import { setAuthToken } from "@/lib/auth";
 
@@ -119,6 +120,18 @@ export default function SigninPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f6f8f8] to-white flex items-center justify-center p-4">
+      <PageGuidance
+        pageKey="auth-signin"
+        title="Sign In"
+        description="Access your Opulanz account securely."
+        steps={[
+          "Enter your registered email address and password",
+          "Click 'Sign In' — you'll receive a one-time code by email",
+          "Enter the 6-digit code to verify your identity",
+          "You'll be redirected to your dashboard once verified",
+        ]}
+        tip="Don't have an account yet? Click 'Create account' below the sign-in form."
+      />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href={`/${locale}`} className="inline-block">

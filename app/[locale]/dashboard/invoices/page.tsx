@@ -20,6 +20,7 @@ import {
   Printer,
   Trash2,
 } from "lucide-react";
+import { PageTour } from "@/components/page-tour";
 
 export default function InvoicesPage() {
   const params = useParams();
@@ -118,6 +119,16 @@ export default function InvoicesPage() {
 
   return (
     <div className="p-6 lg:p-8">
+      <PageTour
+        pageKey="dashboard-invoices"
+        steps={[
+          { title: "Invoices", description: "Create, send, and track invoices for your clients — all in one place. Let me show you how." },
+          { element: "[data-tour='invoice-stats']", title: "Invoice Summary", description: "At a glance: your total invoiced, how much has been paid, what's pending, and what's overdue.", side: "bottom" },
+          { element: "[data-tour='invoice-filter']", title: "Filter Invoices", description: "Search by client name or invoice number, or filter by status (Paid, Pending, Overdue, Draft).", side: "bottom" },
+          { element: "[data-tour='invoice-table']", title: "Invoice List", description: "Each row shows the invoice number, client, amount, and status. Use the action buttons to view, email, download, or manage each invoice.", side: "top" },
+          { element: "button.bg-\\[\\#b59354\\]", title: "Create a New Invoice", description: "Click here to create a new invoice. Fill in your client details, line items, and due date — then send it directly from here.", side: "bottom" },
+        ]}
+      />
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
@@ -131,7 +142,7 @@ export default function InvoicesPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-4 mb-6">
+      <div data-tour="invoice-stats" className="grid gap-4 md:grid-cols-4 mb-6">
         <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500 mb-1">Total Invoiced</p>
           <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
@@ -151,7 +162,7 @@ export default function InvoicesPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-6">
+      <div data-tour="invoice-filter" className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-6">
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -185,7 +196,7 @@ export default function InvoicesPage() {
       </div>
 
       {/* Invoices Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div data-tour="invoice-table" className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>

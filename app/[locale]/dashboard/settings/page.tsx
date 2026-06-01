@@ -18,6 +18,7 @@ import {
   Monitor,
   Check,
 } from "lucide-react";
+import { PageTour } from "@/components/page-tour";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = React.useState<"profile" | "security" | "notifications" | "preferences">("profile");
@@ -36,6 +37,15 @@ export default function SettingsPage() {
 
   return (
     <div className="p-6 lg:p-8">
+      <PageTour
+        pageKey="dashboard-settings"
+        steps={[
+          { title: "Account Settings", description: "Here you can manage your profile, security, notifications, and display preferences. Let me show you each section." },
+          { element: "[data-tour='settings-tabs']", title: "Settings Tabs", description: "Use these tabs to switch between Profile, Security, Notifications, and Preferences. Click any tab to jump to that section.", side: "bottom" },
+          { element: "[data-tour='settings-profile']", title: "Profile Information", description: "View and edit your name, email, phone number, date of incorporation, and registered address.", side: "bottom" },
+          { element: "[data-tour='settings-security']", title: "Security Settings", description: "Enable two-factor authentication, change your password, view login history, and manage trusted devices.", side: "top" },
+        ]}
+      />
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
@@ -43,7 +53,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+      <div data-tour="settings-tabs" className="flex gap-2 mb-8 overflow-x-auto pb-2">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -65,7 +75,7 @@ export default function SettingsPage() {
 
       {/* Profile Tab */}
       {activeTab === "profile" && (
-        <div className="space-y-6">
+        <div data-tour="settings-profile" className="space-y-6">
           {/* Profile Photo */}
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <h3 className="font-semibold text-gray-900 mb-4">Profile Photo</h3>
@@ -146,7 +156,7 @@ export default function SettingsPage() {
 
       {/* Security Tab */}
       {activeTab === "security" && (
-        <div className="space-y-6">
+        <div data-tour="settings-security" className="space-y-6">
           {/* Two-Factor Authentication */}
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between">

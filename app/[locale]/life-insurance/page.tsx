@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Heart, Shield, Users, TrendingUp, CheckCircle, FileText, DollarSign, Briefcase, Clock } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { useTranslations } from "next-intl";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -43,6 +44,18 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
 
   return (
     <>
+      <PageGuidance
+        pageKey="life-insurance"
+        title="Life Insurance"
+        description="Explore our life insurance products and find the right coverage for you."
+        steps={[
+          "Review the different insurance product types below",
+          "Click a product to see full details and benefits",
+          "Use the 'Get a Quote' button to start your application",
+          "A licensed advisor will contact you to finalize your plan",
+        ]}
+        tip="Term life insurance is the most affordable option for most individuals."
+      />
       <Hero
         title={t("hero.title")}
         subtitle={t("hero.subtitle")}

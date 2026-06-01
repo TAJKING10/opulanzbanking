@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { Building2, User, ArrowRight } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,6 +16,18 @@ export default function OpenAccountPage() {
 
   return (
     <>
+      <PageGuidance
+        pageKey="open-account"
+        title="Open an Account"
+        description="Choose the account type that fits you best."
+        steps={[
+          "Select Personal if you are an individual",
+          "Select Business if you are opening for a company",
+          "Fill in the required details and complete identity verification",
+          "Your account will be ready within 24–48 hours",
+        ]}
+        tip="You will need a valid ID and proof of address to complete verification."
+      />
       <Hero
         title={t("whitelabel.title")}
         subtitle={t("openAccount.subtitle")}

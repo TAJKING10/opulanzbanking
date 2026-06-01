@@ -21,6 +21,7 @@ import {
   Video,
   Users,
 } from "lucide-react";
+import { PageTour } from "@/components/page-tour";
 
 export default function SupportPage() {
   const params = useParams();
@@ -64,6 +65,16 @@ export default function SupportPage() {
 
   return (
     <div className="p-6 lg:p-8">
+      <PageTour
+        pageKey="dashboard-support"
+        steps={[
+          { title: "Help & Support", description: "Find answers fast or get in touch with our support team. Let me show you what's available here." },
+          { element: "[data-tour='support-search']", title: "Search for Help", description: "Type any question or topic here to search our knowledge base — articles, FAQs, and tutorials.", side: "bottom" },
+          { element: "[data-tour='support-categories']", title: "Browse by Category", description: "Click a category to see all help articles for that topic — Payments, Cards, Security, and more.", side: "bottom" },
+          { element: "[data-tour='support-contact']", title: "Contact Us", description: "Use Live Chat for instant support, or call/email us. Live chat is available Mon–Fri, 8am–8pm EET.", side: "left" },
+          { element: "[data-tour='support-tickets']", title: "My Support Tickets", description: "View and track all your open and resolved support tickets. Click 'Create New Ticket' to start a new request.", side: "left" },
+        ]}
+      />
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Help & Support</h1>
@@ -71,7 +82,7 @@ export default function SupportPage() {
       </div>
 
       {/* Search */}
-      <div className="bg-gradient-to-r from-[#b59354] to-[#886844] rounded-2xl p-8 mb-8">
+      <div data-tour="support-search" className="bg-gradient-to-r from-[#b59354] to-[#886844] rounded-2xl p-8 mb-8">
         <h2 className="text-2xl font-bold text-white mb-2">How can we help you?</h2>
         <p className="text-white/70 mb-6">Search our knowledge base or browse categories below</p>
         <div className="relative max-w-2xl">
@@ -90,7 +101,7 @@ export default function SupportPage() {
         {/* Main Content - 2 cols */}
         <div className="lg:col-span-2 space-y-6">
           {/* Categories */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div data-tour="support-categories" className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <h3 className="font-semibold text-gray-900 mb-4">Browse by Category</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               {categories.map((category) => {
@@ -181,7 +192,7 @@ export default function SupportPage() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Contact Options */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div data-tour="support-contact" className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <h3 className="font-semibold text-gray-900 mb-4">Contact Us</h3>
             <div className="space-y-3">
               <button className="w-full flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-[#b59354] hover:bg-[#b59354]/5 transition-colors">
@@ -225,7 +236,7 @@ export default function SupportPage() {
           </div>
 
           {/* My Tickets */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div data-tour="support-tickets" className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold text-gray-900">My Tickets</h3>
               <button className="text-sm text-[#b59354] font-medium hover:underline">

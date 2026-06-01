@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter, useParams } from "next/navigation";
 import { CheckCircle2, Eye, EyeOff, Loader2, Mail, Phone, Shield, ExternalLink, Building2 } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { setAuthToken } from "@/lib/auth";
 import ReactCountryFlag from "react-country-flag";
 import {
@@ -710,6 +711,19 @@ export default function CompanyAccountPage() {
   // ─── STEP: Form ───────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-brand-off py-12">
+      <PageGuidance
+        pageKey="open-account-company"
+        title="Company Account Application"
+        description="Complete your KYB to open a business Opulanz account."
+        steps={[
+          "Enter your company details: name, registration number, legal form, and address",
+          "Describe your business activity, countries of operation, and expected volume",
+          "Complete KYC verification for the company's directors/UBOs",
+          "Verify your email and phone number with OTP codes",
+          "Set a password — your business account will be active within 48 hours",
+        ]}
+        tip="Have your Certificate of Incorporation and a company proof of address ready."
+      />
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading
           title={tAccount("title")}

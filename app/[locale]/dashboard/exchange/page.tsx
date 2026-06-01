@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Clock,
 } from "lucide-react";
+import { PageTour } from "@/components/page-tour";
 
 export default function ExchangePage() {
   const params = useParams();
@@ -72,6 +73,17 @@ export default function ExchangePage() {
 
   return (
     <div className="p-6 lg:p-8">
+      <PageTour
+        pageKey="dashboard-exchange"
+        steps={[
+          { title: "Currency Exchange", description: "Convert money between currencies at live market rates. Let me show you how to use this page." },
+          { element: "[data-tour='from-currency']", title: "From Currency", description: "Select the currency you want to convert FROM — for example, Euros (EUR).", side: "bottom" },
+          { element: "[data-tour='to-currency']", title: "To Currency", description: "Select the currency you want to convert TO — for example, US Dollars (USD).", side: "bottom" },
+          { element: "[data-tour='exchange-amount']", title: "Enter the Amount", description: "Type the amount here. The converted amount updates automatically in real time as you type.", side: "bottom" },
+          { element: "[data-tour='exchange-rate']", title: "Live Exchange Rate", description: "This shows the current market rate. Rates refresh automatically — always review before confirming.", side: "top" },
+          { element: "[data-tour='exchange-btn']", title: "Confirm Exchange", description: "Click this button to execute the currency conversion. Funds are moved between your accounts instantly.", side: "top" },
+        ]}
+      />
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Currency Exchange</h1>
@@ -84,11 +96,12 @@ export default function ExchangePage() {
           {/* Exchange Card */}
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             {/* From Currency */}
-            <div className="mb-4">
+            <div data-tour="from-currency" className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">You Send</label>
               <div className="flex gap-3">
                 <div className="relative flex-1">
                   <input
+                    data-tour="exchange-amount"
                     type="text"
                     value={fromAmount}
                     onChange={(e) => handleFromAmountChange(e.target.value)}
@@ -117,7 +130,7 @@ export default function ExchangePage() {
             </div>
 
             {/* Swap Button & Rate */}
-            <div className="flex items-center justify-between py-4">
+            <div data-tour="exchange-rate" className="flex items-center justify-between py-4">
               <button
                 onClick={handleSwapCurrencies}
                 className="w-12 h-12 bg-[#b59354] text-white rounded-full flex items-center justify-center hover:bg-[#886844] transition-colors"
@@ -132,7 +145,7 @@ export default function ExchangePage() {
             </div>
 
             {/* To Currency */}
-            <div className="mb-6">
+            <div data-tour="to-currency" className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">You Receive</label>
               <div className="flex gap-3">
                 <div className="relative flex-1">
@@ -179,6 +192,7 @@ export default function ExchangePage() {
             </div>
 
             <button
+              data-tour="exchange-btn"
               disabled={!fromAmount || parseFloat(fromAmount) <= 0}
               className="w-full bg-[#b59354] text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#886844] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >

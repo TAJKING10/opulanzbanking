@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { Hero } from '@/components/hero';
 import { SectionHeading } from '@/components/section-heading';
 import { ServiceCard } from '@/components/service-card';
+import { PageGuidance } from '@/components/page-guidance';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -70,6 +71,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   return (
     <>
+      <PageGuidance
+        pageKey="home"
+        title="Welcome to Opulanz"
+        description="Your all-in-one banking and financial services platform."
+        steps={[
+          "Browse our services in the section below",
+          "Click a service card to explore or get started",
+          "Open a personal or business account to unlock full features",
+          "Sign in to your dashboard to manage your finances",
+        ]}
+        tip="New here? Start by opening an account — it takes less than 5 minutes."
+      />
       <Hero
         title={t('hero.home.title')}
         subtitle={t('hero.home.subtitle')}

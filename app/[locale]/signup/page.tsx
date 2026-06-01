@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Eye, EyeOff, Mail, Lock, User, Building2, ArrowRight, Check } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 
 export default function SignupPage() {
   const params = useParams();
@@ -54,6 +55,18 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-[#f6f6f7] flex">
+      <PageGuidance
+        pageKey="signup"
+        title="Create Your Account"
+        description="Sign up for Opulanz — takes less than 2 minutes."
+        steps={[
+          "Select Personal or Business account type",
+          "Fill in your full name, email, and a secure password",
+          "Click 'Create Account' to register",
+          "Check your email to verify your address and activate your account",
+        ]}
+        tip="After signing up, you'll be guided through identity verification (KYC)."
+      />
       {/* Left Side - Branding */}
       <div className="hidden lg:flex lg:flex-1 bg-gradient-to-br from-[#b59354] to-[#886844] text-white flex-col justify-between p-12">
         <div>

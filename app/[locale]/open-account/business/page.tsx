@@ -4,6 +4,7 @@ import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
+import { PageGuidance } from "@/components/page-guidance";
 import { Step } from "@/components/account-opening/stepper";
 
 // Import step components
@@ -232,10 +233,25 @@ export default function BusinessAccountPage() {
   };
 
   return (
-    <AccountOpeningLayout
-      title={t("title")}
-      description={t("description")}
-      steps={BUSINESS_ACCOUNT_STEPS}
+    <>
+      <PageGuidance
+        pageKey="open-account-business"
+        title="Business Account Opening"
+        description="Follow the guided steps to open your business account."
+        steps={[
+          "Step 1 – Welcome: review eligibility and documents needed",
+          "Step 2 – Company Status: confirm your company's legal status",
+          "Step 3 – Jurisdiction: confirm your country of registration",
+          "Step 4 – Directors & UBOs: provide details of directors and beneficial owners",
+          "Step 5 – Documents: upload incorporation certificate and company proof of address",
+          "Step 6–8 – Review, Consent & Submit",
+        ]}
+        tip="Have your Certificate of Incorporation and UBO register ready before starting."
+      />
+      <AccountOpeningLayout
+        title={t("title")}
+        description={t("description")}
+        steps={BUSINESS_ACCOUNT_STEPS}
       currentStep={currentStep}
       onStepChange={handleStepChange}
       onNext={handleNext}
@@ -246,6 +262,7 @@ export default function BusinessAccountPage() {
       hideNavigation={currentStep === BUSINESS_ACCOUNT_STEPS.length}
     >
       {renderStep()}
-    </AccountOpeningLayout>
+      </AccountOpeningLayout>
+    </>
   );
 }

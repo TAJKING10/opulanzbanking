@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { Building2, FileText, Users, CreditCard, CheckCircle } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -109,6 +110,18 @@ export default function CompanyFormationPage() {
 
   return (
     <>
+      <PageGuidance
+        pageKey="company-formation"
+        title="Company Formation"
+        description="Register your company in France or Luxembourg with our guided wizard."
+        steps={[
+          "Select the legal structure that fits your business (SARL, SAS, SA, etc.)",
+          "Click on a company type to see details and required capital",
+          "Start the formation wizard and follow the step-by-step process",
+          "Our team reviews your application and handles registration",
+        ]}
+        tip="Not sure which structure to choose? SAS is the most flexible for startups and growing businesses."
+      />
       <Hero
         title={t("heroTitle")}
         subtitle={t("heroSubtitle")}

@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { Building2, Shield, Users, Lock, CheckCircle, ArrowRight, Mail, Phone, User, Send, Loader2 } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -87,6 +88,18 @@ export default function SpvInvestmentPage() {
 
   return (
     <>
+      <PageGuidance
+        pageKey="spv-investment"
+        title="SPV Investment Portal"
+        description="Invest in premium real estate and alternative assets through SPV structures."
+        steps={[
+          "Review the investment overview and available opportunities",
+          "Fill in the interest form with your name, email, and investor type",
+          "Our team will contact you to discuss eligibility and next steps",
+          "Accredited investors gain access to the full investor portal",
+        ]}
+        tip="SPV investments are available to qualified and institutional investors only."
+      />
       <Hero
         title={t("spvInvestment.landing.heroTitle")}
         subtitle={t("spvInvestment.landing.heroSubtitle")}

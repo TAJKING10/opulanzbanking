@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Target, Eye, Award, Users, Shield, Globe, CheckCircle, BadgeCheck, FileCheck, LockKeyhole } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -70,6 +71,17 @@ export default function AboutPage() {
 
   return (
     <>
+      <PageGuidance
+        pageKey="about"
+        title="About Opulanz"
+        description="Learn who we are, our mission, and why clients trust us."
+        steps={[
+          "Read our story and the values that guide us",
+          "See our key statistics and impact in the industry",
+          "Review our regulatory credentials (ACPR, AMF, CSSF)",
+          "Ready? Open an account or contact us to get started",
+        ]}
+      />
       <Hero
         title={t('hero.about.title')}
         subtitle={t('hero.about.subtitle')}

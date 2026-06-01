@@ -7,7 +7,7 @@ const withNextIntl = require('next-intl/plugin')(
 const CSP = [
   "default-src 'self'",
   // Scripts: Next.js needs 'unsafe-inline' for hydration; Sumsub / Tawk.to / Google
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://apis.google.com https://embed.tawk.to https://va.tawk.to https://cdn.jsdelivr.net https://static.hsappstatic.net https://js.stripe.com https://www.paypal.com https://www.paypalobjects.com https://assets.calendly.com",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://apis.google.com https://embed.tawk.to https://va.tawk.to https://cdn.jsdelivr.net https://static.hsappstatic.net https://js.stripe.com https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com https://assets.calendly.com",
   // Styles: self + Google Fonts inline styles
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   // Fonts: Google Fonts CDN
@@ -15,9 +15,9 @@ const CSP = [
   // Images: self + common CDNs + data URIs
   "img-src 'self' data: blob: https:",
   // Connections: backend API + OAuth + KYC + chat
-  "connect-src 'self' https://*.opulanz.com https://*.azurewebsites.net https://accounts.google.com https://oauth2.googleapis.com https://api.sumsub.com https://*.tawk.to wss://*.tawk.to https://www.paypal.com https://calendly.com https://*.calendly.com",
+  "connect-src 'self' http://localhost:5000 https://*.opulanz.com https://*.azurewebsites.net https://accounts.google.com https://oauth2.googleapis.com https://api.sumsub.com https://*.tawk.to wss://*.tawk.to https://www.paypal.com https://www.sandbox.paypal.com https://api-m.sandbox.paypal.com https://api-m.paypal.com https://calendly.com https://*.calendly.com",
   // Frames: Sumsub KYC widget + PayPal checkout
-  "frame-src 'self' https://api.sumsub.com https://*.sumsub.com https://www.paypal.com https://accounts.google.com https://calendly.com https://*.calendly.com",
+  "frame-src 'self' https://api.sumsub.com https://*.sumsub.com https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com https://accounts.google.com https://calendly.com https://*.calendly.com",
   // Media
   "media-src 'self' blob:",
   // Workers for Next.js

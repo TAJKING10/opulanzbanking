@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Scale, FileCheck, Briefcase, Globe, CheckCircle, Shield, TrendingDown, UserCheck } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -72,6 +73,18 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
 
   return (
     <>
+      <PageGuidance
+        pageKey="tax-advisory"
+        title="Tax Advisory Services"
+        description="Get expert tax support tailored to your personal or business needs."
+        steps={[
+          "Browse the available tax services and their prices",
+          "Click a service card to book a consultation",
+          "Select your preferred date, time, and advisor",
+          "Complete payment and receive a confirmation with your meeting link",
+        ]}
+        tip="Your first consultation includes a free 15-minute discovery call."
+      />
       <Hero
         title={t('services.tax.title')}
         subtitle={t('services.tax.description')}

@@ -18,6 +18,7 @@ import {
   ChevronRight,
   MoreHorizontal,
 } from "lucide-react";
+import { PageTour } from "@/components/page-tour";
 
 export default function CardsPage() {
   const params = useParams();
@@ -70,6 +71,16 @@ export default function CardsPage() {
 
   return (
     <div className="p-6 lg:p-8">
+      <PageTour
+        pageKey="dashboard-cards"
+        steps={[
+          { title: "Your Cards", description: "Here you can manage all your physical and virtual cards. Let me walk you through the page." },
+          { element: "[data-tour='card-selector']", title: "Select a Card", description: "Click a card here to switch between your physical and virtual cards and see their details.", side: "bottom" },
+          { element: "[data-tour='card-display']", title: "Card Preview", description: "This shows your selected card. Click the eye icon to reveal the full card number. Keep this safe!", side: "bottom" },
+          { element: "[data-tour='card-actions']", title: "Quick Actions", description: "Freeze your card instantly if it's lost or stolen. You can also change your PIN or report a lost card here.", side: "top" },
+          { element: "[data-tour='card-settings']", title: "Card Settings", description: "Toggle online payments, contactless, ATM withdrawals, and international use on or off with these switches.", side: "left" },
+        ]}
+      />
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
@@ -86,7 +97,7 @@ export default function CardsPage() {
         {/* Card Display - 2 cols */}
         <div className="lg:col-span-2 space-y-6">
           {/* Card Selector */}
-          <div className="flex gap-4 overflow-x-auto pb-2">
+          <div data-tour="card-selector" className="flex gap-4 overflow-x-auto pb-2">
             {cards.map((card) => (
               <button
                 key={card.id}
@@ -111,6 +122,7 @@ export default function CardsPage() {
           {/* 3D Card Display */}
           {selectedCardData && (
             <div
+              data-tour="card-display"
               className={`bg-gradient-to-br ${selectedCardData.color} rounded-2xl p-6 text-white shadow-xl relative overflow-hidden`}
             >
               {/* Background Pattern */}
@@ -209,7 +221,7 @@ export default function CardsPage() {
           )}
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div data-tour="card-actions" className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <button className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-[#b59354] hover:bg-[#b59354]/5 transition-colors">
               <Snowflake className="h-6 w-6 text-blue-500" />
               <span className="text-sm font-medium text-gray-700">Freeze Card</span>
@@ -232,7 +244,7 @@ export default function CardsPage() {
         {/* Sidebar - 1 col */}
         <div className="space-y-6">
           {/* Card Settings */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div data-tour="card-settings" className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <h3 className="font-semibold text-gray-900 mb-4">Card Settings</h3>
             <div className="space-y-4">
               {cardSettings.map((setting) => {

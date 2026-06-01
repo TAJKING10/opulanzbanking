@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter, useParams } from "next/navigation";
 import { CheckCircle2, Eye, EyeOff, Loader2, Mail, Phone, Shield, ExternalLink } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { setAuthToken } from "@/lib/auth";
 import ReactCountryFlag from "react-country-flag";
 import {
@@ -830,6 +831,19 @@ export default function IndividualAccountPage() {
   // ─── STEP: Form ──────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-brand-off py-12">
+      <PageGuidance
+        pageKey="open-account-individual"
+        title="Personal Account Application"
+        description="Complete your KYC to open a personal Opulanz account."
+        steps={[
+          "Fill in your personal details: name, date of birth, nationality, and address",
+          "Answer the financial questionnaire (source of funds, account purpose)",
+          "Complete identity verification via our secure Sumsub widget",
+          "Verify your email and phone number with OTP codes",
+          "Set a password — your account will be ready within 24 hours",
+        ]}
+        tip="Have your passport or national ID and a proof of address ready before starting."
+      />
       <div className="container mx-auto max-w-4xl px-6">
         <SectionHeading
           title={tAccount("title")}

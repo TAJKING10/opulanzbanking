@@ -7,6 +7,83 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Driver.js Interactive Tour – Opulanz Brand Overrides ─────────────────── */
+.opulanz-tour.driver-popover {
+  border-radius: 14px !important;
+  padding: 18px 20px 14px !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(181, 147, 84, 0.15) !important;
+  max-width: 320px !important;
+  font-family: inherit !important;
+  border: 1px solid rgba(181, 147, 84, 0.2) !important;
+}
+.opulanz-tour .driver-popover-title {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #252623 !important;
+  margin-bottom: 8px !important;
+  line-height: 1.4 !important;
+}
+.opulanz-tour .driver-popover-description {
+  font-size: 13px !important;
+  color: #4b5563 !important;
+  line-height: 1.65 !important;
+}
+.opulanz-tour .driver-popover-progress-text {
+  color: #b59354 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+.opulanz-tour .driver-popover-footer {
+  margin-top: 14px !important;
+  gap: 8px !important;
+}
+.opulanz-tour .driver-popover-next-btn,
+.opulanz-tour .driver-popover-done-btn {
+  background: #b59354 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  padding: 6px 14px !important;
+  cursor: pointer !important;
+  transition: background 0.15s !important;
+}
+.opulanz-tour .driver-popover-next-btn:hover,
+.opulanz-tour .driver-popover-done-btn:hover {
+  background: #886844 !important;
+}
+.opulanz-tour .driver-popover-prev-btn {
+  background: transparent !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  color: #6b7280 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 6px 14px !important;
+  cursor: pointer !important;
+}
+.opulanz-tour .driver-popover-prev-btn:hover {
+  background: #f9fafb !important;
+}
+.opulanz-tour .driver-popover-close-btn {
+  color: #9ca3af !important;
+  font-size: 18px !important;
+}
+.opulanz-tour .driver-popover-close-btn:hover {
+  color: #252623 !important;
+}
+.driver-active .driver-overlay {
+  background: rgba(0, 0, 0, 0.45) !important;
+}
+/* highlighted element pulse ring */
+.driver-active .driver-highlighted-element {
+  outline: 2px solid #b59354 !important;
+  outline-offset: 3px !important;
+  border-radius: 8px !important;
+}
+/* ─────────────────────────────────────────────────────────────────────────── */
+
 @layer base {
   :root {
     /* Opulanz Brand Colors */

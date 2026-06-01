@@ -31,6 +31,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
+import { PageTour } from "@/components/page-tour";
 import { getCurrentUser, clearAuth } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 
@@ -183,6 +184,18 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6 lg:p-8 space-y-6">
+      <PageTour
+        pageKey="dashboard"
+        steps={[
+          { title: "Welcome to your Dashboard", description: "This is your financial control center. Let me walk you through each section." },
+          { element: "[data-tour='kyc-banner']", title: "⚠️ Verify Your Identity First", description: "You must complete KYC before you can send money or use full features. Click 'Verify Now' to start — it takes about 3 minutes.", side: "bottom" },
+          { element: "[data-tour='balance-card']", title: "Your Total Balance", description: "This card shows your combined balance across ALL your accounts. Use the 👁 eye icon to hide or reveal the numbers.", side: "bottom" },
+          { element: "[data-tour='quick-actions']", title: "Quick Actions", description: "From here you can: Send Money to anyone, Exchange currencies, and Manage your Cards. These are your most used actions.", side: "left" },
+          { element: "[data-tour='spending-chart']", title: "Weekly Spending Chart", description: "Gold bars = your expenses. Green bars = money received. Use the filter dropdown to switch between This Week, Last Week, or This Month.", side: "top" },
+          { element: "[data-tour='iban']", title: "Your IBAN (Bank Account Number)", description: "Share this IBAN with anyone who needs to send you money. Click the 📋 copy button to copy it to your clipboard instantly.", side: "left" },
+          { element: "[data-tour='transactions']", title: "Recent Transactions", description: "Your last 5 transactions are shown here. Click 'View All' to go to the full transaction history with search and filters.", side: "top" },
+        ]}
+      />
       {/* Header with Greeting */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
@@ -212,7 +225,7 @@ export default function DashboardPage() {
 
       {/* KYC Verification Banner */}
       {!kycVerified && (
-        <div className="flex items-center justify-between gap-4 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
+        <div data-tour="kyc-banner" className="flex items-center justify-between gap-4 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
               <AlertTriangle className="h-5 w-5 text-amber-600" />
@@ -293,7 +306,7 @@ export default function DashboardPage() {
       {/* Main Balance Card & Quick Actions */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main Balance */}
-        <div className="lg:col-span-2 bg-gradient-to-br from-[#b59354] via-[#c9a86c] to-[#886844] rounded-2xl p-6 text-white relative overflow-hidden">
+        <div data-tour="balance-card" className="lg:col-span-2 bg-gradient-to-br from-[#b59354] via-[#c9a86c] to-[#886844] rounded-2xl p-6 text-white relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -350,7 +363,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <div data-tour="quick-actions" className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <h3 className="font-semibold text-gray-900 mb-4">{t("quickActions.title")}</h3>
           <div className="grid grid-cols-2 gap-3">
             <Link
@@ -411,7 +424,7 @@ export default function DashboardPage() {
       {/* Chart and IBAN Section */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Weekly Spending Chart */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <div data-tour="spending-chart" className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="font-semibold text-gray-900">{t("spending.title")}</h3>
@@ -492,7 +505,7 @@ export default function DashboardPage() {
         {/* IBAN & Account Info */}
         <div className="space-y-4">
           {/* Primary Account IBAN */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div data-tour="iban" className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center gap-2 mb-4">
               <Globe className="h-5 w-5 text-[#b59354]" />
               <h3 className="font-semibold text-gray-900">{t("primaryAccount.title")}</h3>
@@ -549,7 +562,7 @@ export default function DashboardPage() {
       {/* Transactions & Side Panels */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Recent Transactions */}
-        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div data-tour="transactions" className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100 flex items-center justify-between">
             <div>
               <h3 className="font-semibold text-lg text-gray-900">{t("transactions.title")}</h3>

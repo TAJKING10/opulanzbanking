@@ -18,6 +18,7 @@ import {
   Briefcase,
   Building2,
 } from "lucide-react";
+import { PageTour } from "@/components/page-tour";
 
 export default function AccountsPage() {
   const params = useParams();
@@ -75,6 +76,15 @@ export default function AccountsPage() {
 
   return (
     <div className="p-6 lg:p-8">
+      <PageTour
+        pageKey="dashboard-accounts"
+        steps={[
+          { title: "Your Accounts", description: "Here you can see all your bank accounts and their balances. Let me walk you through." },
+          { element: "h1", title: "Accounts Overview", description: "This page lists all your accounts: EUR, USD, GBP and any others. The total combined balance is shown at the top.", side: "bottom" },
+          { element: "[data-tour='account-card']", title: "Account Card", description: "Each card shows the account name, currency, current balance, and recent activity trend. Click the 👁 icon to hide the balance.", side: "bottom" },
+          { element: "[data-tour='account-iban']", title: "Your IBAN Number", description: "This is your account IBAN. Click the copy icon next to it to copy it — share this with anyone who needs to pay you.", side: "bottom" },
+        ]}
+      />
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
@@ -134,6 +144,7 @@ export default function AccountsPage() {
           return (
             <div
               key={account.id}
+              data-tour="account-card"
               className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between mb-4">
@@ -174,7 +185,7 @@ export default function AccountsPage() {
                 </div>
               </div>
 
-              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+              <div data-tour="account-iban" className="mb-4 p-3 bg-gray-50 rounded-lg">
                 <p className="text-xs text-gray-500 mb-1">IBAN</p>
                 <div className="flex items-center justify-between">
                   <p className="font-mono text-sm text-gray-700">{account.iban}</p>

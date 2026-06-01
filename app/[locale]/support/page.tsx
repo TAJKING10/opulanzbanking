@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { Phone, Mail, MessageCircle, HelpCircle, FileText, Clock, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import ReactCountryFlag from "react-country-flag";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -112,6 +113,18 @@ export default function SupportPage() {
 
   return (
     <>
+      <PageGuidance
+        pageKey="support"
+        title="Support Center"
+        description="We're here to help — reach out through any channel you prefer."
+        steps={[
+          "Fill in the contact form with your name, email, and message",
+          "Or use the live chat widget at the bottom-right of the screen",
+          "Check the FAQ section below for quick answers to common questions",
+          "For urgent matters, call our support line directly",
+        ]}
+        tip="Most inquiries are resolved within 2 business hours."
+      />
       <Hero
         title={t("hero.title")}
         subtitle={t("hero.subtitle")}

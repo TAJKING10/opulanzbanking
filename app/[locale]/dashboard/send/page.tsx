@@ -13,6 +13,7 @@ import {
   Check,
   Search,
 } from "lucide-react";
+import { PageTour } from "@/components/page-tour";
 
 // SEPA country codes (simplified list)
 const SEPA_COUNTRY_CODES = new Set([
@@ -86,6 +87,18 @@ export default function SendMoneyPage() {
 
   return (
     <div className="p-6 lg:p-8">
+      <PageTour
+        pageKey="dashboard-send"
+        steps={[
+          { title: "Send Money", description: "This page lets you transfer money to your own accounts or to anyone else's bank. Let me guide you through each field." },
+          { element: "[data-tour='transfer-type']", title: "Step 1 — Transfer Type", description: "Choose 'Own Accounts' to move money between your own accounts, or 'Bank Transfer' to send to someone else.", side: "bottom" },
+          { element: "[data-tour='from-account']", title: "Step 2 — From Account", description: "Select which of your accounts the money will be sent from. You can see the balance next to each option.", side: "bottom" },
+          { element: "[data-tour='beneficiary']", title: "Step 3 — Who Are You Sending To?", description: "Search for a saved beneficiary by name or IBAN. Or click '+ Add New Beneficiary' to add someone new.", side: "bottom" },
+          { element: "[data-tour='amount']", title: "Step 4 — Enter the Amount", description: "Type the amount you want to send here. The transfer type (SEPA, SWIFT, Domestic) is automatically detected from the IBAN.", side: "bottom" },
+          { element: "[data-tour='reference']", title: "Step 5 — Reference / Description", description: "Add a payment reference here — for example an invoice number. The recipient will see this on their bank statement.", side: "bottom" },
+          { element: "[data-tour='confirm-btn']", title: "Step 6 — Confirm & Send", description: "Once all fields are filled, this button becomes active. Click it to review and confirm your transfer.", side: "top" },
+        ]}
+      />
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Transfer Money</h1>
@@ -96,7 +109,7 @@ export default function SendMoneyPage() {
         {/* Main Form - 2 cols */}
         <div className="lg:col-span-2 space-y-6">
           {/* Transfer Type Tabs */}
-          <div className="bg-white rounded-xl p-1 shadow-sm border border-gray-100">
+          <div data-tour="transfer-type" className="bg-white rounded-xl p-1 shadow-sm border border-gray-100">
             <div className="flex">
               <button
                 onClick={() => setTransferType("own")}
@@ -125,7 +138,7 @@ export default function SendMoneyPage() {
           </div>
 
           {/* From Account */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div data-tour="from-account" className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <label className="block text-sm font-medium text-gray-700 mb-3">From Account</label>
             <div className="relative">
               <select
@@ -147,7 +160,7 @@ export default function SendMoneyPage() {
           </div>
 
           {/* To — Beneficiary Selection */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div data-tour="beneficiary" className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-4">
               <label className="text-sm font-medium text-gray-700">To</label>
               <Link
@@ -248,7 +261,7 @@ export default function SendMoneyPage() {
           </div>
 
           {/* Amount */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div data-tour="amount" className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <label className="block text-sm font-medium text-gray-700 mb-3">Amount</label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400">€</span>
@@ -268,7 +281,7 @@ export default function SendMoneyPage() {
           </div>
 
           {/* Reference */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <div data-tour="reference" className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <label className="block text-sm font-medium text-gray-700 mb-3">Reference / Description</label>
             <input
               type="text"
@@ -357,6 +370,7 @@ export default function SendMoneyPage() {
             )}
 
             <button
+              data-tour="confirm-btn"
               disabled={!isFormReady}
               className="w-full bg-[#b59354] text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#886844] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >

@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2, User, Building2 } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -72,6 +73,18 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f6f8f8] to-white flex items-center justify-center p-4">
+      <PageGuidance
+        pageKey="auth-signup"
+        title="Create Your Account"
+        description="Sign up for Opulanz in just a few steps."
+        steps={[
+          "Choose your account type: Personal or Business",
+          "Fill in your name, email, phone number, and a strong password",
+          "Click 'Create Account' — you'll receive a verification email",
+          "Verify your email to activate your account and sign in",
+        ]}
+        tip="Use a strong password with uppercase, lowercase, numbers, and symbols."
+      />
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">

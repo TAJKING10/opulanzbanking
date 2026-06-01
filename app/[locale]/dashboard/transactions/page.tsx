@@ -11,6 +11,7 @@ import {
   Calendar,
   X,
 } from "lucide-react";
+import { PageTour } from "@/components/page-tour";
 import jsPDF from "jspdf";
 
 // Transaction type
@@ -974,6 +975,16 @@ export default function TransactionsPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
+      <PageTour
+        pageKey="dashboard-transactions"
+        steps={[
+          { title: "Transaction History", description: "Here you can see every movement in your account — incoming and outgoing. Let me show you around." },
+          { element: "[data-tour='tx-list']", title: "Your Transactions", description: "Each row shows the counterparty, description, date, and amount. Green means money came in, dark means money went out.", side: "right" },
+          { element: "[data-tour='tx-search']", title: "Search Transactions", description: "Type a name or description here to instantly filter transactions as you type.", side: "left" },
+          { element: "[data-tour='tx-filter']", title: "Filter by Type", description: "Click All, Incoming, or Outgoing to quickly narrow down what you see.", side: "left" },
+          { element: "[data-tour='tx-export']", title: "Export Statement", description: "Download your transactions as a PDF bank statement or a CSV file. Accepted by most banks and institutions.", side: "bottom" },
+        ]}
+      />
       {/* Main Content */}
       <div className="flex-1 p-6 lg:p-8">
         {/* Header with Export */}
@@ -982,7 +993,7 @@ export default function TransactionsPage() {
             <ChevronLeft className="h-5 w-5 text-gray-600" />
             <h1 className="text-xl font-semibold text-gray-900">Transactions</h1>
           </div>
-          <div className="relative" ref={exportRef}>
+          <div data-tour="tx-export" className="relative" ref={exportRef}>
             <button
               onClick={() => setShowExportDropdown(!showExportDropdown)}
               className="inline-flex items-center gap-2 text-[#3d3270] font-semibold hover:opacity-80"
@@ -1015,7 +1026,7 @@ export default function TransactionsPage() {
         </div>
 
         {/* Transactions List */}
-        <div className="space-y-0">
+        <div data-tour="tx-list" className="space-y-0">
           {filteredTransactions.map((tx) => (
             <div
               key={tx.id}
@@ -1077,7 +1088,7 @@ export default function TransactionsPage() {
         </div>
 
         {/* Search */}
-        <div className="relative mb-4">
+        <div data-tour="tx-search" className="relative mb-4">
           <input
             type="text"
             placeholder="Search"
@@ -1101,7 +1112,7 @@ export default function TransactionsPage() {
         </div>
 
         {/* Transaction Type */}
-        <div className="flex gap-2 mb-4">
+        <div data-tour="tx-filter" className="flex gap-2 mb-4">
           <button
             onClick={() => setFilterType("all")}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${

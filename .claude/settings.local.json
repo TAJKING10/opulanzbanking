@@ -156,7 +156,12 @@
       "Bash(unzip -o app_logs.zip -d app_logs)",
       "Bash(xargs tail:*)",
       "Bash(unzip -o /tmp/app_logs2.zip -d /tmp/app_logs2)",
-      "Bash(unzip -o /tmp/app_logs3.zip -d /tmp/app_logs3)"
+      "Bash(unzip -o /tmp/app_logs3.zip -d /tmp/app_logs3)",
+      "Bash(git stash:*)",
+      "Bash(xargs -I{} taskkill /F /PID {})",
+      "Bash(tasklist /FI 'PID eq $pid')",
+      "Bash(for pid:*)",
+      "Bash(tasklist)"
     ],
     "deny": [],
     "ask": []

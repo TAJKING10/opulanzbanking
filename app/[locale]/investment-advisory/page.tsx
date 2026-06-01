@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { PieChart, BarChart3, Users, CheckCircle } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,6 +26,18 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
 
   return (
     <>
+      <PageGuidance
+        pageKey="investment-advisory"
+        title="Investment Advisory"
+        description="Grow your wealth with personalized investment strategies."
+        steps={[
+          "Explore our investment services: portfolio management, strategy, and retirement planning",
+          "Review investment options (equities, bonds, alternatives, ESG)",
+          "Click 'Schedule a Consultation' to meet with an advisor",
+          "Receive a tailored investment plan based on your goals and risk profile",
+        ]}
+        tip="All our advisors are MiFID II compliant and regulated by AMF/CSSF."
+      />
       <Hero
         title={t("services.investment.title")}
         subtitle={t("services.investment.description")}

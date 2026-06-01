@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Calculator, FileText, PieChart, Users, CheckCircle, Shield, TrendingUp } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +27,18 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
 
   return (
     <>
+      <PageGuidance
+        pageKey="invoicing-accounting"
+        title="Invoicing & Accounting"
+        description="Streamline your business finances with our accounting tools."
+        steps={[
+          "Browse our accounting features: invoicing, bookkeeping, payroll, reporting",
+          "Click 'Get Started' or 'Request a Demo' to begin onboarding",
+          "Connect your bank account for automated transaction categorization",
+          "Generate reports and manage invoices directly from your dashboard",
+        ]}
+        tip="You can import existing data from QuickBooks, Xero, or Excel during onboarding."
+      />
       <Hero
         title={t("services.accounting.title")}
         subtitle={t("services.accounting.description")}

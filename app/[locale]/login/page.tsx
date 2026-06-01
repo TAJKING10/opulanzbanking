@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Smartphone, RefreshCw, Loader2 } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { Button } from "@/components/ui/button";
 import { OtpInput } from "@/components/otp-input";
 import { setAuthToken } from "@/lib/auth";
@@ -163,6 +164,18 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen">
+      <PageGuidance
+        pageKey="login"
+        title="Sign In to Opulanz"
+        description="Access your Opulanz account securely with two-step verification."
+        steps={[
+          "Enter your registered email address and password",
+          "Click 'Sign In' — a one-time code will be sent to your email",
+          "Enter the 6-digit code to complete verification",
+          "You'll be redirected to your dashboard",
+        ]}
+        tip="Forgot your password? Click the 'Forgot password?' link below the sign-in form."
+      />
       {/* Left Side - Branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#b59354] to-[#886844] text-white flex-col justify-between p-12">
         <div />

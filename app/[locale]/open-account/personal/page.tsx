@@ -4,6 +4,7 @@ import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
+import { PageGuidance } from "@/components/page-guidance";
 import { Step } from "@/components/account-opening/stepper";
 
 // Import step components (will create these)
@@ -182,9 +183,24 @@ export default function PersonalAccountPage() {
   };
 
   return (
-    <AccountOpeningLayout
-      title={t("title")}
-      description={t("description")}
+    <>
+      <PageGuidance
+        pageKey="open-account-personal"
+        title="Personal Account Opening"
+        description="Follow the guided steps to open your personal account."
+        steps={[
+          "Step 1 – Welcome: review what you'll need before starting",
+          "Step 2 – Identity & Contact: fill in your personal and contact details",
+          "Step 3 – Account Intent: describe how you plan to use your account",
+          "Step 4 – Documents: upload your ID and proof of address",
+          "Step 5 – Review & Consent: read and accept the terms",
+          "Step 6 – Submit: your application is sent for review",
+        ]}
+        tip="Have your passport/ID and a proof of address (utility bill or bank statement) ready."
+      />
+      <AccountOpeningLayout
+        title={t("title")}
+        description={t("description")}
       steps={PERSONAL_ACCOUNT_STEPS}
       currentStep={currentStep}
       onStepChange={handleStepChange}
@@ -195,7 +211,8 @@ export default function PersonalAccountPage() {
       isLoading={isLoading}
       hideNavigation={currentStep === PERSONAL_ACCOUNT_STEPS.length}
     >
-      {renderStep()}
+        {renderStep()}
     </AccountOpeningLayout>
+    </>
   );
 }

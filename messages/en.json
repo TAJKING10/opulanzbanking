@@ -3323,6 +3323,13 @@
       "badge3": "Expert Guidance",
       "primaryButton": "Get Free Quote",
       "secondaryButton": "Talk to an Advisor"
+    },
+    "schedule": {
+      "heroTitle": "Schedule Your Life Insurance Consultation",
+      "heroSubtitle": "Book a consultation with our expert advisors to discuss your life insurance needs",
+      "overline": "Book a Consultation",
+      "title": "Choose Your Preferred Time",
+      "description": "Meet with our expert advisors to discuss your life insurance needs and explore the best coverage options for your family."
     }
   },
   "regulatory": {

@@ -3323,6 +3323,13 @@
       "badge3": "Conseils experts",
       "primaryButton": "Obtenir un devis gratuit",
       "secondaryButton": "Parler a un conseiller"
+    },
+    "schedule": {
+      "heroTitle": "Planifiez votre consultation en assurance vie",
+      "heroSubtitle": "Prenez rendez-vous avec nos conseillers experts pour discuter de vos besoins en assurance vie",
+      "overline": "Réservez une Consultation",
+      "title": "Choisissez l'Heure qui Vous Convient",
+      "description": "Rencontrez nos conseillers experts afin de discuter de vos besoins en assurance vie et de découvrir les meilleures options de couverture pour votre famille."
     }
   },
   "regulatory": {

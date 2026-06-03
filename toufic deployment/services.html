@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Opulanz Services — Banking, Tax Advisory, Investment, Life Insurance, Company Formation, Accounting, and SPV Investment." />
+  <title>Services | Opulanz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #b59354;
+      --gold-dark: #886844;
+      --gold-light: #dac5a4;
+      --dark: #252623;
+      --off: #f6f8f8;
+      --gray: #6b7280;
+      --white: #ffffff;
+    }
+    body { font-family: 'Poppins', sans-serif; color: var(--dark); background: var(--white); }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,0.97); backdrop-filter: blur(10px);
+      box-shadow: 0 1px 20px rgba(0,0,0,0.08);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 72px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-logo span { font-size: 1.5rem; font-weight: 800; color: var(--gold); letter-spacing: -0.02em; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a { font-size: 0.875rem; font-weight: 600; color: var(--dark); transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: #fff; padding: 10px 22px;
+      border-radius: 8px; font-size: 0.875rem; font-weight: 600;
+      transition: background .2s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--gold-dark); transform: translateY(-1px); }
+    .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; }
+    .hamburger { width: 24px; height: 2px; background: var(--dark); display: block; position: relative; }
+    .hamburger::before, .hamburger::after { content: ''; width: 24px; height: 2px; background: var(--dark); position: absolute; left: 0; }
+    .hamburger::before { top: -7px; }
+    .hamburger::after { top: 7px; }
+
+    /* PAGE HERO */
+    .page-hero {
+      padding: 140px 5% 80px;
+      background: linear-gradient(135deg, var(--dark) 0%, #3a3830 60%, #252623 100%);
+      position: relative; overflow: hidden; text-align: center;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; top: -30%; right: -5%;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(181,147,84,0.12) 0%, transparent 70%);
+    }
+    .page-hero::after {
+      content: ''; position: absolute; bottom: -30%; left: -5%;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(181,147,84,0.08) 0%, transparent 70%);
+    }
+    .page-hero-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+    .page-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(181,147,84,0.15); border: 1px solid rgba(181,147,84,0.3);
+      color: var(--gold-light); padding: 6px 16px; border-radius: 99px;
+      font-size: 0.78rem; font-weight: 600; margin-bottom: 24px; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .page-hero h1 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 20px; }
+    .page-hero h1 span { color: var(--gold); }
+    .page-hero p { font-size: 1.05rem; color: rgba(255,255,255,0.72); line-height: 1.8; }
+
+    /* FILTER NAV */
+    .filter-bar { background: var(--off); border-bottom: 1px solid rgba(0,0,0,0.06); padding: 20px 5%; position: sticky; top: 72px; z-index: 90; }
+    .filter-inner { max-width: 1200px; margin: 0 auto; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .filter-label { font-size: 0.75rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 8px; }
+    .filter-btn {
+      padding: 8px 18px; border-radius: 99px; font-size: 0.82rem; font-weight: 600;
+      border: 1.5px solid rgba(0,0,0,0.12); color: var(--dark); background: #fff;
+      cursor: pointer; transition: all .2s; white-space: nowrap;
+    }
+    .filter-btn:hover, .filter-btn.active { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+    /* SECTIONS */
+    section { padding: 80px 5%; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-overline { font-size: 0.75rem; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+    .section-title { font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 800; color: var(--dark); margin-bottom: 16px; line-height: 1.2; }
+    .section-desc { font-size: 1rem; color: var(--gray); max-width: 620px; line-height: 1.75; margin-bottom: 56px; }
+
+    /* SERVICE FEATURE */
+    .service-feature {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .service-feature.reverse { direction: rtl; }
+    .service-feature.reverse > * { direction: ltr; }
+    .service-feature-img { border-radius: 20px; overflow: hidden; position: relative; }
+    .service-feature-img img { width: 100%; height: 400px; object-fit: cover; display: block; transition: transform .5s; }
+    .service-feature-img:hover img { transform: scale(1.04); }
+    .service-feature-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(37,38,35,0.4) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .service-feature-tag {
+      position: absolute; top: 20px; left: 20px;
+      background: var(--gold); color: #fff; padding: 6px 14px;
+      border-radius: 99px; font-size: 0.75rem; font-weight: 700;
+    }
+    .service-feature-text h2 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); font-weight: 800; color: var(--dark); margin-bottom: 16px; line-height: 1.25; }
+    .service-feature-text p { font-size: 0.95rem; color: var(--gray); line-height: 1.8; margin-bottom: 28px; }
+    .feature-list { list-style: none; margin-bottom: 32px; }
+    .feature-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 0.875rem; color: var(--dark); margin-bottom: 12px; line-height: 1.5;
+    }
+    .feature-list li::before {
+      content: '✓'; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #fff; font-size: 0.7rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .service-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold); color: #fff; padding: 12px 28px;
+      border-radius: 10px; font-weight: 700; font-size: 0.9rem;
+      transition: background .2s, transform .2s;
+    }
+    .service-cta:hover { background: var(--gold-dark); transform: translateY(-2px); }
+    .service-cta-secondary {
+      display: inline-flex; align-items: center; gap: 8px; margin-left: 16px;
+      color: var(--gold); font-weight: 600; font-size: 0.9rem;
+      border-bottom: 1.5px solid transparent; transition: border-color .2s;
+    }
+    .service-cta-secondary:hover { border-color: var(--gold); }
+    .service-section-alt { background: var(--off); }
+
+    /* SPV SPECIAL */
+    .spv-section { background: linear-gradient(135deg, var(--dark) 0%, #3a3830 100%); color: #fff; padding: 80px 5%; }
+    .spv-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .spv-text .section-overline { color: var(--gold-light); }
+    .spv-text h2 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); font-weight: 800; color: #fff; margin-bottom: 16px; }
+    .spv-text p { font-size: 0.95rem; color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 28px; }
+    .spv-text .feature-list li { color: rgba(255,255,255,0.85); }
+    .spv-text .service-cta { box-shadow: 0 4px 20px rgba(181,147,84,0.4); }
+    .spv-text .service-cta-secondary { color: rgba(255,255,255,0.7); }
+    .spv-text .service-cta-secondary:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+    .spv-img { border-radius: 20px; overflow: hidden; }
+    .spv-img img { width: 100%; height: 400px; object-fit: cover; display: block; }
+    .spv-badges { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 24px; }
+    .spv-badge {
+      background: rgba(181,147,84,0.15); border: 1px solid rgba(181,147,84,0.3);
+      color: var(--gold-light); padding: 8px 16px; border-radius: 8px;
+      font-size: 0.78rem; font-weight: 600;
+    }
+
+    /* CTA BAND */
+    .cta-section {
+      background: linear-gradient(135deg, var(--dark) 0%, #3a3830 100%);
+      text-align: center; padding: 100px 5%;
+    }
+    .cta-section h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 20px; }
+    .cta-section p { font-size: 1rem; color: rgba(255,255,255,0.7); max-width: 520px; margin: 0 auto 40px; line-height: 1.75; }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold); color: #fff; padding: 14px 32px;
+      border-radius: 10px; font-weight: 700; font-size: 1rem;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(181,147,84,0.4);
+    }
+    .btn-primary:hover { background: var(--gold-dark); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: #fff; padding: 14px 32px;
+      border-radius: 10px; font-weight: 700; font-size: 1rem;
+      border: 2px solid rgba(255,255,255,0.35);
+      transition: border-color .2s, background .2s;
+    }
+    .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark); color: rgba(255,255,255,0.55);
+      padding: 60px 5% 32px;
+    }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; max-width: 1200px; margin: 0 auto 48px; }
+    .footer-brand strong { display: block; font-size: 1.3rem; font-weight: 800; color: var(--gold); margin-bottom: 14px; }
+    .footer-brand p { font-size: 0.82rem; line-height: 1.75; max-width: 280px; }
+    .footer-col h5 { font-size: 0.8rem; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a { font-size: 0.82rem; color: rgba(255,255,255,0.5); transition: color .2s; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom p { font-size: 0.78rem; }
+    .footer-reg { font-size: 0.72rem; color: rgba(255,255,255,0.3); max-width: 1200px; margin: 20px auto 0; line-height: 1.6; }
+
+    @media (max-width: 900px) {
+      .service-feature, .spv-inner { grid-template-columns: 1fr; gap: 40px; }
+      .service-feature.reverse { direction: ltr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-mobile-btn { display: block; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .filter-bar { top: 72px; }
+    }
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span>OPULANZ</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <a href="contact.html" class="nav-cta">Open Account</a>
+  <button class="nav-mobile-btn" aria-label="Menu">
+    <span class="hamburger"></span>
+  </button>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">What We Offer</div>
+    <h1>Every Financial Service You Need, <span>Under One Roof</span></h1>
+    <p>From opening your first account to managing complex cross-border investments — Opulanz handles it all, fully regulated and transparently priced.</p>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <span class="filter-label">Jump to:</span>
+    <a href="#banking" class="filter-btn">Banking</a>
+    <a href="#accounting" class="filter-btn">Accounting</a>
+    <a href="#company" class="filter-btn">Company Formation</a>
+    <a href="#tax" class="filter-btn">Tax Advisory</a>
+    <a href="#investment" class="filter-btn">Investments</a>
+    <a href="#insurance" class="filter-btn">Life Insurance</a>
+    <a href="#spv" class="filter-btn">SPV</a>
+  </div>
+</div>
+
+<!-- BANKING -->
+<section id="banking">
+  <div class="container">
+    <div class="service-feature">
+      <div class="service-feature-img">
+        <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=700&h=450&fit=crop" alt="Banking" loading="lazy" />
+        <div class="service-feature-img-overlay"></div>
+        <span class="service-feature-tag">Banking</span>
+      </div>
+      <div class="service-feature-text">
+        <p class="section-overline">Open an Account</p>
+        <h2>Personal &amp; Business Banking, Fully Online</h2>
+        <p>Open a personal or business bank account in under 5 minutes — no branch visits, no paperwork mountains. Get a European IBAN, SEPA transfers, a Mastercard debit card, and full ACPR-regulated security.</p>
+        <ul class="feature-list">
+          <li>European IBAN in your name in minutes</li>
+          <li>SEPA &amp; SWIFT transfers with real exchange rates</li>
+          <li>Physical &amp; virtual Mastercard debit cards</li>
+          <li>Multi-currency support (EUR, USD, GBP +)</li>
+          <li>Real-time transaction notifications</li>
+          <li>Full AML/KYC compliance built in</li>
+        </ul>
+        <a href="contact.html" class="service-cta">Open an Account →</a>
+        <a href="contact.html" class="service-cta-secondary">Talk to us →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCOUNTING -->
+<section id="accounting" class="service-section-alt">
+  <div class="container">
+    <div class="service-feature reverse">
+      <div class="service-feature-img">
+        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=700&h=450&fit=crop" alt="Accounting" loading="lazy" />
+        <div class="service-feature-img-overlay"></div>
+        <span class="service-feature-tag">Accounting</span>
+      </div>
+      <div class="service-feature-text">
+        <p class="section-overline">Accounting &amp; Invoicing</p>
+        <h2>Professional Accounting for Businesses</h2>
+        <p>Streamline your accounting with automated invoicing, real-time bookkeeping, payroll management, and VAT reporting — all compliant with French GAAP and IFRS standards. Built for freelancers, SMEs, and growing businesses.</p>
+        <ul class="feature-list">
+          <li>Automated invoicing and payment tracking</li>
+          <li>Real-time bookkeeping and financial dashboards</li>
+          <li>Payroll management and payslip generation</li>
+          <li>VAT reporting and French GAAP compliance</li>
+          <li>Bank reconciliation and expense management</li>
+          <li>Annual financial statement preparation</li>
+        </ul>
+        <a href="contact.html" class="service-cta">Get Started →</a>
+        <a href="contact.html" class="service-cta-secondary">Book a demo →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPANY FORMATION -->
+<section id="company">
+  <div class="container">
+    <div class="service-feature">
+      <div class="service-feature-img">
+        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=700&h=450&fit=crop" alt="Company Formation" loading="lazy" />
+        <div class="service-feature-img-overlay"></div>
+        <span class="service-feature-tag">Company Formation</span>
+      </div>
+      <div class="service-feature-text">
+        <p class="section-overline">Company Formation</p>
+        <h2>Register Your Company in France or Luxembourg</h2>
+        <p>Start your business the right way. We handle all the paperwork — legal filing, registered address, articles of association, and bank account setup — so you can focus on what you do best. SARL, SAS, SA, and more.</p>
+        <ul class="feature-list">
+          <li>SARL, SAS, SA, SASU, EURL formation in France</li>
+          <li>SA, SARL, SCSp, SCA in Luxembourg</li>
+          <li>Registered address service included</li>
+          <li>Company bank account opening (same session)</li>
+          <li>Articles of association drafted by our attorneys</li>
+          <li>INPI / RCS filing and legal publication handled</li>
+        </ul>
+        <a href="contact.html" class="service-cta">Form Your Company →</a>
+        <a href="contact.html" class="service-cta-secondary">Learn more →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAX ADVISORY -->
+<section id="tax" class="service-section-alt">
+  <div class="container">
+    <div class="service-feature reverse">
+      <div class="service-feature-img">
+        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=700&h=450&fit=crop" alt="Tax Advisory" loading="lazy" />
+        <div class="service-feature-img-overlay"></div>
+        <span class="service-feature-tag">Tax Advisory</span>
+      </div>
+      <div class="service-feature-text">
+        <p class="section-overline">Tax Advisory</p>
+        <h2>Expert Tax Counsel for Individuals &amp; Businesses</h2>
+        <p>Navigate France and Luxembourg's complex tax systems with confidence. Our certified tax advisors and attorneys handle everything from personal income tax returns to corporate restructuring, VAT compliance, and cross-border tax planning.</p>
+        <ul class="feature-list">
+          <li>Personal income tax returns (IR, IFI)</li>
+          <li>Corporate tax (IS) planning and optimization</li>
+          <li>VAT registration, filing, and compliance</li>
+          <li>Cross-border tax planning (France-Luxembourg)</li>
+          <li>Tax audit defense and representation</li>
+          <li>Real estate tax advisory (plus-value, IFI)</li>
+        </ul>
+        <a href="contact.html" class="service-cta">Book a Tax Advisor →</a>
+        <a href="contact.html" class="service-cta-secondary">Free consultation →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT ADVISORY -->
+<section id="investment">
+  <div class="container">
+    <div class="service-feature">
+      <div class="service-feature-img">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&h=450&fit=crop" alt="Investment Advisory" loading="lazy" />
+        <div class="service-feature-img-overlay"></div>
+        <span class="service-feature-tag">Investment</span>
+      </div>
+      <div class="service-feature-text">
+        <p class="section-overline">Investment Advisory</p>
+        <h2>MiFID II-Compliant Portfolio Management</h2>
+        <p>Our AMF-licensed advisors build personalized investment strategies aligned with your goals, risk profile, and time horizon. From equities to ESG funds, we provide institutional-grade management accessible to individuals.</p>
+        <ul class="feature-list">
+          <li>Personalized risk profiling and suitability assessment</li>
+          <li>Equity, bond, ETF, and ESG portfolio construction</li>
+          <li>Discretionary and advisory portfolio management</li>
+          <li>Quarterly review sessions with your advisor</li>
+          <li>Tax-optimized account structures (PEA, AV)</li>
+          <li>Full MiFID II transparency — all costs disclosed</li>
+        </ul>
+        <a href="contact.html" class="service-cta">Schedule a Meeting →</a>
+        <a href="contact.html" class="service-cta-secondary">View our approach →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIFE INSURANCE -->
+<section id="insurance" class="service-section-alt">
+  <div class="container">
+    <div class="service-feature reverse">
+      <div class="service-feature-img">
+        <img src="https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=700&h=450&fit=crop" alt="Life Insurance" loading="lazy" />
+        <div class="service-feature-img-overlay"></div>
+        <span class="service-feature-tag">Life Insurance</span>
+      </div>
+      <div class="service-feature-text">
+        <p class="section-overline">Life Insurance</p>
+        <h2>Expert Insurance Brokerage &amp; Advisory</h2>
+        <p>Our independent insurance brokers connect you with France and Luxembourg's leading insurance providers, negotiating the best terms on your behalf. We are not tied to any single insurer — we work for you.</p>
+        <ul class="feature-list">
+          <li>Term life insurance with competitive premiums</li>
+          <li>Whole life and universal life policies</li>
+          <li>Unit-linked (assurance-vie) investment products</li>
+          <li>Death, disability, and critical illness riders</li>
+          <li>Wealth transfer and estate planning structures</li>
+          <li>Annual review to keep coverage optimal</li>
+        </ul>
+        <a href="contact.html" class="service-cta">Get a Quote →</a>
+        <a href="contact.html" class="service-cta-secondary">Compare plans →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPV INVESTMENT -->
+<section id="spv" class="spv-section">
+  <div class="spv-inner">
+    <div class="spv-text">
+      <p class="section-overline">Exclusive Access</p>
+      <h2>SPV Investment — Real Estate &amp; Alternative Assets</h2>
+      <p>Gain access to exclusive investment opportunities through Special Purpose Vehicles (SPVs) — from premium real estate to alternative assets and private equity co-investments. Reserved for qualified and institutional investors.</p>
+      <ul class="feature-list">
+        <li>Premium real estate SPVs in Paris and Luxembourg</li>
+        <li>Private equity and venture co-investment deals</li>
+        <li>Structured products and alternative credit</li>
+        <li>Full legal, tax, and administrative management</li>
+        <li>Quarterly NAV reporting and investor communications</li>
+        <li>CSSF-regulated Luxembourg fund structures</li>
+      </ul>
+      <div class="spv-badges">
+        <span class="spv-badge">Qualified Investors Only</span>
+        <span class="spv-badge">€100K Minimum</span>
+        <span class="spv-badge">CSSF Regulated</span>
+      </div>
+      <div style="margin-top: 32px;">
+        <a href="contact.html" class="service-cta">Request Access →</a>
+        <a href="contact.html" class="service-cta-secondary" style="color:rgba(255,255,255,0.65); border-color: transparent;">Learn more →</a>
+      </div>
+    </div>
+    <div class="spv-img">
+      <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&h=450&fit=crop" alt="SPV Investment" loading="lazy" />
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to Get Started?</h2>
+    <p>Book a free consultation and let our advisors guide you to the right services for your financial goals.</p>
+    <div class="cta-btns">
+      <a href="contact.html" class="btn-primary">Book a Free Consultation →</a>
+      <a href="contact.html" class="btn-outline">Open an Account</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <strong>OPULANZ</strong>
+      <p>Premium financial services for individuals and businesses in France and Luxembourg. Regulated, secure, and transparent.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#banking">Open Account</a></li>
+        <li><a href="#tax">Tax Advisory</a></li>
+        <li><a href="#investment">Investment Advisory</a></li>
+        <li><a href="#insurance">Life Insurance</a></li>
+        <li><a href="#company">Company Formation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="about.html">Our Mission</a></li>
+        <li><a href="about.html">Regulatory</a></li>
+        <li><a href="contact.html">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Support</h5>
+      <ul>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="contact.html">Help Center</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Opulanz. All rights reserved.</p>
+    <p>Paris, France · Luxembourg City, Luxembourg</p>
+  </div>
+  <p class="footer-reg">Opulanz is regulated by ACPR (France), AMF (France), and CSSF (Luxembourg). Investment products involve risk. Past performance is not indicative of future results. This website is for informational purposes only and does not constitute financial advice.</p>
+</footer>
+
+</body>
+</html>

@@ -18,7 +18,7 @@ export type TourStep =
   | {
       title?: string;
       content: string;
-      target?: string; // CSS selector for element to spotlight
+      target?: string;
       position?: "top" | "bottom" | "left" | "right";
     };
 
@@ -37,13 +37,6 @@ interface NormalizedStep {
   position?: "top" | "bottom" | "left" | "right";
 }
 
-interface SpotRect {
-  top: number;
-  left: number;
-  width: number;
-  height: number;
-}
-
 interface Placement {
   top: number;
   left: number;
@@ -52,9 +45,8 @@ interface Placement {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const PAD = 10;
 const TW = 340;
-const TH = 240;
+const TH = 260;
 
 function normalize(s: TourStep): NormalizedStep {
   return typeof s === "string" ? { content: s } : s;
@@ -64,95 +56,50 @@ function clamp(v: number, lo: number, hi: number) {
   return Math.max(lo, Math.min(v, hi));
 }
 
-function getPlacement(
-  rect: DOMRect,
-  preferred?: "top" | "bottom" | "left" | "right"
-): Placement {
+function getPlacement(rect: DOMRect, preferred?: "top" | "bottom" | "left" | "right"): Placement {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
+  const GAP = 18;
 
   const candidates: ("bottom" | "top" | "right" | "left")[] = preferred
     ? [preferred, "bottom", "top", "right", "left"]
     : ["bottom", "top", "right", "left"];
 
   for (const dir of candidates) {
-    if (dir === "bottom" && rect.bottom + PAD + 20 + TH < vh) {
-      return {
-        top: rect.bottom + PAD + 16,
-        left: clamp(cx - TW / 2, 16, vw - TW - 16),
-        arrow: "top",
-      };
+    if (dir === "bottom" && rect.bottom + GAP + TH < vh) {
+      return { top: rect.bottom + GAP, left: clamp(cx - TW / 2, 16, vw - TW - 16), arrow: "top" };
     }
-    if (dir === "top" && rect.top - PAD - 16 - TH > 0) {
-      return {
-        top: rect.top - PAD - 16 - TH,
-        left: clamp(cx - TW / 2, 16, vw - TW - 16),
-        arrow: "bottom",
-      };
+    if (dir === "top" && rect.top - GAP - TH > 0) {
+      return { top: rect.top - GAP - TH, left: clamp(cx - TW / 2, 16, vw - TW - 16), arrow: "bottom" };
     }
-    if (dir === "right" && rect.right + PAD + 20 + TW < vw) {
-      return {
-        top: clamp(cy - TH / 2, 16, vh - TH - 16),
-        left: rect.right + PAD + 16,
-        arrow: "left",
-      };
+    if (dir === "right" && rect.right + GAP + TW < vw) {
+      return { top: clamp(cy - TH / 2, 16, vh - TH - 16), left: rect.right + GAP, arrow: "left" };
     }
-    if (dir === "left" && rect.left - PAD - 16 - TW > 0) {
-      return {
-        top: clamp(cy - TH / 2, 16, vh - TH - 16),
-        left: rect.left - PAD - 16 - TW,
-        arrow: "right",
-      };
+    if (dir === "left" && rect.left - GAP - TW > 0) {
+      return { top: clamp(cy - TH / 2, 16, vh - TH - 16), left: rect.left - GAP - TW, arrow: "right" };
     }
   }
 
   return { top: vh / 2 - TH / 2, left: vw / 2 - TW / 2, arrow: "none" };
 }
 
-// ─── Spotlight ───────────────────────────────────────────────────────────────
-
-function Spotlight({ r }: { r: SpotRect }) {
-  return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 9998, pointerEvents: "none" }}>
-      <div style={{ position: "absolute", inset: `0 0 auto 0`, height: Math.max(0, r.top), background: "rgba(0,0,0,0.68)" }} />
-      <div style={{ position: "absolute", top: r.top + r.height, inset: `auto 0 0 0`, background: "rgba(0,0,0,0.68)" }} />
-      <div style={{ position: "absolute", top: r.top, left: 0, width: Math.max(0, r.left), height: r.height, background: "rgba(0,0,0,0.68)" }} />
-      <div style={{ position: "absolute", top: r.top, left: r.left + r.width, right: 0, height: r.height, background: "rgba(0,0,0,0.68)" }} />
-      {/* Gold highlight ring */}
-      <div
-        style={{
-          position: "absolute",
-          top: r.top - 2,
-          left: r.left - 2,
-          width: r.width + 4,
-          height: r.height + 4,
-          borderRadius: 10,
-          border: "2px solid #b59354",
-          boxShadow: "0 0 0 3px rgba(181,147,84,0.2), 0 0 30px rgba(181,147,84,0.35)",
-          transition: "top 0.35s ease, left 0.35s ease, width 0.35s ease, height 0.35s ease",
-        }}
-      />
-    </div>
-  );
-}
-
-// ─── Tooltip Arrow ────────────────────────────────────────────────────────────
+// ─── Arrow ───────────────────────────────────────────────────────────────────
 
 function TooltipArrow({ dir }: { dir: Placement["arrow"] }) {
   if (dir === "none") return null;
   const s: React.CSSProperties = { position: "absolute", width: 0, height: 0, pointerEvents: "none" };
-  const t = "10px solid transparent";
+  const t = "11px solid transparent";
   const c = "#1c1c1c";
   if (dir === "top")
-    return <div style={{ ...s, top: -10, left: "50%", transform: "translateX(-50%)", borderLeft: t, borderRight: t, borderBottom: `10px solid ${c}` }} />;
+    return <div style={{ ...s, top: -11, left: "50%", transform: "translateX(-50%)", borderLeft: t, borderRight: t, borderBottom: `11px solid ${c}` }} />;
   if (dir === "bottom")
-    return <div style={{ ...s, bottom: -10, left: "50%", transform: "translateX(-50%)", borderLeft: t, borderRight: t, borderTop: `10px solid ${c}` }} />;
+    return <div style={{ ...s, bottom: -11, left: "50%", transform: "translateX(-50%)", borderLeft: t, borderRight: t, borderTop: `11px solid ${c}` }} />;
   if (dir === "left")
-    return <div style={{ ...s, left: -10, top: "50%", transform: "translateY(-50%)", borderTop: t, borderBottom: t, borderRight: `10px solid ${c}` }} />;
+    return <div style={{ ...s, left: -11, top: "50%", transform: "translateY(-50%)", borderTop: t, borderBottom: t, borderRight: `11px solid ${c}` }} />;
   if (dir === "right")
-    return <div style={{ ...s, right: -10, top: "50%", transform: "translateY(-50%)", borderTop: t, borderBottom: t, borderLeft: `10px solid ${c}` }} />;
+    return <div style={{ ...s, right: -11, top: "50%", transform: "translateY(-50%)", borderTop: t, borderBottom: t, borderLeft: `11px solid ${c}` }} />;
   return null;
 }
 
@@ -182,37 +129,78 @@ function TourOverlay({
   const isLast = idx === steps.length - 1;
   const hasTarget = Boolean(step.target);
 
-  const [spot, setSpot] = React.useState<SpotRect | null>(null);
   const [place, setPlace] = React.useState<Placement | null>(null);
   const [show, setShow] = React.useState(false);
 
+  // Keep track of the currently elevated element so we can restore it
+  const elevatedRef = React.useRef<HTMLElement | null>(null);
+  const savedStylesRef = React.useRef<{ position: string; zIndex: string; outline: string; borderRadius: string } | null>(null);
+
+  // Restore previously elevated element
+  function restoreElement() {
+    const el = elevatedRef.current;
+    const saved = savedStylesRef.current;
+    if (el && saved) {
+      el.style.position = saved.position;
+      el.style.zIndex = saved.zIndex;
+      el.style.outline = saved.outline;
+      el.style.borderRadius = saved.borderRadius;
+      el.style.transition = "";
+    }
+    elevatedRef.current = null;
+    savedStylesRef.current = null;
+  }
+
   React.useEffect(() => {
     setShow(false);
-    setSpot(null);
     setPlace(null);
+    restoreElement();
 
     if (!step.target) {
       const t = setTimeout(() => setShow(true), 80);
-      return () => clearTimeout(t);
+      return () => { clearTimeout(t); restoreElement(); };
     }
 
-    const el = document.querySelector(step.target);
+    const el = document.querySelector(step.target) as HTMLElement | null;
     if (!el) {
       const t = setTimeout(() => setShow(true), 80);
-      return () => clearTimeout(t);
+      return () => { clearTimeout(t); restoreElement(); };
     }
 
     el.scrollIntoView({ behavior: "smooth", block: "center" });
 
     const t = setTimeout(() => {
-      const r = el.getBoundingClientRect();
-      setSpot({ top: r.top - PAD, left: r.left - PAD, width: r.width + PAD * 2, height: r.height + PAD * 2 });
-      setPlace(getPlacement(r, step.position));
-      setShow(true);
-    }, 450);
+      const rect = el.getBoundingClientRect();
 
-    return () => clearTimeout(t);
+      // Save and elevate the element above the dark overlay
+      savedStylesRef.current = {
+        position: el.style.position,
+        zIndex: el.style.zIndex,
+        outline: el.style.outline,
+        borderRadius: el.style.borderRadius,
+      };
+      elevatedRef.current = el;
+
+      el.style.position = "relative";
+      el.style.zIndex = "9999";
+      el.style.outline = "2.5px solid #b59354";
+      el.style.borderRadius = "10px";
+      el.style.transition = "outline 0.2s ease";
+
+      setPlace(getPlacement(rect, step.position));
+      setShow(true);
+    }, 420);
+
+    return () => {
+      clearTimeout(t);
+      restoreElement();
+    };
   }, [idx]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Restore on unmount
+  React.useEffect(() => {
+    return () => restoreElement();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cardStyle: React.CSSProperties = hasTarget && place
     ? {
@@ -238,23 +226,18 @@ function TourOverlay({
 
   return (
     <>
-      {/* Backdrop for steps without a target */}
-      {!hasTarget && (
-        <div
-          onClick={onClose}
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.68)",
-            zIndex: 9997,
-            opacity: show ? 1 : 0,
-            transition: "opacity 0.22s ease",
-          }}
-        />
-      )}
-
-      {/* Spotlight cutout */}
-      {hasTarget && spot && <Spotlight r={spot} />}
+      {/* Full-screen dark backdrop — always shown, target element is elevated above it */}
+      <div
+        onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0,0,0,0.72)",
+          zIndex: 9998,
+          opacity: show ? 1 : 0,
+          transition: "opacity 0.22s ease",
+        }}
+      />
 
       {/* Tooltip card */}
       <div style={cardStyle}>
@@ -262,7 +245,7 @@ function TourOverlay({
           style={{
             background: "#1c1c1c",
             borderRadius: 14,
-            border: "1px solid rgba(181,147,84,0.28)",
+            border: "1px solid rgba(181,147,84,0.3)",
             boxShadow: "0 28px 72px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04)",
             overflow: "visible",
             position: "relative",
@@ -270,7 +253,7 @@ function TourOverlay({
         >
           <TooltipArrow dir={hasTarget && place ? place.arrow : "none"} />
 
-          {/* Gold header bar */}
+          {/* Gold header */}
           <div
             style={{
               background: "linear-gradient(135deg, #b59354 0%, #886844 100%)",
@@ -351,7 +334,6 @@ function TourOverlay({
                   fontSize: 12.5,
                   fontWeight: 600,
                   padding: "5px 2px",
-                  borderRadius: 6,
                 }}
               >
                 <ChevronLeft style={{ width: 14, height: 14 }} />
@@ -388,7 +370,6 @@ function TourOverlay({
                   padding: "8px 15px",
                   borderRadius: 8,
                   boxShadow: "0 3px 10px rgba(181,147,84,0.4)",
-                  letterSpacing: "0.01em",
                 }}
               >
                 {isLast ? (
@@ -415,7 +396,6 @@ function TourOverlay({
               display: "flex",
               alignItems: "center",
               padding: 2,
-              borderRadius: 4,
             }}
           >
             <X style={{ width: 13, height: 13 }} />
@@ -435,7 +415,8 @@ export function PageGuidance({
   steps: rawSteps,
   tip,
 }: PageGuidanceProps) {
-  const storageKey = `opulanz-tour-v2-${pageKey}`;
+  // Stable key — never change this format or existing users will see the tour again
+  const storageKey = `opulanz-tour-${pageKey}`;
   const steps = React.useMemo(() => rawSteps.map(normalize), [rawSteps]);
 
   const [mounted, setMounted] = React.useState(false);
@@ -444,6 +425,7 @@ export function PageGuidance({
 
   React.useEffect(() => {
     setMounted(true);
+    // Show only once — if dismissed before, never auto-open again
     if (!localStorage.getItem(storageKey)) {
       const t = setTimeout(() => setActive(true), 700);
       return () => clearTimeout(t);
@@ -451,6 +433,7 @@ export function PageGuidance({
   }, [storageKey]);
 
   function close() {
+    // Permanently dismissed — won't auto-open again on any future visit
     localStorage.setItem(storageKey, "1");
     setActive(false);
     setIdx(0);
@@ -469,7 +452,7 @@ export function PageGuidance({
 
   return (
     <>
-      {/* Floating ? button */}
+      {/* Floating ? button — always visible, re-opens tour */}
       <div style={{ position: "fixed", bottom: 24, left: 24, zIndex: 9996 }}>
         <button
           onClick={() => { setIdx(0); setActive(true); }}

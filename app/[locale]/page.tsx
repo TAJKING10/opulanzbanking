@@ -79,7 +79,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <PageGuidance
-        pageKey="home-v3"
+        pageKey="home"
         title="Welcome to Opulanz"
         description="Your all-in-one platform for banking, tax, investments, and more."
         steps={[

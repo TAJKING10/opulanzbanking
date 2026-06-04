@@ -18,8 +18,8 @@ const PAYPAL_CLIENT_ID =
   process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ||
   "ASfDlkfY0QexOMLyaQl7LzQP00oDbv3I2j9EkPcBNfSSS6TdwotWY50J3IQWEN17mqpB92UbVY97u3bJ";
 
-// Use same-origin Next.js proxy routes — avoids all CSP issues on localhost and production
-const PAYPAL_API = "/api/paypal";
+// Use backend API directly — required for Capacitor mobile apps (no same-origin proxy)
+const PAYPAL_API = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/paypal`;
 const SDK_URL = "https://www.sandbox.paypal.com/web-sdk/v6/core";
 
 interface PayPalButtonsProps {

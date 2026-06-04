@@ -222,7 +222,7 @@ export function LiveChat() {
     setMessages((prev) => [...prev, { role: "assistant", content: "", streaming: true }]);
 
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch(`${API_BASE}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

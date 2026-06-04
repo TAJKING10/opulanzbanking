@@ -8,6 +8,7 @@ import { TawkChat } from '@/components/tawk-chat';
 import { LiveChat } from '@/components/live-chat';
 import { routing } from '@/i18n/routing';
 import { generateSEOMetadata } from './metadata';
+import { CapacitorInit } from '@/components/capacitor-init';
 import '@/app/globals.css';
 
 const poppins = Poppins({
@@ -54,6 +55,16 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={poppins.className}>
       <head>
+        {/* Viewport: handles safe area insets for mobile notches/home bars */}
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
+        {/* Capacitor/PWA mobile appearance */}
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="theme-color" content="#b59354" />
         {/* Additional hreflang tags for better SEO */}
         {routing.locales.map((loc) => (
           <link
@@ -72,6 +83,7 @@ export default async function LocaleLayout({
       <body className="flex min-h-screen flex-col">
         <GoogleProvider>
           <NextIntlClientProvider messages={messages}>
+            <CapacitorInit />
             <Header locale={locale} />
             <main className="flex-1 pt-20">{children}</main>
             <Footer locale={locale} />

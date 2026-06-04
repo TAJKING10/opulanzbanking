@@ -7,6 +7,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Capacitor Mobile: Safe Area Insets ──────────────────────────────────── */
+/* Handles notches, home indicators, and status bars on iOS and Android       */
+:root {
+  --sat: env(safe-area-inset-top);
+  --sar: env(safe-area-inset-right);
+  --sab: env(safe-area-inset-bottom);
+  --sal: env(safe-area-inset-left);
+}
+
+/* Prevent content from going under the status bar or home indicator */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Prevent text size adjustment on mobile after orientation change */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Remove tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* ── Driver.js Interactive Tour – Opulanz Brand Overrides ─────────────────── */
 .opulanz-tour.driver-popover {
   border-radius: 14px !important;

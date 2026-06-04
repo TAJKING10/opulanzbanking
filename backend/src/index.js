@@ -39,6 +39,7 @@ const investmentContactRoutes = require('./routes/investment-contact');
 const supportRoutes = require('./routes/support');
 const supportChatsRoutes = require('./routes/support-chats');
 const paypalRoutes = require('./routes/paypal');
+const chatRoutes = require('./routes/chat');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -55,7 +56,7 @@ app.use(helmet({
   },
 })); // Security headers with CSP configured
 
-// CORS — allow frontend on any local port (3000-3010) for development
+// CORS — allow frontend on any local port (3000-3010) and Capacitor mobile app origins
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
   'http://localhost:3001',
@@ -65,6 +66,10 @@ const allowedOrigins = [
   'https://www.opulanz.com',
   'https://opulanz.com',
   'https://rg-opulanz-frontend-hdd4ddcvd4gsc6cx.canadacentral-01.azurewebsites.net',
+  // Capacitor mobile app origins
+  'capacitor://localhost',
+  'ionic://localhost',
+  'http://localhost',
 ];
 app.use(cors({
   origin: (origin, callback) => {
@@ -126,6 +131,7 @@ app.use('/api/investment/investments', investmentsRoutes);
 app.use('/api/investment/contact', contactLimiter, investmentContactRoutes);
 app.use('/api/support', contactLimiter, supportRoutes);
 app.use('/api/support-chats', supportChatsRoutes);
+app.use('/api/chat', chatRoutes); // AI chat — moved from Next.js API route for Capacitor compatibility
 
 // Health check endpoint
 app.get('/health', (req, res) => {

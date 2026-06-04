@@ -43,8 +43,13 @@ const securityHeaders = [
   { key: 'Content-Security-Policy', value: CSP },
 ];
 
+const isMobileBuild = process.env.NEXT_OUTPUT === 'export';
+
 const nextConfig = {
-  output: 'standalone',
+  // 'export' for Capacitor mobile builds, 'standalone' for web/Azure deployment
+  output: isMobileBuild ? 'export' : 'standalone',
+  // Required for Capacitor: static files need trailing slashes for proper routing
+  trailingSlash: isMobileBuild ? true : false,
   typescript: {
     ignoreBuildErrors: true,
   },

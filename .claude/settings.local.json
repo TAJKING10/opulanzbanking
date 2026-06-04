@@ -166,7 +166,15 @@
       "Bash(head -20 grep -n \"id=\\\\|PageGuidance\\\\|<section\\\\|<h1\\\\|<h2\\\\b\" \"C:\\\\Users\\\\Toufi\\\\AndroidStudioProjects\\\\azuree\\\\app\\\\[locale]\\\\tax-advisory\\\\booking\\\\BookingClient.tsx\")",
       "Bash(do)",
       "Read(//c/Users/Toufi/AndroidStudioProjects/azuree/app/**)",
-      "Bash(head -20 grep -n \"id=\\\\|<section\\\\|<form\\\\|<div.*id\" \"C:/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/tax-advisory/booking/BookingClient.tsx\")"
+      "Bash(head -20 grep -n \"id=\\\\|<section\\\\|<form\\\\|<div.*id\" \"C:/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/tax-advisory/booking/BookingClient.tsx\")",
+      "Bash(cat \"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/admin/\\(protected\\)/properties/[id]/page.tsx\")",
+      "Bash(npx cap:*)",
+      "Bash(set NEXT_OUTPUT=export)",
+      "Bash(NEXT_OUTPUT=export npm run build)",
+      "Bash(cp \"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/admin/\\(protected\\)/customers/[id]/page.tsx\" \"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/admin/\\(protected\\)/customers/[id]/page-client.tsx\")",
+      "Bash(cp \"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/admin/\\(protected\\)/properties/[id]/page.tsx\" \"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/admin/\\(protected\\)/properties/[id]/page-client.tsx\")",
+      "Bash(cp \"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/portal/\\(protected\\)/offerings/[id]/page.tsx\" \"/c/Users/Toufi/AndroidStudioProjects/azuree/app/[locale]/spv-investment/portal/\\(protected\\)/offerings/[id]/page-client.tsx\")",
+      "Bash(head:*)"
     ],
     "deny": [],
     "ask": []

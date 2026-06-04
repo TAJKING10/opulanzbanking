@@ -73,6 +73,7 @@ export default function AboutPage() {
     <>
       <PageGuidance
         pageKey="about"
+        locale={locale}
         title="About Opulanz"
         description="Learn who we are, our mission, and why clients trust us."
         steps={[

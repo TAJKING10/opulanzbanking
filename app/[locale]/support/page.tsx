@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Phone, Mail, MessageCircle, HelpCircle, FileText, Clock, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { PageGuidance } from "@/components/page-guidance";
 import ReactCountryFlag from "react-country-flag";
@@ -16,6 +16,7 @@ import { COUNTRIES } from "@/shared/lib/countries";
 
 export default function SupportPage() {
   const t = useTranslations("supportPage");
+  const locale = useLocale();
   const [selectedPhoneCode, setSelectedPhoneCode] = React.useState<string>("+33");
   const [isDropdownOpen, setIsDropdownOpen] = React.useState<boolean>(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -115,6 +116,7 @@ export default function SupportPage() {
     <>
       <PageGuidance
         pageKey="support"
+        locale={locale}
         title="Support Center"
         description="We're here to help — reach out through any channel you prefer."
         steps={[

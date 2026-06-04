@@ -75,6 +75,7 @@ export default function ExchangePage() {
     <div className="p-6 lg:p-8">
       <PageTour
         pageKey="dashboard-exchange"
+        locale={locale}
         steps={[
           { title: "Currency Exchange", description: "Convert money between currencies at live market rates. Let me show you how to use this page." },
           { element: "[data-tour='from-currency']", title: "From Currency", description: "Select the currency you want to convert FROM — for example, Euros (EUR).", side: "bottom" },

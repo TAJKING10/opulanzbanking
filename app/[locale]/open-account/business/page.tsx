@@ -236,6 +236,7 @@ export default function BusinessAccountPage() {
     <>
       <PageGuidance
         pageKey="open-account-business"
+        locale={locale}
         title="Business Account Opening"
         description="Follow the guided steps to open your business account."
         steps={[

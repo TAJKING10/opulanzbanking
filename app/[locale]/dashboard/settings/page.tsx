@@ -19,8 +19,11 @@ import {
   Check,
 } from "lucide-react";
 import { PageTour } from "@/components/page-tour";
+import { useParams } from "next/navigation";
 
 export default function SettingsPage() {
+  const params = useParams();
+  const locale = params.locale as string;
   const [activeTab, setActiveTab] = React.useState<"profile" | "security" | "notifications" | "preferences">("profile");
 
   const tabs = [
@@ -39,6 +42,7 @@ export default function SettingsPage() {
     <div className="p-6 lg:p-8">
       <PageTour
         pageKey="dashboard-settings"
+        locale={locale}
         steps={[
           { title: "Account Settings", description: "Here you can manage your profile, security, notifications, and display preferences. Let me show you each section." },
           { element: "[data-tour='settings-tabs']", title: "Settings Tabs", description: "Use these tabs to switch between Profile, Security, Notifications, and Preferences. Click any tab to jump to that section.", side: "bottom" },

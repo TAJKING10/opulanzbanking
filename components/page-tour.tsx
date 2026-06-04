@@ -4,6 +4,7 @@ import * as React from "react";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { HelpCircle } from "lucide-react";
+import { getGuidanceContent, tourUI } from "@/lib/guidance-translations";
 
 export interface TourStep {
   element?: string; // CSS selector — omit for a centered intro step
@@ -16,11 +17,28 @@ export interface TourStep {
 interface PageTourProps {
   pageKey: string;
   steps: TourStep[];
+  locale?: string;
 }
 
-export function PageTour({ pageKey, steps }: PageTourProps) {
+export function PageTour({ pageKey, steps: stepsProp, locale }: PageTourProps) {
   const storageKey = `tour-v1-${pageKey}`;
   const [mounted, setMounted] = React.useState(false);
+  const ui = tourUI[locale === "fr" ? "fr" : "en"];
+
+  // Use translated steps when available
+  const translated = locale ? getGuidanceContent(locale, pageKey) : null;
+  const steps: TourStep[] = React.useMemo(() => {
+    if (translated?.steps?.length) {
+      return translated.steps.map((s) => ({
+        element: s.element ?? s.target,
+        title: s.title ?? "",
+        description: s.content ?? s.description ?? "",
+        side: s.side,
+        align: s.align,
+      }));
+    }
+    return stepsProp;
+  }, [translated, stepsProp]); // eslint-disable-line react-hooks/exhaustive-deps
 
   React.useEffect(() => {
     setMounted(true);
@@ -48,10 +66,10 @@ export function PageTour({ pageKey, steps }: PageTourProps) {
       overlayColor: "rgba(0,0,0,0.45)",
       smoothScroll: true,
       popoverClass: "opulanz-tour",
-      nextBtnText: "Next &rarr;",
-      prevBtnText: "&larr; Back",
-      doneBtnText: "&#10003; Done",
-      progressText: "Step {{current}} of {{total}}",
+      nextBtnText: ui.next.replace("→", "&rarr;").replace("←", "&larr;"),
+      prevBtnText: ui.prev.replace("→", "&rarr;").replace("←", "&larr;"),
+      doneBtnText: ui.done.replace("✓", "&#10003;"),
+      progressText: ui.progress,
       steps: mappedSteps,
       onDestroyed: () => {
         localStorage.setItem(storageKey, "1");
@@ -59,7 +77,7 @@ export function PageTour({ pageKey, steps }: PageTourProps) {
     });
 
     d.drive();
-  }, [steps, storageKey]);
+  }, [steps, storageKey, ui]);
 
   // Auto-start on first visit
   React.useEffect(() => {

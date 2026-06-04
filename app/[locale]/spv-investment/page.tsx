@@ -90,6 +90,7 @@ export default function SpvInvestmentPage() {
     <>
       <PageGuidance
         pageKey="spv-investment"
+        locale={locale}
         title="SPV Investment Portal"
         description="Invest in premium real estate and alternative assets through SPV structures."
         steps={[

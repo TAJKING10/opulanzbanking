@@ -10,6 +10,7 @@ import {
   Sparkles,
   ArrowRight,
 } from "lucide-react";
+import { getGuidanceContent, guidanceUI } from "@/lib/guidance-translations";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -28,6 +29,7 @@ interface PageGuidanceProps {
   description?: string;
   steps: TourStep[];
   tip?: string;
+  locale?: string;
 }
 
 interface NormalizedStep {
@@ -114,6 +116,7 @@ function TourOverlay({
   onNext,
   onPrev,
   onClose,
+  ui,
 }: {
   title: string;
   description?: string;
@@ -123,6 +126,7 @@ function TourOverlay({
   onNext: () => void;
   onPrev: () => void;
   onClose: () => void;
+  ui: typeof guidanceUI["en"];
 }) {
   const step = steps[idx];
   const isFirst = idx === 0;
@@ -337,7 +341,7 @@ function TourOverlay({
                 }}
               >
                 <ChevronLeft style={{ width: 14, height: 14 }} />
-                Back
+                {ui.back}
               </button>
 
               <button
@@ -352,7 +356,7 @@ function TourOverlay({
                   borderRadius: 5,
                 }}
               >
-                Skip tour
+                {ui.skip}
               </button>
 
               <button
@@ -373,9 +377,9 @@ function TourOverlay({
                 }}
               >
                 {isLast ? (
-                  <>Get Started <ArrowRight style={{ width: 13, height: 13 }} /></>
+                  <>{ui.done} <ArrowRight style={{ width: 13, height: 13 }} /></>
                 ) : (
-                  <>Next <ChevronRight style={{ width: 14, height: 14 }} /></>
+                  <>{ui.next} <ChevronRight style={{ width: 14, height: 14 }} /></>
                 )}
               </button>
             </div>
@@ -410,13 +414,34 @@ function TourOverlay({
 
 export function PageGuidance({
   pageKey,
-  title,
-  description,
-  steps: rawSteps,
-  tip,
+  title: titleProp,
+  description: descriptionProp,
+  steps: rawStepsProp,
+  tip: tipProp,
+  locale,
 }: PageGuidanceProps) {
   // Stable key — never change this format or existing users will see the tour again
   const storageKey = `opulanz-tour-${pageKey}`;
+
+  // Use translated content when available, fall back to props
+  const translated = locale ? getGuidanceContent(locale, pageKey) : null;
+  const title = translated?.title ?? titleProp;
+  const description = translated?.description ?? descriptionProp;
+  const tip = translated?.tip ?? tipProp;
+  const ui = guidanceUI[locale === "fr" ? "fr" : "en"];
+
+  const rawSteps: TourStep[] = React.useMemo(() => {
+    if (translated?.steps?.length) {
+      return translated.steps.map((s) => ({
+        title: s.title,
+        content: s.content ?? "",
+        target: s.target,
+        position: s.position,
+      }));
+    }
+    return rawStepsProp;
+  }, [translated, rawStepsProp]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const steps = React.useMemo(() => rawSteps.map(normalize), [rawSteps]);
 
   const [mounted, setMounted] = React.useState(false);
@@ -495,6 +520,7 @@ export function PageGuidance({
             onNext={next}
             onPrev={prev}
             onClose={close}
+            ui={ui}
           />,
           document.body
         )}

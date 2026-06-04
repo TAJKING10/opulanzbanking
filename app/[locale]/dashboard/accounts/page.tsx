@@ -78,6 +78,7 @@ export default function AccountsPage() {
     <div className="p-6 lg:p-8">
       <PageTour
         pageKey="dashboard-accounts"
+        locale={locale}
         steps={[
           { title: "Your Accounts", description: "Here you can see all your bank accounts and their balances. Let me walk you through." },
           { element: "h1", title: "Accounts Overview", description: "This page lists all your accounts: EUR, USD, GBP and any others. The total combined balance is shown at the top.", side: "bottom" },

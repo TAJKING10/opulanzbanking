@@ -121,6 +121,7 @@ export default function InvoicesPage() {
     <div className="p-6 lg:p-8">
       <PageTour
         pageKey="dashboard-invoices"
+        locale={locale}
         steps={[
           { title: "Invoices", description: "Create, send, and track invoices for your clients — all in one place. Let me show you how." },
           { element: "[data-tour='invoice-stats']", title: "Invoice Summary", description: "At a glance: your total invoiced, how much has been paid, what's pending, and what's overdue.", side: "bottom" },

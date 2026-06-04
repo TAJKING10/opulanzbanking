@@ -67,6 +67,7 @@ export default function SupportPage() {
     <div className="p-6 lg:p-8">
       <PageTour
         pageKey="dashboard-support"
+        locale={locale}
         steps={[
           { title: "Help & Support", description: "Find answers fast or get in touch with our support team. Let me show you what's available here." },
           { element: "[data-tour='support-search']", title: "Search for Help", description: "Type any question or topic here to search our knowledge base — articles, FAQs, and tutorials.", side: "bottom" },

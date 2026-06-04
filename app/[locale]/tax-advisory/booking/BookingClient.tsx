@@ -311,6 +311,7 @@ export default function BookingClient() {
     <>
       <PageGuidance
         pageKey="tax-advisory-booking"
+        locale={locale}
         title="Book a Tax Consultation"
         description="Schedule your session with a certified tax advisor in 4 easy steps."
         steps={[

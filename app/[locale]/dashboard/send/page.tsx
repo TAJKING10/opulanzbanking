@@ -89,6 +89,7 @@ export default function SendMoneyPage() {
     <div className="p-6 lg:p-8">
       <PageTour
         pageKey="dashboard-send"
+        locale={locale}
         steps={[
           { title: "Send Money", description: "This page lets you transfer money to your own accounts or to anyone else's bank. Let me guide you through each field." },
           { element: "[data-tour='transfer-type']", title: "Step 1 — Transfer Type", description: "Choose 'Own Accounts' to move money between your own accounts, or 'Bank Transfer' to send to someone else.", side: "bottom" },

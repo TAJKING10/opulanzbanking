@@ -18,6 +18,7 @@ export default function OpenAccountPage() {
     <>
       <PageGuidance
         pageKey="open-account"
+        locale={locale}
         title="Open an Account"
         description="Choose the account type that fits you best."
         steps={[

@@ -73,6 +73,7 @@ export default function CardsPage() {
     <div className="p-6 lg:p-8">
       <PageTour
         pageKey="dashboard-cards"
+        locale={locale}
         steps={[
           { title: "Your Cards", description: "Here you can manage all your physical and virtual cards. Let me walk you through the page." },
           { element: "[data-tour='card-selector']", title: "Select a Card", description: "Click a card here to switch between your physical and virtual cards and see their details.", side: "bottom" },

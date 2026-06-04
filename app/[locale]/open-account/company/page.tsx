@@ -713,6 +713,7 @@ export default function CompanyAccountPage() {
     <div className="min-h-screen bg-brand-off py-12">
       <PageGuidance
         pageKey="open-account-company"
+        locale={locale}
         title="Company Account Application"
         description="Complete your KYB to open a business Opulanz account."
         steps={[

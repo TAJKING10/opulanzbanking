@@ -833,6 +833,7 @@ export default function IndividualAccountPage() {
     <div className="min-h-screen bg-brand-off py-12">
       <PageGuidance
         pageKey="open-account-individual"
+        locale={locale}
         title="Personal Account Application"
         description="Complete your KYC to open a personal Opulanz account."
         steps={[

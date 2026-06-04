@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Building2, FileText, Users, CreditCard, CheckCircle } from "lucide-react";
 import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
@@ -13,6 +13,7 @@ import type { CompanyFormType } from "@/types/company-formation";
 
 export default function CompanyFormationPage() {
   const t = useTranslations("companyFormation");
+  const locale = useLocale();
   const [selectedForm, setSelectedForm] = React.useState<CompanyFormType | null>(null);
 
   const companyForms = [
@@ -112,6 +113,7 @@ export default function CompanyFormationPage() {
     <>
       <PageGuidance
         pageKey="company-formation"
+        locale={locale}
         title="Company Formation"
         description="Register your company in France or Luxembourg with our guided wizard."
         steps={[

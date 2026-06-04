@@ -75,6 +75,7 @@ export default function SignupPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#f6f8f8] to-white flex items-center justify-center p-4">
       <PageGuidance
         pageKey="auth-signup"
+        locale={locale}
         title="Create Your Account"
         description="Sign up for Opulanz in just a few steps."
         steps={[

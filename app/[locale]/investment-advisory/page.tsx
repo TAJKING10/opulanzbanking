@@ -28,6 +28,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
     <>
       <PageGuidance
         pageKey="investment-advisory"
+        locale={locale}
         title="Investment Advisory"
         description="Grow your wealth with personalized investment strategies."
         steps={[

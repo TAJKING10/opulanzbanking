@@ -186,6 +186,7 @@ export default function PersonalAccountPage() {
     <>
       <PageGuidance
         pageKey="open-account-personal"
+        locale={locale}
         title="Personal Account Opening"
         description="Follow the guided steps to open your personal account."
         steps={[

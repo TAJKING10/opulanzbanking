@@ -75,6 +75,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
     <>
       <PageGuidance
         pageKey="tax-advisory"
+        locale={locale}
         title="Tax Advisory Services"
         description="Get expert tax support tailored to your personal or business needs."
         steps={[

@@ -186,6 +186,7 @@ export default function DashboardPage() {
     <div className="p-6 lg:p-8 space-y-6">
       <PageTour
         pageKey="dashboard"
+        locale={locale}
         steps={[
           { title: "Welcome to your Dashboard", description: "This is your financial control center. Let me walk you through each section." },
           { element: "[data-tour='kyc-banner']", title: "⚠️ Verify Your Identity First", description: "You must complete KYC before you can send money or use full features. Click 'Verify Now' to start — it takes about 3 minutes.", side: "bottom" },

@@ -46,6 +46,7 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
     <>
       <PageGuidance
         pageKey="life-insurance"
+        locale={locale}
         title="Life Insurance"
         description="Explore our life insurance products and find the right coverage for you."
         steps={[

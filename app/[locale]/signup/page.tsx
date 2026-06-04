@@ -57,6 +57,7 @@ export default function SignupPage() {
     <div className="min-h-screen bg-[#f6f6f7] flex">
       <PageGuidance
         pageKey="signup"
+        locale={locale}
         title="Create Your Account"
         description="Sign up for Opulanz — takes less than 2 minutes."
         steps={[

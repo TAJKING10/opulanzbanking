@@ -29,6 +29,7 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
     <>
       <PageGuidance
         pageKey="invoicing-accounting"
+        locale={locale}
         title="Invoicing & Accounting"
         description="Streamline your business finances with our accounting tools."
         steps={[

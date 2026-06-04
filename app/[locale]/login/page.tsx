@@ -166,6 +166,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen">
       <PageGuidance
         pageKey="login"
+        locale={locale}
         title="Sign In to Opulanz"
         description="Access your Opulanz account securely with two-step verification."
         steps={[

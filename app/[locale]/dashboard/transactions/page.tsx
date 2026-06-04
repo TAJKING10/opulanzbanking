@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { PageTour } from "@/components/page-tour";
+import { useParams } from "next/navigation";
 import jsPDF from "jspdf";
 
 // Transaction type
@@ -376,6 +377,8 @@ function ChevronDownIcon({ className }: { className?: string }) {
 }
 
 export default function TransactionsPage() {
+  const params = useParams();
+  const locale = params.locale as string;
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filterType, setFilterType] = React.useState<"all" | "incoming" | "outgoing">("all");
   const [showExportDropdown, setShowExportDropdown] = React.useState(false);
@@ -977,6 +980,7 @@ export default function TransactionsPage() {
     <div className="flex min-h-screen bg-gray-50">
       <PageTour
         pageKey="dashboard-transactions"
+        locale={locale}
         steps={[
           { title: "Transaction History", description: "Here you can see every movement in your account — incoming and outgoing. Let me show you around." },
           { element: "[data-tour='tx-list']", title: "Your Transactions", description: "Each row shows the counterparty, description, date, and amount. Green means money came in, dark means money went out.", side: "right" },

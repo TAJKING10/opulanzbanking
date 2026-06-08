@@ -10,24 +10,9 @@ export const routing = defineRouting({
 
   // Always show locale prefix in URL
   localePrefix: 'always',
-
-  // Path names for localized routes (optional)
-  pathnames: {
-    '/': '/',
-    '/open-account': {
-      en: '/open-account',
-      fr: '/ouvrir-compte', // Optional: localized paths
-    },
-    '/company-formation': {
-      en: '/company-formation',
-      fr: '/creation-entreprise',
-    },
-    '/dashboard': '/dashboard',
-  },
 });
 
 // Export type-safe navigation utilities
-export type Pathnames = keyof typeof routing.pathnames;
 export type Locale = (typeof routing.locales)[number];
 
 export const { Link, redirect, usePathname, useRouter, getPathname } =

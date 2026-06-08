@@ -338,7 +338,7 @@ export function PPIdentityStep() {
         onNext={handleSubmit}
         onPrev={prevStep}
         canGoPrev={true}
-        canGoNext={isValid}
+        canGoNext={!!isValid}
       />
     </div>
   );

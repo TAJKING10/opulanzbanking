@@ -170,7 +170,7 @@ export function PMComprehensiveForm() {
       },
     };
 
-    updateData(structuredData);
+    updateData(structuredData as any);
     nextStep();
   };
 

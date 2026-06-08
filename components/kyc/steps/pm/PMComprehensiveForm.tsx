@@ -126,9 +126,11 @@ export function PMComprehensiveForm() {
           lastName: formData.rep1LastName,
           position: formData.rep1Position,
           email: formData.rep1Email,
+          phone: formData.rep1Mobile,
           mobile: formData.rep1Mobile,
           dateOfBirth: formData.rep1DateOfBirth,
           nationality: formData.rep1Nationality,
+          isPEP: false,
         },
       ],
       fatcaCrs: {

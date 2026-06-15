@@ -446,6 +446,16 @@
           "returnHome": "Retour à l'accueil"
         },
         "submitError": "Échec de la soumission du dossier de création. Veuillez réessayer ou contacter le support."
+      },
+      "validation": {
+        "required": "Veuillez remplir tous les champs obligatoires",
+        "proposedName": "Nom légal proposé",
+        "purpose": "Objet social",
+        "registeredOffice": "Adresse du siège social",
+        "atLeastOneShareholder": "Veuillez ajouter au moins un associé avant de continuer.",
+        "atLeastOneManager": "Veuillez ajouter au moins un gérant avant de continuer.",
+        "atLeastOneDirector": "Veuillez ajouter au moins un administrateur avant de continuer.",
+        "capitalMinimum": "Le capital social doit être d'au moins {amount}."
       }
     },
     "process": {
@@ -1189,7 +1199,8 @@
       "back": "Retour",
       "continue": "Continuer",
       "processing": "Traitement...",
-      "progressSaved": "Votre progression est automatiquement sauvegardée. Vous pouvez revenir à tout moment pour compléter votre demande."
+      "progressSaved": "Votre progression est automatiquement sauvegardée. Vous pouvez revenir à tout moment pour compléter votre demande.",
+      "requiredFieldsError": "Veuillez remplir tous les champs obligatoires (*) avant de continuer."
     },
     "common": {
       "upload": "Télécharger",

@@ -36,6 +36,15 @@ export function AccountOpeningLayout({
   hideNavigation = false,
 }: AccountOpeningLayoutProps) {
   const t = useTranslations("accountForms.layout");
+  const [showValidationError, setShowValidationError] = React.useState(false);
+
+  // Reset validation error when step becomes valid or changes
+  React.useEffect(() => {
+    if (canGoNext) setShowValidationError(false);
+  }, [canGoNext]);
+  React.useEffect(() => {
+    setShowValidationError(false);
+  }, [currentStep]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -71,22 +80,34 @@ export function AccountOpeningLayout({
                 {t("back")}
               </Button>
 
-              <Button
-                type="button"
-                onClick={onNext}
-                disabled={!canGoNext || isLoading}
-                className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark disabled:bg-gray-400 disabled:opacity-50"
+              <div
+                onClick={() => {
+                  if (!canGoNext && !isLoading) setShowValidationError(true);
+                }}
               >
-                {isLoading ? (
-                  t("processing")
-                ) : (
-                  <>
-                    {t("continue")}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </Button>
+                <Button
+                  type="button"
+                  onClick={canGoNext ? onNext : undefined}
+                  disabled={!canGoNext || isLoading}
+                  className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark disabled:bg-gray-400 disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    t("processing")
+                  ) : (
+                    <>
+                      {t("continue")}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
+            {showValidationError && !canGoNext && (
+              <div className="mt-3 flex items-center justify-end gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <span className="font-semibold">⚠</span>
+                {t("requiredFieldsError")}
+              </div>
+            )}
 
             {/* Progress saved indicator */}
             <div className="mt-6 text-center">

@@ -31,6 +31,8 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
   const t = useTranslations("companyFormation.wizard");
 
   const [currentStep, setCurrentStep] = React.useState(1);
+  const [showErrors, setShowErrors] = React.useState(false);
+  const [validationMessage, setValidationMessage] = React.useState<string | null>(null);
   const [dossier, setDossier] = React.useState<Partial<CompanyFormationDossier>>({
     formType: initialFormType,
     country: "LU",
@@ -81,7 +83,53 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
     }
   }, [dossier]);
 
+  const validateStep = (): boolean => {
+    switch (currentStep) {
+      case 2: {
+        const missingFields: string[] = [];
+        if (!dossier.proposedNames?.[0]?.trim()) missingFields.push(t("validation.proposedName"));
+        if (!dossier.purpose?.trim()) missingFields.push(t("validation.purpose"));
+        if (!dossier.registeredOffice?.trim()) missingFields.push(t("validation.registeredOffice"));
+        if (missingFields.length > 0) {
+          setValidationMessage(`${t("validation.required")}: ${missingFields.join(", ")}`);
+          return false;
+        }
+        return true;
+      }
+      case 3: {
+        if (!dossier.shareholders?.length) {
+          setValidationMessage(t("validation.atLeastOneShareholder"));
+          return false;
+        }
+        const rules = COMPANY_FORM_RULES[dossier.formType!];
+        if (rules?.requiresManagers && !dossier.managers?.length) {
+          setValidationMessage(t("validation.atLeastOneManager"));
+          return false;
+        }
+        if (rules?.requiresDirectors && !dossier.directors?.length) {
+          setValidationMessage(t("validation.atLeastOneDirector"));
+          return false;
+        }
+        return true;
+      }
+      case 4: {
+        const rules = COMPANY_FORM_RULES[dossier.formType!];
+        if (rules && rules.minCapital > 0 && (!dossier.capitalAmount || dossier.capitalAmount < rules.minCapital)) {
+          setValidationMessage(t("validation.capitalMinimum", { amount: `€${rules.minCapital.toLocaleString()}` }));
+          return false;
+        }
+        return true;
+      }
+      default:
+        return true;
+    }
+  };
+
   const handleNext = () => {
+    setShowErrors(true);
+    if (!validateStep()) return;
+    setShowErrors(false);
+    setValidationMessage(null);
     if (currentStep < WIZARD_STEPS.length) {
       setDossier(prev => ({ ...prev, updatedAt: new Date().toISOString() }));
       setCurrentStep(currentStep + 1);
@@ -89,6 +137,8 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
   };
 
   const handleBack = () => {
+    setShowErrors(false);
+    setValidationMessage(null);
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     } else {
@@ -168,13 +218,21 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
           </CardHeader>
           <CardContent>
             {currentStep === 1 && <Step1CompanyType dossier={dossier} updateDossier={updateDossier} />}
-            {currentStep === 2 && <Step2GeneralInfo dossier={dossier} updateDossier={updateDossier} />}
+            {currentStep === 2 && <Step2GeneralInfo dossier={dossier} updateDossier={updateDossier} showErrors={showErrors} />}
             {currentStep === 3 && <Step3People dossier={dossier} updateDossier={updateDossier} />}
             {currentStep === 4 && <Step4Capital dossier={dossier} updateDossier={updateDossier} />}
             {currentStep === 5 && <Step5Activity dossier={dossier} updateDossier={updateDossier} />}
             {currentStep === 6 && <Step6NotaryDomiciliation dossier={dossier} updateDossier={updateDossier} />}
             {currentStep === 7 && <Step7Documents dossier={dossier} updateDossier={updateDossier} />}
             {currentStep === 8 && <Step8ReviewSubmit dossier={dossier} updateDossier={updateDossier} />}
+
+            {/* Validation error banner */}
+            {validationMessage && (
+              <div className="mt-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <span className="mt-0.5 flex-shrink-0 font-bold">⚠</span>
+                <span>{validationMessage}</span>
+              </div>
+            )}
 
             {/* Navigation */}
             <div className="mt-8 flex justify-between border-t border-brand-grayLight pt-6">
@@ -284,7 +342,7 @@ function Step1CompanyType({ dossier, updateDossier }: StepProps) {
 }
 
 // Step 2: General Info
-function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
+function Step2GeneralInfo({ dossier, updateDossier, showErrors }: StepProps) {
   const t = useTranslations("companyFormation.wizard.step2");
 
   const [primaryName, setPrimaryName] = React.useState(dossier.proposedNames?.[0] || "");
@@ -314,7 +372,11 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
           value={primaryName}
           onChange={(e) => setPrimaryName(e.target.value)}
           placeholder={t("proposedNamePlaceholder")}
+          className={showErrors && !primaryName.trim() ? "border-red-500 focus-visible:ring-red-500" : ""}
         />
+        {showErrors && !primaryName.trim() && (
+          <p className="text-xs text-red-500">This field is required.</p>
+        )}
         <p className="text-xs text-brand-grayMed">
           {t("proposedNameHelp")}
         </p>
@@ -344,9 +406,12 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
           value={purpose}
           onChange={(e) => setPurpose(e.target.value)}
           rows={5}
-          className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+          className={`flex w-full rounded-xl border bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold ${showErrors && !purpose.trim() ? "border-red-500" : "border-brand-grayLight"}`}
           placeholder={t("purposePlaceholder")}
         />
+        {showErrors && !purpose.trim() && (
+          <p className="text-xs text-red-500">This field is required.</p>
+        )}
       </div>
 
       <div className="space-y-2">
@@ -358,9 +423,12 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
           value={registeredOffice}
           onChange={(e) => setRegisteredOffice(e.target.value)}
           rows={3}
-          className="flex w-full rounded-xl border border-brand-grayLight bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+          className={`flex w-full rounded-xl border bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold ${showErrors && !registeredOffice.trim() ? "border-red-500" : "border-brand-grayLight"}`}
           placeholder={t("registeredOfficePlaceholder")}
         />
+        {showErrors && !registeredOffice.trim() && (
+          <p className="text-xs text-red-500">This field is required.</p>
+        )}
         <p className="text-xs text-brand-grayMed">
           {t("registeredOfficeHelp")}
         </p>
@@ -387,4 +455,5 @@ function Step2GeneralInfo({ dossier, updateDossier }: StepProps) {
 type StepProps = {
   dossier: Partial<CompanyFormationDossier>;
   updateDossier: (updates: Partial<CompanyFormationDossier>) => void;
+  showErrors?: boolean;
 };

@@ -446,6 +446,16 @@
           "returnHome": "Return to Home"
         },
         "submitError": "Failed to submit the formation dossier. Please try again or contact support."
+      },
+      "validation": {
+        "required": "Please fill in all required fields",
+        "proposedName": "Proposed Legal Name",
+        "purpose": "Company Purpose",
+        "registeredOffice": "Registered Office Address",
+        "atLeastOneShareholder": "Please add at least one shareholder before continuing.",
+        "atLeastOneManager": "Please add at least one manager before continuing.",
+        "atLeastOneDirector": "Please add at least one director before continuing.",
+        "capitalMinimum": "Share capital must be at least {amount}."
       }
     },
     "process": {
@@ -1189,7 +1199,8 @@
       "back": "Back",
       "continue": "Continue",
       "processing": "Processing...",
-      "progressSaved": "Your progress is automatically saved. You can return anytime to complete your application."
+      "progressSaved": "Your progress is automatically saved. You can return anytime to complete your application.",
+      "requiredFieldsError": "Please fill in all required fields (*) before continuing."
     },
     "common": {
       "upload": "Upload",

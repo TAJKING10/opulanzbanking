@@ -64,7 +64,21 @@ router.post('/', async (req, res) => {
           { role: 'assistant', content: 'Hello! I\'m the Opulanz AI assistant. How can I help you today?' },
         ];
 
-    const fullMessages = [...languageMessages, ...messages];
+    // For short/ambiguous messages (<= 25 chars), append an invisible language hint
+    // so the model doesn't default to French for greetings like "hi", "thanks", etc.
+    const processedMessages = messages.map((msg, i) => {
+      if (
+        i === messages.length - 1 &&
+        msg.role === 'user' &&
+        msg.content.trim().length <= 25
+      ) {
+        const hint = locale === 'fr' ? ' [répondez en français]' : ' [reply in English]';
+        return { ...msg, content: msg.content + hint };
+      }
+      return msg;
+    });
+
+    const fullMessages = [...languageMessages, ...processedMessages];
 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');

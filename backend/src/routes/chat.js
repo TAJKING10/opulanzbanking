@@ -52,39 +52,24 @@ router.post('/', async (req, res) => {
 
     const client = new Anthropic.default({ apiKey });
 
-    // Inject a language primer as the first exchange so the model is already "in" the right language.
-    // We use a realistic greeting exchange so the model sees the conversation is established in that language.
-    const languageMessages = locale === 'fr'
-      ? [
-          { role: 'user', content: 'Bonjour' },
-          { role: 'assistant', content: 'Bonjour ! Je suis l\'assistant IA d\'Opulanz. Comment puis-je vous aider aujourd\'hui ?' },
-        ]
-      : [
-          { role: 'user', content: 'Hello' },
-          { role: 'assistant', content: 'Hello! I\'m the Opulanz AI assistant. How can I help you today?' },
-        ];
+    // Use assistant prefill to force the model to start in the correct language.
+    // By ending the messages array with a partial assistant turn, the model is forced
+    // to continue from that starting point — guaranteeing the right language.
+    const prefill = locale === 'fr' ? 'Bonjour !' : 'Hello!';
 
-    // For short/ambiguous messages (<= 25 chars), append an invisible language hint
-    // so the model doesn't default to French for greetings like "hi", "thanks", etc.
-    const processedMessages = messages.map((msg, i) => {
-      if (
-        i === messages.length - 1 &&
-        msg.role === 'user' &&
-        msg.content.trim().length <= 25
-      ) {
-        const hint = locale === 'fr' ? ' [répondez en français]' : ' [reply in English]';
-        return { ...msg, content: msg.content + hint };
-      }
-      return msg;
-    });
-
-    const fullMessages = [...languageMessages, ...processedMessages];
+    const fullMessages = [
+      ...messages,
+      { role: 'assistant', content: prefill },
+    ];
 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.flushHeaders();
+
+    // Send the prefill text first so the UI shows it as part of the response
+    res.write(`data: ${JSON.stringify({ text: prefill + ' ' })}\n\n`);
 
     const stream = client.messages.stream({
       model: 'claude-haiku-4-5-20251001',

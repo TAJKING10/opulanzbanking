@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
+import { useLocale } from "next-intl";
 import {
   MessageCircle,
   Send,
@@ -19,7 +20,26 @@ import {
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-const FAQS = [
+const FAQS_EN = [
+  {
+    q: "What services does Opulanz offer?",
+    a: "Opulanz is an all-in-one platform with 7 services:\n1. Banking accounts (individual & company)\n2. Company formation in Luxembourg\n3. Tax advisory (5 services, from €100 to €299)\n4. Life insurance brokerage (free consultation)\n5. Investment advisory (min €100,000)\n6. Accounting & invoicing\n7. SPV real estate investment (qualified investors)",
+  },
+  {
+    q: "How do I book a tax advisory consultation?",
+    a: "Easy — 4 steps:\n1. Go to /tax-advisory and pick your service\n2. Enter your contact details\n3. Choose a time slot via Calendly\n4. Pay online (PayPal) → instant confirmation by email with video link",
+  },
+  {
+    q: "How do I open a company account?",
+    a: "Here are the steps:\n1. Not yet incorporated? Start with our Company Formation service (/company-formation).\n2. Go to /open-account → 'Company Account'.\n3. Upload: certificate of incorporation, UBO declaration, directors' IDs.\n4. Submit → approval within 3–5 business days.\n5. Receive your multi-currency IBAN (EUR, USD, GBP, CHF).",
+  },
+  {
+    q: "What are your fees and approval timelines?",
+    a: "Individual account: €10/month, approved in 24–48h.\nCompany account: €25/month, approved in 3–5 days.\nCompany formation: registered office from €600/year, completed in 2–3 weeks.",
+  },
+];
+
+const FAQS_FR = [
   {
     q: "Je suis une société au Luxembourg — comment ouvrir un compte ?",
     a: "Voici les étapes :\n1. Société non immatriculée ? Commencez par notre service Création d'entreprise (/company-formation).\n2. Allez sur /open-account → « Compte Entreprise ».\n3. Téléchargez : acte d'immatriculation, déclaration UBO, pièces d'identité des dirigeants.\n4. Soumettez → approbation sous 3–5 jours ouvrés.\n5. Recevez votre IBAN multi-devises (EUR, USD, GBP, CHF).",
@@ -35,14 +55,6 @@ const FAQS = [
   {
     q: "Quels sont vos tarifs et délais d'approbation ?",
     a: "Compte individuel : €10/mois, approuvé en 24–48h.\nCompte entreprise : €25/mois, approuvé en 3–5 jours.\nCréation d'entreprise : domiciliation à partir de €600/an, finalisée en 2–3 semaines.",
-  },
-  {
-    q: "What services does Opulanz offer?",
-    a: "Opulanz is an all-in-one platform with 7 services:\n1. Banking accounts (individual & company)\n2. Company formation in Luxembourg\n3. Tax advisory (5 services, from €100 to €299)\n4. Life insurance brokerage (free consultation)\n5. Investment advisory (min €100,000)\n6. Accounting & invoicing\n7. SPV real estate investment (qualified investors)",
-  },
-  {
-    q: "How do I book a tax advisory consultation?",
-    a: "Easy — 4 steps:\n1. Go to /tax-advisory and pick your service\n2. Enter your contact details\n3. Choose a time slot via Calendly\n4. Pay online (PayPal) → instant confirmation by email with video link",
   },
 ];
 
@@ -125,6 +137,9 @@ function formatTime(iso: string) {
 
 export function LiveChat() {
   const pathname = usePathname();
+  const locale = useLocale();
+  const isFr = locale === "fr";
+  const FAQS = isFr ? FAQS_FR : FAQS_EN;
   const [open, setOpen] = React.useState(false);
   const [view, setView] = React.useState<View>("welcome");
   const [messages, setMessages] = React.useState<Message[]>([]);
@@ -330,7 +345,7 @@ export function LiveChat() {
     setHumanSending(false);
   }
 
-  function handleFAQ(faq: (typeof FAQS)[0]) {
+  function handleFAQ(faq: { q: string; a: string }) {
     setView("chat");
     setMessages([
       { role: "user", content: faq.q },
@@ -384,8 +399,10 @@ export function LiveChat() {
                   <span className={`h-1.5 w-1.5 rounded-full ${view === "human" && humanStep === "chatting" && adminReplied ? "bg-green-400" : view === "human" && humanStep === "chatting" ? "bg-amber-400 animate-pulse" : "bg-green-400"}`} />
                   <p className="text-xs text-gray-400">
                     {view === "human" && humanStep === "chatting"
-                      ? adminReplied ? "Agent connected" : "Waiting for agent..."
-                      : "AI Assistant · Online"}
+                      ? adminReplied
+                        ? (isFr ? "Agent connecté" : "Agent connected")
+                        : (isFr ? "En attente d'un agent..." : "Waiting for agent...")
+                      : (isFr ? "Assistant IA · En ligne" : "AI Assistant · Online")}
                   </p>
                 </div>
               </div>
@@ -407,14 +424,14 @@ export function LiveChat() {
                   <Bot className="h-4 w-4 text-white" />
                 </div>
                 <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-gray-100 px-4 py-3 text-sm text-gray-800">
-                  Bonjour ! Je suis l'assistant IA d'Opulanz. Comment puis-je vous aider aujourd'hui ?{" "}
-                  <br className="hidden sm:block" />
-                  <span className="text-gray-500 text-xs">Hello! I'm the Opulanz AI. How can I help you?</span>
+                  {isFr
+                    ? "Bonjour ! Je suis l'assistant IA d'Opulanz. Comment puis-je vous aider aujourd'hui ?"
+                    : "Hello! I'm the Opulanz AI assistant. How can I help you today?"}
                 </div>
               </div>
 
               <p className="pl-12 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                Questions fréquentes / FAQ
+                {isFr ? "Questions fréquentes" : "Frequently Asked Questions"}
               </p>
 
               <div className="space-y-2 pl-2">
@@ -436,7 +453,7 @@ export function LiveChat() {
                   className="flex w-full items-center gap-2 rounded-xl border border-dashed border-[#b59354] px-3 py-3 text-left text-sm font-medium text-[#b59354] transition-colors hover:bg-amber-50"
                 >
                   <MessageCircle className="h-4 w-4 flex-shrink-0" />
-                  Poser votre propre question... / Ask your own question...
+                  {isFr ? "Poser votre propre question..." : "Ask your own question..."}
                 </button>
                 <button
                   onClick={() => setView("human")}
@@ -459,7 +476,7 @@ export function LiveChat() {
                       <Bot className="h-4 w-4 text-white" />
                     </div>
                     <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-gray-100 px-4 py-3 text-sm text-gray-800">
-                      Que souhaitez-vous savoir sur Opulanz ? / What would you like to know about Opulanz?
+                      {isFr ? "Que souhaitez-vous savoir sur Opulanz ?" : "What would you like to know about Opulanz?"}
                     </div>
                   </div>
                 )}
@@ -500,9 +517,9 @@ export function LiveChat() {
               {suggestHuman && (
                 <div className="mx-4 mb-2 flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5">
                   <Users className="h-4 w-4 flex-shrink-0 text-[#b59354]" />
-                  <p className="flex-1 text-xs text-gray-600">Would you like to speak with a human agent?</p>
+                  <p className="flex-1 text-xs text-gray-600">{isFr ? "Souhaitez-vous parler à un agent ?" : "Would you like to speak with a human agent?"}</p>
                   <button onClick={() => setView("human")} className="text-xs font-semibold text-[#b59354] hover:underline">
-                    Connect now
+                    {isFr ? "Connecter" : "Connect now"}
                   </button>
                 </div>
               )}
@@ -514,7 +531,7 @@ export function LiveChat() {
                     className="flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-xs text-gray-400 transition-colors hover:bg-amber-50 hover:text-[#b59354]"
                   >
                     <Users className="h-3.5 w-3.5" />
-                    Talk to a human agent
+                    {isFr ? "Parler à un agent" : "Talk to a human agent"}
                   </button>
                 </div>
               )}
@@ -528,7 +545,7 @@ export function LiveChat() {
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(input); }
                     }}
-                    placeholder="Type your message..."
+                    placeholder={isFr ? "Écrivez votre message..." : "Type your message..."}
                     className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400"
                     disabled={loading}
                   />
@@ -558,7 +575,7 @@ export function LiveChat() {
                   className="flex items-center gap-1.5 text-xs text-gray-400 transition-colors hover:text-gray-600"
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
-                  Back to AI assistant
+                  {isFr ? "Retour à l'assistant IA" : "Back to AI assistant"}
                 </button>
               </div>
 
@@ -570,15 +587,15 @@ export function LiveChat() {
                       <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50">
                         <Users className="h-7 w-7 text-[#b59354]" />
                       </div>
-                      <h3 className="text-base font-semibold text-gray-900">Chat with our team</h3>
+                      <h3 className="text-base font-semibold text-gray-900">{isFr ? "Chattez avec notre équipe" : "Chat with our team"}</h3>
                       <p className="mt-1 text-sm text-gray-500">
-                        Available Mon–Fri, 9:00–18:00 CET
+                        {isFr ? "Disponible Lun–Ven, 9h00–18h00 CET" : "Available Mon–Fri, 9:00–18:00 CET"}
                       </p>
                     </div>
 
                     <form onSubmit={startHumanChat} className="space-y-3">
                       <div>
-                        <label className="mb-1 block text-xs font-medium text-gray-700">Your name</label>
+                        <label className="mb-1 block text-xs font-medium text-gray-700">{isFr ? "Votre nom" : "Your name"}</label>
                         <input
                           type="text"
                           value={visitorName}
@@ -589,7 +606,7 @@ export function LiveChat() {
                         />
                       </div>
                       <div>
-                        <label className="mb-1 block text-xs font-medium text-gray-700">Your email</label>
+                        <label className="mb-1 block text-xs font-medium text-gray-700">{isFr ? "Votre email" : "Your email"}</label>
                         <input
                           type="email"
                           value={visitorEmail}
@@ -609,7 +626,7 @@ export function LiveChat() {
                         ) : (
                           <>
                             <MessageCircle className="h-4 w-4" />
-                            Start Live Chat
+                            {isFr ? "Démarrer le chat" : "Start Live Chat"}
                           </>
                         )}
                       </button>
@@ -617,7 +634,7 @@ export function LiveChat() {
 
                     <div className="flex items-center gap-3">
                       <div className="h-px flex-1 bg-gray-200" />
-                      <span className="text-xs text-gray-400">or reach us directly</span>
+                      <span className="text-xs text-gray-400">{isFr ? "ou contactez-nous directement" : "or reach us directly"}</span>
                       <div className="h-px flex-1 bg-gray-200" />
                     </div>
 
@@ -642,7 +659,7 @@ export function LiveChat() {
                           <Mail className="h-3.5 w-3.5 text-[#b59354]" />
                         </div>
                         <div>
-                          <p className="text-xs font-medium text-gray-800">Email us</p>
+                          <p className="text-xs font-medium text-gray-800">{isFr ? "Envoyez-nous un email" : "Email us"}</p>
                           <p className="text-xs text-gray-500">contact@opulanz.com</p>
                         </div>
                       </a>
@@ -658,7 +675,7 @@ export function LiveChat() {
                     {/* System message */}
                     <div className="flex justify-center">
                       <span className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-500">
-                        Chat started — an agent will reply shortly
+                        {isFr ? "Chat démarré — un agent vous répondra bientôt" : "Chat started — an agent will reply shortly"}
                       </span>
                     </div>
 
@@ -666,7 +683,7 @@ export function LiveChat() {
                       <div className="flex justify-center py-4">
                         <div className="flex items-center gap-2 rounded-xl bg-amber-50 px-4 py-3">
                           <Loader2 className="h-4 w-4 animate-spin text-[#b59354]" />
-                          <p className="text-sm text-gray-600">Waiting for an agent to join...</p>
+                          <p className="text-sm text-gray-600">{isFr ? "En attente d'un agent..." : "Waiting for an agent to join..."}</p>
                         </div>
                       </div>
                     )}
@@ -710,7 +727,7 @@ export function LiveChat() {
                       <div className="flex justify-center">
                         <span className="flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs text-green-600">
                           <CheckCircle className="h-3.5 w-3.5" />
-                          Agent connected
+                          {isFr ? "Agent connecté" : "Agent connected"}
                         </span>
                       </div>
                     )}
@@ -727,7 +744,7 @@ export function LiveChat() {
                         onKeyDown={(e) => {
                           if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendHumanMessage(); }
                         }}
-                        placeholder="Type your message..."
+                        placeholder={isFr ? "Écrivez votre message..." : "Type your message..."}
                         className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400"
                         disabled={humanSending}
                       />

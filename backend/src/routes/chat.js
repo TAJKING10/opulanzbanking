@@ -58,12 +58,17 @@ router.post('/', async (req, res) => {
       return res.status(503).json({ error: 'AI service not configured. Please contact support@opulanz.com.' });
     }
 
-    const { messages } = req.body;
+    const { messages, locale } = req.body;
     if (!Array.isArray(messages) || messages.length === 0) {
       return res.status(400).json({ error: 'Invalid request' });
     }
 
     const client = new Anthropic.default({ apiKey });
+
+    // Prepend a locale hint to the system prompt so the model always starts in the right language
+    const localeHint = locale === 'fr'
+      ? '\n\nIMPORTANT: The user is on the French version of the site. Start your response in FRENCH unless the user clearly writes in another language.'
+      : '\n\nIMPORTANT: The user is on the English version of the site. Start your response in ENGLISH unless the user clearly writes in another language (e.g. French, Spanish, Arabic).';
 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -74,7 +79,7 @@ router.post('/', async (req, res) => {
     const stream = client.messages.stream({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 1024,
-      system: SYSTEM_PROMPT,
+      system: SYSTEM_PROMPT + localeHint,
       messages,
     });
 

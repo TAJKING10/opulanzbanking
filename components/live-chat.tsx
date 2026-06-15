@@ -242,6 +242,7 @@ export function LiveChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: history.map((m) => ({ role: m.role, content: m.content })),
+          locale,
         }),
       });
 

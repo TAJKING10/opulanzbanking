@@ -138,6 +138,8 @@ export default function CompanyAccountPage() {
   const [step, setStep] = React.useState<Step>("form");
   const [savedFormData, setSavedFormData] = React.useState<(WhitelabelKYBFormData & { repPhoneCode: string }) | null>(null);
   const [applicationId, setApplicationId] = React.useState<number | null>(null);
+  const [showFormError, setShowFormError] = React.useState(false);
+  const formTopRef = React.useRef<HTMLDivElement>(null);
 
   // Phone code dropdown (for representative)
   const [repPhoneCode, setRepPhoneCode] = React.useState("+33");
@@ -221,8 +223,14 @@ export default function CompanyAccountPage() {
 
   // ─── STEP 1: Store form data → questionnaire ─────────────────────────────────
   const onSubmit = async (data: WhitelabelKYBFormData) => {
+    setShowFormError(false);
     setSavedFormData({ ...data, repPhoneCode });
     setStep("questionnaire");
+  };
+
+  const onFormError = () => {
+    setShowFormError(true);
+    formTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   // ─── STEP 2: Questionnaire → save to backend → Sumsub ────────────────────────
@@ -733,12 +741,30 @@ export default function CompanyAccountPage() {
           className="mb-12"
         />
 
+        <div ref={formTopRef}>
         <Card className="border-none shadow-elevated">
           <CardHeader>
             <CardTitle>{tAccount("form.companyInfo")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            {showFormError && (
+              <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-4 text-sm text-red-700">
+                <span className="mt-0.5 flex-shrink-0 font-bold text-base">⚠</span>
+                <div>
+                  <p className="font-semibold">
+                    {locale === "fr"
+                      ? "Veuillez remplir tous les champs obligatoires (*) avant de continuer."
+                      : "Please fill in all required fields (*) before submitting."}
+                  </p>
+                  <p className="mt-1 text-xs text-red-600">
+                    {locale === "fr"
+                      ? "Les champs en rouge doivent être complétés."
+                      : "Fields highlighted in red must be completed."}
+                  </p>
+                </div>
+              </div>
+            )}
+            <form onSubmit={handleSubmit(onSubmit, onFormError)} className="space-y-8">
 
               {/* Company Details */}
               <div className="grid gap-6 md:grid-cols-2">
@@ -935,6 +961,7 @@ export default function CompanyAccountPage() {
             </form>
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );

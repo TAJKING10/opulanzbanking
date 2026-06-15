@@ -53,9 +53,9 @@ export const whitelabelKYBSchema = z.object({
   companyCountry: z.string().min(2, 'Country is required'),
 
   // Documents
-  statutes: z.array(z.instanceof(File)).min(1, 'Company statutes required'),
-  registerExtract: z.array(z.instanceof(File)).min(1, 'Register extract required'),
-  uboDeclaration: z.array(z.instanceof(File)).min(1, 'UBO declaration required'),
+  statutes: z.array(fileType).min(1, 'Company statutes required'),
+  registerExtract: z.array(fileType).min(1, 'Register extract required'),
+  uboDeclaration: z.array(fileType).min(1, 'UBO declaration required'),
 
   // Business Activity
   businessActivity: z.string().min(10, 'Describe your business activity'),

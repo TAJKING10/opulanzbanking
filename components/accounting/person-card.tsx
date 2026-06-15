@@ -21,9 +21,74 @@ export interface Person {
 }
 
 const ROLES = [
-  { value: "ceo", label: "CEO" },
-  { value: "cfo", label: "CFO" },
+  // Executive Leadership
+  { value: "ceo", label: "CEO – Chief Executive Officer" },
+  { value: "coo", label: "COO – Chief Operating Officer" },
+  { value: "cfo", label: "CFO – Chief Financial Officer" },
+  { value: "cto", label: "CTO – Chief Technology Officer" },
+  { value: "cmo", label: "CMO – Chief Marketing Officer" },
+  { value: "cso", label: "CSO – Chief Strategy Officer" },
+  { value: "cro", label: "CRO – Chief Revenue Officer" },
+  { value: "chro", label: "CHRO – Chief Human Resources Officer" },
+  { value: "cco", label: "CCO – Chief Compliance Officer" },
+  { value: "clro", label: "CLO – Chief Legal Officer" },
+  // Ownership & Board
   { value: "owner", label: "Owner" },
+  { value: "co_owner", label: "Co-Owner" },
+  { value: "founder", label: "Founder" },
+  { value: "co_founder", label: "Co-Founder" },
+  { value: "chairman", label: "Chairman of the Board" },
+  { value: "board_member", label: "Board Member" },
+  { value: "managing_director", label: "Managing Director" },
+  { value: "general_director", label: "General Director" },
+  { value: "president", label: "President" },
+  { value: "vice_president", label: "Vice President" },
+  // Finance & Accounting
+  { value: "finance_director", label: "Finance Director" },
+  { value: "financial_controller", label: "Financial Controller" },
+  { value: "treasurer", label: "Treasurer" },
+  { value: "accountant", label: "Accountant" },
+  { value: "chief_accountant", label: "Chief Accountant" },
+  { value: "financial_analyst", label: "Financial Analyst" },
+  { value: "tax_advisor", label: "Tax Advisor" },
+  { value: "auditor", label: "Auditor" },
+  // Legal & Compliance
+  { value: "legal_director", label: "Legal Director" },
+  { value: "general_counsel", label: "General Counsel" },
+  { value: "compliance_officer", label: "Compliance Officer" },
+  { value: "aml_officer", label: "AML Officer" },
+  { value: "data_protection_officer", label: "Data Protection Officer (DPO)" },
+  { value: "company_secretary", label: "Company Secretary" },
+  // Operations & Administration
+  { value: "operations_director", label: "Operations Director" },
+  { value: "operations_manager", label: "Operations Manager" },
+  { value: "admin_manager", label: "Administrative Manager" },
+  { value: "office_manager", label: "Office Manager" },
+  { value: "project_manager", label: "Project Manager" },
+  { value: "procurement_manager", label: "Procurement Manager" },
+  // Sales & Marketing
+  { value: "sales_director", label: "Sales Director" },
+  { value: "sales_manager", label: "Sales Manager" },
+  { value: "marketing_director", label: "Marketing Director" },
+  { value: "marketing_manager", label: "Marketing Manager" },
+  { value: "business_development", label: "Business Development Manager" },
+  { value: "account_manager", label: "Account Manager" },
+  // Technology
+  { value: "it_director", label: "IT Director" },
+  { value: "it_manager", label: "IT Manager" },
+  { value: "product_manager", label: "Product Manager" },
+  { value: "software_engineer", label: "Software Engineer / Developer" },
+  // HR & People
+  { value: "hr_director", label: "HR Director" },
+  { value: "hr_manager", label: "HR Manager" },
+  // Authorized Representative
+  { value: "authorized_signatory", label: "Authorized Signatory" },
+  { value: "power_of_attorney", label: "Power of Attorney" },
+  { value: "legal_representative", label: "Legal Representative" },
+  // Other
+  { value: "consultant", label: "Consultant / Advisor" },
+  { value: "partner", label: "Partner" },
+  { value: "associate", label: "Associate" },
   { value: "other", label: "Other" },
 ];
 

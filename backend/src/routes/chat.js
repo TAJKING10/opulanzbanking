@@ -52,15 +52,16 @@ router.post('/', async (req, res) => {
 
     const client = new Anthropic.default({ apiKey });
 
-    // Inject a language primer as the first exchange so the model is already "in" the right language
+    // Inject a language primer as the first exchange so the model is already "in" the right language.
+    // We use a realistic greeting exchange so the model sees the conversation is established in that language.
     const languageMessages = locale === 'fr'
       ? [
-          { role: 'user', content: '[SYSTEM CONTEXT] Respond in French.' },
-          { role: 'assistant', content: 'Compris. Je répondrai en français.' },
+          { role: 'user', content: 'Bonjour' },
+          { role: 'assistant', content: 'Bonjour ! Je suis l\'assistant IA d\'Opulanz. Comment puis-je vous aider aujourd\'hui ?' },
         ]
       : [
-          { role: 'user', content: '[SYSTEM CONTEXT] Respond in English.' },
-          { role: 'assistant', content: 'Understood. I will respond in English.' },
+          { role: 'user', content: 'Hello' },
+          { role: 'assistant', content: 'Hello! I\'m the Opulanz AI assistant. How can I help you today?' },
         ];
 
     const fullMessages = [...languageMessages, ...messages];

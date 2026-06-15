@@ -65,10 +65,18 @@ router.post('/', async (req, res) => {
 
     const client = new Anthropic.default({ apiKey });
 
-    // Build a locale prefix that goes BEFORE the system prompt so it takes highest priority
-    const localePrefix = locale === 'fr'
-      ? '⚠️ LANGUAGE OVERRIDE: The user is browsing in FRENCH. You MUST reply in FRENCH for this entire conversation, unless the user explicitly writes in a different language.\n\n'
-      : '⚠️ LANGUAGE OVERRIDE: The user is browsing in ENGLISH. You MUST reply in ENGLISH for this entire conversation, unless the user explicitly writes in a different language (e.g. French, Arabic, Spanish).\n\n';
+    // Inject a language primer as the first exchange so the model is already "in" the right language
+    const languageMessages = locale === 'fr'
+      ? [
+          { role: 'user', content: '[SYSTEM CONTEXT] Respond in French.' },
+          { role: 'assistant', content: 'Compris. Je répondrai en français.' },
+        ]
+      : [
+          { role: 'user', content: '[SYSTEM CONTEXT] Respond in English.' },
+          { role: 'assistant', content: 'Understood. I will respond in English.' },
+        ];
+
+    const fullMessages = [...languageMessages, ...messages];
 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -79,8 +87,8 @@ router.post('/', async (req, res) => {
     const stream = client.messages.stream({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 1024,
-      system: localePrefix + SYSTEM_PROMPT,
-      messages,
+      system: SYSTEM_PROMPT,
+      messages: fullMessages,
     });
 
     for await (const chunk of stream) {

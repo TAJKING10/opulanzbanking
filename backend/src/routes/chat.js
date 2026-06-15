@@ -65,10 +65,10 @@ router.post('/', async (req, res) => {
 
     const client = new Anthropic.default({ apiKey });
 
-    // Prepend a locale hint to the system prompt so the model always starts in the right language
-    const localeHint = locale === 'fr'
-      ? '\n\nIMPORTANT: The user is on the French version of the site. Start your response in FRENCH unless the user clearly writes in another language.'
-      : '\n\nIMPORTANT: The user is on the English version of the site. Start your response in ENGLISH unless the user clearly writes in another language (e.g. French, Spanish, Arabic).';
+    // Build a locale prefix that goes BEFORE the system prompt so it takes highest priority
+    const localePrefix = locale === 'fr'
+      ? '⚠️ LANGUAGE OVERRIDE: The user is browsing in FRENCH. You MUST reply in FRENCH for this entire conversation, unless the user explicitly writes in a different language.\n\n'
+      : '⚠️ LANGUAGE OVERRIDE: The user is browsing in ENGLISH. You MUST reply in ENGLISH for this entire conversation, unless the user explicitly writes in a different language (e.g. French, Arabic, Spanish).\n\n';
 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -79,7 +79,7 @@ router.post('/', async (req, res) => {
     const stream = client.messages.stream({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 1024,
-      system: SYSTEM_PROMPT + localeHint,
+      system: localePrefix + SYSTEM_PROMPT,
       messages,
     });
 

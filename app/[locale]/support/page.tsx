@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { Phone, Mail, MessageCircle, HelpCircle, FileText, Clock, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { Phone, Mail, MessageCircle, HelpCircle, FileText, Clock, CheckCircle, AlertCircle, Loader2, ExternalLink } from "lucide-react";
 import { PageGuidance } from "@/components/page-guidance";
 import ReactCountryFlag from "react-country-flag";
 import { Hero } from "@/components/hero";
@@ -369,7 +369,7 @@ export default function SupportPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="bg-white py-12">
+      <section id="faq" className="bg-white py-12">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading
             title={t("faq.title")}
@@ -407,6 +407,7 @@ export default function SupportPage() {
           />
 
           <div className="grid gap-8 md:grid-cols-3">
+            {/* Documentation → Legal Terms */}
             <Card className="card-hover border-none text-center">
               <CardContent className="p-8">
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
@@ -418,10 +419,15 @@ export default function SupportPage() {
                 <p className="mb-6 text-sm text-brand-grayMed">
                   {t("resources.documentation.description")}
                 </p>
-                <Button variant="outline">{t("resources.documentation.button")}</Button>
+                <a href={`/${locale}/legal/terms`}>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    {t("resources.documentation.button")} <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </a>
               </CardContent>
             </Card>
 
+            {/* Help Center → scroll to FAQ */}
             <Card className="card-hover border-none text-center">
               <CardContent className="p-8">
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
@@ -431,10 +437,16 @@ export default function SupportPage() {
                 <p className="mb-6 text-sm text-brand-grayMed">
                   {t("resources.helpCenter.description")}
                 </p>
-                <Button variant="outline">{t("resources.helpCenter.button")}</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" })}
+                >
+                  {t("resources.helpCenter.button")}
+                </Button>
               </CardContent>
             </Card>
 
+            {/* Service Status — inline live status */}
             <Card className="card-hover border-none text-center">
               <CardContent className="p-8">
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
@@ -443,10 +455,22 @@ export default function SupportPage() {
                 <h3 className="mb-3 text-xl font-bold text-brand-dark">
                   {t("resources.status.title")}
                 </h3>
-                <p className="mb-6 text-sm text-brand-grayMed">
+                <p className="mb-4 text-sm text-brand-grayMed">
                   {t("resources.status.description")}
                 </p>
-                <Button variant="outline">{t("resources.status.button")}</Button>
+                <div className="mb-4 rounded-lg bg-green-50 border border-green-200 px-4 py-3">
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="inline-block h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse" />
+                    <span className="text-sm font-semibold text-green-700">
+                      {locale === "fr" ? "Tous les systèmes opérationnels" : "All Systems Operational"}
+                    </span>
+                  </div>
+                </div>
+                <a href="mailto:support@opulanz.com">
+                  <Button variant="outline" className="flex items-center gap-2">
+                    {t("resources.status.button")} <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </a>
               </CardContent>
             </Card>
           </div>

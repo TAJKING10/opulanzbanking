@@ -8,7 +8,7 @@ pool:
 
 steps:
 # 1️⃣ Use Node.js 20
-- task: NodeTool@0
+- task: NodeTool@1
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'

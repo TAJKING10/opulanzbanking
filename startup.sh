@@ -9,8 +9,8 @@ export NODE_ENV=production
 # Use Azure's dynamic port or default to 8080
 export PORT=${PORT:-8080}
 
-echo "📦 Installing production dependencies..."
-npm ci --only=production
+echo "📦 Installing dependencies..."
+npm ci
 
 echo "🔨 Building Next.js application..."
 npm run build

@@ -11,9 +11,17 @@ import { useEffect } from "react";
  */
 export function CapacitorInit() {
   useEffect(() => {
-    // Only run in Capacitor native environment
     if (typeof window === "undefined") return;
+
+    // Register PWA service worker (web browsers only, not Capacitor native)
     const isCapacitor = !!(window as any).Capacitor?.isNativePlatform?.();
+    if (!isCapacitor && "serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .catch(() => {/* fail silently */});
+    }
+
+    // Init Capacitor native plugins
     if (!isCapacitor) return;
 
     async function initNative() {
@@ -21,10 +29,7 @@ export function CapacitorInit() {
         const { SplashScreen } = await import("@capacitor/splash-screen");
         const { StatusBar, Style } = await import("@capacitor/status-bar");
 
-        // Hide splash screen with a smooth fade
         await SplashScreen.hide({ fadeOutDuration: 300 });
-
-        // Set status bar style (light content = white icons, dark content = dark icons)
         await StatusBar.setStyle({ style: Style.Default });
         await StatusBar.setBackgroundColor({ color: "#ffffff" });
       } catch {

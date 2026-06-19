@@ -60,11 +60,18 @@ export default async function LocaleLayout({
           name="viewport"
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
-        {/* Capacitor/PWA mobile appearance */}
+        {/* PWA manifest */}
+        <link rel="manifest" href="/manifest.json" />
+        {/* Android PWA */}
         <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#b59354" />
+        {/* iOS PWA - makes it feel like a native app */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="theme-color" content="#b59354" />
+        <meta name="apple-mobile-web-app-title" content="Opulanz" />
+        <link rel="apple-touch-icon" href="/images/opulanz-logo.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/opulanz-logo.png" />
+        <link rel="apple-touch-startup-image" href="/images/opulanz-logo.png" />
         {/* Additional hreflang tags for better SEO */}
         {routing.locales.map((loc) => (
           <link

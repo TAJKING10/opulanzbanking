@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { ArrowRight } from 'lucide-react';
 import { Hero } from '@/components/hero';
+import { AppInstallBanner } from '@/components/app-install-banner';
 import { SectionHeading } from '@/components/section-heading';
 import { ServiceCard } from '@/components/service-card';
 import { PageGuidance } from '@/components/page-guidance';
@@ -150,6 +151,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           href: '#services',
         }}
       />
+
+      <AppInstallBanner />
 
       {/* Services Section */}
       <section id="services" className="bg-white py-12 md:py-16">

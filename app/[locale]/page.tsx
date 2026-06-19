@@ -152,7 +152,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         }}
       />
 
-      <AppInstallBanner />
+      {/* <AppInstallBanner /> */}
 
       {/* Services Section */}
       <section id="services" className="bg-white py-12 md:py-16">

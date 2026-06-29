@@ -35,6 +35,21 @@ steps:
     displayName: 'Sync Capacitor iOS'
 
   - script: |
+      echo "Available Xcode versions:"
+      ls /Applications/ | grep Xcode
+      XCODE26=$(ls /Applications/ | grep "Xcode_26" | head -1)
+      if [ -n "$XCODE26" ]; then
+        sudo xcode-select -s "/Applications/$XCODE26/Contents/Developer"
+        echo "Selected: $XCODE26"
+      else
+        LATEST=$(ls /Applications/ | grep "^Xcode_" | sort -V | tail -1)
+        sudo xcode-select -s "/Applications/$LATEST/Contents/Developer"
+        echo "Xcode 26 not found, using latest: $LATEST"
+      fi
+      xcodebuild -version
+    displayName: 'Select latest Xcode'
+
+  - script: |
       cd ios/App
       pod install --repo-update
     displayName: 'Install CocoaPods'

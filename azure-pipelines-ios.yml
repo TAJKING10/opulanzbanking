@@ -87,11 +87,6 @@ steps:
         -scheme App \
         -configuration Release \
         -archivePath "$AGENT_TEMPDIRECTORY/Opulanz.xcarchive" \
-        DEVELOPMENT_TEAM="$(IOS_TEAM_ID)" \
-        CODE_SIGN_STYLE="Manual" \
-        CODE_SIGN_IDENTITY="iPhone Distribution" \
-        PROVISIONING_PROFILE="$(PROFILE_UUID)" \
-        PROVISIONING_PROFILE_SPECIFIER="$(PROFILE_UUID)" \
         2>&1 | tee "$AGENT_TEMPDIRECTORY/xcodebuild.log"
       EXIT_CODE=${PIPESTATUS[0]}
       if [ $EXIT_CODE -ne 0 ]; then

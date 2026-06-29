@@ -97,15 +97,28 @@ steps:
     displayName: 'Build iOS archive'
 
   - script: |
+      EXPORT_METHOD="${{ parameters.distribution }}"
+      if [ "$EXPORT_METHOD" = "app-store" ]; then
+        EXPORT_METHOD="app-store-connect"
+      fi
       cat > "$AGENT_TEMPDIRECTORY/ExportOptions.plist" <<EOF
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
       <dict>
         <key>method</key>
-        <string>${{ parameters.distribution }}</string>
+        <string>${EXPORT_METHOD}</string>
         <key>teamID</key>
         <string>$(IOS_TEAM_ID)</string>
+        <key>provisioningProfiles</key>
+        <dict>
+          <key>com.opulanz.banking</key>
+          <string>Opulanz</string>
+        </dict>
+        <key>signingStyle</key>
+        <string>manual</string>
+        <key>signingCertificate</key>
+        <string>iPhone Distribution</string>
         <key>uploadSymbols</key>
         <true/>
         <key>compileBitcode</key>

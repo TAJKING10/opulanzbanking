@@ -85,7 +85,14 @@ steps:
         -configuration Release \
         -archivePath "$AGENT_TEMPDIRECTORY/Opulanz.xcarchive" \
         DEVELOPMENT_TEAM="$(IOS_TEAM_ID)" \
-        | xcpretty && exit ${PIPESTATUS[0]}
+        CODE_SIGN_STYLE="Manual" \
+        2>&1 | tee "$AGENT_TEMPDIRECTORY/xcodebuild.log"
+      EXIT_CODE=${PIPESTATUS[0]}
+      if [ $EXIT_CODE -ne 0 ]; then
+        echo "##[error]xcodebuild failed. Last 50 lines:"
+        tail -50 "$AGENT_TEMPDIRECTORY/xcodebuild.log"
+        exit $EXIT_CODE
+      fi
     displayName: 'Build iOS archive'
 
   - script: |

@@ -41,6 +41,12 @@ export default function SigninPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      // skip_2fa account: token returned directly, go straight to dashboard
+      if (data.token) {
+        setAuthToken(data.token);
+        router.push(`/${locale}/dashboard`);
+        return;
+      }
       setUserId(String(data.userId));
       setOtp("");
       setStep("email-otp");

@@ -440,6 +440,22 @@ router.post('/signin', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid email or password' });
 
+    // Skip 2FA for demo/test accounts flagged with skip_2fa
+    if (user.skip_2fa) {
+      const token = signToken(user, false);
+      return res.json({
+        success: true,
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          accountType: user.account_type,
+          kycStatus: user.kyc_status,
+        },
+      });
+    }
+
     // Send EMAIL OTP to email address
     const emailOtp = generateOTP();
     await saveOTP(user.id, user.email, emailOtp, 'email', 'signin');

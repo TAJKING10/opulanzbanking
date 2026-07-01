@@ -133,7 +133,7 @@
   },
   "whitelabel": {
     "title": "Ouvrir un compte",
-    "choiceTitle": "Choisissez le type de compte",
+    "choiceTitle": "Choisissez votre type de compte",
     "individual": "Compte particulier",
     "company": "Compte entreprise",
     "needCompany": "Besoin de créer une société d'abord ?",
@@ -1168,21 +1168,21 @@
   "openAccount": {
     "subtitle": "Comptes de paiement professionnels pour particuliers et entreprises, fournis via notre partenaire agréé.",
     "individual": {
-      "description": "Compte bancaire personnel pour les particuliers avec des fonctionnalités professionnelles et support multi-devises.",
+      "description": "Compte de paiement personnel pour particuliers, avec fonctionnalités professionnelles et support multidevise.",
       "features": {
-        "iban": "IBAN multi-devises",
-        "transfers": "Virements SEPA et SWIFT",
+        "iban": "IBAN multidevise",
+        "transfers": "Virements SEPA & SWIFT",
         "card": "Carte de débit incluse",
-        "banking": "Banque mobile et web"
+        "banking": "Application mobile & web"
       }
     },
     "company": {
-      "description": "Compte professionnel pour les entreprises avec des fonctionnalités avancées et accès multi-utilisateurs.",
+      "description": "Compte professionnel pour entreprises, avec fonctionnalités avancées et accès multi-utilisateurs.",
       "features": {
         "iban": "IBAN professionnel dédié",
         "access": "Contrôle d'accès multi-utilisateurs",
         "accounting": "Intégration comptable",
-        "cards": "Cartes d'entreprise"
+        "cards": "Cartes corporate"
       }
     },
     "formation": {

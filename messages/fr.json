@@ -20,7 +20,7 @@
     "home": "Accueil",
     "about": "À propos",
     "openAccount": "Ouvrir un compte",
-    "companyFormation": "Création de société",
+    "companyFormation": "Assistance à la constitution",
     "services": "Services",
     "support": "Support",
     "ourServices": "Nos Services",
@@ -160,8 +160,8 @@
   "companyFormation": {
     "subtitle": "Assistance en montage de sociétés, Service complet du montage au conseil",
     "description": "Choisissez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
-    "heroTitle": "Création de société au Luxembourg",
-    "heroSubtitle": "Services complets de création de société avec accompagnement expert. Choisissez votre structure et lancez l'assistant de création.",
+    "heroTitle": "Assistance à la constitution d'entreprise au Luxembourg",
+    "heroSubtitle": "Services complets d'assistance à la constitution d'entreprise avec accompagnement expert. Choisissez votre structure et lancez votre assistant de constitution.",
     "chooseForm": "Choisissez votre forme juridique",
     "chooseFormDesc": "Sélectionnez la structure juridique qui correspond le mieux aux besoins de votre entreprise",
     "startFormation": "Commencer la création",
@@ -169,7 +169,7 @@
     "shareholdersLabel": "Actionnaires :",
     "minPrefix": "Min.",
     "liabilityLabel": "Responsabilité :",
-    "processTitle": "Processus de création simple en 8 étapes",
+    "processTitle": "Une procédure de constitution accompagnée en 8 étapes",
     "processDesc": "Nous vous guidons à chaque étape de la création de société",
     "processSteps": {
       "companyType": "Type de société",
@@ -189,14 +189,14 @@
       "submit": "Soumettre",
       "submitDesc": "Vérifier et soumettre"
     },
-    "benefitsTitle": "Pourquoi créer votre société avec Opulanz ?",
+    "benefitsTitle": "Pourquoi vous faire accompagner par Opulanz ?",
     "benefits": {
       "expertTitle": "Accompagnement expert",
       "expertDesc": "Notre équipe d'experts en droit des sociétés luxembourgeois vous guide à chaque étape du processus de création.",
       "fastTitle": "Rapide et efficace",
       "fastDesc": "Complétez l'assistant en ligne en quelques minutes. La plupart des créations sont finalisées en 2 à 3 semaines.",
       "fullServiceTitle": "Service complet",
-      "fullServiceDesc": "De la coordination notariale à l'inscription au RCS, nous nous occupons de tout pour vous."
+      "fullServiceDesc": "Nous vous accompagnons dans l'ensemble des démarches, de la coordination avec le notaire à l'immatriculation au RCS."
     },
     "forms": {
       "sarl": {
@@ -559,8 +559,8 @@
         "description": "Produits d'assurance-vie complets pour protéger ce qui compte le plus pour vous et votre famille."
       },
       "companyFormation": {
-        "title": "Montage de Sociétés",
-        "description": "Assistance complète pour la création de votre entreprise au Luxembourg avec accompagnement juridique et réglementaire."
+        "title": "Assistance à la constitution d'entreprise",
+        "description": "Assistance complète pour la constitution de votre entreprise au Luxembourg avec accompagnement juridique et réglementaire."
       },
       "bankingServices": {
         "title": "Services de Paiement",
@@ -1103,7 +1103,7 @@
     "links": {
       "services": {
         "openAccount": "Ouvrir un compte",
-        "companyFormation": "Création de société",
+        "companyFormation": "Assistance à la constitution",
         "accounting": "Comptabilité et facturation",
         "tax": "Conseil fiscal",
         "investment": "Conseil en investissement",

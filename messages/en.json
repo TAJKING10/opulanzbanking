@@ -20,7 +20,7 @@
     "home": "Home",
     "about": "About",
     "openAccount": "Open Account",
-    "companyFormation": "Company Formation",
+    "companyFormation": "Company Formation Assistance",
     "services": "Services",
     "support": "Support",
     "ourServices": "Our Services",
@@ -160,8 +160,8 @@
   "companyFormation": {
     "subtitle": "Company formation assistance, Full service from incorporation to consulting",
     "description": "Choose the legal structure that best fits your business needs",
-    "heroTitle": "Company Formation in Luxembourg",
-    "heroSubtitle": "Complete company formation services with expert guidance. Choose your structure and start your formation wizard.",
+    "heroTitle": "Company Formation Assistance in Luxembourg",
+    "heroSubtitle": "Complete company formation assistance with expert guidance. Choose your structure and start your incorporation assistance wizard.",
     "chooseForm": "Choose Your Company Form",
     "chooseFormDesc": "Select the legal structure that best fits your business needs",
     "startFormation": "Start Formation",
@@ -169,7 +169,7 @@
     "shareholdersLabel": "Shareholders:",
     "minPrefix": "Min.",
     "liabilityLabel": "Liability:",
-    "processTitle": "Simple 8-Step Formation Process",
+    "processTitle": "Simple 8-Step Assisted Incorporation Process",
     "processDesc": "We guide you through every step of the company formation",
     "processSteps": {
       "companyType": "Company Type",
@@ -189,14 +189,14 @@
       "submit": "Submit",
       "submitDesc": "Review and submit"
     },
-    "benefitsTitle": "Why Form Your Company with Opulanz?",
+    "benefitsTitle": "Why get incorporation assistance from Opulanz?",
     "benefits": {
       "expertTitle": "Expert Guidance",
       "expertDesc": "Our team of Luxembourg corporate law experts guide you through every step of the formation process.",
       "fastTitle": "Fast & Efficient",
       "fastDesc": "Complete the online wizard in minutes. Most formations completed within 2-3 weeks.",
       "fullServiceTitle": "Full Service",
-      "fullServiceDesc": "From notary coordination to RCS registration, we handle everything for you."
+      "fullServiceDesc": "From notary coordination to RCS registration, we guide you through every step."
     },
     "forms": {
       "sarl": {
@@ -559,7 +559,7 @@
         "description": "Comprehensive life insurance products to protect what matters most to you and your family."
       },
       "companyFormation": {
-        "title": "Company Formation",
+        "title": "Company Formation Assistance",
         "description": "Complete support for establishing your business in Luxembourg with legal and regulatory guidance."
       },
       "bankingServices": {
@@ -1103,7 +1103,7 @@
     "links": {
       "services": {
         "openAccount": "Open Account",
-        "companyFormation": "Company Formation",
+        "companyFormation": "Company Formation Assistance",
         "accounting": "Accounting & Invoicing",
         "tax": "Tax Advisory",
         "investment": "Investment Advisory",

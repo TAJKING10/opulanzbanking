@@ -132,7 +132,7 @@
     }
   },
   "whitelabel": {
-    "title": "Open Your Account",
+    "title": "Open Account",
     "choiceTitle": "Choose Account Type",
     "individual": "Individual Account",
     "company": "Company Account",
@@ -1166,7 +1166,7 @@
     }
   },
   "openAccount": {
-    "subtitle": "Choose your account type and complete the application in minutes",
+    "subtitle": "Professional payment accounts for individuals and companies, provided through our licensed partner.",
     "individual": {
       "description": "Personal banking account for individuals with professional features and multi-currency support.",
       "features": {

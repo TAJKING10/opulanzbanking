@@ -132,7 +132,7 @@
     }
   },
   "whitelabel": {
-    "title": "Ouvrir votre compte",
+    "title": "Ouvrir un compte",
     "choiceTitle": "Choisissez le type de compte",
     "individual": "Compte particulier",
     "company": "Compte entreprise",
@@ -1166,7 +1166,7 @@
     }
   },
   "openAccount": {
-    "subtitle": "Choisissez votre type de compte et complétez la demande en quelques minutes",
+    "subtitle": "Comptes de paiement professionnels pour particuliers et entreprises, fournis via notre partenaire agréé.",
     "individual": {
       "description": "Compte bancaire personnel pour les particuliers avec des fonctionnalités professionnelles et support multi-devises.",
       "features": {

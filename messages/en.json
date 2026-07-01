@@ -511,7 +511,7 @@
     },
     "investment": {
       "title": "Investment Advisory",
-      "description": "MiFID-compliant investment advice and portfolio management"
+      "description": "Independent investment advice provided as a registered Financial Investment Advisor (CIF), under AMF oversight."
     },
     "lifeInsurance": {
       "title": "Life Insurance",
@@ -803,86 +803,77 @@
         "ourServices": "Our Services"
       },
       "services": {
-        "overline": "Investment Services",
-        "title": "Professional Investment Advisory",
-        "description": "Build and grow your wealth with expert investment guidance tailored to your unique financial situation.",
+        "overline": "Our investment advice",
+        "title": "Our investment advice",
+        "description": "Receive personalised recommendations tailored to your situation, objectives and risk tolerance.",
         "items": {
           "portfolio": {
-            "title": "Portfolio Diversification",
-            "description": "Strategic asset allocation across multiple investment classes to optimize returns and manage risk."
+            "title": "Asset allocation guidance",
+            "description": "We advise you on allocating across asset classes to balance potential return and risk."
           },
           "strategy": {
-            "title": "Investment Strategy",
-            "description": "Customized investment strategies aligned with your long-term financial objectives."
+            "title": "Investment strategy",
+            "description": "Tailored recommendations aligned with your long-term objectives."
           },
           "retirement": {
-            "title": "Retirement Planning",
-            "description": "Strategic retirement planning to ensure financial security in your golden years."
+            "title": "Retirement planning",
+            "description": "Guidance to structure your savings towards retirement."
           }
         }
       },
       "whyUs": {
-        "title": "Grow Your Wealth with Confidence",
-        "description": "Our investment advisory team brings decades of experience in global markets and financial planning. We combine sophisticated analysis with personalized service to help you achieve your financial goals. Whether you are planning for retirement, building wealth, or seeking passive income, we provide the expertise and support you need.",
-        "cta": "Schedule Consultation",
+        "title": "What our service includes",
+        "description": "Our team brings market experience to personalised recommendations. Whether you are planning for retirement or looking to structure your wealth, we provide clear and tailored advice.",
+        "cta": "Schedule Meeting",
         "benefits": [
-          "Access to exclusive investment opportunities",
-          "Personalized investment strategies",
-          "Regular portfolio rebalancing",
+          "Personalised investment recommendations",
+          "Periodic review of your investments and suggested adjustments",
+          "Ongoing assessment of the suitability of our recommendations",
           "Transparent fee structure",
-          "Expert market analysis and insights",
-          "Tax-efficient investment solutions",
-          "Ongoing portfolio monitoring and reporting"
+          "Market analysis and insights",
+          "Advice on tax-efficient investment wrappers"
         ]
       },
       "options": {
-        "overline": "Investment Options",
-        "title": "Diverse Investment Opportunities",
-        "description": "Access a wide range of investment vehicles tailored to your risk tolerance and financial objectives.",
-        "riskLabel": "Risk Level",
+        "overline": "Asset classes we advise on",
+        "title": "Asset classes we advise on",
+        "description": "Investing involves a risk of capital loss. Past performance is not indicative of future results.",
+        "riskLabel": "Risk",
         "items": {
           "equities": {
             "title": "Equities",
-            "description": "Global stock market investments with growth potential",
-            "risk": "Medium to High"
+            "description": "Global stock markets, growth potential",
+            "risk": "Medium to high"
           },
           "fixedIncome": {
             "title": "Fixed Income",
-            "description": "Bonds and other debt securities for stable returns",
-            "risk": "Low to Medium"
+            "description": "Debt securities for more stable returns",
+            "risk": "Low to medium"
           },
           "alternative": {
             "title": "Alternative Investments",
-            "description": "Private equity, real estate, and hedge funds",
-            "risk": "Medium to High"
+            "description": "Private equity, real estate, alternative funds",
+            "risk": "Medium to high"
           },
           "sustainable": {
             "title": "Sustainable Investing",
-            "description": "ESG-focused investments for responsible growth",
+            "description": "ESG approach",
             "risk": "Medium"
           }
         }
       },
       "stats": {
-        "aum": {
-          "value": "€2.5B+",
-          "label": "Assets Under Management"
-        },
-        "clients": {
-          "value": "5,000+",
-          "label": "Satisfied Clients"
-        },
-        "experience": {
-          "value": "25+",
-          "label": "Years of Experience"
-        }
+        "aum": { "value": "€2.5B+", "label": "Assets Under Management" },
+        "clients": { "value": "5,000+", "label": "Satisfied Clients" },
+        "experience": { "value": "25+", "label": "Years of Experience" }
       },
       "cta": {
-        "title": "Start Building Your Investment Portfolio",
-        "description": "Take the first step towards financial freedom. Schedule a consultation with our investment advisors and discover how we can help you reach your financial goals.",
+        "title": "Advance with independent advice",
+        "description": "Our team brings market experience to personalised recommendations. Whether you are planning for retirement or looking to structure your wealth, we provide clear and tailored advice.",
         "scheduleMeeting": "Schedule Meeting",
-        "contactSupport": "Learn More"
-      }
+        "contactSupport": "Our Services"
+      },
+      "legalMention": "Investment advice provided by Advensys Insurance-Finance SARL, Financial Investment Advisor registered with ORIAS no. 21003660, member of [AMF-approved association — La compagnie CIF], under the oversight of the AMF."
     },
     "schedule": {
       "heroTitle": "Schedule Your Investment Advisory Meeting",

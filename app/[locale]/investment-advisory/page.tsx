@@ -131,20 +131,6 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="bg-gray-50 py-12 md:py-16">
-        <div className="container mx-auto max-w-7xl px-6">
-          <div className="grid gap-8 md:grid-cols-3">
-            {(["aum", "clients", "experience"] as const).map((key) => (
-              <div key={key} className="text-center">
-                <div className="mb-2 text-4xl font-bold text-brand-gold">{p(`stats.${key}.value`)}</div>
-                <p className="text-sm text-brand-grayMed">{p(`stats.${key}.label`)}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
@@ -168,6 +154,15 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
               {p("cta.contactSupport")}
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Legal Mention */}
+      <section className="bg-white py-6">
+        <div className="container mx-auto max-w-4xl px-6">
+          <p className="text-xs text-brand-grayMed text-center border-t border-brand-grayLight pt-6">
+            {p("legalMention")}
+          </p>
         </div>
       </section>
     </>

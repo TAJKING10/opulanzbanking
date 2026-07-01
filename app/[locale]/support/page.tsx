@@ -152,11 +152,8 @@ export default function SupportPage() {
                 <p className="mb-4 text-sm text-brand-grayMed">
                   {t("contactMethods.phone.description")}
                 </p>
-                <p className="text-lg font-semibold text-brand-gold">
-                  {t("contactMethods.phone.numberLU")}
-                </p>
                 <p className="mb-2 text-lg font-semibold text-brand-gold">
-                  {t("contactMethods.phone.numberFR")}
+                  {t("contactMethods.phone.numberLU")}
                 </p>
                 <p className="text-xs text-brand-grayMed">{t("contactMethods.phone.hours")}</p>
               </CardContent>

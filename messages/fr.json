@@ -1120,6 +1120,7 @@
         "contact": "Contact"
       },
       "legal": {
+        "mentions": "Mentions légales",
         "terms": "Conditions générales",
         "privacy": "Politique de confidentialité",
         "disclaimers": "Avertissements",

@@ -148,6 +148,14 @@ export function Footer({ locale }: FooterProps) {
             <ul className="space-y-2">
               <li>
                 <Link
+                  href={`/${locale}/legal/mentions`}
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
+                >
+                  {t("footer.links.legal.mentions")}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href={`/${locale}/legal/terms`}
                   className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >

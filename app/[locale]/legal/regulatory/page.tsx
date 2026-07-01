@@ -4,71 +4,10 @@ import * as React from "react";
 import { useLocale } from "next-intl";
 import { Hero } from "@/components/hero";
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield, FileCheck, Building2, Scale } from "lucide-react";
 
 export default function RegulatoryPage() {
   const locale = useLocale();
   const isFr = locale === "fr";
-
-  const regulators = isFr
-    ? [
-        {
-          name: "CSSF",
-          fullName: "Commission de Surveillance du Secteur Financier",
-          country: "Luxembourg",
-          description:
-            "La CSSF est l'autorité de surveillance du secteur financier au Luxembourg. Elle supervise les banques, établissements de paiement, gestionnaires de fonds et autres entités financières opérant au Luxembourg.",
-          website: "https://www.cssf.lu",
-          icon: Shield,
-        },
-        {
-          name: "ACPR",
-          fullName: "Autorité de Contrôle Prudentiel et de Résolution",
-          country: "France",
-          description:
-            "L'ACPR est l'autorité de supervision prudentielle et de résolution française. Elle supervise les banques, compagnies d'assurance et établissements financiers opérant en France.",
-          website: "https://acpr.banque-france.fr",
-          icon: Building2,
-        },
-        {
-          name: "AMF",
-          fullName: "Autorité des Marchés Financiers",
-          country: "France",
-          description:
-            "L'AMF est l'autorité française des marchés financiers. Elle régule les marchés financiers, les services d'investissement et protège les investisseurs.",
-          website: "https://www.amf-france.org",
-          icon: Scale,
-        },
-      ]
-    : [
-        {
-          name: "CSSF",
-          fullName: "Commission de Surveillance du Secteur Financier",
-          country: "Luxembourg",
-          description:
-            "The CSSF is Luxembourg's financial sector supervisory authority. It supervises banks, payment institutions, fund managers, and other financial entities operating in Luxembourg.",
-          website: "https://www.cssf.lu",
-          icon: Shield,
-        },
-        {
-          name: "ACPR",
-          fullName: "Autorité de Contrôle Prudentiel et de Résolution",
-          country: "France",
-          description:
-            "The French Prudential Supervision and Resolution Authority supervises banks, insurance companies, and financial institutions operating in France.",
-          website: "https://acpr.banque-france.fr",
-          icon: Building2,
-        },
-        {
-          name: "AMF",
-          fullName: "Autorité des Marchés Financiers",
-          country: "France",
-          description:
-            "The French Financial Markets Authority regulates financial markets, investment services, and protects investors.",
-          website: "https://www.amf-france.org",
-          icon: Scale,
-        },
-      ];
 
   return (
     <>
@@ -76,278 +15,491 @@ export default function RegulatoryPage() {
         title={isFr ? "Informations Réglementaires" : "Regulatory Information"}
         subtitle={
           isFr
-            ? "Notre engagement envers la conformité et la supervision réglementaire"
-            : "Our commitment to compliance and regulatory oversight"
+            ? "Identité réglementaire complète de toutes les entités du groupe Opulanz"
+            : "Full regulatory identity of all entities contributing to the Opulanz platform"
         }
       />
 
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-4xl px-6">
-          <div className="mb-12 text-center">
-            <p className="text-lg text-brand-grayMed">
-              {isFr
-                ? "Opulanz opère sous une supervision réglementaire stricte afin de garantir les plus hauts standards d'intégrité financière, de protection des clients et de transparence opérationnelle."
-                : "Opulanz operates under strict regulatory oversight to ensure the highest standards of financial integrity, client protection, and operational transparency."}
-            </p>
-          </div>
-
-          {/* Regulatory Framework */}
-          <Card className="mb-12 border-none shadow-sm">
-            <CardContent className="p-8">
-              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
-                <Scale className="h-8 w-8 text-brand-goldDark" />
-              </div>
-              <h2 className="mb-4 text-2xl font-bold text-brand-dark">
-                {isFr ? "Cadre Réglementaire" : "Regulatory Framework"}
-              </h2>
-              <p className="mb-4 text-brand-grayMed">
-                {isFr
-                  ? "Opulanz est réglementé par les principales autorités financières européennes. Nos activités respectent :"
-                  : "Opulanz is regulated by leading European financial authorities. Our operations comply with:"}
-              </p>
-              <ul className="list-disc pl-6 text-brand-grayMed space-y-2">
-                {isFr ? (
-                  <>
-                    <li>Directive européenne sur les services de paiement (DSP2)</li>
-                    <li>Directive sur les marchés d'instruments financiers (MiFID II)</li>
-                    <li>Directives anti-blanchiment (LCB-FT 5e et 6e directive)</li>
-                    <li>Règlement général sur la protection des données (RGPD)</li>
-                    <li>Réglementation bancaire et financière luxembourgeoise (loi du 5 avril 1993)</li>
-                    <li>Réglementation bancaire et financière française (Code monétaire et financier)</li>
-                  </>
-                ) : (
-                  <>
-                    <li>EU Payment Services Directive (PSD2)</li>
-                    <li>Markets in Financial Instruments Directive (MiFID II)</li>
-                    <li>Anti-Money Laundering Directives (AMLD5/6)</li>
-                    <li>General Data Protection Regulation (GDPR)</li>
-                    <li>Luxembourg Banking and Financial Services Law (Law of 5 April 1993)</li>
-                    <li>French Monetary and Financial Code (Code monétaire et financier)</li>
-                  </>
-                )}
-              </ul>
-            </CardContent>
-          </Card>
-
-          {/* Regulators */}
-          <h2 className="mb-8 text-center text-3xl font-bold text-brand-dark">
-            {isFr ? "Nos Autorités de Régulation" : "Our Regulators"}
-          </h2>
-
-          <div className="space-y-6 mb-12">
-            {regulators.map((regulator, index) => {
-              const Icon = regulator.icon;
-              return (
-                <Card key={index} className="card-hover border-none">
-                  <CardContent className="p-8">
-                    <div className="flex items-start gap-6">
-                      <div className="flex-shrink-0">
-                        <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
-                          <Icon className="h-8 w-8 text-brand-goldDark" />
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <div className="mb-2 flex items-center gap-3">
-                          <h3 className="text-2xl font-bold text-brand-dark">{regulator.name}</h3>
-                          <span className="rounded-full bg-brand-goldLight px-3 py-1 text-xs font-semibold text-brand-goldDark">
-                            {regulator.country}
-                          </span>
-                        </div>
-                        <p className="mb-3 text-sm font-semibold text-brand-gold">
-                          {regulator.fullName}
-                        </p>
-                        <p className="mb-4 text-brand-grayMed">{regulator.description}</p>
-                        <a
-                          href={regulator.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm font-semibold text-brand-gold hover:text-brand-goldDark transition-colors"
-                        >
-                          {isFr ? "Visiter le site officiel →" : "Visit Official Website →"}
-                        </a>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-
-          {/* Compliance Standards */}
-          <Card className="mb-12 border-none shadow-sm">
-            <CardContent className="p-8">
-              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
-                <FileCheck className="h-8 w-8 text-brand-goldDark" />
-              </div>
-              <h2 className="mb-4 text-2xl font-bold text-brand-dark">
-                {isFr ? "Standards de Conformité" : "Compliance Standards"}
-              </h2>
-              <p className="mb-4 text-brand-grayMed">
-                {isFr
-                  ? "Nous maintenons les plus hauts standards de conformité dans tous les aspects de nos activités :"
-                  : "We maintain the highest compliance standards across all aspects of our operations:"}
-              </p>
-
-              <h3 className="mt-6 mb-3 text-xl font-semibold text-brand-dark">
-                {isFr ? "Lutte contre le Blanchiment de Capitaux (LCB)" : "Anti-Money Laundering (AML)"}
-              </h3>
-              <p className="mb-4 text-brand-grayMed">
-                {isFr
-                  ? "Nous mettons en œuvre des politiques et procédures LCB-FT complètes pour détecter et prévenir le blanchiment d'argent. Cela inclut la surveillance continue des transactions, la déclaration d'opérations suspectes et des programmes de formation du personnel."
-                  : "We implement comprehensive AML/CFT policies and procedures to detect and prevent money laundering and terrorist financing. This includes ongoing transaction monitoring, suspicious activity reporting, and staff training programmes."}
-              </p>
-
-              <h3 className="mt-6 mb-3 text-xl font-semibold text-brand-dark">
-                {isFr ? "Connaissance du Client (KYC)" : "Know Your Customer (KYC)"}
-              </h3>
-              <p className="mb-4 text-brand-grayMed">
-                {isFr
-                  ? "Tous les clients font l'objet de procédures rigoureuses de vérification d'identité et de diligence raisonnable. Nous collectons et vérifions les informations personnelles, les détails sur les bénéficiaires effectifs et l'origine des fonds afin d'assurer la conformité réglementaire."
-                  : "All clients undergo thorough identity verification and due diligence procedures. We collect and verify personal information, beneficial ownership details, and source of funds to ensure regulatory compliance."}
-              </p>
-
-              <h3 className="mt-6 mb-3 text-xl font-semibold text-brand-dark">
-                {isFr ? "Lutte contre le Financement du Terrorisme (LFT)" : "Counter-Terrorist Financing (CTF)"}
-              </h3>
-              <p className="mb-4 text-brand-grayMed">
-                {isFr
-                  ? "Nous effectuons le criblage de tous les clients et transactions contre les listes de sanctions internationales et les listes de surveillance afin de prévenir le financement du terrorisme et de nous conformer aux réglementations de sécurité internationales."
-                  : "We screen all clients and transactions against international sanctions lists and watchlists to prevent terrorist financing and comply with international security regulations."}
-              </p>
-
-              <h3 className="mt-6 mb-3 text-xl font-semibold text-brand-dark">
-                {isFr ? "Protection des Données" : "Data Protection"}
-              </h3>
-              <p className="mb-4 text-brand-grayMed">
-                {isFr
-                  ? "Nous respectons le RGPD et mettons en œuvre des mesures robustes de protection des données afin de préserver vos informations personnelles. Vos données sont traitées de manière licite, transparente et sécurisée."
-                  : "We comply with the GDPR and implement robust data protection measures to safeguard your personal information. Your data is processed lawfully, transparently, and securely."}
-              </p>
-
-              <h3 className="mt-6 mb-3 text-xl font-semibold text-brand-dark">
-                {isFr ? "Protection des Fonds Clients" : "Client Fund Protection"}
-              </h3>
-              <p className="mb-4 text-brand-grayMed">
-                {isFr
-                  ? "Les fonds des clients sont détenus sur des comptes ségrégués auprès de partenaires bancaires agréés et sont protégés conformément aux systèmes de garantie des dépôts applicables. Vos fonds sont maintenus séparément des fonds opérationnels de la société."
-                  : "Client funds are held in segregated accounts with licensed banking partners and are protected in accordance with applicable deposit guarantee schemes. Your funds are maintained separately from company operational funds."}
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Licences */}
           <Card className="border-none shadow-sm">
-            <CardContent className="p-8">
-              <h2 className="mb-4 text-2xl font-bold text-brand-dark">
-                {isFr ? "Licences et Autorisations" : "Licences and Authorisations"}
-              </h2>
-              <p className="mb-6 text-brand-grayMed">
-                {isFr
-                  ? "Opulanz détient les licences et autorisations nécessaires pour fournir des services financiers :"
-                  : "Opulanz holds the necessary licences and authorisations to provide financial services:"}
-              </p>
-
-              <div className="space-y-4">
-                <div className="rounded-lg border border-brand-grayLight/30 p-4">
-                  <h3 className="mb-2 text-lg font-semibold text-brand-dark">
-                    {isFr ? "Services Bancaires — Luxembourg" : "Banking Services — Luxembourg"}
-                  </h3>
-                  <p className="mb-2 text-sm text-brand-grayMed">
-                    {isFr
-                      ? "Agréé et supervisé par la CSSF (Commission de Surveillance du Secteur Financier)"
-                      : "Licensed and supervised by the CSSF (Commission de Surveillance du Secteur Financier)"}
-                  </p>
-                  <p className="text-xs text-brand-grayMed">
-                    {isFr
-                      ? "Nos activités bancaires luxembourgeoises sont entièrement conformes à la loi bancaire luxembourgeoise et aux directives bancaires européennes."
-                      : "Our Luxembourg banking operations are fully compliant with Luxembourg banking law and European banking directives."}
-                  </p>
-                </div>
-
-                <div className="rounded-lg border border-brand-grayLight/30 p-4">
-                  <h3 className="mb-2 text-lg font-semibold text-brand-dark">
-                    {isFr ? "Services Bancaires — France" : "Banking Services — France"}
-                  </h3>
-                  <p className="mb-2 text-sm text-brand-grayMed">
-                    {isFr
-                      ? "Agréé et supervisé par l'ACPR (Autorité de Contrôle Prudentiel et de Résolution)"
-                      : "Licensed and supervised by the ACPR (Autorité de Contrôle Prudentiel et de Résolution)"}
-                  </p>
-                  <p className="text-xs text-brand-grayMed">
-                    {isFr
-                      ? "Nos activités bancaires françaises sont entièrement conformes au droit bancaire français et aux directives bancaires européennes."
-                      : "Our French banking operations are fully compliant with French banking law and European banking directives."}
-                  </p>
-                </div>
-
-                <div className="rounded-lg border border-brand-grayLight/30 p-4">
-                  <h3 className="mb-2 text-lg font-semibold text-brand-dark">
-                    {isFr ? "Services d'Investissement — France" : "Investment Services — France"}
-                  </h3>
-                  <p className="mb-2 text-sm text-brand-grayMed">
-                    {isFr
-                      ? "Réglementé par l'AMF (Autorité des Marchés Financiers)"
-                      : "Regulated by the AMF (Autorité des Marchés Financiers)"}
-                  </p>
-                  <p className="text-xs text-brand-grayMed">
-                    {isFr
-                      ? "Nos services de conseil en investissement sont conformes aux réglementations MiFID II et aux exigences de l'AMF."
-                      : "Our investment advisory services comply with MiFID II regulations and AMF requirements."}
-                  </p>
-                </div>
-
-                <div className="rounded-lg border border-brand-grayLight/30 p-4">
-                  <h3 className="mb-2 text-lg font-semibold text-brand-dark">
-                    {isFr ? "Services de Paiement" : "Payment Services"}
-                  </h3>
-                  <p className="mb-2 text-sm text-brand-grayMed">
-                    {isFr
-                      ? "Autorisé au titre de la DSP2 (Directive sur les Services de Paiement 2)"
-                      : "Authorised under PSD2 (Payment Services Directive 2)"}
-                  </p>
-                  <p className="text-xs text-brand-grayMed">
-                    {isFr
-                      ? "Nous fournissons des services de paiement sécurisés à travers l'Espace Économique Européen en conformité avec les exigences de la DSP2."
-                      : "We provide secure payment services across the European Economic Area in compliance with PSD2 requirements."}
-                  </p>
-                </div>
-              </div>
+            <CardContent className="prose prose-lg max-w-none p-8">
+              {isFr ? <FrContent /> : <EnContent />}
             </CardContent>
           </Card>
-
-          {/* Contact */}
-          <div className="mt-12 rounded-lg bg-brand-off p-8 text-center">
-            <h3 className="mb-4 text-xl font-bold text-brand-dark">
-              {isFr
-                ? "Des Questions sur notre Statut Réglementaire ?"
-                : "Questions About Our Regulatory Status?"}
-            </h3>
-            <p className="mb-6 text-brand-grayMed">
-              {isFr
-                ? "Pour toute question relative à nos licences, procédures de conformité ou questions réglementaires, veuillez contacter notre équipe de conformité."
-                : "For enquiries about our licences, compliance procedures, or regulatory matters, please contact our compliance team."}
-            </p>
-            <div className="space-y-2 text-sm text-brand-grayMed">
-              <p>
-                <strong>{isFr ? "E-mail Conformité :" : "Compliance Email:"}</strong>{" "}
-                compliance@opulanz.com
-              </p>
-              <p>
-                <strong>{isFr ? "Renseignements Généraux :" : "General Enquiries:"}</strong>{" "}
-                +352 20 30 40 50
-              </p>
-              <p>
-                <strong>{isFr ? "Adresse :" : "Address:"}</strong> 1 Avenue de la Liberté,
-                L-1931 Luxembourg
-              </p>
-            </div>
-          </div>
-
-          <p className="mt-8 text-center text-xs text-brand-grayMed">
-            {isFr ? "Dernière mise à jour : juin 2025" : "Last updated: June 2025"}
-          </p>
         </div>
       </section>
+    </>
+  );
+}
+
+function EnContent() {
+  return (
+    <>
+      <p className="text-brand-grayMed mb-8">
+        This page sets out the full regulatory identity of all entities contributing to the Opulanz
+        platform, their respective licences, agréments, and the services each is authorised to provide.
+      </p>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">1. Group Structure Overview</h2>
+      <p className="text-brand-grayMed mb-4">
+        The Opulanz platform is operated by a group of independent but coordinated regulated
+        entities, each contributing specific licensed activities:
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
+        <li>
+          <strong>Advensys Insurance-Finance SARL (France):</strong> ORIAS regulated — CIF, COBSP, COA, CJA
+        </li>
+        <li>
+          <strong>Groupe Advensys Luxembourg S.A. (Luxembourg):</strong> RCS licensed — Accounting,
+          tax advisory, company formation with accounting mandate
+        </li>
+        <li>
+          <strong>Opulanz SIA (Latvia):</strong> Commercial entity — Software licences, IT services,
+          banking introductions
+        </li>
+      </ul>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">
+        2. Advensys Insurance-Finance SARL — Full Regulatory Profile
+      </h2>
+      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
+        <p><strong>Company name:</strong> Advensys Insurance-Finance SARL</p>
+        <p><strong>Trade name:</strong> AIF</p>
+        <p><strong>RCS Paris:</strong> 895 111 292</p>
+        <p><strong>SIRET:</strong> 895 111 292 00010</p>
+        <p><strong>EUID:</strong> FR7501.895111292</p>
+        <p><strong>VAT (intracommunautaire):</strong> FR50895111292</p>
+        <p><strong>Share capital:</strong> EUR 20,000</p>
+        <p><strong>Registered office:</strong> 66 avenue des Champs-Élysées, 75008 Paris, France</p>
+        <p><strong>Phone:</strong> +33 6 98 21 44 46</p>
+        <p><strong>Email:</strong> contact@advensys-in-finance.com</p>
+        <p><strong>APE:</strong> 6622Z — Autres activités auxiliaires d&apos;assurance et de retraite</p>
+        <p><strong>ORIAS n°:</strong> 21003660</p>
+        <p>
+          <strong>ORIAS link:</strong>{" "}
+          <a href="https://www.orias.fr" target="_blank" rel="noopener noreferrer" className="text-brand-gold hover:text-brand-goldDark">
+            www.orias.fr
+          </a>{" "}
+          — Public register verifiable online
+        </p>
+      </div>
+
+      <p className="text-brand-grayMed mb-3 text-sm italic">
+        Licences and authorisations confirmed by ORIAS attestation dated 17/02/2026:
+      </p>
+      <div className="overflow-x-auto mb-6">
+        <table className="w-full text-sm text-brand-grayMed border-collapse">
+          <thead>
+            <tr className="bg-gray-50">
+              <th className="text-left p-3 border border-gray-200 font-semibold text-brand-dark">Qualification</th>
+              <th className="text-left p-3 border border-gray-200 font-semibold text-brand-dark">Since</th>
+              <th className="text-left p-3 border border-gray-200 font-semibold text-brand-dark">Valid Until</th>
+              <th className="text-left p-3 border border-gray-200 font-semibold text-brand-dark">Regulator</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="p-3 border border-gray-200">CIF — Conseiller en Investissements Financiers</td>
+              <td className="p-3 border border-gray-200">28/05/2021</td>
+              <td className="p-3 border border-gray-200">28/02/2027</td>
+              <td className="p-3 border border-gray-200">AMF / ORIAS</td>
+            </tr>
+            <tr className="bg-gray-50/50">
+              <td className="p-3 border border-gray-200">COBSP — Courtier en Opérations de Banque et Services de Paiement</td>
+              <td className="p-3 border border-gray-200">16/04/2021</td>
+              <td className="p-3 border border-gray-200">28/02/2027</td>
+              <td className="p-3 border border-gray-200">ACPR / ORIAS</td>
+            </tr>
+            <tr>
+              <td className="p-3 border border-gray-200">COA — Courtier d&apos;Assurance ou de Réassurance</td>
+              <td className="p-3 border border-gray-200">16/04/2021</td>
+              <td className="p-3 border border-gray-200">28/02/2027</td>
+              <td className="p-3 border border-gray-200">ACPR / ORIAS</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
+        Services authorised for Advensys Insurance-Finance SARL on the Opulanz platform:
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-1 text-sm">
+        <li>Banking account opening intermediation (COBSP)</li>
+        <li>Insurance brokerage — life insurance and general insurance products (COA)</li>
+        <li>Investment advisory services — MiFID II compliant (CIF)</li>
+        <li>Company formation — standalone (CJA qualification)</li>
+        <li>Legal and administrative advisory (CJA qualification)</li>
+      </ul>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">
+        3. Groupe Advensys Luxembourg S.A. — Full Regulatory Profile
+      </h2>
+      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
+        <p><strong>Company name:</strong> Groupe Advensys Luxembourg S.A.</p>
+        <p><strong>Trade names:</strong> Advensys Conseil · Location Rolls Royce · Opulanz Group</p>
+        <p><strong>Legal form:</strong> Société anonyme (SA)</p>
+        <p><strong>RCS Luxembourg:</strong> B197138</p>
+        <p><strong>Share capital:</strong> EUR 31,000 — Fixed — Fully paid up</p>
+        <p><strong>NACE code:</strong> 69.200 — Accounting activities</p>
+        <p><strong>Registered office:</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg</p>
+        <p><strong>Incorporation date:</strong> 12/05/2015</p>
+        <p><strong>Sole director:</strong> DULBERG Irvin Regnard — sole signatory authority</p>
+        <p><strong>Director mandate:</strong> Appointed 23/11/2020 — Expires 23/11/2026</p>
+        <p><strong>Statutory auditor:</strong> Advensys Conseil LTD (Companies House UK n°07464304)</p>
+        <p><strong>Email:</strong> contact@advensys-conseil.lu</p>
+        <p><strong>Phone:</strong> +352 28 79 76 26</p>
+      </div>
+
+      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
+        Services authorised for Groupe Advensys Luxembourg S.A. on the Opulanz platform:
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-3 space-y-1 text-sm">
+        <li>Professional accounting and payroll services</li>
+        <li>Tax advisory for individuals and legal entities (persons physiques et morales)</li>
+        <li>Company formation in Luxembourg — only when coupled with an accounting mandate</li>
+        <li>Business creation consulting and operational support</li>
+      </ul>
+      <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-brand-grayMed">
+        <strong>Important:</strong> Groupe Advensys Luxembourg S.A. may NOT provide company
+        formation services as a standalone service (without an accounting mandate). Standalone
+        company formation must be processed through Advensys Insurance-Finance SARL under its CJA
+        qualification.
+      </div>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">
+        4. Opulanz SIA — Full Regulatory Profile
+      </h2>
+      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
+        <p><strong>Company name:</strong> Opulanz SIA</p>
+        <p><strong>Legal form:</strong> Sabiedrība ar ierobežotu atbildību (SIA) — Latvian LLC</p>
+        <p><strong>Registration number:</strong> 40203750214</p>
+        <p><strong>Registration date:</strong> 27/05/2026</p>
+        <p><strong>Share capital:</strong> EUR 3,000 — Fully paid up</p>
+        <p><strong>Registered office:</strong> Vīlandes iela 5-36, Rīga, LV-1010, Republic of Latvia</p>
+        <p><strong>SEPA identifier:</strong> LV44ZZZ40203750214</p>
+        <p><strong>Sole shareholder:</strong> DULBERG Irvin Regnard</p>
+        <p><strong>Board member:</strong> DULBERG Irvin Regnard — sole right of representation</p>
+        <p><strong>Email:</strong> contact@opulanz.com</p>
+      </div>
+
+      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
+        Services provided by Opulanz SIA on the Opulanz platform:
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-3 space-y-1 text-sm">
+        <li>IT services and platform development</li>
+        <li>
+          Banking account opening introductions (acting as introducer to licensed EU EMI partners —
+          not as a licensed EMI itself)
+        </li>
+      </ul>
+      <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-brand-grayMed">
+        <strong>Important:</strong> Opulanz SIA does not hold an EMI licence, payment institution
+        licence, or any financial services licence. Banking and payment services are provided
+        exclusively through licensed EMI partners operating within the EU regulatory framework under
+        introduction contract.
+      </div>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">5. Complaints &amp; Dispute Resolution</h2>
+      <p className="text-brand-grayMed mb-3">
+        All complaints must be submitted in writing to the Compliance Department:
+      </p>
+      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
+        <p><strong>Email:</strong> contact@opulanz.com</p>
+        <p><strong>Subject line:</strong> &apos;COMPLAINT — [Service Name] — [Your Name]&apos;</p>
+        <p><strong>Response time (France):</strong> 15 business days maximum (ACPR requirement)</p>
+        <p><strong>Response time (Luxembourg):</strong> 30 calendar days maximum</p>
+      </div>
+      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
+        External dispute resolution — if not resolved internally about Advensys Insurance-Finance SARL:
+      </p>
+      <div className="mb-6 pl-4 border-l-2 border-brand-gold/40 text-brand-grayMed text-sm space-y-1">
+        <p>
+          <strong>CNPM - MÉDIATION-CONSOMMATION</strong> — 27 avenue de la Libération, 42400 Saint-Chamond
+        </p>
+        <p>Tél : 04 77 42 10 58</p>
+        <p>Courriel : contact-admin@cnpm-mediation-consommation.eu</p>
+      </div>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">6. Regulatory Notices</h2>
+      <p className="text-brand-grayMed mb-3">
+        The following regulatory information applies to all services:
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-3 text-sm">
+        <li>
+          Advensys Insurance-Finance SARL is registered with the ORIAS (Organisme pour le Registre
+          des Intermédiaires en Assurance) — verification at{" "}
+          <a href="https://www.orias.fr" target="_blank" rel="noopener noreferrer" className="text-brand-gold hover:text-brand-goldDark">
+            www.orias.fr
+          </a>{" "}
+          using n°21003660.
+        </li>
+        <li>
+          Advensys Insurance-Finance SARL acts under the prudential supervision of the ACPR
+          (Autorité de Contrôle Prudentiel et de Résolution) for insurance and banking
+          intermediation.
+        </li>
+        <li>
+          Investment advisory services provided by Advensys Insurance-Finance SARL are conducted
+          under the supervision of the AMF (Autorité des Marchés Financiers) in its capacity as CIF.
+        </li>
+        <li>
+          Groupe Advensys Luxembourg S.A. operates under Luxembourg law and is registered with the
+          Luxembourg Business Registers (LBR) — verification at{" "}
+          <a href="https://www.lbr.lu" target="_blank" rel="noopener noreferrer" className="text-brand-gold hover:text-brand-goldDark">
+            www.lbr.lu
+          </a>{" "}
+          using RCS B197138 and accounting and business licence under Ministry of Economy of Luxembourg.
+        </li>
+        <li>
+          Opulanz SIA is registered with the Latvian Commercial Register — verification at{" "}
+          <a href="https://www.ur.gov.lv" target="_blank" rel="noopener noreferrer" className="text-brand-gold hover:text-brand-goldDark">
+            www.ur.gov.lv
+          </a>.
+        </li>
+      </ul>
+
+      <p className="text-sm text-brand-grayMed mt-8 pt-6 border-t border-brand-grayLight">
+        Last updated: July 2026
+      </p>
+    </>
+  );
+}
+
+function FrContent() {
+  return (
+    <>
+      <p className="text-brand-grayMed mb-8">
+        La présente page expose l&apos;identité réglementaire complète de toutes les entités
+        contribuant à la plateforme Opulanz, leurs licences et agréments respectifs, ainsi que les
+        services que chacune est autorisée à fournir.
+      </p>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">1. Présentation de la Structure du Groupe</h2>
+      <p className="text-brand-grayMed mb-4">
+        La plateforme Opulanz est exploitée par un groupe d&apos;entités réglementées indépendantes
+        mais coordonnées, chacune apportant des activités spécifiques sous licence :
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
+        <li>
+          <strong>Advensys Insurance-Finance SARL (France) :</strong> Réglementée par l&apos;ORIAS — CIF, COBSP, COA, CJA
+        </li>
+        <li>
+          <strong>Groupe Advensys Luxembourg S.A. (Luxembourg) :</strong> Enregistrée au RCS —
+          Comptabilité, conseil fiscal, création de société avec mandat comptable
+        </li>
+        <li>
+          <strong>Opulanz SIA (Lettonie) :</strong> Entité commerciale — Licences logicielles,
+          services informatiques, apport d&apos;affaires bancaires
+        </li>
+      </ul>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">
+        2. Advensys Insurance-Finance SARL — Profil Réglementaire Complet
+      </h2>
+      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
+        <p><strong>Dénomination sociale :</strong> Advensys Insurance-Finance SARL</p>
+        <p><strong>Sigle :</strong> AIF</p>
+        <p><strong>RCS Paris :</strong> 895 111 292</p>
+        <p><strong>SIRET :</strong> 895 111 292 00010</p>
+        <p><strong>EUID :</strong> FR7501.895111292</p>
+        <p><strong>TVA intracommunautaire :</strong> FR50895111292</p>
+        <p><strong>Capital social :</strong> 20 000 EUR</p>
+        <p><strong>Siège social :</strong> 66 avenue des Champs-Élysées, 75008 Paris, France</p>
+        <p><strong>Téléphone :</strong> +33 6 98 21 44 46</p>
+        <p><strong>Email :</strong> contact@advensys-in-finance.com</p>
+        <p><strong>APE :</strong> 6622Z — Autres activités auxiliaires d&apos;assurance et de retraite</p>
+        <p><strong>ORIAS n° :</strong> 21003660</p>
+        <p>
+          <strong>Lien ORIAS :</strong>{" "}
+          <a href="https://www.orias.fr" target="_blank" rel="noopener noreferrer" className="text-brand-gold hover:text-brand-goldDark">
+            www.orias.fr
+          </a>{" "}
+          — Registre public consultable en ligne
+        </p>
+      </div>
+
+      <p className="text-brand-grayMed mb-3 text-sm italic">
+        Licences et autorisations confirmées par l&apos;attestation ORIAS du 17/02/2026 :
+      </p>
+      <div className="overflow-x-auto mb-6">
+        <table className="w-full text-sm text-brand-grayMed border-collapse">
+          <thead>
+            <tr className="bg-gray-50">
+              <th className="text-left p-3 border border-gray-200 font-semibold text-brand-dark">Qualification</th>
+              <th className="text-left p-3 border border-gray-200 font-semibold text-brand-dark">Depuis</th>
+              <th className="text-left p-3 border border-gray-200 font-semibold text-brand-dark">Valable jusqu&apos;au</th>
+              <th className="text-left p-3 border border-gray-200 font-semibold text-brand-dark">Régulateur</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="p-3 border border-gray-200">CIF — Conseiller en Investissements Financiers</td>
+              <td className="p-3 border border-gray-200">28/05/2021</td>
+              <td className="p-3 border border-gray-200">28/02/2027</td>
+              <td className="p-3 border border-gray-200">AMF / ORIAS</td>
+            </tr>
+            <tr className="bg-gray-50/50">
+              <td className="p-3 border border-gray-200">COBSP — Courtier en Opérations de Banque et Services de Paiement</td>
+              <td className="p-3 border border-gray-200">16/04/2021</td>
+              <td className="p-3 border border-gray-200">28/02/2027</td>
+              <td className="p-3 border border-gray-200">ACPR / ORIAS</td>
+            </tr>
+            <tr>
+              <td className="p-3 border border-gray-200">COA — Courtier d&apos;Assurance ou de Réassurance</td>
+              <td className="p-3 border border-gray-200">16/04/2021</td>
+              <td className="p-3 border border-gray-200">28/02/2027</td>
+              <td className="p-3 border border-gray-200">ACPR / ORIAS</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
+        Services autorisés pour Advensys Insurance-Finance SARL sur la plateforme Opulanz :
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-1 text-sm">
+        <li>Intermédiation à l&apos;ouverture de compte bancaire (COBSP)</li>
+        <li>Courtage en assurance — assurance vie et produits d&apos;assurance générale (COA)</li>
+        <li>Services de conseil en investissement — conformes MiFID II (CIF)</li>
+        <li>Création de société — en autonome (qualification CJA)</li>
+        <li>Conseil juridique et administratif (qualification CJA)</li>
+      </ul>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">
+        3. Groupe Advensys Luxembourg S.A. — Profil Réglementaire Complet
+      </h2>
+      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
+        <p><strong>Dénomination sociale :</strong> Groupe Advensys Luxembourg S.A.</p>
+        <p><strong>Enseignes commerciales :</strong> Advensys Conseil · Location Rolls Royce · Opulanz Group</p>
+        <p><strong>Forme juridique :</strong> Société anonyme (SA)</p>
+        <p><strong>RCS Luxembourg :</strong> B197138</p>
+        <p><strong>Capital social :</strong> 31 000 EUR — Fixe — Entièrement libéré</p>
+        <p><strong>Code NACE :</strong> 69.200 — Activités comptables</p>
+        <p><strong>Siège social :</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand-Duché de Luxembourg</p>
+        <p><strong>Date de constitution :</strong> 12/05/2015</p>
+        <p><strong>Administrateur unique :</strong> DULBERG Irvin Regnard — pouvoir de signature unique</p>
+        <p><strong>Mandat administrateur :</strong> Nommé le 23/11/2020 — Expire le 23/11/2026</p>
+        <p><strong>Commissaire aux comptes :</strong> Advensys Conseil LTD (Companies House UK n°07464304)</p>
+        <p><strong>Email :</strong> contact@advensys-conseil.lu</p>
+        <p><strong>Téléphone :</strong> +352 28 79 76 26</p>
+      </div>
+
+      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
+        Services autorisés pour Groupe Advensys Luxembourg S.A. sur la plateforme Opulanz :
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-3 space-y-1 text-sm">
+        <li>Services de comptabilité professionnelle et de gestion de la paie</li>
+        <li>Conseil fiscal pour les personnes physiques et morales</li>
+        <li>Création de société au Luxembourg — uniquement couplée à un mandat comptable</li>
+        <li>Conseil à la création d&apos;entreprise et accompagnement opérationnel</li>
+      </ul>
+      <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-brand-grayMed">
+        <strong>Important :</strong> Groupe Advensys Luxembourg S.A. ne peut PAS fournir de
+        services de création de société en prestation autonome (sans mandat comptable). La création
+        de société en autonome doit impérativement être traitée par Advensys Insurance-Finance SARL
+        au titre de sa qualification CJA.
+      </div>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">
+        4. Opulanz SIA — Profil Réglementaire Complet
+      </h2>
+      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
+        <p><strong>Dénomination sociale :</strong> Opulanz SIA</p>
+        <p><strong>Forme juridique :</strong> Sabiedrība ar ierobežotu atbildību (SIA) — SARL lettone</p>
+        <p><strong>Numéro d&apos;enregistrement :</strong> 40203750214</p>
+        <p><strong>Date d&apos;enregistrement :</strong> 27/05/2026</p>
+        <p><strong>Capital social :</strong> 3 000 EUR — Intégralement libéré</p>
+        <p><strong>Siège social :</strong> Vīlandes iela 5-36, Rīga, LV-1010, République de Lettonie</p>
+        <p><strong>Identifiant SEPA :</strong> LV44ZZZ40203750214</p>
+        <p><strong>Actionnaire unique :</strong> DULBERG Irvin Regnard</p>
+        <p><strong>Membre du Conseil :</strong> DULBERG Irvin Regnard — droit de représentation sole</p>
+        <p><strong>Email :</strong> contact@opulanz.com</p>
+      </div>
+
+      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
+        Services fournis par Opulanz SIA sur la plateforme Opulanz :
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-3 space-y-1 text-sm">
+        <li>Services informatiques et développement de la plateforme</li>
+        <li>
+          Apport d&apos;affaires pour l&apos;ouverture de comptes bancaires (agissant en qualité
+          d&apos;apporteur auprès de partenaires EME agréés au sein de l&apos;UE — et non en tant
+          qu&apos;EME agréé lui-même)
+        </li>
+      </ul>
+      <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-brand-grayMed">
+        <strong>Important :</strong> Opulanz SIA ne détient pas d&apos;agrément EME, de licence
+        d&apos;établissement de paiement ni d&apos;aucune licence de services financiers. Les
+        services bancaires et de paiement sont fournis exclusivement par des partenaires EME agréés
+        opérant dans le cadre réglementaire de l&apos;UE, sur la base d&apos;un contrat
+        d&apos;apport d&apos;affaires.
+      </div>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">5. Réclamations &amp; Résolution des Litiges</h2>
+      <p className="text-brand-grayMed mb-3">
+        Toute réclamation doit être adressée par écrit au Département Conformité :
+      </p>
+      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
+        <p><strong>Email :</strong> contact@opulanz.com</p>
+        <p><strong>Objet :</strong> &apos;RÉCLAMATION — [Nom du service] — [Votre nom]&apos;</p>
+        <p><strong>Délai de réponse (France) :</strong> 15 jours ouvrés maximum (exigence ACPR)</p>
+        <p><strong>Délai de réponse (Luxembourg) :</strong> 30 jours calendaires maximum</p>
+      </div>
+      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
+        Résolution externe des litiges — en cas de non-résolution interne concernant Advensys Insurance-Finance SARL :
+      </p>
+      <div className="mb-6 pl-4 border-l-2 border-brand-gold/40 text-brand-grayMed text-sm space-y-1">
+        <p>
+          <strong>CNPM - MÉDIATION-CONSOMMATION</strong> — 27 avenue de la Libération, 42400 Saint-Chamond
+        </p>
+        <p>Tél : 04 77 42 10 58</p>
+        <p>Courriel : contact-admin@cnpm-mediation-consommation.eu</p>
+      </div>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">6. Mentions Réglementaires</h2>
+      <p className="text-brand-grayMed mb-3">
+        Les informations réglementaires suivantes s&apos;appliquent à l&apos;ensemble des services :
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-3 text-sm">
+        <li>
+          Advensys Insurance-Finance SARL est immatriculée auprès de l&apos;ORIAS (Organisme pour
+          le Registre des Intermédiaires en Assurance) — vérification sur{" "}
+          <a href="https://www.orias.fr" target="_blank" rel="noopener noreferrer" className="text-brand-gold hover:text-brand-goldDark">
+            www.orias.fr
+          </a>{" "}
+          sous le n°21003660.
+        </li>
+        <li>
+          Advensys Insurance-Finance SARL exerce sous la supervision prudentielle de l&apos;ACPR
+          (Autorité de Contrôle Prudentiel et de Résolution) pour l&apos;intermédiation en
+          assurance et en banque.
+        </li>
+        <li>
+          Les services de conseil en investissement fournis par Advensys Insurance-Finance SARL sont
+          conduits sous la supervision de l&apos;AMF (Autorité des Marchés Financiers) en sa
+          qualité de CIF.
+        </li>
+        <li>
+          Groupe Advensys Luxembourg S.A. opère sous le droit luxembourgeois et est enregistrée
+          auprès du Luxembourg Business Registers (LBR) — vérification sur{" "}
+          <a href="https://www.lbr.lu" target="_blank" rel="noopener noreferrer" className="text-brand-gold hover:text-brand-goldDark">
+            www.lbr.lu
+          </a>{" "}
+          sous le numéro RCS B197138, avec agrément comptable et commercial délivré par le
+          Ministère de l&apos;Économie du Luxembourg.
+        </li>
+        <li>
+          Opulanz SIA est enregistrée auprès du Registre du Commerce letton — vérification sur{" "}
+          <a href="https://www.ur.gov.lv" target="_blank" rel="noopener noreferrer" className="text-brand-gold hover:text-brand-goldDark">
+            www.ur.gov.lv
+          </a>.
+        </li>
+      </ul>
+
+      <p className="text-sm text-brand-grayMed mt-8 pt-6 border-t border-brand-grayLight">
+        Dernière mise à jour : juillet 2026
+      </p>
     </>
   );
 }

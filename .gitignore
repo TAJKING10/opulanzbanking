@@ -9,7 +9,7 @@
 /coverage
 
 # next.js
-/.next/
+
 /out/
 
 # production
@@ -48,3 +48,12 @@ backend/node_modules
 backend/nul
 backend/.env
 nul
+
+
+# iOS certificates & provisioning profiles (sensitive — never commit)
+*.p8
+*.cer
+*.certSigningRequest
+*.mobileprovision
+distribution_key.key
+*.p12

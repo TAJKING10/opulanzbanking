@@ -42,58 +42,58 @@
     },
     "about": {
       "title": "About Opulanz",
-      "subtitle": "The All-in-One Enterprise Platform",
+      "subtitle": "The All-in-One Platform for Businesses",
       "storyOverline": "OUR STORY",
       "storyTitle": "Transforming Corporate Finance",
-      "storyIntro": "Opulanz is part of the Advensys Luxembourg S.A. Group, a holding company with over 19 years of experience providing comprehensive business solutions across Europe. We built Opulanz with a clear vision: to become the European leader in corporate finance.",
+      "storyIntro": "Opulanz is a brand of Groupe Advensys Luxembourg S.A., a holding company with over 19 years of experience in comprehensive business solutions across Europe. We built Opulanz with a clear vision: to simplify and bring together, in one place, the financial and operational services that businesses need.",
       "missionTitle": "Our Mission",
-      "missionText": "To improve the ecosystem of business financial services, payments, and operational processes using modern technology including AI and Blockchain.",
+      "missionText": "To improve the ecosystem of business financial services, payments, and operational processes through modern technologies, including AI and Blockchain.",
       "visionTitle": "Our Vision",
-      "visionText": "To become the market leader in online business services in Europe, with financial and brokerage licenses enabling greater flexibility",
-      "storyClosing": "Today, we serve commercial companies, financial institutions, investment funds, and freelancers across Europe. Our experienced team continues to innovate with cutting-edge technology while maintaining the highest standards of security, compliance, and customer service. We represent quality, trust, and innovation in corporate banking.",
-      "impactOverline": "Our Impact",
+      "visionText": "To become a European reference for online business services, leveraging our intermediary and advisory statuses to offer flexibility and quality of service.",
+      "storyClosing": "Today, we support commercial companies, financial institutions, investment funds, and freelancers across Europe, with the highest standards of security, compliance, and service.",
+      "impactOverline": "OUR IMPACT",
       "impactTitle": "Trusted by Businesses Across Europe",
       "impactSubtitle": "Our growth reflects the trust our clients place in us",
       "statsYears": "19+",
       "statsYearsLabel": "Years of Experience",
       "statsClients": "500+",
-      "statsClientsLabel": "Business Clients",
+      "statsClientsLabel": "Professional Clients",
       "strengthsOverline": "OUR STRENGTHS",
       "strengthsTitle": "What Sets Us Apart",
-      "strengthsDescription": "Three key pillars of our success",
+      "strengthsDescription": "The pillars of our commitment to our clients",
       "strength1Title": "Business Financial Expertise",
-      "strength1Description": "Over 19+ years of experience serving commercial companies, financial institutions, and investment funds across Europe.",
+      "strength1Description": "Over 19 years serving commercial companies, financial institutions, and investment funds across Europe.",
       "strength2Title": "All-in-One Platform",
-      "strength2Description": "Complete business solution from company formation to financial services, accounting, tax advisory, investment, and insurance.",
+      "strength2Description": "From company formation assistance to financial services: accounting, tax advisory, investment advisory, and insurance.",
       "strength3Title": "Modern Technology",
-      "strength3Description": "Leveraging Artificial Intelligence and Blockchain to make business financial services better, easier, and more efficient.",
-      "licensesOverline": "LICENSES & CERTIFICATIONS",
-      "licensesTitle": "Fully Licensed & Certified",
-      "licensesDescription": "We maintain all necessary licenses and certifications to provide business financial services across Europe, ensuring compliance with industry regulations and standards.",
-      "cert1Title": "State Licensed",
-      "cert1Description": "State Licensed Agents",
-      "cert2Title": "Certified",
-      "cert2Description": "Industry Certified Professionals",
-      "cert3Title": "Bonded",
-      "cert3Description": "Bonded & Insured Operations",
-      "cert4Title": "Accredited",
-      "cert4Description": "Better Business Bureau Accredited",
-      "whyTitle": "Why Choose Opulanz?",
-      "whyDescription": "What makes us your trusted business financial partner",
+      "strength3Description": "AI and Blockchain for simpler and more efficient services.",
+      "licensesOverline": "OUR REGULATORY STATUS",
+      "licensesTitle": "Our Regulated Activities",
+      "licensesDescription": "Our regulated activities are carried out by licensed entities within the group:",
+      "cert1Title": "Intermediation (France)",
+      "cert1Description": "Advensys Insurance-Finance, ORIAS n° 21003660: broker (banking operations, payment services, insurance) under ACPR supervision, and Investment Adviser (CIF) under AMF supervision.",
+      "cert2Title": "Accounting (Luxembourg)",
+      "cert2Description": "Carried out under authorisation of the Ministry of Economy of the Grand Duchy of Luxembourg.",
+      "cert3Title": "Accounts & Payments",
+      "cert3Description": "Provided through our licensed partner, an Electronic Money Institution (EMI) authorised within the European Union.",
+      "cert4Title": "Professional Indemnity",
+      "cert4Description": "Advensys Insurance-Finance SARL holds professional indemnity insurance with MMA IARD France, covering all regulated intermediation activities.",
+      "whyTitle": "Why Opulanz?",
+      "whyDescription": "What makes us your trusted partner",
       "benefit1Title": "All-in-One Platform",
-      "benefit1Description": "Complete business solution covering company formation, financial services, accounting, tax advisory, investment, insurance, and more - all in one platform.",
+      "benefit1Description": "All your professional services in one place.",
       "benefit2Title": "19+ Years of Experience",
-      "benefit2Description": "Part of Groupe Advensys Luxembourg S.A., we bring nearly two decades of expertise in serving businesses across Europe.",
-      "benefit3Title": "Modern Technology Stack",
-      "benefit3Description": "Built with cutting-edge Artificial Intelligence and Blockchain technology to provide efficient, secure, and innovative financial solutions.",
-      "benefit4Title": "Business-Focused Approach",
-      "benefit4Description": "Specifically designed for commercial companies, financial institutions, investment funds, and freelancers - not retail banking.",
-      "benefit5Title": "European Quality Standards",
-      "benefit5Description": "Operating across Europe, we maintain the highest standards of quality, trust, and compliance with financial regulations.",
-      "benefit6Title": "Future-Ready Vision",
-      "benefit6Description": "Working towards full banking license with integrated blockchain and green technologies to lead the European online financial services market.",
+      "benefit2Description": "Within Groupe Advensys Luxembourg S.A.",
+      "benefit3Title": "Cutting-Edge Technology",
+      "benefit3Description": "AI and Blockchain at the service of your needs.",
+      "benefit4Title": "Built for Professionals",
+      "benefit4Description": "Dedicated to businesses, financial institutions, investment funds, and freelancers.",
+      "benefit5Title": "European Standards",
+      "benefit5Description": "Quality, trust, and regulatory compliance.",
+      "benefit6Title": "Future Vision",
+      "benefit6Description": "Continuous innovation for European businesses.",
       "ctaTitle": "Ready to Get Started?",
-      "ctaDescription": "Join thousands of businesses across Europe who trust Opulanz as their all-in-one financial and business solution platform.",
+      "ctaDescription": "Join the businesses that trust Opulanz for their financial and operational services.",
       "ctaOpenAccount": "Open an Account",
       "ctaContact": "Contact Us"
     }
@@ -511,7 +511,7 @@
     },
     "investment": {
       "title": "Investment Advisory",
-      "description": "MiFID-compliant investment advice and portfolio management"
+      "description": "Independent investment advice provided as a registered Financial Investment Advisor (CIF), under AMF oversight."
     },
     "lifeInsurance": {
       "title": "Life Insurance",
@@ -803,86 +803,77 @@
         "ourServices": "Our Services"
       },
       "services": {
-        "overline": "Investment Services",
-        "title": "Professional Investment Advisory",
-        "description": "Build and grow your wealth with expert investment guidance tailored to your unique financial situation.",
+        "overline": "Our investment advice",
+        "title": "Our investment advice",
+        "description": "Receive personalised recommendations tailored to your situation, objectives and risk tolerance.",
         "items": {
           "portfolio": {
-            "title": "Portfolio Diversification",
-            "description": "Strategic asset allocation across multiple investment classes to optimize returns and manage risk."
+            "title": "Asset allocation guidance",
+            "description": "We advise you on allocating across asset classes to balance potential return and risk."
           },
           "strategy": {
-            "title": "Investment Strategy",
-            "description": "Customized investment strategies aligned with your long-term financial objectives."
+            "title": "Investment strategy",
+            "description": "Tailored recommendations aligned with your long-term objectives."
           },
           "retirement": {
-            "title": "Retirement Planning",
-            "description": "Strategic retirement planning to ensure financial security in your golden years."
+            "title": "Retirement planning",
+            "description": "Guidance to structure your savings towards retirement."
           }
         }
       },
       "whyUs": {
-        "title": "Grow Your Wealth with Confidence",
-        "description": "Our investment advisory team brings decades of experience in global markets and financial planning. We combine sophisticated analysis with personalized service to help you achieve your financial goals. Whether you are planning for retirement, building wealth, or seeking passive income, we provide the expertise and support you need.",
-        "cta": "Schedule Consultation",
+        "title": "What our service includes",
+        "description": "Our team brings market experience to personalised recommendations. Whether you are planning for retirement or looking to structure your wealth, we provide clear and tailored advice.",
+        "cta": "Schedule Meeting",
         "benefits": [
-          "Access to exclusive investment opportunities",
-          "Personalized investment strategies",
-          "Regular portfolio rebalancing",
+          "Personalised investment recommendations",
+          "Periodic review of your investments and suggested adjustments",
+          "Ongoing assessment of the suitability of our recommendations",
           "Transparent fee structure",
-          "Expert market analysis and insights",
-          "Tax-efficient investment solutions",
-          "Ongoing portfolio monitoring and reporting"
+          "Market analysis and insights",
+          "Advice on tax-efficient investment wrappers"
         ]
       },
       "options": {
-        "overline": "Investment Options",
-        "title": "Diverse Investment Opportunities",
-        "description": "Access a wide range of investment vehicles tailored to your risk tolerance and financial objectives.",
-        "riskLabel": "Risk Level",
+        "overline": "Asset classes we advise on",
+        "title": "Asset classes we advise on",
+        "description": "Investing involves a risk of capital loss. Past performance is not indicative of future results.",
+        "riskLabel": "Risk",
         "items": {
           "equities": {
             "title": "Equities",
-            "description": "Global stock market investments with growth potential",
-            "risk": "Medium to High"
+            "description": "Global stock markets, growth potential",
+            "risk": "Medium to high"
           },
           "fixedIncome": {
             "title": "Fixed Income",
-            "description": "Bonds and other debt securities for stable returns",
-            "risk": "Low to Medium"
+            "description": "Debt securities for more stable returns",
+            "risk": "Low to medium"
           },
           "alternative": {
             "title": "Alternative Investments",
-            "description": "Private equity, real estate, and hedge funds",
-            "risk": "Medium to High"
+            "description": "Private equity, real estate, alternative funds",
+            "risk": "Medium to high"
           },
           "sustainable": {
             "title": "Sustainable Investing",
-            "description": "ESG-focused investments for responsible growth",
+            "description": "ESG approach",
             "risk": "Medium"
           }
         }
       },
       "stats": {
-        "aum": {
-          "value": "€2.5B+",
-          "label": "Assets Under Management"
-        },
-        "clients": {
-          "value": "5,000+",
-          "label": "Satisfied Clients"
-        },
-        "experience": {
-          "value": "25+",
-          "label": "Years of Experience"
-        }
+        "aum": { "value": "€2.5B+", "label": "Assets Under Management" },
+        "clients": { "value": "5,000+", "label": "Satisfied Clients" },
+        "experience": { "value": "25+", "label": "Years of Experience" }
       },
       "cta": {
-        "title": "Start Building Your Investment Portfolio",
-        "description": "Take the first step towards financial freedom. Schedule a consultation with our investment advisors and discover how we can help you reach your financial goals.",
+        "title": "Advance with independent advice",
+        "description": "Our team brings market experience to personalised recommendations. Whether you are planning for retirement or looking to structure your wealth, we provide clear and tailored advice.",
         "scheduleMeeting": "Schedule Meeting",
-        "contactSupport": "Learn More"
-      }
+        "contactSupport": "Our Services"
+      },
+      "legalMention": "Investment advice provided by Advensys Insurance-Finance SARL, Financial Investment Advisor registered with ORIAS no. 21003660, member of [AMF-approved association — La compagnie CIF], under the oversight of the AMF."
     },
     "schedule": {
       "heroTitle": "Schedule Your Investment Advisory Meeting",
@@ -1150,14 +1141,14 @@
       }
     },
     "trust": {
-      "title": "Trusted & Regulated",
-      "description": "Your business in safe hands",
-      "summary": "Opulanz operates under strict regulatory oversight to ensure your financial security."
+      "title": "STATUS & OVERSIGHT",
+      "description": "Regulated activities",
+      "summary": "Our regulated activities are carried out by licensed group entities, under the oversight of the French authorities."
     },
     "regulatory": {
       "france": "France",
-      "acpr": "Prudential Supervision and Resolution Authority",
-      "amf": "Financial Markets Authority"
+      "acpr": "Broker in banking operations, payment services and insurance. Advensys Insurance-Finance — ORIAS no. 21003660, under ACPR oversight.",
+      "amf": "Financial Investment Advisor (CIF). Advensys Insurance-Finance — ORIAS no. 21003660, under AMF oversight."
     },
     "cta": {
       "title": "Ready to get started?",
@@ -2841,7 +2832,7 @@
         "description": "Speak directly with one of our support specialists.",
         "numberLU": "LU: +352 28 79 76 26",
         "numberFR": "FR: +33 6 98 21 44 46",
-        "hours": "Mon–Fri, 9:00–18:00 CET"
+        "hours": "Mon–Fri, 9:00–17:00 CET"
       },
       "email": {
         "title": "Email Support",

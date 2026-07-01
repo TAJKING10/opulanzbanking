@@ -42,16 +42,16 @@
     },
     "about": {
       "title": "À propos d'Opulanz",
-      "subtitle": "La Plateforme d'Entreprise Tout en Un",
+      "subtitle": "La plateforme tout-en-un pour les entreprises",
       "storyOverline": "NOTRE HISTOIRE",
-      "storyTitle": "Transformer la finance d'Entreprise",
-      "storyIntro": "Opulanz fait partie du Groupe Advensys Luxembourg S.A., une société holding avec plus de 19 ans d'expérience dans la fourniture de solutions d'affaires complètes à travers l'Europe. Nous avons construit Opulanz avec une vision claire : devenir le leader de la finance européenne pour les entreprises.",
-      "missionTitle": "Notre Mission",
-      "missionText": "Améliorer l'écosystème des services financiers aux entreprises, des paiements et des processus opérationnels en utilisant les technologies modernes, notamment l'IA et la Blockchain.",
-      "visionTitle": "Notre Vision",
-      "visionText": "Devenir les leaders du marché du service au entreprise en ligne en Europe avec des licences financières et de courtage permettant une flexibilité accrue",
-      "storyClosing": "Aujourd'hui, nous servons des entreprises commerciales, des institutions financières, des fonds d'investissement et des freelances à travers l'Europe. Notre équipe expérimentée continue d'innover avec une technologie de pointe tout en maintenant les plus hauts standards de sécurité, de conformité et de service client. Nous représentons la qualité, la confiance et l'innovation dans la banque d'entreprise.",
-      "impactOverline": "Notre Impact",
+      "storyTitle": "Transformer la finance d'entreprise",
+      "storyIntro": "Opulanz est une marque du Groupe Advensys Luxembourg S.A., société holding forte de plus de 19 ans d'expérience dans les solutions complètes aux entreprises en Europe. Nous avons conçu Opulanz avec une vision claire : simplifier et réunir, en un seul endroit, les services financiers et opérationnels dont les entreprises ont besoin.",
+      "missionTitle": "Notre mission",
+      "missionText": "Améliorer l'écosystème des services financiers, des paiements et des processus opérationnels des entreprises grâce aux technologies modernes, notamment l'IA et la Blockchain.",
+      "visionTitle": "Notre vision",
+      "visionText": "Devenir une référence européenne des services en ligne aux entreprises, en nous appuyant sur nos statuts d'intermédiaire et de conseil pour offrir flexibilité et qualité de service.",
+      "storyClosing": "Aujourd'hui, nous accompagnons des entreprises commerciales, des institutions financières, des fonds d'investissement et des indépendants à travers l'Europe, avec les plus hauts standards de sécurité, de conformité et de service.",
+      "impactOverline": "NOTRE IMPACT",
       "impactTitle": "La confiance des entreprises à travers l'Europe",
       "impactSubtitle": "Notre croissance reflète la confiance que nos clients nous accordent",
       "statsYears": "19+",
@@ -60,40 +60,40 @@
       "statsClientsLabel": "Clients professionnels",
       "strengthsOverline": "NOS FORCES",
       "strengthsTitle": "Ce qui nous distingue",
-      "strengthsDescription": "Trois piliers clés de notre succès",
+      "strengthsDescription": "Les piliers de notre engagement envers nos clients",
       "strength1Title": "Expertise financière d'entreprise",
-      "strength1Description": "Plus de 19 ans d'expérience au service des entreprises commerciales, des institutions financières et des fonds d'investissement à travers l'Europe.",
-      "strength2Title": "Plateforme Tout-en-Un",
-      "strength2Description": "Solution d'entreprise complète, de la création de société aux services financiers, comptabilité, conseil fiscal, investissement et assurance.",
+      "strength1Description": "Plus de 19 ans au service des entreprises, institutions financières et fonds d'investissement en Europe.",
+      "strength2Title": "Plateforme tout-en-un",
+      "strength2Description": "De l'assistance à la constitution d'entreprise aux services financiers : comptabilité, conseil fiscal, conseil en investissement et assurance.",
       "strength3Title": "Technologie moderne",
-      "strength3Description": "Utilisation de l'Intelligence Artificielle et de la Blockchain pour rendre les services financiers aux entreprises meilleurs, plus simples et plus efficaces.",
-      "licensesOverline": "LICENCES ET CERTIFICATIONS",
-      "licensesTitle": "Entièrement licencié et certifié",
-      "licensesDescription": "Nous maintenons toutes les licences et certifications nécessaires pour fournir des services financiers aux entreprises à travers l'Europe, en assurant la conformité avec les réglementations et normes du secteur.",
-      "cert1Title": "Agréé par l'État",
-      "cert1Description": "Agents agréés par l'État",
-      "cert2Title": "Certifié",
-      "cert2Description": "Professionnels certifiés du secteur",
-      "cert3Title": "Cautionné",
-      "cert3Description": "Opérations cautionnées et assurées",
-      "cert4Title": "Accrédité",
-      "cert4Description": "Accrédité par le Bureau d'éthique commerciale",
-      "whyTitle": "Pourquoi choisir Opulanz ?",
-      "whyDescription": "Ce qui fait de nous votre partenaire financier de confiance",
-      "benefit1Title": "Plateforme Tout-en-Un",
-      "benefit1Description": "Solution d'entreprise complète couvrant la création de société, les services financiers, la comptabilité, le conseil fiscal, l'investissement, l'assurance et plus encore - tout sur une seule plateforme.",
+      "strength3Description": "IA et Blockchain pour des services plus simples et plus efficaces.",
+      "licensesOverline": "NOS STATUTS",
+      "licensesTitle": "Nos activités réglementées",
+      "licensesDescription": "Nos activités réglementées sont exercées par des entités agréées du groupe :",
+      "cert1Title": "Intermédiation (France)",
+      "cert1Description": "Advensys Insurance-Finance, ORIAS n° 21003660 : courtier (opérations de banque, services de paiement, assurance) sous contrôle de l'ACPR, et Conseiller en Investissements Financiers sous contrôle de l'AMF.",
+      "cert2Title": "Comptabilité (Luxembourg)",
+      "cert2Description": "Exercée sous autorisation du Ministère de l'Économie du Grand-Duché de Luxembourg.",
+      "cert3Title": "Comptes et paiements",
+      "cert3Description": "Fournis via notre partenaire agréé, établissement de monnaie électronique (EME) agréé au sein de l'Union européenne.",
+      "cert4Title": "Assurance RC Pro",
+      "cert4Description": "Advensys Insurance-Finance SARL est couvert par une assurance responsabilité civile professionnelle souscrite auprès de MMA IARD France.",
+      "whyTitle": "Pourquoi Opulanz ?",
+      "whyDescription": "Ce qui fait de nous votre partenaire de confiance",
+      "benefit1Title": "Plateforme tout-en-un",
+      "benefit1Description": "Tous vos services professionnels au même endroit.",
       "benefit2Title": "19+ ans d'expérience",
-      "benefit2Description": "Membre du Groupe Advensys Luxembourg S.A., nous apportons près de deux décennies d'expertise au service des entreprises à travers l'Europe.",
+      "benefit2Description": "Au sein du Groupe Advensys Luxembourg S.A.",
       "benefit3Title": "Technologies de pointe",
-      "benefit3Description": "Construit avec des technologies d'Intelligence Artificielle et de Blockchain de pointe pour fournir des solutions financières efficaces, sécurisées et innovantes.",
-      "benefit4Title": "Approche axée sur l'entreprise",
-      "benefit4Description": "Spécifiquement conçu pour les entreprises commerciales, les institutions financières, les fonds d'investissement et les indépendants - pas de banque de détail.",
-      "benefit5Title": "Standards de qualité européens",
-      "benefit5Description": "Opérant à travers l'Europe, nous maintenons les plus hauts standards de qualité, de confiance et de conformité aux réglementations financières.",
-      "benefit6Title": "Vision tournée vers l'avenir",
-      "benefit6Description": "Travaillant vers l'obtention d'une licence bancaire complète avec des technologies blockchain et vertes intégrées pour mener le marché européen des services financiers en ligne.",
+      "benefit3Description": "IA et Blockchain au service de vos besoins.",
+      "benefit4Title": "Pensé pour les pros",
+      "benefit4Description": "Dédié aux entreprises, institutions financières, fonds et indépendants.",
+      "benefit5Title": "Standards européens",
+      "benefit5Description": "Qualité, confiance et conformité réglementaire.",
+      "benefit6Title": "Vision d'avenir",
+      "benefit6Description": "Innovation continue au service des entreprises européennes.",
       "ctaTitle": "Prêt à commencer ?",
-      "ctaDescription": "Rejoignez des milliers d'entreprises à travers l'Europe qui font confiance à Opulanz comme plateforme financière et de solutions d'entreprise tout-en-un.",
+      "ctaDescription": "Rejoignez les entreprises qui font confiance à Opulanz pour leurs services financiers et opérationnels.",
       "ctaOpenAccount": "Ouvrir un compte",
       "ctaContact": "Contactez-nous"
     }
@@ -511,7 +511,7 @@
     },
     "investment": {
       "title": "Conseil en investissement",
-      "description": "Conseil en investissement et gestion de portefeuille conforme à MiFID"
+      "description": "Conseil en investissement indépendant fourni en qualité de Conseiller en Investissements Financiers (CIF), sous le contrôle de l'AMF."
     },
     "lifeInsurance": {
       "title": "Assurance-vie",
@@ -803,62 +803,61 @@
         "ourServices": "Nos services"
       },
       "services": {
-        "overline": "Services d'investissement",
-        "title": "Conseil en investissement professionnel",
-        "description": "Développez votre patrimoine avec des conseils en investissement adaptés à votre situation financière.",
+        "overline": "Notre conseil en investissement",
+        "title": "Notre conseil en investissement",
+        "description": "Bénéficiez de recommandations personnalisées, adaptées à votre situation, vos objectifs et votre tolérance au risque.",
         "items": {
           "portfolio": {
-            "title": "Diversification de portefeuille",
-            "description": "Allocation stratégique d'actifs dans plusieurs classes d'investissement pour optimiser les rendements et gérer les risques."
+            "title": "Répartition de vos actifs",
+            "description": "Nous vous conseillons sur l'allocation entre différentes classes d'actifs afin d'équilibrer rendement potentiel et niveau de risque."
           },
           "strategy": {
             "title": "Stratégie d'investissement",
-            "description": "Stratégies d'investissement personnalisées alignées sur vos objectifs financiers à long terme."
+            "description": "Des recommandations sur mesure alignées sur vos objectifs de long terme."
           },
           "retirement": {
-            "title": "Planification de la retraite",
-            "description": "Planification stratégique de la retraite pour assurer votre sécurité financière."
+            "title": "Préparation de la retraite",
+            "description": "Un accompagnement pour structurer votre épargne en vue de la retraite."
           }
         }
       },
       "whyUs": {
-        "title": "Développez votre patrimoine en toute confiance",
-        "description": "Notre équipe de conseil en investissement possède des décennies d'expérience sur les marchés mondiaux et en planification financière. Nous combinons une analyse approfondie et un service personnalisé pour vous aider à atteindre vos objectifs financiers.",
-        "cta": "Planifier une consultation",
+        "title": "Ce que comprend notre accompagnement",
+        "description": "Notre équipe met son expérience des marchés au service de recommandations personnalisées. Que vous prépariez votre retraite ou cherchiez à structurer votre patrimoine, nous vous apportons un conseil clair et adapté.",
+        "cta": "Prendre rendez-vous",
         "benefits": [
-          "Accès à des opportunités d'investissement exclusives",
-          "Stratégies d'investissement personnalisées",
-          "Rééquilibrage régulier du portefeuille",
+          "Recommandations d'investissement personnalisées",
+          "Revue périodique de vos investissements et propositions d'ajustement",
+          "Suivi de la pertinence de nos recommandations dans le temps",
           "Structure de frais transparente",
-          "Analyses de marché expertes",
-          "Solutions d'investissement fiscalement optimisées",
-          "Suivi et reporting continus du portefeuille"
+          "Analyse et éclairage sur les marchés",
+          "Conseil sur les enveloppes fiscalement efficientes"
         ]
       },
       "options": {
-        "overline": "Options d'investissement",
-        "title": "Des opportunités d'investissement diversifiées",
-        "description": "Accédez à une large gamme de véhicules d'investissement adaptés à votre tolérance au risque et à vos objectifs.",
-        "riskLabel": "Niveau de risque",
+        "overline": "Classes d'actifs sur lesquelles nous vous conseillons",
+        "title": "Classes d'actifs sur lesquelles nous vous conseillons",
+        "description": "Investir comporte un risque de perte en capital. Les performances passées ne préjugent pas des performances futures.",
+        "riskLabel": "Risque",
         "items": {
           "equities": {
             "title": "Actions",
-            "description": "Investissements en bourse mondiale avec un potentiel de croissance",
+            "description": "Marchés actions mondiaux, potentiel de croissance",
             "risk": "Moyen à élevé"
           },
           "fixedIncome": {
-            "title": "Revenus fixes",
-            "description": "Obligations et autres titres de créance pour des rendements stables",
+            "title": "Obligations / taux",
+            "description": "Titres de dette pour des revenus plus stables",
             "risk": "Faible à moyen"
           },
           "alternative": {
             "title": "Investissements alternatifs",
-            "description": "Capital-investissement, immobilier et fonds spéculatifs",
+            "description": "Private equity, immobilier, fonds alternatifs",
             "risk": "Moyen à élevé"
           },
           "sustainable": {
             "title": "Investissement durable",
-            "description": "Investissements axés sur les critères ESG pour une croissance responsable",
+            "description": "Approche ESG",
             "risk": "Moyen"
           }
         }
@@ -878,11 +877,12 @@
         }
       },
       "cta": {
-        "title": "Commencez à construire votre portefeuille d'investissement",
-        "description": "Faites le premier pas vers la liberté financière. Planifiez une consultation avec nos conseillers en investissement.",
-        "scheduleMeeting": "Planifier un rendez-vous",
-        "contactSupport": "En savoir plus"
-      }
+        "title": "Avancez avec un conseil indépendant",
+        "description": "Notre équipe met son expérience des marchés au service de recommandations personnalisées. Que vous prépariez votre retraite ou cherchiez à structurer votre patrimoine, nous vous apportons un conseil clair et adapté.",
+        "scheduleMeeting": "Prendre rendez-vous",
+        "contactSupport": "Nos prestations"
+      },
+      "legalMention": "Conseil en investissement fourni par Advensys Insurance-Finance SARL, Conseiller en Investissements Financiers immatriculé à l'ORIAS n° 21003660, membre de [association agréée AMF — La Compagnie CIF], sous le contrôle de l'AMF."
     },
     "schedule": {
       "heroTitle": "Planifiez votre rendez-vous de conseil en investissement",
@@ -1150,14 +1150,14 @@
       }
     },
     "trust": {
-      "title": "Fiable et Réglementé",
-      "description": "Votre entreprise en mains sûres",
-      "summary": "Opulanz opère sous une surveillance réglementaire stricte pour assurer votre sécurité financière."
+      "title": "STATUTS & CONTRÔLE",
+      "description": "Des activités encadrées",
+      "summary": "Nos activités réglementées sont exercées par des entités agréées du groupe, sous le contrôle des autorités françaises."
     },
     "regulatory": {
       "france": "France",
-      "acpr": "Autorité de Contrôle Prudentiel et de Résolution",
-      "amf": "Autorité des Marchés Financiers"
+      "acpr": "Courtier en opérations de banque, services de paiement et assurance. Advensys Insurance-Finance — ORIAS n° 21003660, sous le contrôle de l'ACPR.",
+      "amf": "Conseiller en Investissements Financiers (CIF). Advensys Insurance-Finance — ORIAS n° 21003660, sous le contrôle de l'AMF."
     },
     "cta": {
       "title": "Prêt à commencer ?",
@@ -2841,7 +2841,7 @@
         "description": "Parlez directement avec l'un de nos spécialistes du support.",
         "numberLU": "LU : +352 28 79 76 26",
         "numberFR": "FR : +33 6 98 21 44 46",
-        "hours": "Lun–Ven, 9h00–18h00 CET"
+        "hours": "Lun–Ven, 9h00–17h00 CET"
       },
       "email": {
         "title": "Assistance par e-mail",

@@ -212,7 +212,9 @@
       "Bash(cp -r public .next/standalone/public)",
       "Bash(/c/Users/Toufi/AndroidStudioProjects/azuree/.gitignore:*)",
       "Bash(cp -r /c/Users/Toufi/AndroidStudioProjects/azuree/public /c/Users/Toufi/AndroidStudioProjects/azuree/.next/standalone/public)",
-      "Bash(cp -r /c/Users/Toufi/AndroidStudioProjects/azuree/.next/static /c/Users/Toufi/AndroidStudioProjects/azuree/.next/standalone/.next/static)"
+      "Bash(cp -r /c/Users/Toufi/AndroidStudioProjects/azuree/.next/static /c/Users/Toufi/AndroidStudioProjects/azuree/.next/standalone/.next/static)",
+      "Bash(cp -r public .next/standalone/)",
+      "Bash(cp -r .next/static .next/standalone/.next/)"
     ],
     "deny": [],
     "ask": []

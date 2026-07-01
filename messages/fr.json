@@ -1143,7 +1143,7 @@
       "description": "Tout ce dont vous avez besoin pour développer votre entreprise",
       "summary": "Du service de paiement au conseil, nous fournissons des services financiers complets pour les entrepreneurs modernes.",
       "banking": {
-        "description": "Comptes bancaires professionnels pour les particuliers et les entreprises"
+        "description": "Comptes de paiement professionnels pour les particuliers et les entreprises"
       },
       "formation": {
         "description": "Assistance en montage de sociétés, Service complet du montage au conseil"
@@ -1189,8 +1189,8 @@
       "cta": "Nous pouvons vous aider à assister pour établir votre société au Luxembourg avant d'ouvrir votre compte professionnel."
     },
     "referral": {
-      "title": "Vous ne savez pas quel partenaire bancaire vous convient ?",
-      "description": "Répondez à quelques questions et nous vous recommanderons la meilleure solution bancaire pour vos besoins.",
+      "title": "Vous ne savez pas quel partenaire de paiement vous convient ?",
+      "description": "Répondez à quelques questions et nous vous recommanderons la meilleure solution de paiement pour vos besoins.",
       "cta": "Trouvez votre partenaire"
     },
     "getStarted": "Commencer"
@@ -1237,7 +1237,7 @@
       "toBeUploadedLater": "À télécharger ultérieurement",
       "documentsUploaded": "documents téléchargés",
       "currentAccount": "Compte courant",
-      "privateBanking": "Banque privée",
+      "privateBanking": "Service privé",
       "europeanResident": "Résident européen",
       "nonResident": "Non-résident",
       "salary": "Salaire",
@@ -1248,26 +1248,26 @@
       "other": "Autre",
       "applicationSummary": "Résumé de la demande",
       "requiredConsents": "Consentements requis",
-      "consentProcessingTitle": "Traitement pour introduction bancaire",
-      "consentProcessingDesc": "Je consens au traitement de mes données personnelles par Opulanz dans le but de me présenter à la Banque Partenaire Opulanz pour l'ouverture de compte. Ceci est requis pour continuer.",
-      "consentDataSharingTitle": "Partage de données avec les banques partenaires",
-      "consentDataSharingDesc": "Je consens au partage de mes données de demande par Opulanz avec les banques partenaires et les EMI pour l'ouverture de compte et les vérifications de conformité. Ceci est requis pour continuer.",
+      "consentProcessingTitle": "Traitement pour introduction partenaire",
+      "consentProcessingDesc": "Je consens au traitement de mes données personnelles par Opulanz dans le but de me présenter au Partenaire Opulanz pour l'ouverture de compte. Ceci est requis pour continuer.",
+      "consentDataSharingTitle": "Partage de données avec les partenaires de paiement",
+      "consentDataSharingDesc": "Je consens au partage de mes données de demande par Opulanz avec les partenaires de paiement et les EMI pour l'ouverture de compte et les vérifications de conformité. Ceci est requis pour continuer.",
       "consentMarketingTitle": "Communications marketing (Optionnel)",
-      "consentMarketingDesc": "Je souhaite recevoir des mises à jour, des offres et des nouvelles d'Opulanz concernant les produits et services bancaires. Vous pouvez vous désabonner à tout moment.",
+      "consentMarketingDesc": "Je souhaite recevoir des mises à jour, des offres et des nouvelles d'Opulanz concernant les produits et services de paiement. Vous pouvez vous désabonner à tout moment.",
       "gdprTitle": "Vos droits sur vos données",
       "gdprDesc": "En vertu du RGPD, vous avez le droit d'accéder, de rectifier, d'effacer ou de transférer vos données. Vous pouvez également vous opposer au traitement et retirer votre consentement à tout moment. Consultez notre Politique de confidentialité pour plus de détails.",
       "consentsRequired": "Les deux consentements requis doivent être acceptés pour continuer votre demande.",
       "applicationSubmitted": "Demande soumise !",
-      "applicationSubmittedDesc": "Votre demande a été soumise avec succès à la Banque Partenaire Opulanz.",
+      "applicationSubmittedDesc": "Votre demande a été soumise avec succès au Partenaire Opulanz.",
       "applicationReference": "Votre référence de demande",
       "saveReference": "Conservez ce numéro de référence pour suivre votre demande",
       "whatHappensNext": "Que se passe-t-il ensuite ?",
       "emailConfirmation": "Confirmation par e-mail",
       "emailConfirmationDesc": "Nous avons envoyé un e-mail de confirmation avec les détails de votre demande et votre numéro de référence.",
-      "bankReview": "Examen bancaire",
-      "bankReviewDesc": "La Banque Partenaire Opulanz examinera votre demande et vérifiera vos documents. Cela prend généralement 2 à 5 jours ouvrables.",
+      "bankReview": "Examen partenaire",
+      "bankReviewDesc": "Le Partenaire Opulanz examinera votre demande et vérifiera vos documents. Cela prend généralement 2 à 5 jours ouvrables.",
       "accountActivation": "Activation du compte",
-      "accountActivationDesc": "Une fois approuvé, la banque vous contactera directement pour compléter l'activation du compte et vous fournir les détails de votre compte.",
+      "accountActivationDesc": "Une fois approuvé, le partenaire vous contactera directement pour compléter l'activation du compte et vous fournir les détails de votre compte.",
       "docUploadPending": "Téléchargement de documents en attente",
       "docUploadPendingDesc": "Vous devez encore télécharger vos documents. Nous vous enverrons un lien sécurisé vers votre tableau de bord dans les 24 heures.",
       "quickActions": "Actions rapides",
@@ -1301,16 +1301,16 @@
       },
       "welcome": {
         "title": "Bienvenue chez Opulanz",
-        "description": "Commençons l'ouverture de votre compte bancaire personnel. Cela devrait prendre environ 10 minutes.",
+        "description": "Commençons l'ouverture de votre compte de paiement personnel. Cela devrait prendre environ 10 minutes.",
         "accountTypeQuestion": "Quel type de compte souhaitez-vous ouvrir ?",
         "currentTitle": "Compte courant",
-        "currentDesc": "Banque personnelle standard pour les transactions quotidiennes, les paiements et l'épargne. Adapté aux résidents et non-résidents.",
-        "privateTitle": "Banque privée",
-        "privateDesc": "Services de gestion de patrimoine et de banque privée pour les particuliers fortunés. Dépôt minimum généralement requis.",
+        "currentDesc": "Compte de paiement standard pour les transactions quotidiennes, les paiements et l'épargne. Adapté aux résidents et non-résidents.",
+        "privateTitle": "Service privé",
+        "privateDesc": "Services de gestion de patrimoine et de service privé pour les particuliers fortunés. Dépôt minimum généralement requis.",
         "whatNext": "Que se passe-t-il ensuite ?",
         "nextStep1": "Nous collecterons vos informations personnelles",
         "nextStep2": "Vérifierons votre identité et vos coordonnées",
-        "nextStep3": "Vous mettrons en relation avec la Banque Partenaire Opulanz",
+        "nextStep3": "Vous mettrons en relation avec le Partenaire Opulanz",
         "nextStep4": "Complèterons le processus d'ouverture de compte"
       },
       "identity": {
@@ -1323,15 +1323,15 @@
       },
       "intent": {
         "title": "Intention du compte",
-        "description": "Aidez-nous à comprendre vos besoins bancaires afin que nous puissions vous mettre en relation avec la bonne banque partenaire.",
+        "description": "Aidez-nous à comprendre vos besoins de paiement afin que nous puissions vous mettre en relation avec le bon partenaire de paiement.",
         "residenceQuestion": "Quel est votre statut de résidence ?",
         "residentEurope": "Je suis résident d'un pays européen",
         "residentEuropeDesc": "Vous vivez et payez des impôts dans un État membre de l'Union européenne",
         "nonResident": "Je suis non-résident",
-        "nonResidentDesc": "Vous vivez en dehors de l'Europe mais souhaitez un compte bancaire européen",
+        "nonResidentDesc": "Vous vivez en dehors de l'Europe mais souhaitez un compte de paiement européen",
         "countryQuestion": "Dans quel pays résidez-vous ?",
         "selectCountry": "Sélectionnez votre pays",
-        "countryHelp": "Cela nous aide à vous mettre en relation avec le partenaire bancaire approprié",
+        "countryHelp": "Cela nous aide à vous mettre en relation avec le partenaire de paiement approprié",
         "currenciesQuestion": "De quelles devises avez-vous besoin ?",
         "currenciesHelp": "Sélectionnez toutes les devises que vous prévoyez d'utiliser pour les transactions",
         "monthlyTransfers": "Transferts mensuels entrants estimés",
@@ -1344,16 +1344,16 @@
         "pepDescription": "Je confirme que je ne suis pas une Personne Politiquement Exposée (PPE) ni soumis à des sanctions internationales. Les PPE comprennent les responsables gouvernementaux, les politiciens de haut rang et leurs proches associés.",
         "pepWarning": "Si vous êtes une PPE ou soumis à des sanctions, une vérification supplémentaire sera requise",
         "whyNeeded": "Pourquoi nous avons besoin de ces informations",
-        "whyNeededDesc": "En fonction de votre statut de résidence et de votre localisation, nous vous mettrons en relation avec la Banque Partenaire Opulanz la mieux adaptée à vos besoins et conforme aux réglementations bancaires locales.",
-        "privateBankingNotice": "Banque privée sélectionnée",
-        "privateBankingNoticeDesc": "La banque privée nécessite généralement un dépôt minimum (100 000 € et plus) et offre une gestion de relation dédiée, des conseils en patrimoine et des services d'investissement.",
+        "whyNeededDesc": "En fonction de votre statut de résidence et de votre localisation, nous vous mettrons en relation avec le Partenaire Opulanz le mieux adapté à vos besoins et conforme aux réglementations de paiement locales.",
+        "privateBankingNotice": "Service privé sélectionné",
+        "privateBankingNoticeDesc": "Le service privé nécessite généralement un dépôt minimum (100 000 € et plus) et offre une gestion de relation dédiée, des conseils en patrimoine et des services d'investissement.",
         "otherEuCountry": "Autre pays de l'UE"
       },
       "documents": {
         "title": "Éligibilité et documents",
         "description": "Téléchargez les documents requis pour la vérification d'identité et la conformité.",
         "passport": "Passeport ou carte d'identité valide",
-        "addressProof": "Justificatif de domicile (facture, relevé bancaire)",
+        "addressProof": "Justificatif de domicile (facture, relevé de compte)",
         "incomeProof": "Justificatif de revenus (bulletin de salaire, déclaration fiscale)",
         "wealthStatement": "Déclaration de patrimoine/actifs"
       },
@@ -1384,10 +1384,10 @@
         "submitDesc": "Dernière étape"
       },
       "welcome": {
-        "title": "Bienvenue dans la banque d'entreprise",
-        "description": "Commençons l'ouverture de votre compte bancaire professionnel. Ce processus devrait prendre environ 15-20 minutes.",
+        "title": "Bienvenue dans les paiements d'entreprise",
+        "description": "Commençons l'ouverture de votre compte de paiement professionnel. Ce processus devrait prendre environ 15-20 minutes.",
         "accountOpeningTitle": "Ouverture de compte professionnel",
-        "accountOpeningDesc": "Que vous ayez une société existante ou que vous souhaitiez en créer une nouvelle, nous vous guiderons tout au long du processus d'ouverture de compte bancaire avec la Banque Partenaire Opulanz.",
+        "accountOpeningDesc": "Que vous ayez une société existante ou que vous souhaitiez en créer une nouvelle, nous vous guiderons tout au long du processus d'ouverture de compte de paiement avec le Partenaire Opulanz.",
         "whatYouNeed": "Ce dont vous aurez besoin :",
         "need1": "Documents d'enregistrement de la société (si société existante)",
         "need2": "Informations sur les dirigeants et bénéficiaires effectifs (UBO)",
@@ -1400,19 +1400,19 @@
       },
       "companyStatus": {
         "title": "Statut de la société",
-        "description": "Parlez-nous de votre société afin que nous puissions vous fournir la bonne solution bancaire.",
+        "description": "Parlez-nous de votre société afin que nous puissions vous fournir la bonne solution de paiement.",
         "question": "Avez-vous une société existante ou souhaitez-vous en créer une nouvelle ?",
         "existingTitle": "Société existante",
-        "existingDesc": "J'ai déjà une société enregistrée et j'ai besoin d'un compte bancaire.",
+        "existingDesc": "J'ai déjà une société enregistrée et j'ai besoin d'un compte de paiement.",
         "newTitle": "Nouvelle société",
-        "newDesc": "Je souhaite créer une nouvelle société et j'ai besoin d'aide pour la création et la banque.",
+        "newDesc": "Je souhaite créer une nouvelle société et j'ai besoin d'aide pour la création et les paiements.",
         "companyDetails": "Détails de la société",
         "companyName": "Nom de la société",
         "companyNamePlaceholder": "Entrez le nom de votre société",
         "registrationNumber": "Numéro d'enregistrement",
         "registrationNumberPlaceholder": "ex. B123456",
         "formationServiceTitle": "Service de création de société",
-        "formationServiceDesc": "Nous vous aiderons à créer votre société dans la juridiction de votre choix et à ouvrir un compte bancaire simultanément. Ce processus simplifié permet de gagner du temps."
+        "formationServiceDesc": "Nous vous aiderons à créer votre société dans la juridiction de votre choix et à ouvrir un compte de paiement simultanément. Ce processus simplifié permet de gagner du temps."
       },
       "jurisdiction": {
         "title": "Juridiction prévue",
@@ -1420,7 +1420,7 @@
         "newQuestion": "Où souhaitez-vous créer votre société ?",
         "selectJurisdiction": "Sélectionner la juridiction",
         "chooseJurisdiction": "Choisissez une juridiction",
-        "jurisdictionHelp": "Cela détermine quel partenaire bancaire et quel cadre réglementaire s'appliqueront",
+        "jurisdictionHelp": "Cela détermine quel partenaire de paiement et quel cadre réglementaire s'appliqueront",
         "jurisdictionInfo": "Informations sur la juridiction",
         "luxembourgInfo": "Luxembourg : Centre financier de premier plan avec un régime fiscal favorable pour les sociétés holding. Taux d'imposition : ~24%.",
         "luxembourgCapital": "Capital social minimum : 12 000 € pour une S.à r.l. (société à responsabilité limitée)",
@@ -1428,9 +1428,9 @@
         "franceCapital": "Capital social minimum : 1 € pour SAS/SARL (structures les plus courantes)",
         "finlandInfo": "Finlande : Économie nordique stable avec une forte infrastructure numérique. Taux d'imposition : 20%.",
         "finlandCapital": "Capital social minimum : 2 500 € pour Oy (société à responsabilité limitée)",
-        "otherInfo": "Nous vous mettrons en relation avec la Banque Partenaire Opulanz qui dessert les sociétés dans la juridiction sélectionnée. Les exigences et délais spécifiques seront fournis après examen.",
+        "otherInfo": "Nous vous mettrons en relation avec le Partenaire Opulanz qui dessert les sociétés dans la juridiction sélectionnée. Les exigences et délais spécifiques seront fournis après examen.",
         "formationTimeline": "Délai de création de société",
-        "formationTimelineDesc": "La création de société prend généralement 2 à 4 semaines. Nous vous guiderons tout au long du processus et vous aiderons à ouvrir votre compte bancaire simultanément.",
+        "formationTimelineDesc": "La création de société prend généralement 2 à 4 semaines. Nous vous guiderons tout au long du processus et vous aiderons à ouvrir votre compte de paiement simultanément.",
         "otherEuCountry": "Autre pays de l'UE"
       },
       "directors": {
@@ -1446,7 +1446,7 @@
         "ownership": "% de détention",
         "ownershipPlaceholder": "ex. 50",
         "whyNeeded": "Pourquoi nous avons besoin de ces informations",
-        "whyNeededDesc": "Les banques sont tenues par la loi (réglementations KYC/AML) de connaître qui contrôle la société. Cela aide à prévenir la criminalité financière et assure la transparence."
+        "whyNeededDesc": "Les établissements financiers sont tenus par la loi (réglementations KYC/AML) de connaître qui contrôle la société. Cela aide à prévenir la criminalité financière et assure la transparence."
       },
       "formation": {
         "title": "Détails de création de société",
@@ -1468,10 +1468,10 @@
         "included2": "Préparation des statuts",
         "included3": "Enregistrement auprès des autorités",
         "included4": "Enregistrement fiscal",
-        "included5": "Ouverture de compte bancaire",
+        "included5": "Ouverture de compte de paiement",
         "included6": "Adresse de siège social (si nécessaire)",
         "timelineTitle": "Délai de création",
-        "timelineDesc": "Le processus de création de société prend généralement 2 à 4 semaines. Nous vous tiendrons informé à chaque étape et coordonnerons l'ouverture du compte bancaire."
+        "timelineDesc": "Le processus de création de société prend généralement 2 à 4 semaines. Nous vous tiendrons informé à chaque étape et coordonnerons l'ouverture du compte de paiement."
       },
       "documents": {
         "title": "Documents professionnels",
@@ -1535,7 +1535,7 @@
     "approval": {
       "nextSteps": "Prochaines étapes",
       "steps": {
-        "app": "Téléchargez notre application mobile ou accédez à la banque en ligne",
+        "app": "Téléchargez notre application mobile ou accédez à notre application web",
         "security": "Configurez la sécurité de votre compte (2FA, PIN)",
         "card": "Demandez votre carte de débit",
         "fund": "Alimentez votre compte par virement"
@@ -3142,7 +3142,7 @@
           "required": "*",
           "accountType": "Type de compte",
           "currentAccount": "Compte courant",
-          "privateBanking": "Banque privée",
+          "privateBanking": "Service privé",
           "jurisdictions": "Juridictions préférées",
           "currencies": "Devises préférées",
           "estimatedMonthlyIncoming": "Entrées mensuelles estimées",

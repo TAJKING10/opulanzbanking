@@ -1143,7 +1143,7 @@
       "description": "Everything you need to grow your business",
       "summary": "From payment processing to consulting, we provide comprehensive financial services for modern entrepreneurs.",
       "banking": {
-        "description": "Professional business banking accounts for individuals and companies"
+        "description": "Professional business payment accounts for individuals and companies"
       },
       "formation": {
         "description": "Company formation assistance, Full service from incorporation to consulting"
@@ -1189,8 +1189,8 @@
       "cta": "We can assist you in setting up your company in Luxembourg before opening your business account."
     },
     "referral": {
-      "title": "Not sure which banking partner is right for you?",
-      "description": "Answer a few questions and we'll recommend the best banking solution for your needs.",
+      "title": "Not sure which payment partner is right for you?",
+      "description": "Answer a few questions and we'll recommend the best payment solution for your needs.",
       "cta": "Find Your Match"
     },
     "getStarted": "Get Started"
@@ -1237,7 +1237,7 @@
       "toBeUploadedLater": "To be uploaded later",
       "documentsUploaded": "documents uploaded",
       "currentAccount": "Current / Everyday Account",
-      "privateBanking": "Private Banking",
+      "privateBanking": "Private Payment",
       "europeanResident": "European Resident",
       "nonResident": "Non-resident",
       "salary": "Salary",
@@ -1248,26 +1248,26 @@
       "other": "Other",
       "applicationSummary": "Application Summary",
       "requiredConsents": "Required Consents",
-      "consentProcessingTitle": "Processing for Bank Introduction",
-      "consentProcessingDesc": "I consent to Opulanz processing my personal data for the purpose of introducing me to Opulanz Partner Bank for account opening. This is required to proceed.",
-      "consentDataSharingTitle": "Data Sharing with Partner Banks",
-      "consentDataSharingDesc": "I consent to Opulanz sharing my application data with partner banks and EMIs for the purpose of account opening and compliance checks. This is required to proceed.",
+      "consentProcessingTitle": "Processing for Partner Introduction",
+      "consentProcessingDesc": "I consent to Opulanz processing my personal data for the purpose of introducing me to Opulanz Partner for account opening. This is required to proceed.",
+      "consentDataSharingTitle": "Data Sharing with Payment Partners",
+      "consentDataSharingDesc": "I consent to Opulanz sharing my application data with payment partners and EMIs for the purpose of account opening and compliance checks. This is required to proceed.",
       "consentMarketingTitle": "Marketing Communications (Optional)",
-      "consentMarketingDesc": "I would like to receive updates, offers, and news from Opulanz about banking products and services. You can unsubscribe at any time.",
+      "consentMarketingDesc": "I would like to receive updates, offers, and news from Opulanz about payment products and services. You can unsubscribe at any time.",
       "gdprTitle": "Your Data Rights",
       "gdprDesc": "Under GDPR, you have the right to access, rectify, erase, or port your data. You can also object to processing and withdraw consent at any time. See our Privacy Policy for details.",
       "consentsRequired": "Both required consents must be accepted to continue with your application.",
       "applicationSubmitted": "Application Submitted!",
-      "applicationSubmittedDesc": "Your application has been successfully submitted to Opulanz Partner Bank.",
+      "applicationSubmittedDesc": "Your application has been successfully submitted to Opulanz Partner.",
       "applicationReference": "Your Application Reference",
       "saveReference": "Save this reference number for tracking your application",
       "whatHappensNext": "What Happens Next?",
       "emailConfirmation": "Email Confirmation",
       "emailConfirmationDesc": "We've sent a confirmation email with your application details and reference number.",
-      "bankReview": "Bank Review",
-      "bankReviewDesc": "Opulanz Partner Bank will review your application and verify your documents. This typically takes 2-5 business days.",
+      "bankReview": "Partner Review",
+      "bankReviewDesc": "Opulanz Partner will review your application and verify your documents. This typically takes 2-5 business days.",
       "accountActivation": "Account Activation",
-      "accountActivationDesc": "Once approved, the bank will contact you directly to complete the account activation and provide your account details.",
+      "accountActivationDesc": "Once approved, the partner will contact you directly to complete the account activation and provide your account details.",
       "docUploadPending": "Document Upload Pending",
       "docUploadPendingDesc": "You still need to upload your documents. We'll send you a secure link to your dashboard within 24 hours.",
       "quickActions": "Quick Actions",
@@ -1301,16 +1301,16 @@
       },
       "welcome": {
         "title": "Welcome to Opulanz",
-        "description": "Let's get started with opening your personal bank account. This should take about 10 minutes.",
+        "description": "Let's get started with opening your personal payment account. This should take about 10 minutes.",
         "accountTypeQuestion": "What type of account are you opening?",
         "currentTitle": "Current / Everyday Account",
-        "currentDesc": "Standard personal banking for daily transactions, payments, and savings. Suitable for residents and non-residents.",
-        "privateTitle": "Private Banking",
-        "privateDesc": "Wealth management and private banking services for high-net-worth individuals. Minimum deposit typically required.",
+        "currentDesc": "Standard personal payment account for daily transactions, payments, and savings. Suitable for residents and non-residents.",
+        "privateTitle": "Private Payment",
+        "privateDesc": "Wealth management and private payment services for high-net-worth individuals. Minimum deposit typically required.",
         "whatNext": "What happens next?",
         "nextStep1": "We'll collect your personal information",
         "nextStep2": "Verify your identity and contact details",
-        "nextStep3": "Match you with Opulanz Partner Bank",
+        "nextStep3": "Match you with Opulanz Partner",
         "nextStep4": "Complete the account opening process"
       },
       "identity": {
@@ -1323,15 +1323,15 @@
       },
       "intent": {
         "title": "Account Intent",
-        "description": "Help us understand your banking needs so we can match you with the right partner bank.",
+        "description": "Help us understand your payment needs so we can match you with the right payment partner.",
         "residenceQuestion": "What is your residence status?",
         "residentEurope": "I am a resident of a European country",
         "residentEuropeDesc": "You live and pay taxes in a European Union member state",
         "nonResident": "I am a non-resident",
-        "nonResidentDesc": "You live outside of Europe but want a European bank account",
+        "nonResidentDesc": "You live outside of Europe but want a European payment account",
         "countryQuestion": "Which country do you reside in?",
         "selectCountry": "Select your country",
-        "countryHelp": "This helps us match you with the appropriate banking partner",
+        "countryHelp": "This helps us match you with the appropriate payment partner",
         "currenciesQuestion": "Which currencies do you need?",
         "currenciesHelp": "Select all currencies you plan to use for transactions",
         "monthlyTransfers": "Estimated monthly incoming transfers",
@@ -1344,16 +1344,16 @@
         "pepDescription": "I confirm that I am not a Politically Exposed Person (PEP) or subject to any international sanctions. PEPs include government officials, senior politicians, and their close associates.",
         "pepWarning": "If you are a PEP or subject to sanctions, additional verification will be required",
         "whyNeeded": "Why we need this information",
-        "whyNeededDesc": "Based on your residence status and location, we'll match you with Opulanz Partner Bank that can best serve your needs and comply with local banking regulations.",
-        "privateBankingNotice": "Private Banking Selected",
-        "privateBankingNoticeDesc": "Private banking typically requires a minimum deposit (â‚¬100,000+) and provides dedicated relationship management, wealth advisory, and investment services.",
+        "whyNeededDesc": "Based on your residence status and location, we'll match you with Opulanz Partner that can best serve your needs and comply with local payment regulations.",
+        "privateBankingNotice": "Private Payment Selected",
+        "privateBankingNoticeDesc": "Private payment typically requires a minimum deposit (€100,000+) and provides dedicated relationship management, wealth advisory, and investment services.",
         "otherEuCountry": "Other EU Country"
       },
       "documents": {
         "title": "Eligibility & Documents",
         "description": "Upload the required documents for identity verification and compliance.",
         "passport": "Valid Passport or National ID",
-        "addressProof": "Proof of Address (utility bill, bank statement)",
+        "addressProof": "Proof of Address (utility bill, account statement)",
         "incomeProof": "Proof of Income (payslip, tax return)",
         "wealthStatement": "Statement of Wealth/Assets"
       },
@@ -1364,7 +1364,7 @@
     },
     "business": {
       "title": "Open a Business Account",
-      "description": "Complete your business banking application",
+      "description": "Complete your business payment application",
       "steps": {
         "welcomeLabel": "Welcome",
         "welcomeDesc": "Get started",
@@ -1384,10 +1384,10 @@
         "submitDesc": "Final step"
       },
       "welcome": {
-        "title": "Welcome to Business Banking",
-        "description": "Let's get started with opening your business bank account. This process should take about 15-20 minutes.",
+        "title": "Welcome to Business Payments",
+        "description": "Let's get started with opening your business payment account. This process should take about 15-20 minutes.",
         "accountOpeningTitle": "Business Account Opening",
-        "accountOpeningDesc": "Whether you have an existing company or want to start a new one, we'll guide you through the process of opening a business bank account with Opulanz Partner Bank.",
+        "accountOpeningDesc": "Whether you have an existing company or want to start a new one, we'll guide you through the process of opening a business payment account with Opulanz Partner.",
         "whatYouNeed": "What you'll need:",
         "need1": "Company registration documents (if existing company)",
         "need2": "Information about directors and beneficial owners (UBOs)",
@@ -1400,19 +1400,19 @@
       },
       "companyStatus": {
         "title": "Company Status",
-        "description": "Tell us about your company so we can provide the right banking solution.",
+        "description": "Tell us about your company so we can provide the right payment solution.",
         "question": "Do you have an existing company or want to start a new one?",
         "existingTitle": "Existing Company",
-        "existingDesc": "I already have a registered company and need a bank account for it.",
+        "existingDesc": "I already have a registered company and need a payment account for it.",
         "newTitle": "New Company",
-        "newDesc": "I want to start a new company and need help with company formation and banking.",
+        "newDesc": "I want to start a new company and need help with company formation and payment services.",
         "companyDetails": "Company Details",
         "companyName": "Company Name",
         "companyNamePlaceholder": "Enter your company name",
         "registrationNumber": "Company Registration Number",
         "registrationNumberPlaceholder": "e.g., B123456",
         "formationServiceTitle": "Company Formation Service",
-        "formationServiceDesc": "We'll help you form your company in your chosen jurisdiction and open a bank account simultaneously. This streamlined process saves time and ensures everything is set up correctly."
+        "formationServiceDesc": "We'll help you form your company in your chosen jurisdiction and open a payment account simultaneously. This streamlined process saves time and ensures everything is set up correctly."
       },
       "jurisdiction": {
         "title": "Intended Jurisdiction",
@@ -1420,7 +1420,7 @@
         "newQuestion": "Where would you like to form your company?",
         "selectJurisdiction": "Select Jurisdiction",
         "chooseJurisdiction": "Choose a jurisdiction",
-        "jurisdictionHelp": "This determines which banking partner and regulatory framework will apply",
+        "jurisdictionHelp": "This determines which payment partner and regulatory framework will apply",
         "jurisdictionInfo": "Jurisdiction Information",
         "luxembourgInfo": "Luxembourg: Premier financial center with favorable tax regime for holding companies. Corporate tax rate: ~24%.",
         "luxembourgCapital": "Minimum share capital: â‚¬12,000 for S.Ã  r.l. (limited liability company)",
@@ -1428,9 +1428,9 @@
         "franceCapital": "Minimum share capital: â‚¬1 for SAS/SARL (most common structures)",
         "finlandInfo": "Finland: Stable Nordic economy with strong digital infrastructure. Corporate tax rate: 20%.",
         "finlandCapital": "Minimum share capital: â‚¬2,500 for Oy (limited company)",
-        "otherInfo": "We'll match you with Opulanz Partner Bank that serves companies in your selected jurisdiction. Specific requirements and timelines will be provided after application review.",
+        "otherInfo": "We'll match you with Opulanz Partner that serves companies in your selected jurisdiction. Specific requirements and timelines will be provided after application review.",
         "formationTimeline": "Company Formation Timeline",
-        "formationTimelineDesc": "Company formation typically takes 2-4 weeks. We'll guide you through the entire process and help you open your bank account simultaneously.",
+        "formationTimelineDesc": "Company formation typically takes 2-4 weeks. We'll guide you through the entire process and help you open your payment account simultaneously.",
         "otherEuCountry": "Other EU Country"
       },
       "directors": {
@@ -1446,7 +1446,7 @@
         "ownership": "Ownership %",
         "ownershipPlaceholder": "e.g., 50",
         "whyNeeded": "Why we need this information",
-        "whyNeededDesc": "Banks are required by law (KYC/AML regulations) to know who controls the company. This helps prevent financial crime and ensures transparency."
+        "whyNeededDesc": "Financial institutions are required by law (KYC/AML regulations) to know who controls the company. This helps prevent financial crime and ensures transparency."
       },
       "formation": {
         "title": "Company Formation Details",
@@ -1468,10 +1468,10 @@
         "included2": "Articles of association preparation",
         "included3": "Company registration with authorities",
         "included4": "Tax registration",
-        "included5": "Bank account opening",
+        "included5": "Payment account opening",
         "included6": "Registered office address (if needed)",
         "timelineTitle": "Formation Timeline",
-        "timelineDesc": "The company formation process typically takes 2-4 weeks. We'll keep you updated at each stage and coordinate the bank account opening to minimize delays."
+        "timelineDesc": "The company formation process typically takes 2-4 weeks. We'll keep you updated at each stage and coordinate the payment account opening to minimize delays."
       },
       "documents": {
         "title": "Business Documents",
@@ -1535,7 +1535,7 @@
     "approval": {
       "nextSteps": "Next Steps",
       "steps": {
-        "app": "Download our mobile app or access web banking",
+        "app": "Download our mobile app or access our web app",
         "security": "Set up your account security (2FA, PIN)",
         "card": "Request your debit card",
         "fund": "Fund your account via transfer"
@@ -3142,7 +3142,7 @@
           "required": "*",
           "accountType": "Account Type",
           "currentAccount": "Current Account",
-          "privateBanking": "Private Banking",
+          "privateBanking": "Private Payment",
           "jurisdictions": "Preferred Jurisdictions",
           "currencies": "Preferred Currencies",
           "estimatedMonthlyIncoming": "Estimated Monthly Incoming",

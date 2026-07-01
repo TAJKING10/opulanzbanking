@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { Calculator, FileText, PieChart, Users, CheckCircle, Shield, TrendingUp } from "lucide-react";
+import { Calculator, FileText, PieChart, Users, CheckCircle, TrendingUp } from "lucide-react";
 import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -19,7 +19,6 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
     { icon: Calculator,  key: "bookkeeping" },
     { icon: PieChart,    key: "reporting" },
     { icon: Users,       key: "payroll" },
-    { icon: Shield,      key: "compliance" },
     { icon: TrendingUp,  key: "planning" },
   ] as const;
 

@@ -5,6 +5,8 @@ import { useTranslations, useLocale } from "next-intl";
 import { Hero } from "@/components/hero";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Script from "next/script";
 import { useState, useEffect, useRef } from "react";
 import { PayPalButtons } from "@/components/paypal-buttons";
@@ -22,12 +24,16 @@ export default function ScheduleInvestmentMeetingPage() {
   const locale = useLocale();
   const dateLocale = locale === "fr" ? "fr-FR" : "en-US";
 
-  const [step, setStep] = useState<'calendar' | 'payment' | 'confirmation'>('calendar');
+  const [step, setStep] = useState<'contact' | 'calendar' | 'payment' | 'confirmation'>('contact');
+  const [contact, setContact] = useState({ firstName: "", lastName: "", email: "" });
+  const [errors, setErrors] = useState<{ firstName?: string; lastName?: string; email?: string }>({});
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const calendlyRef = useRef<HTMLDivElement>(null);
+
+  const fullName = `${contact.firstName} ${contact.lastName}`.trim();
 
   // If Calendly script was already loaded by a previous page navigation, onLoad won't fire
   useEffect(() => {
@@ -43,8 +49,6 @@ export default function ScheduleInvestmentMeetingPage() {
           setBookingData({
             eventUri: e.data.payload.event.uri,
             inviteeUri: e.data.payload.invitee.uri,
-            inviteeName: e.data.payload.invitee.name,
-            inviteeEmail: e.data.payload.invitee.email,
             eventStartTime: e.data.payload.event.start_time,
             eventEndTime: e.data.payload.event.end_time,
           });
@@ -64,6 +68,7 @@ export default function ScheduleInvestmentMeetingPage() {
       window.Calendly?.initInlineWidget({
         url: `https://calendly.com/opulanz-banking/tax-advisory-clone?hide_event_type_details=1&primary_color=d0ab08&locale=${locale}`,
         parentElement: calendlyRef.current,
+        prefill: { name: fullName, email: contact.email },
       });
     }
   }, [step, calendlyLoaded, locale]);
@@ -74,6 +79,18 @@ export default function ScheduleInvestmentMeetingPage() {
     const timer = setTimeout(() => { handlePaymentComplete(); }, 1200);
     return () => clearTimeout(timer);
   }, [paymentCompleted]);
+
+  function handleContactSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const errs: { firstName?: string; lastName?: string; email?: string } = {};
+    if (!contact.firstName.trim()) errs.firstName = t("firstNameRequired");
+    if (!contact.lastName.trim()) errs.lastName = t("lastNameRequired");
+    if (!contact.email.trim()) errs.email = t("emailRequired");
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)) errs.email = t("emailInvalid");
+    setErrors(errs);
+    if (Object.keys(errs).length) return;
+    setStep('calendar');
+  }
 
   const handlePaymentComplete = async () => {
     setLoading(true);
@@ -87,8 +104,8 @@ export default function ScheduleInvestmentMeetingPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          full_name: bookingData.inviteeName,
-          email: bookingData.inviteeEmail,
+          full_name: fullName,
+          email: contact.email,
           calendly_id: bookingData.eventUri,
           calendly_event_uri: bookingData.eventUri,
           meeting_type: 'Investment Advisory',
@@ -105,8 +122,8 @@ export default function ScheduleInvestmentMeetingPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          customerName: bookingData.inviteeName,
-          customerEmail: bookingData.inviteeEmail,
+          customerName: fullName,
+          customerEmail: contact.email,
           appointmentDate: startDate.toLocaleDateString(dateLocale, {
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
           }),
@@ -136,6 +153,65 @@ export default function ScheduleInvestmentMeetingPage() {
       <section className="bg-white py-12">
         <div className="container mx-auto max-w-5xl px-6">
 
+          {/* Step 0: Contact Details */}
+          {step === 'contact' && (
+            <>
+              <div className="mb-8 text-center">
+                <h2 className="mb-4 text-2xl font-bold text-brand-dark md:text-3xl">
+                  {t("contactTitle")}
+                </h2>
+                <p className="text-brand-grayMed">
+                  {t("contactSubtitle")}
+                </p>
+              </div>
+
+              <Card className="border-none shadow-lg">
+                <CardContent className="p-8">
+                  <form onSubmit={handleContactSubmit} className="space-y-6">
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      <div>
+                        <Label htmlFor="firstName">{t("firstName")} <span className="text-red-500">*</span></Label>
+                        <Input
+                          id="firstName"
+                          value={contact.firstName}
+                          onChange={(e) => setContact(p => ({ ...p, firstName: e.target.value }))}
+                          className={`mt-1 ${errors.firstName ? "border-red-500" : ""}`}
+                        />
+                        {errors.firstName && <p className="mt-1 text-sm text-red-500">{errors.firstName}</p>}
+                      </div>
+                      <div>
+                        <Label htmlFor="lastName">{t("lastName")} <span className="text-red-500">*</span></Label>
+                        <Input
+                          id="lastName"
+                          value={contact.lastName}
+                          onChange={(e) => setContact(p => ({ ...p, lastName: e.target.value }))}
+                          className={`mt-1 ${errors.lastName ? "border-red-500" : ""}`}
+                        />
+                        {errors.lastName && <p className="mt-1 text-sm text-red-500">{errors.lastName}</p>}
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="email">{t("email")} <span className="text-red-500">*</span></Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={contact.email}
+                        onChange={(e) => setContact(p => ({ ...p, email: e.target.value }))}
+                        className={`mt-1 ${errors.email ? "border-red-500" : ""}`}
+                      />
+                      {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+                    </div>
+                    <div className="flex justify-end pt-2">
+                      <Button type="submit" className="bg-brand-gold text-white hover:bg-brand-goldDark">
+                        {t("continueToCalendar")}
+                      </Button>
+                    </div>
+                  </form>
+                </CardContent>
+              </Card>
+            </>
+          )}
+
           {/* Step 1: Calendar */}
           {step === 'calendar' && (
             <>
@@ -156,6 +232,12 @@ export default function ScheduleInvestmentMeetingPage() {
                   />
                 </CardContent>
               </Card>
+
+              <div className="mt-6 flex justify-start">
+                <Button variant="outline" onClick={() => setStep('contact')}>
+                  {t("backToContact")}
+                </Button>
+              </div>
 
               {/* Info Cards */}
               <div className="mt-12 grid gap-8 md:grid-cols-3">
@@ -228,11 +310,11 @@ export default function ScheduleInvestmentMeetingPage() {
                   <div className="space-y-3">
                     <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                       <span className="text-brand-grayMed">{t("labelName")}</span>
-                      <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                      <span className="font-semibold text-brand-dark">{fullName}</span>
                     </div>
                     <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                       <span className="text-brand-grayMed">{t("labelEmail")}</span>
-                      <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
+                      <span className="font-semibold text-brand-dark">{contact.email}</span>
                     </div>
                     <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                       <span className="text-brand-grayMed">{t("labelDate")}</span>
@@ -299,7 +381,7 @@ export default function ScheduleInvestmentMeetingPage() {
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
                           </svg>
-                          {loading ? t("processing") : 'Redirecting to confirmation...'}
+                          {loading ? t("processing") : t("redirecting")}
                         </div>
                       </div>
                     )}
@@ -335,7 +417,7 @@ export default function ScheduleInvestmentMeetingPage() {
                       </div>
                       <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                         <span className="text-brand-grayMed">{t("labelName")}</span>
-                        <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                        <span className="font-semibold text-brand-dark">{fullName}</span>
                       </div>
                       <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                         <span className="text-brand-grayMed">{t("labelDate")}</span>
@@ -364,7 +446,7 @@ export default function ScheduleInvestmentMeetingPage() {
                 <div className="rounded-lg bg-brand-goldLight/20 p-6">
                   <h4 className="mb-3 font-semibold text-brand-dark">{t("whatsNext")}</h4>
                   <ul className="space-y-2 text-sm text-brand-grayMed">
-                    <li>✓ {t("next1", { email: bookingData.inviteeEmail })}</li>
+                    <li>✓ {t("next1", { email: contact.email })}</li>
                     <li>✓ {t("next2")}</li>
                     <li>✓ {t("next3")}</li>
                     <li>✓ {t("next4")}</li>

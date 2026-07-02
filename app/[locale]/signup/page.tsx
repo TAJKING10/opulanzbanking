@@ -121,7 +121,7 @@ export default function SignupPage() {
         <div className="flex items-center gap-4 text-sm text-white/60">
           <span>Regulated by ACPR</span>
           <span>.</span>
-          <span>SEPA Licensed</span>
+          <span>SEPA Enabled</span>
           <span>.</span>
           <span>PCI DSS Compliant</span>
         </div>

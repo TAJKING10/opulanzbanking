@@ -461,7 +461,7 @@ export function LiveChat() {
                   className="flex w-full items-center gap-2 rounded-xl border border-dashed border-gray-300 px-3 py-3 text-left text-sm font-medium text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50"
                 >
                   <Users className="h-4 w-4 flex-shrink-0" />
-                  Chat with a human agent
+                  {isFr ? "Contacter un agent" : "Chat with a human agent"}
                 </button>
               </div>
             </div>

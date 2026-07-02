@@ -922,7 +922,19 @@
       "returnHome": "Return to Home",
       "completePaymentFirst": "Please complete the PayPal payment first.",
       "paymentFailed": "Payment failed. Please try again.",
-      "paymentError": "There was an error processing your payment. Please contact support."
+      "paymentError": "There was an error processing your payment. Please contact support.",
+      "contactTitle": "Your Contact Details",
+      "contactSubtitle": "Please provide your name and email so we can personalize your consultation.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "emailRequired": "Email address is required",
+      "emailInvalid": "Please enter a valid email address",
+      "continueToCalendar": "Continue to Calendar",
+      "backToContact": "Back",
+      "redirecting": "Redirecting to confirmation..."
     }
   },
   "legal": {
@@ -2103,6 +2115,16 @@
           }
         }
       },
+      "guidance": {
+        "title": "SPV Investment Portal",
+        "description": "Invest in premium real estate and alternative assets through SPV structures.",
+        "step1": "Welcome to the SPV Investment Portal. This section is for qualified investors interested in real estate and alternative assets through Special Purpose Vehicles.",
+        "step2Title": "What is an SPV?",
+        "step2Content": "This section explains how SPV structures work — how they isolate assets, protect investors, and enable co-investment in premium deals.",
+        "step3Title": "Express Interest",
+        "step3Content": "Use this form to register your interest. Enter your name, email, and investor type — our team will reach out to discuss eligibility.",
+        "tip": "SPV investments are reserved for qualified and institutional investors only."
+      },
       "cta": {
         "title": "Interested in SPV Investment Opportunities?",
         "description": "Contact our advisory team to learn more about current and upcoming real estate SPV investment opportunities. Access is available by invitation only.",
@@ -2124,6 +2146,9 @@
         "message": "Message",
         "messagePlaceholder": "Please describe your investment interests and objectives...",
         "submit": "Submit Request",
+        "submitting": "Submitting...",
+        "errorGeneric": "Failed to submit inquiry. Please try again.",
+        "errorNetwork": "Network error. Please check your connection and try again.",
         "success": "Thank you for your interest. A member of our team will contact you shortly.",
         "disclaimer": "This page is provided for informational purposes only and does not constitute a public offer, solicitation, or investment advice. Access to detailed investment information is available exclusively through restricted, invitation-based access following appropriate investor verification."
       }
@@ -2816,6 +2841,16 @@
         "description": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
         "getStarted": "Get Started",
         "contactSales": "Contact Sales"
+      },
+      "guidance": {
+        "title": "Invoicing & Accounting",
+        "description": "Streamline your business finances with our accounting tools.",
+        "step1": "Welcome to Invoicing & Accounting. This platform handles your invoices, bookkeeping, payroll, and financial reporting — all in one place.",
+        "step2Title": "Platform Features",
+        "step2Content": "These cards highlight the core features — automated invoicing, real-time bookkeeping, payroll management, and tax reporting.",
+        "step3Title": "Get Started",
+        "step3Content": "Click 'Get Started' to begin your onboarding. You can import existing data from QuickBooks, Xero, or Excel.",
+        "tip": "You can import existing data from QuickBooks, Xero, or Excel during onboarding."
       }
     }
   },
@@ -3424,13 +3459,12 @@
         "tagline": "Business Banking Made Simple",
         "description": "Manage your business finances with powerful tools for payments, invoicing, and multi-currency accounts.",
         "stats": {
-          "volume": "Processed annually",
-          "clients": "Business clients",
-          "countries": "Countries"
+          "volume": "Years of Experience",
+          "clients": "Professional Clients"
         },
         "compliance": {
           "acpr": "Regulated by ACPR",
-          "sepa": "SEPA Licensed",
+          "sepa": "SEPA Enabled",
           "pci": "PCI DSS Compliant"
         }
       },

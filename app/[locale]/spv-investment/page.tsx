@@ -46,11 +46,11 @@ export default function SpvInvestmentPage() {
       if (data.success) {
         setIsSubmitted(true);
       } else {
-        setSubmitError(data.error || 'Failed to submit inquiry. Please try again.');
+        setSubmitError(data.error || t("spvInvestment.landing.contactForm.errorGeneric"));
       }
     } catch (error) {
       console.error('Error submitting inquiry:', error);
-      setSubmitError('Network error. Please check your connection and try again.');
+      setSubmitError(t("spvInvestment.landing.contactForm.errorNetwork"));
     } finally {
       setIsSubmitting(false);
     }
@@ -91,14 +91,14 @@ export default function SpvInvestmentPage() {
       <PageGuidance
         pageKey="spv-investment"
         locale={locale}
-        title="SPV Investment Portal"
-        description="Invest in premium real estate and alternative assets through SPV structures."
+        title={t("spvInvestment.landing.guidance.title")}
+        description={t("spvInvestment.landing.guidance.description")}
         steps={[
-          { content: "Welcome to the SPV Investment Portal. This section is for qualified investors interested in real estate and alternative assets through Special Purpose Vehicles." },
-          { title: "What is an SPV?", content: "This section explains how SPV structures work — how they isolate assets, protect investors, and enable co-investment in premium deals.", target: "#what-is-spv", position: "bottom" },
-          { title: "Express Interest", content: "Use this form to register your interest. Enter your name, email, and investor type — our team will reach out to discuss eligibility.", target: "#contact", position: "top" },
+          { content: t("spvInvestment.landing.guidance.step1") },
+          { title: t("spvInvestment.landing.guidance.step2Title"), content: t("spvInvestment.landing.guidance.step2Content"), target: "#what-is-spv", position: "bottom" },
+          { title: t("spvInvestment.landing.guidance.step3Title"), content: t("spvInvestment.landing.guidance.step3Content"), target: "#contact", position: "top" },
         ]}
-        tip="SPV investments are reserved for qualified and institutional investors only."
+        tip={t("spvInvestment.landing.guidance.tip")}
       />
       <Hero
         title={t("spvInvestment.landing.heroTitle")}
@@ -329,7 +329,7 @@ export default function SpvInvestmentPage() {
                       {isSubmitting ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Submitting...
+                          {t("spvInvestment.landing.contactForm.submitting")}
                         </>
                       ) : (
                         <>

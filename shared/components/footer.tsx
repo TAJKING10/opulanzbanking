@@ -1,18 +1,10 @@
 import * as React from "react";
 import Link from "next/link";
-import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 interface FooterProps {
   locale: string;
 }
-
-const socialLinks = [
-  { icon: Linkedin, href: "#", key: "linkedin" },
-  { icon: Twitter, href: "#", key: "twitter" },
-  { icon: Facebook, href: "#", key: "facebook" },
-  { icon: Instagram, href: "#", key: "instagram" },
-];
 
 export function Footer({ locale }: FooterProps) {
   const currentYear = new Date().getFullYear();
@@ -202,23 +194,6 @@ export function Footer({ locale }: FooterProps) {
             <p className="mt-4 text-sm text-brand-grayMed leading-relaxed max-w-md">
               {t("footer.description")}
             </p>
-            <div className="mt-6 flex gap-3">
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={social.key}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={t(`footer.social.${social.key}`)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-gold text-white transition-all hover:bg-brand-goldDark hover:scale-110"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
-                );
-              })}
-            </div>
           </div>
         </div>
 

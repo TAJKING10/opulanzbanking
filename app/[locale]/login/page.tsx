@@ -190,16 +190,12 @@ export default function LoginPage() {
           </p>
           <div className="flex items-center gap-8 pt-8">
             <div>
-              <p className="text-3xl font-bold">€2.5B+</p>
+              <p className="text-3xl font-bold">19+</p>
               <p className="text-sm text-white/70">{p("branding.stats.volume")}</p>
             </div>
             <div>
-              <p className="text-3xl font-bold">50K+</p>
+              <p className="text-3xl font-bold">500+</p>
               <p className="text-sm text-white/70">{p("branding.stats.clients")}</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold">35+</p>
-              <p className="text-sm text-white/70">{p("branding.stats.countries")}</p>
             </div>
           </div>
         </div>

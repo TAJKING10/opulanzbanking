@@ -420,8 +420,8 @@ export function PageGuidance({
   tip: tipProp,
   locale,
 }: PageGuidanceProps) {
-  // Stable key — never change this format or existing users will see the tour again
-  const storageKey = `opulanz-tour-${pageKey}`;
+  // Locale-aware key — each language shows its own tour independently
+  const storageKey = `opulanz-tour-${pageKey}-${locale ?? "en"}`;
 
   // Use translated content when available, fall back to props
   const translated = locale ? getGuidanceContent(locale, pageKey) : null;

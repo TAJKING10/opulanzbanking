@@ -68,13 +68,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       ctaLabel: t('common.learnMore'),
       exploreLabel: t('common.explore'),
     },
-    {
-      id: 'svc-spv',
-      title: t('services.spvInvestment.title'),
-      description: t('services.spvInvestment.description'),
-      image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=500&fit=crop',
-      href: `/${locale}/spv-investment`,
-    },
   ];
 
   return (
@@ -123,12 +116,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             content: "Expert insurance brokerage connecting you with leading providers. Term life, whole life, and unit-linked policies — tailored to individuals and families.",
             target: "#svc-insurance",
             position: "left",
-          },
-          {
-            title: "SPV Investment",
-            content: "Exclusive real estate and alternative asset investments through Special Purpose Vehicles. Reserved for qualified and institutional investors seeking premium co-investment opportunities.",
-            target: "#svc-spv",
-            position: "top",
           },
           {
             title: "Ready to Begin?",

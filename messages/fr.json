@@ -931,7 +931,19 @@
       "returnHome": "Retour à l'accueil",
       "completePaymentFirst": "Veuillez d'abord finaliser le paiement PayPal.",
       "paymentFailed": "Le paiement a échoué. Veuillez réessayer.",
-      "paymentError": "Une erreur est survenue lors du traitement de votre paiement. Veuillez contacter le support."
+      "paymentError": "Une erreur est survenue lors du traitement de votre paiement. Veuillez contacter le support.",
+      "contactTitle": "Vos coordonnées",
+      "contactSubtitle": "Veuillez indiquer votre nom et votre e-mail pour personnaliser votre consultation.",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Adresse e-mail",
+      "firstNameRequired": "Le prénom est requis",
+      "lastNameRequired": "Le nom est requis",
+      "emailRequired": "L'adresse e-mail est requise",
+      "emailInvalid": "Veuillez saisir une adresse e-mail valide",
+      "continueToCalendar": "Continuer vers le calendrier",
+      "backToContact": "Retour",
+      "redirecting": "Redirection vers la confirmation..."
     }
   },
   "legal": {
@@ -2112,6 +2124,16 @@
           }
         }
       },
+      "guidance": {
+        "title": "Portail d'Investissement SPV",
+        "description": "Investissez dans l'immobilier premium et les actifs alternatifs via des structures SPV.",
+        "step1": "Bienvenue sur le Portail d'Investissement SPV. Cette section est destinée aux investisseurs qualifiés intéressés par l'immobilier et les actifs alternatifs via des Véhicules à Usage Spécial.",
+        "step2Title": "Qu'est-ce qu'un SPV ?",
+        "step2Content": "Cette section explique le fonctionnement des structures SPV — comment elles isolent les actifs, protègent les investisseurs et permettent le co-investissement dans des opportunités premium.",
+        "step3Title": "Exprimer votre intérêt",
+        "step3Content": "Utilisez ce formulaire pour enregistrer votre intérêt. Saisissez votre nom, e-mail et type d'investisseur — notre équipe vous contactera pour discuter de votre éligibilité.",
+        "tip": "Les investissements SPV sont réservés aux investisseurs qualifiés et institutionnels uniquement."
+      },
       "cta": {
         "title": "Intéressé par les opportunités d'investissement SPV ?",
         "description": "Contactez notre équipe de conseil pour en savoir plus sur les opportunités d'investissement SPV immobilier actuelles et à venir. L'accès est disponible uniquement sur invitation.",
@@ -2133,6 +2155,9 @@
         "message": "Message",
         "messagePlaceholder": "Veuillez décrire vos intérêts et objectifs d'investissement...",
         "submit": "Envoyer la demande",
+        "submitting": "Envoi en cours...",
+        "errorGeneric": "Échec de l'envoi de la demande. Veuillez réessayer.",
+        "errorNetwork": "Erreur réseau. Veuillez vérifier votre connexion et réessayer.",
         "success": "Merci pour votre intérêt. Un membre de notre équipe vous contactera prochainement.",
         "disclaimer": "Cette page est fournie à titre informatif uniquement et ne constitue pas une offre publique, une sollicitation ou un conseil en investissement. L'accès aux informations détaillées sur les investissements est disponible exclusivement via un accès restreint sur invitation après vérification appropriée de l'investisseur."
       }
@@ -2825,6 +2850,16 @@
         "description": "Rejoignez des milliers d'entreprises qui nous font confiance pour leur comptabilité et leur facturation. Commencez dès aujourd'hui.",
         "getStarted": "Commencer",
         "contactSales": "Contacter les ventes"
+      },
+      "guidance": {
+        "title": "Facturation & Comptabilité",
+        "description": "Simplifiez vos finances d'entreprise avec nos outils de comptabilité.",
+        "step1": "Bienvenue dans Facturation & Comptabilité. Cette plateforme gère vos factures, votre comptabilité, votre paie et vos rapports financiers — le tout en un seul endroit.",
+        "step2Title": "Fonctionnalités de la plateforme",
+        "step2Content": "Ces cartes présentent les fonctionnalités principales — facturation automatisée, comptabilité en temps réel, gestion de la paie et déclarations fiscales.",
+        "step3Title": "Commencer",
+        "step3Content": "Cliquez sur 'Commencer' pour démarrer votre intégration. Vous pouvez importer des données existantes depuis QuickBooks, Xero ou Excel.",
+        "tip": "Vous pouvez importer des données existantes depuis QuickBooks, Xero ou Excel lors de l'intégration."
       }
     }
   },
@@ -3433,13 +3468,12 @@
         "tagline": "La banque d'entreprise simplifiée",
         "description": "Gérez vos finances d'entreprise avec des outils puissants pour les paiements, la facturation et les comptes multidevises.",
         "stats": {
-          "volume": "Traité annuellement",
-          "clients": "Clients entreprises",
-          "countries": "Pays"
+          "volume": "Années d'expérience",
+          "clients": "Clients professionnels"
         },
         "compliance": {
           "acpr": "Régulé par l'ACPR",
-          "sepa": "Agréé SEPA",
+          "sepa": "SEPA Activé",
           "pci": "Conforme PCI DSS"
         }
       },

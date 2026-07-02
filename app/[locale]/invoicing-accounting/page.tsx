@@ -29,14 +29,14 @@ export default function InvoicingAccountingPage({ params: { locale } }: { params
       <PageGuidance
         pageKey="invoicing-accounting"
         locale={locale}
-        title="Invoicing & Accounting"
-        description="Streamline your business finances with our accounting tools."
+        title={p("guidance.title")}
+        description={p("guidance.description")}
         steps={[
-          { content: "Welcome to Invoicing & Accounting. This platform handles your invoices, bookkeeping, payroll, and financial reporting — all in one place." },
-          { title: "Platform Features", content: "These cards highlight the core features — automated invoicing, real-time bookkeeping, payroll management, and tax reporting.", target: "#features", position: "top" },
-          { title: "Get Started", content: "Click 'Get Started' to begin your onboarding. You can import existing data from QuickBooks, Xero, or Excel.", target: "a[href*='onboarding']", position: "bottom" },
+          { content: p("guidance.step1") },
+          { title: p("guidance.step2Title"), content: p("guidance.step2Content"), target: "#features", position: "top" },
+          { title: p("guidance.step3Title"), content: p("guidance.step3Content"), target: "a[href*='onboarding']", position: "bottom" },
         ]}
-        tip="You can import existing data from QuickBooks, Xero, or Excel during onboarding."
+        tip={p("guidance.tip")}
       />
       <Hero
         title={t("services.accounting.title")}

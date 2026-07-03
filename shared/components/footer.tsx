@@ -56,44 +56,10 @@ export function Footer({ locale }: FooterProps) {
               </li>
               <li>
                 <Link
-                  href={`/${locale}/investment-advisory`}
-                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
-                >
-                  {t("footer.links.services.investment")}
-                </Link>
-              </li>
-              <li>
-                <Link
                   href={`/${locale}/spv-investment`}
                   className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("footer.links.services.spvInvestment")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Products Column */}
-          <div>
-            <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-dark">
-              {t("footer.sections.products")}
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href={`/${locale}/life-insurance`}
-                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
-                >
-                  {t("footer.links.products.lifeInsurance")}
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href={`/${locale}/open-account`}
-                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
-                >
-                  {t("footer.links.products.businessBanking")}
                 </Link>
               </li>
             </ul>
@@ -199,15 +165,13 @@ export function Footer({ locale }: FooterProps) {
 
         {/* Bottom Bar */}
         <div className="border-t border-brand-grayLight pt-8">
-          <div className="flex flex-col items-center justify-between gap-4 text-sm text-brand-grayMed md:flex-row">
-            <p className="text-center md:text-left">
+          <div className="flex flex-col items-center gap-4 text-sm text-brand-grayMed">
+            <p className="text-xs text-center leading-relaxed max-w-4xl">
+              {t("footer.regulated")}
+            </p>
+            <p className="text-center">
               © {currentYear} {t("footer.copyright", { year: currentYear }).replace(`© ${currentYear} `, '')}
             </p>
-            <div className="flex flex-wrap justify-center gap-6">
-              <p className="text-xs text-center">
-                {t("footer.regulated")}
-              </p>
-            </div>
           </div>
         </div>
       </div>

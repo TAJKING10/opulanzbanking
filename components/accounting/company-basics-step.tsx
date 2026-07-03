@@ -28,12 +28,6 @@ const COMPANY_TYPES = [
 const COUNTRIES = [
   { code: "LU", name: "Luxembourg" },
   { code: "FR", name: "France" },
-  { code: "DE", name: "Germany" },
-  { code: "BE", name: "Belgium" },
-  { code: "NL", name: "Netherlands" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "LV", name: "Latvia" },
-  { code: "US", name: "United States" },
 ];
 
 interface CompanyBasicsStepProps {

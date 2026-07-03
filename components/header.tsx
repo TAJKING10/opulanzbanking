@@ -55,7 +55,7 @@ export function Header({ locale }: HeaderProps) {
           : "bg-white shadow-sm"
       )}
     >
-      <nav className="container mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+      <nav className="mx-auto flex h-16 md:h-20 w-full max-w-7xl 3xl:max-w-[1600px] 4xl:max-w-[1800px] items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           href={`/${locale}`}
@@ -71,7 +71,7 @@ export function Header({ locale }: HeaderProps) {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-10 md:flex">
+        <div className="hidden items-center gap-6 lg:gap-10 md:flex">
           {navigation.map((item) => {
             const isActive = item.href === ""
               ? pathname === `/${locale}` || pathname === `/${locale}/`
@@ -186,7 +186,7 @@ export function Header({ locale }: HeaderProps) {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="border-t border-brand-grayLight bg-white md:hidden">
-          <div className="container mx-auto space-y-1 px-6 py-6">
+          <div className="container mx-auto space-y-1 px-4 sm:px-6 py-4 sm:py-6">
             {navigation.map((item) => {
               // Services with submenu
               if (item.isServices) {

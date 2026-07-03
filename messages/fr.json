@@ -47,7 +47,7 @@
       "storyTitle": "Transformer la finance d'entreprise",
       "storyIntro": "Opulanz est une marque du Groupe Advensys Luxembourg S.A., société holding forte de plus de 19 ans d'expérience dans les solutions complètes aux entreprises en Europe. Nous avons conçu Opulanz avec une vision claire : simplifier et réunir, en un seul endroit, les services financiers et opérationnels dont les entreprises ont besoin.",
       "missionTitle": "Notre mission",
-      "missionText": "Améliorer l'écosystème des services financiers, des paiements et des processus opérationnels des entreprises grâce aux technologies modernes, notamment l'IA et la Blockchain.",
+      "missionText": "Améliorer l'écosystème des services financiers, des paiements et des processus opérationnels des entreprises grâce aux technologies modernes, notamment l'IA.",
       "visionTitle": "Notre vision",
       "visionText": "Devenir une référence européenne des services en ligne aux entreprises, en nous appuyant sur nos statuts d'intermédiaire et de conseil pour offrir flexibilité et qualité de service.",
       "storyClosing": "Aujourd'hui, nous accompagnons des entreprises commerciales, des institutions financières, des fonds d'investissement et des indépendants à travers l'Europe, avec les plus hauts standards de sécurité, de conformité et de service.",
@@ -66,7 +66,7 @@
       "strength2Title": "Plateforme tout-en-un",
       "strength2Description": "De l'assistance à la constitution d'entreprise aux services financiers : comptabilité, conseil fiscal, conseil en investissement et assurance.",
       "strength3Title": "Technologie moderne",
-      "strength3Description": "IA et Blockchain pour des services plus simples et plus efficaces.",
+      "strength3Description": "IA pour des services plus simples et plus efficaces.",
       "licensesOverline": "NOS STATUTS",
       "licensesTitle": "Nos activités réglementées",
       "licensesDescription": "Nos activités réglementées sont exercées par des entités agréées du groupe :",
@@ -85,7 +85,7 @@
       "benefit2Title": "19+ ans d'expérience",
       "benefit2Description": "Au sein du Groupe Advensys Luxembourg S.A.",
       "benefit3Title": "Technologies de pointe",
-      "benefit3Description": "IA et Blockchain au service de vos besoins.",
+      "benefit3Description": "IA au service de vos besoins.",
       "benefit4Title": "Pensé pour les pros",
       "benefit4Description": "Dédié aux entreprises, institutions financières, fonds et indépendants.",
       "benefit5Title": "Standards européens",
@@ -2872,10 +2872,12 @@
       "title": "Nous contacter",
       "description": "Choisissez le canal d'assistance qui vous convient le mieux.",
       "phone": {
-        "title": "Assistance téléphonique",
-        "description": "Parlez directement avec l'un de nos spécialistes du support.",
-        "numberLU": "LU : +352 28 79 76 26",
-        "numberFR": "FR : +33 6 98 21 44 46",
+        "title": "Support téléphonique",
+        "description": "Parlez directement avec l'un de nos spécialistes.",
+        "salesTeam": "Équipe commerciale",
+        "salesNumber": "LU : +352 28 79 76 26",
+        "techTeam": "Équipe technique",
+        "techNumber": "LV : +371 20 682 842",
         "hours": "Lun–Ven, 9h00–17h00 CET"
       },
       "email": {
@@ -2905,6 +2907,17 @@
         "technical": "Support technique",
         "company": "Création de société",
         "billing": "Facturation et paiements",
+        "tax": "Conseil fiscal",
+        "investment": "Conseil en investissement",
+        "insurance": "Assurance vie",
+        "accounting": "Comptabilité et facturation",
+        "spv": "SPV & Investissement immobilier",
+        "kyc": "KYC / Vérification d'identité",
+        "compliance": "Conformité & Réglementation",
+        "transfers": "Virements & Paiements",
+        "cards": "Cartes & Limites",
+        "fraud": "Fraude & Sécurité",
+        "partnership": "Partenariat & Demande commerciale",
         "other": "Autre"
       },
       "message": "Message",
@@ -2963,7 +2976,7 @@
     },
     "offices": {
       "title": "Nos bureaux",
-      "description": "Rendez-nous visite au Luxembourg ou en France.",
+      "description": "Rendez-nous visite au Luxembourg, en France ou en Lettonie",
       "luxembourg": {
         "title": "Luxembourg",
         "address": "34, Grand-rue",
@@ -2979,6 +2992,14 @@
         "country": "France",
         "phone": "Téléphone",
         "email": "E-mail"
+      },
+      "latvia": {
+        "title": "Lettonie",
+        "address": "Vilandes Iela 5-36",
+        "city": "1010 Riga",
+        "country": "Lettonie",
+        "phone": "Téléphone",
+        "email": "Email"
       }
     }
   },

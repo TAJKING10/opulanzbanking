@@ -183,7 +183,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 3xl:p-12 space-y-4 sm:space-y-6">
       <PageTour
         pageKey="dashboard"
         locale={locale}
@@ -226,7 +226,7 @@ export default function DashboardPage() {
 
       {/* KYC Verification Banner */}
       {!kycVerified && (
-        <div data-tour="kyc-banner" className="flex items-center justify-between gap-4 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
+        <div data-tour="kyc-banner" className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 bg-amber-50 border border-amber-200 rounded-xl px-4 sm:px-5 py-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
               <AlertTriangle className="h-5 w-5 text-amber-600" />
@@ -305,7 +305,7 @@ export default function DashboardPage() {
       */}
 
       {/* Main Balance Card & Quick Actions */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
         {/* Main Balance */}
         <div data-tour="balance-card" className="lg:col-span-2 bg-gradient-to-br from-[#b59354] via-[#c9a86c] to-[#886844] rounded-2xl p-6 text-white relative overflow-hidden">
           {/* Background Pattern */}
@@ -423,7 +423,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Chart and IBAN Section */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
         {/* Weekly Spending Chart */}
         <div data-tour="spending-chart" className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
@@ -561,7 +561,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Transactions & Side Panels */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
         {/* Recent Transactions */}
         <div data-tour="transactions" className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100 flex items-center justify-between">
@@ -579,24 +579,24 @@ export default function DashboardPage() {
           </div>
           <div className="divide-y divide-gray-50">
             {transactions.map((tx) => (
-              <div key={tx.id} className="p-4 hover:bg-gray-50 transition-colors cursor-pointer">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 ${tx.color} text-white rounded-xl flex items-center justify-center font-bold`}>
+              <div key={tx.id} className="p-3 sm:p-4 hover:bg-gray-50 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 ${tx.color} text-white rounded-xl flex items-center justify-center font-bold text-sm`}>
                       {tx.icon}
                     </div>
-                    <div>
-                      <p className="font-semibold text-gray-900">{tx.name}</p>
-                      <p className="text-sm text-gray-500">{tx.category}</p>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-gray-900 truncate">{tx.name}</p>
+                      <p className="text-xs sm:text-sm text-gray-500 truncate">{tx.category}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className={`font-semibold ${tx.isCredit ? "text-green-600" : "text-gray-900"}`}>
+                  <div className="text-right flex-shrink-0">
+                    <p className={`font-semibold text-sm sm:text-base ${tx.isCredit ? "text-green-600" : "text-gray-900"}`}>
                       {tx.amount}
                     </p>
-                    <div className="flex items-center justify-end gap-2 mt-1">
-                      <span className="text-xs text-gray-400">{tx.date}</span>
-                      <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${
+                    <div className="flex items-center justify-end gap-1 sm:gap-2 mt-1">
+                      <span className="hidden sm:inline text-xs text-gray-400">{tx.date}</span>
+                      <span className={`inline-flex px-1.5 sm:px-2 py-0.5 rounded text-xs font-medium ${
                         tx.status === "completed"
                           ? "bg-green-100 text-green-700"
                           : "bg-yellow-100 text-yellow-700"

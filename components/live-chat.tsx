@@ -375,11 +375,15 @@ export function LiveChat() {
       {/* Chat panel */}
       {open && (
         <div
-          className="fixed bottom-24 right-6 z-50 flex flex-col overflow-hidden rounded-2xl shadow-2xl"
+          className="fixed z-50 flex flex-col overflow-hidden rounded-2xl shadow-2xl"
           style={{
-            width: 460,
-            maxWidth: "calc(100vw - 24px)",
-            height: 620,
+            bottom: "80px",
+            right: "16px",
+            left: "16px",
+            width: "auto",
+            maxWidth: "460px",
+            height: "min(620px, calc(100dvh - 100px))",
+            marginLeft: "auto",
             background: "#fff",
             border: "1px solid #e5e7eb",
           }}
@@ -419,7 +423,7 @@ export function LiveChat() {
 
           {/* WELCOME VIEW */}
           {view === "welcome" && (
-            <div className="flex-1 space-y-4 overflow-y-auto p-5">
+            <div className="flex-1 space-y-3 overflow-y-auto p-4">
               <div className="flex gap-3">
                 <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#b59354]">
                   <Bot className="h-4 w-4 text-white" />
@@ -431,16 +435,16 @@ export function LiveChat() {
                 </div>
               </div>
 
-              <p className="pl-12 text-xs font-semibold uppercase tracking-wider text-gray-400">
+              <p className="pl-10 text-xs font-semibold uppercase tracking-wider text-gray-400">
                 {isFr ? "Questions fréquentes" : "Frequently Asked Questions"}
               </p>
 
-              <div className="space-y-2 pl-2">
+              <div className="space-y-2">
                 {FAQS.map((faq, i) => (
                   <button
                     key={i}
                     onClick={() => handleFAQ(faq)}
-                    className="flex w-full items-center gap-2 rounded-xl border border-gray-200 px-3 py-3 text-left text-sm text-gray-700 transition-colors hover:border-[#b59354] hover:bg-amber-50"
+                    className="flex w-full items-center gap-2 rounded-xl border border-gray-200 px-3 py-2.5 text-left text-sm text-gray-700 transition-colors hover:border-[#b59354] hover:bg-amber-50"
                   >
                     <ChevronRight className="h-4 w-4 flex-shrink-0 text-[#b59354]" />
                     <span>{faq.q}</span>
@@ -448,7 +452,7 @@ export function LiveChat() {
                 ))}
               </div>
 
-              <div className="pl-2 space-y-2">
+              <div className="space-y-2">
                 <button
                   onClick={() => setView("chat")}
                   className="flex w-full items-center gap-2 rounded-xl border border-dashed border-[#b59354] px-3 py-3 text-left text-sm font-medium text-[#b59354] transition-colors hover:bg-amber-50"
@@ -772,7 +776,7 @@ export function LiveChat() {
       {/* Floating bubble */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#252623] shadow-lg transition-transform hover:scale-105 active:scale-95"
+        className="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-50 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-[#252623] shadow-lg transition-transform hover:scale-105 active:scale-95"
         aria-label={open ? "Minimize chat" : "Open support chat"}
       >
         <MessageCircle className="h-6 w-6 text-[#b59354]" />

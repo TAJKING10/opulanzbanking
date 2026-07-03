@@ -7,7 +7,7 @@ import { PageGuidance } from "@/components/page-guidance";
 import ReactCountryFlag from "react-country-flag";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -89,28 +89,6 @@ export default function SupportPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const faqs = [
-    {
-      question: t("faq.questions.openAccount.question"),
-      answer: t("faq.questions.openAccount.answer"),
-    },
-    {
-      question: t("faq.questions.documents.question"),
-      answer: t("faq.questions.documents.answer"),
-    },
-    {
-      question: t("faq.questions.fees.question"),
-      answer: t("faq.questions.fees.answer"),
-    },
-    {
-      question: t("faq.questions.currencies.question"),
-      answer: t("faq.questions.currencies.answer"),
-    },
-    {
-      question: t("faq.questions.contact.question"),
-      answer: t("faq.questions.contact.answer"),
-    },
-  ];
 
   return (
     <>
@@ -152,10 +130,17 @@ export default function SupportPage() {
                 <p className="mb-4 text-sm text-brand-grayMed">
                   {t("contactMethods.phone.description")}
                 </p>
-                <p className="mb-2 text-lg font-semibold text-brand-gold">
-                  {t("contactMethods.phone.numberLU")}
-                </p>
-                <p className="text-xs text-brand-grayMed">{t("contactMethods.phone.hours")}</p>
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <p className="text-xs text-brand-grayMed">{t("contactMethods.phone.salesTeam")}</p>
+                    <p className="font-semibold text-brand-gold">{t("contactMethods.phone.salesNumber")}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-brand-grayMed">{t("contactMethods.phone.techTeam")}</p>
+                    <p className="font-semibold text-brand-gold">{t("contactMethods.phone.techNumber")}</p>
+                  </div>
+                </div>
+                <p className="mt-3 text-xs text-brand-grayMed">{t("contactMethods.phone.hours")}</p>
               </CardContent>
             </Card>
 
@@ -324,6 +309,17 @@ export default function SupportPage() {
                       <option value="technical">{t("contactForm.subjects.technical")}</option>
                       <option value="company">{t("contactForm.subjects.company")}</option>
                       <option value="billing">{t("contactForm.subjects.billing")}</option>
+                      <option value="tax">{t("contactForm.subjects.tax")}</option>
+                      <option value="investment">{t("contactForm.subjects.investment")}</option>
+                      <option value="insurance">{t("contactForm.subjects.insurance")}</option>
+                      <option value="accounting">{t("contactForm.subjects.accounting")}</option>
+                      <option value="spv">{t("contactForm.subjects.spv")}</option>
+                      <option value="kyc">{t("contactForm.subjects.kyc")}</option>
+                      <option value="compliance">{t("contactForm.subjects.compliance")}</option>
+                      <option value="transfers">{t("contactForm.subjects.transfers")}</option>
+                      <option value="cards">{t("contactForm.subjects.cards")}</option>
+                      <option value="fraud">{t("contactForm.subjects.fraud")}</option>
+                      <option value="partnership">{t("contactForm.subjects.partnership")}</option>
                       <option value="other">{t("contactForm.subjects.other")}</option>
                     </select>
                   </div>
@@ -365,33 +361,6 @@ export default function SupportPage() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section id="faq" className="bg-white py-12">
-        <div className="container mx-auto max-w-4xl px-6">
-          <SectionHeading
-            title={t("faq.title")}
-            description={t("faq.description")}
-            align="center"
-            className="mb-12"
-          />
-
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <Card key={index} className="border-none">
-                <CardHeader>
-                  <CardTitle className="flex items-start gap-3 text-lg">
-                    <HelpCircle className="h-6 w-6 flex-shrink-0 text-brand-gold" />
-                    <span>{faq.question}</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="pl-9 text-sm text-brand-grayMed">{faq.answer}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Additional Resources */}
       <section className="bg-white py-12">
@@ -434,10 +403,7 @@ export default function SupportPage() {
                 <p className="mb-6 text-sm text-brand-grayMed">
                   {t("resources.helpCenter.description")}
                 </p>
-                <Button
-                  variant="outline"
-                  onClick={() => document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" })}
-                >
+                <Button variant="outline" onClick={handleStartChat}>
                   {t("resources.helpCenter.button")}
                 </Button>
               </CardContent>
@@ -484,10 +450,9 @@ export default function SupportPage() {
             className="mb-12"
           />
 
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-3">
             <Card className="border-none">
               <CardContent className="p-8">
-                {/* Unique h3 per card — country name doubled as <p> removed */}
                 <h3 className="mb-1 text-xl font-bold text-brand-dark">
                   {t("offices.luxembourg.title")}
                 </h3>
@@ -509,7 +474,6 @@ export default function SupportPage() {
 
             <Card className="border-none">
               <CardContent className="p-8">
-                {/* Unique h3 per card — country name doubled as <p> removed */}
                 <h3 className="mb-1 text-xl font-bold text-brand-dark">
                   {t("offices.france.title")}
                 </h3>
@@ -523,6 +487,27 @@ export default function SupportPage() {
                   </p>
                   <p>
                     <strong className="text-brand-dark">{t("offices.france.email")}:</strong>{" "}
+                    contact@opulanz.com
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none">
+              <CardContent className="p-8">
+                <h3 className="mb-1 text-xl font-bold text-brand-dark">
+                  {t("offices.latvia.title")}
+                </h3>
+                <div className="space-y-2 text-sm text-brand-grayMed">
+                  <address className="not-italic space-y-1">
+                    <p>{t("offices.latvia.address")}</p>
+                    <p>{t("offices.latvia.city")}</p>
+                  </address>
+                  <p className="mt-4">
+                    <strong className="text-brand-dark">{t("offices.latvia.phone")}:</strong> +371 20 682 842
+                  </p>
+                  <p>
+                    <strong className="text-brand-dark">{t("offices.latvia.email")}:</strong>{" "}
                     contact@opulanz.com
                   </p>
                 </div>

@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { COUNTRIES } from "@/shared/lib/countries";
 
 export interface Address {
   street: string;
@@ -18,17 +19,6 @@ export interface Address {
   postal: string;
   country: string;
 }
-
-const COUNTRIES = [
-  { code: "LU", name: "Luxembourg" },
-  { code: "FR", name: "France" },
-  { code: "DE", name: "Germany" },
-  { code: "BE", name: "Belgium" },
-  { code: "NL", name: "Netherlands" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "US", name: "United States" },
-  { code: "LV", name: "Latvia" },
-];
 
 interface AddressBlockProps {
   label: string;

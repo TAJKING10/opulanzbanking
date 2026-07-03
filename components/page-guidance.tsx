@@ -420,6 +420,8 @@ export function PageGuidance({
   tip: tipProp,
   locale,
 }: PageGuidanceProps) {
+  // Bug 24: Hidden — automatic guidance disabled for all pages/locales
+  return null;
   // Locale-aware key — each language shows its own tour independently
   const storageKey = `opulanz-tour-${pageKey}-${locale ?? "en"}`;
 

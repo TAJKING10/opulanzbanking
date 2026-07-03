@@ -47,7 +47,7 @@
       "storyTitle": "Transforming Corporate Finance",
       "storyIntro": "Opulanz is a brand of Groupe Advensys Luxembourg S.A., a holding company with over 19 years of experience in comprehensive business solutions across Europe. We built Opulanz with a clear vision: to simplify and bring together, in one place, the financial and operational services that businesses need.",
       "missionTitle": "Our Mission",
-      "missionText": "To improve the ecosystem of business financial services, payments, and operational processes through modern technologies, including AI and Blockchain.",
+      "missionText": "To improve the ecosystem of business financial services, payments, and operational processes through modern technologies, including AI.",
       "visionTitle": "Our Vision",
       "visionText": "To become a European reference for online business services, leveraging our intermediary and advisory statuses to offer flexibility and quality of service.",
       "storyClosing": "Today, we support commercial companies, financial institutions, investment funds, and freelancers across Europe, with the highest standards of security, compliance, and service.",
@@ -66,7 +66,7 @@
       "strength2Title": "All-in-One Platform",
       "strength2Description": "From company formation assistance to financial services: accounting, tax advisory, investment advisory, and insurance.",
       "strength3Title": "Modern Technology",
-      "strength3Description": "AI and Blockchain for simpler and more efficient services.",
+      "strength3Description": "AI for simpler and more efficient services.",
       "licensesOverline": "OUR REGULATORY STATUS",
       "licensesTitle": "Our Regulated Activities",
       "licensesDescription": "Our regulated activities are carried out by licensed entities within the group:",
@@ -85,7 +85,7 @@
       "benefit2Title": "19+ Years of Experience",
       "benefit2Description": "Within Groupe Advensys Luxembourg S.A.",
       "benefit3Title": "Cutting-Edge Technology",
-      "benefit3Description": "AI and Blockchain at the service of your needs.",
+      "benefit3Description": "AI at the service of your needs.",
       "benefit4Title": "Built for Professionals",
       "benefit4Description": "Dedicated to businesses, financial institutions, investment funds, and freelancers.",
       "benefit5Title": "European Standards",
@@ -863,9 +863,18 @@
         }
       },
       "stats": {
-        "aum": { "value": "€2.5B+", "label": "Assets Under Management" },
-        "clients": { "value": "5,000+", "label": "Satisfied Clients" },
-        "experience": { "value": "25+", "label": "Years of Experience" }
+        "aum": {
+          "value": "€2.5B+",
+          "label": "Assets Under Management"
+        },
+        "clients": {
+          "value": "5,000+",
+          "label": "Satisfied Clients"
+        },
+        "experience": {
+          "value": "25+",
+          "label": "Years of Experience"
+        }
       },
       "cta": {
         "title": "Advance with independent advice",
@@ -2865,8 +2874,10 @@
       "phone": {
         "title": "Phone Support",
         "description": "Speak directly with one of our support specialists.",
-        "numberLU": "LU: +352 28 79 76 26",
-        "numberFR": "FR: +33 6 98 21 44 46",
+        "salesTeam": "Sales team",
+        "salesNumber": "LU: +352 28 79 76 26",
+        "techTeam": "Technical team",
+        "techNumber": "LV: +371 20 682 842",
         "hours": "Mon–Fri, 9:00–17:00 CET"
       },
       "email": {
@@ -2896,6 +2907,17 @@
         "technical": "Technical Support",
         "company": "Company Formation",
         "billing": "Billing & Payments",
+        "tax": "Tax Advisory",
+        "investment": "Investment Advisory",
+        "insurance": "Life Insurance",
+        "accounting": "Accounting & Invoicing",
+        "spv": "SPV & Real Estate Investment",
+        "kyc": "KYC / Identity Verification",
+        "compliance": "Compliance & Regulatory",
+        "transfers": "Transfers & Payments",
+        "cards": "Cards & Limits",
+        "fraud": "Fraud & Security",
+        "partnership": "Partnership & Business Inquiry",
         "other": "Other"
       },
       "message": "Message",
@@ -2954,7 +2976,7 @@
     },
     "offices": {
       "title": "Our Offices",
-      "description": "Visit us in Luxembourg or France.",
+      "description": "Visit us in Luxembourg, France or Latvia",
       "luxembourg": {
         "title": "Luxembourg",
         "address": "34, Grand-rue",
@@ -2968,6 +2990,14 @@
         "address": "66 Avenue des Champs-Élysées",
         "city": "75008 Paris",
         "country": "France",
+        "phone": "Phone",
+        "email": "Email"
+      },
+      "latvia": {
+        "title": "Latvia",
+        "address": "Vilandes Iela 5-36",
+        "city": "1010 Riga",
+        "country": "Latvia",
         "phone": "Phone",
         "email": "Email"
       }

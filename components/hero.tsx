@@ -34,14 +34,14 @@ export function Hero({
         className
       )}
     >
-      <div className="container relative z-10 mx-auto max-w-6xl px-6">
+      <div className="container relative z-10 mx-auto max-w-6xl 3xl:max-w-[1400px] px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <h1 className="text-balance text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl xl:text-7xl">
+          <h1 className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 3xl:text-8xl">
             {title}
           </h1>
           {subtitle && (

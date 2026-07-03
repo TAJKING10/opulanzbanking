@@ -12,9 +12,9 @@ export function Footer({ locale }: FooterProps) {
 
   return (
     <footer className="border-t border-brand-grayLight bg-gradient-to-b from-white to-gray-50">
-      <div className="container mx-auto max-w-7xl px-6 py-12">
+      <div className="container mx-auto max-w-7xl 3xl:max-w-[1600px] 4xl:max-w-[1800px] px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         {/* Links Grid at Top */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 gap-y-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-10 sm:mb-12">
 
           {/* Services Column */}
           <div>

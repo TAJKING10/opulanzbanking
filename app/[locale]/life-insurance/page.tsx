@@ -270,12 +270,6 @@ export default function LifeInsurancePage({ params: { locale } }: { params: { lo
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a
                 href={`/${locale}/life-insurance/schedule`}
-                className="inline-flex h-14 min-w-56 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-lg transition-all hover:bg-gray-50 hover:scale-105"
-              >
-                {t("cta.primaryButton")}
-              </a>
-              <a
-                href={`/${locale}/life-insurance/schedule`}
                 className="inline-flex h-14 min-w-56 items-center justify-center rounded-2xl border-2 border-white bg-white/10 px-8 text-base font-semibold text-white transition-all hover:bg-white/20"
               >
                 {t("cta.secondaryButton")}

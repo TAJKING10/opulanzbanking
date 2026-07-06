@@ -131,7 +131,7 @@ router.post('/appointment', async (req, res) => {
     await transporter.sendMail({
       from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
-      subject: `Appointment Confirmed — ${meetingType} | Opulanz Banking`,
+      subject: `${meetingType} Invitation from Opulanz`,
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
           <div style="background:#b59354;padding:24px;text-align:center;">

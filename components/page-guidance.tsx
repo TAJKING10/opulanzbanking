@@ -426,7 +426,7 @@ export function PageGuidance({
   const storageKey = `opulanz-tour-${pageKey}-${locale ?? "en"}`;
 
   // Use translated content when available, fall back to props
-  const translated = locale ? getGuidanceContent(locale, pageKey) : null;
+  const translated = locale ? getGuidanceContent(locale!, pageKey) : null;
   const title = translated?.title ?? titleProp;
   const description = translated?.description ?? descriptionProp;
   const tip = translated?.tip ?? tipProp;

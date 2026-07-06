@@ -48,7 +48,7 @@ function OtpBox({ value, onChange, disabled }: OtpBoxProps) {
       {digits.map((d, i) => (
         <input
           key={i}
-          ref={(el) => (refs.current[i] = el)}
+          ref={(el) => { refs.current[i] = el; }}
           type="text"
           inputMode="numeric"
           maxLength={1}

@@ -26,10 +26,16 @@ steps:
   - script: npm ci
     displayName: 'Install dependencies'
 
-  - script: NEXT_OUTPUT=export npm run build
+  - script: npm run build
     displayName: 'Build Next.js static export'
     env:
       NEXT_OUTPUT: export
+      NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
+      NEXT_PUBLIC_BASE_URL: $(NEXT_PUBLIC_BASE_URL)
+      NEXT_PUBLIC_GOOGLE_CLIENT_ID: $(NEXT_PUBLIC_GOOGLE_CLIENT_ID)
+      NEXT_PUBLIC_PAYPAL_CLIENT_ID: $(NEXT_PUBLIC_PAYPAL_CLIENT_ID)
+      NEXT_PUBLIC_TAWK_PROPERTY_ID: $(NEXT_PUBLIC_TAWK_PROPERTY_ID)
+      NEXT_PUBLIC_TAWK_WIDGET_ID: $(NEXT_PUBLIC_TAWK_WIDGET_ID)
 
   - script: npx cap sync ios
     displayName: 'Sync Capacitor iOS'
@@ -102,6 +108,10 @@ steps:
         -scheme App \
         -configuration Release \
         -archivePath "$AGENT_TEMPDIRECTORY/Opulanz.xcarchive" \
+        CODE_SIGN_STYLE=Manual \
+        CODE_SIGN_IDENTITY="iPhone Distribution" \
+        PROVISIONING_PROFILE="$(PROFILE_UUID)" \
+        DEVELOPMENT_TEAM="$(IOS_TEAM_ID)" \
         2>&1 | tee "$AGENT_TEMPDIRECTORY/xcodebuild.log"
       EXIT_CODE=${PIPESTATUS[0]}
       if [ $EXIT_CODE -ne 0 ]; then

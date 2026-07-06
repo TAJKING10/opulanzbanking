@@ -6,9 +6,6 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-- group: frontend-env-vars
-
 steps:
 # 1️⃣ Use Node.js 20
 - task: NodeTool@1
@@ -20,18 +17,12 @@ steps:
 - script: npm ci
   displayName: 'Install dependencies'
 
-# 3️⃣ Build Next.js (reads .env.production automatically)
+# 3️⃣ Build Next.js (NEXT_PUBLIC_* vars are loaded from .env.production automatically)
 - script: npm run build
   displayName: 'Build Next.js app'
   env:
     NODE_ENV: production
     NODE_TLS_REJECT_UNAUTHORIZED: '0'
-    NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
-    NEXT_PUBLIC_BASE_URL: $(NEXT_PUBLIC_BASE_URL)
-    NEXT_PUBLIC_GOOGLE_CLIENT_ID: $(NEXT_PUBLIC_GOOGLE_CLIENT_ID)
-    NEXT_PUBLIC_PAYPAL_CLIENT_ID: $(NEXT_PUBLIC_PAYPAL_CLIENT_ID)
-    NEXT_PUBLIC_TAWK_PROPERTY_ID: $(NEXT_PUBLIC_TAWK_PROPERTY_ID)
-    NEXT_PUBLIC_TAWK_WIDGET_ID: $(NEXT_PUBLIC_TAWK_WIDGET_ID)
 
 # 4️⃣ Copy public + static assets into standalone output
 - script: |

@@ -33,7 +33,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
         description="Grow your wealth with personalized investment strategies."
         steps={[
           { content: "Welcome to Investment Advisory. Our MiFID II-compliant advisors will build a strategy tailored to your goals and risk profile." },
-          { title: "Our Services", content: "Here are all our investment services — portfolio management, retirement planning, ESG investing, and more. Browse and choose what fits your needs.", target: "#services", position: "top" },
+          { title: "Our Services", content: "Here are all our investment services — portfolio management, retirement planning, ESG investing, and more. Browse and choose what fits your needs.", target: "#advisory-services", position: "top" },
           { title: "Schedule a Meeting", content: "Ready to get started? Click this button to schedule a free discovery call with one of our certified advisors.", target: "a[href*='investment-advisory/schedule']", position: "bottom" },
         ]}
         tip="All our advisors are MiFID II compliant and regulated by AMF/CSSF."
@@ -48,7 +48,7 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
       />
 
       {/* Services Section */}
-      <section id="services" className="bg-white py-12 md:py-16">
+      <section id="advisory-services" className="bg-white py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-6">
           <SectionHeading
             overline={p("services.overline")}

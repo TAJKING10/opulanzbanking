@@ -9,8 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Script from "next/script";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { PayPalButtons } from "@/components/paypal-buttons";
 import {
   CheckCircle, Clock, Video, Shield,
@@ -57,6 +56,9 @@ export default function BookingClient() {
   const serviceId = searchParams.get("service") || "";
   const svc = SERVICE_MAP[serviceId] || DEFAULT_SERVICE;
   const serviceTitle = locale === "fr" ? svc.titleFr : svc.title;
+  const calendlyUrl = locale === "fr"
+    ? "https://calendly.com/opulanz-banking/conseil-fiscal"
+    : "https://calendly.com/opulanz-banking/tax-advisory";
 
   const [step, setStep] = useState<Step>("contact");
   const [contact, setContact] = useState<ContactData>({ firstName: "", lastName: "", email: "", phone: "" });
@@ -64,37 +66,25 @@ export default function BookingClient() {
   const [calendly, setCalendly] = useState<CalendlyData>({});
   const [paypal, setPaypal] = useState<PaypalData>({});
   const [paymentDone, setPaymentDone] = useState(false);
-  const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [confirmationNumber, setConfirmationNumber] = useState("");
-  const calendlyRef = useRef<HTMLDivElement>(null);
+  const [calendlyLoaded, setCalendlyLoaded] = useState(false);
 
   const fullName = `${contact.firstName} ${contact.lastName}`.trim();
   const dateStr = fmtDate(calendly.startTime, locale);
   const timeStr = fmtTime(calendly.startTime, locale);
 
-  // ── Calendly init ──────────────────────────────────────────────────────────
+
+  // ── Load Calendly script when calendar step is active ─────────────────────
   useEffect(() => {
-    if (step !== "calendar") return;
-    function init() {
-      // @ts-ignore
-      if (window.Calendly && calendlyRef.current) {
-        calendlyRef.current.innerHTML = "";
-        // @ts-ignore
-        window.Calendly.initInlineWidget({
-          url: "https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=b59354",
-          parentElement: calendlyRef.current,
-          prefill: { name: fullName, email: contact.email },
-        });
-      }
-    }
-    // @ts-ignore
-    if (window.Calendly) { init(); }
-    else {
-      const iv = setInterval(() => { // @ts-ignore
-        if (window.Calendly) { clearInterval(iv); init(); }
-      }, 200);
-      return () => clearInterval(iv);
+    if (step === "calendar" && !calendlyLoaded) {
+      const existing = document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]');
+      if (existing) { setCalendlyLoaded(true); return; }
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      script.onload = () => setCalendlyLoaded(true);
+      document.head.appendChild(script);
     }
   }, [step, calendlyLoaded]);
 
@@ -444,7 +434,12 @@ export default function BookingClient() {
               />
               <Card className="mt-8 border-none shadow-lg">
                 <CardContent className="p-4 md:p-8">
-                  <div ref={calendlyRef} style={{ minWidth: "320px", height: "700px" }} />
+                  <div
+                    key={locale}
+                    className="calendly-inline-widget"
+                    data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=b59354&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(contact.email)}`}
+                    style={{ minWidth: "320px", height: "700px" }}
+                  />
                 </CardContent>
               </Card>
               <div className="mt-6 flex justify-start">
@@ -741,11 +736,6 @@ export default function BookingClient() {
         </div>
       </section>
 
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="afterInteractive"
-        onLoad={() => setCalendlyLoaded(true)}
-      />
     </>
   );
 }

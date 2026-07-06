@@ -214,7 +214,11 @@
       "Bash(cp -r /c/Users/Toufi/AndroidStudioProjects/azuree/public /c/Users/Toufi/AndroidStudioProjects/azuree/.next/standalone/public)",
       "Bash(cp -r /c/Users/Toufi/AndroidStudioProjects/azuree/.next/static /c/Users/Toufi/AndroidStudioProjects/azuree/.next/standalone/.next/static)",
       "Bash(git merge:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "mcp__claude_ai_Calendly__users-get_current_user",
+      "mcp__claude_ai_Calendly__event_types-list_event_types",
+      "Skill(claude-in-chrome)",
+      "mcp__claude_ai_Calendly__event_types-create_event_type"
     ],
     "deny": [],
     "ask": []

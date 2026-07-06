@@ -201,7 +201,7 @@
     "forms": {
       "sarl": {
         "fullName": "Private Limited Company",
-        "minCapital": "â‚¬12,000",
+        "minCapital": "€12,000",
         "minShareholders": 1,
         "liability": "Limited",
         "features": {
@@ -213,17 +213,17 @@
       },
       "sarls": {
         "fullName": "Simplified Private Limited Company",
-        "minCapital": "â‚¬1",
+        "minCapital": "€1",
         "features": {
           "capital": "Very low capital requirement",
           "formation": "Simplified formation",
           "startups": "Ideal for startups",
-          "max": "Max capital â‚¬100,000"
+          "max": "Max capital €100,000"
         }
       },
       "sa": {
         "fullName": "Public Limited Company",
-        "minCapital": "â‚¬30,000",
+        "minCapital": "€30,000",
         "features": {
           "public": "Can be listed publicly",
           "board": "Board of directors required",
@@ -382,7 +382,7 @@
         "domiciliationItem1": "Professional business address in Luxembourg",
         "domiciliationItem2": "Mail forwarding and scanning",
         "domiciliationItem3": "Meeting room access",
-        "domiciliationPrice": "From â‚¬600/year",
+        "domiciliationPrice": "From €600/year",
         "noDomiciliationNote": "If you don't select domiciliation service, you must provide proof of a registered address (lease agreement or property title) in the next step."
       },
       "step7": {
@@ -412,6 +412,7 @@
         "directorsCount": "Directors: {count}",
         "managersCount": "Managers: {count}",
         "ubosCount": "UBOs: {count}",
+        "primaryContact": "Primary Contact",
         "activity": "Activity",
         "nace": "NACE: {code}",
         "expectedTurnover": "Expected turnover: {amount}",
@@ -700,7 +701,7 @@
         "originDetails": "Provide additional details about the origin of funds",
         "expectedReturn": "e.g. 8",
         "maxLoss": "e.g. 20",
-        "initialInvestment": "Minimum â‚¬100,000"
+        "initialInvestment": "Minimum €100,000"
       },
       "options": {
         "legalForm": {
@@ -773,7 +774,7 @@
         "usPersonCheckbox": "I confirm this company is not a US person under FATCA regulations.",
         "advisoryHelper": "In advisory mode, we provide recommendations but you retain full decision-making authority over your portfolio.",
         "managementHelper": "In discretionary management mode, we manage your portfolio on your behalf within agreed parameters.",
-        "minimumInvestment": "Minimum initial investment: â‚¬100,000"
+        "minimumInvestment": "Minimum initial investment: €100,000"
       },
       "consents": {
         "dataProcessing": {
@@ -1236,9 +1237,7 @@
       "fileReqSize": "Maximum file size: 5MB per document",
       "fileReqClear": "Documents must be clear and legible",
       "fileReqValid": "All documents must be valid (not expired)",
-      "uploadLater": "I'll upload documents later via my dashboard",
-      "uploadLaterDesc": "You can submit your application now and upload documents later. We'll send you a secure link to your dashboard where you can complete the document upload.",
-      "uploadRequired": "Please upload all required documents or select the option to upload later to continue.",
+      "uploadRequired": "Please upload all required documents to continue.",
       "completeRequired": "Please complete all required fields to continue.",
       "currenciesNeeded": "Currencies Needed",
       "estMonthlyTransfers": "Est. Monthly Incoming Transfers",
@@ -1249,7 +1248,7 @@
       "toBeUploadedLater": "To be uploaded later",
       "documentsUploaded": "documents uploaded",
       "currentAccount": "Current / Everyday Account",
-      "privateBanking": "Private Payment",
+      "privateBanking": "Private Banking",
       "europeanResident": "European Resident",
       "nonResident": "Non-resident",
       "salary": "Salary",
@@ -1317,8 +1316,8 @@
         "accountTypeQuestion": "What type of account are you opening?",
         "currentTitle": "Current / Everyday Account",
         "currentDesc": "Standard personal payment account for daily transactions, payments, and savings. Suitable for residents and non-residents.",
-        "privateTitle": "Private Payment",
-        "privateDesc": "Wealth management and private payment services for high-net-worth individuals. Minimum deposit typically required.",
+        "privateTitle": "Private Banking",
+        "privateDesc": "Wealth management and private banking services for high-net-worth individuals. Minimum deposit typically required.",
         "whatNext": "What happens next?",
         "nextStep1": "We'll collect your personal information",
         "nextStep2": "Verify your identity and contact details",
@@ -1357,8 +1356,8 @@
         "pepWarning": "If you are a PEP or subject to sanctions, additional verification will be required",
         "whyNeeded": "Why we need this information",
         "whyNeededDesc": "Based on your residence status and location, we'll match you with Opulanz Partner that can best serve your needs and comply with local payment regulations.",
-        "privateBankingNotice": "Private Payment Selected",
-        "privateBankingNoticeDesc": "Private payment typically requires a minimum deposit (€100,000+) and provides dedicated relationship management, wealth advisory, and investment services.",
+        "privateBankingNotice": "Private bank selected",
+        "privateBankingNoticeDesc": "Private banking typically requires a minimum deposit (€250,000+) and provides dedicated relationship management, wealth advisory, and investment services.",
         "otherEuCountry": "Other EU Country"
       },
       "documents": {
@@ -3198,7 +3197,7 @@
           "required": "*",
           "accountType": "Account Type",
           "currentAccount": "Current Account",
-          "privateBanking": "Private Payment",
+          "privateBanking": "Private Banking",
           "jurisdictions": "Preferred Jurisdictions",
           "currencies": "Preferred Currencies",
           "estimatedMonthlyIncoming": "Estimated Monthly Incoming",

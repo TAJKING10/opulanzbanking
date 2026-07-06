@@ -261,7 +261,111 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
     if (smsOtp.length === 6 && !otpLoading && innerStep === "sms-otp") handleVerifySmsOtp();
   }, [smsOtp]);
 
-  // ── KYC Step ──────────────────────────────────────────────────────────────
+  // ── Private Banking: Send email to contact@opulanz.com ────────────────────
+  const [privateSubmitting, setPrivateSubmitting] = React.useState(false);
+  const [privateSubmitted, setPrivateSubmitted] = React.useState(false);
+  const [privateRef, setPrivateRef] = React.useState("");
+  const [privateError, setPrivateError] = React.useState("");
+
+  async function handlePrivateBankingSubmit() {
+    setPrivateSubmitting(true);
+    setPrivateError("");
+    try {
+      const appId = await saveApplication();
+      const ref = `OPL-PB-${Date.now().toString(36).toUpperCase()}`;
+      setPrivateRef(ref);
+
+      await fetch(`${API}/api/notifications/private-banking`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ref,
+          applicationId: appId,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: userEmail,
+          phone: userPhone,
+          residence: data.residence,
+          country: data.country,
+          currencies: data.currencies,
+          monthlyTransfers: data.monthlyTransfers,
+          sourceOfFunds: data.sourceOfFunds,
+          documentsCount: (data.documents || []).length,
+        }),
+      });
+
+      setPrivateSubmitted(true);
+    } catch {
+      setPrivateError("An error occurred. Please try again.");
+    } finally {
+      setPrivateSubmitting(false);
+    }
+  }
+
+  // For private banking, show simplified submission (no Sumsub)
+  if (data.mode === "private" && innerStep === "kyc") {
+    if (privateSubmitted) {
+      return (
+        <div className="max-w-md mx-auto space-y-6 text-center">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+            <CheckCircle2 className="h-10 w-10 text-green-600" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Application Submitted</h2>
+            <p className="text-gray-500 text-sm">
+              Your private banking application has been received. Our team will contact you at{" "}
+              <strong className="text-gray-900">{userEmail}</strong> within 1–2 business days.
+            </p>
+          </div>
+          <div className="rounded-2xl bg-gradient-to-r from-[#b59354]/10 to-[#b59354]/5 border border-[#b59354]/20 p-6">
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">Reference Number</p>
+            <p className="text-xl font-bold text-gray-900 font-mono tracking-wider">{privateRef}</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-6">
+        <div className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
+            <Shield className="h-8 w-8 text-[#b59354]" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Submit Your Application</h2>
+          <p className="text-gray-500 text-sm max-w-md mx-auto">
+            Your private banking application will be sent to our team at{" "}
+            <strong>contact@opulanz.com</strong>. A relationship manager will reach out to you directly.
+          </p>
+        </div>
+
+        <div className="bg-gray-50 rounded-2xl border border-gray-100 p-6 space-y-3">
+          <p className="font-semibold text-gray-900">Application Summary</p>
+          <div className="text-sm text-gray-600 space-y-1">
+            <p><strong>Name:</strong> {data.firstName} {data.lastName}</p>
+            <p><strong>Email:</strong> {userEmail}</p>
+            <p><strong>Phone:</strong> {userPhone}</p>
+            <p><strong>Documents uploaded:</strong> {(data.documents || []).length}</p>
+          </div>
+        </div>
+
+        {privateError && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700 text-center">
+            {privateError}
+          </div>
+        )}
+
+        <button
+          onClick={handlePrivateBankingSubmit}
+          disabled={privateSubmitting}
+          className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          {privateSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Submit Application"}
+        </button>
+      </div>
+    );
+  }
+
+  // ── KYC Step (standard accounts) ──────────────────────────────────────────
   if (innerStep === "kyc") {
     return (
       <div className="space-y-6">
@@ -286,14 +390,6 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
             ))}
           </ul>
         </div>
-
-        <button
-          onClick={() => {
-            // Show Sumsub widget
-            setInnerStep("kyc");
-          }}
-          className="hidden"
-        />
 
         <SumsubKycWidget
           userId={userEmail || `personal-${Date.now()}`}

@@ -321,8 +321,8 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                     type="number"
                     min="0"
                     max="100"
-                    value={editingPerson.sharePercent || 0}
-                    onChange={(e) => setEditingPerson({ ...editingPerson, sharePercent: parseFloat(e.target.value) })}
+                    value={editingPerson.sharePercent || ""}
+                    onChange={(e) => setEditingPerson({ ...editingPerson, sharePercent: parseFloat(e.target.value) || 0 })}
                   />
                 </div>
               )}

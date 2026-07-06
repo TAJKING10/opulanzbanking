@@ -15,6 +15,9 @@ import { PayPalButtons } from "@/components/paypal-buttons";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function TaxReturnPreparationPage({ params: { locale } }: { params: { locale: string } }) {
+  const calendlyUrl = locale === "fr"
+    ? "https://calendly.com/opulanz-banking/conseil-fiscal"
+    : "https://calendly.com/opulanz-banking/tax-advisory";
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -604,8 +607,9 @@ Contact: opulanz.banking@gmail.com
             </div>
 
             <div
+              key={locale}
               className="calendly-inline-widget"
-              data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a"
+              data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d8ba4a`}
               style={{ minWidth: '320px', height: '700px' }}
             />
           </div>

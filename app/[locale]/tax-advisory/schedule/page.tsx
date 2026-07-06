@@ -9,6 +9,9 @@ import Script from "next/script";
 export default function ScheduleConsultationPage() {
   const t = useTranslations();
   const locale = useLocale();
+  const calendlyUrl = locale === "fr"
+    ? "https://calendly.com/opulanz-banking/conseil-fiscal"
+    : "https://calendly.com/opulanz-banking/tax-advisory";
 
   return (
     <>
@@ -32,8 +35,9 @@ export default function ScheduleConsultationPage() {
             <CardContent className="p-4 md:p-8">
               {/* Calendly inline widget */}
               <div
+                key={locale}
                 className="calendly-inline-widget"
-                data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a"
+                data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d8ba4a`}
                 style={{ minWidth: '320px', height: '700px' }}
               />
             </CardContent>

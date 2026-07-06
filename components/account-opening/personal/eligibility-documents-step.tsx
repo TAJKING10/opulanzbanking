@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Upload, CheckCircle, XCircle, FileText, AlertCircle } from "lucide-react";
 
@@ -52,8 +51,6 @@ export function EligibilityDocumentsStep({ data, onUpdate, onNext }: Eligibility
     },
   ]);
 
-  const [uploadLater, setUploadLater] = React.useState(data.uploadLater || false);
-
   const handleFileUpload = (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -78,14 +75,9 @@ export function EligibilityDocumentsStep({ data, onUpdate, onNext }: Eligibility
     }
   };
 
-  const handleUploadLaterChange = (checked: boolean) => {
-    setUploadLater(checked);
-    onUpdate({ uploadLater: checked });
-  };
-
   const requiredDocs = documents.filter((doc) => doc.required);
   const allRequiredUploaded = requiredDocs.every((doc) => doc.uploaded);
-  const canContinue = allRequiredUploaded || uploadLater;
+  const canContinue = allRequiredUploaded;
 
   // Update parent with validation status and documents
   React.useEffect(() => {
@@ -184,24 +176,6 @@ export function EligibilityDocumentsStep({ data, onUpdate, onNext }: Eligibility
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Upload Later Option */}
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="upload-later"
-              checked={uploadLater}
-              onCheckedChange={handleUploadLaterChange}
-              className="mt-1"
-            />
-            <div className="flex-1">
-              <Label htmlFor="upload-later" className="cursor-pointer font-semibold text-blue-900">
-                {tc("uploadLater")}
-              </Label>
-              <p className="mt-1 text-sm text-blue-800">{tc("uploadLaterDesc")}</p>
-            </div>
-          </div>
         </div>
 
         {/* File Requirements */}

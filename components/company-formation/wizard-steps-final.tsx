@@ -56,15 +56,7 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
           placeholder={t("naceCodePlaceholder")}
         />
         <p className="text-xs text-brand-grayMed">
-          {t("naceCodeHelp")}{" "}
-          <a
-            href="https://nacev2.com/en"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-brand-gold hover:underline"
-          >
-            {t("findNaceCode")}
-          </a>
+          {t("naceCodeHelp")}
         </p>
       </div>
 
@@ -479,6 +471,34 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
         // localStorage failure is non-fatal
       }
 
+      // Send confirmation email to user + admin notification (non-fatal)
+      try {
+        const primaryPerson =
+          dossier.shareholders?.[0] ||
+          dossier.managers?.[0] ||
+          dossier.directors?.[0];
+        const userEmail = primaryPerson?.email;
+        const userName = primaryPerson
+          ? `${primaryPerson.firstName} ${primaryPerson.lastName}`
+          : "Applicant";
+
+        if (userEmail) {
+          await fetch(`${apiUrl}/api/notifications/company-formation`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userEmail,
+              userName,
+              companyName: dossier.proposedNames?.[0] || "",
+              formType: dossier.formType,
+              reference: dossier.userRef,
+            }),
+          });
+        }
+      } catch (emailErr) {
+        console.warn("Email notification failed (non-fatal):", emailErr);
+      }
+
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error submitting company formation:", error);
@@ -546,6 +566,21 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
             )}
             <p>{t("ubosCount", { count: dossier.ubos?.length || 0 })}</p>
           </SummarySection>
+
+          {(() => {
+            const primary = dossier.shareholders?.[0] || dossier.managers?.[0] || dossier.directors?.[0];
+            if (!primary) return null;
+            return (
+              <SummarySection title={t("primaryContact")}>
+                {(primary.firstName || primary.lastName) && (
+                  <p><strong>{primary.firstName} {primary.lastName}</strong></p>
+                )}
+                {primary.email && <p className="text-sm text-brand-grayMed">{primary.email}</p>}
+                {primary.phone && <p className="text-sm text-brand-grayMed">{primary.phone}</p>}
+                {primary.address && <p className="text-sm text-brand-grayMed">{primary.address}</p>}
+              </SummarySection>
+            );
+          })()}
 
           <SummarySection title={t("activity")}>
             <p>{t("nace", { code: dossier.naceCode || t("notProvided") })}</p>

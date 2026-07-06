@@ -194,4 +194,160 @@ router.post('/appointment', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/notifications/company-formation
+ * Send company formation confirmation to user + notification to admin
+ */
+router.post('/company-formation', async (req, res) => {
+  try {
+    const { userEmail, userName, companyName, formType, reference } = req.body;
+
+    if (!userEmail || !userName || !reference) {
+      return res.status(400).json({ success: false, error: 'Missing required fields' });
+    }
+
+    const transporter = createTransporter();
+    const teamEmail = process.env.TEAM_EMAIL || 'opulanz.banking@gmail.com';
+    const displayCompany = companyName || 'Your company';
+
+    // 1. Confirmation email to user
+    await transporter.sendMail({
+      from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+      to: userEmail,
+      subject: `Company Formation Dossier Received — Opulanz Banking`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+          <div style="background:#b59354;padding:24px;text-align:center;">
+            <h1 style="color:#fff;margin:0;font-size:24px;letter-spacing:2px;">OPULANZ BANKING</h1>
+            <p style="color:#fff;margin:8px 0 0;opacity:0.9;">Formation Dossier Submitted</p>
+          </div>
+          <div style="padding:32px;background:#fff;">
+            <h2 style="color:#252623;margin-top:0;">Thank you, ${userName}!</h2>
+            <p style="color:#4b5563;">Your company formation dossier has been successfully submitted. Our team will review it and contact you within <strong>24–72 hours</strong> to proceed with the notarization and registration process.</p>
+            <div style="background:#f6f8f8;border-left:4px solid #b59354;padding:20px 24px;margin:24px 0;border-radius:0 8px 8px 0;">
+              <table style="width:100%;border-collapse:collapse;">
+                <tr><td style="padding:8px 0;color:#6b7280;width:160px;"><strong>Reference:</strong></td><td style="padding:8px 0;font-weight:600;color:#b59354;font-family:monospace;">${reference}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Company Name:</strong></td><td style="padding:8px 0;font-weight:600;color:#252623;">${displayCompany}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Structure:</strong></td><td style="padding:8px 0;">${formType || 'N/A'}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Submitted:</strong></td><td style="padding:8px 0;">${new Date().toLocaleDateString('en-US', { dateStyle: 'long' })}</td></tr>
+              </table>
+            </div>
+            <p style="color:#4b5563;">Please keep your reference number safe — you may be asked for it during follow-up.</p>
+            <p style="color:#4b5563;">Questions? <a href="mailto:support@opulanz.com" style="color:#b59354;">support@opulanz.com</a></p>
+          </div>
+          <div style="padding:16px 32px;background:#f6f8f8;text-align:center;">
+            <p style="color:#9ca3af;font-size:12px;margin:0;">© ${new Date().getFullYear()} Opulanz Banking. All rights reserved.</p>
+            <p style="color:#9ca3af;font-size:12px;margin:4px 0 0;">Luxembourg | France</p>
+          </div>
+        </div>
+      `,
+    });
+
+    // 2. Admin notification
+    await transporter.sendMail({
+      from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+      to: teamEmail,
+      subject: `[New Company Formation] ${displayCompany} — ${formType || 'N/A'}`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+          <div style="background:#252623;padding:24px;text-align:center;">
+            <h1 style="color:#b59354;margin:0;font-size:20px;">New Company Formation Dossier</h1>
+          </div>
+          <div style="padding:32px;background:#fff;">
+            <table style="width:100%;border-collapse:collapse;">
+              <tr><td style="padding:8px 0;color:#6b7280;width:160px;"><strong>Reference:</strong></td><td style="padding:8px 0;font-weight:600;font-family:monospace;">${reference}</td></tr>
+              <tr><td style="padding:8px 0;color:#6b7280;"><strong>Applicant:</strong></td><td style="padding:8px 0;">${userName}</td></tr>
+              <tr><td style="padding:8px 0;color:#6b7280;"><strong>Email:</strong></td><td style="padding:8px 0;"><a href="mailto:${userEmail}" style="color:#b59354;">${userEmail}</a></td></tr>
+              <tr><td style="padding:8px 0;color:#6b7280;"><strong>Company:</strong></td><td style="padding:8px 0;font-weight:600;">${displayCompany}</td></tr>
+              <tr><td style="padding:8px 0;color:#6b7280;"><strong>Structure:</strong></td><td style="padding:8px 0;">${formType || 'N/A'}</td></tr>
+              <tr><td style="padding:8px 0;color:#6b7280;"><strong>Submitted:</strong></td><td style="padding:8px 0;">${new Date().toLocaleString('en-US', { dateStyle: 'long', timeStyle: 'short' })}</td></tr>
+            </table>
+          </div>
+        </div>
+      `,
+    });
+
+    console.log(`📧 Company formation dossier submitted: ${userName} <${userEmail}> — ${displayCompany} (${reference})`);
+    res.json({ success: true, message: 'Company formation emails sent' });
+  } catch (error) {
+    console.error('Error sending company formation notification:', error);
+    res.status(500).json({ success: false, error: 'Failed to send notifications', message: error.message });
+  }
+});
+
+/**
+ * POST /api/notifications/private-banking
+ * Send private banking application to contact@opulanz.com + confirmation to user
+ */
+router.post('/private-banking', async (req, res) => {
+  try {
+    const { ref, applicationId, firstName, lastName, email, phone, residence, country, currencies, monthlyTransfers, sourceOfFunds, documentsCount } = req.body;
+
+    const transporter = createTransporter();
+    const TEAM_EMAIL = process.env.TEAM_EMAIL || 'contact@opulanz.com';
+    const fullName = `${firstName || ''} ${lastName || ''}`.trim();
+
+    // 1. Admin notification to contact@opulanz.com
+    await transporter.sendMail({
+      from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+      to: TEAM_EMAIL,
+      subject: `Private Banking Application — ${fullName} [${ref}]`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+          <div style="background:#b59354;padding:24px;text-align:center;">
+            <h1 style="color:#fff;margin:0;font-size:24px;letter-spacing:2px;">OPULANZ BANKING</h1>
+            <p style="color:#fff;margin:8px 0 0;opacity:0.9;">New Private Banking Application</p>
+          </div>
+          <div style="padding:32px;background:#fff;">
+            <h2 style="color:#252623;margin-top:0;">Applicant Details</h2>
+            <table style="width:100%;border-collapse:collapse;">
+              <tr><td style="padding:8px 0;color:#888;width:180px;">Reference</td><td style="padding:8px 0;font-weight:bold;">${ref}</td></tr>
+              <tr><td style="padding:8px 0;color:#888;">Application ID</td><td style="padding:8px 0;">${applicationId || 'N/A'}</td></tr>
+              <tr><td style="padding:8px 0;color:#888;">Full Name</td><td style="padding:8px 0;">${fullName}</td></tr>
+              <tr><td style="padding:8px 0;color:#888;">Email</td><td style="padding:8px 0;">${email}</td></tr>
+              <tr><td style="padding:8px 0;color:#888;">Phone</td><td style="padding:8px 0;">${phone || 'N/A'}</td></tr>
+              <tr><td style="padding:8px 0;color:#888;">Country of Residence</td><td style="padding:8px 0;">${residence || country || 'N/A'}</td></tr>
+              <tr><td style="padding:8px 0;color:#888;">Currencies</td><td style="padding:8px 0;">${Array.isArray(currencies) ? currencies.join(', ') : (currencies || 'N/A')}</td></tr>
+              <tr><td style="padding:8px 0;color:#888;">Monthly Transfers</td><td style="padding:8px 0;">€${(monthlyTransfers || 0).toLocaleString()}</td></tr>
+              <tr><td style="padding:8px 0;color:#888;">Source of Funds</td><td style="padding:8px 0;">${sourceOfFunds || 'N/A'}</td></tr>
+              <tr><td style="padding:8px 0;color:#888;">Documents Uploaded</td><td style="padding:8px 0;">${documentsCount || 0}</td></tr>
+            </table>
+          </div>
+        </div>
+      `,
+    });
+
+    // 2. Confirmation to applicant
+    if (email) {
+      await transporter.sendMail({
+        from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: `Your Private Banking Application — Opulanz [${ref}]`,
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+            <div style="background:#b59354;padding:24px;text-align:center;">
+              <h1 style="color:#fff;margin:0;font-size:24px;letter-spacing:2px;">OPULANZ BANKING</h1>
+              <p style="color:#fff;margin:8px 0 0;opacity:0.9;">Application Received</p>
+            </div>
+            <div style="padding:32px;background:#fff;">
+              <h2 style="color:#252623;margin-top:0;">Dear ${fullName},</h2>
+              <p>Thank you for your private banking application. Our team has received your request and a relationship manager will contact you within 1–2 business days.</p>
+              <div style="background:#f9f6f0;border:1px solid #b59354;border-radius:8px;padding:20px;margin:24px 0;text-align:center;">
+                <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Your Reference Number</p>
+                <p style="margin:8px 0 0;font-size:24px;font-weight:bold;color:#252623;font-family:monospace;">${ref}</p>
+              </div>
+              <p style="color:#888;font-size:13px;">If you have any questions, please contact us at <a href="mailto:contact@opulanz.com" style="color:#b59354;">contact@opulanz.com</a></p>
+            </div>
+          </div>
+        `,
+      });
+    }
+
+    return res.json({ success: true, ref });
+  } catch (err) {
+    console.error('Private banking notification error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to send notification' });
+  }
+});
+
 module.exports = router;

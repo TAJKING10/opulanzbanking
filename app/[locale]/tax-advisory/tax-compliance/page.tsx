@@ -15,6 +15,9 @@ import { PayPalButtons } from "@/components/paypal-buttons";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function TaxCompliancePage({ params: { locale } }: { params: { locale: string } }) {
+  const calendlyUrl = locale === "fr"
+    ? "https://calendly.com/opulanz-banking/conseil-fiscal"
+    : "https://calendly.com/opulanz-banking/tax-advisory";
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -360,7 +363,7 @@ Contact: opulanz.banking@gmail.com
               <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><Euro className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">€{totalPrice} Fee</h3><p className="text-sm text-brand-grayMed">Fixed price for tax compliance</p></div>
               <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><Shield className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Service</h3><p className="text-sm text-brand-grayMed">Compliance monitoring and advice</p></div>
             </div>
-            <div className="calendly-inline-widget" data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a" style={{ minWidth: '320px', height: '700px' }} />
+            <div key={locale} className="calendly-inline-widget" data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d8ba4a`} style={{ minWidth: '320px', height: '700px' }} />
           </div>
         </section></>
     );

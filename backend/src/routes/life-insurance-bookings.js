@@ -175,7 +175,7 @@ router.post('/', async (req, res) => {
       await transporter.sendMail({
         from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
         to: customer_info.email,
-        subject: `Life Insurance Invitation from Opulanz`,
+        subject: `Invitation from Opulanz`,
         html: `
           <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
             <div style="background:#b59354;padding:24px;text-align:center;">

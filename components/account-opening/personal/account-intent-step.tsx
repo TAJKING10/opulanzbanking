@@ -220,15 +220,15 @@ export function AccountIntentStep({ data, onUpdate, onNext }: AccountIntentStepP
             <Slider
               value={[monthlyTransfers]}
               onValueChange={handleMonthlyTransfersChange}
-              min={0}
-              max={1000000}
-              step={1000}
+              min={data.mode === "private" ? 100000 : 0}
+              max={data.mode === "private" ? 50000000 : 1000000}
+              step={data.mode === "private" ? 100000 : 1000}
               className="w-full"
             />
             <div className="flex justify-between text-sm">
-              <span className="text-brand-grayMed">€0</span>
+              <span className="text-brand-grayMed">{data.mode === "private" ? "€100K" : "€0"}</span>
               <span className="font-semibold text-brand-gold">{formatCurrency(monthlyTransfers)}</span>
-              <span className="text-brand-grayMed">€1M+</span>
+              <span className="text-brand-grayMed">{data.mode === "private" ? "€50M+" : "€1M+"}</span>
             </div>
           </div>
           <p className="text-xs text-brand-grayMed">{t("monthlyTransfersHelp")}</p>

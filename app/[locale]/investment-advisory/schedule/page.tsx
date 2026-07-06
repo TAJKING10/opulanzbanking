@@ -7,8 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Script from "next/script";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { PayPalButtons } from "@/components/paypal-buttons";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -24,6 +23,10 @@ export default function ScheduleInvestmentMeetingPage() {
   const locale = useLocale();
   const dateLocale = locale === "fr" ? "fr-FR" : "en-US";
 
+  const calendlyUrl = locale === "fr"
+    ? "https://calendly.com/opulanz-banking/conseil-en-investissement"
+    : "https://calendly.com/opulanz-banking/tax-advisory-clone";
+
   const [step, setStep] = useState<'contact' | 'calendar' | 'payment' | 'confirmation'>('contact');
   const [contact, setContact] = useState({ firstName: "", lastName: "", email: "" });
   const [errors, setErrors] = useState<{ firstName?: string; lastName?: string; email?: string }>({});
@@ -31,16 +34,8 @@ export default function ScheduleInvestmentMeetingPage() {
   const [loading, setLoading] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
-  const calendlyRef = useRef<HTMLDivElement>(null);
 
   const fullName = `${contact.firstName} ${contact.lastName}`.trim();
-
-  // If Calendly script was already loaded by a previous page navigation, onLoad won't fire
-  useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).Calendly) {
-      setCalendlyLoaded(true);
-    }
-  }, []);
 
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
@@ -61,17 +56,19 @@ export default function ScheduleInvestmentMeetingPage() {
     return () => window.removeEventListener('message', handleCalendlyEvent);
   }, []);
 
+
+  // Load Calendly script when calendar step is active
   useEffect(() => {
-    if (step === 'calendar' && calendlyLoaded && calendlyRef.current) {
-      calendlyRef.current.innerHTML = '';
-      // @ts-ignore
-      window.Calendly?.initInlineWidget({
-        url: `https://calendly.com/opulanz-banking/tax-advisory-clone?hide_event_type_details=1&primary_color=d0ab08&locale=${locale}`,
-        parentElement: calendlyRef.current,
-        prefill: { name: fullName, email: contact.email },
-      });
+    if (step === 'calendar' && !calendlyLoaded) {
+      const existing = document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]');
+      if (existing) { setCalendlyLoaded(true); return; }
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      script.onload = () => setCalendlyLoaded(true);
+      document.head.appendChild(script);
     }
-  }, [step, calendlyLoaded, locale]);
+  }, [step, calendlyLoaded]);
 
   // Auto-proceed to confirmation after payment completes
   useEffect(() => {
@@ -227,7 +224,9 @@ export default function ScheduleInvestmentMeetingPage() {
               <Card className="border-none shadow-lg">
                 <CardContent className="p-4 md:p-8">
                   <div
-                    ref={calendlyRef}
+                    key={locale}
+                    className="calendly-inline-widget"
+                    data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d0ab08&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(contact.email)}`}
                     style={{ minWidth: '320px', height: '700px' }}
                   />
                 </CardContent>
@@ -465,11 +464,6 @@ export default function ScheduleInvestmentMeetingPage() {
         </div>
       </section>
 
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="afterInteractive"
-        onLoad={() => setCalendlyLoaded(true)}
-      />
     </>
   );
 }

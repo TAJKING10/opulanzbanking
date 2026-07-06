@@ -5,11 +5,8 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-- name: VERCEL_PROJECT_ID
-  value: 'prj_3NJ50azpNT5OKeTof6mPr18c7fi0'
-- name: VERCEL_ORG_ID
-  value: 'team_fhA85kClq1piD12QCIwYK8Qq'
-- group: frontend-env-vars
+  VERCEL_PROJECT_ID: 'prj_3NJ50azpNT5OKeTof6mPr18c7fi0'
+  VERCEL_ORG_ID: 'team_fhA85kClq1piD12QCIwYK8Qq'
 
 steps:
 - checkout: self
@@ -33,12 +30,6 @@ steps:
     VERCEL_ORG_ID: $(VERCEL_ORG_ID)
     VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
     VERCEL_TOKEN: $(VERCEL_TOKEN)
-    NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
-    NEXT_PUBLIC_BASE_URL: $(NEXT_PUBLIC_BASE_URL)
-    NEXT_PUBLIC_GOOGLE_CLIENT_ID: $(NEXT_PUBLIC_GOOGLE_CLIENT_ID)
-    NEXT_PUBLIC_PAYPAL_CLIENT_ID: $(NEXT_PUBLIC_PAYPAL_CLIENT_ID)
-    NEXT_PUBLIC_TAWK_PROPERTY_ID: $(NEXT_PUBLIC_TAWK_PROPERTY_ID)
-    NEXT_PUBLIC_TAWK_WIDGET_ID: $(NEXT_PUBLIC_TAWK_WIDGET_ID)
 
 - script: |
     vercel deploy --prebuilt --token=$VERCEL_TOKEN

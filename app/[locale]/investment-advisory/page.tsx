@@ -45,10 +45,6 @@ export default function InvestmentAdvisoryPage({ params: { locale } }: { params:
           label: p("hero.scheduleMeeting"),
           href: `/${locale}/investment-advisory/schedule`,
         }}
-        secondaryCta={{
-          label: p("hero.ourServices"),
-          href: "#services",
-        }}
       />
 
       {/* Services Section */}

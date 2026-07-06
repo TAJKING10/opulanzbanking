@@ -32,6 +32,9 @@ export default function ScheduleInvestmentMeetingPage() {
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const calendlyRef = useRef<HTMLDivElement>(null);
+  // Calendly only sends URIs in event_scheduled — capture the actual ISO start time
+  // from date_and_time_selected which fires when the user picks a slot.
+  const selectedStartTimeRef = useRef<string | null>(null);
 
   const fullName = `${contact.firstName} ${contact.lastName}`.trim();
 
@@ -45,12 +48,19 @@ export default function ScheduleInvestmentMeetingPage() {
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
       if (e.data.event && e.data.event.indexOf('calendly') === 0) {
+        if (e.data.event === 'calendly.date_and_time_selected') {
+          // Store the ISO start time; Calendly omits it from event_scheduled payload
+          selectedStartTimeRef.current = e.data.payload?.invitee_start_time ?? null;
+        }
         if (e.data.event === 'calendly.event_scheduled') {
+          const startTime =
+            e.data.payload?.event?.start_time ??
+            selectedStartTimeRef.current;
           setBookingData({
             eventUri: e.data.payload.event.uri,
             inviteeUri: e.data.payload.invitee.uri,
-            eventStartTime: e.data.payload.event.start_time,
-            eventEndTime: e.data.payload.event.end_time,
+            eventStartTime: startTime,
+            eventEndTime: e.data.payload?.event?.end_time ?? null,
           });
           setStep('payment');
         }
@@ -98,7 +108,7 @@ export default function ScheduleInvestmentMeetingPage() {
     try {
       if (!bookingData) throw new Error('No booking data available');
 
-      const startDate = new Date(bookingData.eventStartTime);
+      const startDate = bookingData.eventStartTime ? new Date(bookingData.eventStartTime) : null;
 
       await fetchWithTimeout(`${API}/api/appointments`, {
         method: 'POST',
@@ -124,12 +134,12 @@ export default function ScheduleInvestmentMeetingPage() {
         body: JSON.stringify({
           customerName: fullName,
           customerEmail: contact.email,
-          appointmentDate: startDate.toLocaleDateString(dateLocale, {
+          appointmentDate: startDate ? startDate.toLocaleDateString(dateLocale, {
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-          }),
-          appointmentTime: startDate.toLocaleTimeString(dateLocale, {
+          }) : '',
+          appointmentTime: startDate ? startDate.toLocaleTimeString(dateLocale, {
             hour: '2-digit', minute: '2-digit'
-          }),
+          }) : '',
           meetingType: 'Investment Advisory'
         })
       }).catch(() => null);
@@ -319,17 +329,21 @@ export default function ScheduleInvestmentMeetingPage() {
                     <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                       <span className="text-brand-grayMed">{t("labelDate")}</span>
                       <span className="font-semibold text-brand-dark">
-                        {new Date(bookingData.eventStartTime).toLocaleDateString(dateLocale, {
-                          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                        })}
+                        {bookingData.eventStartTime
+                          ? new Date(bookingData.eventStartTime).toLocaleDateString(dateLocale, {
+                              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                            })
+                          : '—'}
                       </span>
                     </div>
                     <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                       <span className="text-brand-grayMed">{t("labelTime")}</span>
                       <span className="font-semibold text-brand-dark">
-                        {new Date(bookingData.eventStartTime).toLocaleTimeString(dateLocale, {
-                          hour: '2-digit', minute: '2-digit'
-                        })}
+                        {bookingData.eventStartTime
+                          ? new Date(bookingData.eventStartTime).toLocaleTimeString(dateLocale, {
+                              hour: '2-digit', minute: '2-digit'
+                            })
+                          : '—'}
                       </span>
                     </div>
                     <div className="flex justify-between">

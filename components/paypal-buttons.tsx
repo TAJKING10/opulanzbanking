@@ -203,7 +203,7 @@ export function PayPalButtons({
     setPaying(true);
     console.log("[PayPal v6] Starting payment session...");
     sessionRef.current
-      .start({ presentationMode: "auto" }, createOrderRef.current())
+      .start({ presentationMode: "auto" }, createOrderRef.current)
       .catch((err: any) => {
         console.error("[PayPal v6] session.start error:", err);
         setPaying(false);

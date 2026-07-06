@@ -835,7 +835,7 @@
         ]
       },
       "options": {
-        "overline": "Asset classes we advise on",
+        "overline": "",
         "title": "Asset classes we advise on",
         "description": "Investing involves a risk of capital loss. Past performance is not indicative of future results.",
         "riskLabel": "Risk",

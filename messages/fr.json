@@ -835,7 +835,7 @@
         ]
       },
       "options": {
-        "overline": "Classes d'actifs sur lesquelles nous vous conseillons",
+        "overline": "",
         "title": "Classes d'actifs sur lesquelles nous vous conseillons",
         "description": "Investir comporte un risque de perte en capital. Les performances passées ne préjugent pas des performances futures.",
         "riskLabel": "Risque",

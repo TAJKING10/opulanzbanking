@@ -803,7 +803,7 @@
         "ourServices": "Our Services"
       },
       "services": {
-        "overline": "Our investment advice",
+        "overline": "",
         "title": "Our investment advice",
         "description": "Receive personalised recommendations tailored to your situation, objectives and risk tolerance.",
         "items": {

@@ -803,7 +803,7 @@
         "ourServices": "Nos services"
       },
       "services": {
-        "overline": "Notre conseil en investissement",
+        "overline": "",
         "title": "Notre conseil en investissement",
         "description": "Bénéficiez de recommandations personnalisées, adaptées à votre situation, vos objectifs et votre tolérance au risque.",
         "items": {

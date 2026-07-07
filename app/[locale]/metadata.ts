@@ -21,9 +21,9 @@ export function generateSEOMetadata({
   title,
   description,
 }: GenerateMetadataProps): Metadata {
-  const defaultTitle = 'Opulanz - Professional Digital Banking';
+  const defaultTitle = 'Opulanz - Professional Financial Services';
   const defaultDescription =
-    'Trusted digital banking, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg.';
+    'Trusted financial services, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg.';
 
   const pageTitle = title || defaultTitle;
   const pageDescription = description || defaultDescription;
@@ -55,7 +55,7 @@ export function generateSEOMetadata({
           url: `${baseUrl}/images/opulanz-og-image.png`,
           width: 1200,
           height: 630,
-          alt: 'Opulanz Banking',
+          alt: 'Opulanz Financial Services',
         },
       ],
     },

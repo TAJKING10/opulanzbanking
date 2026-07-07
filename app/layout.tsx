@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Opulanz',
-  description: 'Opulanz Banking Platform',
+  description: 'Opulanz Financial Services Platform',
 };
 
 // Minimal pass-through — every real route is handled by app/[locale]/layout.tsx

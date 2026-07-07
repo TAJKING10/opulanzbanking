@@ -29,8 +29,10 @@ export function generateSEOMetadata({
   const pageDescription = description || defaultDescription;
   const url = `${baseUrl}/${locale}${pathname}`;
 
-  // Generate alternate language links
-  const languages: Record<string, string> = {};
+  // Generate alternate language links — x-default signals the fallback for unmatched locales
+  const languages: Record<string, string> = {
+    'x-default': `${baseUrl}/en${pathname}`,
+  };
   routing.locales.forEach((loc) => {
     languages[loc] = `${baseUrl}/${loc}${pathname}`;
   });

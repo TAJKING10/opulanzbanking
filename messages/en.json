@@ -944,7 +944,15 @@
       "emailInvalid": "Please enter a valid email address",
       "continueToCalendar": "Continue to Calendar",
       "backToContact": "Back",
-      "redirecting": "Redirecting to confirmation..."
+      "redirecting": "Redirecting to confirmation...",
+      "phone": "Phone Number",
+      "phoneRequired": "Phone number is required",
+      "investmentAmount": "Estimated Investment Amount (optional)",
+      "topic": "What would you like to discuss? (optional)",
+      "continueToPayment": "Continue to Payment",
+      "labelPhone": "Phone:",
+      "labelTotal": "Total:",
+      "securePayment": "Payments are secured by PayPal. Your card details are never stored."
     }
   },
   "legal": {

@@ -944,7 +944,15 @@
       "emailInvalid": "Veuillez saisir une adresse e-mail valide",
       "continueToCalendar": "Continuer vers le calendrier",
       "backToContact": "Retour",
-      "redirecting": "Redirection vers la confirmation..."
+      "redirecting": "Redirection vers la confirmation...",
+      "phone": "Numéro de téléphone",
+      "phoneRequired": "Le numéro de téléphone est requis",
+      "investmentAmount": "Montant d'investissement estimé (optionnel)",
+      "topic": "Que souhaitez-vous discuter ? (optionnel)",
+      "continueToPayment": "Continuer vers le paiement",
+      "labelPhone": "Téléphone :",
+      "labelTotal": "Total :",
+      "securePayment": "Paiements sécurisés par PayPal. Vos coordonnées bancaires ne sont jamais stockées."
     }
   },
   "legal": {

@@ -218,7 +218,8 @@
       "mcp__claude_ai_Calendly__users-get_current_user",
       "mcp__claude_ai_Calendly__event_types-list_event_types",
       "Skill(claude-in-chrome)",
-      "mcp__claude_ai_Calendly__event_types-create_event_type"
+      "mcp__claude_ai_Calendly__event_types-create_event_type",
+      "Bash(start:*)"
     ],
     "deny": [],
     "ask": []

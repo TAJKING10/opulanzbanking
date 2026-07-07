@@ -9,15 +9,124 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { PayPalButtons } from "@/components/paypal-buttons";
+import { CheckCircle, Shield, ArrowLeft, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-function fetchWithTimeout(url: string, options: RequestInit, timeoutMs = 5000) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeoutMs);
-  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(id));
+function fetchSafe(url: string, options: RequestInit) {
+  const ctrl = new AbortController();
+  const id = setTimeout(() => ctrl.abort(), 6000);
+  return fetch(url, { ...options, signal: ctrl.signal }).finally(() => clearTimeout(id));
 }
 
+type Step = "info" | "payment" | "calendar" | "confirmation";
+
+// ── Full client profile ──────────────────────────────────────────────────────
+interface ClientProfile {
+  // Personal identity
+  title: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  placeOfBirth: string;
+  nationality: string;
+  maritalStatus: string;
+  // Contact
+  email: string;
+  phone: string;
+  // Residential address
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  // Identity document
+  docType: string;
+  docNumber: string;
+  docExpiry: string;
+  docIssuingCountry: string;
+  // Tax residency
+  taxCountry: string;
+  taxId: string;
+  usPerson: boolean;
+  // Professional situation
+  professionalStatus: string;
+  employerName: string;
+  position: string;
+  sector: string;
+  // Family
+  numberOfDependents: string;
+  // Financial situation
+  annualIncome: string;
+  incomeSource: string;
+  totalAssets: string;
+  liquidAssets: string;
+  realEstateValue: string;
+  outstandingDebts: string;
+  // Origin of funds
+  originOfFunds: string;
+  originDetails: string;
+  // Investment profile
+  investmentExperience: string;
+  riskTolerance: string;
+  investmentHorizon: string;
+  investmentObjective: string;
+  expectedReturn: string;
+  maxLossAcceptable: string;
+  // Service
+  missionType: string;
+  initialInvestment: string;
+  // Consents
+  consentData: boolean;
+  consentKyc: boolean;
+  consentElectronic: boolean;
+  consentMarketing: boolean;
+}
+
+const EMPTY: ClientProfile = {
+  title: "Mr.", firstName: "", lastName: "", dateOfBirth: "", placeOfBirth: "",
+  nationality: "", maritalStatus: "single",
+  email: "", phone: "",
+  addressLine1: "", addressLine2: "", city: "", postalCode: "", country: "",
+  docType: "passport", docNumber: "", docExpiry: "", docIssuingCountry: "",
+  taxCountry: "", taxId: "", usPerson: false,
+  professionalStatus: "", employerName: "", position: "", sector: "",
+  numberOfDependents: "0",
+  annualIncome: "", incomeSource: "", totalAssets: "", liquidAssets: "",
+  realEstateValue: "", outstandingDebts: "",
+  originOfFunds: "", originDetails: "",
+  investmentExperience: "beginner", riskTolerance: "moderate",
+  investmentHorizon: "", investmentObjective: "", expectedReturn: "", maxLossAcceptable: "",
+  missionType: "advisory", initialInvestment: "",
+  consentData: false, consentKyc: false, consentElectronic: false, consentMarketing: false,
+};
+
+// ── Reusable field components ────────────────────────────────────────────────
+const F = ({ label, required, error, children }: { label: string; required?: boolean; error?: string; children: React.ReactNode }) => (
+  <div>
+    <Label className="block text-sm font-medium text-brand-dark mb-1">
+      {label} {required && <span className="text-red-500">*</span>}
+    </Label>
+    {children}
+    {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+  </div>
+);
+
+const inp = "w-full px-3 py-2 border border-brand-grayLight rounded-lg text-sm focus:ring-2 focus:ring-brand-gold focus:border-transparent";
+const sel = "w-full px-3 py-2 border border-brand-grayLight rounded-lg text-sm focus:ring-2 focus:ring-brand-gold focus:border-transparent bg-white";
+
+// ── Section header ───────────────────────────────────────────────────────────
+function SectionHeader({ title, open, onToggle }: { title: string; open: boolean; onToggle: () => void }) {
+  return (
+    <button type="button" onClick={onToggle}
+      className="w-full flex items-center justify-between p-4 bg-brand-gold/10 rounded-lg mb-4 hover:bg-brand-gold/20 transition-colors">
+      <h3 className="text-base font-semibold text-brand-dark">{title}</h3>
+      {open ? <ChevronUp className="w-5 h-5 text-brand-dark" /> : <ChevronDown className="w-5 h-5 text-brand-dark" />}
+    </button>
+  );
+}
+
+// ── Main page ────────────────────────────────────────────────────────────────
 export default function ScheduleInvestmentMeetingPage() {
   const t = useTranslations("investmentAdvisory.schedule");
   const locale = useLocale();
@@ -27,443 +136,763 @@ export default function ScheduleInvestmentMeetingPage() {
     ? "https://calendly.com/opulanz-banking/conseil-en-investissement"
     : "https://calendly.com/opulanz-banking/tax-advisory-clone";
 
-  const [step, setStep] = useState<'contact' | 'calendar' | 'payment' | 'confirmation'>('contact');
-  const [contact, setContact] = useState({ firstName: "", lastName: "", email: "" });
-  const [errors, setErrors] = useState<{ firstName?: string; lastName?: string; email?: string }>({});
+  const [step, setStep] = useState<Step>("info");
+  const [profile, setProfile] = useState<ClientProfile>(EMPTY);
+  const [errors, setErrors] = useState<Partial<Record<keyof ClientProfile, string>>>({});
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [paymentOrderId, setPaymentOrderId] = useState("");
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
 
-  const fullName = `${contact.firstName} ${contact.lastName}`.trim();
+  // Collapsed sections
+  const [open, setOpen] = useState({
+    identity: true, contact: true, address: true, document: true,
+    tax: false, professional: false, family: false,
+    financial: false, origin: false, investment: false, service: false, consents: false,
+  });
+  const toggle = (k: keyof typeof open) => setOpen(p => ({ ...p, [k]: !p[k] }));
 
+  const set = (field: keyof ClientProfile, value: any) =>
+    setProfile(p => ({ ...p, [field]: value }));
+
+  const fullName = `${profile.firstName} ${profile.lastName}`.trim();
+
+  // Load Calendly widget
   useEffect(() => {
-    const handleCalendlyEvent = (e: MessageEvent) => {
-      if (e.data.event && e.data.event.indexOf('calendly') === 0) {
-        if (e.data.event === 'calendly.event_scheduled') {
-          setBookingData({
-            eventUri: e.data.payload.event.uri,
-            inviteeUri: e.data.payload.invitee.uri,
-            eventStartTime: e.data.payload.event.start_time,
-            eventEndTime: e.data.payload.event.end_time,
-          });
-          setStep('payment');
-        }
-      }
-    };
-
-    window.addEventListener('message', handleCalendlyEvent);
-    return () => window.removeEventListener('message', handleCalendlyEvent);
-  }, []);
-
-
-  // Load Calendly script when calendar step is active
-  useEffect(() => {
-    if (step === 'calendar' && !calendlyLoaded) {
+    if (step === "calendar" && !calendlyLoaded) {
       const existing = document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]');
       if (existing) { setCalendlyLoaded(true); return; }
-      const script = document.createElement('script');
-      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      const script = document.createElement("script");
+      script.src = "https://assets.calendly.com/assets/external/widget.js";
       script.async = true;
       script.onload = () => setCalendlyLoaded(true);
       document.head.appendChild(script);
     }
   }, [step, calendlyLoaded]);
 
-  // Auto-proceed to confirmation after payment completes
+  // Listen for Calendly booking event
   useEffect(() => {
-    if (!paymentCompleted) return;
-    const timer = setTimeout(() => { handlePaymentComplete(); }, 1200);
-    return () => clearTimeout(timer);
-  }, [paymentCompleted]);
+    const handle = (e: MessageEvent) => {
+      if (e.data?.event === "calendly.event_scheduled") {
+        const p = e.data.payload || {};
+        const data = {
+          eventUri: p.event?.uri,
+          inviteeUri: p.invitee?.uri,
+          eventStartTime: p.event?.start_time,
+          eventEndTime: p.event?.end_time,
+        };
+        setBookingData(data);
+        submitBooking(data);
+      }
+    };
+    window.addEventListener("message", handle);
+    return () => window.removeEventListener("message", handle);
+  }, [profile, paymentOrderId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function handleContactSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const errs: { firstName?: string; lastName?: string; email?: string } = {};
-    if (!contact.firstName.trim()) errs.firstName = t("firstNameRequired");
-    if (!contact.lastName.trim()) errs.lastName = t("lastNameRequired");
-    if (!contact.email.trim()) errs.email = t("emailRequired");
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)) errs.email = t("emailInvalid");
-    setErrors(errs);
-    if (Object.keys(errs).length) return;
-    setStep('calendar');
+  // ── Validation ──────────────────────────────────────────────────────────────
+  function validate(): boolean {
+    const e: Partial<Record<keyof ClientProfile, string>> = {};
+    if (!profile.firstName.trim())    e.firstName    = "Required";
+    if (!profile.lastName.trim())     e.lastName     = "Required";
+    if (!profile.dateOfBirth)         e.dateOfBirth  = "Required";
+    if (!profile.placeOfBirth.trim()) e.placeOfBirth = "Required";
+    if (!profile.nationality.trim())  e.nationality  = "Required";
+    if (!profile.email.trim())        e.email        = "Required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email)) e.email = "Invalid email";
+    if (!profile.phone.trim())        e.phone        = "Required";
+    if (!profile.addressLine1.trim()) e.addressLine1 = "Required";
+    if (!profile.city.trim())         e.city         = "Required";
+    if (!profile.postalCode.trim())   e.postalCode   = "Required";
+    if (!profile.country.trim())      e.country      = "Required";
+    if (!profile.docNumber.trim())    e.docNumber    = "Required";
+    if (!profile.docExpiry)           e.docExpiry    = "Required";
+    if (!profile.docIssuingCountry.trim()) e.docIssuingCountry = "Required";
+    if (!profile.taxCountry.trim())   e.taxCountry   = "Required";
+    if (!profile.professionalStatus)  e.professionalStatus = "Required";
+    if (!profile.annualIncome)        e.annualIncome = "Required";
+    if (!profile.incomeSource)        e.incomeSource = "Required";
+    if (!profile.originOfFunds)       e.originOfFunds = "Required";
+    if (!profile.investmentHorizon)   e.investmentHorizon = "Required";
+    if (!profile.investmentObjective) e.investmentObjective = "Required";
+    if (!profile.initialInvestment)   e.initialInvestment = "Required";
+    if (!profile.consentData)         e.consentData  = "Required";
+    if (!profile.consentKyc)          e.consentKyc   = "Required";
+    if (!profile.consentElectronic)   e.consentElectronic = "Required";
+    setErrors(e);
+    if (Object.keys(e).length > 0) {
+      // Auto-open sections that have errors
+      const errFields = Object.keys(e) as (keyof ClientProfile)[];
+      if (errFields.some(f => ["firstName","lastName","dateOfBirth","placeOfBirth","nationality","maritalStatus"].includes(f))) setOpen(p=>({...p,identity:true}));
+      if (errFields.some(f => ["email","phone"].includes(f))) setOpen(p=>({...p,contact:true}));
+      if (errFields.some(f => ["addressLine1","city","postalCode","country"].includes(f))) setOpen(p=>({...p,address:true}));
+      if (errFields.some(f => ["docNumber","docExpiry","docIssuingCountry"].includes(f))) setOpen(p=>({...p,document:true}));
+      if (errFields.some(f => ["taxCountry"].includes(f))) setOpen(p=>({...p,tax:true}));
+      if (errFields.some(f => ["professionalStatus"].includes(f))) setOpen(p=>({...p,professional:true}));
+      if (errFields.some(f => ["annualIncome","incomeSource"].includes(f))) setOpen(p=>({...p,financial:true}));
+      if (errFields.some(f => ["originOfFunds"].includes(f))) setOpen(p=>({...p,origin:true}));
+      if (errFields.some(f => ["investmentHorizon","investmentObjective"].includes(f))) setOpen(p=>({...p,investment:true}));
+      if (errFields.some(f => ["initialInvestment"].includes(f))) setOpen(p=>({...p,service:true}));
+      if (errFields.some(f => ["consentData","consentKyc","consentElectronic"].includes(f))) setOpen(p=>({...p,consents:true}));
+      return false;
+    }
+    return true;
   }
 
-  const handlePaymentComplete = async () => {
+  function handleInfoSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (validate()) setStep("payment");
+  }
+
+  function handlePaymentSuccess(orderId: string) {
+    setPaymentOrderId(orderId);
+    setStep("calendar");
+  }
+
+  async function submitBooking(cal: any) {
     setLoading(true);
-
     try {
-      if (!bookingData) throw new Error('No booking data available');
-
-      const startDate = new Date(bookingData.eventStartTime);
-
-      await fetchWithTimeout(`${API}/api/appointments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const startDate = new Date(cal.eventStartTime);
+      await fetchSafe(`${API}/api/appointments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           full_name: fullName,
-          email: contact.email,
-          calendly_id: bookingData.eventUri,
-          calendly_event_uri: bookingData.eventUri,
-          meeting_type: 'Investment Advisory',
-          status: 'confirmed',
-          start_time: bookingData.eventStartTime,
-          end_time: bookingData.eventEndTime,
+          email: profile.email,
+          calendly_id: cal.eventUri,
+          calendly_event_uri: cal.eventUri,
+          meeting_type: "Investment Advisory",
+          status: "confirmed",
+          start_time: cal.eventStartTime,
+          end_time: cal.eventEndTime,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          location: 'Video Conference',
-          notes: 'Paid consultation - €99.90'
-        })
+          location: "Video Conference",
+          notes: JSON.stringify({
+            phone: profile.phone,
+            nationality: profile.nationality,
+            address: `${profile.addressLine1}, ${profile.city}, ${profile.country}`,
+            docType: profile.docType,
+            docNumber: profile.docNumber,
+            profession: `${profile.professionalStatus} – ${profile.employerName}`,
+            annualIncome: profile.annualIncome,
+            initialInvestment: profile.initialInvestment,
+            missionType: profile.missionType,
+            riskTolerance: profile.riskTolerance,
+            paypalOrderId: paymentOrderId,
+            amountPaid: "€99.90",
+          }),
+        }),
       }).catch(() => null);
 
-      await fetchWithTimeout(`${API}/api/notifications/appointment`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      await fetchSafe(`${API}/api/notifications/appointment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           customerName: fullName,
-          customerEmail: contact.email,
+          customerEmail: profile.email,
           appointmentDate: startDate.toLocaleDateString(dateLocale, {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            weekday: "long", year: "numeric", month: "long", day: "numeric",
           }),
           appointmentTime: startDate.toLocaleTimeString(dateLocale, {
-            hour: '2-digit', minute: '2-digit'
+            hour: "2-digit", minute: "2-digit",
           }),
-          meetingType: 'Investment Advisory'
-        })
+          meetingType: "Investment Advisory",
+        }),
       }).catch(() => null);
 
-      setStep('confirmation');
-    } catch (error) {
-      console.error('Error processing payment:', error);
-      setStep('confirmation');
+      setStep("confirmation");
+    } catch {
+      setStep("confirmation");
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  const progressSteps: Step[] = ["info", "payment", "calendar"];
+  const stepIdx = progressSteps.indexOf(step);
 
   return (
     <>
-      <Hero
-        title={t("heroTitle")}
-        subtitle={t("heroSubtitle")}
-      />
+      <Hero title={t("heroTitle")} subtitle={t("heroSubtitle")} />
 
       <section className="bg-white py-12">
-        <div className="container mx-auto max-w-5xl px-6">
+        <div className="container mx-auto max-w-4xl px-6">
 
-          {/* Step 0: Contact Details */}
-          {step === 'contact' && (
+          {/* Progress indicator */}
+          {step !== "confirmation" && (
+            <div className="mb-10 flex items-center justify-center gap-2">
+              {(["Your Information", "Payment", "Book Meeting"] as const).map((label, i) => (
+                <React.Fragment key={label}>
+                  <div className="flex flex-col items-center gap-1">
+                    <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-all ${
+                      i < stepIdx ? "bg-brand-gold text-white" :
+                      i === stepIdx ? "bg-brand-goldLight text-brand-goldDark ring-4 ring-brand-goldLight/30" :
+                      "bg-gray-100 text-gray-400"
+                    }`}>
+                      {i < stepIdx ? <CheckCircle className="h-5 w-5" /> : i + 1}
+                    </div>
+                    <span className={`text-xs font-medium hidden sm:block ${i === stepIdx ? "text-brand-gold" : "text-brand-grayMed"}`}>{label}</span>
+                  </div>
+                  {i < 2 && <div className={`h-1 w-16 rounded mb-4 transition-all ${i < stepIdx ? "bg-brand-gold" : "bg-gray-100"}`} />}
+                </React.Fragment>
+              ))}
+            </div>
+          )}
+
+          {/* ═══════════════════════════════════════════════════════════
+              STEP 1 — Complete Client Profile
+          ═══════════════════════════════════════════════════════════ */}
+          {step === "info" && (
             <>
               <div className="mb-8 text-center">
-                <h2 className="mb-4 text-2xl font-bold text-brand-dark md:text-3xl">
-                  {t("contactTitle")}
-                </h2>
-                <p className="text-brand-grayMed">
-                  {t("contactSubtitle")}
-                </p>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-brand-gold">Step 1 of 3</p>
+                <h2 className="mb-2 text-2xl font-bold text-brand-dark md:text-3xl">Complete Your Profile</h2>
+                <p className="text-brand-grayMed text-sm">All information is required for regulatory compliance (KYC/AML). Fields marked * are mandatory.</p>
               </div>
+
+              <form onSubmit={handleInfoSubmit} className="space-y-4">
+
+                {/* ── 1. Personal Identity ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="1. Personal Identity" open={open.identity} onToggle={() => toggle("identity")} />
+                    {open.identity && (
+                      <div className="px-6 pb-6 space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <F label="Title" required>
+                            <select value={profile.title} onChange={e => set("title", e.target.value)} className={sel}>
+                              <option>Mr.</option><option>Mrs.</option><option>Ms.</option><option>Dr.</option>
+                            </select>
+                          </F>
+                          <F label="First Name" required error={errors.firstName}>
+                            <Input value={profile.firstName} onChange={e => set("firstName", e.target.value)} className={errors.firstName ? "border-red-500" : ""} />
+                          </F>
+                          <F label="Last Name" required error={errors.lastName}>
+                            <Input value={profile.lastName} onChange={e => set("lastName", e.target.value)} className={errors.lastName ? "border-red-500" : ""} />
+                          </F>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Date of Birth" required error={errors.dateOfBirth}>
+                            <Input type="date" value={profile.dateOfBirth} onChange={e => set("dateOfBirth", e.target.value)} className={errors.dateOfBirth ? "border-red-500" : ""} />
+                          </F>
+                          <F label="Place of Birth" required error={errors.placeOfBirth}>
+                            <Input placeholder="City, Country" value={profile.placeOfBirth} onChange={e => set("placeOfBirth", e.target.value)} className={errors.placeOfBirth ? "border-red-500" : ""} />
+                          </F>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Nationality" required error={errors.nationality}>
+                            <Input placeholder="e.g. French, Luxembourgish" value={profile.nationality} onChange={e => set("nationality", e.target.value)} className={errors.nationality ? "border-red-500" : ""} />
+                          </F>
+                          <F label="Marital Status" required>
+                            <select value={profile.maritalStatus} onChange={e => set("maritalStatus", e.target.value)} className={sel}>
+                              <option value="single">Single</option>
+                              <option value="married">Married</option>
+                              <option value="pacs">PACS / Civil Partnership</option>
+                              <option value="divorced">Divorced</option>
+                              <option value="widowed">Widowed</option>
+                              <option value="cohabitation">Cohabitation</option>
+                            </select>
+                          </F>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 2. Contact Information ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="2. Contact Information" open={open.contact} onToggle={() => toggle("contact")} />
+                    {open.contact && (
+                      <div className="px-6 pb-6 space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Email Address" required error={errors.email}>
+                            <Input type="email" placeholder="john.doe@example.com" value={profile.email} onChange={e => set("email", e.target.value)} className={errors.email ? "border-red-500" : ""} />
+                          </F>
+                          <F label="Phone Number" required error={errors.phone}>
+                            <Input type="tel" placeholder="+352 123 456 789" value={profile.phone} onChange={e => set("phone", e.target.value)} className={errors.phone ? "border-red-500" : ""} />
+                          </F>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 3. Residential Address ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="3. Residential Address" open={open.address} onToggle={() => toggle("address")} />
+                    {open.address && (
+                      <div className="px-6 pb-6 space-y-4">
+                        <F label="Address Line 1" required error={errors.addressLine1}>
+                          <Input placeholder="Street number & name" value={profile.addressLine1} onChange={e => set("addressLine1", e.target.value)} className={errors.addressLine1 ? "border-red-500" : ""} />
+                        </F>
+                        <F label="Address Line 2">
+                          <Input placeholder="Apartment, suite, floor (optional)" value={profile.addressLine2} onChange={e => set("addressLine2", e.target.value)} />
+                        </F>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <F label="City" required error={errors.city}>
+                            <Input value={profile.city} onChange={e => set("city", e.target.value)} className={errors.city ? "border-red-500" : ""} />
+                          </F>
+                          <F label="Postal Code" required error={errors.postalCode}>
+                            <Input value={profile.postalCode} onChange={e => set("postalCode", e.target.value)} className={errors.postalCode ? "border-red-500" : ""} />
+                          </F>
+                          <F label="Country" required error={errors.country}>
+                            <Input placeholder="e.g. France, Luxembourg" value={profile.country} onChange={e => set("country", e.target.value)} className={errors.country ? "border-red-500" : ""} />
+                          </F>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 4. Identity Document ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="4. Identity Document" open={open.document} onToggle={() => toggle("document")} />
+                    {open.document && (
+                      <div className="px-6 pb-6 space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Document Type" required>
+                            <select value={profile.docType} onChange={e => set("docType", e.target.value)} className={sel}>
+                              <option value="passport">Passport</option>
+                              <option value="national_id">National Identity Card</option>
+                              <option value="drivers_license">Driver's Licence</option>
+                              <option value="residence_permit">Residence Permit</option>
+                            </select>
+                          </F>
+                          <F label="Document Number" required error={errors.docNumber}>
+                            <Input placeholder="e.g. AB1234567" value={profile.docNumber} onChange={e => set("docNumber", e.target.value)} className={errors.docNumber ? "border-red-500" : ""} />
+                          </F>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Expiry Date" required error={errors.docExpiry}>
+                            <Input type="date" value={profile.docExpiry} onChange={e => set("docExpiry", e.target.value)} className={errors.docExpiry ? "border-red-500" : ""} />
+                          </F>
+                          <F label="Issuing Country" required error={errors.docIssuingCountry}>
+                            <Input placeholder="e.g. France, Luxembourg" value={profile.docIssuingCountry} onChange={e => set("docIssuingCountry", e.target.value)} className={errors.docIssuingCountry ? "border-red-500" : ""} />
+                          </F>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 5. Tax Residency ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="5. Tax Residency" open={open.tax} onToggle={() => toggle("tax")} />
+                    {open.tax && (
+                      <div className="px-6 pb-6 space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Country of Tax Residence" required error={errors.taxCountry}>
+                            <Input placeholder="e.g. France, Luxembourg" value={profile.taxCountry} onChange={e => set("taxCountry", e.target.value)} className={errors.taxCountry ? "border-red-500" : ""} />
+                          </F>
+                          <F label="Tax Identification Number (TIN)">
+                            <Input placeholder="e.g. FR12345678901" value={profile.taxId} onChange={e => set("taxId", e.target.value)} />
+                          </F>
+                        </div>
+                        <label className="flex items-start gap-3 cursor-pointer">
+                          <input type="checkbox" checked={profile.usPerson} onChange={e => set("usPerson", e.target.checked)}
+                            className="mt-1 h-4 w-4 text-brand-gold focus:ring-brand-gold rounded" />
+                          <span className="text-sm text-brand-dark">I am a US person for tax purposes (FATCA)</span>
+                        </label>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 6. Professional Situation ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="6. Professional Situation" open={open.professional} onToggle={() => toggle("professional")} />
+                    {open.professional && (
+                      <div className="px-6 pb-6 space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Professional Status" required error={errors.professionalStatus}>
+                            <select value={profile.professionalStatus} onChange={e => set("professionalStatus", e.target.value)} className={`${sel} ${errors.professionalStatus ? "border-red-500" : ""}`}>
+                              <option value="">Select status</option>
+                              <option value="employed">Employed</option>
+                              <option value="self_employed">Self-Employed</option>
+                              <option value="business_owner">Business Owner</option>
+                              <option value="retired">Retired</option>
+                              <option value="unemployed">Unemployed</option>
+                              <option value="student">Student</option>
+                            </select>
+                          </F>
+                          <F label="Industry / Sector">
+                            <Input placeholder="e.g. Finance, Technology, Real Estate" value={profile.sector} onChange={e => set("sector", e.target.value)} />
+                          </F>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Employer Name">
+                            <Input placeholder="Company or organisation name" value={profile.employerName} onChange={e => set("employerName", e.target.value)} />
+                          </F>
+                          <F label="Job Title / Position">
+                            <Input placeholder="e.g. CEO, Engineer, Consultant" value={profile.position} onChange={e => set("position", e.target.value)} />
+                          </F>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 7. Family Situation ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="7. Family Situation" open={open.family} onToggle={() => toggle("family")} />
+                    {open.family && (
+                      <div className="px-6 pb-6">
+                        <F label="Number of Dependants">
+                          <Input type="number" min="0" max="20" value={profile.numberOfDependents}
+                            onChange={e => set("numberOfDependents", e.target.value)} className="w-32" />
+                        </F>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 8. Financial Situation ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="8. Financial Situation" open={open.financial} onToggle={() => toggle("financial")} />
+                    {open.financial && (
+                      <div className="px-6 pb-6 space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Annual Income (EUR)" required error={errors.annualIncome}>
+                            <Input type="number" placeholder="e.g. 75000" value={profile.annualIncome} onChange={e => set("annualIncome", e.target.value)} className={errors.annualIncome ? "border-red-500" : ""} />
+                          </F>
+                          <F label="Main Income Source" required error={errors.incomeSource}>
+                            <select value={profile.incomeSource} onChange={e => set("incomeSource", e.target.value)} className={`${sel} ${errors.incomeSource ? "border-red-500" : ""}`}>
+                              <option value="">Select source</option>
+                              <option value="salary">Salary</option>
+                              <option value="business">Business Income</option>
+                              <option value="investments">Investment Returns</option>
+                              <option value="pension">Pension</option>
+                              <option value="inheritance">Inheritance</option>
+                              <option value="rental">Rental Income</option>
+                              <option value="other">Other</option>
+                            </select>
+                          </F>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Total Assets (EUR)">
+                            <Input type="number" placeholder="e.g. 500000" value={profile.totalAssets} onChange={e => set("totalAssets", e.target.value)} />
+                          </F>
+                          <F label="Liquid Assets (EUR)">
+                            <Input type="number" placeholder="Cash, savings accounts" value={profile.liquidAssets} onChange={e => set("liquidAssets", e.target.value)} />
+                          </F>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Real Estate Value (EUR)">
+                            <Input type="number" placeholder="Total value of properties" value={profile.realEstateValue} onChange={e => set("realEstateValue", e.target.value)} />
+                          </F>
+                          <F label="Outstanding Debts / Loans (EUR)">
+                            <Input type="number" placeholder="Mortgages, personal loans" value={profile.outstandingDebts} onChange={e => set("outstandingDebts", e.target.value)} />
+                          </F>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 9. Origin of Funds ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="9. Origin of Investment Funds" open={open.origin} onToggle={() => toggle("origin")} />
+                    {open.origin && (
+                      <div className="px-6 pb-6 space-y-4">
+                        <F label="Primary Origin of Funds" required error={errors.originOfFunds}>
+                          <select value={profile.originOfFunds} onChange={e => set("originOfFunds", e.target.value)} className={`${sel} ${errors.originOfFunds ? "border-red-500" : ""}`}>
+                            <option value="">Select origin</option>
+                            <option value="savings">Personal Savings</option>
+                            <option value="salary">Salary / Employment Income</option>
+                            <option value="sale_of_assets">Sale of Assets</option>
+                            <option value="inheritance">Inheritance / Gift</option>
+                            <option value="business_income">Business Income</option>
+                            <option value="investment_returns">Investment Returns</option>
+                            <option value="real_estate">Real Estate Proceeds</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </F>
+                        <F label="Additional Details">
+                          <textarea rows={3} placeholder="Please provide further context about the origin of your investment funds..."
+                            value={profile.originDetails} onChange={e => set("originDetails", e.target.value)}
+                            className={`${inp} resize-none`} />
+                        </F>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 10. Investment Profile ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="10. Investment Knowledge & Objectives" open={open.investment} onToggle={() => toggle("investment")} />
+                    {open.investment && (
+                      <div className="px-6 pb-6 space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Investment Experience">
+                            <select value={profile.investmentExperience} onChange={e => set("investmentExperience", e.target.value)} className={sel}>
+                              <option value="beginner">Beginner (less than 2 years)</option>
+                              <option value="intermediate">Intermediate (2–5 years)</option>
+                              <option value="advanced">Advanced (5–10 years)</option>
+                              <option value="expert">Expert (10+ years)</option>
+                            </select>
+                          </F>
+                          <F label="Risk Tolerance">
+                            <select value={profile.riskTolerance} onChange={e => set("riskTolerance", e.target.value)} className={sel}>
+                              <option value="conservative">Conservative – Preserve capital</option>
+                              <option value="moderate">Moderate – Balanced growth</option>
+                              <option value="aggressive">Aggressive – Maximum growth</option>
+                            </select>
+                          </F>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Investment Horizon" required error={errors.investmentHorizon}>
+                            <select value={profile.investmentHorizon} onChange={e => set("investmentHorizon", e.target.value)} className={`${sel} ${errors.investmentHorizon ? "border-red-500" : ""}`}>
+                              <option value="">Select horizon</option>
+                              <option value="short">Short-term (less than 3 years)</option>
+                              <option value="medium">Medium-term (3–7 years)</option>
+                              <option value="long">Long-term (more than 7 years)</option>
+                            </select>
+                          </F>
+                          <F label="Primary Objective" required error={errors.investmentObjective}>
+                            <select value={profile.investmentObjective} onChange={e => set("investmentObjective", e.target.value)} className={`${sel} ${errors.investmentObjective ? "border-red-500" : ""}`}>
+                              <option value="">Select objective</option>
+                              <option value="capital_preservation">Capital Preservation</option>
+                              <option value="income_generation">Income Generation</option>
+                              <option value="capital_growth">Capital Growth</option>
+                              <option value="balanced">Balanced Growth & Income</option>
+                            </select>
+                          </F>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <F label="Expected Annual Return (%)">
+                            <Input type="number" step="0.1" placeholder="e.g. 5.0" value={profile.expectedReturn} onChange={e => set("expectedReturn", e.target.value)} />
+                          </F>
+                          <F label="Maximum Acceptable Loss (%)">
+                            <Input type="number" step="0.1" placeholder="e.g. 10.0" value={profile.maxLossAcceptable} onChange={e => set("maxLossAcceptable", e.target.value)} />
+                          </F>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 11. Service & Investment Amount ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="11. Service Type & Investment Amount" open={open.service} onToggle={() => toggle("service")} />
+                    {open.service && (
+                      <div className="px-6 pb-6 space-y-4">
+                        <F label="Type of Service">
+                          <select value={profile.missionType} onChange={e => set("missionType", e.target.value)} className={sel}>
+                            <option value="advisory">Investment Advisory (Conseil) – We recommend, you decide</option>
+                            <option value="management">Portfolio Management (Gestion sous mandat) – We manage on your behalf</option>
+                          </select>
+                        </F>
+                        <F label="Planned Initial Investment (EUR)" required error={errors.initialInvestment}>
+                          <Input type="number" placeholder="Minimum €10,000" value={profile.initialInvestment}
+                            onChange={e => set("initialInvestment", e.target.value)}
+                            className={errors.initialInvestment ? "border-red-500" : ""} />
+                          <p className="mt-1 text-xs text-brand-grayMed">Minimum initial investment: €10,000</p>
+                        </F>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* ── 12. Consents ── */}
+                <Card className="border border-gray-100 shadow-sm">
+                  <CardContent className="p-0">
+                    <SectionHeader title="12. Consents & Declarations" open={open.consents} onToggle={() => toggle("consents")} />
+                    {open.consents && (
+                      <div className="px-6 pb-6 space-y-4">
+                        {[
+                          { key: "consentData" as const, required: true, label: "Data Processing *", text: "I consent to the processing of my personal data for KYC/AML compliance and investment advisory purposes in accordance with GDPR." },
+                          { key: "consentKyc" as const, required: true, label: "KYC / AML Compliance *", text: "I authorise Opulanz to perform identity verification and AML/CFT checks as required by French and Luxembourgish regulations (ACPR, AMF, CSSF)." },
+                          { key: "consentElectronic" as const, required: true, label: "Electronic Signature *", text: "I agree to receive and sign documents electronically via DocuSign, and accept that electronic signatures have the same legal validity as handwritten signatures." },
+                          { key: "consentMarketing" as const, required: false, label: "Marketing Communications", text: "I agree to receive updates and offers from Opulanz (optional)." },
+                        ].map(({ key, label, text, required }) => (
+                          <div key={key}>
+                            <label className="flex items-start gap-3 cursor-pointer">
+                              <input type="checkbox" checked={profile[key] as boolean}
+                                onChange={e => set(key, e.target.checked)}
+                                className="mt-1 h-4 w-4 text-brand-gold focus:ring-brand-gold rounded" />
+                              <span className="text-sm text-brand-dark">
+                                <strong>{label}:</strong> {text}
+                              </span>
+                            </label>
+                            {errors[key] && <p className="mt-1 text-xs text-red-500 ml-7">This consent is required</p>}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Error summary */}
+                {Object.keys(errors).length > 0 && (
+                  <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+                    <p className="text-sm font-semibold text-red-700">Please complete all required fields before continuing.</p>
+                    <p className="text-xs text-red-600 mt-1">Sections with missing information have been expanded above.</p>
+                  </div>
+                )}
+
+                <div className="flex justify-end pt-2">
+                  <Button type="submit" className="flex items-center gap-2 bg-brand-gold text-white hover:bg-brand-goldDark px-8 py-3 text-base">
+                    Continue to Payment <ArrowRight className="h-5 w-5" />
+                  </Button>
+                </div>
+
+              </form>
+            </>
+          )}
+
+          {/* ═══════════════════════════════════════════════════════════
+              STEP 2 — PayPal Payment
+          ═══════════════════════════════════════════════════════════ */}
+          {step === "payment" && (
+            <>
+              <div className="mb-8 text-center">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-brand-gold">Step 2 of 3</p>
+                <h2 className="mb-2 text-2xl font-bold text-brand-dark md:text-3xl">{t("completePaymentTitle")}</h2>
+                <p className="text-brand-grayMed">{t("completePaymentDesc")}</p>
+              </div>
+
+              <Card className="mb-6 border-brand-gold/30 shadow-lg">
+                <CardContent className="p-8">
+                  <h3 className="mb-4 text-lg font-bold text-brand-dark">Order Summary</h3>
+                  <div className="space-y-2 text-sm">
+                    {[
+                      ["Name", fullName],
+                      ["Email", profile.email],
+                      ["Phone", profile.phone],
+                      ["Nationality", profile.nationality],
+                      ["Address", `${profile.addressLine1}, ${profile.city}, ${profile.country}`],
+                      ["Document", `${profile.docType.replace("_", " ")} – ${profile.docNumber}`],
+                      ["Service", profile.missionType === "advisory" ? "Investment Advisory (Conseil)" : "Portfolio Management"],
+                      ["Initial Investment", profile.initialInvestment ? `€${Number(profile.initialInvestment).toLocaleString()}` : "—"],
+                    ].map(([label, value]) => value && (
+                      <div key={label} className="flex justify-between border-b border-gray-100 py-1.5">
+                        <span className="text-brand-grayMed">{label}</span>
+                        <span className="font-medium text-brand-dark text-right max-w-xs truncate">{value}</span>
+                      </div>
+                    ))}
+                    <div className="flex justify-between items-center border-t border-brand-grayLight pt-3 mt-2">
+                      <span className="font-bold text-brand-dark">Consultation Fee</span>
+                      <span className="text-xl font-bold text-brand-gold">€99.90</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
               <Card className="border-none shadow-lg">
                 <CardContent className="p-8">
-                  <form onSubmit={handleContactSubmit} className="space-y-6">
-                    <div className="grid gap-6 sm:grid-cols-2">
-                      <div>
-                        <Label htmlFor="firstName">{t("firstName")} <span className="text-red-500">*</span></Label>
-                        <Input
-                          id="firstName"
-                          value={contact.firstName}
-                          onChange={(e) => setContact(p => ({ ...p, firstName: e.target.value }))}
-                          className={`mt-1 ${errors.firstName ? "border-red-500" : ""}`}
-                        />
-                        {errors.firstName && <p className="mt-1 text-sm text-red-500">{errors.firstName}</p>}
-                      </div>
-                      <div>
-                        <Label htmlFor="lastName">{t("lastName")} <span className="text-red-500">*</span></Label>
-                        <Input
-                          id="lastName"
-                          value={contact.lastName}
-                          onChange={(e) => setContact(p => ({ ...p, lastName: e.target.value }))}
-                          className={`mt-1 ${errors.lastName ? "border-red-500" : ""}`}
-                        />
-                        {errors.lastName && <p className="mt-1 text-sm text-red-500">{errors.lastName}</p>}
-                      </div>
+                  <div className="mx-auto max-w-md">
+                    <PayPalButtons
+                      amount="99.90"
+                      description="Investment Advisory Consultation – 45 minutes"
+                      onSuccess={(orderId) => handlePaymentSuccess(orderId)}
+                    />
+                    <div className="mt-4 flex items-center justify-center gap-2 text-xs text-brand-grayMed">
+                      <Shield className="h-4 w-4 text-green-600" />
+                      <span>{t("securePayment")}</span>
                     </div>
-                    <div>
-                      <Label htmlFor="email">{t("email")} <span className="text-red-500">*</span></Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={contact.email}
-                        onChange={(e) => setContact(p => ({ ...p, email: e.target.value }))}
-                        className={`mt-1 ${errors.email ? "border-red-500" : ""}`}
-                      />
-                      {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
-                    </div>
-                    <div className="flex justify-end pt-2">
-                      <Button type="submit" className="bg-brand-gold text-white hover:bg-brand-goldDark">
-                        {t("continueToCalendar")}
-                      </Button>
-                    </div>
-                  </form>
+                  </div>
+                  <div className="mt-6 flex justify-start">
+                    <Button variant="outline" onClick={() => setStep("info")} className="flex items-center gap-2">
+                      <ArrowLeft className="h-4 w-4" /> Back to Profile
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </>
           )}
 
-          {/* Step 1: Calendar */}
-          {step === 'calendar' && (
+          {/* ═══════════════════════════════════════════════════════════
+              STEP 3 — Calendly
+          ═══════════════════════════════════════════════════════════ */}
+          {step === "calendar" && (
             <>
               <div className="mb-8 text-center">
-                <h2 className="mb-4 text-2xl font-bold text-brand-dark md:text-3xl">
-                  {t("calendarTitle")}
-                </h2>
-                <p className="text-brand-grayMed">
-                  {t("calendarSubtitle")}
-                </p>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-brand-gold">Step 3 of 3</p>
+                <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 bg-green-50 border border-green-200 rounded-full">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span className="text-sm font-semibold text-green-700">{t("paymentSuccess")} ✓</span>
+                </div>
+                <h2 className="mb-2 text-2xl font-bold text-brand-dark md:text-3xl">{t("calendarTitle")}</h2>
+                <p className="text-brand-grayMed">{t("calendarSubtitle")}</p>
               </div>
 
               <Card className="border-none shadow-lg">
                 <CardContent className="p-4 md:p-8">
-                  <div
-                    key={locale}
-                    className="calendly-inline-widget"
-                    data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d0ab08&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(contact.email)}`}
-                    style={{ minWidth: '320px', height: '700px' }}
-                  />
+                  {loading ? (
+                    <div className="flex flex-col items-center justify-center py-16 gap-4">
+                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-brand-gold border-t-transparent" />
+                      <p className="text-brand-grayMed">{t("processing")}</p>
+                    </div>
+                  ) : (
+                    <div key={locale} className="calendly-inline-widget"
+                      data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d0ab08&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(profile.email)}`}
+                      style={{ minWidth: "320px", height: "700px" }} />
+                  )}
+                </CardContent>
+              </Card>
+            </>
+          )}
+
+          {/* ═══════════════════════════════════════════════════════════
+              STEP 4 — Confirmation
+          ═══════════════════════════════════════════════════════════ */}
+          {step === "confirmation" && bookingData && (
+            <div className="text-center">
+              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+                <CheckCircle className="h-10 w-10 text-green-600" />
+              </div>
+              <h2 className="mb-4 text-3xl font-bold text-brand-dark">{t("paymentConfirmed")}</h2>
+              <p className="mb-8 text-brand-grayMed">{t("paymentConfirmedDesc")}</p>
+
+              <Card className="mb-8 border-brand-gold/30 shadow-lg text-left">
+                <CardContent className="p-8">
+                  <h3 className="mb-4 text-xl font-bold text-brand-dark">{t("confirmedAppointment")}</h3>
+                  <div className="space-y-3 text-sm">
+                    {[
+                      [t("labelService"), t("serviceName")],
+                      [t("labelName"), fullName],
+                      [t("labelEmail"), profile.email],
+                      [t("labelPhone"), profile.phone],
+                      [t("labelDate"), new Date(bookingData.eventStartTime).toLocaleDateString(dateLocale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })],
+                      [t("labelTime"), new Date(bookingData.eventStartTime).toLocaleTimeString(dateLocale, { hour: "2-digit", minute: "2-digit" })],
+                      [t("labelDuration"), t("duration45")],
+                    ].map(([label, value]) => (
+                      <div key={label} className="flex justify-between border-b border-brand-grayLight/30 pb-2">
+                        <span className="text-brand-grayMed">{label}</span>
+                        <span className="font-semibold text-brand-dark">{value}</span>
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
 
-              <div className="mt-6 flex justify-start">
-                <Button variant="outline" onClick={() => setStep('contact')}>
-                  {t("backToContact")}
-                </Button>
-              </div>
-
-              {/* Info Cards */}
-              <div className="mt-12 grid gap-8 md:grid-cols-3">
-                <div className="text-center">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
-                    <svg className="h-6 w-6 text-brand-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="mb-2 text-lg font-bold text-brand-dark">{t("info1Title")}</h3>
-                  <p className="text-sm text-brand-grayMed">{t("info1Desc")}</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
-                    <svg className="h-6 w-6 text-brand-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <h3 className="mb-2 text-lg font-bold text-brand-dark">{t("info2Title")}</h3>
-                  <p className="text-sm text-brand-grayMed">{t("info2Desc")}</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
-                    <svg className="h-6 w-6 text-brand-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  </div>
-                  <h3 className="mb-2 text-lg font-bold text-brand-dark">{t("info3Title")}</h3>
-                  <p className="text-sm text-brand-grayMed">{t("info3Desc")}</p>
-                </div>
-              </div>
-
-              {/* What to Prepare */}
-              <div className="mt-12 rounded-lg bg-brand-off p-8">
-                <h3 className="mb-4 text-xl font-bold text-brand-dark">{t("prepareTitle")}</h3>
-                <ul className="space-y-3 text-brand-grayMed">
-                  {(["prepare1","prepare2","prepare3","prepare4","prepare5"] as const).map((key) => (
-                    <li key={key} className="flex items-start gap-3">
-                      <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span>{t(key)}</span>
-                    </li>
-                  ))}
+              <div className="rounded-lg bg-brand-goldLight/20 p-6 mb-8 text-left">
+                <h4 className="mb-3 font-semibold text-brand-dark">{t("whatsNext")}</h4>
+                <ul className="space-y-2 text-sm text-brand-grayMed">
+                  <li>✓ {t("next1", { email: profile.email })}</li>
+                  <li>✓ {t("next2")}</li>
+                  <li>✓ {t("next3")}</li>
+                  <li>✓ {t("next4")}</li>
                 </ul>
               </div>
-            </>
+
+              <Button onClick={() => window.location.href = `/${locale}`} className="bg-brand-gold text-white hover:bg-brand-goldDark">
+                {t("returnHome")}
+              </Button>
+            </div>
           )}
 
-          {/* Step 2: Payment */}
-          {step === 'payment' && bookingData && (
-            <>
-              <div className="mb-8 text-center">
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                  <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h2 className="mb-4 text-2xl font-bold text-brand-dark md:text-3xl">
-                  {t("slotReserved")}
-                </h2>
-                <p className="text-brand-grayMed">{t("completePaymentDesc")}</p>
-              </div>
-
-              <Card className="mb-8 border-brand-gold/30 shadow-lg">
-                <CardContent className="p-8">
-                  <h3 className="mb-4 text-xl font-bold text-brand-dark">{t("appointmentDetails")}</h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                      <span className="text-brand-grayMed">{t("labelName")}</span>
-                      <span className="font-semibold text-brand-dark">{fullName}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                      <span className="text-brand-grayMed">{t("labelEmail")}</span>
-                      <span className="font-semibold text-brand-dark">{contact.email}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                      <span className="text-brand-grayMed">{t("labelDate")}</span>
-                      <span className="font-semibold text-brand-dark">
-                        {new Date(bookingData.eventStartTime).toLocaleDateString(dateLocale, {
-                          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                        })}
-                      </span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                      <span className="text-brand-grayMed">{t("labelTime")}</span>
-                      <span className="font-semibold text-brand-dark">
-                        {new Date(bookingData.eventStartTime).toLocaleTimeString(dateLocale, {
-                          hour: '2-digit', minute: '2-digit'
-                        })}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-brand-grayMed">{t("labelDuration")}</span>
-                      <span className="font-semibold text-brand-dark">{t("duration45")}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-none shadow-lg">
-                <CardContent className="p-8 md:p-12">
-                  <div className="text-center">
-                    <div className="mb-6">
-                      <h3 className="mb-2 text-xl font-bold text-brand-dark">{t("completePaymentTitle")}</h3>
-                      <p className="text-3xl font-bold text-brand-gold">€99.90</p>
-                      <p className="mt-2 text-sm text-brand-grayMed">{t("oneTimePayment")}</p>
-                    </div>
-
-                    <div className="mx-auto max-w-md">
-                      <PayPalButtons
-                        amount="99.90"
-                        description="Investment Advisory Consultation - 45 minutes"
-                        onSuccess={() => setPaymentCompleted(true)}
-                      />
-
-                      <div className="mt-6 rounded-lg bg-blue-50 p-4">
-                        <p className="text-sm text-blue-800">
-                          <strong>{t("testingLabel")}</strong>{' '}
-                          {t("testingDesc")}{' '}
-                          <code className="rounded bg-blue-100 px-2 py-1">4111 1111 1111 1111</code>
-                          {' '}{t("testingDetails")}
-                        </p>
-                      </div>
-                    </div>
-
-                    {paymentCompleted && (
-                      <div className="mt-6">
-                        <div className="mb-4 rounded-lg bg-green-50 p-4 text-green-800">
-                          <div className="flex items-center justify-center gap-2">
-                            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                            </svg>
-                            <span className="font-semibold">{t("paymentSuccess")}</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-center gap-2 text-brand-grayMed text-sm">
-                          <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
-                          </svg>
-                          {loading ? t("processing") : t("redirecting")}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </>
-          )}
-
-          {/* Step 3: Confirmation */}
-          {step === 'confirmation' && bookingData && (
-            <>
-              <div className="text-center">
-                <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-                  <svg className="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h2 className="mb-4 text-3xl font-bold text-brand-dark">
-                  {t("paymentConfirmed")}
-                </h2>
-                <p className="mb-8 text-brand-grayMed">
-                  {t("paymentConfirmedDesc")}
-                </p>
-
-                <Card className="mb-8 border-brand-gold/30 shadow-lg">
-                  <CardContent className="p-8">
-                    <h3 className="mb-4 text-xl font-bold text-brand-dark">{t("confirmedAppointment")}</h3>
-                    <div className="space-y-3 text-left">
-                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                        <span className="text-brand-grayMed">{t("labelService")}</span>
-                        <span className="font-semibold text-brand-dark">{t("serviceName")}</span>
-                      </div>
-                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                        <span className="text-brand-grayMed">{t("labelName")}</span>
-                        <span className="font-semibold text-brand-dark">{fullName}</span>
-                      </div>
-                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                        <span className="text-brand-grayMed">{t("labelDate")}</span>
-                        <span className="font-semibold text-brand-dark">
-                          {new Date(bookingData.eventStartTime).toLocaleDateString(dateLocale, {
-                            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                          })}
-                        </span>
-                      </div>
-                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                        <span className="text-brand-grayMed">{t("labelTime")}</span>
-                        <span className="font-semibold text-brand-dark">
-                          {new Date(bookingData.eventStartTime).toLocaleTimeString(dateLocale, {
-                            hour: '2-digit', minute: '2-digit'
-                          })}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-brand-grayMed">{t("labelDuration")}</span>
-                        <span className="font-semibold text-brand-dark">{t("duration45")}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <div className="rounded-lg bg-brand-goldLight/20 p-6">
-                  <h4 className="mb-3 font-semibold text-brand-dark">{t("whatsNext")}</h4>
-                  <ul className="space-y-2 text-sm text-brand-grayMed">
-                    <li>✓ {t("next1", { email: contact.email })}</li>
-                    <li>✓ {t("next2")}</li>
-                    <li>✓ {t("next3")}</li>
-                    <li>✓ {t("next4")}</li>
-                  </ul>
-                </div>
-
-                <Button
-                  onClick={() => window.location.href = `/${locale}`}
-                  className="mt-8 bg-brand-gold text-white hover:bg-brand-goldDark"
-                >
-                  {t("returnHome")}
-                </Button>
-              </div>
-            </>
-          )}
         </div>
       </section>
-
     </>
   );
 }

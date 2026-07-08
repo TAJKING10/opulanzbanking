@@ -6,6 +6,7 @@
 const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
+const emailService = require('../services/emailService');
 
 // Reusable transporter
 function createTransporter() {
@@ -207,7 +208,7 @@ router.post('/company-formation', async (req, res) => {
     }
 
     const transporter = createTransporter();
-    const teamEmail = process.env.TEAM_EMAIL || 'opulanz.banking@gmail.com';
+    const teamEmail = process.env.EMAIL_COMPANY_FORMATION || 'company-set@opulanz.com';
     const displayCompany = companyName || 'Your company';
 
     // 1. Confirmation email to user
@@ -284,7 +285,7 @@ router.post('/private-banking', async (req, res) => {
     const { ref, applicationId, firstName, lastName, email, phone, residence, country, currencies, monthlyTransfers, sourceOfFunds, documentsCount } = req.body;
 
     const transporter = createTransporter();
-    const TEAM_EMAIL = process.env.TEAM_EMAIL || 'contact@opulanz.com';
+    const TEAM_EMAIL = process.env.EMAIL_OPEN_ACCOUNT || 'info@opulanz.com';
     const fullName = `${firstName || ''} ${lastName || ''}`.trim();
 
     // 1. Admin notification to contact@opulanz.com

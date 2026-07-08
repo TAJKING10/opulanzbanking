@@ -15,6 +15,7 @@ const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
 const { pool } = require('../config/db');
+const emailService = require('../services/emailService');
 const { createNarviAccount } = require('../services/narvi');
 
 const emailTransporter = nodemailer.createTransport({
@@ -156,13 +157,15 @@ router.post('/', async (req, res) => {
           </div>`,
       }).catch(e => console.error('Confirmation email failed:', e.message));
 
-      // Notify support team
-      emailTransporter.sendMail({
-        from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
-        to: 'support@opulanz.com',
-        subject: `[New Application #${application.id}] ${isCompany ? 'Company' : 'Individual'} — ${firstName}`,
-        html: `<p>New ${type} application submitted.</p><p><strong>Ref:</strong> #${application.id}</p><p><strong>Name:</strong> ${firstName}</p><p><strong>Email:</strong> ${payload.email}</p>`,
-      }).catch(() => {});
+      // Send admin notification via emailService (routes to correct inbox by type)
+      const appType = type === 'company_formation' ? 'company_formation'
+        : type === 'accounting' ? 'accounting'
+        : 'open_account';
+      emailService.sendApplicationEmails(appType, {
+        applicationId: application.id,
+        type,
+        payload,
+      }).catch(err => console.error('[Applications] Admin email failed:', err.message));
     }
 
     res.status(201).json({

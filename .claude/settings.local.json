@@ -219,7 +219,16 @@
       "mcp__claude_ai_Calendly__event_types-list_event_types",
       "Skill(claude-in-chrome)",
       "mcp__claude_ai_Calendly__event_types-create_event_type",
-      "Bash(start:*)"
+      "Bash(start:*)",
+      "Bash(C:/Users/Toufi/AndroidStudioProjects/azuree/backend/.env:*)",
+      "Bash(sed -n '15,22p' C:/Users/Toufi/AndroidStudioProjects/azuree/backend/src/routes/tax-advisory-bookings.js)",
+      "Bash(sed -n '15,22p' C:/Users/Toufi/AndroidStudioProjects/azuree/backend/src/routes/life-insurance-bookings.js)",
+      "Bash(sed -n '118,135p' C:/Users/Toufi/AndroidStudioProjects/azuree/backend/src/routes/appointments.js)",
+      "Bash(sed -n '158,168p' C:/Users/Toufi/AndroidStudioProjects/azuree/backend/src/routes/applications.js)",
+      "Bash(sed -n '15,20p' C:/Users/Toufi/AndroidStudioProjects/azuree/backend/src/routes/tax-advisory-bookings.js)",
+      "Bash(sed -n '15,20p' C:/Users/Toufi/AndroidStudioProjects/azuree/backend/src/routes/life-insurance-bookings.js)",
+      "Bash(sed -n '122,138p' C:/Users/Toufi/AndroidStudioProjects/azuree/backend/src/routes/appointments.js)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []

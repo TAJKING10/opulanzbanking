@@ -136,9 +136,50 @@ export default function BookingClient() {
     setLoading(true);
 
     const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-    const confNum = `TAX-${Date.now().toString(36).toUpperCase()}`;
+    let confNum = `TAX-${Date.now().toString(36).toUpperCase()}`;
     const paymentDate = new Date().toISOString();
 
+    // 1. Save to tax-advisory-bookings → sends correct emails:
+    //    client → contact.email, admin → tax-ad@opulanz.com
+    try {
+      const res = await fetchWithTimeout(`${API}/api/tax-advisory-bookings`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "tax_advisory",
+          status: "confirmed",
+          customer_info: {
+            firstName: contact.firstName,
+            lastName: contact.lastName,
+            email: contact.email,
+            phone: contact.phone,
+          },
+          service: {
+            id: serviceId || "tax-advisory",
+            title: serviceTitle,
+            price: svc.price,
+          },
+          appointment: {
+            date: calendly.startTime || paymentDate,
+            time: timeStr || "",
+            calendlyEventUrl: calendly.eventUri || "",
+            calendlyInviteeUrl: calendly.inviteeUri || "",
+          },
+          payment: {
+            method: "paypal",
+            orderId: paypal.orderId || "",
+            status: paypal.status || "COMPLETED",
+            payer: paypal.payer || {},
+          },
+        }),
+      });
+      const data = await res.json();
+      if (data.success && data.data?.confirmation_number) {
+        confNum = data.data.confirmation_number;
+      }
+    } catch (err) { console.warn("Booking save failed:", err); }
+
+    // 2. Also save to appointments table for the dashboard
     try {
       await fetchWithTimeout(`${API}/api/appointments`, {
         method: "POST",
@@ -158,21 +199,6 @@ export default function BookingClient() {
         }),
       });
     } catch (err) { console.warn("Appointment save failed:", err); }
-
-    try {
-      await fetchWithTimeout(`${API}/api/notifications/appointment`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customerName: fullName,
-          customerEmail: contact.email,
-          appointmentDate: dateStr || "Scheduled via Calendly",
-          appointmentTime: timeStr || "See Calendly confirmation",
-          meetingType: `Tax Advisory – ${serviceTitle}`,
-          price: svc.price.toFixed(2),
-        }),
-      });
-    } catch (err) { console.warn("Notification failed:", err); }
 
     // Save to sessionStorage for confirmation page
     try {

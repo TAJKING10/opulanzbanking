@@ -34,10 +34,11 @@ type StepProps = {
 export function Step3People({ dossier, updateDossier }: StepProps) {
   const t = useTranslations("companyFormation.wizard.step3");
 
-  const [shareholders, setShareholders] = React.useState<Person[]>(dossier.shareholders || []);
-  const [directors, setDirectors] = React.useState<Person[]>(dossier.directors || []);
-  const [managers, setManagers] = React.useState<Person[]>(dossier.managers || []);
-  const [ubos, setUbos] = React.useState<Person[]>(dossier.ubos || []);
+  const filterEmpty = (list: Person[]) => list.filter(p => p.firstName.trim() && p.lastName.trim());
+  const [shareholders, setShareholders] = React.useState<Person[]>(filterEmpty(dossier.shareholders || []));
+  const [directors, setDirectors] = React.useState<Person[]>(filterEmpty(dossier.directors || []));
+  const [managers, setManagers] = React.useState<Person[]>(filterEmpty(dossier.managers || []));
+  const [ubos, setUbos] = React.useState<Person[]>(filterEmpty(dossier.ubos || []));
   const [editingPerson, setEditingPerson] = React.useState<Person | null>(null);
   const [editingType, setEditingType] = React.useState<"shareholder" | "director" | "manager" | "ubo" | null>(null);
 
@@ -63,8 +64,12 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
     setEditingType(type);
   };
 
+  const isPersonValid = (p: Person | null) =>
+    !!(p && p.firstName.trim() && p.lastName.trim() && p.dob && p.nationality.trim() && p.address.trim());
+
   const savePerson = () => {
     if (!editingPerson || !editingType) return;
+    if (!isPersonValid(editingPerson)) return;
 
     switch (editingType) {
       case "shareholder":
@@ -344,7 +349,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
               }}>
                 {t("cancel")}
               </Button>
-              <Button onClick={savePerson}>{t("save")}</Button>
+              <Button onClick={savePerson} disabled={!isPersonValid(editingPerson)}>{t("save")}</Button>
             </div>
           </div>
         </div>

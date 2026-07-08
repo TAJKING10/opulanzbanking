@@ -41,7 +41,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
     {
       id: "ubo-register",
       name: t("uboRegister"),
-      required: true,
+      required: false,
       uploaded: false,
     },
     {

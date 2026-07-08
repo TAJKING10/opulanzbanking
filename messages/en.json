@@ -1442,14 +1442,14 @@
         "jurisdictionHelp": "This determines which payment partner and regulatory framework will apply",
         "jurisdictionInfo": "Jurisdiction Information",
         "luxembourgInfo": "Luxembourg: Premier financial center with favorable tax regime for holding companies. Corporate tax rate: ~24%.",
-        "luxembourgCapital": "Minimum share capital: â‚¬12,000 for S.Ã  r.l. (limited liability company)",
+        "luxembourgCapital": "Minimum share capital: EUR 12,000 for S.a r.l. (limited liability company)",
         "franceInfo": "France: Large economy with access to EU market. Corporate tax rate: ~25%.",
         "franceCapital": "Minimum share capital: â‚¬1 for SAS/SARL (most common structures)",
         "finlandInfo": "Finland: Stable Nordic economy with strong digital infrastructure. Corporate tax rate: 20%.",
         "finlandCapital": "Minimum share capital: â‚¬2,500 for Oy (limited company)",
         "otherInfo": "We'll match you with Opulanz Partner that serves companies in your selected jurisdiction. Specific requirements and timelines will be provided after application review.",
         "formationTimeline": "Company Formation Timeline",
-        "formationTimelineDesc": "Company formation typically takes 2-4 weeks. We'll guide you through the entire process and help you open your payment account simultaneously.",
+        "formationTimelineDesc": "Company formation typically takes 4 weeks. We'll guide you through the entire process and help you open your payment account simultaneously.",
         "otherEuCountry": "Other EU Country"
       },
       "directors": {
@@ -1479,7 +1479,7 @@
         "shareCapital": "Initial Share Capital",
         "shareCapitalPlaceholder": "e.g., â‚¬12,000",
         "shareCapitalHelp": "Minimum requirements vary by jurisdiction",
-        "luxembourgMin": "(Luxembourg: â‚¬12,000 for S.Ã  r.l.)",
+        "luxembourgMin": "(Luxembourg: EUR 12,000 for S.a r.l.)",
         "franceMin": "(France: â‚¬1 for SAS/SARL)",
         "finlandMin": "(Finland: â‚¬2,500 for Oy)",
         "whatsIncluded": "What's Included",
@@ -1490,7 +1490,7 @@
         "included5": "Payment account opening",
         "included6": "Registered office address (if needed)",
         "timelineTitle": "Formation Timeline",
-        "timelineDesc": "The company formation process typically takes 2-4 weeks. We'll keep you updated at each stage and coordinate the payment account opening to minimize delays."
+        "timelineDesc": "The company formation process typically takes 4 weeks. We'll keep you updated at each stage and coordinate the payment account opening to minimize delays."
       },
       "documents": {
         "title": "Business Documents",

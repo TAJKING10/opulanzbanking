@@ -27,7 +27,7 @@ export function CompanyStatusStep({ data, onUpdate, onNext }: CompanyStatusStepP
   };
 
   const canContinue =
-    (companyStatus === "existing" && companyName && registrationNumber) ||
+    (companyStatus === "existing" && companyName.trim().length > 0 && registrationNumber.trim().length > 0) ||
     companyStatus === "new";
 
   // Update parent with validation status

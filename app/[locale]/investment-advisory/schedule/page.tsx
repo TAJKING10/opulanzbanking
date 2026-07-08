@@ -7,9 +7,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState, useEffect } from "react";
-import { PayPalButtons } from "@/components/paypal-buttons";
-import { CheckCircle, Shield, ArrowLeft, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
+import { CheckCircle, ArrowRight, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -19,7 +18,7 @@ function fetchSafe(url: string, options: RequestInit) {
   return fetch(url, { ...options, signal: ctrl.signal }).finally(() => clearTimeout(id));
 }
 
-type Step = "info" | "payment" | "calendar" | "confirmation";
+type Step = "info" | "confirmation";
 
 // ── Full client profile ──────────────────────────────────────────────────────
 interface ClientProfile {
@@ -130,19 +129,11 @@ function SectionHeader({ title, open, onToggle }: { title: string; open: boolean
 export default function ScheduleInvestmentMeetingPage() {
   const t = useTranslations("investmentAdvisory.schedule");
   const locale = useLocale();
-  const dateLocale = locale === "fr" ? "fr-FR" : "en-US";
-
-  const calendlyUrl = locale === "fr"
-    ? "https://calendly.com/opulanz-banking/conseil-en-investissement"
-    : "https://calendly.com/opulanz-banking/tax-advisory-clone";
 
   const [step, setStep] = useState<Step>("info");
   const [profile, setProfile] = useState<ClientProfile>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof ClientProfile, string>>>({});
-  const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [paymentOrderId, setPaymentOrderId] = useState("");
-  const [calendlyLoaded, setCalendlyLoaded] = useState(false);
 
   // Collapsed sections
   const [open, setOpen] = useState({
@@ -156,38 +147,6 @@ export default function ScheduleInvestmentMeetingPage() {
     setProfile(p => ({ ...p, [field]: value }));
 
   const fullName = `${profile.firstName} ${profile.lastName}`.trim();
-
-  // Load Calendly widget
-  useEffect(() => {
-    if (step === "calendar" && !calendlyLoaded) {
-      const existing = document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]');
-      if (existing) { setCalendlyLoaded(true); return; }
-      const script = document.createElement("script");
-      script.src = "https://assets.calendly.com/assets/external/widget.js";
-      script.async = true;
-      script.onload = () => setCalendlyLoaded(true);
-      document.head.appendChild(script);
-    }
-  }, [step, calendlyLoaded]);
-
-  // Listen for Calendly booking event
-  useEffect(() => {
-    const handle = (e: MessageEvent) => {
-      if (e.data?.event === "calendly.event_scheduled") {
-        const p = e.data.payload || {};
-        const data = {
-          eventUri: p.event?.uri,
-          inviteeUri: p.invitee?.uri,
-          eventStartTime: p.event?.start_time,
-          eventEndTime: p.event?.end_time,
-        };
-        setBookingData(data);
-        submitBooking(data);
-      }
-    };
-    window.addEventListener("message", handle);
-    return () => window.removeEventListener("message", handle);
-  }, [profile, paymentOrderId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Validation ──────────────────────────────────────────────────────────────
   function validate(): boolean {
@@ -238,34 +197,20 @@ export default function ScheduleInvestmentMeetingPage() {
     return true;
   }
 
-  function handleInfoSubmit(e: React.FormEvent) {
+  async function handleInfoSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (validate()) setStep("payment");
-  }
-
-  function handlePaymentSuccess(orderId: string) {
-    setPaymentOrderId(orderId);
-    setStep("calendar");
-  }
-
-  async function submitBooking(cal: any) {
+    if (!validate()) return;
     setLoading(true);
     try {
-      const startDate = new Date(cal.eventStartTime);
       await fetchSafe(`${API}/api/appointments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           full_name: fullName,
           email: profile.email,
-          calendly_id: cal.eventUri,
-          calendly_event_uri: cal.eventUri,
           meeting_type: "Investment Advisory",
-          status: "confirmed",
-          start_time: cal.eventStartTime,
-          end_time: cal.eventEndTime,
+          status: "pending",
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          location: "Video Conference",
           notes: JSON.stringify({
             phone: profile.phone,
             nationality: profile.nationality,
@@ -277,38 +222,14 @@ export default function ScheduleInvestmentMeetingPage() {
             initialInvestment: profile.initialInvestment,
             missionType: profile.missionType,
             riskTolerance: profile.riskTolerance,
-            paypalOrderId: paymentOrderId,
-            amountPaid: "€99.90",
           }),
         }),
       }).catch(() => null);
-
-      await fetchSafe(`${API}/api/notifications/appointment`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customerName: fullName,
-          customerEmail: profile.email,
-          appointmentDate: startDate.toLocaleDateString(dateLocale, {
-            weekday: "long", year: "numeric", month: "long", day: "numeric",
-          }),
-          appointmentTime: startDate.toLocaleTimeString(dateLocale, {
-            hour: "2-digit", minute: "2-digit",
-          }),
-          meetingType: "Investment Advisory",
-        }),
-      }).catch(() => null);
-
-      setStep("confirmation");
-    } catch {
-      setStep("confirmation");
     } finally {
       setLoading(false);
+      setStep("confirmation");
     }
   }
-
-  const progressSteps: Step[] = ["info", "payment", "calendar"];
-  const stepIdx = progressSteps.indexOf(step);
 
   return (
     <>
@@ -317,26 +238,6 @@ export default function ScheduleInvestmentMeetingPage() {
       <section className="bg-white py-12">
         <div className="container mx-auto max-w-4xl px-6">
 
-          {/* Progress indicator */}
-          {step !== "confirmation" && (
-            <div className="mb-10 flex items-center justify-center gap-2">
-              {(["Your Information", "Payment", "Book Meeting"] as const).map((label, i) => (
-                <React.Fragment key={label}>
-                  <div className="flex flex-col items-center gap-1">
-                    <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-all ${
-                      i < stepIdx ? "bg-brand-gold text-white" :
-                      i === stepIdx ? "bg-brand-goldLight text-brand-goldDark ring-4 ring-brand-goldLight/30" :
-                      "bg-gray-100 text-gray-400"
-                    }`}>
-                      {i < stepIdx ? <CheckCircle className="h-5 w-5" /> : i + 1}
-                    </div>
-                    <span className={`text-xs font-medium hidden sm:block ${i === stepIdx ? "text-brand-gold" : "text-brand-grayMed"}`}>{label}</span>
-                  </div>
-                  {i < 2 && <div className={`h-1 w-16 rounded mb-4 transition-all ${i < stepIdx ? "bg-brand-gold" : "bg-gray-100"}`} />}
-                </React.Fragment>
-              ))}
-            </div>
-          )}
 
           {/* ═══════════════════════════════════════════════════════════
               STEP 1 — Complete Client Profile
@@ -344,7 +245,6 @@ export default function ScheduleInvestmentMeetingPage() {
           {step === "info" && (
             <>
               <div className="mb-8 text-center">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-brand-gold">Step 1 of 3</p>
                 <h2 className="mb-2 text-2xl font-bold text-brand-dark md:text-3xl">Complete Your Profile</h2>
                 <p className="text-brand-grayMed text-sm">All information is required for regulatory compliance (KYC/AML). Fields marked * are mandatory.</p>
               </div>
@@ -740,8 +640,8 @@ export default function ScheduleInvestmentMeetingPage() {
                 )}
 
                 <div className="flex justify-end pt-2">
-                  <Button type="submit" className="flex items-center gap-2 bg-brand-gold text-white hover:bg-brand-goldDark px-8 py-3 text-base">
-                    Continue to Payment <ArrowRight className="h-5 w-5" />
+                  <Button type="submit" disabled={loading} className="flex items-center gap-2 bg-brand-gold text-white hover:bg-brand-goldDark px-8 py-3 text-base">
+                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <>Submit <ArrowRight className="h-5 w-5" /></>}
                   </Button>
                 </div>
 
@@ -750,143 +650,22 @@ export default function ScheduleInvestmentMeetingPage() {
           )}
 
           {/* ═══════════════════════════════════════════════════════════
-              STEP 2 — PayPal Payment
+              CONFIRMATION
           ═══════════════════════════════════════════════════════════ */}
-          {step === "payment" && (
-            <>
-              <div className="mb-8 text-center">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-brand-gold">Step 2 of 3</p>
-                <h2 className="mb-2 text-2xl font-bold text-brand-dark md:text-3xl">{t("completePaymentTitle")}</h2>
-                <p className="text-brand-grayMed">{t("completePaymentDesc")}</p>
-              </div>
-
-              <Card className="mb-6 border-brand-gold/30 shadow-lg">
-                <CardContent className="p-8">
-                  <h3 className="mb-4 text-lg font-bold text-brand-dark">Order Summary</h3>
-                  <div className="space-y-2 text-sm">
-                    {[
-                      ["Name", fullName],
-                      ["Email", profile.email],
-                      ["Phone", profile.phone],
-                      ["Nationality", profile.nationality],
-                      ["Address", `${profile.addressLine1}, ${profile.city}, ${profile.country}`],
-                      ["Document", `${profile.docType.replace("_", " ")} – ${profile.docNumber}`],
-                      ["Service", profile.missionType === "advisory" ? "Investment Advisory (Conseil)" : "Portfolio Management"],
-                      ["Initial Investment", profile.initialInvestment ? `€${Number(profile.initialInvestment).toLocaleString()}` : "—"],
-                    ].map(([label, value]) => value && (
-                      <div key={label} className="flex justify-between border-b border-gray-100 py-1.5">
-                        <span className="text-brand-grayMed">{label}</span>
-                        <span className="font-medium text-brand-dark text-right max-w-xs truncate">{value}</span>
-                      </div>
-                    ))}
-                    <div className="flex justify-between items-center border-t border-brand-grayLight pt-3 mt-2">
-                      <span className="font-bold text-brand-dark">Consultation Fee</span>
-                      <span className="text-xl font-bold text-brand-gold">€99.90</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-none shadow-lg">
-                <CardContent className="p-8">
-                  <div className="mx-auto max-w-md">
-                    <PayPalButtons
-                      amount="99.90"
-                      description="Investment Advisory Consultation – 45 minutes"
-                      onSuccess={(orderId) => handlePaymentSuccess(orderId)}
-                    />
-                    <div className="mt-4 flex items-center justify-center gap-2 text-xs text-brand-grayMed">
-                      <Shield className="h-4 w-4 text-green-600" />
-                      <span>{t("securePayment")}</span>
-                    </div>
-                  </div>
-                  <div className="mt-6 flex justify-start">
-                    <Button variant="outline" onClick={() => setStep("info")} className="flex items-center gap-2">
-                      <ArrowLeft className="h-4 w-4" /> Back to Profile
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </>
-          )}
-
-          {/* ═══════════════════════════════════════════════════════════
-              STEP 3 — Calendly
-          ═══════════════════════════════════════════════════════════ */}
-          {step === "calendar" && (
-            <>
-              <div className="mb-8 text-center">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-brand-gold">Step 3 of 3</p>
-                <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 bg-green-50 border border-green-200 rounded-full">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
-                  <span className="text-sm font-semibold text-green-700">{t("paymentSuccess")} ✓</span>
-                </div>
-                <h2 className="mb-2 text-2xl font-bold text-brand-dark md:text-3xl">{t("calendarTitle")}</h2>
-                <p className="text-brand-grayMed">{t("calendarSubtitle")}</p>
-              </div>
-
-              <Card className="border-none shadow-lg">
-                <CardContent className="p-4 md:p-8">
-                  {loading ? (
-                    <div className="flex flex-col items-center justify-center py-16 gap-4">
-                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-brand-gold border-t-transparent" />
-                      <p className="text-brand-grayMed">{t("processing")}</p>
-                    </div>
-                  ) : (
-                    <div key={locale} className="calendly-inline-widget"
-                      data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d0ab08&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(profile.email)}`}
-                      style={{ minWidth: "320px", height: "700px" }} />
-                  )}
-                </CardContent>
-              </Card>
-            </>
-          )}
-
-          {/* ═══════════════════════════════════════════════════════════
-              STEP 4 — Confirmation
-          ═══════════════════════════════════════════════════════════ */}
-          {step === "confirmation" && bookingData && (
-            <div className="text-center">
+          {step === "confirmation" && (
+            <div className="text-center py-8">
               <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
                 <CheckCircle className="h-10 w-10 text-green-600" />
               </div>
-              <h2 className="mb-4 text-3xl font-bold text-brand-dark">{t("paymentConfirmed")}</h2>
-              <p className="mb-8 text-brand-grayMed">{t("paymentConfirmedDesc")}</p>
-
-              <Card className="mb-8 border-brand-gold/30 shadow-lg text-left">
-                <CardContent className="p-8">
-                  <h3 className="mb-4 text-xl font-bold text-brand-dark">{t("confirmedAppointment")}</h3>
-                  <div className="space-y-3 text-sm">
-                    {[
-                      [t("labelService"), t("serviceName")],
-                      [t("labelName"), fullName],
-                      [t("labelEmail"), profile.email],
-                      [t("labelPhone"), profile.phone],
-                      [t("labelDate"), new Date(bookingData.eventStartTime).toLocaleDateString(dateLocale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })],
-                      [t("labelTime"), new Date(bookingData.eventStartTime).toLocaleTimeString(dateLocale, { hour: "2-digit", minute: "2-digit" })],
-                      [t("labelDuration"), t("duration45")],
-                    ].map(([label, value]) => (
-                      <div key={label} className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                        <span className="text-brand-grayMed">{label}</span>
-                        <span className="font-semibold text-brand-dark">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="rounded-lg bg-brand-goldLight/20 p-6 mb-8 text-left">
-                <h4 className="mb-3 font-semibold text-brand-dark">{t("whatsNext")}</h4>
-                <ul className="space-y-2 text-sm text-brand-grayMed">
-                  <li>✓ {t("next1", { email: profile.email })}</li>
-                  <li>✓ {t("next2")}</li>
-                  <li>✓ {t("next3")}</li>
-                  <li>✓ {t("next4")}</li>
-                </ul>
-              </div>
-
+              <h2 className="mb-4 text-3xl font-bold text-brand-dark">Request Received</h2>
+              <p className="mb-3 text-lg text-brand-grayMed">
+                Thank you, <span className="font-semibold text-brand-dark">{fullName}</span>.
+              </p>
+              <p className="mb-8 text-xl font-semibold text-brand-gold">
+                We will contact you in 2 working days.
+              </p>
               <Button onClick={() => window.location.href = `/${locale}`} className="bg-brand-gold text-white hover:bg-brand-goldDark">
-                {t("returnHome")}
+                Return to Home
               </Button>
             </div>
           )}

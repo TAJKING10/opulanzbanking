@@ -382,7 +382,7 @@
         "domiciliationItem1": "Professional business address in Luxembourg",
         "domiciliationItem2": "Mail forwarding and scanning",
         "domiciliationItem3": "Meeting room access",
-        "domiciliationPrice": "From €600/year",
+        "domiciliationPrice": "From EUR 600/year",
         "noDomiciliationNote": "If you don't select domiciliation service, you must provide proof of a registered address (lease agreement or property title) in the next step."
       },
       "step7": {

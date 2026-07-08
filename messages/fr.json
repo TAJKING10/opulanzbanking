@@ -382,7 +382,7 @@
         "domiciliationItem1": "Adresse professionnelle au Luxembourg",
         "domiciliationItem2": "Réexpédition et numérisation du courrier",
         "domiciliationItem3": "Accès aux salles de réunion",
-        "domiciliationPrice": "À partir de 600 €/an",
+        "domiciliationPrice": "À partir de 600 EUR/an",
         "noDomiciliationNote": "Si vous ne sélectionnez pas le service de domiciliation, vous devez fournir une preuve d'adresse de siège social (bail ou titre de propriété) à l'étape suivante."
       },
       "step7": {

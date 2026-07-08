@@ -203,6 +203,9 @@ export default function AccountingOnboardingPage() {
           // Consent
           consent: formData.consent,
 
+          // Top-level email so emailService can find the client
+          email: formData.primaryContact?.email,
+
           // Metadata
           applicationId: appId,
           submittedAt: new Date().toISOString(),
@@ -227,6 +230,18 @@ export default function AccountingOnboardingPage() {
       };
 
       sessionStorage.setItem('accounting-application', JSON.stringify(confirmationData));
+
+      // Save to backend + trigger emails (non-fatal if backend down)
+      try {
+        const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+        await fetch(`${API}/api/applications`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(applicationPayload),
+        });
+      } catch (apiErr) {
+        console.warn("Backend save failed (non-fatal):", apiErr);
+      }
 
       // Redirect to professional confirmation page
       router.push(`/${locale}/invoicing-accounting/confirmation?ref=${appId}`);
@@ -300,8 +315,17 @@ export default function AccountingOnboardingPage() {
         return formData.isStep1Valid === true;
       case 2:
         return formData.isStep2Valid === true;
-      case 3:
-        return formData.isStep3Valid === true;
+      case 3: {
+        const ra = formData.registeredAddress;
+        const pc = formData.primaryContact;
+        const oa = formData.operatingAddress;
+        const addrOk = formData.sameAsRegistered
+          ? !!(ra?.street && ra?.city && ra?.postal && ra?.country)
+          : !!(ra?.street && ra?.city && ra?.postal && ra?.country &&
+               oa?.street && oa?.city && oa?.postal && oa?.country);
+        const contactOk = !!(pc?.firstName && pc?.lastName && pc?.role && pc?.email && pc?.phone);
+        return addrOk && contactOk;
+      }
       case 4:
         return formData.isStep4Valid === true;
       case 5:

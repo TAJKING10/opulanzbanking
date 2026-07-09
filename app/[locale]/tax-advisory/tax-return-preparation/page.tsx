@@ -8,17 +8,49 @@ import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import emailjs from '@emailjs/browser';
+import { PayPalButtons } from "@/components/paypal-buttons";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function TaxReturnPreparationPage({ params: { locale } }: { params: { locale: string } }) {
+  const calendlyUrl = locale === "fr"
+    ? "https://calendly.com/opulanz-banking/conseil-fiscal"
+    : "https://calendly.com/opulanz-banking/tax-advisory";
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
-  const paypalRef = useRef<HTMLDivElement>(null);
+
+  // Load booking data from localStorage on mount
+  useEffect(() => {
+    const savedBookingData = localStorage.getItem('taxAdvisoryBookingData');
+    const savedStep = localStorage.getItem('taxAdvisoryStep');
+
+    if (savedBookingData) {
+      try {
+        const parsedData = JSON.parse(savedBookingData);
+        setBookingData(parsedData);
+        if (savedStep && ['info', 'calendar', 'payment', 'confirmation'].includes(savedStep)) {
+          setStep(savedStep as any);
+        }
+      } catch (error) {
+        console.error('Error loading booking data:', error);
+        localStorage.removeItem('taxAdvisoryBookingData');
+        localStorage.removeItem('taxAdvisoryStep');
+      }
+    }
+  }, []);
+
+  // Save booking data to localStorage whenever it changes
+  useEffect(() => {
+    if (bookingData) {
+      localStorage.setItem('taxAdvisoryBookingData', JSON.stringify(bookingData));
+      localStorage.setItem('taxAdvisoryStep', step);
+    }
+  }, [bookingData, step]);
 
   const totalPrice = 299;
   const servicePrice = totalPrice / 1.17; // Price without VAT
@@ -121,37 +153,35 @@ Contact: opulanz.banking@gmail.com
       document.head.appendChild(script);
     }
   }, [step, calendlyLoaded]);
-  // Load PayPal SDK when payment step is active
-  useEffect(() => {
-    if (step === 'payment' && !paypalLoaded) {
-      const script = document.createElement('script');
-      const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo';
-      script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR`;
-      script.async = true;
-      script.onload = () => setPaypalLoaded(true);
-      document.head.appendChild(script);
-    }
-  }, [step, paypalLoaded]);
-
-
   // Listen for Calendly events
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
+      // Log all message events for debugging
+      console.log('Message received:', e.data);
+
       if (e.data.event && e.data.event.indexOf('calendly') === 0) {
         console.log('Calendly Event:', e.data.event);
+        console.log('Full event data:', JSON.stringify(e.data, null, 2));
 
         if (e.data.event === 'calendly.event_scheduled') {
-          console.log('Booking details:', e.data.payload);
+          console.log('Booking details payload:', e.data.payload);
 
-          // Store booking data
-          setBookingData({
-            eventUri: e.data.payload.event.uri,
-            inviteeUri: e.data.payload.invitee.uri,
-            inviteeName: e.data.payload.invitee.name,
-            inviteeEmail: e.data.payload.invitee.email,
-            eventStartTime: e.data.payload.event.start_time,
-            eventEndTime: e.data.payload.event.end_time,
-          });
+          // Extract data with fallbacks
+          const payload = e.data.payload || {};
+          const event = payload.event || {};
+          const invitee = payload.invitee || {};
+
+          const bookingInfo = {
+            eventUri: event.uri || '',
+            inviteeUri: invitee.uri || '',
+            inviteeName: invitee.name || '',
+            inviteeEmail: invitee.email || '',
+            eventStartTime: event.start_time || event.startTime || '',
+            eventEndTime: event.end_time || event.endTime || '',
+          };
+
+          console.log('Extracted booking info:', bookingInfo);
+          setBookingData(bookingInfo);
 
           // Move to payment step
           setStep('payment');
@@ -166,64 +196,18 @@ Contact: opulanz.banking@gmail.com
     };
   }, []);
 
-  // Initialize PayPal buttons when step changes to payment
   useEffect(() => {
-    if (step === 'payment' && paypalLoaded && paypalRef.current && bookingData) {
-      // Clear existing buttons
-      paypalRef.current.innerHTML = '';
-
-      // @ts-ignore
-      if (window.paypal) {
-        // @ts-ignore
-        window.paypal.Buttons({
-          style: {
-            layout: 'vertical',
-            color: 'gold',
-            shape: 'rect',
-            label: 'pay',
-            height: 50
-          },
-          createOrder: function(data: any, actions: any) {
-            return actions.order.create({
-              purchase_units: [{
-                description: 'Tax Return Preparation - 60 minutes',
-                amount: {
-                  currency_code: 'EUR',
-                  value: totalPrice.toFixed(2)
-                }
-              }]
-            });
-          },
-          onApprove: function(data: any, actions: any) {
-            return actions.order.capture().then(function(details: any) {
-              console.log('Payment completed:', details);
-              setPaymentCompleted(true);
-            });
-          },
-          onError: function(err: any) {
-            console.error('PayPal error:', err);
-            alert('Payment failed. Please try again.');
-          }
-        }).render(paypalRef.current);
-      }
-    }
-  }, [step, paypalLoaded, bookingData, totalPrice]);
+    if (!paymentCompleted) return;
+    const timer = setTimeout(() => { handlePaymentComplete(); }, 1200);
+    return () => clearTimeout(timer);
+  }, [paymentCompleted]);
 
   const handlePaymentComplete = async () => {
-    if (!paymentCompleted) {
-      alert('Please complete the PayPal payment first.');
-      return;
-    }
-
     setLoading(true);
-
     try {
-      if (!bookingData) {
-        throw new Error('No booking data available');
-      }
+      if (!bookingData) throw new Error('No booking data available');
 
-      // Save appointment to database
-      const appointmentResponse = await fetch('http://localhost:5000/api/appointments', {
+      await fetch(`${API}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -239,20 +223,12 @@ Contact: opulanz.banking@gmail.com
           location: 'Video Conference',
           notes: `Paid consultation - €${totalPrice}`
         })
-      });
-
-      if (!appointmentResponse.ok) {
-        const errorData = await appointmentResponse.json();
-        console.error('Appointment creation failed:', errorData);
-      }
+      }).catch(() => null);
 
       sendEmailReceipts();
-
-
       setStep('confirmation');
     } catch (error) {
-      console.error('Error processing payment:', error);
-      alert('There was an error processing your payment. Please contact support.');
+      setStep('confirmation');
     } finally {
       setLoading(false);
     }
@@ -276,9 +252,31 @@ Contact: opulanz.banking@gmail.com
 
   // Step 3: Confirmation
   if (step === 'confirmation' && bookingData) {
+    // Validate and format appointment details
+    const appointmentName = bookingData.inviteeName || 'Not provided';
+    const appointmentEmail = bookingData.inviteeEmail || 'Not provided';
+    const startDate = bookingData.eventStartTime ? new Date(bookingData.eventStartTime) : null;
+    const isValidDate = startDate && !isNaN(startDate.getTime());
+
+    const formattedDate = isValidDate
+      ? startDate!.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      : 'Date not set';
+
+    const formattedTime = isValidDate
+      ? startDate!.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      : 'Time not set';
+
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-500">
@@ -306,31 +304,19 @@ Contact: opulanz.banking@gmail.com
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Name:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentName}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Email:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentEmail}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Date:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedDate}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Time:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedTime}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-brand-grayMed">Duration:</span>
@@ -343,19 +329,33 @@ Contact: opulanz.banking@gmail.com
             <div className="rounded-lg bg-brand-goldLight/20 p-6 mb-8">
               <h4 className="mb-3 font-semibold text-brand-dark">What's Next?</h4>
               <ul className="space-y-2 text-sm text-brand-grayMed">
-                <li>✓ Check your email ({bookingData.inviteeEmail}) for the meeting link and calendar invite</li>
+                <li>✓ Check your email ({appointmentEmail}) for the meeting link and calendar invite</li>
                 <li>✓ Prepare your tax documents and questions</li>
                 <li>✓ Join the video conference at your scheduled time</li>
                 <li>✓ Our team has been notified and will be ready for your consultation</li>
               </ul>
             </div>
 
-            <Button
-              onClick={() => window.location.href = `/${locale}`}
-              className="w-full bg-brand-gold text-white hover:bg-brand-goldDark"
-            >
-              Return to Home
-            </Button>
+            <div className="flex flex-col gap-4">
+              <Button
+                onClick={generatePDFReceipt}
+                variant="outline"
+                className="w-full border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
+              >
+                Download Receipt
+              </Button>
+              <Button
+                onClick={() => {
+                  // Clear booking data for fresh start
+                  localStorage.removeItem('taxAdvisoryBookingData');
+                  localStorage.removeItem('taxAdvisoryStep');
+                  window.location.href = `/${locale}`;
+                }}
+                className="w-full bg-brand-gold text-white hover:bg-brand-goldDark"
+              >
+                Return to Home
+              </Button>
+            </div>
           </div>
         </section>
 
@@ -363,11 +363,59 @@ Contact: opulanz.banking@gmail.com
     );
   }
 
-  // Step 2: Payment
-  if (step === 'payment' && bookingData) {
+  // If payment step but no booking data, redirect to calendar
+  if (step === 'payment' && !bookingData) {
     return (
       <>
         <section className="hero-gradient py-16 md:py-20">
+          <div className="container mx-auto max-w-4xl px-6">
+            <div className="text-center">
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+                No Booking Found
+              </h1>
+              <p className="mb-8 text-lg text-white/90">
+                Please schedule your appointment first before proceeding to payment.
+              </p>
+              <Button
+                onClick={() => setStep('calendar')}
+                className="bg-white text-brand-dark hover:bg-gray-50"
+              >
+                Schedule Appointment
+              </Button>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  // Step 2: Payment
+  if (step === 'payment' && bookingData) {
+    // Validate and format appointment details
+    const appointmentName = bookingData.inviteeName || 'Not provided';
+    const appointmentEmail = bookingData.inviteeEmail || 'Not provided';
+    const startDate = bookingData.eventStartTime ? new Date(bookingData.eventStartTime) : null;
+    const isValidDate = startDate && !isNaN(startDate.getTime());
+
+    const formattedDate = isValidDate
+      ? startDate!.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      : 'Date not set';
+
+    const formattedTime = isValidDate
+      ? startDate!.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      : 'Time not set';
+
+    return (
+      <>
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
@@ -391,31 +439,19 @@ Contact: opulanz.banking@gmail.com
                 <div className="space-y-3">
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Name:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentName}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Email:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentEmail}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Date:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedDate}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Time:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedTime}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-brand-grayMed">Duration:</span>
@@ -470,10 +506,22 @@ Contact: opulanz.banking@gmail.com
                     </p>
                   </div>
 
-                  {/* PayPal Button Container */}
                   <div className="mx-auto max-w-md">
-                    <div ref={paypalRef} id="paypal-button-container"></div>
-
+                    <PayPalButtons
+                      amount={totalPrice.toFixed(2)}
+                      description="Tax Return Preparation - 60 minutes"
+                      onSuccess={(orderId, details) => {
+                        setBookingData((prev: any) => ({
+                          ...prev,
+                          paymentDetails: {
+                            orderId: details.id || orderId,
+                            status: details.status || 'completed',
+                            timestamp: new Date().toISOString()
+                          }
+                        }));
+                        setPaymentCompleted(true);
+                      }}
+                    />
                     <div className="mt-6 rounded-lg bg-blue-50 p-4">
                       <p className="text-sm text-blue-800">
                         <strong>Testing:</strong> Use card{' '}
@@ -491,15 +539,10 @@ Contact: opulanz.banking@gmail.com
                           <span className="font-semibold">Payment Successful!</span>
                         </div>
                       </div>
-
-                      <Button
-                        type="button"
-                        onClick={handlePaymentComplete}
-                        disabled={loading}
-                        className="bg-brand-gold text-white hover:bg-brand-goldDark"
-                      >
-                        {loading ? 'Processing...' : 'Continue to Confirmation'}
-                      </Button>
+                      <div className="flex items-center justify-center gap-2 text-brand-grayMed text-sm">
+                        <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+                        {loading ? 'Processing...' : 'Redirecting to confirmation...'}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -516,7 +559,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'calendar') {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
@@ -564,8 +607,9 @@ Contact: opulanz.banking@gmail.com
             </div>
 
             <div
+              key={locale}
               className="calendly-inline-widget"
-              data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a"
+              data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d8ba4a`}
               style={{ minWidth: '320px', height: '700px' }}
             />
           </div>
@@ -584,7 +628,7 @@ Contact: opulanz.banking@gmail.com
       />
 
       {/* Booking Section - At Top */}
-      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-12 md:py-16 overflow-hidden">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-brand-goldLight/20 rounded-full blur-3xl"></div>
 
@@ -616,7 +660,7 @@ Contact: opulanz.banking@gmail.com
       </section>
 
       {/* Overview Section */}
-      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-white py-12 md:py-16 overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30"></div>
 
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
@@ -664,7 +708,7 @@ Contact: opulanz.banking@gmail.com
       </section>
 
       {/* Benefits Section */}
-      <section className="relative bg-gray-50 py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-gray-50 py-12 md:py-16 overflow-hidden">
         <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-brand-goldLight/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl"></div>
 
@@ -699,7 +743,7 @@ Contact: opulanz.banking@gmail.com
       </section>
 
       {/* CTA Section */}
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
             Ready to File Your Tax Return?

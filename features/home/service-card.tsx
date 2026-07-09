@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ interface ServiceCardProps {
   href: string;
   ctaLabel?: string;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export function ServiceCard({
@@ -23,14 +25,18 @@ export function ServiceCard({
   description,
   image,
   href,
-  ctaLabel = "Learn More",
+  ctaLabel,
   className,
+  style,
 }: ServiceCardProps) {
+  const t = useTranslations();
+  const resolvedCtaLabel = ctaLabel || t("common.learnMore");
   return (
     <motion.div
       whileHover={{ y: -8 }}
       transition={{ duration: 0.3 }}
       className={cn("h-full", className)}
+      style={style}
     >
       <Card className="card-hover group h-full overflow-hidden border-none">
         <div className="relative aspect-[16/10] w-full overflow-hidden">
@@ -50,7 +56,7 @@ export function ServiceCard({
             className="group/btn p-0 text-brand-gold"
           >
             <Link href={href}>
-              {ctaLabel}
+              {resolvedCtaLabel}
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
             </Link>
           </Button>

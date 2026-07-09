@@ -39,6 +39,8 @@ export interface UploadedFile {
   size: number;
   type: string;
   uploadedAt: string;
+  fileUrl?: string;
+  blobName?: string;
 }
 
 export interface CompanyFormationDossier {
@@ -97,6 +99,8 @@ export interface CompanyFormationDossier {
   userRef: string;
   paymentStatus: PaymentStatus;
   setupFeeAmount?: number;
+  paypalOrderId?: string;
+  paypalPaymentDetails?: any;
 }
 
 /**

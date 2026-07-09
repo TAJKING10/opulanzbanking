@@ -26,10 +26,15 @@ export function Hero({
   secondaryCta,
   className,
 }: HeroProps) {
+  const isPageHeader = !primaryCta && !secondaryCta;
+
   return (
     <section
       className={cn(
-        "hero-gradient relative overflow-hidden py-24 md:py-32 lg:py-40",
+        "hero-gradient relative overflow-hidden",
+        isPageHeader
+          ? "pt-32 pb-20 md:pt-36 md:pb-24 lg:pt-40 lg:pb-28"
+          : "pt-32 pb-20 md:pt-36 md:pb-24 lg:pt-40 lg:pb-28",
         className
       )}
     >
@@ -40,7 +45,12 @@ export function Hero({
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <h1 className="text-balance text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl xl:text-7xl">
+          <h1 className={cn(
+            "text-balance font-bold tracking-tight text-white",
+            isPageHeader
+              ? "text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
+              : "text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
+          )}>
             {title}
           </h1>
           {subtitle && (
@@ -48,7 +58,7 @@ export function Hero({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mx-auto mt-6 max-w-2xl text-balance text-lg text-white/90 md:text-xl"
+              className="mx-auto mt-6 max-w-3xl text-balance text-lg text-white/90 md:text-xl"
             >
               {subtitle}
             </motion.p>

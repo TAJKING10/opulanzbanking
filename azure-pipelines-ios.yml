@@ -1,0 +1,173 @@
+trigger: none
+
+pr: none
+
+parameters:
+  - name: distribution
+    displayName: 'Distribution method'
+    type: string
+    default: 'app-store'
+    values:
+      - app-store
+      - ad-hoc
+
+pool:
+  vmImage: 'macOS-latest'
+
+variables:
+  - group: ios-signing
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
+
+  - script: npm ci
+    displayName: 'Install dependencies'
+
+  - script: NEXT_OUTPUT=export npm run build
+    displayName: 'Build Next.js static export'
+    env:
+      NEXT_OUTPUT: export
+
+  - script: npx cap sync ios
+    displayName: 'Sync Capacitor iOS'
+
+  - script: |
+      echo "Available Xcode versions:"
+      ls /Applications/ | grep Xcode
+      XCODE26=$(ls /Applications/ | grep "Xcode_26" | head -1)
+      if [ -n "$XCODE26" ]; then
+        sudo xcode-select -s "/Applications/$XCODE26/Contents/Developer"
+        echo "Selected: $XCODE26"
+      else
+        LATEST=$(ls /Applications/ | grep "^Xcode_" | sort -V | tail -1)
+        sudo xcode-select -s "/Applications/$LATEST/Contents/Developer"
+        echo "Xcode 26 not found, using latest: $LATEST"
+      fi
+      xcodebuild -version
+    displayName: 'Select latest Xcode'
+
+  - script: |
+      cd ios/App
+      pod install --repo-update
+    displayName: 'Install CocoaPods'
+
+  - task: DownloadSecureFile@1
+    name: certificate
+    displayName: 'Download distribution certificate'
+    inputs:
+      secureFile: 'distribution.p12'
+
+  - task: DownloadSecureFile@1
+    name: apikey
+    displayName: 'Download App Store Connect API key'
+    inputs:
+      secureFile: 'AuthKey_SMGBK6VF5N.p8'
+
+  - script: |
+      KEYCHAIN_PATH="$AGENT_TEMPDIRECTORY/app-signing.keychain-db"
+
+      security create-keychain -p "$(IOS_KEYCHAIN_PASSWORD)" "$KEYCHAIN_PATH"
+      security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+      security unlock-keychain -p "$(IOS_KEYCHAIN_PASSWORD)" "$KEYCHAIN_PATH"
+
+      security import "$(certificate.secureFilePath)" -P "$(IOS_CERTIFICATE_PASSWORD)" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+      security list-keychain -d user -s "$KEYCHAIN_PATH"
+    displayName: 'Install certificate into keychain'
+
+  - task: DownloadSecureFile@1
+    name: provisioningProfile
+    displayName: 'Download provisioning profile'
+    inputs:
+      secureFile: 'Opulanz_App_Store.mobileprovision'
+
+  - script: |
+      mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+      cp "$(provisioningProfile.secureFilePath)" ~/Library/MobileDevice/Provisioning\ Profiles/
+      UUID=$(security cms -D -i "$(provisioningProfile.secureFilePath)" | plutil -extract UUID xml1 -o - - | sed -n 's/.*<string>\(.*\)<\/string>.*/\1/p')
+      echo "##vso[task.setvariable variable=PROFILE_UUID]$UUID"
+      echo "Provisioning Profile UUID: $UUID"
+    displayName: 'Install provisioning profile'
+
+  - script: |
+      mkdir -p ~/.appstoreconnect/private_keys
+      cp "$(apikey.secureFilePath)" ~/.appstoreconnect/private_keys/AuthKey_$(APP_STORE_CONNECT_API_KEY_ID).p8
+    displayName: 'Install App Store Connect API key'
+
+  - script: |
+      xcodebuild archive \
+        -workspace ios/App/App.xcworkspace \
+        -scheme App \
+        -configuration Release \
+        -archivePath "$AGENT_TEMPDIRECTORY/Opulanz.xcarchive" \
+        2>&1 | tee "$AGENT_TEMPDIRECTORY/xcodebuild.log"
+      EXIT_CODE=${PIPESTATUS[0]}
+      if [ $EXIT_CODE -ne 0 ]; then
+        echo "##[error]xcodebuild failed. Last 50 lines:"
+        tail -50 "$AGENT_TEMPDIRECTORY/xcodebuild.log"
+        exit $EXIT_CODE
+      fi
+    displayName: 'Build iOS archive'
+
+  - script: |
+      EXPORT_METHOD="${{ parameters.distribution }}"
+      if [ "$EXPORT_METHOD" = "app-store" ]; then
+        EXPORT_METHOD="app-store-connect"
+      fi
+      cat > "$AGENT_TEMPDIRECTORY/ExportOptions.plist" <<EOF
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+      <dict>
+        <key>method</key>
+        <string>${EXPORT_METHOD}</string>
+        <key>teamID</key>
+        <string>$(IOS_TEAM_ID)</string>
+        <key>provisioningProfiles</key>
+        <dict>
+          <key>com.opulanz.banking</key>
+          <string>Opulanz</string>
+        </dict>
+        <key>signingStyle</key>
+        <string>manual</string>
+        <key>signingCertificate</key>
+        <string>iPhone Distribution</string>
+        <key>uploadSymbols</key>
+        <true/>
+        <key>compileBitcode</key>
+        <false/>
+      </dict>
+      </plist>
+      EOF
+    displayName: 'Create ExportOptions.plist'
+
+  - script: |
+      xcodebuild -exportArchive \
+        -archivePath "$AGENT_TEMPDIRECTORY/Opulanz.xcarchive" \
+        -exportOptionsPlist "$AGENT_TEMPDIRECTORY/ExportOptions.plist" \
+        -exportPath "$AGENT_TEMPDIRECTORY/ipa"
+    displayName: 'Export IPA'
+
+  - script: |
+      IPA_PATH=$(find "$AGENT_TEMPDIRECTORY/ipa" -name "*.ipa" | head -1)
+      xcrun altool --upload-app \
+        --type ios \
+        --file "$IPA_PATH" \
+        --apiKey "$(APP_STORE_CONNECT_API_KEY_ID)" \
+        --apiIssuer "$(APP_STORE_CONNECT_ISSUER_ID)"
+    displayName: 'Upload to TestFlight'
+    condition: eq('${{ parameters.distribution }}', 'app-store')
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Agent.TempDirectory)/ipa'
+      artifactName: 'Opulanz-IPA'
+    displayName: 'Publish IPA artifact'
+
+  - script: |
+      security delete-keychain "$AGENT_TEMPDIRECTORY/app-signing.keychain-db" || true
+      rm -f ~/.appstoreconnect/private_keys/AuthKey_$(APP_STORE_CONNECT_API_KEY_ID).p8 || true
+    displayName: 'Cleanup'
+    condition: always()

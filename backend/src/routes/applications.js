@@ -13,8 +13,15 @@
 
 const express = require('express');
 const router = express.Router();
+const nodemailer = require('nodemailer');
 const { pool } = require('../config/db');
+const emailService = require('../services/emailService');
 const { createNarviAccount } = require('../services/narvi');
+
+const emailTransporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+});
 
 /**
  * POST /api/applications
@@ -53,10 +60,10 @@ router.post('/', async (req, res) => {
     const { type, status = 'draft', payload = {} } = req.body;
 
     // Validation
-    if (!type || !['individual', 'company', 'accounting', 'insurance'].includes(type)) {
+    if (!type || !['individual', 'company', 'accounting', 'insurance', 'company_formation'].includes(type)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid type. Must be "individual", "company", "accounting", or "insurance"'
+        error: 'Invalid type. Must be "individual", "company", "accounting", "insurance", or "company_formation"'
       });
     }
 
@@ -105,6 +112,60 @@ router.post('/', async (req, res) => {
       } else {
         console.warn(`⚠️ Application #${application.id} saved but Narvi integration failed:`, narviResponse.error);
       }
+    }
+
+    // Send confirmation email if submitted and email provided
+    if (status === 'submitted' && payload.email) {
+      const firstName = payload.firstName || payload.companyName || 'Client';
+      const isCompany = type === 'company';
+      emailTransporter.sendMail({
+        from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+        to: payload.email,
+        replyTo: 'support@opulanz.com',
+        subject: 'Opulanz — Application Received',
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+            <div style="background:linear-gradient(135deg,#b59354,#886844);padding:32px;text-align:center;border-radius:12px 12px 0 0;">
+              <h1 style="color:white;margin:0;font-size:28px;letter-spacing:2px;">OPULANZ</h1>
+              <p style="color:rgba(255,255,255,0.8);margin:6px 0 0;font-size:13px;">Banking Platform</p>
+            </div>
+            <div style="background:#fff;padding:40px;border:1px solid #e5e7eb;border-radius:0 0 12px 12px;">
+              <h2 style="color:#252623;margin:0 0 16px;">Application Received</h2>
+              <p style="color:#555;font-size:15px;line-height:1.7;">Dear ${firstName},</p>
+              <p style="color:#555;font-size:15px;line-height:1.7;">
+                Thank you for submitting your ${isCompany ? 'company' : 'individual'} account application to Opulanz.
+                We have received your information and our compliance team will review it shortly.
+              </p>
+              <div style="background:#f6f8f8;border-radius:12px;padding:20px;margin:24px 0;border-left:4px solid #b59354;">
+                <p style="margin:0 0 8px;font-weight:600;color:#252623;">Your Application Reference:</p>
+                <p style="margin:0;font-size:20px;font-weight:bold;color:#b59354;letter-spacing:1px;">${isCompany ? 'OPL-CORP' : 'OPL-IND'}-${application.id}</p>
+              </div>
+              <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:14px;margin:0 0 20px;">
+                <p style="margin:0;font-size:13px;color:#856404;line-height:1.6;">
+                  <strong>Next step:</strong> Look for a separate email from us with subject<br/>
+                  <strong>"Opulanz - Verify Your Email Address"</strong> — it contains your 6-digit verification code.<br/>
+                  Do <strong>not</strong> use your application reference number as a verification code.
+                </p>
+              </div>
+              <p style="color:#555;font-size:14px;line-height:1.7;">
+                You will be notified by email at every stage of the process.
+                If you have any questions, contact us at
+                <a href="mailto:support@opulanz.com" style="color:#b59354;font-weight:600;">support@opulanz.com</a>
+              </p>
+              <p style="color:#9ca3af;font-size:12px;margin-top:32px;">© 2026 Opulanz Banking. All rights reserved.</p>
+            </div>
+          </div>`,
+      }).catch(e => console.error('Confirmation email failed:', e.message));
+
+      // Send admin notification via emailService (routes to correct inbox by type)
+      const appType = type === 'company_formation' ? 'company_formation'
+        : type === 'accounting' ? 'accounting'
+        : 'open_account';
+      emailService.sendApplicationEmails(appType, {
+        applicationId: application.id,
+        type,
+        payload,
+      }).catch(err => console.error('[Applications] Admin email failed:', err.message));
     }
 
     res.status(201).json({

@@ -2,8 +2,67 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { CheckCircle, ArrowRight, Mail, Clock, FileText } from "lucide-react";
+import { useRouter } from "next/navigation";
+import {
+  CheckCircle2, Eye, EyeOff, Loader2, Mail, Phone,
+  Shield, Building2, RefreshCw
+} from "lucide-react";
+import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
+import { setAuthToken } from "@/lib/auth";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+type InnerStep = "contact-info" | "kyc" | "email-otp" | "sms-otp" | "set-password" | "complete";
+
+interface OtpBoxProps {
+  value: string;
+  onChange: (v: string) => void;
+  disabled?: boolean;
+}
+
+function OtpBox({ value, onChange, disabled }: OtpBoxProps) {
+  const refs = React.useRef<(HTMLInputElement | null)[]>([]);
+  const digits = value.split("").concat(Array(6).fill("")).slice(0, 6);
+
+  const update = (i: number, char: string) => {
+    const d = char.replace(/\D/g, "").slice(-1);
+    const next = [...digits];
+    next[i] = d;
+    onChange(next.join(""));
+    if (d && i < 5) refs.current[i + 1]?.focus();
+  };
+
+  const onKeyDown = (i: number, e: React.KeyboardEvent) => {
+    if (e.key === "Backspace" && !digits[i] && i > 0) refs.current[i - 1]?.focus();
+  };
+
+  const onPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    onChange(pasted.padEnd(6, "").slice(0, 6));
+    refs.current[Math.min(pasted.length, 5)]?.focus();
+  };
+
+  return (
+    <div className="flex gap-2 sm:gap-3 justify-center">
+      {digits.map((d, i) => (
+        <input
+          key={i}
+          ref={(el) => (refs.current[i] = el)}
+          type="text"
+          inputMode="numeric"
+          maxLength={1}
+          value={d}
+          disabled={disabled}
+          onChange={(e) => update(i, e.target.value)}
+          onKeyDown={(e) => onKeyDown(i, e)}
+          onPaste={onPaste}
+          className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl sm:text-2xl font-bold rounded-xl border-2 border-gray-200 focus:border-[#b59354] focus:outline-none bg-white transition-colors disabled:opacity-50"
+        />
+      ))}
+    </div>
+  );
+}
 
 interface BusinessSubmissionStepProps {
   data: any;
@@ -12,276 +71,541 @@ interface BusinessSubmissionStepProps {
 }
 
 export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmissionStepProps) {
-  const [submitted, setSubmitted] = React.useState(false);
-  const [applicationId, setApplicationId] = React.useState("");
-  const hasSubmitted = React.useRef(false);
+  const router = useRouter();
 
+  const [innerStep, setInnerStep] = React.useState<InnerStep>("contact-info");
+  const [applicationId, setApplicationId] = React.useState<number | null>(null);
+  const hasSavedRef = React.useRef(false);
+
+  // Contact info (collected in first step since business form has no phone)
+  const primaryEmail = data.directors?.[0]?.email || data.email || "";
+  const [contactEmail, setContactEmail] = React.useState(primaryEmail);
+  const [contactPhone, setContactPhone] = React.useState(data.phone || "");
+  const [contactInfoError, setContactInfoError] = React.useState("");
+
+  // OTP state
+  const [emailOtp, setEmailOtp] = React.useState("");
+  const [smsOtp, setSmsOtp] = React.useState("");
+  const [otpLoading, setOtpLoading] = React.useState(false);
+  const [otpError, setOtpError] = React.useState("");
+  const [smsViaTwilio, setSmsViaTwilio] = React.useState(true);
+  const [resendCooldown, setResendCooldown] = React.useState(0);
+
+  // Password state
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [showPwd, setShowPwd] = React.useState(false);
+  const [pwdLoading, setPwdLoading] = React.useState(false);
+  const [pwdError, setPwdError] = React.useState("");
+
+  // Complete state
+  const [iban, setIban] = React.useState("");
+  const [bic, setBic] = React.useState("");
+
+  // Derived
+  const fullPhone = contactPhone.startsWith("+") ? contactPhone : `+${contactPhone}`;
+
+  // Resend cooldown countdown
   React.useEffect(() => {
-    // Prevent duplicate submissions
-    if (hasSubmitted.current) {
-      return;
-    }
+    if (resendCooldown <= 0) return;
+    const t = setTimeout(() => setResendCooldown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [resendCooldown]);
 
-    // Submit business application to backend
-    const submitApplication = async () => {
-      hasSubmitted.current = true;
-      try {
-        const appId = `OPL-B-${Date.now()}`;
-
-        // Internal routing logic
-        const route = determineRoute(data);
-        console.log("Application routed to:", route);
-        console.log("Application data:", data);
-
-        // Prepare payload for backend
-        const applicationPayload = {
+  // Save application to backend (once)
+  async function saveApplication(): Promise<number | null> {
+    if (hasSavedRef.current) return applicationId;
+    hasSavedRef.current = true;
+    try {
+      const director = data.directors?.[0] || {};
+      const res = await fetch(`${API}/api/applications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           type: "company",
           status: "submitted",
           payload: {
-            // Company Status
             companyStatus: data.companyStatus,
-
-            // Company Details
             companyName: data.companyName,
             registrationNumber: data.registrationNumber,
             jurisdiction: data.jurisdiction,
-
-            // Directors & UBOs
             directors: data.directors || [],
             ubos: data.ubos || [],
-
-            // Formation (if new company)
             formationDetails: data.formationDetails || null,
-
-            // Documents info (files would be uploaded separately)
-            documents: data.documents?.map((doc: any) => ({
-              name: doc.name,
-              type: doc.type,
-              size: doc.size
-            })) || [],
-
-            // Consents
+            documents: data.documents?.map((doc: any) => ({ name: doc.name, type: doc.type, size: doc.size })) || [],
             consents: data.consents || {},
-
-            // Metadata
-            route: route,
-            applicationId: appId,
+            contactEmail,
+            contactPhone: fullPhone,
             submittedAt: new Date().toISOString(),
-          }
-        };
-
-        // Submit to backend API
-        const response = await fetch('http://localhost:5000/api/applications', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
           },
-          body: JSON.stringify(applicationPayload),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to submit business application to backend');
-        }
-
-        const result = await response.json();
-        console.log("Business application saved to Azure database:", result);
-
-        // Also create a company record if it's an existing company
-        if (data.companyStatus === 'existing' && data.companyName && data.registrationNumber) {
-          const companyPayload = {
-            name: data.companyName,
-            registration_number: data.registrationNumber,
-            country: data.jurisdiction,
-            legal_form: data.legalForm || 'Unknown',
-          };
-
-          const companyResponse = await fetch('http://localhost:5000/api/companies', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(companyPayload),
-          });
-
-          if (companyResponse.ok) {
-            const companyResult = await companyResponse.json();
-            console.log("Company record created:", companyResult);
-          }
-        }
-
-        setApplicationId(appId);
-        setSubmitted(true);
-
-        // Clear saved progress
-        localStorage.removeItem("business-account-progress");
-      } catch (error) {
-        console.error("Error submitting business application:", error);
-        // Still show success to user, but log error
-        const appId = `OPL-B-${Date.now()}`;
-        setApplicationId(appId);
-        setSubmitted(true);
-        localStorage.removeItem("business-account-progress");
-      }
-    };
-
-    submitApplication();
-  }, [data]);
-
-  const determineRoute = (applicationData: any) => {
-    // Internal routing logic based on jurisdiction
-    const { jurisdiction } = applicationData;
-
-    if (jurisdiction === "LU" || jurisdiction === "FR") {
-      return "ROUTE_A_OLKY"; // Luxembourg/France → OLKY
-    } else if (jurisdiction === "FI") {
-      return "ROUTE_B_NARVI"; // Finland → NARVI
+        }),
+      });
+      const result = await res.json();
+      const id = result.data?.id || null;
+      setApplicationId(id);
+      localStorage.removeItem("business-account-progress");
+      return id;
+    } catch {
+      return null;
     }
+  }
 
-    // Default route
-    return "ROUTE_A_OLKY";
-  };
+  // Contact info → KYC
+  async function handleContactInfoNext() {
+    setContactInfoError("");
+    if (!contactEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) {
+      setContactInfoError("Please enter a valid email address");
+      return;
+    }
+    if (!contactPhone || contactPhone.replace(/\D/g, "").length < 7) {
+      setContactInfoError("Please enter a valid phone number");
+      return;
+    }
+    setInnerStep("kyc");
+  }
 
+  // Called when Sumsub KYC passes
+  async function handleSumsubComplete() {
+    await saveApplication();
+    try {
+      await fetch(`${API}/api/auth/pre-register/send-email-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: contactEmail }),
+      });
+    } catch { /* non-blocking */ }
+    setResendCooldown(60);
+    setInnerStep("email-otp");
+  }
+
+  async function handleVerifyEmailOtp() {
+    if (emailOtp.length !== 6) return;
+    setOtpLoading(true);
+    setOtpError("");
+    try {
+      const res = await fetch(`${API}/api/auth/pre-register/verify-email-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: contactEmail, otp: emailOtp }),
+      });
+      if (!res.ok) {
+        const d = await res.json();
+        setOtpError(d.error || "Invalid or expired code");
+        return;
+      }
+      const smsRes = await fetch(`${API}/api/auth/pre-register/send-sms-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: fullPhone, email: contactEmail }),
+      });
+      const smsData = await smsRes.json();
+      setSmsViaTwilio(smsData.smsSent === true);
+      setResendCooldown(60);
+      setInnerStep("sms-otp");
+    } finally {
+      setOtpLoading(false);
+    }
+  }
+
+  async function handleVerifySmsOtp() {
+    if (smsOtp.length !== 6) return;
+    setOtpLoading(true);
+    setOtpError("");
+    try {
+      const res = await fetch(`${API}/api/auth/pre-register/verify-sms-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: fullPhone, otp: smsOtp, email: contactEmail }),
+      });
+      if (!res.ok) {
+        const d = await res.json();
+        setOtpError(d.error || "Invalid or expired code");
+        return;
+      }
+      setInnerStep("set-password");
+    } finally {
+      setOtpLoading(false);
+    }
+  }
+
+  async function handleSetPassword() {
+    setPwdError("");
+    if (password.length < 8) { setPwdError("Password must be at least 8 characters"); return; }
+    if (password !== confirmPassword) { setPwdError("Passwords do not match"); return; }
+
+    setPwdLoading(true);
+    try {
+      const director = data.directors?.[0] || {};
+      const res = await fetch(`${API}/api/auth/register-no-2fa`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: director.firstName || data.companyName || "Business",
+          lastName: director.lastName || "Account",
+          email: contactEmail,
+          phone: fullPhone,
+          password,
+          accountType: "corporate",
+          applicationId,
+        }),
+      });
+      const result = await res.json();
+      if (!res.ok) {
+        setPwdError(result.error || "Failed to create account");
+        return;
+      }
+      setAuthToken(result.token);
+      setIban(result.iban || "");
+      setBic(result.bic || "");
+      setInnerStep("complete");
+    } finally {
+      setPwdLoading(false);
+    }
+  }
+
+  // Auto-submit OTP when 6 digits entered
+  React.useEffect(() => {
+    if (emailOtp.length === 6 && !otpLoading && innerStep === "email-otp") handleVerifyEmailOtp();
+  }, [emailOtp]);
+
+  React.useEffect(() => {
+    if (smsOtp.length === 6 && !otpLoading && innerStep === "sms-otp") handleVerifySmsOtp();
+  }, [smsOtp]);
+
+  // Password strength
+  const pwdStrength = password.length === 0 ? 0
+    : password.length < 8 ? 1
+    : /[A-Z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password) ? 3
+    : 2;
+  const pwdStrengthLabel = ["", "Weak", "Good", "Strong"][pwdStrength];
+  const pwdStrengthColor = ["", "bg-red-400", "bg-yellow-400", "bg-green-500"][pwdStrength];
+
+  // ── Contact Info Step ──────────────────────────────────────────────────────
+  if (innerStep === "contact-info") {
+    return (
+      <div className="max-w-md mx-auto space-y-6">
+        <div className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
+            <Building2 className="h-8 w-8 text-[#b59354]" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Confirm Contact Details</h2>
+          <p className="text-gray-500 text-sm">
+            We'll send verification codes to these details before creating your business account.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Contact Email</label>
+            <input
+              type="email"
+              value={contactEmail}
+              onChange={(e) => setContactEmail(e.target.value)}
+              placeholder="contact@company.com"
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#b59354] focus:outline-none text-sm transition-colors"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Contact Phone Number</label>
+            <input
+              type="tel"
+              value={contactPhone}
+              onChange={(e) => setContactPhone(e.target.value)}
+              placeholder="+33 6 12 34 56 78"
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#b59354] focus:outline-none text-sm transition-colors"
+            />
+            <p className="text-xs text-gray-400 mt-1">Include country code (e.g. +33 for France)</p>
+          </div>
+        </div>
+
+        {contactInfoError && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700 text-center">
+            {contactInfoError}
+          </div>
+        )}
+
+        <button
+          onClick={handleContactInfoNext}
+          className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors"
+        >
+          Continue to Verification
+        </button>
+      </div>
+    );
+  }
+
+  // ── KYC Step ──────────────────────────────────────────────────────────────
+  if (innerStep === "kyc") {
+    return (
+      <div className="space-y-6">
+        <div className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
+            <Shield className="h-8 w-8 text-[#b59354]" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Business Verification</h2>
+          <p className="text-gray-500 text-sm max-w-md mx-auto">
+            To open a business account, we need to verify your identity as an authorised representative. This is required by financial regulations.
+          </p>
+        </div>
+
+        <div className="bg-gray-50 rounded-2xl border border-gray-100 p-6">
+          <h3 className="font-semibold text-gray-900 mb-3">What you'll need:</h3>
+          <ul className="space-y-2 text-sm text-gray-600">
+            {[
+              "A valid government-issued photo ID (passport or national ID)",
+              "A device with a camera for the selfie check",
+              "Company registration documents",
+              "Proof of business address (last 3 months)",
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <span className="text-[#b59354] font-bold mt-0.5">✓</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <SumsubKycWidget
+          userId={contactEmail || `business-${Date.now()}`}
+          levelName="corporate_signup_kyc"
+          onClose={() => {/* keep on KYC step */}}
+          onComplete={handleSumsubComplete}
+        />
+      </div>
+    );
+  }
+
+  // ── Email OTP ─────────────────────────────────────────────────────────────
+  if (innerStep === "email-otp") {
+    return (
+      <div className="max-w-md mx-auto space-y-6">
+        <div className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
+            <Mail className="h-8 w-8 text-[#b59354]" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Check your email</h2>
+          <p className="text-gray-500 text-sm">
+            We sent a 6-digit verification code to<br />
+            <strong className="text-gray-900">{contactEmail}</strong>
+          </p>
+        </div>
+
+        <OtpBox value={emailOtp} onChange={setEmailOtp} disabled={otpLoading} />
+
+        {otpError && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700 text-center">
+            {otpError}
+          </div>
+        )}
+
+        <button
+          onClick={handleVerifyEmailOtp}
+          disabled={emailOtp.length !== 6 || otpLoading}
+          className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          {otpLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Verify Email"}
+        </button>
+
+        <div className="text-center">
+          {resendCooldown > 0 ? (
+            <p className="text-sm text-gray-400">Resend in {resendCooldown}s</p>
+          ) : (
+            <button
+              onClick={async () => {
+                await fetch(`${API}/api/auth/pre-register/send-email-otp`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: contactEmail }) });
+                setResendCooldown(60);
+              }}
+              className="text-sm text-[#b59354] hover:underline flex items-center gap-1 mx-auto"
+            >
+              <RefreshCw className="h-3.5 w-3.5" /> Resend code
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── SMS OTP ───────────────────────────────────────────────────────────────
+  if (innerStep === "sms-otp") {
+    return (
+      <div className="max-w-md mx-auto space-y-6">
+        <div className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
+            <Phone className="h-8 w-8 text-[#b59354]" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Phone verification</h2>
+          <p className="text-gray-500 text-sm">
+            {smsViaTwilio
+              ? <><br />Code sent to <strong className="text-gray-900">{fullPhone}</strong></>
+              : <>SMS unavailable — code sent to <strong className="text-gray-900">{contactEmail}</strong></>
+            }
+          </p>
+        </div>
+
+        <OtpBox value={smsOtp} onChange={setSmsOtp} disabled={otpLoading} />
+
+        {otpError && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700 text-center">
+            {otpError}
+          </div>
+        )}
+
+        <button
+          onClick={handleVerifySmsOtp}
+          disabled={smsOtp.length !== 6 || otpLoading}
+          className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          {otpLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Verify Phone"}
+        </button>
+
+        <div className="text-center">
+          {resendCooldown > 0 ? (
+            <p className="text-sm text-gray-400">Resend in {resendCooldown}s</p>
+          ) : (
+            <button
+              onClick={async () => {
+                const smsRes = await fetch(`${API}/api/auth/pre-register/send-sms-otp`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone: fullPhone, email: contactEmail }) });
+                const smsData = await smsRes.json();
+                setSmsViaTwilio(smsData.smsSent === true);
+                setResendCooldown(60);
+              }}
+              className="text-sm text-[#b59354] hover:underline flex items-center gap-1 mx-auto"
+            >
+              <RefreshCw className="h-3.5 w-3.5" /> Resend code
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Set Password ──────────────────────────────────────────────────────────
+  if (innerStep === "set-password") {
+    return (
+      <div className="max-w-md mx-auto space-y-6">
+        <div className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
+            <Shield className="h-8 w-8 text-[#b59354]" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Set your password</h2>
+          <p className="text-gray-500 text-sm">
+            Create a secure password for your Opulanz business account.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+            <div className="relative">
+              <input
+                type={showPwd ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Min. 8 characters"
+                className="w-full px-4 py-3 pr-12 rounded-xl border-2 border-gray-200 focus:border-[#b59354] focus:outline-none text-sm transition-colors"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPwd(!showPwd)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showPwd ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+              </button>
+            </div>
+            {password.length > 0 && (
+              <div className="mt-2 space-y-1">
+                <div className="flex gap-1">
+                  {[1, 2, 3].map((l) => (
+                    <div key={l} className={`h-1 flex-1 rounded-full transition-colors ${pwdStrength >= l ? pwdStrengthColor : "bg-gray-200"}`} />
+                  ))}
+                </div>
+                <p className={`text-xs font-medium ${["", "text-red-500", "text-yellow-600", "text-green-600"][pwdStrength]}`}>
+                  {pwdStrengthLabel}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Confirm Password</label>
+            <input
+              type={showPwd ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Repeat your password"
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#b59354] focus:outline-none text-sm transition-colors"
+            />
+          </div>
+        </div>
+
+        {pwdError && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700 text-center">
+            {pwdError}
+          </div>
+        )}
+
+        <button
+          onClick={handleSetPassword}
+          disabled={!password || !confirmPassword || pwdLoading}
+          className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          {pwdLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create Business Account"}
+        </button>
+      </div>
+    );
+  }
+
+  // ── Complete ──────────────────────────────────────────────────────────────
   return (
-    <div className="space-y-8">
-      {submitted ? (
-        <>
-          {/* Success State */}
-          <div className="text-center">
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-              <CheckCircle className="h-12 w-12 text-green-600" />
+    <div className="max-w-md mx-auto space-y-6 text-center">
+      <div>
+        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+          <CheckCircle2 className="h-12 w-12 text-green-600" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Business Account Created!</h2>
+        <p className="text-gray-500 text-sm">
+          Your Opulanz business account is ready. Sign in using SMS and email two-factor authentication.
+        </p>
+      </div>
+
+      {(iban || bic) && (
+        <div className="bg-gray-50 rounded-2xl border border-gray-100 p-5 text-left space-y-3">
+          {iban && (
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium">IBAN</p>
+              <p className="font-mono text-sm font-semibold text-gray-900 mt-0.5 break-all">{iban}</p>
             </div>
-            <h2 className="mb-2 text-2xl font-bold text-brand-dark">Application Submitted!</h2>
-            <p className="text-lg text-brand-grayMed">
-              Your application has been successfully submitted to Opulanz Partner Bank.
-            </p>
-          </div>
-
-          {/* Application ID */}
-          <div className="rounded-lg border border-brand-grayLight bg-brand-gold/5 p-6 text-center">
-            <p className="mb-2 text-sm font-medium text-brand-dark">Your Application Reference</p>
-            <p className="text-2xl font-bold text-brand-gold">{applicationId}</p>
-            <p className="mt-2 text-xs text-brand-grayMed">
-              Save this reference number for tracking your application
-            </p>
-          </div>
-
-          {/* Next Steps */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-brand-dark">What Happens Next?</h3>
-
-            <div className="space-y-3">
-              <div className="flex items-start gap-4 rounded-lg border border-brand-grayLight bg-white p-4">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-brand-gold/10 text-sm font-bold text-brand-gold">
-                  1
-                </div>
-                <div>
-                  <p className="font-semibold text-brand-dark">Email Confirmation</p>
-                  <p className="mt-1 text-sm text-brand-grayMed">
-                    We've sent a confirmation email to <strong>{data.email}</strong> with your
-                    application details and reference number.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 rounded-lg border border-brand-grayLight bg-white p-4">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-brand-gold/10 text-sm font-bold text-brand-gold">
-                  2
-                </div>
-                <div>
-                  <p className="font-semibold text-brand-dark">Bank Review</p>
-                  <p className="mt-1 text-sm text-brand-grayMed">
-                    Opulanz Partner Bank will review your application and verify your documents.
-                    This typically takes 2-5 business days.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 rounded-lg border border-brand-grayLight bg-white p-4">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-brand-gold/10 text-sm font-bold text-brand-gold">
-                  3
-                </div>
-                <div>
-                  <p className="font-semibold text-brand-dark">Account Activation</p>
-                  <p className="mt-1 text-sm text-brand-grayMed">
-                    Once approved, the bank will contact you directly to complete the account
-                    activation and provide your account details.
-                  </p>
-                </div>
-              </div>
-
-              {data.uploadLater && (
-                <div className="flex items-start gap-4 rounded-lg border border-amber-200 bg-amber-50 p-4">
-                  <FileText className="h-5 w-5 flex-shrink-0 text-amber-600" />
-                  <div>
-                    <p className="font-semibold text-amber-900">Document Upload Pending</p>
-                    <p className="mt-1 text-sm text-amber-800">
-                      You still need to upload your documents. We'll send you a secure link to your
-                      dashboard within 24 hours.
-                    </p>
-                  </div>
-                </div>
-              )}
+          )}
+          {bic && (
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium">BIC / SWIFT</p>
+              <p className="font-mono text-sm font-semibold text-gray-900 mt-0.5">{bic}</p>
             </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-brand-dark">Quick Actions</h3>
-
-            <div className="grid gap-3 md:grid-cols-2">
-              <div className="flex items-center gap-3 rounded-lg border border-brand-grayLight bg-white p-4">
-                <Mail className="h-8 w-8 text-brand-gold" />
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-brand-dark">Check Your Email</p>
-                  <p className="text-xs text-brand-grayMed">Confirmation sent to {data.email}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 rounded-lg border border-brand-grayLight bg-white p-4">
-                <Clock className="h-8 w-8 text-brand-gold" />
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-brand-dark">Expected Timeline</p>
-                  <p className="text-xs text-brand-grayMed">2-5 business days for review</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col items-center gap-4 pt-6 sm:flex-row sm:justify-center">
-            <Button asChild className="min-w-48 bg-brand-gold text-white hover:bg-brand-goldDark">
-              <Link href={`/${locale}`}>
-                Return to Homepage
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-
-            <Button asChild variant="outline" className="min-w-48">
-              <Link href={`/${locale}/support`}>Contact Support</Link>
-            </Button>
-          </div>
-
-          {/* Additional Info */}
-          <div className="rounded-lg bg-blue-50 p-4 text-center">
-            <p className="text-sm text-blue-900">
-              <strong>Need help?</strong> Our support team is available Monday-Friday, 9:00-18:00 CET.
-              Email us at{" "}
-              <a href="mailto:support@opulanz.com" className="underline">
-                support@opulanz.com
-              </a>
-            </p>
-          </div>
-        </>
-      ) : (
-        <>
-          {/* Loading State */}
-          <div className="text-center">
-            <div className="mx-auto mb-6 h-16 w-16 animate-spin rounded-full border-4 border-brand-gold border-t-transparent"></div>
-            <h2 className="mb-2 text-2xl font-bold text-brand-dark">Submitting Your Application</h2>
-            <p className="text-lg text-brand-grayMed">Please wait while we process your application...</p>
-          </div>
-        </>
+          )}
+        </div>
       )}
+
+      <div className="bg-blue-50 rounded-2xl p-4 text-left">
+        <p className="text-sm font-semibold text-blue-900 mb-1">Two-factor authentication enabled</p>
+        <p className="text-xs text-blue-700">
+          Each time you sign in, a verification code will be sent to your email and phone — keeping your business account secure.
+        </p>
+      </div>
+
+      <Link
+        href={`/${locale}/dashboard`}
+        className="block w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors"
+      >
+        Go to Dashboard
+      </Link>
+
+      <Link
+        href={`/${locale}`}
+        className="block text-sm text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        Return to homepage
+      </Link>
     </div>
   );
 }

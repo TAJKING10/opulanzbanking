@@ -1,18 +1,10 @@
 import * as React from "react";
 import Link from "next/link";
-import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 interface FooterProps {
   locale: string;
 }
-
-const socialLinks = [
-  { icon: Linkedin, href: "#", key: "linkedin" },
-  { icon: Twitter, href: "#", key: "twitter" },
-  { icon: Facebook, href: "#", key: "facebook" },
-  { icon: Instagram, href: "#", key: "instagram" },
-];
 
 export function Footer({ locale }: FooterProps) {
   const currentYear = new Date().getFullYear();
@@ -20,9 +12,9 @@ export function Footer({ locale }: FooterProps) {
 
   return (
     <footer className="border-t border-brand-grayLight bg-gradient-to-b from-white to-gray-50">
-      <div className="container mx-auto max-w-7xl px-6 py-12">
+      <div className="container mx-auto max-w-7xl 3xl:max-w-[1600px] 4xl:max-w-[1800px] px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         {/* Links Grid at Top */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 gap-y-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-10 sm:mb-12">
 
           {/* Services Column */}
           <div>
@@ -64,43 +56,10 @@ export function Footer({ locale }: FooterProps) {
               </li>
               <li>
                 <Link
-                  href={`/${locale}/investment-advisory`}
+                  href={`/${locale}/spv-investment`}
                   className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
-                  {t("footer.links.services.investment")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Products Column */}
-          <div>
-            <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-dark">
-              {t("footer.sections.products")}
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href={`/${locale}/life-insurance`}
-                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
-                >
-                  {t("footer.links.products.lifeInsurance")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={`/${locale}/mortgage`}
-                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
-                >
-                  {t("footer.links.products.mortgage")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={`/${locale}/open-account`}
-                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
-                >
-                  {t("footer.links.products.businessBanking")}
+                  {t("footer.links.services.spvInvestment")}
                 </Link>
               </li>
             </ul>
@@ -145,6 +104,14 @@ export function Footer({ locale }: FooterProps) {
               {t("footer.sections.legal")}
             </h3>
             <ul className="space-y-2">
+              <li>
+                <Link
+                  href={`/${locale}/legal/mentions`}
+                  className="text-xs text-brand-grayMed transition-colors hover:text-brand-gold"
+                >
+                  {t("footer.links.legal.mentions")}
+                </Link>
+              </li>
               <li>
                 <Link
                   href={`/${locale}/legal/terms`}
@@ -193,37 +160,18 @@ export function Footer({ locale }: FooterProps) {
             <p className="mt-4 text-sm text-brand-grayMed leading-relaxed max-w-md">
               {t("footer.description")}
             </p>
-            <div className="mt-6 flex gap-3">
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={social.key}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={t(`footer.social.${social.key}`)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-gold text-white transition-all hover:bg-brand-goldDark hover:scale-110"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
-                );
-              })}
-            </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="border-t border-brand-grayLight pt-8">
-          <div className="flex flex-col items-center justify-between gap-4 text-sm text-brand-grayMed md:flex-row">
-            <p className="text-center md:text-left">
+          <div className="flex flex-col items-center gap-4 text-sm text-brand-grayMed">
+            <p className="text-xs text-center leading-relaxed max-w-4xl">
+              {t("footer.regulated")}
+            </p>
+            <p className="text-center">
               © {currentYear} {t("footer.copyright", { year: currentYear }).replace(`© ${currentYear} `, '')}
             </p>
-            <div className="flex flex-wrap justify-center gap-6">
-              <p className="text-xs text-center">
-                {t("footer.regulated")}
-              </p>
-            </div>
           </div>
         </div>
       </div>

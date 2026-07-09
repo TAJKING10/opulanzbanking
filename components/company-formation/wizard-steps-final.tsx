@@ -3,14 +3,14 @@
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
-  Briefcase,
   Upload,
   CheckCircle,
   X,
   FileText,
   AlertCircle,
-  Download,
   CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,8 @@ type StepProps = {
 
 // Step 5: Activity & Scale
 export function Step5Activity({ dossier, updateDossier }: StepProps) {
+  const t = useTranslations("companyFormation.wizard.step5");
+
   const [naceCode, setNaceCode] = React.useState(dossier.naceCode || "");
   const [expectedTurnover, setExpectedTurnover] = React.useState(dossier.expectedTurnover || 0);
   const [numberOfEmployees, setNumberOfEmployees] = React.useState(dossier.numberOfEmployees || 0);
@@ -45,30 +47,22 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
     <div className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="naceCode">
-          NACE Code <span className="text-red-500">*</span>
+          {t("naceCode")} <span className="text-red-500">*</span>
         </Label>
         <Input
           id="naceCode"
           value={naceCode}
           onChange={(e) => setNaceCode(e.target.value)}
-          placeholder="e.g., 62.01 - Computer programming activities"
+          placeholder={t("naceCodePlaceholder")}
         />
         <p className="text-xs text-brand-grayMed">
-          Statistical classification of economic activities in the EU.{" "}
-          <a
-            href="https://nacev2.com/en"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-brand-gold hover:underline"
-          >
-            Find your NACE code
-          </a>
+          {t("naceCodeHelp")}
         </p>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="expectedTurnover">
-          Expected Annual Turnover (EUR) <span className="text-red-500">*</span>
+          {t("expectedTurnover")} <span className="text-red-500">*</span>
         </Label>
         <Input
           id="expectedTurnover"
@@ -76,16 +70,16 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
           min="0"
           value={expectedTurnover}
           onChange={(e) => setExpectedTurnover(parseFloat(e.target.value) || 0)}
-          placeholder="e.g., 500000"
+          placeholder={t("expectedTurnoverPlaceholder")}
         />
         <p className="text-xs text-brand-grayMed">
-          Estimated annual revenue for the first year
+          {t("expectedTurnoverHelp")}
         </p>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="numberOfEmployees">
-          Number of Employees at Launch
+          {t("numberOfEmployees")}
         </Label>
         <Input
           id="numberOfEmployees"
@@ -93,18 +87,17 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
           min="0"
           value={numberOfEmployees}
           onChange={(e) => setNumberOfEmployees(parseInt(e.target.value) || 0)}
-          placeholder="e.g., 5"
+          placeholder={t("numberOfEmployeesPlaceholder")}
         />
         <p className="text-xs text-brand-grayMed">
-          Expected number of employees when starting operations
+          {t("numberOfEmployeesHelp")}
         </p>
       </div>
 
       <div className="rounded-xl bg-blue-50 p-4">
-        <h4 className="mb-2 font-semibold text-blue-900">Why we ask</h4>
+        <h4 className="mb-2 font-semibold text-blue-900">{t("whyWeAsk")}</h4>
         <p className="text-sm text-blue-800">
-          This information helps us prepare accurate documentation and advise you on applicable
-          regulations, tax obligations, and reporting requirements.
+          {t("whyWeAskDesc")}
         </p>
       </div>
     </div>
@@ -113,6 +106,8 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
 
 // Step 6: Notary & Domiciliation
 export function Step6NotaryDomiciliation({ dossier, updateDossier }: StepProps) {
+  const t = useTranslations("companyFormation.wizard.step6");
+
   const [notaryName, setNotaryName] = React.useState(dossier.notaryPreferences?.name || "");
   const [notaryCity, setNotaryCity] = React.useState(dossier.notaryPreferences?.city || "");
   const [notaryLanguage, setNotaryLanguage] = React.useState<"FR" | "EN" | "DE">(
@@ -131,49 +126,53 @@ export function Step6NotaryDomiciliation({ dossier, updateDossier }: StepProps) 
     });
   }, [notaryName, notaryCity, notaryLanguage, domiciliationNeeded]);
 
+  const requiresNotary = dossier.formType !== "SARL-S" && dossier.formType !== "SOLE";
+
   return (
     <div className="space-y-6">
-      <div>
-        <h3 className="mb-4 text-lg font-bold text-brand-dark">Notary Preferences</h3>
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="notaryName">Preferred Notary Name (Optional)</Label>
-            <Input
-              id="notaryName"
-              value={notaryName}
-              onChange={(e) => setNotaryName(e.target.value)}
-              placeholder="Leave blank to let us choose"
-            />
-          </div>
+      {requiresNotary && (
+        <div>
+          <h3 className="mb-4 text-lg font-bold text-brand-dark">{t("notaryPreferences")}</h3>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="notaryName">{t("notaryName")}</Label>
+              <Input
+                id="notaryName"
+                value={notaryName}
+                onChange={(e) => setNotaryName(e.target.value)}
+                placeholder={t("notaryNamePlaceholder")}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="notaryCity">Preferred City (Optional)</Label>
-            <Input
-              id="notaryCity"
-              value={notaryCity}
-              onChange={(e) => setNotaryCity(e.target.value)}
-              placeholder="e.g., Luxembourg City"
-            />
-          </div>
+            <div className="space-y-2">
+              <Label htmlFor="notaryCity">{t("notaryCity")}</Label>
+              <Input
+                id="notaryCity"
+                value={notaryCity}
+                onChange={(e) => setNotaryCity(e.target.value)}
+                placeholder={t("notaryCityPlaceholder")}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="notaryLanguage">Language for Incorporation Deeds</Label>
-            <select
-              id="notaryLanguage"
-              className="flex h-11 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-              value={notaryLanguage}
-              onChange={(e) => setNotaryLanguage(e.target.value as "FR" | "EN" | "DE")}
-            >
-              <option value="EN">English</option>
-              <option value="FR">French</option>
-              <option value="DE">German</option>
-            </select>
+            <div className="space-y-2">
+              <Label htmlFor="notaryLanguage">{t("notaryLanguage")}</Label>
+              <select
+                id="notaryLanguage"
+                className="flex h-11 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+                value={notaryLanguage}
+                onChange={(e) => setNotaryLanguage(e.target.value as "FR" | "EN" | "DE")}
+              >
+                <option value="EN">{t("english")}</option>
+                <option value="FR">{t("french")}</option>
+                <option value="DE">{t("german")}</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      <div className="border-t border-brand-grayLight pt-6">
-        <h3 className="mb-4 text-lg font-bold text-brand-dark">Registered Office / Domiciliation</h3>
+      <div className={requiresNotary ? "border-t border-brand-grayLight pt-6" : ""}>
+        <h3 className="mb-4 text-lg font-bold text-brand-dark">{t("registeredOffice")}</h3>
         <div className="space-y-4">
           <div className="flex items-start space-x-3">
             <Checkbox
@@ -183,36 +182,39 @@ export function Step6NotaryDomiciliation({ dossier, updateDossier }: StepProps) 
             />
             <div>
               <Label htmlFor="domiciliationNeeded" className="cursor-pointer font-semibold">
-                I need a domiciliation / registered address service
+                {t("needDomiciliation")}
               </Label>
               <p className="mt-1 text-sm text-brand-grayMed">
-                We can provide you with a professional business address in Luxembourg for your registered office.
+                {t("needDomiciliationDesc")}
               </p>
             </div>
           </div>
 
           {domiciliationNeeded && (
             <div className="rounded-xl bg-brand-goldLight/20 p-4">
-              <h4 className="mb-2 font-semibold text-brand-dark">Domiciliation Service</h4>
+              <h4 className="mb-2 font-semibold text-brand-dark">{t("domiciliationService")}</h4>
               <p className="text-sm text-brand-grayMed mb-2">
-                Our domiciliation service includes:
+                {t("domiciliationIncludes")}
               </p>
               <ul className="text-sm text-brand-dark space-y-1">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                  <span>Professional business address in Luxembourg</span>
+                  <span>{t("domiciliationItem1")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                  <span>Mail forwarding and scanning</span>
+                  <span>{t("domiciliationItem2")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                  <span>Meeting room access</span>
+                  <span>{t("domiciliationItem3")}</span>
                 </li>
               </ul>
-              <p className="mt-3 text-sm font-semibold text-brand-dark">
-                From €600/year
+              <p className="mt-3 text-sm text-brand-grayMed italic">
+                {t("domiciliationNote")}
+              </p>
+              <p className="mt-2 text-sm font-semibold text-brand-dark">
+                {t("domiciliationPrice")}
               </p>
             </div>
           )}
@@ -221,8 +223,7 @@ export function Step6NotaryDomiciliation({ dossier, updateDossier }: StepProps) 
 
       <div className="rounded-xl bg-blue-50 p-4">
         <p className="text-sm text-blue-900">
-          <strong>Note:</strong> If you don't select domiciliation service, you must provide proof
-          of a registered address (lease agreement or property title) in the next step.
+          <strong>Note:</strong> {t("noDomiciliationNote")}
         </p>
       </div>
     </div>
@@ -231,6 +232,8 @@ export function Step6NotaryDomiciliation({ dossier, updateDossier }: StepProps) 
 
 // Step 7: Documents
 export function Step7Documents({ dossier, updateDossier }: StepProps) {
+  const t = useTranslations("companyFormation.wizard.step7");
+
   const [idDocs, setIdDocs] = React.useState<UploadedFile[]>(dossier.uploads?.ids || []);
   const [leaseDocs, setLeaseDocs] = React.useState<UploadedFile[]>(dossier.uploads?.leaseOrDomiciliation || []);
   const [capitalCert, setCapitalCert] = React.useState<UploadedFile | null>(dossier.uploads?.capitalCertificate || null);
@@ -292,10 +295,10 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
       {/* ID Documents */}
       <div>
         <h3 className="mb-2 text-lg font-bold text-brand-dark">
-          ID/Passport Copies <span className="text-red-500">*</span>
+          {t("idDocuments")} <span className="text-red-500">*</span>
         </h3>
         <p className="mb-4 text-sm text-brand-grayMed">
-          Upload ID or passport copies for all directors, managers, and UBOs
+          {t("idDocumentsDesc")}
         </p>
         <div className="space-y-4">
           {idDocs.map((file) => (
@@ -310,8 +313,8 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
             />
             <div className="text-center">
               <Upload className="mx-auto mb-2 h-8 w-8 text-brand-grayMed" />
-              <p className="text-sm font-semibold text-brand-dark">Click to upload ID/Passport</p>
-              <p className="text-xs text-brand-grayMed">PDF, JPG, or PNG • Max 10MB</p>
+              <p className="text-sm font-semibold text-brand-dark">{t("uploadIdPassport")}</p>
+              <p className="text-xs text-brand-grayMed">{t("fileFormats")}</p>
             </div>
           </label>
         </div>
@@ -321,10 +324,10 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
       {!dossier.domiciliationNeeded && (
         <div>
           <h3 className="mb-2 text-lg font-bold text-brand-dark">
-            Lease Agreement / Property Title <span className="text-red-500">*</span>
+            {t("leaseTitle")} <span className="text-red-500">*</span>
           </h3>
           <p className="mb-4 text-sm text-brand-grayMed">
-            Proof of registered office address in Luxembourg
+            {t("leaseDesc")}
           </p>
           <div className="space-y-4">
             {leaseDocs.map((file) => (
@@ -339,8 +342,8 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
               />
               <div className="text-center">
                 <Upload className="mx-auto mb-2 h-8 w-8 text-brand-grayMed" />
-                <p className="text-sm font-semibold text-brand-dark">Click to upload Lease/Title</p>
-                <p className="text-xs text-brand-grayMed">PDF • Max 10MB</p>
+                <p className="text-sm font-semibold text-brand-dark">{t("uploadLease")}</p>
+                <p className="text-xs text-brand-grayMed">{t("leasePdfOnly")}</p>
               </div>
             </label>
           </div>
@@ -350,10 +353,10 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
       {/* Capital Certificate */}
       <div>
         <h3 className="mb-2 text-lg font-bold text-brand-dark">
-          Capital Deposit Certificate (Optional)
+          {t("capitalCertTitle")}
         </h3>
         <p className="mb-4 text-sm text-brand-grayMed">
-          Can be uploaded after payment. Bank certificate confirming capital deposit.
+          {t("capitalCertDesc")}
         </p>
         <div className="space-y-4">
           {capitalCert ? (
@@ -368,8 +371,8 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
               />
               <div className="text-center">
                 <Upload className="mx-auto mb-2 h-8 w-8 text-brand-grayMed" />
-                <p className="text-sm font-semibold text-brand-dark">Click to upload Certificate</p>
-                <p className="text-xs text-brand-grayMed">PDF • Max 10MB</p>
+                <p className="text-sm font-semibold text-brand-dark">{t("uploadCertificate")}</p>
+                <p className="text-xs text-brand-grayMed">{t("certPdfOnly")}</p>
               </div>
             </label>
           )}
@@ -379,7 +382,7 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
       <div className="rounded-xl bg-yellow-50 p-4">
         <p className="text-sm text-yellow-900">
           <AlertCircle className="inline h-4 w-4 mr-1" />
-          <strong>Note:</strong> This is a simulation. In production, files would be uploaded to secure cloud storage.
+          <strong>Note:</strong> {t("simulationNote")}
         </p>
       </div>
     </div>
@@ -407,6 +410,10 @@ function FileCard({ file, onRemove }: { file: UploadedFile; onRemove: () => void
 
 // Step 8: Review & Submit
 export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
+  const t = useTranslations("companyFormation.wizard.step8");
+  const params = useParams();
+  const locale = params.locale as string;
+
   const [termsAccepted, setTermsAccepted] = React.useState(dossier.consents?.termsAccepted || false);
   const [privacyAccepted, setPrivacyAccepted] = React.useState(dossier.consents?.privacyAccepted || false);
   const [accuracyConfirmed, setAccuracyConfirmed] = React.useState(dossier.consents?.accuracyConfirmed || false);
@@ -414,7 +421,14 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
   const [isPaymentComplete, setIsPaymentComplete] = React.useState(dossier.paymentStatus === "PAID");
   const [isProcessing, setIsProcessing] = React.useState(false);
 
-  const setupFee = 1500; // Demo amount
+  const feeByType: Record<string, number> = {
+    SARL: 2900,
+    "SARL-S": 1500,
+    SA: 1500,
+    SCSp: 12000,
+    SOLE: 500,
+  };
+  const setupFee = feeByType[dossier.formType ?? ""] ?? 1500;
 
   React.useEffect(() => {
     updateDossier({
@@ -434,79 +448,75 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
 
   const handleSubmit = async () => {
     if (!termsAccepted || !privacyAccepted || !accuracyConfirmed) {
-      alert("Please accept all required consents");
+      alert(t("acceptAllConsents"));
       return;
     }
 
     setIsProcessing(true);
 
     try {
-      // Build final payload
-      const finalDossier: CompanyFormationDossier = dossier as CompanyFormationDossier;
-      finalDossier.updatedAt = new Date().toISOString();
-
-      // Save to backend database
-      const applicationPayload = {
+      const payload = {
         type: "company_formation",
         status: "submitted",
         payload: {
-          formType: finalDossier.formType,
-          country: finalDossier.country,
-          proposedNames: finalDossier.proposedNames,
-          purpose: finalDossier.purpose,
-          registeredOffice: finalDossier.registeredOffice,
-          duration: finalDossier.duration,
-          shareholders: finalDossier.shareholders,
-          directors: finalDossier.directors,
-          managers: finalDossier.managers,
-          ubos: finalDossier.ubos,
-          capitalAmount: finalDossier.capitalAmount,
-          capitalCurrency: finalDossier.capitalCurrency,
-          contributions: finalDossier.contributions,
-          naceCode: finalDossier.naceCode,
-          expectedTurnover: finalDossier.expectedTurnover,
-          numberOfEmployees: finalDossier.numberOfEmployees,
-          notaryPreferences: finalDossier.notaryPreferences,
-          domiciliationNeeded: finalDossier.domiciliationNeeded,
-          uploads: finalDossier.uploads,
-          consents: finalDossier.consents,
-          setupFeeAmount: finalDossier.setupFeeAmount,
-          paymentStatus: finalDossier.paymentStatus,
-          userRef: finalDossier.userRef,
-          submittedAt: new Date().toISOString(),
+          ...dossier,
+          updatedAt: new Date().toISOString(),
         },
       };
 
-      const response = await fetch("http://localhost:5000/api/applications", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const response = await fetch(`${apiUrl}/api/applications`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(applicationPayload),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit application");
+        throw new Error(`API error: ${response.status}`);
       }
 
-      const result = await response.json();
-      console.log("✅ Company Formation Dossier saved to backend:", result);
+      // Save to localStorage as backup (non-fatal)
+      try {
+        const existing = localStorage.getItem("opulanz_company_formations");
+        const list = existing ? JSON.parse(existing) : [];
+        list.push({ ...dossier, updatedAt: new Date().toISOString() });
+        localStorage.setItem("opulanz_company_formations", JSON.stringify(list));
+      } catch {
+        // localStorage failure is non-fatal
+      }
 
-      // Save to localStorage (backup)
-      const existingDossiers = localStorage.getItem("opulanz_company_formations");
-      const dossiers = existingDossiers ? JSON.parse(existingDossiers) : [];
-      dossiers.push(finalDossier);
-      localStorage.setItem("opulanz_company_formations", JSON.stringify(dossiers));
+      // Send confirmation email to user + admin notification (non-fatal)
+      try {
+        const primaryPerson =
+          dossier.shareholders?.[0] ||
+          dossier.managers?.[0] ||
+          dossier.directors?.[0];
+        const userEmail = primaryPerson?.email;
+        const userName = primaryPerson
+          ? `${primaryPerson.firstName} ${primaryPerson.lastName}`
+          : "Applicant";
 
-      // Log to console
-      console.log("🏢 Company Formation Dossier Submitted:", finalDossier);
+        if (userEmail) {
+          await fetch(`${apiUrl}/api/notifications/company-formation`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userEmail,
+              userName,
+              companyName: dossier.proposedNames?.[0] || "",
+              formType: dossier.formType,
+              reference: dossier.userRef,
+            }),
+          });
+        }
+      } catch (emailErr) {
+        console.warn("Email notification failed (non-fatal):", emailErr);
+      }
 
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error submitting company formation:", error);
-      alert(
-        "Failed to submit company formation. Please try again or contact support."
-      );
+      alert(t("submitError"));
     } finally {
       setIsProcessing(false);
     }
@@ -519,22 +529,21 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
           <CheckCircle className="h-10 w-10 text-green-600" />
         </div>
         <h3 className="text-2xl font-bold text-brand-dark">
-          Formation Dossier Submitted!
+          {t("submitted.title")}
         </h3>
         <p className="text-brand-grayMed max-w-2xl mx-auto">
-          Your company formation dossier has been created. Our team will review it and contact you within 24–72 hours
-          to proceed with the notarization and registration process.
+          {t("submitted.description")}
         </p>
         <div className="rounded-xl bg-brand-goldLight/20 p-6 max-w-md mx-auto">
           <p className="text-sm text-brand-dark">
-            <strong>Reference:</strong> {dossier.userRef}
+            <strong>{t("submitted.reference")}</strong> {dossier.userRef}
           </p>
           <p className="text-xs text-brand-grayMed mt-2">
-            You'll receive an email confirmation shortly.
+            {t("submitted.emailConfirmation")}
           </p>
         </div>
         <Button onClick={() => window.location.href = "/"}>
-          Return to Home
+          {t("submitted.returnHome")}
         </Button>
       </div>
     );
@@ -544,43 +553,58 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
     <div className="space-y-8">
       {/* Summary */}
       <div>
-        <h3 className="mb-4 text-lg font-bold text-brand-dark">Dossier Summary</h3>
+        <h3 className="mb-4 text-lg font-bold text-brand-dark">{t("dossierSummary")}</h3>
         <div className="space-y-4">
-          <SummarySection title="Company Type">
+          <SummarySection title={t("companyType")}>
             <p>{dossier.formType}</p>
           </SummarySection>
 
-          <SummarySection title="Company Name">
-            <p>{dossier.proposedNames?.[0] || "Not provided"}</p>
+          <SummarySection title={t("companyName")}>
+            <p>{dossier.proposedNames?.[0] || t("notProvided")}</p>
             {dossier.proposedNames?.[1] && (
-              <p className="text-sm text-brand-grayMed">Alternate: {dossier.proposedNames[1]}</p>
+              <p className="text-sm text-brand-grayMed">{t("alternate", { name: dossier.proposedNames[1] })}</p>
             )}
           </SummarySection>
 
-          <SummarySection title="Capital">
-            <p>€{dossier.capitalAmount?.toLocaleString() || 0} EUR</p>
+          <SummarySection title={t("capital")}>
+            <p>{"\u20AC"}{dossier.capitalAmount?.toLocaleString() || 0} EUR</p>
           </SummarySection>
 
-          <SummarySection title="People">
-            <p>Shareholders: {dossier.shareholders?.length || 0}</p>
+          <SummarySection title={t("people")}>
+            <p>{t("shareholdersCount", { count: dossier.shareholders?.length || 0 })}</p>
             {dossier.directors && dossier.directors.length > 0 && (
-              <p>Directors: {dossier.directors.length}</p>
+              <p>{t("directorsCount", { count: dossier.directors.length })}</p>
             )}
             {dossier.managers && dossier.managers.length > 0 && (
-              <p>Managers: {dossier.managers.length}</p>
+              <p>{t("managersCount", { count: dossier.managers.length })}</p>
             )}
-            <p>UBOs: {dossier.ubos?.length || 0}</p>
+            <p>{t("ubosCount", { count: dossier.ubos?.length || 0 })}</p>
           </SummarySection>
 
-          <SummarySection title="Activity">
-            <p>NACE: {dossier.naceCode || "Not provided"}</p>
-            <p>Expected turnover: €{dossier.expectedTurnover?.toLocaleString() || 0}</p>
+          {(() => {
+            const primary = dossier.shareholders?.[0] || dossier.managers?.[0] || dossier.directors?.[0];
+            if (!primary) return null;
+            return (
+              <SummarySection title={t("primaryContact")}>
+                {(primary.firstName || primary.lastName) && (
+                  <p><strong>{primary.firstName} {primary.lastName}</strong></p>
+                )}
+                {primary.email && <p className="text-sm text-brand-grayMed">{primary.email}</p>}
+                {primary.phone && <p className="text-sm text-brand-grayMed">{primary.phone}</p>}
+                {primary.address && <p className="text-sm text-brand-grayMed">{primary.address}</p>}
+              </SummarySection>
+            );
+          })()}
+
+          <SummarySection title={t("activity")}>
+            <p>{t("nace", { code: dossier.naceCode || t("notProvided") })}</p>
+            <p>{t("expectedTurnover", { amount: `\u20AC${dossier.expectedTurnover?.toLocaleString() || 0}` })}</p>
           </SummarySection>
 
-          <SummarySection title="Documents">
-            <p>ID documents: {dossier.uploads?.ids?.length || 0}</p>
-            <p>Lease/Domiciliation: {dossier.domiciliationNeeded ? "Service requested" : `${dossier.uploads?.leaseOrDomiciliation?.length || 0} uploaded`}</p>
-            <p>Capital certificate: {dossier.uploads?.capitalCertificate ? "Uploaded" : "Not yet"}</p>
+          <SummarySection title={t("documents")}>
+            <p>{t("idDocuments", { count: dossier.uploads?.ids?.length || 0 })}</p>
+            <p>{t("leaseDomiciliation", { value: dossier.domiciliationNeeded ? t("serviceRequested") : `${dossier.uploads?.leaseOrDomiciliation?.length || 0} ${t("uploaded")}` })}</p>
+            <p>{t("capitalCertificate", { value: dossier.uploads?.capitalCertificate ? t("uploadedStatus") : t("notYet") })}</p>
           </SummarySection>
         </div>
       </div>
@@ -588,13 +612,13 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
       {/* Payment */}
       {!isPaymentComplete && (
         <div className="rounded-xl border-2 border-brand-gold p-6">
-          <h3 className="mb-4 text-lg font-bold text-brand-dark">Setup Fee Payment</h3>
+          <h3 className="mb-4 text-lg font-bold text-brand-dark">{t("setupFeePayment")}</h3>
           <div className="mb-4 flex items-center justify-between rounded-xl bg-brand-goldLight/20 p-4">
-            <span className="font-semibold text-brand-dark">Opulanz Setup Fee</span>
-            <span className="text-2xl font-bold text-brand-gold">€{setupFee}</span>
+            <span className="font-semibold text-brand-dark">{t("opulanzSetupFee")}</span>
+            <span className="text-2xl font-bold text-brand-gold">{"\u20AC"}{setupFee}</span>
           </div>
           <p className="mb-4 text-sm text-brand-grayMed">
-            This covers our administrative and coordination services. Notary and registration fees are separate and will be communicated by the notary.
+            {t("feeDescription")}
           </p>
           <Button
             onClick={handlePayment}
@@ -603,11 +627,11 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
             size="lg"
           >
             {isProcessing ? (
-              <>Processing...</>
+              <>{t("processing")}</>
             ) : (
               <>
                 <CreditCard className="mr-2 h-5 w-5" />
-                Pay Setup Fee (Demo)
+                {t("paySetupFee")}
               </>
             )}
           </Button>
@@ -618,14 +642,14 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
         <div className="rounded-xl bg-green-50 p-4">
           <div className="flex items-center gap-2 text-green-700">
             <CheckCircle className="h-5 w-5" />
-            <span className="font-semibold">Payment complete</span>
+            <span className="font-semibold">{t("paymentComplete")}</span>
           </div>
         </div>
       )}
 
       {/* Consents */}
       <div className="space-y-4">
-        <h3 className="text-lg font-bold text-brand-dark">Required Consents</h3>
+        <h3 className="text-lg font-bold text-brand-dark">{t("requiredConsents")}</h3>
         <div className="space-y-3">
           <div className="flex items-start space-x-3">
             <Checkbox
@@ -634,7 +658,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
               onCheckedChange={(checked) => setAccuracyConfirmed(checked as boolean)}
             />
             <Label htmlFor="accuracyConfirmed" className="cursor-pointer leading-relaxed">
-              I confirm that all information provided is accurate and complete to the best of my knowledge
+              {t("accuracyConfirm")}
             </Label>
           </div>
 
@@ -645,9 +669,9 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
               onCheckedChange={(checked) => setTermsAccepted(checked as boolean)}
             />
             <Label htmlFor="termsAccepted" className="cursor-pointer leading-relaxed">
-              I accept the{" "}
-              <Link href="/en/legal/terms" className="text-brand-gold hover:underline">
-                Terms & Conditions
+              {t("acceptTerms")}{" "}
+              <Link href={`/${locale}/legal/terms`} className="text-brand-gold hover:underline">
+                {t("termsConditions")}
               </Link>
             </Label>
           </div>
@@ -659,9 +683,9 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
               onCheckedChange={(checked) => setPrivacyAccepted(checked as boolean)}
             />
             <Label htmlFor="privacyAccepted" className="cursor-pointer leading-relaxed">
-              I accept the{" "}
-              <Link href="/en/legal/privacy" className="text-brand-gold hover:underline">
-                Privacy Policy
+              {t("acceptPrivacy")}{" "}
+              <Link href={`/${locale}/legal/privacy`} className="text-brand-gold hover:underline">
+                {t("privacyPolicy")}
               </Link>
             </Label>
           </div>
@@ -671,18 +695,16 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
       {/* Submit */}
       <Button
         onClick={handleSubmit}
-        disabled={!termsAccepted || !privacyAccepted || !accuracyConfirmed || !isPaymentComplete}
+        disabled={!termsAccepted || !privacyAccepted || !accuracyConfirmed || isProcessing}
         size="lg"
         className="w-full"
       >
-        Submit Formation Dossier
+        {isProcessing ? t("processing") : t("submitDossier")}
       </Button>
 
-      {(!termsAccepted || !privacyAccepted || !accuracyConfirmed || !isPaymentComplete) && (
+      {(!termsAccepted || !privacyAccepted || !accuracyConfirmed) && (
         <p className="text-center text-sm text-brand-grayMed">
-          {!isPaymentComplete
-            ? "Please complete payment before submitting"
-            : "Please accept all consents to submit"}
+          {t("acceptAllConsents")}
         </p>
       )}
     </div>

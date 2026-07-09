@@ -1,40 +1,51 @@
 trigger:
-- DocuSignWordfiles
+  branches:
+    include:
+      - main
 
 pool:
-  vmImage: ubuntu-latest
-
-variables:
-  VERCEL_PROJECT_ID: 'prj_3NJ50azpNT5OKeTof6mPr18c7fi0'
-  VERCEL_ORG_ID: 'team_fhA85kClq1piD12QCIwYK8Qq'
+  vmImage: 'ubuntu-latest'
 
 steps:
-- checkout: self
+# 1️⃣ Use Node.js 20
+- task: NodeTool@1
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Use Node.js 20'
 
-- script: |
-    npm install -g vercel
-  displayName: 'Install Vercel CLI'
+# 2️⃣ Install dependencies
+- script: npm ci
+  displayName: 'Install dependencies'
 
-- script: |
-    vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
-  displayName: 'Pull Vercel Preview Settings'
+# 3️⃣ Build Next.js (reads .env.production automatically)
+- script: npm run build
+  displayName: 'Build Next.js app'
   env:
-    VERCEL_ORG_ID: $(VERCEL_ORG_ID)
-    VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
-    VERCEL_TOKEN: $(VERCEL_TOKEN)
+    NODE_ENV: production
+    NODE_TLS_REJECT_UNAUTHORIZED: '0'
 
+# 4️⃣ Copy public + static assets into standalone output
 - script: |
-    vercel build --token=$VERCEL_TOKEN
-  displayName: 'Build Vercel Preview'
-  env:
-    VERCEL_ORG_ID: $(VERCEL_ORG_ID)
-    VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
-    VERCEL_TOKEN: $(VERCEL_TOKEN)
+    cp -r public .next/standalone/public
+    cp -r .next/static .next/standalone/.next/static
+    echo "Static assets copied into standalone output"
+  displayName: 'Copy static assets to standalone'
 
-- script: |
-    vercel deploy --prebuilt --token=$VERCEL_TOKEN
-  displayName: 'Deploy to Vercel Preview'
-  env:
-    VERCEL_ORG_ID: $(VERCEL_ORG_ID)
-    VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
-    VERCEL_TOKEN: $(VERCEL_TOKEN)
+# 5️⃣ Archive the standalone output for deployment
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '.next/standalone'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+    replaceExistingArchive: true
+  displayName: 'Archive standalone build'
+
+# 6️⃣ Deploy to Azure App Service
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Azure-Service-Connection'
+    appName: 'rg-opulanz-frontend'
+    package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+    startUpCommand: 'node server.js'
+  displayName: 'Deploy to App Service'

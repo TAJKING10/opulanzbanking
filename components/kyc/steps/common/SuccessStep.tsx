@@ -6,7 +6,9 @@ import { CheckCircle, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function SuccessStep() {
-  const { resetWizard } = useKYCWizard();
+  const { data, resetWizard } = useKYCWizard();
+  const applicationId = (data as any).applicationId;
+  const envelopeId = (data as any).envelopeId;
 
   return (
     <div className="text-center py-12">
@@ -16,8 +18,8 @@ export function SuccessStep() {
         </div>
         <h2 className="text-3xl font-bold text-brand-dark mb-4">Application Submitted Successfully!</h2>
         <p className="text-lg text-brand-grayMed max-w-2xl mx-auto">
-          Thank you for completing your client onboarding. Your information has been received
-          and will be reviewed by our compliance team.
+          Thank you for completing your client onboarding. Your information has been received,
+          documents have been generated, and a signature request has been sent to your email.
         </p>
       </div>
 
@@ -72,12 +74,25 @@ export function SuccessStep() {
       </div>
 
       <div className="bg-white border border-brand-grayLight rounded-xl p-6 max-w-2xl mx-auto mb-8">
-        <div className="flex items-center justify-center gap-3">
-          <FileText className="w-8 h-8 text-brand-gold" />
-          <div className="text-center">
-            <p className="text-sm font-semibold text-brand-dark">Application Reference</p>
-            <p className="text-xs text-brand-grayMed">KYC-{Date.now().toString().slice(-8)}</p>
+        <div className="space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <FileText className="w-8 h-8 text-brand-gold" />
+            <div className="text-center">
+              <p className="text-sm font-semibold text-brand-dark">Application Reference</p>
+              <p className="text-xs text-brand-grayMed font-mono">
+                {applicationId ? `APP-${applicationId}` : 'Processing...'}
+              </p>
+            </div>
           </div>
+          {envelopeId && (
+            <div className="pt-4 border-t border-brand-grayLight">
+              <p className="text-xs text-brand-grayMed mb-1">DocuSign Envelope ID:</p>
+              <p className="text-xs text-brand-dark font-mono break-all">{envelopeId}</p>
+              <p className="text-xs text-brand-grayMed mt-2">
+                📧 Check your email for the signature request
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

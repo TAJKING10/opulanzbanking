@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 interface WizardProgressProps {
   currentStep: number;
@@ -9,14 +10,15 @@ interface WizardProgressProps {
 }
 
 export function WizardProgress({ currentStep, totalSteps, steps }: WizardProgressProps) {
+  const t = useTranslations('investmentAdvisory.wizard.progress');
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
   return (
     <div className="mb-8">
       <div className="mb-4">
         <div className="flex justify-between text-sm text-brand-grayMed mb-2">
-          <span>Step {currentStep + 1} of {totalSteps}</span>
-          <span>{Math.round(progress)}% Complete</span>
+          <span>{t('step')} {currentStep + 1} {t('of')} {totalSteps}</span>
+          <span>{Math.round(progress)}% {t('complete')}</span>
         </div>
         <div className="h-2 bg-brand-grayLight rounded-full overflow-hidden">
           <div

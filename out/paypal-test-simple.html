@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PayPal Payment Test - €99.90</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    .price {
+      font-size: 48px;
+      color: #b59354;
+      text-align: center;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    #paypal-button-container {
+      margin: 30px 0;
+    }
+    .info {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+    .info code {
+      background: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    .success {
+      display: none;
+      background: #4caf50;
+      color: white;
+      padding: 20px;
+      border-radius: 4px;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 PayPal Sandbox Test</h1>
+    <div class="price">€99.90</div>
+    <p style="text-align: center; color: #666;">
+      Investment Advisory Consultation
+    </p>
+
+    <div id="paypal-button-container"></div>
+
+    <div id="success-message" class="success">
+      <h2>✅ Payment Successful!</h2>
+      <p>The payment system is working perfectly!</p>
+      <p id="payment-details"></p>
+    </div>
+
+    <div class="info">
+      <h3>🔑 Test Card (No SMS!):</h3>
+      <p>
+        <strong>Card:</strong> <code>4111 1111 1111 1111</code><br>
+        <strong>Expiry:</strong> <code>12/2030</code><br>
+        <strong>CVV:</strong> <code>123</code><br>
+        <strong>Name:</strong> <code>Test User</code>
+      </p>
+      <p style="margin-top: 15px;">
+        ✅ This card NEVER asks for verification!<br>
+        ✅ Payment will complete instantly!<br>
+        ✅ No SMS will be sent!
+      </p>
+    </div>
+  </div>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo&currency=EUR"></script>
+  <script>
+    paypal.Buttons({
+      style: {
+        layout: 'vertical',
+        color: 'gold',
+        shape: 'rect',
+        label: 'pay'
+      },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            description: 'Investment Advisory Consultation - 45 minutes',
+            amount: {
+              currency_code: 'EUR',
+              value: '99.90'
+            }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          console.log('Payment successful:', details);
+
+          // Show success message
+          document.getElementById('success-message').style.display = 'block';
+          document.getElementById('payment-details').innerHTML =
+            'Order ID: ' + data.orderID + '<br>' +
+            'Payer: ' + details.payer.name.given_name + ' ' + details.payer.name.surname + '<br>' +
+            'Amount: €' + details.purchase_units[0].amount.value;
+
+          // Hide PayPal button
+          document.getElementById('paypal-button-container').style.display = 'none';
+        });
+      },
+      onError: function(err) {
+        console.error('Payment error:', err);
+        alert('Payment failed: ' + err.message);
+      }
+    }).render('#paypal-button-container');
+  </script>
+</body>
+</html>

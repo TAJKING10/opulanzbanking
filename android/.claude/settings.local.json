@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Toufi/AndroidStudioProjects/azuree/**)",
+      "Bash(adb devices:*)",
+      "Bash(/c/Users/Toufi/AppData/Local/Android/Sdk/platform-tools/adb.exe devices:*)",
+      "Bash(cmd /c \"set NEXT_OUTPUT=export && npx next build\")",
+      "Bash(NEXT_OUTPUT=export npx next build)",
+      "Bash(npx cap:*)",
+      "Bash(./gradlew assembleDebug 2>&1)",
+      "Bash(/c/Users/Toufi/AppData/Local/Android/Sdk/platform-tools/adb.exe install:*)",
+      "Bash(/c/Users/Toufi/AppData/Local/Android/Sdk/platform-tools/adb.exe shell:*)",
+      "Bash(powershell -Command \"Compress-Archive -Path ''android/app/build/outputs/apk/debug/app-debug.apk'' -DestinationPath ''Opulanz-Android.zip'' -Force\")"
+    ]
+  }
+}

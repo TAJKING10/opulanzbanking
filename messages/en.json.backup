@@ -1,0 +1,439 @@
+{
+  "common": {
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "select": "Select",
+    "back": "Back",
+    "next": "Next",
+    "save": "Save",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "required": "Required"
+  },
+  "nav": {
+    "openAccount": "Open Account",
+    "companyFormation": "Company Formation",
+    "services": "Services",
+    "support": "Support"
+  },
+  "hero": {
+    "home": {
+      "title": "Professional Banking for Modern Business",
+      "subtitle": "Trusted digital banking, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg.",
+      "primaryCta": "Open Account",
+      "secondaryCta": "Learn More"
+    }
+  },
+  "warmReferral": {
+    "title": "Find the Right Banking Partner",
+    "subtitle": "Answer a few questions and we'll connect you with the best banking solution for your needs.",
+    "step1Title": "Your Information",
+    "step2Title": "Business Details",
+    "step3Title": "Partner Match",
+    "email": "Email Address",
+    "clientType": "Account Type",
+    "individual": "Individual",
+    "company": "Company",
+    "country": "Country",
+    "france": "France",
+    "luxembourg": "Luxembourg",
+    "legalForm": "Legal Form",
+    "sarl": "SARL",
+    "sas": "SAS",
+    "sa": "SA",
+    "other": "Other",
+    "expectedVolume": "Expected Monthly Volume",
+    "handoffTitle": "Your Recommended Partner",
+    "handoffDescription": "Based on your profile, we recommend opening your account with {partner}. Opulanz will remain your point of contact throughout the process.",
+    "proceedToPartner": "Proceed to {partner}",
+    "thankYouTitle": "Thank You!",
+    "thankYouDescription": "You'll receive a confirmation email shortly. Need help? Book a 15-minute callback with our team.",
+    "bookCallback": "Book Callback",
+    "consent": {
+      "dataSharing": "I consent to Opulanz sharing my information with banking partners",
+      "terms": "I agree to Opulanz",
+      "termsLink": "Terms & Conditions",
+      "privacy": "Privacy Policy",
+      "partnerTerms": "I understand the account will be opened by the partner bank"
+    }
+  },
+  "whitelabel": {
+    "title": "Open Your Account",
+    "choiceTitle": "Choose Account Type",
+    "individual": "Individual Account",
+    "company": "Company Account",
+    "needCompany": "Need to form a company first?",
+    "formCompany": "Company Formation",
+    "kycTitle": "Identity Verification",
+    "kybTitle": "Business Verification",
+    "uploadId": "Upload ID Document",
+    "uploadSelfie": "Upload Selfie",
+    "uploadPoa": "Proof of Address",
+    "uploadStatutes": "Company Statutes",
+    "uploadRegister": "Company Register Extract",
+    "uploadUbo": "UBO Declaration",
+    "pepDeclaration": "PEP/Sanctions Declaration",
+    "activityCountries": "Countries of Activity",
+    "monthlyVolume": "Expected Monthly Volume",
+    "submitApplication": "Submit Application",
+    "applicationSubmitted": "Application Submitted",
+    "decisionPending": "Your application is under review. You'll receive a decision within 2-3 business days.",
+    "approved": "Account Approved",
+    "approvedMessage": "Congratulations! Your account has been approved.",
+    "yourIban": "Your IBAN",
+    "nextSteps": "Next Steps"
+  },
+  "companyFormation": {
+    "title": "Company Formation in Luxembourg",
+    "selectForm": "Select Company Form",
+    "sarl": "SARL - Private Limited Company",
+    "sarls": "SARL-S - Simplified Private Limited Company",
+    "sa": "SA - Public Limited Company",
+    "scsp": "SCSp - Special Limited Partnership",
+    "soleProprietor": "Sole Proprietor",
+    "wizardTitle": "Company Formation Wizard",
+    "companyDetails": "Company Details",
+    "shareholders": "Shareholders",
+    "capitalDeposit": "Capital Deposit",
+    "payment": "Payment",
+    "confirmation": "Confirmation",
+    "companyName": "Company Name",
+    "businessActivity": "Business Activity",
+    "shareCapital": "Share Capital",
+    "addShareholder": "Add Shareholder",
+    "depositCapital": "Deposit share capital with partner bank",
+    "notaryCertificate": "Notary will issue incorporation certificate",
+    "rcsRegistration": "Registration with Luxembourg RCS",
+    "totalFees": "Total Formation Fees",
+    "proceedToPayment": "Proceed to Payment",
+    "saveProgress": "Save & Resume Later"
+  },
+  "services": {
+    "accounting": {
+      "title": "Accounting & Invoicing",
+      "description": "Professional accounting and invoicing services for your business"
+    },
+    "tax": {
+      "title": "Tax Advisory",
+      "description": "Expert tax consultation for cross-border businesses"
+    },
+    "investment": {
+      "title": "Investment Advisory",
+      "description": "MiFID-compliant investment advice and portfolio management"
+    },
+    "lifeInsurance": {
+      "title": "Life Insurance",
+      "description": "Expert insurance brokerage services connecting you with leading providers"
+    },
+    "mortgage": {
+      "title": "Mortgage Services",
+      "description": "Home financing solutions in Luxembourg"
+    }
+  },
+  "legal": {
+    "regulated": "Regulated by ACPR & AMF (FR)",
+    "disclaimer": "Opulanz is a digital banking platform. Banking services provided by licensed partners.",
+    "mifid": "Investment services subject to MiFID II regulations",
+    "idd": "Insurance distribution subject to IDD requirements"
+  },
+  "footer": {
+    "sections": {
+      "services": "Services",
+      "products": "Products",
+      "company": "Company",
+      "legal": "Legal"
+    },
+    "links": {
+      "services": {
+        "openAccount": "Open Account",
+        "companyFormation": "Company Formation",
+        "accounting": "Accounting & Invoicing",
+        "tax": "Tax Advisory",
+        "investment": "Investment Advisory"
+      },
+      "products": {
+        "lifeInsurance": "Life Insurance",
+        "mortgage": "Mortgage",
+        "businessBanking": "Business Banking"
+      },
+      "company": {
+        "about": "About Us",
+        "support": "Support",
+        "contact": "Contact"
+      },
+      "legal": {
+        "terms": "Terms & Conditions",
+        "privacy": "Privacy Policy",
+        "disclaimers": "Disclaimers",
+        "regulatory": "Regulatory"
+      }
+    },
+    "social": {
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    },
+    "description": "The One-Stop-Shop Business Banking Platform. Part of Groupe Advensys Luxembourg S.A., with 18+ years of experience providing comprehensive business solutions across Europe.",
+    "copyright": "© {year} Opulanz. All rights reserved.",
+    "regulated": "Regulated by ACPR & AMF (FR)"
+  },
+  "home": {
+    "services": {
+      "title": "Our Services",
+      "description": "Everything you need to grow your business",
+      "summary": "From banking to advisory, we provide comprehensive financial services for modern entrepreneurs.",
+      "banking": {
+        "description": "Professional business banking accounts for individuals and companies"
+      },
+      "formation": {
+        "description": "Complete company formation services in Luxembourg"
+      }
+    },
+    "trust": {
+      "title": "Trusted & Regulated",
+      "description": "Your business in safe hands",
+      "summary": "Opulanz operates under strict regulatory oversight to ensure your financial security."
+    },
+    "regulatory": {
+      "france": "France",
+      "acpr": "Autorité de Contrôle Prudentiel et de Résolution",
+      "amf": "Autorité des Marchés Financiers"
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "description": "Open your account in minutes and access professional banking services tailored for your business.",
+      "contact": "Contact Us"
+    }
+  },
+  "openAccount": {
+    "subtitle": "Choose your account type and complete the application in minutes",
+    "individual": {
+      "description": "Personal banking account for individuals with professional features and multi-currency support.",
+      "features": {
+        "iban": "Multi-currency IBAN",
+        "transfers": "SEPA & SWIFT transfers",
+        "card": "Debit card included",
+        "banking": "Mobile & web banking"
+      }
+    },
+    "company": {
+      "description": "Professional business account for companies with advanced features and multi-user access.",
+      "features": {
+        "iban": "Dedicated business IBAN",
+        "access": "Multi-user access control",
+        "accounting": "Accounting integration",
+        "cards": "Corporate cards"
+      }
+    },
+    "formation": {
+      "cta": "We can help you form your company in Luxembourg before opening your business account."
+    },
+    "referral": {
+      "title": "Not sure which banking partner is right for you?",
+      "description": "Answer a few questions and we'll recommend the best banking solution for your needs.",
+      "cta": "Find Your Match"
+    }
+  },
+  "kyc": {
+    "subtitle": "Complete your identity verification to open your account",
+    "sections": {
+      "personalInfo": "Personal Information",
+      "address": "Address",
+      "documents": "Document Verification",
+      "activity": "Activity Information",
+      "consents": "Consents"
+    },
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "dateOfBirth": "Date of Birth",
+      "nationality": "Nationality",
+      "phoneNumber": "Phone Number",
+      "streetAddress": "Street Address",
+      "city": "City",
+      "postalCode": "Postal Code",
+      "country": "Country",
+      "pep": "Are you a Politically Exposed Person (PEP)?",
+      "expectedMonthlyVolume": "Expected Monthly Volume",
+      "sourceOfFunds": "Source of Funds"
+    },
+    "documents": {
+      "help": "Please upload clear photos or scans of the following documents (max 15MB each)"
+    },
+    "pep": {
+      "no": "No",
+      "yes": "Yes"
+    },
+    "volumeOptions": {
+      "0_5k": "€0 - €5,000",
+      "5k_20k": "€5,000 - €20,000",
+      "20k_50k": "€20,000 - €50,000",
+      "50k_plus": "€50,000+"
+    },
+    "sourceOfFunds": {
+      "placeholder": "Please describe the origin of your funds..."
+    },
+    "consents": {
+      "kyc": "I consent to identity verification and compliance checks as required by law",
+      "terms": "I agree to Opulanz Terms & Conditions and Privacy Policy"
+    },
+    "approval": {
+      "nextSteps": "Next Steps",
+      "steps": {
+        "app": "Download our mobile app or access web banking",
+        "security": "Set up your account security (2FA, PIN)",
+        "card": "Request your debit card",
+        "fund": "Fund your account via transfer"
+      }
+    },
+    "buttons": {
+      "dashboard": "Go to Dashboard",
+      "downloadApp": "Download App"
+    }
+  },
+  "companyFormation": {
+    "subtitle": "Complete company formation services with expert guidance",
+    "description": "Choose the legal structure that best fits your business needs",
+    "forms": {
+      "sarl": {
+        "fullName": "Private Limited Company",
+        "minCapital": "€12,000",
+        "minShareholders": 1,
+        "liability": "Limited",
+        "features": {
+          "common": "Most common structure",
+          "flexible": "Flexible management",
+          "capital": "Lower capital requirement",
+          "suitable": "Suitable for SMEs"
+        }
+      },
+      "sarls": {
+        "fullName": "Simplified Private Limited Company",
+        "minCapital": "€1",
+        "features": {
+          "capital": "Very low capital requirement",
+          "formation": "Simplified formation",
+          "startups": "Ideal for startups",
+          "max": "Max capital €100,000"
+        }
+      },
+      "sa": {
+        "fullName": "Public Limited Company",
+        "minCapital": "€30,000",
+        "features": {
+          "public": "Can be listed publicly",
+          "board": "Board of directors required",
+          "credibility": "Higher credibility",
+          "suitable": "Suitable for larger businesses"
+        }
+      },
+      "scsp": {
+        "fullName": "Special Limited Partnership",
+        "minCapital": "No minimum",
+        "features": {
+          "transparent": "Tax transparent",
+          "funds": "Popular for funds",
+          "flexible": "Flexible structure",
+          "liability": "General partner liability"
+        }
+      },
+      "soleProprietor": "Sole Proprietor"
+    },
+    "process": {
+      "title": "Simple Formation Process",
+      "description": "We guide you through every step"
+    },
+    "steps": {
+      "details": {
+        "title": "Company Details",
+        "description": "Provide company information"
+      },
+      "shareholders": {
+        "title": "Shareholders",
+        "description": "Add shareholders and structure"
+      },
+      "capital": {
+        "title": "Capital Deposit",
+        "description": "Deposit share capital"
+      },
+      "payment": {
+        "title": "Payment",
+        "description": "Pay formation fees"
+      },
+      "registration": {
+        "title": "Registration",
+        "description": "Complete RCS registration"
+      }
+    },
+    "fields": {
+      "companyName": {
+        "label": "Company Name",
+        "placeholder": "Enter company name"
+      },
+      "fullName": {
+        "placeholder": "Full Name"
+      },
+      "nationality": {
+        "placeholder": "Nationality"
+      },
+      "email": {
+        "placeholder": "Email"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back! Here's your account overview.",
+    "balance": {
+      "label": "Total Balance"
+    },
+    "buttons": {
+      "addFunds": "Add Funds",
+      "transfer": "Transfer"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "items": {
+        "openAccount": "Open New Account",
+        "formCompany": "Form Company",
+        "bookAdvisory": "Book Advisory",
+        "viewStatements": "View Statements"
+      }
+    },
+    "transactions": {
+      "title": "Recent Transactions",
+      "viewAll": "View All"
+    },
+    "applications": {
+      "title": "Application Status"
+    },
+    "services": {
+      "title": "Our Services",
+      "needHelp": "Need Help?",
+      "description": "Book a consultation with our advisory team",
+      "button": "Book Consultation"
+    }
+  },
+  "compliance": {
+    "FR": {
+      "banking": "Opulanz is a digital banking platform. Banking services are provided by licensed partners regulated by ACPR (Autorité de Contrôle Prudentiel et de Résolution).",
+      "investment": "Investment services are subject to MiFID II regulations and provided by advisors authorized by AMF (Autorité des Marchés Financiers).",
+      "insurance": "Insurance distribution is subject to IDD (Insurance Distribution Directive) requirements. Opulanz acts as an insurance intermediary.",
+      "mortgage": "Mortgage services are provided by licensed credit intermediaries. Subject to responsible lending requirements."
+    },
+    "LU": {
+      "banking": "Banking services are provided by licensed and regulated partners.",
+      "investment": "Investment advisory services comply with Luxembourg law and MiFID II regulations.",
+      "insurance": "Life insurance products distributed in compliance with Luxembourg insurance law and IDD requirements.",
+      "mortgage": "Mortgage services provided by regulated credit institutions in Luxembourg. Subject to consumer protection laws."
+    }
+  },
+  "metadata": {
+    "title": "Opulanz - Professional Digital Banking",
+    "description": "Trusted digital banking, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg."
+  }
+}

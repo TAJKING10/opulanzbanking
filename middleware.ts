@@ -1,12 +1,26 @@
 import createMiddleware from 'next-intl/middleware';
-import { locales } from './i18n';
+import { routing } from './i18n/routing';
+import { NextRequest, NextResponse } from 'next/server';
 
-export default createMiddleware({
-  locales,
-  defaultLocale: 'en',
-  localePrefix: 'always',
-});
+const intlMiddleware = createMiddleware(routing);
+
+export default function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  // Protect /dashboard routes — require auth_token cookie
+  if (pathname.match(/\/[a-z]{2}\/dashboard/)) {
+    const token = req.cookies.get('auth_token')?.value;
+    if (!token) {
+      const locale = pathname.split('/')[1] || 'en';
+      return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
+    }
+  }
+
+  return intlMiddleware(req);
+}
 
 export const config = {
-  matcher: ['/', '/(fr|en)/:path*', '/((?!_next|_vercel|.*\\..*).*)'],
+  matcher: [
+    '/((?!api|_next|_vercel|.*\\..*).*)',
+  ],
 };

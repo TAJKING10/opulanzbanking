@@ -4,6 +4,7 @@ import * as React from "react";
 import { AlertCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useLocalStorageFlag } from "@/shared/hooks/use-local-storage";
 
 interface ComplianceBannerProps {
   market: "FR" | "LU";
@@ -41,21 +42,10 @@ export function ComplianceBanner({
   dismissible = true,
   className,
 }: ComplianceBannerProps) {
-  const [isDismissed, setIsDismissed] = React.useState(false);
-
-  React.useEffect(() => {
-    const dismissed = localStorage.getItem(
-      `compliance-banner-${market}-${productType}`
-    );
-    if (dismissed) {
-      setIsDismissed(true);
-    }
-  }, [market, productType]);
-
-  const handleDismiss = () => {
-    localStorage.setItem(`compliance-banner-${market}-${productType}`, "true");
-    setIsDismissed(true);
-  };
+  const [isDismissed, handleDismiss] = useLocalStorageFlag(
+    `compliance-banner-${market}-${productType}`,
+    false
+  );
 
   if (isDismissed) return null;
 

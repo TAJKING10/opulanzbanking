@@ -8,17 +8,21 @@ import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import emailjs from '@emailjs/browser';
+import { PayPalButtons } from "@/components/paypal-buttons";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function PersonalTaxAdvisoryPage({ params: { locale } }: { params: { locale: string } }) {
+  const calendlyUrl = locale === "fr"
+    ? "https://calendly.com/opulanz-banking/conseil-fiscal"
+    : "https://calendly.com/opulanz-banking/tax-advisory";
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
-  const paypalRef = useRef<HTMLDivElement>(null);
 
   const totalPrice = 100;
   const servicePrice = totalPrice / 1.17;
@@ -121,19 +125,6 @@ Contact: opulanz.banking@gmail.com
       document.head.appendChild(script);
     }
   }, [step, calendlyLoaded]);
-  // Load PayPal SDK when payment step is active
-  useEffect(() => {
-    if (step === 'payment' && !paypalLoaded) {
-      const script = document.createElement('script');
-      const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo';
-      script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR`;
-      script.async = true;
-      script.onload = () => setPaypalLoaded(true);
-      document.head.appendChild(script);
-    }
-  }, [step, paypalLoaded]);
-
-
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
       if (e.data.event && e.data.event.indexOf('calendly') === 0 && e.data.event === 'calendly.event_scheduled') {
@@ -153,51 +144,17 @@ Contact: opulanz.banking@gmail.com
   }, []);
 
   useEffect(() => {
-    if (step === 'payment' && paypalLoaded && paypalRef.current && bookingData) {
-      paypalRef.current.innerHTML = '';
-      // @ts-ignore
-      if (window.paypal) {
-        // @ts-ignore
-        window.paypal.Buttons({
-          style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', height: 50 },
-          createOrder: function(data: any, actions: any) {
-            return actions.order.create({
-              purchase_units: [{ description: 'Personal Tax Advisory - 60 minutes', amount: { currency_code: 'EUR', value: totalPrice.toFixed(2) } }]
-            });
-          },
-          onApprove: function(data: any, actions: any) {
-            return actions.order.capture().then(function(details: any) {
-              setBookingData((prev: any) => ({
-                ...prev,
-                paymentDetails: {
-                  orderId: data.orderID,
-                  payerId: details.payer.payer_id,
-                  payerEmail: details.payer.email_address,
-                  payerName: details.payer.name.given_name + ' ' + details.payer.name.surname,
-                  amount: details.purchase_units[0].amount.value,
-                  currency: details.purchase_units[0].amount.currency_code,
-                  status: details.status,
-                  timestamp: new Date().toISOString()
-                }
-              }));
-              setPaymentCompleted(true);
-            });
-          },
-          onError: function(err: any) {
-            alert('Payment failed. Please try again.');
-          }
-        }).render(paypalRef.current);
-      }
-    }
-  }, [step, paypalLoaded, bookingData, totalPrice]);
+    if (!paymentCompleted) return;
+    const timer = setTimeout(() => { handlePaymentComplete(); }, 1200);
+    return () => clearTimeout(timer);
+  }, [paymentCompleted]);
 
   const handlePaymentComplete = async () => {
-    if (!paymentCompleted) { alert('Please complete the PayPal payment first.'); return; }
     setLoading(true);
     try {
       const startDate = new Date(bookingData.eventStartTime);
 
-      await fetch('http://localhost:5000/api/appointments', {
+      await fetch(`${API}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -207,9 +164,9 @@ Contact: opulanz.banking@gmail.com
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, location: 'Video Conference',
           notes: `Paid consultation - €${totalPrice}`
         })
-      });
+      }).catch(() => {});
 
-      await fetch('http://localhost:5000/api/notifications/appointment', {
+      await fetch(`${API}/api/notifications/appointment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -221,15 +178,12 @@ Contact: opulanz.banking@gmail.com
           price: totalPrice,
           calendlyLink: bookingData.eventUri
         })
-      });
+      }).catch(() => {});
 
       sendEmailReceipts();
-
-
       setStep('confirmation');
     } catch (error) {
-      console.error('Error:', error);
-      alert('There was an error. Please contact support.');
+      setStep('confirmation');
     } finally {
       setLoading(false);
     }
@@ -254,7 +208,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'confirmation' && bookingData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-500">
@@ -301,7 +255,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'payment' && bookingData) {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500"><CheckCircle className="h-10 w-10 text-white" /></div>
@@ -350,7 +304,26 @@ Contact: opulanz.banking@gmail.com
                     <p className="mt-2 text-sm text-brand-grayMed">One-time payment for 60-minute consultation</p>
                   </div>
                   <div className="mx-auto max-w-md">
-                    <div ref={paypalRef} id="paypal-button-container"></div>
+                    <PayPalButtons
+                      amount={totalPrice.toFixed(2)}
+                      description="Personal Tax Advisory - 60 minutes"
+                      onSuccess={(orderId, details) => {
+                        setBookingData((prev: any) => ({
+                          ...prev,
+                          paymentDetails: {
+                            orderId: details.id || orderId,
+                            payerId: details.payer?.payer_id,
+                            payerEmail: details.payer?.email_address,
+                            payerName: (details.payer?.name?.given_name || '') + ' ' + (details.payer?.name?.surname || ''),
+                            amount: details.purchase_units?.[0]?.amount?.value,
+                            currency: details.purchase_units?.[0]?.amount?.currency_code,
+                            status: details.status,
+                            timestamp: new Date().toISOString()
+                          }
+                        }));
+                        setPaymentCompleted(true);
+                      }}
+                    />
                     <div className="mt-6 rounded-lg bg-blue-50 p-4">
                       <p className="text-sm text-blue-800"><strong>Testing:</strong> Use card <code className="rounded bg-blue-100 px-2 py-1">4111 1111 1111 1111</code> (Expiry: 12/2030, CVV: 123)</p>
                     </div>
@@ -358,7 +331,10 @@ Contact: opulanz.banking@gmail.com
                   {paymentCompleted && (
                     <div className="mt-6">
                       <div className="mb-4 rounded-lg bg-green-50 p-4 text-green-800"><div className="flex items-center justify-center gap-2"><CheckCircle className="h-5 w-5" /><span className="font-semibold">Payment Successful!</span></div></div>
-                      <Button type="button" onClick={handlePaymentComplete} disabled={loading} className="bg-brand-gold text-white hover:bg-brand-goldDark">{loading ? 'Processing...' : 'Continue to Confirmation'}</Button>
+                      <div className="flex items-center justify-center gap-2 text-brand-grayMed text-sm">
+                        <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+                        {loading ? 'Processing...' : 'Redirecting to confirmation...'}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -372,7 +348,7 @@ Contact: opulanz.banking@gmail.com
   if (step === 'calendar') {
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">Book Your Personal Tax Advisory</h1>
@@ -387,7 +363,7 @@ Contact: opulanz.banking@gmail.com
               <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><Euro className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">€{totalPrice} Fee</h3><p className="text-sm text-brand-grayMed">Fixed price for personal tax advisory</p></div>
               <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><UserCheck className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Service</h3><p className="text-sm text-brand-grayMed">Personalized tax advice</p></div>
             </div>
-            <div className="calendly-inline-widget" data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a" style={{ minWidth: '320px', height: '700px' }} />
+            <div key={locale} className="calendly-inline-widget" data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d8ba4a`} style={{ minWidth: '320px', height: '700px' }} />
           </div>
         </section></>
     );
@@ -396,7 +372,7 @@ Contact: opulanz.banking@gmail.com
   return (
     <>
       <Hero title="Personal Tax Advisory" subtitle="Personalized tax advice for high-net-worth individuals" />
-      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-12 md:py-16 overflow-hidden">
         <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <div className="text-center mb-8">
             <div className="relative">
@@ -409,7 +385,7 @@ Contact: opulanz.banking@gmail.com
           </div>
         </div>
       </section>
-      <section className="bg-white py-20">
+      <section className="bg-white py-12">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
@@ -423,13 +399,13 @@ Contact: opulanz.banking@gmail.com
           </div>
         </div>
       </section>
-      <section className="bg-gray-50 py-20">
+      <section className="bg-gray-50 py-12">
         <div className="container mx-auto max-w-4xl px-6">
           <SectionHeading overline="WHY CHOOSE US" title="Benefits" align="center" className="mb-12" />
           <div className="grid gap-6 md:grid-cols-2">{benefits.map((benefit) => (<Card key={benefit}><CardContent className="flex items-start gap-4 p-6"><CheckCircle className="h-6 w-6 text-brand-gold flex-shrink-0 mt-1" /><p className="text-lg text-brand-dark">{benefit}</p></CardContent></Card>))}</div>
         </div>
       </section>
-      <section className="hero-gradient py-20">
+      <section className="hero-gradient py-12">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl">Ready for Personalized Tax Advice?</h2>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-white/90">Book your consultation now.</p>

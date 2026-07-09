@@ -46,8 +46,8 @@ export function PPIdentityStep() {
     nextStep();
   };
 
-  const isValid = holder1.lastName && holder1.firstName && holder1.dateOfBirth &&
-                  holder1.nationality && holder1.address?.street;
+  const isValid = !!(holder1.lastName && holder1.firstName && holder1.dateOfBirth &&
+                  holder1.nationality && holder1.address?.street);
 
   return (
     <div>
@@ -338,7 +338,7 @@ export function PPIdentityStep() {
         onNext={handleSubmit}
         onPrev={prevStep}
         canGoPrev={true}
-        canGoNext={!!isValid}
+        canGoNext={isValid}
       />
     </div>
   );

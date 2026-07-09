@@ -11,8 +11,10 @@ export default function TermsPage() {
 
   const content = {
     hero: {
-      title: isFr ? "Informations Légales" : "Legal Information",
-      subtitle: isFr ? "Conditions Générales d'Utilisation" : "Terms and Conditions",
+      title: isFr ? "Conditions Générales d'Utilisation" : "Terms & Conditions",
+      subtitle: isFr
+        ? "Régissant l'utilisation de la plateforme Opulanz et des services associés"
+        : "Governing the use of the Opulanz platform and services provided thereunder",
     },
     sections: isFr ? frContent : enContent,
   };
@@ -36,224 +38,317 @@ export default function TermsPage() {
 
 const enContent = (
   <>
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">1. Company Identification</h2>
-    <div className="text-brand-grayMed mb-6 space-y-2">
-      <p><strong>Company Name:</strong> Opulanz S.A.</p>
-      <p><strong>Registered Address:</strong> 1 Avenue de la Liberté, L-1931 Luxembourg</p>
-      <p><strong>Email:</strong> legal@opulanz.com</p>
-      <p><strong>Phone:</strong> +352 20 30 40 50</p>
-      <p><strong>Website:</strong> www.opulanz.com</p>
-      <p><strong>Regulatory Authority (Luxembourg):</strong> Commission de Surveillance du Secteur Financier (CSSF)</p>
-      <p><strong>Regulatory Authority (France):</strong> Autorité de Contrôle Prudentiel et de Résolution (ACPR) and Autorité des Marchés Financiers (AMF)</p>
-    </div>
+    <p className="text-brand-grayMed mb-8">
+      These Terms and Conditions govern the use of the Opulanz platform (www.opulanz.com) and the
+      services provided thereunder. By accessing or using the Platform, you agree to be bound by these Terms.
+      If you do not agree, please discontinue use immediately.
+    </p>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">2. Acceptance of Terms</h2>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">1. Identification of Service Providers</h2>
     <p className="text-brand-grayMed mb-4">
-      By accessing and using the Opulanz platform (the "Platform"), you agree to be bound by these Terms and Conditions ("Terms"). If you do not agree to these Terms in their entirety, you must immediately cease using the Platform.
+      The Opulanz platform is operated by a group of regulated entities, each providing services within its
+      specific licensed scope:
     </p>
-    <p className="text-brand-grayMed mb-6">
-      These Terms constitute a legally binding agreement between you ("User", "Client") and Opulanz S.A. ("Opulanz", "we", "us", "our"). We reserve the right to amend these Terms at any time. Continued use of the Platform following notification of any changes constitutes your acceptance of the revised Terms.
-    </p>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">3. Services Provided</h2>
-    <p className="text-brand-grayMed mb-4">Opulanz provides the following financial services through its Platform:</p>
-    <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-      <li>Personal and business account opening and management</li>
-      <li>Payment and money transfer services (SEPA, SWIFT, international transfers)</li>
-      <li>Investment advisory services</li>
-      <li>Insurance brokerage and intermediation</li>
-      <li>Company formation and corporate services</li>
-      <li>Tax advisory and accounting services</li>
-      <li>Wealth management and financial planning</li>
-    </ul>
-    <p className="text-brand-grayMed mb-6">
-      The availability of specific services may vary depending on your country of residence and applicable regulatory requirements.
-    </p>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">4. Eligibility</h2>
-    <p className="text-brand-grayMed mb-4">To use the Opulanz Platform, you must:</p>
-    <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-      <li>Be at least 18 years of age</li>
-      <li>Have the legal capacity to enter into binding contracts</li>
-      <li>Not be a resident of a jurisdiction where the use of our services is prohibited</li>
-      <li>Successfully complete our identity verification (KYC) process</li>
-      <li>Not be listed on any applicable sanctions list or watchlist</li>
+    <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-3">
+      <li>
+        <strong>Banking account opening &amp; payment intermediation:</strong> Opulanz SIA (Latvia, reg.
+        40203750214) acting as introducer, in partnership with licensed EMI partners within the European Union.
+      </li>
+      <li>
+        <strong>Insurance brokerage:</strong> Advensys Insurance-Finance SARL (ORIAS n°21003660, COA since 16/04/2021).
+      </li>
+      <li>
+        <strong>Banking brokerage (COBSP):</strong> Advensys Insurance-Finance SARL (ORIAS n°21003660, COBSP since 16/04/2021).
+      </li>
+      <li>
+        <strong>Investment advisory (CIF):</strong> Advensys Insurance-Finance SARL (ORIAS n°21003660, CIF since 28/05/2021, AMF registered).
+      </li>
+      <li>
+        <strong>Accounting, tax advisory &amp; company formation (combined with accounting mandate):</strong> Groupe Advensys Luxembourg S.A. (RCS Luxembourg B197138, NACE 69.200).
+      </li>
+      <li>
+        <strong>Company formation — standalone (without accounting mandate):</strong> Advensys Insurance-Finance SARL, under its CJA (Conseil Juridique et Administratif) qualification.
+      </li>
+      <li>
+        <strong>Accounting software licences &amp; IT services:</strong> Opulanz SIA (Latvia, reg. 40203750214).
+      </li>
     </ul>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">5. Account Registration and Security</h2>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">2. Eligibility</h2>
+    <p className="text-brand-grayMed mb-6">
+      Access to the Platform is reserved for legal entities, professionals, investment funds, freelancers, and
+      individuals meeting the regulatory eligibility criteria applicable to each service. Clients must be at
+      least 18 years of age and legally capable of entering into binding contractual obligations under
+      applicable law.
+    </p>
+
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">3. KYC / AML Obligations</h2>
     <p className="text-brand-grayMed mb-4">
-      You are responsible for maintaining the confidentiality of your account credentials. You must notify us immediately of any unauthorised use of your account or any security breach. Opulanz will not be liable for any loss arising from your failure to keep your credentials secure.
+      In compliance with EU Directive 2015/849 (5th AML Directive) and applicable national
+      transpositions, all users are required to provide identity documentation and proof of address prior to
+      accessing any regulated financial service. The Platform reserves the right to refuse access or suspend
+      an account in the event of incomplete or fraudulent documentation.
     </p>
-    <p className="text-brand-grayMed mb-6">
-      You agree to provide accurate, current, and complete information during registration and to keep this information updated. Providing false or misleading information may result in immediate account suspension and potential legal action.
-    </p>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">6. Know Your Customer (KYC) and Anti-Money Laundering (AML)</h2>
-    <p className="text-brand-grayMed mb-4">
-      In compliance with applicable anti-money laundering and counter-terrorist financing regulations, including the EU Anti-Money Laundering Directives (AMLD5/6), Opulanz is required to verify the identity of all clients and to monitor transactions.
-    </p>
-    <p className="text-brand-grayMed mb-6">
-      You agree to provide all documentation requested for identity verification and due diligence purposes. We reserve the right to refuse, suspend, or terminate services if we are unable to complete satisfactory KYC checks or if we detect suspicious activity.
-    </p>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">7. Fees and Charges</h2>
-    <p className="text-brand-grayMed mb-6">
-      Our fee schedule is available on the Platform and is subject to change with prior notice. Fees will be clearly communicated before any transaction is executed. You authorise Opulanz to deduct applicable fees directly from your account balance.
-    </p>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">8. Prohibited Uses</h2>
-    <p className="text-brand-grayMed mb-4">You agree not to use the Platform for:</p>
     <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-      <li>Any unlawful, fraudulent, or deceptive activity</li>
-      <li>Money laundering, terrorist financing, or sanctions evasion</li>
-      <li>Transactions involving prohibited goods or services</li>
-      <li>Circumventing any technical or security measures</li>
-      <li>Any activity that violates applicable laws or regulations</li>
+      <li>Valid government-issued photo identification (passport or national identity card)</li>
+      <li>Proof of residential address (utility bill or bank statement dated within 3 months)</li>
+      <li>
+        For legal entities: certificate of incorporation, beneficial ownership declaration, and proof of
+        registered address
+      </li>
+      <li>Source of funds declaration where required by applicable AML regulations</li>
     </ul>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">9. Intellectual Property</h2>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">4. Services &amp; Scope</h2>
+    <p className="text-brand-grayMed mb-4">
+      The Platform provides access to the following services, each governed by specific service agreements
+      entered into at the time of subscription:
+    </p>
+    <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
+      <li>Business and personal bank account opening (via licensed EMI partners)</li>
+      <li>Company formation in Luxembourg (with or without accounting mandate — see eligibility per entity)</li>
+      <li>Professional accounting and payroll services</li>
+      <li>Accounting software licensing and invoice management</li>
+      <li>Tax advisory for individuals and legal entities</li>
+      <li>Investment advisory services (MiFID II compliant)</li>
+      <li>Life insurance and general insurance brokerage</li>
+      <li>Special Purpose Vehicle (SPV) structuring and real estate investment advisory (in the future)</li>
+    </ul>
+
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">5. Fees &amp; Pricing</h2>
     <p className="text-brand-grayMed mb-6">
-      All content, trademarks, logos, and intellectual property on the Platform are the exclusive property of Opulanz S.A. or its licensors. You may not reproduce, distribute, or create derivative works from any content on the Platform without our express written consent.
+      Fees applicable to each service are set out in the specific service agreement or pricing schedule
+      communicated prior to engagement. The Platform reserves the right to modify its fee schedule with a
+      minimum notice period of 30 days, in accordance with PSD2 requirements (Directive 2015/2366/EU)
+      for payment-related services.
     </p>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">10. Limitation of Liability</h2>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">6. Account Termination</h2>
     <p className="text-brand-grayMed mb-6">
-      To the maximum extent permitted by applicable law, Opulanz shall not be liable for any indirect, incidental, consequential, or punitive damages arising from your use of the Platform. Our total aggregate liability shall not exceed the fees paid by you to Opulanz in the twelve (12) months preceding the event giving rise to the claim.
+      Either party may terminate a service agreement by giving written notice. For payment services, a
+      minimum notice period of 30 days applies in accordance with PSD2. In the event of breach of these
+      Terms, KYC/AML non-compliance, or fraudulent activity, the Platform reserves the right to suspend
+      or terminate access without prior notice.
     </p>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">11. Governing Law and Dispute Resolution</h2>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">7. Limitation of Liability</h2>
     <p className="text-brand-grayMed mb-6">
-      These Terms are governed by the laws of the Grand Duchy of Luxembourg. Any dispute arising from or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts of Luxembourg City, without prejudice to your right as a consumer to seek recourse before the courts of your country of residence.
+      To the fullest extent permitted by applicable law, Opulanz entities shall not be liable for indirect,
+      incidental, special, or consequential damages arising from the use of the Platform. Liability for direct
+      damages is limited to the amounts paid by the client for the specific service during the 12 months
+      preceding the claim.
     </p>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">12. Contact</h2>
-    <div className="text-brand-grayMed mb-6 space-y-2">
-      <p><strong>Legal Enquiries:</strong> legal@opulanz.com</p>
-      <p><strong>General Support:</strong> contact@opulanz.com</p>
-      <p><strong>Phone:</strong> +352 20 30 40 50</p>
-      <p><strong>Address:</strong> 1 Avenue de la Liberté, L-1931 Luxembourg</p>
-    </div>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">8. Intellectual Property</h2>
+    <p className="text-brand-grayMed mb-6">
+      All content, software, trademarks, and materials available on the Platform are the exclusive property
+      of Groupe Advensys Luxembourg S.A. No licence is granted to reproduce, copy, or distribute any
+      content without prior written consent.
+    </p>
 
-    <div className="mt-8 p-4 bg-brand-goldLight/20 rounded-lg">
-      <p className="text-sm text-brand-grayMed italic">
-        These Terms and Conditions are provided for informational purposes. Please ensure you have read and understood them fully before using our services.
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">9. Modification of Terms</h2>
+    <p className="text-brand-grayMed mb-6">
+      These Terms may be modified at any time. For payment services, any modification will be notified to
+      clients with a minimum of 30 days' prior notice, as required by PSD2. Continued use of the Platform
+      after the effective date constitutes acceptance of the updated Terms.
+    </p>
+
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">10. Governing Law &amp; Jurisdiction</h2>
+    <p className="text-brand-grayMed mb-6">
+      These Terms are governed by the laws of the Grand Duchy of Luxembourg for services provided by
+      Groupe Advensys Luxembourg S.A., and by French law for services provided by Advensys Insurance-Finance
+      SARL, and by Latvian law for services provided by Opulanz SIA. Any dispute shall be subject to the
+      exclusive jurisdiction of the courts of Luxembourg City or Paris or Riga, respectively, depending on
+      the entity concerned.
+    </p>
+
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">11. Complaints Procedure</h2>
+    <p className="text-brand-grayMed mb-4">
+      Any complaint relating to services provided through the Platform must be submitted in writing to the
+      Compliance Department:
+    </p>
+    <div className="text-brand-grayMed mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1">
+      <p><strong>Email:</strong> contact@opulanz.com</p>
+      <p>
+        <strong>Address:</strong> 66 avenue des Champs-Élysées, 75008 Paris (AIF) /
+        49 Duarrefstrooss, L-9964 Huldange (GAL SA) /
+        Vilandes Iela 5-36, LV-1010 Riga, Latvia
       </p>
+      <p><strong>Response time:</strong> 15 business days maximum (France, per ACPR requirements)</p>
     </div>
+    <p className="text-brand-grayMed mb-6">
+      In the event of an unresolved dispute regarding investment advisory services, clients may refer the
+      matter to the <strong>Médiateur de l'AMF</strong> (Autorité des Marchés Financiers). For banking
+      intermediation disputes, the <strong>Médiateur de l'ACPR</strong> is competent if the service is
+      provided by Advensys Insurance-Finance SARL.
+    </p>
 
     <p className="text-sm text-brand-grayMed mt-8 pt-6 border-t border-brand-grayLight">
-      Last updated: June 2025
+      Last updated: July 2026
     </p>
   </>
 );
 
 const frContent = (
   <>
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">1. Identification de la Société</h2>
-    <div className="text-brand-grayMed mb-6 space-y-2">
-      <p><strong>Raison Sociale :</strong> Opulanz S.A.</p>
-      <p><strong>Adresse du Siège Social :</strong> 1 Avenue de la Liberté, L-1931 Luxembourg</p>
-      <p><strong>E-mail :</strong> legal@opulanz.com</p>
-      <p><strong>Téléphone :</strong> +352 20 30 40 50</p>
-      <p><strong>Site Web :</strong> www.opulanz.com</p>
-      <p><strong>Autorité de Régulation (Luxembourg) :</strong> Commission de Surveillance du Secteur Financier (CSSF)</p>
-      <p><strong>Autorité de Régulation (France) :</strong> Autorité de Contrôle Prudentiel et de Résolution (ACPR) et Autorité des Marchés Financiers (AMF)</p>
-    </div>
+    <p className="text-brand-grayMed mb-8">
+      Les présentes Conditions Générales d'Utilisation régissent l'utilisation de la plateforme Opulanz
+      (www.opulanz.com) et des services qui y sont proposés. En accédant à la Plateforme ou en l'utilisant,
+      vous acceptez d'être lié par les présentes Conditions. Si vous n'acceptez pas, veuillez cesser
+      immédiatement toute utilisation.
+    </p>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">2. Acceptation des Conditions</h2>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">1. Identification des Prestataires de Services</h2>
     <p className="text-brand-grayMed mb-4">
-      En accédant à la plateforme Opulanz (la « Plateforme ») et en l'utilisant, vous acceptez d'être lié par les présentes Conditions Générales d'Utilisation (les « Conditions »). Si vous n'acceptez pas l'intégralité des présentes Conditions, vous devez immédiatement cesser d'utiliser la Plateforme.
+      La plateforme Opulanz est exploitée par un groupe d'entités réglementées, chacune fournissant des
+      services dans le cadre de son périmètre d'agrément spécifique :
     </p>
-    <p className="text-brand-grayMed mb-6">
-      Les présentes Conditions constituent un accord juridiquement contraignant entre vous (l'« Utilisateur », le « Client ») et Opulanz S.A. (« Opulanz », « nous », « notre »). Nous nous réservons le droit de modifier ces Conditions à tout moment. L'utilisation continue de la Plateforme après notification de toute modification constitue votre acceptation des Conditions révisées.
-    </p>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">3. Services Proposés</h2>
-    <p className="text-brand-grayMed mb-4">Opulanz fournit les services financiers suivants via sa Plateforme :</p>
-    <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-      <li>Ouverture et gestion de comptes personnels et professionnels</li>
-      <li>Services de paiement et de transfert d'argent (SEPA, SWIFT, virements internationaux)</li>
-      <li>Services de conseil en investissement</li>
-      <li>Courtage et intermédiation en assurance</li>
-      <li>Services de création d'entreprise et services aux sociétés</li>
-      <li>Conseil fiscal et comptable</li>
-      <li>Gestion de patrimoine et planification financière</li>
-    </ul>
-    <p className="text-brand-grayMed mb-6">
-      La disponibilité de services spécifiques peut varier selon votre pays de résidence et les exigences réglementaires applicables.
-    </p>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">4. Conditions d'Éligibilité</h2>
-    <p className="text-brand-grayMed mb-4">Pour utiliser la Plateforme Opulanz, vous devez :</p>
-    <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-      <li>Être âgé d'au moins 18 ans</li>
-      <li>Avoir la capacité juridique de conclure des contrats contraignants</li>
-      <li>Ne pas résider dans une juridiction où l'utilisation de nos services est interdite</li>
-      <li>Réussir notre processus de vérification d'identité (KYC)</li>
-      <li>Ne figurer sur aucune liste de sanctions ou de surveillance applicable</li>
-    </ul>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">5. Inscription au Compte et Sécurité</h2>
-    <p className="text-brand-grayMed mb-4">
-      Vous êtes responsable du maintien de la confidentialité de vos identifiants de compte. Vous devez nous informer immédiatement de toute utilisation non autorisée de votre compte ou de toute violation de la sécurité. Opulanz ne pourra être tenu responsable de toute perte résultant de votre manquement à protéger vos identifiants.
-    </p>
-    <p className="text-brand-grayMed mb-6">
-      Vous vous engagez à fournir des informations exactes, actuelles et complètes lors de votre inscription et à les tenir à jour. La fourniture d'informations fausses ou trompeuses peut entraîner la suspension immédiate du compte et d'éventuelles poursuites judiciaires.
-    </p>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">6. Connaissance du Client (KYC) et Lutte contre le Blanchiment d'Argent (LCB)</h2>
-    <p className="text-brand-grayMed mb-4">
-      Conformément aux réglementations applicables en matière de lutte contre le blanchiment de capitaux et le financement du terrorisme, notamment les Directives européennes anti-blanchiment (LCB/FT 5e et 6e directive), Opulanz est tenu de vérifier l'identité de tous ses clients et de surveiller les transactions.
-    </p>
-    <p className="text-brand-grayMed mb-6">
-      Vous acceptez de fournir tous les documents demandés à des fins de vérification d'identité et de diligence raisonnable. Nous nous réservons le droit de refuser, suspendre ou résilier les services si nous ne sommes pas en mesure d'effectuer des vérifications KYC satisfaisantes ou si nous détectons une activité suspecte.
-    </p>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">7. Frais et Commissions</h2>
-    <p className="text-brand-grayMed mb-6">
-      Notre grille tarifaire est disponible sur la Plateforme et est susceptible d'évoluer avec un préavis approprié. Les frais vous seront clairement communiqués avant l'exécution de toute transaction. Vous autorisez Opulanz à prélever les frais applicables directement sur le solde de votre compte.
-    </p>
-
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">8. Utilisations Interdites</h2>
-    <p className="text-brand-grayMed mb-4">Vous vous engagez à ne pas utiliser la Plateforme pour :</p>
-    <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-      <li>Toute activité illégale, frauduleuse ou trompeuse</li>
-      <li>Le blanchiment d'argent, le financement du terrorisme ou la contournement des sanctions</li>
-      <li>Des transactions impliquant des biens ou services interdits</li>
-      <li>Le contournement de toute mesure technique ou de sécurité</li>
-      <li>Toute activité violant les lois ou réglementations applicables</li>
+    <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-3">
+      <li>
+        <strong>Ouverture de compte bancaire &amp; intermédiation en paiement :</strong> Opulanz SIA
+        (Lettonie, n° 40203750214), agissant en qualité d'apporteur d'affaires, en partenariat avec des
+        établissements de monnaie électronique (EME) agréés au sein de l'Union européenne.
+      </li>
+      <li>
+        <strong>Courtage en assurance :</strong> Advensys Insurance-Finance SARL (ORIAS n°21003660, COA
+        depuis le 16/04/2021).
+      </li>
+      <li>
+        <strong>Courtage en opérations de banque et services de paiement (COBSP) :</strong> Advensys
+        Insurance-Finance SARL (ORIAS n°21003660, COBSP depuis le 16/04/2021).
+      </li>
+      <li>
+        <strong>Conseil en investissements financiers (CIF) :</strong> Advensys Insurance-Finance SARL
+        (ORIAS n°21003660, CIF depuis le 28/05/2021, enregistré auprès de l'AMF).
+      </li>
+      <li>
+        <strong>Comptabilité, conseil fiscal &amp; création de société (avec mandat comptable) :</strong>{" "}
+        Groupe Advensys Luxembourg S.A. (RCS Luxembourg B197138, NACE 69.200).
+      </li>
+      <li>
+        <strong>Création de société — seule (sans mandat comptable) :</strong> Advensys Insurance-Finance
+        SARL, au titre de sa qualification de Conseil Juridique et Administratif (CJA).
+      </li>
+      <li>
+        <strong>Licences logicielles de comptabilité &amp; services informatiques :</strong> Opulanz SIA
+        (Lettonie, n° 40203750214).
+      </li>
     </ul>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">9. Propriété Intellectuelle</h2>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">2. Éligibilité</h2>
     <p className="text-brand-grayMed mb-6">
-      Tous les contenus, marques, logos et propriétés intellectuelles présents sur la Plateforme sont la propriété exclusive d'Opulanz S.A. ou de ses concédants de licence. Vous ne pouvez reproduire, distribuer ou créer des œuvres dérivées à partir de tout contenu de la Plateforme sans notre consentement écrit exprès.
+      L'accès à la Plateforme est réservé aux personnes morales, aux professionnels, aux fonds
+      d'investissement, aux travailleurs indépendants et aux particuliers satisfaisant aux critères
+      d'éligibilité réglementaires applicables à chaque service. Les clients doivent être âgés d'au moins
+      18 ans et avoir la capacité juridique de contracter des obligations contraignantes en vertu du droit
+      applicable.
     </p>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">10. Limitation de Responsabilité</h2>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">3. Obligations KYC / LCB-FT</h2>
+    <p className="text-brand-grayMed mb-4">
+      Conformément à la Directive européenne 2015/849 (5e Directive anti-blanchiment) et à ses
+      transpositions nationales applicables, tous les utilisateurs sont tenus de fournir des pièces
+      d'identité et un justificatif de domicile avant d'accéder à tout service financier réglementé. La
+      Plateforme se réserve le droit de refuser l'accès ou de suspendre un compte en cas de documentation
+      incomplète ou frauduleuse.
+    </p>
+    <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
+      <li>Pièce d'identité officielle avec photo en cours de validité (passeport ou carte nationale d'identité)</li>
+      <li>Justificatif de domicile (facture de services ou relevé bancaire datant de moins de 3 mois)</li>
+      <li>
+        Pour les personnes morales : extrait K-bis ou équivalent, déclaration des bénéficiaires effectifs
+        et justificatif du siège social
+      </li>
+      <li>Déclaration d'origine des fonds lorsqu'exigée par la réglementation LCB-FT applicable</li>
+    </ul>
+
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">4. Services &amp; Périmètre</h2>
+    <p className="text-brand-grayMed mb-4">
+      La Plateforme donne accès aux services suivants, chacun étant régi par des conventions de service
+      spécifiques conclues au moment de la souscription :
+    </p>
+    <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
+      <li>Ouverture de compte bancaire professionnel et personnel (via des partenaires EME agréés)</li>
+      <li>Création de société au Luxembourg (avec ou sans mandat comptable — voir éligibilité par entité)</li>
+      <li>Services de comptabilité professionnelle et de gestion de la paie</li>
+      <li>Licence de logiciel comptable et gestion des factures</li>
+      <li>Conseil fiscal pour les particuliers et les personnes morales</li>
+      <li>Services de conseil en investissement (conformes à MiFID II)</li>
+      <li>Courtage en assurance vie et en assurance générale</li>
+      <li>Structuration de Véhicules à But Spécial (SPV) et conseil en investissement immobilier (à venir)</li>
+    </ul>
+
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">5. Tarifs &amp; Frais</h2>
     <p className="text-brand-grayMed mb-6">
-      Dans les limites permises par la loi applicable, Opulanz ne pourra être tenu responsable de tout dommage indirect, accessoire, consécutif ou punitif découlant de votre utilisation de la Plateforme. Notre responsabilité totale cumulée ne pourra excéder les frais que vous nous avez versés au cours des douze (12) mois précédant l'événement à l'origine de la réclamation.
+      Les frais applicables à chaque service sont définis dans la convention de service spécifique ou le
+      barème tarifaire communiqué préalablement à l'engagement. La Plateforme se réserve le droit de
+      modifier son barème tarifaire moyennant un préavis minimum de 30 jours, conformément aux exigences
+      de la DSP2 (Directive 2015/2366/UE) pour les services liés aux paiements.
     </p>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">11. Droit Applicable et Résolution des Litiges</h2>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">6. Résiliation du Compte</h2>
     <p className="text-brand-grayMed mb-6">
-      Les présentes Conditions sont régies par le droit du Grand-Duché de Luxembourg. Tout litige découlant des présentes Conditions ou en rapport avec celles-ci sera soumis à la compétence exclusive des tribunaux de Luxembourg-Ville, sans préjudice de votre droit, en tant que consommateur, de saisir les juridictions de votre pays de résidence.
+      Chaque partie peut résilier une convention de service par notification écrite. Pour les services de
+      paiement, un préavis minimum de 30 jours s'applique conformément à la DSP2. En cas de manquement
+      aux présentes Conditions, de non-conformité KYC/LCB-FT ou d'activité frauduleuse, la Plateforme se
+      réserve le droit de suspendre ou de résilier l'accès sans préavis.
     </p>
 
-    <h2 className="text-2xl font-bold text-brand-dark mb-4">12. Contact</h2>
-    <div className="text-brand-grayMed mb-6 space-y-2">
-      <p><strong>Questions Juridiques :</strong> legal@opulanz.com</p>
-      <p><strong>Support Général :</strong> contact@opulanz.com</p>
-      <p><strong>Téléphone :</strong> +352 20 30 40 50</p>
-      <p><strong>Adresse :</strong> 1 Avenue de la Liberté, L-1931 Luxembourg</p>
-    </div>
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">7. Limitation de Responsabilité</h2>
+    <p className="text-brand-grayMed mb-6">
+      Dans les limites autorisées par le droit applicable, les entités Opulanz ne pourront être tenues
+      responsables des dommages indirects, accessoires, spéciaux ou consécutifs découlant de l'utilisation
+      de la Plateforme. La responsabilité pour dommages directs est limitée aux sommes versées par le
+      client pour le service concerné au cours des 12 mois précédant la réclamation.
+    </p>
 
-    <div className="mt-8 p-4 bg-brand-goldLight/20 rounded-lg">
-      <p className="text-sm text-brand-grayMed italic">
-        Les présentes Conditions Générales d'Utilisation sont fournies à titre informatif. Veuillez vous assurer de les avoir lues et comprises dans leur intégralité avant d'utiliser nos services.
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">8. Propriété Intellectuelle</h2>
+    <p className="text-brand-grayMed mb-6">
+      L'ensemble des contenus, logiciels, marques et matériaux disponibles sur la Plateforme sont la
+      propriété exclusive de Groupe Advensys Luxembourg S.A. Aucune licence n'est accordée pour
+      reproduire, copier ou distribuer tout contenu sans consentement écrit préalable.
+    </p>
+
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">9. Modification des Conditions</h2>
+    <p className="text-brand-grayMed mb-6">
+      Les présentes Conditions peuvent être modifiées à tout moment. Pour les services de paiement, toute
+      modification sera notifiée aux clients avec un préavis minimum de 30 jours, comme l'exige la DSP2.
+      L'utilisation continue de la Plateforme après la date d'entrée en vigueur vaut acceptation des
+      Conditions mises à jour.
+    </p>
+
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">10. Droit Applicable &amp; Juridiction Compétente</h2>
+    <p className="text-brand-grayMed mb-6">
+      Les présentes Conditions sont régies par le droit du Grand-Duché de Luxembourg pour les services
+      fournis par Groupe Advensys Luxembourg S.A., par le droit français pour les services fournis par
+      Advensys Insurance-Finance SARL, et par le droit letton pour les services fournis par Opulanz SIA.
+      Tout litige relève de la compétence exclusive des tribunaux de Luxembourg-Ville, de Paris ou de
+      Riga, respectivement, selon l'entité concernée.
+    </p>
+
+    <h2 className="text-2xl font-bold text-brand-dark mb-4">11. Procédure de Réclamation</h2>
+    <p className="text-brand-grayMed mb-4">
+      Toute réclamation relative aux services fournis via la Plateforme doit être adressée par écrit au
+      Département Conformité :
+    </p>
+    <div className="text-brand-grayMed mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1">
+      <p><strong>Email :</strong> contact@opulanz.com</p>
+      <p>
+        <strong>Adresse :</strong> 66 avenue des Champs-Élysées, 75008 Paris (AIF) /
+        49 Duarrefstrooss, L-9964 Huldange (GAL SA) /
+        Vilandes Iela 5-36, LV-1010 Riga, Lettonie
       </p>
+      <p><strong>Délai de réponse :</strong> 15 jours ouvrés maximum (France, conformément aux exigences de l'ACPR)</p>
     </div>
+    <p className="text-brand-grayMed mb-6">
+      En cas de litige non résolu relatif aux services de conseil en investissement, les clients peuvent
+      saisir le <strong>Médiateur de l'AMF</strong> (Autorité des Marchés Financiers). Pour les litiges
+      relatifs à l'intermédiation bancaire, le <strong>Médiateur de l'ACPR</strong> est compétent si le
+      service est fourni par Advensys Insurance-Finance SARL.
+    </p>
 
     <p className="text-sm text-brand-grayMed mt-8 pt-6 border-t border-brand-grayLight">
-      Dernière mise à jour : juin 2025
+      Dernière mise à jour : juillet 2026
     </p>
   </>
 );

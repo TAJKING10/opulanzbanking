@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { Upload, CheckCircle, XCircle, FileText, AlertCircle } from "lucide-react";
 
 interface Document {
@@ -21,106 +20,108 @@ interface BusinessDocumentsStepProps {
 }
 
 export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocumentsStepProps) {
-  const [documents, setDocuments] = React.useState<Document[]>([
-    {
-      id: "company-registration",
-      name: "Company Registration Certificate",
-      required: data.companyStatus === "existing",
-      uploaded: false,
-    },
-    {
-      id: "articles",
-      name: "Articles of Association / Statutes",
-      required: data.companyStatus === "existing",
-      uploaded: false,
-    },
-    {
-      id: "ubo-register",
-      name: "UBO Register / Shareholder Register",
-      required: true,
-      uploaded: false,
-    },
-    {
-      id: "director-ids",
-      name: "Directors' Identity Documents",
-      required: true,
-      uploaded: false,
-    },
-    {
-      id: "ubo-ids",
-      name: "UBOs' Identity Documents",
-      required: true,
-      uploaded: false,
-    },
-    {
-      id: "business-address",
-      name: "Proof of Business Address",
-      required: true,
-      uploaded: false,
-    },
-  ]);
+  const t = useTranslations("accountForms.business.documents");
+  const tc = useTranslations("accountForms.common");
 
-  const [uploadLater, setUploadLater] = React.useState(data.uploadLater || false);
+  const [documents, setDocuments] = React.useState<Document[]>(() => {
+    const savedDocs: any[] = data.documents || [];
+    const savedMap = new Map(savedDocs.map((d: any) => [d.id, d]));
+    return [
+      {
+        id: "company-registration",
+        name: t("companyRegistration"),
+        required: data.companyStatus === "existing",
+        uploaded: savedMap.has("company-registration"),
+        file: savedMap.get("company-registration")?.file,
+      },
+      {
+        id: "articles",
+        name: t("articles"),
+        required: data.companyStatus === "existing",
+        uploaded: savedMap.has("articles"),
+        file: savedMap.get("articles")?.file,
+      },
+      {
+        id: "ubo-register",
+        name: t("uboRegister"),
+        required: false,
+        uploaded: savedMap.has("ubo-register"),
+        file: savedMap.get("ubo-register")?.file,
+      },
+      {
+        id: "director-ids",
+        name: t("directorIds"),
+        required: true,
+        uploaded: savedMap.has("director-ids"),
+        file: savedMap.get("director-ids")?.file,
+      },
+      {
+        id: "ubo-ids",
+        name: t("uboIds"),
+        required: true,
+        uploaded: savedMap.has("ubo-ids"),
+        file: savedMap.get("ubo-ids")?.file,
+      },
+      {
+        id: "business-address",
+        name: t("businessAddress"),
+        required: true,
+        uploaded: savedMap.has("business-address"),
+        file: savedMap.get("business-address")?.file,
+      },
+    ];
+  });
 
   const handleFileUpload = (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Validate file type (PDF, JPG, PNG)
       const validTypes = ["application/pdf", "image/jpeg", "image/png"];
       if (!validTypes.includes(file.type)) {
         alert("Please upload a PDF, JPG, or PNG file");
         return;
       }
 
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         alert("File size must be less than 5MB");
         return;
       }
 
-      // Update document status
       setDocuments((prev) =>
         prev.map((doc) =>
           doc.id === documentId ? { ...doc, uploaded: true, file } : doc
         )
       );
 
-      // Simulate upload with auto-retry
       console.log(`Uploading ${file.name}...`);
     }
   };
 
-  const handleUploadLaterChange = (checked: boolean) => {
-    setUploadLater(checked);
-  };
-
   const requiredDocs = documents.filter((doc) => doc.required);
   const allRequiredUploaded = requiredDocs.every((doc) => doc.uploaded);
-  const isDocumentsStepValid = allRequiredUploaded || uploadLater;
+  const isDocumentsStepValid = allRequiredUploaded;
 
   // Update parent with validation status
   React.useEffect(() => {
     onUpdate({
       documents: documents.filter((doc) => doc.uploaded),
-      uploadLater,
       isDocumentsStepValid,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDocumentsStepValid, uploadLater]);
+  }, [isDocumentsStepValid]);
 
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Business Documents</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          Upload the required business and identity documents for verification and compliance.
+          {t("description")}
         </p>
       </div>
 
       <div className="space-y-6">
         {/* Document Checklist */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-brand-dark">Required Documents</h3>
+          <h3 className="text-lg font-semibold text-brand-dark">{tc("requiredDocuments")}</h3>
 
           {documents.map((document) => (
             <div
@@ -148,7 +149,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
                       </p>
                       {document.uploaded && document.file && (
                         <p className="mt-1 text-sm text-green-700">
-                          Uploaded: {document.file.name}
+                          {tc("uploaded")}: {document.file.name}
                         </p>
                       )}
                     </div>
@@ -165,7 +166,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
                         className="pointer-events-none"
                       >
                         <Upload className="mr-2 h-4 w-4" />
-                        Upload
+                        {tc("upload")}
                       </Button>
                       <input
                         id={`file-${document.id}`}
@@ -191,7 +192,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
                       }
                     >
                       <XCircle className="mr-2 h-4 w-4" />
-                      Remove
+                      {tc("remove")}
                     </Button>
                   )}
                 </div>
@@ -200,44 +201,21 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
           ))}
         </div>
 
-        {/* Upload Later Option */}
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="upload-later"
-              checked={uploadLater}
-              onCheckedChange={handleUploadLaterChange}
-              className="mt-1"
-            />
-            <div className="flex-1">
-              <Label htmlFor="upload-later" className="cursor-pointer font-semibold text-blue-900">
-                I'll upload documents later via my dashboard
-              </Label>
-              <p className="mt-1 text-sm text-blue-800">
-                You can submit your application now and upload documents later. We'll send you
-                a secure link to your dashboard where you can complete the document upload.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* File Requirements */}
         <div className="rounded-lg bg-gray-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-brand-dark">File Requirements</h4>
+          <h4 className="mb-2 text-sm font-semibold text-brand-dark">{tc("fileRequirements")}</h4>
           <ul className="space-y-1 text-sm text-brand-grayMed">
-            <li>• Accepted formats: PDF, JPG, PNG</li>
-            <li>• Maximum file size: 5MB per document</li>
-            <li>• Documents must be clear and legible</li>
-            <li>• All documents must be valid (not expired)</li>
+            <li>• {tc("fileReqFormats")}</li>
+            <li>• {tc("fileReqSize")}</li>
+            <li>• {tc("fileReqClear")}</li>
+            <li>• {tc("fileReqValid")}</li>
           </ul>
         </div>
 
         {!isDocumentsStepValid && (
           <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-amber-600" />
-            <div className="text-sm text-amber-900">
-              Please upload all required documents or select "I'll upload documents later" to continue.
-            </div>
+            <div className="text-sm text-amber-900">{tc("uploadRequired")}</div>
           </div>
         )}
       </div>

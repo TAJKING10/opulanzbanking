@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, Globe, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,8 +12,9 @@ interface HeaderProps {
 }
 
 const navigation = [
+  { name: "Home", href: "" },
+  { name: "About", href: "/about" },
   { name: "Open Account", href: "/open-account" },
-  { name: "Company Formation", href: "/company-formation" },
   { name: "Services", href: "/services" },
   { name: "Support", href: "/support" },
 ];
@@ -48,29 +48,33 @@ export function Header({ locale }: HeaderProps) {
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
         isScrolled
-          ? "bg-white shadow-md"
-          : "bg-transparent"
+          ? "bg-white/95 backdrop-blur-md shadow-md"
+          : "bg-white shadow-sm"
       )}
     >
       <nav className="container mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <Link
           href={`/${locale}`}
-          className="flex items-center gap-3 transition-opacity hover:opacity-80"
+          className="flex items-center transition-opacity hover:opacity-80"
         >
-          <Image
-            src="/images/opulanz-logo.png"
-            alt="Opulanz Logo"
-            width={60}
-            height={60}
-            className="h-16 w-auto"
-          />
+          <div className="bg-white px-2 py-1 rounded">
+            <img
+              src="/images/opulanz-logo-header.png"
+              alt="Opulanz"
+              width={160}
+              height={56}
+              className="h-14 w-auto object-contain"
+            />
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-10 md:flex">
           {navigation.map((item) => {
-            const isActive = pathname.includes(item.href);
+            const isActive = item.href === ""
+              ? pathname === `/${locale}` || pathname === `/${locale}/`
+              : pathname.includes(item.href);
 
             // Services dropdown
             if (item.name === "Services") {
@@ -83,7 +87,7 @@ export function Header({ locale }: HeaderProps) {
                 >
                   <button
                     className={cn(
-                      "flex items-center gap-1 text-sm font-semibold transition-colors hover:text-brand-gold",
+                      "flex items-center gap-1 text-sm font-semibold transition-all duration-200 hover:text-brand-gold hover:scale-105 px-1",
                       isActive ? "text-brand-gold" : "text-brand-dark"
                     )}
                   >
@@ -124,7 +128,7 @@ export function Header({ locale }: HeaderProps) {
                 key={item.name}
                 href={`/${locale}${item.href}`}
                 className={cn(
-                  "text-sm font-semibold transition-colors hover:text-brand-gold",
+                  "text-sm font-semibold transition-all duration-200 hover:text-brand-gold hover:scale-105 px-1",
                   isActive ? "text-brand-gold" : "text-brand-dark"
                 )}
               >
@@ -135,7 +139,7 @@ export function Header({ locale }: HeaderProps) {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           {/* Language Switcher */}
           <div className="hidden items-center gap-2 sm:flex">
             <Globe className="h-4 w-4 text-brand-grayMed transition-colors" />
@@ -146,20 +150,21 @@ export function Header({ locale }: HeaderProps) {
                 const path = pathname.replace(`/${locale}`, `/${newLocale}`);
                 window.location.href = path;
               }}
-              className="cursor-pointer border-none bg-transparent text-sm font-semibold text-brand-dark transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold"
+              className="cursor-pointer border-none bg-transparent text-sm font-semibold text-brand-dark transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold rounded-md"
             >
               <option value="en">EN</option>
               <option value="fr">FR</option>
             </select>
           </div>
 
+          {/* Open Account Button */}
           <Button
             asChild
-            variant={isScrolled ? "primary" : "default"}
+            variant="default"
             size="sm"
-            className="hidden sm:inline-flex"
+            className="hidden sm:inline-flex bg-brand-gold text-white hover:bg-brand-goldDark transition-all duration-200 hover:scale-105 shadow-sm hover:shadow-md"
           >
-            <Link href={`/${locale}/open-account`}>Get Started</Link>
+            <Link href={`/${locale}/open-account`}>Open Account</Link>
           </Button>
 
           {/* Mobile Menu Toggle */}
@@ -188,7 +193,7 @@ export function Header({ locale }: HeaderProps) {
                   <div key={item.name}>
                     <button
                       onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
-                      className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-base font-semibold text-brand-dark transition-colors hover:bg-brand-off hover:text-brand-gold"
+                      className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-base font-semibold text-brand-dark transition-colors hover:bg-gray-50 hover:text-brand-gold"
                     >
                       {item.name}
                       <ChevronDown
@@ -202,7 +207,7 @@ export function Header({ locale }: HeaderProps) {
                       <div className="ml-4 mt-1 space-y-1">
                         <Link
                           href={`/${locale}/services`}
-                          className="block rounded-lg px-4 py-2.5 text-sm font-bold text-brand-gold transition-colors hover:bg-brand-off"
+                          className="block rounded-lg px-4 py-2.5 text-sm font-bold text-brand-gold transition-colors hover:bg-gray-50"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
                           Our Services
@@ -211,7 +216,7 @@ export function Header({ locale }: HeaderProps) {
                           <Link
                             key={service.name}
                             href={`/${locale}${service.href}`}
-                            className="block rounded-lg px-4 py-2.5 text-sm font-medium text-brand-grayMed transition-colors hover:bg-brand-off hover:text-brand-gold"
+                            className="block rounded-lg px-4 py-2.5 text-sm font-medium text-brand-grayMed transition-colors hover:bg-gray-50 hover:text-brand-gold"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             {service.name}
@@ -227,7 +232,7 @@ export function Header({ locale }: HeaderProps) {
                 <Link
                   key={item.name}
                   href={`/${locale}${item.href}`}
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-brand-dark transition-colors hover:bg-brand-off hover:text-brand-gold"
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-brand-dark transition-colors hover:bg-gray-50 hover:text-brand-gold"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.name}
@@ -248,9 +253,17 @@ export function Header({ locale }: HeaderProps) {
                 <option value="fr">Français</option>
               </select>
             </div>
-            <Button asChild variant="primary" className="mt-4 w-full">
-              <Link href={`/${locale}/open-account`}>Get Started</Link>
-            </Button>
+            <div className="space-y-2 pt-4">
+              <div className="space-y-2">
+                <p className="px-4 text-xs font-semibold text-brand-grayMed uppercase tracking-wide">Open Account</p>
+                <Button asChild variant="primary" className="w-full">
+                  <Link href={`/${locale}/open-account/individual`}>Individual Account</Link>
+                </Button>
+                <Button asChild variant="default" className="w-full">
+                  <Link href={`/${locale}/open-account/company`}>Company Account</Link>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       )}

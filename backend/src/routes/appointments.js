@@ -14,6 +14,7 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/db');
+const emailService = require('../services/emailService');
 
 /**
  * POST /api/appointments
@@ -120,9 +121,22 @@ router.post('/', async (req, res) => {
       ]
     );
 
-    res.status(201).json({
+    // Send emails for investment advisory bookings (non-blocking)
+    const apt = result.rows[0];
+    if (meeting_type && meeting_type.toLowerCase().includes('investment')) {
+      emailService.sendInvestmentAdvisoryEmails({
+        fullName: full_name,
+        email,
+        phone,
+        startTime: start_time,
+        notes,
+        paypalOrderId: (() => { try { return JSON.parse(notes || '{}').paypalOrderId; } catch (e) { return null; } })(),
+      }).catch(err => console.error('[Investment Advisory] Email failed:', err.message));
+    }
+
+        res.status(201).json({
       success: true,
-      data: result.rows[0]
+      data: apt
     });
   } catch (error) {
     console.error('Error creating appointment:', error);

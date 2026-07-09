@@ -38,7 +38,7 @@ export function KYCWizardProvider({ children }: { children: ReactNode }) {
     setData(prev => ({
       ...prev,
       ...updates
-    }));
+    } as Partial<ClientFile>));
   };
 
   const nextStep = () => setCurrentStep(prev => prev + 1);

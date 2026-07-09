@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { Building2, User, ArrowRight } from "lucide-react";
+import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,12 +16,25 @@ export default function OpenAccountPage() {
 
   return (
     <>
+      <PageGuidance
+        pageKey="open-account"
+        locale={locale}
+        title="Open an Account"
+        description="Choose the account type that fits you best."
+        steps={[
+          { content: "Welcome to Account Opening. You can open a personal account for yourself, or a business account for your company — both fully online." },
+          { title: "Choose Your Account Type", content: "These two cards are your options. Select 'Personal' if you are an individual, or 'Business' if you are registering a company account.", target: "#account-types", position: "top" },
+          { title: "Personal Account", content: "The Personal account is for individuals. You'll need a valid ID and proof of address. The process takes about 5 minutes.", target: "#account-personal", position: "right" },
+          { title: "Business Account", content: "The Business account is for companies. You'll need company registration documents and a representative ID.", target: "#account-business", position: "left" },
+        ]}
+        tip="You will need a valid ID and proof of address to complete identity verification (KYC)."
+      />
       <Hero
         title={t("whitelabel.title")}
-        subtitle="Choose your account type and complete the application in minutes"
+        subtitle={t("openAccount.subtitle")}
       />
 
-      <section className="bg-brand-off py-20">
+      <section id="account-types" className="bg-brand-off py-12">
         <div className="container mx-auto max-w-5xl px-6">
           <SectionHeading
             title={t("whitelabel.choiceTitle")}
@@ -30,7 +44,7 @@ export default function OpenAccountPage() {
 
           <div className="grid gap-8 md:grid-cols-2">
             {/* Individual Account */}
-            <Card className="card-hover group border-2 border-brand-grayLight transition-all hover:border-brand-gold">
+            <Card id="account-personal" className="card-hover group border-2 border-brand-grayLight transition-all hover:border-brand-gold">
               <CardContent className="p-8">
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
                   <User className="h-8 w-8 text-brand-goldDark" />
@@ -39,25 +53,24 @@ export default function OpenAccountPage() {
                   {t("whitelabel.individual")}
                 </h3>
                 <p className="mb-6 text-brand-grayMed">
-                  Personal banking account for individuals with professional
-                  features and multi-currency support.
+                  {t("openAccount.individual.description")}
                 </p>
                 <ul className="mb-8 space-y-2 text-sm text-brand-dark">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Multi-currency IBAN</span>
+                    <span>{t("openAccount.individual.features.iban")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>SEPA & SWIFT transfers</span>
+                    <span>{t("openAccount.individual.features.transfers")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Debit card included</span>
+                    <span>{t("openAccount.individual.features.card")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Mobile & web banking</span>
+                    <span>{t("openAccount.individual.features.banking")}</span>
                   </li>
                 </ul>
                 <Button
@@ -67,7 +80,7 @@ export default function OpenAccountPage() {
                   className="w-full group-hover:bg-brand-goldDark"
                 >
                   <Link href={`/${locale}/open-account/start?mode=personal`}>
-                    Get Started
+                    {t("openAccount.getStarted")}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
@@ -75,7 +88,7 @@ export default function OpenAccountPage() {
             </Card>
 
             {/* Company Account */}
-            <Card className="card-hover group border-2 border-brand-grayLight transition-all hover:border-brand-gold">
+            <Card id="account-business" className="card-hover group border-2 border-brand-grayLight transition-all hover:border-brand-gold">
               <CardContent className="p-8">
                 <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
                   <Building2 className="h-8 w-8 text-brand-goldDark" />
@@ -84,25 +97,24 @@ export default function OpenAccountPage() {
                   {t("whitelabel.company")}
                 </h3>
                 <p className="mb-6 text-brand-grayMed">
-                  Professional business account for companies with advanced
-                  features and multi-user access.
+                  {t("openAccount.company.description")}
                 </p>
                 <ul className="mb-8 space-y-2 text-sm text-brand-dark">
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Dedicated business IBAN</span>
+                    <span>{t("openAccount.company.features.iban")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Multi-user access control</span>
+                    <span>{t("openAccount.company.features.access")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Accounting integration</span>
+                    <span>{t("openAccount.company.features.accounting")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-brand-gold">✓</span>
-                    <span>Corporate cards</span>
+                    <span>{t("openAccount.company.features.cards")}</span>
                   </li>
                 </ul>
                 <Button
@@ -112,7 +124,7 @@ export default function OpenAccountPage() {
                   className="w-full group-hover:bg-brand-goldDark"
                 >
                   <Link href={`/${locale}/open-account/start?mode=business`}>
-                    Get Started
+                    {t("openAccount.getStarted")}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
@@ -126,8 +138,7 @@ export default function OpenAccountPage() {
               {t("whitelabel.needCompany")}
             </h3>
             <p className="mb-6 text-brand-grayMed">
-              We can help you form your company in Luxembourg before opening
-              your business account.
+              {t("openAccount.formation.cta")}
             </p>
             <Button asChild variant="outline" size="lg">
               <Link href={`/${locale}/company-formation`}>

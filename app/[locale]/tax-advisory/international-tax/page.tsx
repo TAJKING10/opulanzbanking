@@ -1,28 +1,103 @@
 "use client";
 
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { PayPalButtons } from "@/components/paypal-buttons";
 import { Globe, CheckCircle, Clock, Euro } from "lucide-react";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
-import { useState, useEffect, useRef } from "react";
 import emailjs from '@emailjs/browser';
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export default function InternationalTaxPage({ params: { locale } }: { params: { locale: string } }) {
+  const calendlyUrl = locale === "fr"
+    ? "https://calendly.com/opulanz-banking/conseil-fiscal"
+    : "https://calendly.com/opulanz-banking/tax-advisory";
   const [step, setStep] = useState<'info' | 'calendar' | 'payment' | 'confirmation'>('info');
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState<any>(null);
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
-  const paypalRef = useRef<HTMLDivElement>(null);
+  const [useManualBooking, setUseManualBooking] = useState(false);
 
   const totalPrice = 250;
   const servicePrice = totalPrice / 1.17; // Price without VAT
   const vat = totalPrice - servicePrice;
+
+  // Reset function to clear all booking data
+  const resetBooking = () => {
+    localStorage.removeItem('internationalTaxBookingData');
+    localStorage.removeItem('internationalTaxStep');
+    setBookingData(null);
+    setPaymentCompleted(false);
+    setPaymentDetails(null);
+    setUseManualBooking(false);
+    setStep('info');
+  };
+
+  // Manual booking form submission
+  const handleManualBooking = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const dateStr = formData.get('date') as string;
+    const timeStr = formData.get('time') as string;
+    const eventStartTime = `${dateStr}T${timeStr}`;
+
+    // Calculate end time (60 minutes later)
+    const startDate = new Date(eventStartTime);
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+    const eventEndTime = endDate.toISOString();
+
+    // Merge with existing bookingData (if from Calendly) or create new
+    const completeBookingInfo = {
+      ...(bookingData || {}),
+      inviteeName: formData.get('name') as string,
+      inviteeEmail: formData.get('email') as string,
+      eventStartTime: eventStartTime,
+      eventEndTime: eventEndTime,
+      // If not from Calendly, generate manual URIs
+      eventUri: bookingData?.eventUri || `manual-${Date.now()}`,
+      inviteeUri: bookingData?.inviteeUri || `manual-invitee-${Date.now()}`,
+    };
+
+    console.log('✅ Complete booking info:', completeBookingInfo);
+    setBookingData(completeBookingInfo);
+    setStep('payment');
+  };
+
+  // Load booking data from localStorage on mount
+  useEffect(() => {
+    const savedBookingData = localStorage.getItem('internationalTaxBookingData');
+    const savedStep = localStorage.getItem('internationalTaxStep');
+
+    if (savedBookingData) {
+      try {
+        const parsedData = JSON.parse(savedBookingData);
+        setBookingData(parsedData);
+        if (savedStep && ['info', 'calendar', 'payment', 'confirmation'].includes(savedStep)) {
+          setStep(savedStep as any);
+        }
+      } catch (error) {
+        console.error('Error loading booking data:', error);
+        localStorage.removeItem('internationalTaxBookingData');
+        localStorage.removeItem('internationalTaxStep');
+      }
+    }
+  }, []);
+
+  // Save booking data to localStorage whenever it changes
+  useEffect(() => {
+    if (bookingData) {
+      localStorage.setItem('internationalTaxBookingData', JSON.stringify(bookingData));
+      localStorage.setItem('internationalTaxStep', step);
+    }
+  }, [bookingData, step]);
   // Initialize EmailJS
   useEffect(() => {
     emailjs.init('YOUR_PUBLIC_KEY'); // Replace with your EmailJS public key
@@ -32,39 +107,67 @@ export default function InternationalTaxPage({ params: { locale } }: { params: {
   const generatePDFReceipt = () => {
     if (!bookingData || !bookingData.paymentDetails) return;
 
+    const pd = bookingData.paymentDetails;
     const receiptContent = `
-OPULANZ BANKING - PAYMENT RECEIPT
-==================================================
+╔══════════════════════════════════════════════════════════════╗
+║           OPULANZ BANKING - PAYMENT RECEIPT                  ║
+╚══════════════════════════════════════════════════════════════╝
 
-Service: International Tax
-Date: ${new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-Time: ${new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-Duration: 60 minutes
+APPOINTMENT DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Service:        International Tax Consultation
+Date:           ${new Date(bookingData.eventStartTime).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+Time:           ${new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+Duration:       60 minutes
 
 CLIENT INFORMATION
-==================================================
-Name: ${bookingData.inviteeName}
-Email: ${bookingData.inviteeEmail}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name:           ${bookingData.inviteeName}
+Email:          ${bookingData.inviteeEmail}
 
-PAYMENT DETAILS
-==================================================
-Order ID: ${bookingData.paymentDetails.orderId}
-Amount: €250.00 (incl. VAT)
-Service Fee: €${(250 / 1.17).toFixed(2)} (excl. VAT)
-VAT (17%): €${(250 - 250 / 1.17).toFixed(2)}
-Payment Method: PayPal
-Status: ${bookingData.paymentDetails.status}
-Date: ${new Date(bookingData.paymentDetails.timestamp).toLocaleString('en-US')}
+PAYMENT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PayPal Order ID:    ${pd.orderId}
+PayPal Payer ID:    ${pd.payerId}
+Payer Name:         ${pd.payerName}
+Payer Email:        ${pd.payerEmail}
+Payment Status:     ${pd.status}
+Payment Date:       ${new Date(pd.timestamp).toLocaleString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  timeZoneName: 'short'
+})}
+
+AMOUNT BREAKDOWN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Service Fee (excl. VAT):    €${(250 / 1.17).toFixed(2)}
+VAT (17%):                   €${(250 - 250 / 1.17).toFixed(2)}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TOTAL PAID:                  €${pd.amount} ${pd.currency}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+This is an official receipt for your payment to Opulanz Banking.
+Please keep this receipt for your records.
+
+For questions or support, contact us at:
+Email: opulanz.banking@gmail.com
+Web: www.opulanzbanking.com
 
 Thank you for choosing Opulanz Banking!
-Contact: opulanz.banking@gmail.com
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Receipt Generated: ${new Date().toLocaleString('en-US')}
     `;
 
     const blob = new Blob([receiptContent], { type: 'text/plain' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Opulanz-Receipt-${bookingData.paymentDetails.orderId}.txt`;
+    a.download = `Opulanz-Receipt-${pd.orderId}.txt`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -121,38 +224,81 @@ Contact: opulanz.banking@gmail.com
       document.head.appendChild(script);
     }
   }, [step, calendlyLoaded]);
-  // Load PayPal SDK when payment step is active
-  useEffect(() => {
-    if (step === 'payment' && !paypalLoaded) {
-      const script = document.createElement('script');
-      const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'AY2J7gUncxDdmNXWjLaw5E9A4Gz6X-hcQvagQBhi2erpaMLeHoaHbGIi7dgns3GZ3oFxg-wO0Xhwy0qo';
-      script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR`;
-      script.async = true;
-      script.onload = () => setPaypalLoaded(true);
-      document.head.appendChild(script);
-    }
-  }, [step, paypalLoaded]);
-
-
   // Listen for Calendly events
   useEffect(() => {
     const handleCalendlyEvent = (e: MessageEvent) => {
-      if (e.data.event && e.data.event.indexOf('calendly') === 0) {
-        console.log('Calendly Event:', e.data.event);
+      // Only process Calendly events
+      if (!e.data.event || e.data.event.indexOf('calendly') !== 0) {
+        return;
+      }
 
-        if (e.data.event === 'calendly.event_scheduled') {
-          console.log('Booking details:', e.data.payload);
+      console.log('🎯 Calendly Event:', e.data.event);
+      console.log('📦 Full event data:', e.data);
 
-          setBookingData({
-            eventUri: e.data.payload.event.uri,
-            inviteeUri: e.data.payload.invitee.uri,
-            inviteeName: e.data.payload.invitee.name,
-            inviteeEmail: e.data.payload.invitee.email,
-            eventStartTime: e.data.payload.event.start_time,
-            eventEndTime: e.data.payload.event.end_time,
-          });
+      if (e.data.event === 'calendly.event_scheduled') {
+        console.log('✅ EVENT SCHEDULED! Processing...');
+        console.log('📋 Payload:', e.data.payload);
 
-          setStep('payment');
+        try {
+          const payload = e.data.payload;
+
+          if (!payload) {
+            console.error('❌ No payload received from Calendly');
+            return;
+          }
+
+          console.log('📋 Full Payload:', JSON.stringify(payload, null, 2));
+
+          // Extract all available data from Calendly
+          const event = payload.event || {};
+          const invitee = payload.invitee || {};
+
+          const eventUri = event.uri || '';
+          const inviteeUri = invitee.uri || '';
+          const startTime = event.start_time || '';
+          const endTime = event.end_time || '';
+
+          console.log('✅ Calendly event scheduled!');
+          console.log('🔗 Event URI:', eventUri);
+          console.log('🔗 Invitee URI:', inviteeUri);
+          console.log('📅 Start Time:', startTime);
+          console.log('📅 End Time:', endTime);
+
+          // Merge with prefilled data (name, email) from earlier form
+          const completeBookingData = {
+            ...bookingData, // Contains inviteeName and inviteeEmail from prefill
+            eventUri: eventUri,
+            inviteeUri: inviteeUri,
+            eventStartTime: startTime,
+            eventEndTime: endTime,
+            isFromCalendly: true
+          };
+
+          console.log('📝 Complete booking data:', completeBookingData);
+
+          // Validate we have all required data
+          if (completeBookingData.inviteeName &&
+              completeBookingData.inviteeEmail &&
+              completeBookingData.eventStartTime) {
+            console.log('✅ ALL DATA CAPTURED! Going directly to payment!');
+            setBookingData(completeBookingData);
+            setStep('payment');
+          } else if (completeBookingData.inviteeName && completeBookingData.inviteeEmail) {
+            console.log('⚠️ Missing date/time, showing manual form');
+            setBookingData(completeBookingData);
+            alert('✅ Time slot booked on Calendly!\n\nPlease confirm the date and time you selected.');
+            setUseManualBooking(true);
+          } else {
+            console.log('⚠️ Missing required data, showing manual form');
+            setBookingData(completeBookingData);
+            alert('Please fill in your details to complete the booking.');
+            setUseManualBooking(true);
+          }
+
+        } catch (error) {
+          console.error('❌ Error processing Calendly event:', error);
+          alert('Error processing booking. Please use Manual Booking.');
+          setUseManualBooking(true);
         }
       }
     };
@@ -161,62 +307,18 @@ Contact: opulanz.banking@gmail.com
     return () => window.removeEventListener('message', handleCalendlyEvent);
   }, []);
 
-  // Initialize PayPal buttons
   useEffect(() => {
-    if (step === 'payment' && paypalLoaded && paypalRef.current && bookingData) {
-      paypalRef.current.innerHTML = '';
-
-      // @ts-ignore
-      if (window.paypal) {
-        // @ts-ignore
-        window.paypal.Buttons({
-          style: {
-            layout: 'vertical',
-            color: 'gold',
-            shape: 'rect',
-            label: 'pay',
-            height: 50
-          },
-          createOrder: function(data: any, actions: any) {
-            return actions.order.create({
-              purchase_units: [{
-                description: 'International Tax - 60 minutes',
-                amount: {
-                  currency_code: 'EUR',
-                  value: totalPrice.toFixed(2)
-                }
-              }]
-            });
-          },
-          onApprove: function(data: any, actions: any) {
-            return actions.order.capture().then(function(details: any) {
-              console.log('Payment completed:', details);
-              setPaymentCompleted(true);
-            });
-          },
-          onError: function(err: any) {
-            console.error('PayPal error:', err);
-            alert('Payment failed. Please try again.');
-          }
-        }).render(paypalRef.current);
-      }
-    }
-  }, [step, paypalLoaded, bookingData, totalPrice]);
+    if (!paymentCompleted) return;
+    const timer = setTimeout(() => { handlePaymentComplete(); }, 1200);
+    return () => clearTimeout(timer);
+  }, [paymentCompleted]);
 
   const handlePaymentComplete = async () => {
-    if (!paymentCompleted) {
-      alert('Please complete the PayPal payment first.');
-      return;
-    }
-
     setLoading(true);
-
     try {
-      if (!bookingData) {
-        throw new Error('No booking data available');
-      }
+      if (!bookingData) throw new Error('No booking data available');
 
-      await fetch('http://localhost:5000/api/appointments', {
+      await fetch(`${API}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -230,17 +332,27 @@ Contact: opulanz.banking@gmail.com
           end_time: bookingData.eventEndTime,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           location: 'Video Conference',
-          notes: `Paid consultation - €${totalPrice}`
+          notes: `Paid consultation - €${totalPrice}${paymentDetails ? ` - PayPal Order ID: ${paymentDetails.orderId}` : ''}`
         })
-      });
+      }).catch(() => {});
+
+      if (paymentDetails) {
+        setBookingData((prev: any) => ({
+          ...prev,
+          paymentDetails: {
+            orderId: paymentDetails.orderId, payerId: paymentDetails.payerId,
+            payerEmail: paymentDetails.payerEmail, payerName: paymentDetails.payerName,
+            amount: paymentDetails.amount, currency: paymentDetails.currency,
+            status: paymentDetails.status, timestamp: paymentDetails.timestamp,
+            updateTime: paymentDetails.updateTime
+          }
+        }));
+      }
 
       sendEmailReceipts();
-
-
       setStep('confirmation');
     } catch (error) {
-      console.error('Error processing payment:', error);
-      alert('There was an error processing your payment. Please contact support.');
+      setStep('confirmation');
     } finally {
       setLoading(false);
     }
@@ -264,9 +376,31 @@ Contact: opulanz.banking@gmail.com
 
   // Step 3: Confirmation
   if (step === 'confirmation' && bookingData) {
+    // Validate and format appointment details
+    const appointmentName = bookingData.inviteeName || 'Not provided';
+    const appointmentEmail = bookingData.inviteeEmail || 'Not provided';
+    const startDate = bookingData.eventStartTime ? new Date(bookingData.eventStartTime) : null;
+    const isValidDate = startDate && !isNaN(startDate.getTime());
+
+    const formattedDate = isValidDate
+      ? startDate!.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      : 'Date not set';
+
+    const formattedTime = isValidDate
+      ? startDate!.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      : 'Time not set';
+
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-500">
@@ -294,31 +428,19 @@ Contact: opulanz.banking@gmail.com
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Name:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentName}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Email:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentEmail}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Date:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedDate}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Time:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedTime}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-brand-grayMed">Duration:</span>
@@ -328,22 +450,79 @@ Contact: opulanz.banking@gmail.com
               </CardContent>
             </Card>
 
+            {bookingData.paymentDetails && (
+              <Card className="mb-8 border-green-200 bg-green-50/50 shadow-lg">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-2 mb-4">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <h3 className="text-xl font-bold text-brand-dark">Payment Receipt</h3>
+                  </div>
+                  <div className="space-y-3 text-left">
+                    <div className="flex justify-between border-b border-green-200 pb-2">
+                      <span className="text-brand-grayMed">PayPal Order ID:</span>
+                      <span className="font-mono text-sm font-semibold text-brand-dark">{bookingData.paymentDetails.orderId}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-green-200 pb-2">
+                      <span className="text-brand-grayMed">Payer Name:</span>
+                      <span className="font-semibold text-brand-dark">{bookingData.paymentDetails.payerName}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-green-200 pb-2">
+                      <span className="text-brand-grayMed">Payer Email:</span>
+                      <span className="font-semibold text-brand-dark">{bookingData.paymentDetails.payerEmail}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-green-200 pb-2">
+                      <span className="text-brand-grayMed">Amount Paid:</span>
+                      <span className="font-semibold text-brand-dark">€{bookingData.paymentDetails.amount} {bookingData.paymentDetails.currency}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-green-200 pb-2">
+                      <span className="text-brand-grayMed">Payment Status:</span>
+                      <span className="font-semibold text-green-600">{bookingData.paymentDetails.status}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-brand-grayMed">Payment Date:</span>
+                      <span className="font-semibold text-brand-dark">
+                        {new Date(bookingData.paymentDetails.timestamp).toLocaleString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             <div className="rounded-lg bg-brand-goldLight/20 p-6 mb-8">
               <h4 className="mb-3 font-semibold text-brand-dark">What's Next?</h4>
               <ul className="space-y-2 text-sm text-brand-grayMed">
-                <li>✓ Check your email ({bookingData.inviteeEmail}) for the meeting link and calendar invite</li>
+                <li>✓ Check your email ({appointmentEmail}) for the meeting link and calendar invite</li>
                 <li>✓ Prepare your tax documents and questions</li>
                 <li>✓ Join the video conference at your scheduled time</li>
                 <li>✓ Our team has been notified and will be ready for your consultation</li>
               </ul>
             </div>
 
-            <Button
-              onClick={() => window.location.href = `/${locale}`}
-              className="w-full bg-brand-gold text-white hover:bg-brand-goldDark"
-            >
-              Return to Home
-            </Button>
+            <div className="flex flex-col gap-4">
+              <Button
+                onClick={generatePDFReceipt}
+                variant="outline"
+                className="w-full border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
+              >
+                Download Receipt
+              </Button>
+              <Button
+                onClick={() => {
+                  resetBooking();
+                  window.location.href = `/${locale}`;
+                }}
+                className="w-full bg-brand-gold text-white hover:bg-brand-goldDark"
+              >
+                Return to Home
+              </Button>
+            </div>
           </div>
         </section>
 
@@ -351,11 +530,81 @@ Contact: opulanz.banking@gmail.com
     );
   }
 
-  // Step 2: Payment
-  if (step === 'payment' && bookingData) {
+  // If payment step but no booking data, redirect to calendar
+  if (step === 'payment' && !bookingData) {
+    // Clear localStorage and redirect
+    localStorage.removeItem('internationalTaxBookingData');
+    localStorage.removeItem('internationalTaxStep');
+    setStep('calendar');
+    return null;
+  }
+
+  // If confirmation step but no booking data, show error and reset
+  if (step === 'confirmation' && (!bookingData || !bookingData.inviteeName || !bookingData.eventStartTime)) {
     return (
       <>
         <section className="hero-gradient py-16 md:py-20">
+          <div className="container mx-auto max-w-4xl px-6">
+            <div className="text-center">
+              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-red-500">
+                <CheckCircle className="h-12 w-12 text-white" />
+              </div>
+              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+                No Booking Found
+              </h1>
+              <p className="text-lg text-white/90 mb-8">
+                You need to book an appointment through Calendly first before seeing the confirmation.
+              </p>
+              <Button
+                onClick={resetBooking}
+                size="lg"
+                className="bg-white text-brand-dark hover:bg-gray-50"
+              >
+                Start Fresh - Book Appointment
+              </Button>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  // Step 2: Payment
+  if (step === 'payment' && bookingData) {
+    // Validate booking data - if missing critical info, redirect to calendar
+    if (!bookingData.inviteeName || !bookingData.inviteeEmail || !bookingData.eventStartTime) {
+      console.error('Invalid booking data:', bookingData);
+      resetBooking();
+      return null;
+    }
+
+    // Validate and format appointment details
+    const appointmentName = bookingData.inviteeName;
+    const appointmentEmail = bookingData.inviteeEmail;
+    const startDate = new Date(bookingData.eventStartTime);
+    const isValidDate = startDate && !isNaN(startDate.getTime());
+
+    if (!isValidDate) {
+      console.error('Invalid date:', bookingData.eventStartTime);
+      resetBooking();
+      return null;
+    }
+
+    const formattedDate = startDate.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const formattedTime = startDate.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    return (
+      <>
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
@@ -379,31 +628,19 @@ Contact: opulanz.banking@gmail.com
                 <div className="space-y-3">
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Name:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeName}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentName}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Email:</span>
-                    <span className="font-semibold text-brand-dark">{bookingData.inviteeEmail}</span>
+                    <span className="font-semibold text-brand-dark">{appointmentEmail}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Date:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedDate}</span>
                   </div>
                   <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
                     <span className="text-brand-grayMed">Time:</span>
-                    <span className="font-semibold text-brand-dark">
-                      {new Date(bookingData.eventStartTime).toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </span>
+                    <span className="font-semibold text-brand-dark">{formattedTime}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-brand-grayMed">Duration:</span>
@@ -459,8 +696,24 @@ Contact: opulanz.banking@gmail.com
                   </div>
 
                   <div className="mx-auto max-w-md">
-                    <div ref={paypalRef} id="paypal-button-container"></div>
-
+                    <PayPalButtons
+                      amount={totalPrice.toFixed(2)}
+                      description="International Tax Advisory - 60 minutes"
+                      onSuccess={(orderId, details) => {
+                        setPaymentDetails({
+                          orderId: details.id || orderId,
+                          payerId: details.payer?.payer_id,
+                          payerEmail: details.payer?.email_address,
+                          payerName: (details.payer?.name?.given_name || '') + ' ' + (details.payer?.name?.surname || ''),
+                          amount: details.purchase_units?.[0]?.amount?.value,
+                          currency: details.purchase_units?.[0]?.amount?.currency_code,
+                          status: details.status,
+                          timestamp: details.create_time,
+                          updateTime: details.update_time
+                        });
+                        setPaymentCompleted(true);
+                      }}
+                    />
                     <div className="mt-6 rounded-lg bg-blue-50 p-4">
                       <p className="text-sm text-blue-800">
                         <strong>Testing:</strong> Use card{' '}
@@ -478,15 +731,10 @@ Contact: opulanz.banking@gmail.com
                           <span className="font-semibold">Payment Successful!</span>
                         </div>
                       </div>
-
-                      <Button
-                        type="button"
-                        onClick={handlePaymentComplete}
-                        disabled={loading}
-                        className="bg-brand-gold text-white hover:bg-brand-goldDark"
-                      >
-                        {loading ? 'Processing...' : 'Continue to Confirmation'}
-                      </Button>
+                      <div className="flex items-center justify-center gap-2 text-brand-grayMed text-sm">
+                        <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+                        {loading ? 'Processing...' : 'Redirecting to confirmation...'}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -499,11 +747,233 @@ Contact: opulanz.banking@gmail.com
     );
   }
 
+  // Prefill handler - capture data from Calendly form before showing widget
+  const handlePrefillForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const prefillData = {
+      name: formData.get('prefill_name') as string,
+      email: formData.get('prefill_email') as string,
+    };
+
+    console.log('Prefill data captured:', prefillData);
+
+    // Store prefill data
+    setBookingData({
+      inviteeName: prefillData.name,
+      inviteeEmail: prefillData.email,
+      isPrefilled: true
+    });
+
+    // Show Calendly with prefilled data
+    setUseManualBooking(false);
+  };
+
   // Step 1: Calendar
   if (step === 'calendar') {
+    // First, show prefill form to capture user details
+    if (!bookingData?.isPrefilled && !useManualBooking) {
+      return (
+        <>
+          <section className="hero-gradient py-16 md:py-20">
+            <div className="container mx-auto max-w-4xl px-6">
+              <div className="text-center">
+                <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+                  Book Your Consultation
+                </h1>
+                <p className="text-lg text-white/90">
+                  Step 1: Enter your details
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white py-12 md:py-16">
+            <div className="container mx-auto max-w-2xl px-6">
+              <Card className="border-2 border-brand-gold/30">
+                <CardContent className="p-8">
+                  <div className="mb-6 text-center">
+                    <h3 className="text-2xl font-bold text-brand-dark mb-2">Enter Your Details</h3>
+                    <p className="text-brand-grayMed">We'll use this to schedule your appointment</p>
+                  </div>
+
+                  <form onSubmit={handlePrefillForm} className="space-y-6">
+                    <div>
+                      <label htmlFor="prefill_name" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="prefill_name"
+                        name="prefill_name"
+                        required
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                        placeholder="Toufic Jandah"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="prefill_email" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        id="prefill_email"
+                        name="prefill_email"
+                        required
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                        placeholder="toufic@example.com"
+                      />
+                    </div>
+
+                    <div className="bg-brand-goldLight/20 rounded-lg p-4">
+                      <p className="text-sm text-brand-dark">
+                        <strong>Next step:</strong> After entering your details, you'll select your preferred date and time on our calendar.
+                      </p>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full bg-brand-gold text-white hover:bg-brand-goldDark"
+                    >
+                      Continue to Calendar →
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+        </>
+      );
+    }
+
+    if (useManualBooking) {
+      // Manual booking form
+      return (
+        <>
+          <section className="hero-gradient py-16 md:py-20">
+            <div className="container mx-auto max-w-4xl px-6">
+              <div className="text-center">
+                <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+                  Book Your Consultation
+                </h1>
+                <p className="text-lg text-white/90">
+                  Fill in your details to proceed with payment
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white py-12 md:py-16">
+            <div className="container mx-auto max-w-2xl px-6">
+              <Card className="border-2 border-brand-gold/30">
+                <CardContent className="p-8">
+                  <form onSubmit={handleManualBooking} className="space-y-6">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        defaultValue={bookingData?.inviteeName || ''}
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                        placeholder="John Smith"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        defaultValue={bookingData?.inviteeEmail || ''}
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                        placeholder="john@example.com"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="date" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Preferred Date *
+                      </label>
+                      <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        required
+                        defaultValue={bookingData?.eventStartTime ? new Date(bookingData.eventStartTime).toISOString().split('T')[0] : ''}
+                        min={new Date().toISOString().split('T')[0]}
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="time" className="block text-sm font-semibold text-brand-dark mb-2">
+                        Preferred Time *
+                      </label>
+                      <input
+                        type="time"
+                        id="time"
+                        name="time"
+                        required
+                        defaultValue={bookingData?.eventStartTime ? new Date(bookingData.eventStartTime).toTimeString().slice(0, 5) : ''}
+                        className="w-full rounded-lg border-2 border-brand-grayLight px-4 py-3 focus:border-brand-gold focus:outline-none"
+                      />
+                    </div>
+
+                    {bookingData?.isFromCalendly && bookingData?.eventStartTime ? (
+                      <div className="bg-green-50 border-2 border-green-200 rounded-lg p-4">
+                        <p className="text-sm text-green-800">
+                          <strong>✅ Success!</strong> All fields are pre-filled with your Calendly booking details. Please verify and click Continue.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="bg-brand-goldLight/20 rounded-lg p-4">
+                        <p className="text-sm text-brand-dark">
+                          <strong>Note:</strong> {bookingData?.isFromCalendly
+                            ? 'Please enter the date and time you just selected on Calendly.'
+                            : 'This is a preferred time. We\'ll contact you to confirm availability.'}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex gap-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setUseManualBooking(false)}
+                        className="flex-1"
+                      >
+                        Back to Calendly
+                      </Button>
+                      <Button
+                        type="submit"
+                        className="flex-1 bg-brand-gold text-white hover:bg-brand-goldDark"
+                      >
+                        Continue to Payment
+                      </Button>
+                    </div>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+        </>
+      );
+    }
+
+    // Calendly widget view
     return (
       <>
-        <section className="hero-gradient py-16 md:py-20">
+        <section className="hero-gradient py-12 md:py-16">
           <div className="container mx-auto max-w-4xl px-6">
             <div className="text-center">
               <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
@@ -518,6 +988,16 @@ Contact: opulanz.banking@gmail.com
 
         <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-5xl px-6">
+            <div className="mb-6 text-center">
+              <Button
+                onClick={() => setUseManualBooking(true)}
+                variant="outline"
+                className="border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
+              >
+                Having trouble with Calendly? Use Manual Booking →
+              </Button>
+            </div>
+
             <div className="grid gap-8 md:grid-cols-3 mb-8">
               <div className="text-center">
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
@@ -551,8 +1031,9 @@ Contact: opulanz.banking@gmail.com
             </div>
 
             <div
+              key={locale}
               className="calendly-inline-widget"
-              data-url="https://calendly.com/opulanz-banking/tax-advisory?hide_event_type_details=1&primary_color=d8ba4a"
+              data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d8ba4a&name=${encodeURIComponent(bookingData?.inviteeName || '')}&email=${encodeURIComponent(bookingData?.inviteeEmail || '')}`}
               style={{ minWidth: '320px', height: '700px' }}
             />
           </div>
@@ -570,7 +1051,7 @@ Contact: opulanz.banking@gmail.com
         subtitle="Expert guidance on cross-border tax matters and transfer pricing"
       />
 
-      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-16 md:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-12 md:py-16 overflow-hidden">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-brand-goldLight/20 rounded-full blur-3xl"></div>
 
@@ -601,7 +1082,7 @@ Contact: opulanz.banking@gmail.com
         </div>
       </section>
 
-      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-white py-12 md:py-16 overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30"></div>
 
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
@@ -648,7 +1129,7 @@ Contact: opulanz.banking@gmail.com
         </div>
       </section>
 
-      <section className="relative bg-gray-50 py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-gray-50 py-12 md:py-16 overflow-hidden">
         <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-brand-goldLight/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl"></div>
 
@@ -682,7 +1163,7 @@ Contact: opulanz.banking@gmail.com
         </div>
       </section>
 
-      <section className="hero-gradient py-20 md:py-28">
+      <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-6 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
             Ready to Optimize Your International Tax?

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,8 @@ interface CompanyFormationStepProps {
 }
 
 export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormationStepProps) {
+  const t = useTranslations("accountForms.business.formation");
+
   const [proposedName, setProposedName] = React.useState(data.proposedCompanyName || "");
   const [businessActivity, setBusinessActivity] = React.useState(data.businessActivity || "");
   const [shareCapital, setShareCapital] = React.useState(data.shareCapital || "");
@@ -34,9 +37,9 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="mb-2 text-2xl font-bold text-brand-dark">Company Formation Details</h2>
+        <h2 className="mb-2 text-2xl font-bold text-brand-dark">{t("title")}</h2>
         <p className="text-brand-grayMed">
-          Provide information for forming your new company in {data.jurisdiction === "LU" ? "Luxembourg" : data.jurisdiction === "FR" ? "France" : data.jurisdiction === "FI" ? "Finland" : "your chosen jurisdiction"}.
+          {t("serviceDesc")}
         </p>
       </div>
 
@@ -45,77 +48,75 @@ export function CompanyFormationStep({ data, onUpdate, onNext }: CompanyFormatio
           <div className="flex items-start gap-4">
             <Building2 className="h-8 w-8 flex-shrink-0 text-brand-gold" />
             <div>
-              <h3 className="mb-2 text-lg font-semibold text-brand-dark">Company Formation Service</h3>
+              <h3 className="mb-2 text-lg font-semibold text-brand-dark">{t("serviceTitle")}</h3>
               <p className="text-sm text-brand-grayMed">
-                We'll handle the entire company formation process including registration,
-                drafting articles of association, and setting up your corporate structure.
+                {t("serviceDesc")}
               </p>
             </div>
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="proposedName">Proposed Company Name *</Label>
+          <Label htmlFor="proposedName">{t("proposedName")} *</Label>
           <Input
             id="proposedName"
             type="text"
             value={proposedName}
             onChange={(e) => setProposedName(e.target.value)}
-            placeholder="Enter your proposed company name"
+            placeholder={t("proposedNamePlaceholder")}
           />
           <p className="text-xs text-brand-grayMed">
-            We'll check availability and suggest alternatives if needed
+            {t("proposedNameHelp")}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="businessActivity">Business Activity / Description *</Label>
+          <Label htmlFor="businessActivity">{t("businessActivity")} *</Label>
           <Textarea
             id="businessActivity"
             value={businessActivity}
             onChange={(e) => setBusinessActivity(e.target.value)}
-            placeholder="Describe your business activities (e.g., software development, consulting, e-commerce)"
+            placeholder={t("businessActivityPlaceholder")}
             rows={4}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="shareCapital">Initial Share Capital *</Label>
+          <Label htmlFor="shareCapital">{t("shareCapital")} *</Label>
           <Input
             id="shareCapital"
             type="text"
             value={shareCapital}
             onChange={(e) => setShareCapital(e.target.value)}
-            placeholder="e.g., €12,000"
+            placeholder={t("shareCapitalPlaceholder")}
           />
           <p className="text-xs text-brand-grayMed">
-            Minimum requirements vary by jurisdiction
-            {data.jurisdiction === "LU" && " (Luxembourg: €12,000 for S.à r.l.)"}
-            {data.jurisdiction === "FR" && " (France: €1 for SAS/SARL)"}
-            {data.jurisdiction === "FI" && " (Finland: €2,500 for Oy)"}
+            {t("shareCapitalHelp")}
+            {data.jurisdiction === "LU" && ` ${t("luxembourgMin")}`}
+            {data.jurisdiction === "FR" && ` ${t("franceMin")}`}
+            {data.jurisdiction === "FI" && ` ${t("finlandMin")}`}
           </p>
         </div>
 
         <div className="rounded-lg bg-amber-50 p-4">
           <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-amber-900">
             <FileText className="h-4 w-4" />
-            What's Included
+            {t("whatsIncluded")}
           </h4>
           <ul className="space-y-1 text-sm text-amber-800">
-            <li>• Company name reservation and registration</li>
-            <li>• Articles of association preparation</li>
-            <li>• Company registration with authorities</li>
-            <li>• Tax registration</li>
-            <li>• Bank account opening</li>
-            <li>• Registered office address (if needed)</li>
+            <li>• {t("included1")}</li>
+            <li>• {t("included2")}</li>
+            <li>• {t("included3")}</li>
+            <li>• {t("included4")}</li>
+            <li>• {t("included5")}</li>
+            <li>• {t("included6")}</li>
           </ul>
         </div>
 
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-blue-900">Formation Timeline</h4>
+          <h4 className="mb-2 text-sm font-semibold text-blue-900">{t("timelineTitle")}</h4>
           <p className="text-sm text-blue-800">
-            The company formation process typically takes 2-4 weeks. We'll keep you updated at
-            each stage and coordinate the bank account opening to minimize delays.
+            {t("timelineDesc")}
           </p>
         </div>
       </div>

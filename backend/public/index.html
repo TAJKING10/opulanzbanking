@@ -310,7 +310,7 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>🏦 Opulanz Banking - Admin Panel</h1>
+            <h1><span aria-hidden="true">🏦</span> Opulanz Banking - Admin Panel</h1>
             <p>Backend Management & Monitoring Dashboard</p>
         </div>
 
@@ -344,23 +344,23 @@
             <div>
                 <!-- Narvi Account -->
                 <div class="panel">
-                    <h2>💳 Narvi Account</h2>
+                    <h2><span aria-hidden="true">💳</span> Narvi Account</h2>
                     <div class="narvi-account" id="narvi-account">
                         <h3>Live Business Account</h3>
                         <div class="iban" id="account-iban">Loading...</div>
                         <div class="balance" id="account-balance">€0.00</div>
                     </div>
-                    <button class="btn" onclick="refreshAccount()">🔄 Refresh Balance</button>
-                    <button class="btn btn-success" onclick="testTransfer()">💸 Test Transfer</button>
+                    <button id="btn-refresh-account" class="btn"><span aria-hidden="true">🔄</span> Refresh Balance</button>
+                    <button id="btn-test-transfer" class="btn btn-success"><span aria-hidden="true">💸</span> Test Transfer</button>
                 </div>
 
                 <!-- Quick Actions -->
                 <div class="panel">
-                    <h2>⚡ Quick Actions</h2>
-                    <button class="btn" onclick="runDemo()">🎬 Run Complete Demo</button>
-                    <button class="btn" onclick="testVOP()">✅ Test VOP Flow</button>
-                    <button class="btn" onclick="checkStatus()">📊 Check Status</button>
-                    <button class="btn btn-success" onclick="refreshAll()">🔄 Refresh All</button>
+                    <h2><span aria-hidden="true">⚡</span> Quick Actions</h2>
+                    <button id="btn-run-demo" class="btn"><span aria-hidden="true">🎬</span> Run Complete Demo</button>
+                    <button id="btn-test-vop" class="btn"><span aria-hidden="true">✅</span> Test VOP Flow</button>
+                    <button id="btn-check-status" class="btn"><span aria-hidden="true">📊</span> Check Status</button>
+                    <button id="btn-refresh-all" class="btn btn-success"><span aria-hidden="true">🔄</span> Refresh All</button>
                 </div>
             </div>
 
@@ -368,7 +368,7 @@
             <div>
                 <!-- Recent Applications -->
                 <div class="panel">
-                    <h2>📋 Recent Applications</h2>
+                    <h2><span aria-hidden="true">📋</span> Recent Applications</h2>
                     <div id="applications-list">
                         <div class="loading"></div> Loading applications...
                     </div>
@@ -376,7 +376,7 @@
 
                 <!-- Recent Transactions -->
                 <div class="panel">
-                    <h2>💰 Recent Transactions</h2>
+                    <h2><span aria-hidden="true">💰</span> Recent Transactions</h2>
                     <div id="transactions-list">
                         <div class="loading"></div> Loading transactions...
                     </div>
@@ -386,15 +386,16 @@
 
         <!-- Activity Log -->
         <div class="panel">
-            <h2>📜 Activity Log</h2>
-            <div class="log-container" id="activity-log">
+            <h2><span aria-hidden="true">📜</span> Activity Log</h2>
+            <div class="log-container" id="activity-log" aria-live="polite" aria-label="Activity log" role="log">
                 <div class="log-entry log-info">[INFO] Admin panel initialized</div>
             </div>
         </div>
     </div>
 
     <script>
-        const API_BASE = 'http://localhost:5000';
+        // Use the current origin so this works in any environment (local, staging, production)
+        const API_BASE = window.location.origin;
         let accountData = null;
 
         // Log function
@@ -465,45 +466,71 @@
 
         // Load applications
         async function loadApplications() {
+            const listEl = document.getElementById('applications-list');
             try {
                 log('Loading applications...', 'info');
 
                 const response = await fetch(`${API_BASE}/api/applications?limit=5`);
                 const data = await response.json();
 
+                listEl.textContent = '';
+
                 if (data.success) {
                     const count = data.pagination?.total || data.data.length;
                     document.getElementById('app-count').textContent = count;
 
-                    const listHtml = data.data.map(app => `
-                        <div class="transaction-item">
-                            <div>
-                                <strong>${app.type.toUpperCase()}</strong> -
-                                Application #${app.id}
-                                <span class="status badge-${app.status}">${app.status.toUpperCase()}</span>
-                            </div>
-                            <div style="font-size: 12px; color: #666; margin-top: 5px;">
-                                ${app.payload?.firstName || app.payload?.companyName || 'N/A'} -
-                                ${new Date(app.created_at).toLocaleDateString()}
-                            </div>
-                        </div>
-                    `).join('');
+                    if (data.data.length === 0) {
+                        const p = document.createElement('p');
+                        p.textContent = 'No applications yet';
+                        listEl.appendChild(p);
+                    } else {
+                        data.data.forEach(app => {
+                            const item = document.createElement('div');
+                            item.className = 'transaction-item';
 
-                    document.getElementById('applications-list').innerHTML = listHtml || '<p>No applications yet</p>';
+                            const top = document.createElement('div');
+                            const strong = document.createElement('strong');
+                            strong.textContent = String(app.type || '').toUpperCase();
+                            top.appendChild(strong);
+                            top.appendChild(document.createTextNode(' - Application #' + app.id + ' '));
+                            const badge = document.createElement('span');
+                            // Sanitize status for use in className (allow only alphanumeric/hyphen)
+                            const safeStatus = String(app.status || '').replace(/[^a-z0-9-]/gi, '');
+                            badge.className = 'status badge-' + safeStatus;
+                            badge.textContent = String(app.status || '').toUpperCase();
+                            top.appendChild(badge);
 
-                    log(`Loaded ${data.data.length} applications`, 'success');
+                            const bottom = document.createElement('div');
+                            bottom.style.cssText = 'font-size: 12px; color: #666; margin-top: 5px;';
+                            const name = String(app.payload?.firstName || app.payload?.companyName || 'N/A');
+                            const date = new Date(app.created_at).toLocaleDateString();
+                            bottom.textContent = name + ' - ' + date;
+
+                            item.appendChild(top);
+                            item.appendChild(bottom);
+                            listEl.appendChild(item);
+                        });
+                    }
+
+                    log('Loaded ' + data.data.length + ' applications', 'success');
                 } else {
-                    document.getElementById('applications-list').innerHTML = '<p>Failed to load applications</p>';
+                    const p = document.createElement('p');
+                    p.textContent = 'Failed to load applications';
+                    listEl.appendChild(p);
                     log('Failed to load applications', 'error');
                 }
             } catch (error) {
-                document.getElementById('applications-list').innerHTML = '<p>Error loading applications</p>';
+                listEl.textContent = '';
+                const p = document.createElement('p');
+                p.textContent = 'Error loading applications';
+                listEl.appendChild(p);
                 log('Error loading applications: ' + error.message, 'error');
             }
         }
 
         // Load transactions (placeholder - needs backend endpoint)
         async function loadTransactions() {
+            const listEl = document.getElementById('transactions-list');
             try {
                 log('Loading transactions...', 'info');
 
@@ -515,23 +542,37 @@
                     { id: 'MS9R...', amount: 99910, currency: 'EUR', status: 'DONE', type: 'CREDIT' }
                 ];
 
-                const listHtml = transactions.map(tx => `
-                    <div class="transaction-item">
-                        <div>
-                            <span class="amount">€${(tx.amount / 100).toFixed(2)}</span>
-                            <span class="status status-${tx.status.toLowerCase()}">${tx.status}</span>
-                        </div>
-                        <div style="font-size: 12px; color: #666; margin-top: 5px;">
-                            ${tx.type} - TX: ${tx.id}
-                        </div>
-                    </div>
-                `).join('');
+                listEl.textContent = '';
 
-                document.getElementById('transactions-list').innerHTML = listHtml;
+                transactions.forEach(tx => {
+                    const item = document.createElement('div');
+                    item.className = 'transaction-item';
 
-                log(`Loaded ${transactions.length} transactions`, 'success');
+                    const top = document.createElement('div');
+                    const amountSpan = document.createElement('span');
+                    amountSpan.className = 'amount';
+                    amountSpan.textContent = '€' + (tx.amount / 100).toFixed(2);
+                    const statusSpan = document.createElement('span');
+                    statusSpan.className = 'status status-' + String(tx.status).toLowerCase();
+                    statusSpan.textContent = tx.status;
+                    top.appendChild(amountSpan);
+                    top.appendChild(statusSpan);
+
+                    const bottom = document.createElement('div');
+                    bottom.style.cssText = 'font-size: 12px; color: #666; margin-top: 5px;';
+                    bottom.textContent = tx.type + ' - TX: ' + tx.id;
+
+                    item.appendChild(top);
+                    item.appendChild(bottom);
+                    listEl.appendChild(item);
+                });
+
+                log('Loaded ' + transactions.length + ' transactions', 'success');
             } catch (error) {
-                document.getElementById('transactions-list').innerHTML = '<p>Error loading transactions</p>';
+                listEl.textContent = '';
+                const p = document.createElement('p');
+                p.textContent = 'Error loading transactions';
+                listEl.appendChild(p);
                 log('Error loading transactions: ' + error.message, 'error');
             }
         }
@@ -562,21 +603,34 @@
             alert('Run this command in terminal:\nnode backend/test-complete-narvi-status.js');
         }
 
-        function refreshAll() {
+        async function refreshAll() {
+            const btn = document.getElementById('btn-refresh-all');
+            btn.disabled = true;
+            btn.textContent = 'Refreshing...';
             log('Refreshing all data...', 'info');
-            checkHealth();
-            loadAccount();
-            loadApplications();
-            loadTransactions();
+            try {
+                await Promise.all([checkHealth(), loadAccount(), loadApplications(), loadTransactions()]);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🔄 Refresh All';
+            }
         }
 
-        // Initialize on page load
+        // Initialize on page load — use addEventListener instead of inline handlers
         window.addEventListener('DOMContentLoaded', () => {
             log('Initializing admin panel...', 'info');
             checkHealth();
             loadAccount();
             loadApplications();
             loadTransactions();
+
+            // Wire up buttons via addEventListener (no inline onclick)
+            document.getElementById('btn-refresh-account').addEventListener('click', refreshAccount);
+            document.getElementById('btn-test-transfer').addEventListener('click', testTransfer);
+            document.getElementById('btn-run-demo').addEventListener('click', runDemo);
+            document.getElementById('btn-test-vop').addEventListener('click', testVOP);
+            document.getElementById('btn-check-status').addEventListener('click', checkStatus);
+            document.getElementById('btn-refresh-all').addEventListener('click', refreshAll);
 
             // Auto-refresh every 30 seconds
             setInterval(() => {

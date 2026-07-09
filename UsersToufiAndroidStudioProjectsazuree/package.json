@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@sumsub/websdk-react": "^2.6.1"
+  }
+}

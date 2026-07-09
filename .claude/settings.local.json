@@ -228,7 +228,9 @@
       "Bash(sed -n '15,20p' C:/Users/Toufi/AndroidStudioProjects/azuree/backend/src/routes/tax-advisory-bookings.js)",
       "Bash(sed -n '15,20p' C:/Users/Toufi/AndroidStudioProjects/azuree/backend/src/routes/life-insurance-bookings.js)",
       "Bash(sed -n '122,138p' C:/Users/Toufi/AndroidStudioProjects/azuree/backend/src/routes/appointments.js)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(git show:*)",
+      "Bash(git config:*)"
     ],
     "deny": [],
     "ask": []

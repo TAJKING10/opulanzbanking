@@ -126,48 +126,52 @@ export function Step6NotaryDomiciliation({ dossier, updateDossier }: StepProps) 
     });
   }, [notaryName, notaryCity, notaryLanguage, domiciliationNeeded]);
 
+  const requiresNotary = dossier.formType !== "SARL-S" && dossier.formType !== "SOLE";
+
   return (
     <div className="space-y-6">
-      <div>
-        <h3 className="mb-4 text-lg font-bold text-brand-dark">{t("notaryPreferences")}</h3>
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="notaryName">{t("notaryName")}</Label>
-            <Input
-              id="notaryName"
-              value={notaryName}
-              onChange={(e) => setNotaryName(e.target.value)}
-              placeholder={t("notaryNamePlaceholder")}
-            />
-          </div>
+      {requiresNotary && (
+        <div>
+          <h3 className="mb-4 text-lg font-bold text-brand-dark">{t("notaryPreferences")}</h3>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="notaryName">{t("notaryName")}</Label>
+              <Input
+                id="notaryName"
+                value={notaryName}
+                onChange={(e) => setNotaryName(e.target.value)}
+                placeholder={t("notaryNamePlaceholder")}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="notaryCity">{t("notaryCity")}</Label>
-            <Input
-              id="notaryCity"
-              value={notaryCity}
-              onChange={(e) => setNotaryCity(e.target.value)}
-              placeholder={t("notaryCityPlaceholder")}
-            />
-          </div>
+            <div className="space-y-2">
+              <Label htmlFor="notaryCity">{t("notaryCity")}</Label>
+              <Input
+                id="notaryCity"
+                value={notaryCity}
+                onChange={(e) => setNotaryCity(e.target.value)}
+                placeholder={t("notaryCityPlaceholder")}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="notaryLanguage">{t("notaryLanguage")}</Label>
-            <select
-              id="notaryLanguage"
-              className="flex h-11 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-              value={notaryLanguage}
-              onChange={(e) => setNotaryLanguage(e.target.value as "FR" | "EN" | "DE")}
-            >
-              <option value="EN">{t("english")}</option>
-              <option value="FR">{t("french")}</option>
-              <option value="DE">{t("german")}</option>
-            </select>
+            <div className="space-y-2">
+              <Label htmlFor="notaryLanguage">{t("notaryLanguage")}</Label>
+              <select
+                id="notaryLanguage"
+                className="flex h-11 w-full rounded-xl border border-brand-grayLight bg-white px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+                value={notaryLanguage}
+                onChange={(e) => setNotaryLanguage(e.target.value as "FR" | "EN" | "DE")}
+              >
+                <option value="EN">{t("english")}</option>
+                <option value="FR">{t("french")}</option>
+                <option value="DE">{t("german")}</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      <div className="border-t border-brand-grayLight pt-6">
+      <div className={requiresNotary ? "border-t border-brand-grayLight pt-6" : ""}>
         <h3 className="mb-4 text-lg font-bold text-brand-dark">{t("registeredOffice")}</h3>
         <div className="space-y-4">
           <div className="flex items-start space-x-3">
@@ -206,7 +210,10 @@ export function Step6NotaryDomiciliation({ dossier, updateDossier }: StepProps) 
                   <span>{t("domiciliationItem3")}</span>
                 </li>
               </ul>
-              <p className="mt-3 text-sm font-semibold text-brand-dark">
+              <p className="mt-3 text-sm text-brand-grayMed italic">
+                {t("domiciliationNote")}
+              </p>
+              <p className="mt-2 text-sm font-semibold text-brand-dark">
                 {t("domiciliationPrice")}
               </p>
             </div>
@@ -414,7 +421,14 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
   const [isPaymentComplete, setIsPaymentComplete] = React.useState(dossier.paymentStatus === "PAID");
   const [isProcessing, setIsProcessing] = React.useState(false);
 
-  const setupFee = 1500; // Demo amount
+  const feeByType: Record<string, number> = {
+    SARL: 2900,
+    "SARL-S": 1500,
+    SA: 1500,
+    SCSp: 12000,
+    SOLE: 500,
+  };
+  const setupFee = feeByType[dossier.formType ?? ""] ?? 1500;
 
   React.useEffect(() => {
     updateDossier({

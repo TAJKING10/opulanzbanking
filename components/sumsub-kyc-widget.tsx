@@ -152,7 +152,7 @@ export function SumsubKycWidget({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto min-h-[420px] flex items-center justify-center">
+        <div className="flex-1 overflow-y-auto min-h-[420px] flex flex-col items-center justify-start">
           {loading && (
             <div className="flex flex-col items-center gap-4 text-gray-500 py-12">
               <div className="w-16 h-16 bg-[#b59354]/10 rounded-2xl flex items-center justify-center">

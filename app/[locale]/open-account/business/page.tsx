@@ -258,9 +258,10 @@ export default function BusinessAccountPage() {
       onNext={handleNext}
       onBack={handleBack}
       canGoNext={currentStep < BUSINESS_ACCOUNT_STEPS.length && canProceed()}
-      canGoBack={currentStep > 1 && currentStep < BUSINESS_ACCOUNT_STEPS.length}
+      canGoBack={currentStep > 1}
       isLoading={isLoading}
-      hideNavigation={currentStep === BUSINESS_ACCOUNT_STEPS.length}
+      hideNavigation={false}
+      hideNext={currentStep === BUSINESS_ACCOUNT_STEPS.length}
     >
       {renderStep()}
       </AccountOpeningLayout>

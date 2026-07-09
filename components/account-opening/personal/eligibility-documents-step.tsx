@@ -24,32 +24,40 @@ export function EligibilityDocumentsStep({ data, onUpdate, onNext }: Eligibility
   const t = useTranslations("accountForms.personal.documents");
   const tc = useTranslations("accountForms.common");
 
-  const [documents, setDocuments] = React.useState<Document[]>([
-    {
-      id: "passport",
-      name: t("passport"),
-      required: true,
-      uploaded: false,
-    },
-    {
-      id: "address-proof",
-      name: t("addressProof"),
-      required: true,
-      uploaded: false,
-    },
-    {
-      id: "income-proof",
-      name: t("incomeProof"),
-      required: data.mode === "private",
-      uploaded: false,
-    },
-    {
-      id: "wealth-statement",
-      name: t("wealthStatement"),
-      required: data.mode === "private",
-      uploaded: false,
-    },
-  ]);
+  const [documents, setDocuments] = React.useState<Document[]>(() => {
+    const savedDocs: any[] = data.documents || [];
+    const savedMap = new Map(savedDocs.map((d: any) => [d.id, d]));
+    return [
+      {
+        id: "passport",
+        name: t("passport"),
+        required: true,
+        uploaded: savedMap.has("passport"),
+        file: savedMap.get("passport")?.file,
+      },
+      {
+        id: "address-proof",
+        name: t("addressProof"),
+        required: true,
+        uploaded: savedMap.has("address-proof"),
+        file: savedMap.get("address-proof")?.file,
+      },
+      {
+        id: "income-proof",
+        name: t("incomeProof"),
+        required: data.mode === "private",
+        uploaded: savedMap.has("income-proof"),
+        file: savedMap.get("income-proof")?.file,
+      },
+      {
+        id: "wealth-statement",
+        name: t("wealthStatement"),
+        required: data.mode === "private",
+        uploaded: savedMap.has("wealth-statement"),
+        file: savedMap.get("wealth-statement")?.file,
+      },
+    ];
+  });
 
   const handleFileUpload = (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

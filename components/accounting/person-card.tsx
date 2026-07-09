@@ -100,6 +100,15 @@ interface PersonCardProps {
   errors?: Partial<Record<keyof Person, string>>;
 }
 
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPhone(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  return phone.trim().startsWith("+") && digits.length >= 7 && digits.length <= 15;
+}
+
 export function PersonCard({
   label,
   person,
@@ -108,10 +117,22 @@ export function PersonCard({
   errors = {},
 }: PersonCardProps) {
   const t = useTranslations();
+  const [touchedEmail, setTouchedEmail] = React.useState(false);
+  const [touchedPhone, setTouchedPhone] = React.useState(false);
 
   const updateField = (field: keyof Person, value: string) => {
     onChange({ ...person, [field]: value });
   };
+
+  const emailError =
+    touchedEmail && person.email && !isValidEmail(person.email)
+      ? "Please enter a valid email address (e.g. name@company.com)"
+      : null;
+
+  const phoneError =
+    touchedPhone && person.phone && !isValidPhone(person.phone)
+      ? "Phone must start with + country code and contain 7–15 digits (e.g. +352 123 456 789)"
+      : null;
 
   return (
     <div className="space-y-4 rounded-lg border border-brand-grayLight p-4">
@@ -165,8 +186,13 @@ export function PersonCard({
             type="email"
             value={person.email}
             onChange={(e) => updateField("email", e.target.value)}
+            onBlur={() => setTouchedEmail(true)}
             placeholder={t('accounting.contactsAddresses.placeholders.email')}
+            className={emailError ? "border-red-500 focus-visible:ring-red-500" : ""}
           />
+          {emailError && (
+            <p className="mt-1 text-xs text-red-500">{emailError}</p>
+          )}
         </div>
 
         <div>
@@ -175,8 +201,13 @@ export function PersonCard({
             type="tel"
             value={person.phone}
             onChange={(e) => updateField("phone", e.target.value)}
+            onBlur={() => setTouchedPhone(true)}
             placeholder={t('accounting.contactsAddresses.placeholders.phone')}
+            className={phoneError ? "border-red-500 focus-visible:ring-red-500" : ""}
           />
+          {phoneError && (
+            <p className="mt-1 text-xs text-red-500">{phoneError}</p>
+          )}
         </div>
       </div>
     </div>

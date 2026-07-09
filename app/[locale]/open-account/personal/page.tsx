@@ -208,9 +208,10 @@ export default function PersonalAccountPage() {
       onNext={handleNext}
       onBack={handleBack}
       canGoNext={currentStep < PERSONAL_ACCOUNT_STEPS.length && canProceed()}
-      canGoBack={currentStep > 1 && currentStep < PERSONAL_ACCOUNT_STEPS.length}
+      canGoBack={currentStep > 1}
       isLoading={isLoading}
-      hideNavigation={currentStep === PERSONAL_ACCOUNT_STEPS.length}
+      hideNavigation={false}
+      hideNext={currentStep === PERSONAL_ACCOUNT_STEPS.length}
     >
         {renderStep()}
     </AccountOpeningLayout>

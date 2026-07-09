@@ -3,8 +3,6 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { Upload, CheckCircle, XCircle, FileText, AlertCircle } from "lucide-react";
 
 interface Document {
@@ -25,46 +23,54 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
   const t = useTranslations("accountForms.business.documents");
   const tc = useTranslations("accountForms.common");
 
-  const [documents, setDocuments] = React.useState<Document[]>([
-    {
-      id: "company-registration",
-      name: t("companyRegistration"),
-      required: data.companyStatus === "existing",
-      uploaded: false,
-    },
-    {
-      id: "articles",
-      name: t("articles"),
-      required: data.companyStatus === "existing",
-      uploaded: false,
-    },
-    {
-      id: "ubo-register",
-      name: t("uboRegister"),
-      required: false,
-      uploaded: false,
-    },
-    {
-      id: "director-ids",
-      name: t("directorIds"),
-      required: true,
-      uploaded: false,
-    },
-    {
-      id: "ubo-ids",
-      name: t("uboIds"),
-      required: true,
-      uploaded: false,
-    },
-    {
-      id: "business-address",
-      name: t("businessAddress"),
-      required: true,
-      uploaded: false,
-    },
-  ]);
-
-  const [uploadLater, setUploadLater] = React.useState(data.uploadLater || false);
+  const [documents, setDocuments] = React.useState<Document[]>(() => {
+    const savedDocs: any[] = data.documents || [];
+    const savedMap = new Map(savedDocs.map((d: any) => [d.id, d]));
+    return [
+      {
+        id: "company-registration",
+        name: t("companyRegistration"),
+        required: data.companyStatus === "existing",
+        uploaded: savedMap.has("company-registration"),
+        file: savedMap.get("company-registration")?.file,
+      },
+      {
+        id: "articles",
+        name: t("articles"),
+        required: data.companyStatus === "existing",
+        uploaded: savedMap.has("articles"),
+        file: savedMap.get("articles")?.file,
+      },
+      {
+        id: "ubo-register",
+        name: t("uboRegister"),
+        required: false,
+        uploaded: savedMap.has("ubo-register"),
+        file: savedMap.get("ubo-register")?.file,
+      },
+      {
+        id: "director-ids",
+        name: t("directorIds"),
+        required: true,
+        uploaded: savedMap.has("director-ids"),
+        file: savedMap.get("director-ids")?.file,
+      },
+      {
+        id: "ubo-ids",
+        name: t("uboIds"),
+        required: true,
+        uploaded: savedMap.has("ubo-ids"),
+        file: savedMap.get("ubo-ids")?.file,
+      },
+      {
+        id: "business-address",
+        name: t("businessAddress"),
+        required: true,
+        uploaded: savedMap.has("business-address"),
+        file: savedMap.get("business-address")?.file,
+      },
+    ];
+  });
 
   const handleFileUpload = (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -90,23 +96,18 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
     }
   };
 
-  const handleUploadLaterChange = (checked: boolean) => {
-    setUploadLater(checked);
-  };
-
   const requiredDocs = documents.filter((doc) => doc.required);
   const allRequiredUploaded = requiredDocs.every((doc) => doc.uploaded);
-  const isDocumentsStepValid = allRequiredUploaded || uploadLater;
+  const isDocumentsStepValid = allRequiredUploaded;
 
   // Update parent with validation status
   React.useEffect(() => {
     onUpdate({
       documents: documents.filter((doc) => doc.uploaded),
-      uploadLater,
       isDocumentsStepValid,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDocumentsStepValid, uploadLater]);
+  }, [isDocumentsStepValid]);
 
   return (
     <div className="space-y-8">
@@ -198,24 +199,6 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Upload Later Option */}
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="upload-later"
-              checked={uploadLater}
-              onCheckedChange={handleUploadLaterChange}
-              className="mt-1"
-            />
-            <div className="flex-1">
-              <Label htmlFor="upload-later" className="cursor-pointer font-semibold text-blue-900">
-                {tc("uploadLater")}
-              </Label>
-              <p className="mt-1 text-sm text-blue-800">{tc("uploadLaterDesc")}</p>
-            </div>
-          </div>
         </div>
 
         {/* File Requirements */}

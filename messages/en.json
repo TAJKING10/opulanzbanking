@@ -375,14 +375,15 @@
         "french": "French",
         "german": "German",
         "registeredOffice": "Registered Office / Domiciliation",
-        "needDomiciliation": "I need a domiciliation / registered address service",
-        "needDomiciliationDesc": "We can provide you with a professional business address in Luxembourg for your registered office.",
-        "domiciliationService": "Domiciliation Service",
-        "domiciliationIncludes": "Our domiciliation service includes:",
-        "domiciliationItem1": "Professional business address in Luxembourg",
-        "domiciliationItem2": "Mail forwarding and scanning",
-        "domiciliationItem3": "Meeting room access",
-        "domiciliationPrice": "From EUR 600/year",
+        "needDomiciliation": "I need a registered address in Luxembourg",
+        "needDomiciliationDesc": "We connect you with a licensed professional domiciliation provider in Luxembourg, who will provide a registered office address compliant with local regulations.",
+        "domiciliationService": "Introduction — Registered Office & Domiciliation",
+        "domiciliationIncludes": "Our introduction service includes:",
+        "domiciliationItem1": "Introduction to a licensed domiciliation provider in Luxembourg",
+        "domiciliationItem2": "Support in preparing your domiciliation file",
+        "domiciliationItem3": "Coordination of the process through to setup",
+        "domiciliationNote": "The registered office address and the domiciliation agreement are provided directly by the licensed provider. Ancillary services (mail forwarding/scanning, meeting room access) are offered by that provider.",
+        "domiciliationPrice": "From €1,300/year (partner provider's indicative rate)",
         "noDomiciliationNote": "If you don't select domiciliation service, you must provide proof of a registered address (lease agreement or property title) in the next step."
       },
       "step7": {
@@ -2856,7 +2857,7 @@
         "title": "Ready to Streamline Your Finances?",
         "description": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
         "getStarted": "Get Started",
-        "contactSales": "Contact Sales"
+        "contactSales": "Contact Us"
       },
       "guidance": {
         "title": "Invoicing & Accounting",

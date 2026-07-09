@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
 import { Step } from "@/components/account-opening/stepper";
@@ -19,6 +19,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export default function AccountingOnboardingPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const locale = params.locale as string;
   const t = useTranslations();
 
@@ -93,8 +94,16 @@ export default function AccountingOnboardingPage() {
     consent: false,
   });
 
-  // Load saved progress from localStorage
+  // Load saved progress from localStorage (or jump to a specific step via URL param)
   React.useEffect(() => {
+    const uploadStep = searchParams.get("uploadStep");
+    if (uploadStep) {
+      const step = parseInt(uploadStep);
+      if (!isNaN(step)) {
+        setCurrentStep(step);
+        return;
+      }
+    }
     const saved = localStorage.getItem("accounting-onboarding-progress");
     if (saved) {
       try {
@@ -226,6 +235,7 @@ export default function AccountingOnboardingPage() {
         companyType: formData.companyType,
         registrationNumber: formData.registrationNumber,
         vatNumber: formData.vatNumber,
+        uploadLater: formData.uploadLater || false,
         submittedAt: new Date().toISOString(),
       };
 
@@ -349,7 +359,7 @@ export default function AccountingOnboardingPage() {
       canGoNext={canProceed()}
       canGoBack={currentStep > 1}
       isLoading={isLoading}
-      hideNavigation={currentStep === ACCOUNTING_STEPS.length}
+      hideNext={currentStep === ACCOUNTING_STEPS.length}
     >
       {renderStep()}
     </AccountOpeningLayout>

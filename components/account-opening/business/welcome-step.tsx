@@ -54,15 +54,6 @@ export function BusinessWelcomeStep({ data, onUpdate, onNext }: BusinessWelcomeS
         </div>
       </div>
 
-      <div className="flex justify-end">
-        <button
-          type="button"
-          onClick={onNext}
-          className="rounded-lg bg-brand-gold px-8 py-3 text-base font-semibold text-white transition-all hover:bg-brand-goldDark"
-        >
-          {t("startApplication")}
-        </button>
-      </div>
     </div>
   );
 }

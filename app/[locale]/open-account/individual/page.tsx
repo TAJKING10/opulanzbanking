@@ -504,15 +504,25 @@ export default function IndividualAccountPage() {
 
               <p className="text-xs text-brand-grayMed">* Required fields</p>
 
-              <Button
-                variant="primary"
-                size="lg"
-                className="w-full"
-                disabled={questionnaireLoading}
-                onClick={handleQuestionnaireSubmit}
-              >
-                {questionnaireLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Continue"}
-              </Button>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full"
+                  onClick={() => setStep("form")}
+                >
+                  ← Back
+                </Button>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
+                  disabled={questionnaireLoading}
+                  onClick={handleQuestionnaireSubmit}
+                >
+                  {questionnaireLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Continue"}
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -532,10 +542,18 @@ export default function IndividualAccountPage() {
               We need to verify your identity. This takes 2–3 minutes.
             </p>
           </div>
+          <div className="mb-4">
+            <button
+              onClick={() => setStep("questionnaire")}
+              className="flex items-center gap-1 text-sm text-brand-grayMed hover:text-brand-dark transition-colors"
+            >
+              ← Back to questionnaire
+            </button>
+          </div>
           <SumsubKycWidget
             userId={userEmail}
             levelName="individual_signup_kyc"
-            onClose={() => setStep("form")}
+            onClose={() => setStep("questionnaire")}
             onComplete={handleSumsubComplete}
           />
         </div>

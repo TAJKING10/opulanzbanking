@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { CheckCircle, Building2, Mail, User, FileText, Download, ArrowRight, Calendar, MapPin, Euro, Users, TrendingUp } from "lucide-react";
+import { CheckCircle, Building2, Mail, User, FileText, Download, ArrowRight, Upload } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -382,6 +382,28 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
               )}
             </CardContent>
           </Card>
+
+          {/* Upload Documents Later Banner */}
+          {applicationData.uploadLater && (
+            <div className="mb-8 rounded-lg border-2 border-amber-300 bg-amber-50 p-5">
+              <div className="flex items-start gap-4">
+                <Upload className="h-6 w-6 flex-shrink-0 text-amber-600 mt-0.5" />
+                <div className="flex-1">
+                  <h3 className="font-semibold text-amber-900 mb-1">Documents pending upload</h3>
+                  <p className="text-sm text-amber-800 mb-3">
+                    You skipped document upload during onboarding. Please upload your documents to complete the process.
+                  </p>
+                  <Button
+                    onClick={() => router.push(`/${locale}/invoicing-accounting/onboarding?uploadStep=5`)}
+                    className="bg-amber-600 text-white hover:bg-amber-700"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload Documents Now
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Action Buttons */}
           <div className="grid gap-4 md:grid-cols-2 mb-8">

@@ -19,6 +19,7 @@ interface AccountOpeningLayoutProps {
   title: string;
   description?: string;
   hideNavigation?: boolean;
+  hideNext?: boolean;
 }
 
 export function AccountOpeningLayout({
@@ -34,6 +35,7 @@ export function AccountOpeningLayout({
   title,
   description,
   hideNavigation = false,
+  hideNext = false,
 }: AccountOpeningLayoutProps) {
   const t = useTranslations("accountForms.layout");
   const [showValidationError, setShowValidationError] = React.useState(false);
@@ -80,27 +82,29 @@ export function AccountOpeningLayout({
                 {t("back")}
               </Button>
 
-              <div
-                onClick={() => {
-                  if (!canGoNext && !isLoading) setShowValidationError(true);
-                }}
-              >
-                <Button
-                  type="button"
-                  onClick={canGoNext ? onNext : undefined}
-                  disabled={!canGoNext || isLoading}
-                  className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark disabled:bg-gray-400 disabled:opacity-50"
+              {!hideNext && (
+                <div
+                  onClick={() => {
+                    if (!canGoNext && !isLoading) setShowValidationError(true);
+                  }}
                 >
-                  {isLoading ? (
-                    t("processing")
-                  ) : (
-                    <>
-                      {t("continue")}
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </>
-                  )}
-                </Button>
-              </div>
+                  <Button
+                    type="button"
+                    onClick={canGoNext ? onNext : undefined}
+                    disabled={!canGoNext || isLoading}
+                    className="min-w-32 bg-brand-gold text-white hover:bg-brand-goldDark disabled:bg-gray-400 disabled:opacity-50"
+                  >
+                    {isLoading ? (
+                      t("processing")
+                    ) : (
+                      <>
+                        {t("continue")}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
             </div>
             {showValidationError && !canGoNext && (
               <div className="mt-3 flex items-center justify-end gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">

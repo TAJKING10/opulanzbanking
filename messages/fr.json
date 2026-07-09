@@ -375,14 +375,15 @@
         "french": "Français",
         "german": "Allemand",
         "registeredOffice": "Siège social / Domiciliation",
-        "needDomiciliation": "J'ai besoin d'un service de domiciliation / adresse de siège social",
-        "needDomiciliationDesc": "Nous pouvons vous fournir une adresse professionnelle au Luxembourg pour votre siège social.",
-        "domiciliationService": "Service de domiciliation",
-        "domiciliationIncludes": "Notre service de domiciliation comprend :",
-        "domiciliationItem1": "Adresse professionnelle au Luxembourg",
-        "domiciliationItem2": "Réexpédition et numérisation du courrier",
-        "domiciliationItem3": "Accès aux salles de réunion",
-        "domiciliationPrice": "À partir de 600 EUR/an",
+        "needDomiciliation": "J'ai besoin d'une adresse de siège social au Luxembourg",
+        "needDomiciliationDesc": "Nous vous mettons en relation avec un domiciliataire professionnel agréé au Luxembourg, qui vous fournira une adresse de siège social conforme à la réglementation.",
+        "domiciliationService": "Mise en relation — Domiciliation & siège social",
+        "domiciliationIncludes": "Notre service de mise en relation comprend :",
+        "domiciliationItem1": "Introduction auprès d'un domiciliataire agréé au Luxembourg",
+        "domiciliationItem2": "Accompagnement dans la constitution de votre dossier de domiciliation",
+        "domiciliationItem3": "Coordination des démarches jusqu'à la mise en place",
+        "domiciliationNote": "L'adresse de siège social et le contrat de domiciliation sont fournis directement par le domiciliataire agréé. Les prestations annexes (réexpédition/numérisation du courrier, accès à des salles de réunion) sont proposées par ce prestataire.",
+        "domiciliationPrice": "À partir de 1 300 €/an (tarif du domiciliataire partenaire, à titre indicatif)",
         "noDomiciliationNote": "Si vous ne sélectionnez pas le service de domiciliation, vous devez fournir une preuve d'adresse de siège social (bail ou titre de propriété) à l'étape suivante."
       },
       "step7": {
@@ -2856,7 +2857,7 @@
         "title": "Prêt à simplifier vos finances ?",
         "description": "Rejoignez des milliers d'entreprises qui nous font confiance pour leur comptabilité et leur facturation. Commencez dès aujourd'hui.",
         "getStarted": "Commencer",
-        "contactSales": "Contacter les ventes"
+        "contactSales": "Nous contacter"
       },
       "guidance": {
         "title": "Facturation & Comptabilité",

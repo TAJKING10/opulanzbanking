@@ -43,6 +43,14 @@ export function ContactsAddressesStep({
     onUpdate({ hasAccountingContact: checked });
   };
 
+  const isValidEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const isValidPhone = (phone: string) => {
+    const digits = phone.replace(/\D/g, "");
+    return phone.trim().startsWith("+") && digits.length >= 7 && digits.length <= 15;
+  };
+
   const checkValidity = () => {
     // Check registered address
     if (!data.registeredAddress?.street) return false;
@@ -59,11 +67,18 @@ export function ContactsAddressesStep({
     }
 
     // Check primary contact
-    if (!data.primaryContact?.firstName) return false;
-    if (!data.primaryContact?.lastName) return false;
-    if (!data.primaryContact?.role) return false;
-    if (!data.primaryContact?.email) return false;
-    if (!data.primaryContact?.phone) return false;
+    const pc = data.primaryContact;
+    if (!pc?.firstName || !pc?.lastName || !pc?.role) return false;
+    if (!pc?.email || !isValidEmail(pc.email)) return false;
+    if (!pc?.phone || !isValidPhone(pc.phone)) return false;
+
+    // Check accounting contact if added
+    if (hasAccountingContact) {
+      const ac = data.accountingContact;
+      if (!ac?.firstName || !ac?.lastName || !ac?.role) return false;
+      if (!ac?.email || !isValidEmail(ac.email)) return false;
+      if (!ac?.phone || !isValidPhone(ac.phone)) return false;
+    }
 
     return true;
   };
@@ -76,7 +91,9 @@ export function ContactsAddressesStep({
     data.registeredAddress,
     data.operatingAddress,
     data.primaryContact,
+    data.accountingContact,
     sameAsRegistered,
+    hasAccountingContact,
   ]);
 
   return (

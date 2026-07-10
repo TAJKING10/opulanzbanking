@@ -30,6 +30,7 @@ export default function ScheduleInvestmentMeetingPage() {
   const [bookingData, setBookingData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [confirmationNumber, setConfirmationNumber] = useState('');
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const calendlyRef = useRef<HTMLDivElement>(null);
   // Calendly only sends URIs in event_scheduled — capture the actual ISO start time
@@ -76,7 +77,7 @@ export default function ScheduleInvestmentMeetingPage() {
       calendlyRef.current.innerHTML = '';
       // @ts-ignore
       window.Calendly?.initInlineWidget({
-        url: `https://calendly.com/opulanz-banking/tax-advisory-clone?hide_event_type_details=1&primary_color=d0ab08&locale=${locale}`,
+        url: `https://calendly.com/opulanz-banking/investment-advisory?hide_event_type_details=1&primary_color=d0ab08&locale=${locale}`,
         parentElement: calendlyRef.current,
         prefill: { name: fullName, email: contact.email },
       });
@@ -102,8 +103,75 @@ export default function ScheduleInvestmentMeetingPage() {
     setStep('calendar');
   }
 
+  const handleDownloadReceipt = () => {
+    const startDate = bookingData?.eventStartTime ? new Date(bookingData.eventStartTime) : null;
+    const dateStr = startDate
+      ? startDate.toLocaleDateString(dateLocale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+      : '—';
+    const timeStr = startDate
+      ? startDate.toLocaleTimeString(dateLocale, { hour: '2-digit', minute: '2-digit' })
+      : '—';
+    const paymentDateStr = new Date().toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const html = `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<title>Opulanz Receipt ${confirmationNumber}</title>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:620px;margin:40px auto;padding:0 24px;color:#252623}
+  .print-note{background:#DBEAFE;border:1px solid #93C5FD;border-radius:6px;padding:12px 16px;font-size:12px;margin-bottom:24px;display:flex;align-items:center;gap:8px}
+  .print-note button{margin-left:auto;background:#1E3A5F;color:#fff;border:none;border-radius:4px;padding:6px 14px;font-size:12px;cursor:pointer}
+  .header{text-align:center;padding-bottom:20px;border-bottom:2px solid #B59354;margin-bottom:24px}
+  .logo{font-size:22px;font-weight:800;letter-spacing:.12em;color:#252623}
+  .logo span{color:#B59354}
+  .sub{font-size:13px;color:#6E6A60;margin-top:4px}
+  .conf-pill{display:inline-block;background:#FAF6EE;border:1.5px solid #B59354;border-radius:6px;padding:6px 16px;font-family:monospace;font-size:14px;font-weight:700;color:#886844;margin:12px 0}
+  .row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #E4DFD5;font-size:13px}
+  .row:last-child{border-bottom:none}
+  .lbl{color:#6E6A60}
+  .val{font-weight:600;color:#252623}
+  .total-row{padding:14px 0;border-top:2px solid #B59354;margin-top:8px}
+  .total-row .lbl{font-weight:700;color:#252623}
+  .total-row .val{font-size:18px;font-weight:700;color:#B59354}
+  .footer{margin-top:28px;padding-top:16px;border-top:1px solid #E4DFD5;font-size:11px;color:#6E6A60;text-align:center}
+  @media print{.print-note{display:none}}
+</style>
+</head>
+<body>
+<div class="print-note">
+  📄 To save as PDF: File → Print → Save as PDF
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+<div class="header">
+  <div class="logo">OPUL<span>ANZ</span></div>
+  <div class="sub">Investment Advisory — Payment Receipt</div>
+  <div class="conf-pill">${confirmationNumber}</div>
+</div>
+<div class="row"><span class="lbl">Service</span><span class="val">Investment Advisory Consultation</span></div>
+<div class="row"><span class="lbl">Client Name</span><span class="val">${fullName}</span></div>
+<div class="row"><span class="lbl">Email</span><span class="val">${contact.email}</span></div>
+<div class="row"><span class="lbl">Appointment Date</span><span class="val">${dateStr}</span></div>
+<div class="row"><span class="lbl">Appointment Time</span><span class="val">${timeStr}</span></div>
+<div class="row"><span class="lbl">Duration</span><span class="val">45 minutes</span></div>
+<div class="row"><span class="lbl">Format</span><span class="val">Video Conference</span></div>
+<div class="row"><span class="lbl">Payment Method</span><span class="val">PayPal</span></div>
+<div class="row"><span class="lbl">Payment Date</span><span class="val">${paymentDateStr}</span></div>
+<div class="row total-row"><span class="lbl">Total Paid</span><span class="val">€99.90</span></div>
+<div class="footer">Opulanz Banking · support@opulanzbanking.com<br>This receipt confirms your paid consultation booking.</div>
+</body></html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Opulanz-Receipt-${confirmationNumber}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const handlePaymentComplete = async () => {
     setLoading(true);
+    const confNum = `INV-${Date.now().toString(36).toUpperCase()}`;
+    setConfirmationNumber(confNum);
 
     try {
       if (!bookingData) throw new Error('No booking data available');
@@ -417,9 +485,15 @@ export default function ScheduleInvestmentMeetingPage() {
                 <h2 className="mb-4 text-3xl font-bold text-brand-dark">
                   {t("paymentConfirmed")}
                 </h2>
-                <p className="mb-8 text-brand-grayMed">
+                <p className="mb-4 text-brand-grayMed">
                   {t("paymentConfirmedDesc")}
                 </p>
+                {confirmationNumber && (
+                  <div className="mb-8 inline-flex items-center gap-2 rounded-lg border border-brand-gold/50 bg-brand-gold/5 px-5 py-2">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-brand-grayMed">Booking Ref</span>
+                    <span className="font-mono text-base font-bold text-brand-gold">{confirmationNumber}</span>
+                  </div>
+                )}
 
                 <Card className="mb-8 border-brand-gold/30 shadow-lg">
                   <CardContent className="p-8">
@@ -467,12 +541,21 @@ export default function ScheduleInvestmentMeetingPage() {
                   </ul>
                 </div>
 
-                <Button
-                  onClick={() => window.location.href = `/${locale}`}
-                  className="mt-8 bg-brand-gold text-white hover:bg-brand-goldDark"
-                >
-                  {t("returnHome")}
-                </Button>
+                <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  <Button
+                    onClick={handleDownloadReceipt}
+                    variant="outline"
+                    className="border-brand-gold text-brand-gold hover:bg-brand-gold/10"
+                  >
+                    Download Receipt
+                  </Button>
+                  <Button
+                    onClick={() => window.location.href = `/${locale}`}
+                    className="bg-brand-gold text-white hover:bg-brand-goldDark"
+                  >
+                    {t("returnHome")}
+                  </Button>
+                </div>
               </div>
             </>
           )}

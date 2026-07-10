@@ -880,9 +880,9 @@
         "title": "Avancez avec un conseil indépendant",
         "description": "Notre équipe met son expérience des marchés au service de recommandations personnalisées. Que vous prépariez votre retraite ou cherchiez à structurer votre patrimoine, nous vous apportons un conseil clair et adapté.",
         "scheduleMeeting": "Prendre rendez-vous",
-        "contactSupport": "Nos prestations"
+        "contactSupport": "Contacter le support"
       },
-      "legalMention": "Conseil en investissement fourni par Advensys Insurance-Finance SARL, Conseiller en Investissements Financiers immatriculé à l'ORIAS n° 21003660, membre de [association agréée AMF — La Compagnie CIF], sous le contrôle de l'AMF."
+      "legalMention": "Conseil en investissement fourni par Advensys Insurance-Finance SARL, Conseiller en Investissements Financiers immatriculé à l'ORIAS n° 21003660, membre de La Compagnie CIF, sous le contrôle de l'AMF."
     },
     "schedule": {
       "heroTitle": "Planifiez votre rendez-vous de conseil en investissement",
@@ -927,7 +927,7 @@
       "next1": "Consultez votre e-mail ({email}) pour le lien de réunion et l''invitation au calendrier",
       "next2": "Préparez vos documents financiers et vos questions",
       "next3": "Rejoignez la vidéoconférence à l'heure prévue",
-      "next4": "Notre équipe a été notifiée à opulanz.banking@gmail.com",
+      "next4": "Notre équipe a été notifiée à support@opulanzbanking.com",
       "returnHome": "Retour à l'accueil",
       "completePaymentFirst": "Veuillez d'abord finaliser le paiement PayPal.",
       "paymentFailed": "Le paiement a échoué. Veuillez réessayer.",

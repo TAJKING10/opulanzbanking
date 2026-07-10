@@ -880,9 +880,9 @@
         "title": "Advance with independent advice",
         "description": "Our team brings market experience to personalised recommendations. Whether you are planning for retirement or looking to structure your wealth, we provide clear and tailored advice.",
         "scheduleMeeting": "Schedule Meeting",
-        "contactSupport": "Our Services"
+        "contactSupport": "Contact Support"
       },
-      "legalMention": "Investment advice provided by Advensys Insurance-Finance SARL, Financial Investment Advisor registered with ORIAS no. 21003660, member of [AMF-approved association — La compagnie CIF], under the oversight of the AMF."
+      "legalMention": "Investment advice provided by Advensys Insurance-Finance SARL, Financial Investment Advisor registered with ORIAS no. 21003660, member of La compagnie CIF, under the oversight of the AMF."
     },
     "schedule": {
       "heroTitle": "Schedule Your Investment Advisory Meeting",
@@ -927,7 +927,7 @@
       "next1": "Check your email ({email}) for the meeting link and calendar invite",
       "next2": "Prepare your financial documents and questions",
       "next3": "Join the video conference at your scheduled time",
-      "next4": "Our team has been notified at opulanz.banking@gmail.com",
+      "next4": "Our team has been notified at support@opulanzbanking.com",
       "returnHome": "Return to Home",
       "completePaymentFirst": "Please complete the PayPal payment first.",
       "paymentFailed": "Payment failed. Please try again.",

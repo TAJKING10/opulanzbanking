@@ -284,12 +284,24 @@ export default function CompanyAccountPage() {
       const appId = result.data?.id || null;
       setApplicationId(appId);
 
+      // Upload company documents to temp store so admin email gets attachments (non-fatal)
+      const corpTempIds: string[] = [];
+      for (const file of [savedFormData?.statutes?.[0], savedFormData?.registerExtract?.[0], savedFormData?.uboDeclaration?.[0]].filter(Boolean) as File[]) {
+        try {
+          const f = new FormData(); f.append("file", file);
+          const r = await fetch(`${API}/api/upload/temp`, { method: "POST", body: f });
+          const j = r.ok ? await r.json() : null;
+          if (j?.tempId) corpTempIds.push(j.tempId);
+        } catch { /* non-fatal */ }
+      }
+
       // Send confirmation to client + admin notification to info@opulanz.com (non-fatal)
       fetch(`${API}/api/notifications/open-account`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           applicationId: appId || `OPL-CORP-${Date.now()}`,
+          tempIds: corpTempIds,
           payload: {
             email: savedFormData?.contactEmail,
             firstName: savedFormData?.representativeFirstName,

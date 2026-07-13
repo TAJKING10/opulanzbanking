@@ -6,8 +6,18 @@
 const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
+const rateLimit = require('express-rate-limit');
 const emailService = require('../services/emailService');
 const tempFileStore = require('../services/tempFileStore');
+
+// Rate limit for public contact form: 5 requests per IP per 15 minutes
+const contactRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, error: 'Too many messages sent. Please try again in 15 minutes.' },
+});
 
 /**
  * Build a Nodemailer attachments array from an array of tempIds.
@@ -55,7 +65,7 @@ function createTransporter() {
  * POST /api/notifications/contact
  * Send support contact form emails (to support team + confirmation to user)
  */
-router.post('/contact', async (req, res) => {
+router.post('/contact', contactRateLimit, async (req, res) => {
   try {
     const { firstName, lastName, email, phone, subject, message } = req.body;
 

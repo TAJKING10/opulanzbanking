@@ -166,7 +166,7 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
 
   // Called when Sumsub KYC passes
   async function handleSumsubComplete() {
-    await saveApplication();
+    const savedAppId = await saveApplication();
 
     // Send admin notification with uploaded documents as attachments (non-blocking)
     try {
@@ -175,6 +175,7 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          applicationId: savedAppId || undefined,
           tempIds,
           payload: {
             accountType: "Business",

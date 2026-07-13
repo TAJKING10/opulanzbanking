@@ -262,12 +262,24 @@ export default function IndividualAccountPage() {
       const appId = result.data?.id || null;
       setApplicationId(appId);
 
+      // Upload KYC documents to temp store so admin email gets attachments (non-fatal)
+      const indTempIds: string[] = [];
+      for (const file of [savedFormData?.idDocument?.[0], savedFormData?.selfie?.[0], savedFormData?.proofOfAddress?.[0]].filter(Boolean) as File[]) {
+        try {
+          const f = new FormData(); f.append("file", file);
+          const r = await fetch(`${API}/api/upload/temp`, { method: "POST", body: f });
+          const j = r.ok ? await r.json() : null;
+          if (j?.tempId) indTempIds.push(j.tempId);
+        } catch { /* non-fatal */ }
+      }
+
       // Send confirmation to client + admin notification to info@opulanz.com (non-fatal)
       fetch(`${API}/api/notifications/open-account`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           applicationId: appId || `OPL-IND-${Date.now()}`,
+          tempIds: indTempIds,
           payload: {
             email: savedFormData?.email,
             firstName: savedFormData?.firstName,

@@ -11,6 +11,7 @@ interface Document {
   required: boolean;
   uploaded: boolean;
   file?: File;
+  tempId?: string;
 }
 
 interface BusinessDocumentsStepProps {
@@ -72,27 +73,45 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
     ];
   });
 
-  const handleFileUpload = (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const validTypes = ["application/pdf", "image/jpeg", "image/png"];
-      if (!validTypes.includes(file.type)) {
-        alert("Please upload a PDF, JPG, or PNG file");
-        return;
+    if (!file) return;
+
+    const validTypes = ["application/pdf", "image/jpeg", "image/png",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    if (!validTypes.includes(file.type)) {
+      alert("Please upload a PDF, JPG, PNG, DOC, or DOCX file");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      alert("File size must be less than 10MB");
+      return;
+    }
+
+    // Optimistically mark uploaded so UI responds immediately
+    setDocuments((prev) =>
+      prev.map((doc) =>
+        doc.id === documentId ? { ...doc, uploaded: true, file } : doc
+      )
+    );
+
+    // Upload to temp store so file can be attached to admin email
+    try {
+      const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch(`${API}/api/upload/temp`, { method: "POST", body: form });
+      const json = res.ok ? await res.json() : null;
+      if (json?.tempId) {
+        setDocuments((prev) =>
+          prev.map((doc) =>
+            doc.id === documentId ? { ...doc, tempId: json.tempId } : doc
+          )
+        );
       }
-
-      if (file.size > 5 * 1024 * 1024) {
-        alert("File size must be less than 5MB");
-        return;
-      }
-
-      setDocuments((prev) =>
-        prev.map((doc) =>
-          doc.id === documentId ? { ...doc, uploaded: true, file } : doc
-        )
-      );
-
-      console.log(`Uploading ${file.name}...`);
+    } catch {
+      console.warn("Temp upload failed for", file.name);
     }
   };
 
@@ -100,14 +119,17 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
   const allRequiredUploaded = requiredDocs.every((doc) => doc.uploaded);
   const isDocumentsStepValid = allRequiredUploaded;
 
-  // Update parent with validation status
+  // Update parent with validation status and tempIds for email attachments
   React.useEffect(() => {
     onUpdate({
       documents: documents.filter((doc) => doc.uploaded),
+      documentTempIds: documents
+        .filter((doc) => doc.uploaded && doc.tempId)
+        .map((doc) => doc.tempId as string),
       isDocumentsStepValid,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDocumentsStepValid]);
+  }, [isDocumentsStepValid, documents]);
 
   return (
     <div className="space-y-8">
@@ -171,7 +193,7 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
                       <input
                         id={`file-${document.id}`}
                         type="file"
-                        accept=".pdf,.jpg,.jpeg,.png"
+                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
                         onChange={(e) => handleFileUpload(document.id, e)}
                         className="hidden"
                       />

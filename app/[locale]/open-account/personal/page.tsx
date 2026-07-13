@@ -63,8 +63,14 @@ export default function PersonalAccountPage() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setFormData(parsed.formData || formData);
-        setCurrentStep(parsed.currentStep || 1);
+        const savedStep = parsed.currentStep || 1;
+        const savedFormData = { ...(parsed.formData || formData) };
+        // Always reset mode on step 1 so user must actively choose account type
+        if (savedStep === 1) {
+          savedFormData.mode = "";
+        }
+        setFormData(savedFormData);
+        setCurrentStep(savedStep);
       } catch (e) {
         console.error("Failed to load saved progress", e);
       }

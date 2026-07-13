@@ -11,7 +11,8 @@ interface HeroProps {
   subtitle?: string;
   primaryCta?: {
     label: string;
-    href: string;
+    href?: string;
+    onClick?: () => void;
   };
   secondaryCta?: {
     label: string;
@@ -62,14 +63,25 @@ export function Hero({
               className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
             >
               {primaryCta && (
-                <Button
-                  asChild
-                  size="lg"
-                  variant="default"
-                  className="min-w-48"
-                >
-                  <Link href={primaryCta.href}>{primaryCta.label}</Link>
-                </Button>
+                primaryCta.onClick ? (
+                  <Button
+                    size="lg"
+                    variant="default"
+                    className="min-w-48"
+                    onClick={primaryCta.onClick}
+                  >
+                    {primaryCta.label}
+                  </Button>
+                ) : (
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="default"
+                    className="min-w-48"
+                  >
+                    <Link href={primaryCta.href!}>{primaryCta.label}</Link>
+                  </Button>
+                )
               )}
               {secondaryCta && (
                 <Button

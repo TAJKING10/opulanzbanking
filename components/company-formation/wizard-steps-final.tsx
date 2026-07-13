@@ -248,7 +248,7 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
     });
   }, [idDocs, leaseDocs, capitalCert]);
 
-  const simulateUpload = (type: "id" | "lease" | "capital") => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const simulateUpload = (type: "id" | "lease" | "capital") => async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -270,6 +270,31 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
       case "capital":
         setCapitalCert(uploadedFile);
         break;
+    }
+
+    // Upload to temp store so file can be attached to admin email
+    try {
+      const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch(`${API}/api/upload/temp`, { method: "POST", body: form });
+      const json = res.ok ? await res.json() : null;
+      if (json?.tempId) {
+        const withTempId = { ...uploadedFile, tempId: json.tempId };
+        switch (type) {
+          case "id":
+            setIdDocs((prev) => prev.map((f) => f.id === uploadedFile.id ? withTempId : f));
+            break;
+          case "lease":
+            setLeaseDocs((prev) => prev.map((f) => f.id === uploadedFile.id ? withTempId : f));
+            break;
+          case "capital":
+            setCapitalCert(withTempId);
+            break;
+        }
+      }
+    } catch {
+      console.warn("Temp upload failed for", file.name);
     }
 
     // Reset input
@@ -485,7 +510,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
         // localStorage failure is non-fatal
       }
 
-      // Send confirmation email to user + admin notification (non-fatal)
+      // Send confirmation email to client + admin notification (non-fatal)
       try {
         const primaryPerson =
           dossier.shareholders?.[0] ||
@@ -493,8 +518,15 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
           dossier.directors?.[0];
         const userEmail = primaryPerson?.email;
         const userName = primaryPerson
-          ? `${primaryPerson.firstName} ${primaryPerson.lastName}`
+          ? `${primaryPerson.firstName} ${primaryPerson.lastName}`.trim()
           : "Applicant";
+
+        // Collect all tempIds from uploaded documents
+        const allTempIds = [
+          ...(dossier.uploads?.ids || []).map((f: any) => f.tempId).filter(Boolean),
+          ...(dossier.uploads?.leaseOrDomiciliation || []).map((f: any) => f.tempId).filter(Boolean),
+          ...(dossier.uploads?.capitalCertificate?.tempId ? [dossier.uploads.capitalCertificate.tempId] : []),
+        ];
 
         if (userEmail) {
           await fetch(`${apiUrl}/api/notifications/company-formation`, {
@@ -506,6 +538,24 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
               companyName: dossier.proposedNames?.[0] || "",
               formType: dossier.formType,
               reference: dossier.userRef,
+              setupFeeAmount: setupFee,
+              registeredOffice: dossier.registeredOffice || "",
+              naceCode: dossier.naceCode || "",
+              capitalAmount: dossier.capitalAmount ? `€${dossier.capitalAmount.toLocaleString()}` : "",
+              domiciliationNeeded: dossier.domiciliationNeeded || false,
+              shareholders: (dossier.shareholders || [])
+                .map((s: any) => `${s.firstName} ${s.lastName}`.trim())
+                .filter(Boolean)
+                .join(", "),
+              directors: (dossier.directors || [])
+                .map((d: any) => `${d.firstName} ${d.lastName}`.trim())
+                .filter(Boolean)
+                .join(", "),
+              managers: (dossier.managers || [])
+                .map((m: any) => `${m.firstName} ${m.lastName}`.trim())
+                .filter(Boolean)
+                .join(", "),
+              tempIds: allTempIds,
             }),
           });
         }

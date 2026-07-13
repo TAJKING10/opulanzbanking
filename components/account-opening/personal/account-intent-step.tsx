@@ -81,7 +81,7 @@ export function AccountIntentStep({ data, onUpdate, onNext }: AccountIntentStepP
 
   // Update parent with validation status
   React.useEffect(() => {
-    onUpdate({ isIntentStepValid: isFormValid });
+    onUpdate({ isIntentStepValid: !!isFormValid });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormValid]);
 

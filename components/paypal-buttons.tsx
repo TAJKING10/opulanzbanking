@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 // Declare custom element for TypeScript (kept hidden in DOM for SDK internals)
 declare global {
@@ -37,6 +38,7 @@ export function PayPalButtons({
   onSuccess,
   onError,
 }: PayPalButtonsProps) {
+  const t = useTranslations("paypalButtons");
   const sessionRef = useRef<any>(null);
   const createOrderRef = useRef<(() => Promise<{ orderId: string }>) | null>(null);
   const readyRef = useRef(false);
@@ -101,7 +103,7 @@ export function PayPalButtons({
       } catch (err: any) {
         console.error("[PayPal v6] createInstance failed:", err);
         if (!cancelled) {
-          setError("PayPal failed to initialize. Please refresh.");
+          setError(t("initFailed"));
           setLoading(false);
           onError?.("init failed");
         }
@@ -123,7 +125,7 @@ export function PayPalButtons({
             console.error("[PayPal v6] capture error:", err);
             if (!cancelled) {
               setPaying(false);
-              setError("Payment approved but capture failed. Contact support.");
+              setError(t("captureFailed"));
               onError?.(err.message);
             }
           }
@@ -136,7 +138,7 @@ export function PayPalButtons({
           console.error("[PayPal v6] Payment error:", err);
           if (!cancelled) {
             setPaying(false);
-            setError("Payment failed. Please try again.");
+            setError(t("paymentFailed"));
             onError?.("payment error");
           }
         },
@@ -176,7 +178,7 @@ export function PayPalButtons({
       script.onload = () => { if (!cancelled) initPayPal(); };
       script.onerror = () => {
         if (!cancelled) {
-          setError("Could not load PayPal. Check your connection.");
+          setError(t("loadFailed"));
           setLoading(false);
         }
       };
@@ -185,7 +187,7 @@ export function PayPalButtons({
 
     const timeoutId = setTimeout(() => {
       if (!cancelled && !readyRef.current) {
-        setError("PayPal is taking too long. Please refresh.");
+        setError(t("timeout"));
         setLoading(false);
       }
     }, 20000);
@@ -203,11 +205,11 @@ export function PayPalButtons({
     setPaying(true);
     console.log("[PayPal v6] Starting payment session...");
     sessionRef.current
-      .start({ presentationMode: "auto" }, createOrderRef.current())
+      .start({ presentationMode: "auto" }, createOrderRef.current)
       .catch((err: any) => {
         console.error("[PayPal v6] session.start error:", err);
         setPaying(false);
-        setError("Could not start payment. Please try again.");
+        setError(t("startFailed"));
       });
   }
 
@@ -217,7 +219,7 @@ export function PayPalButtons({
       {loading && !error && (
         <div className="flex flex-col items-center justify-center py-8 gap-3">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#b59354] border-t-transparent" />
-          <p className="text-sm text-gray-500">Loading PayPal...</p>
+          <p className="text-sm text-gray-500">{t("loading")}</p>
         </div>
       )}
 
@@ -234,7 +236,7 @@ export function PayPalButtons({
             }}
             className="rounded-md bg-[#b59354] px-4 py-2 text-sm font-semibold text-white hover:bg-[#886844] transition-colors"
           >
-            Try Again
+            {t("tryAgain")}
           </button>
         </div>
       )}
@@ -249,7 +251,7 @@ export function PayPalButtons({
           {paying ? (
             <>
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#003087] border-t-transparent" />
-              Processing...
+              {t("processing")}
             </>
           ) : (
             <>
@@ -261,7 +263,7 @@ export function PayPalButtons({
                 <path d="M120.6 14.4h-3.7c-.3 0-.6.2-.6.5l-.2 1.1-.3-.4c-.9-1.3-3-1.8-5-1.8-4.6 0-8.6 3.5-9.3 8.4-.4 2.5.2 4.8 1.5 6.4 1.2 1.5 3 2.1 5.1 2.1 3.7 0 5.7-2.4 5.7-2.4l-.2 1.1c-.1.4.2.7.6.7h3.3c.5 0 1-.4 1.1-.9l2-12.1c.1-.4-.2-.7-.6-.7zm-5.1 8.1c-.4 2.3-2.3 3.9-4.7 3.9-1.2 0-2.2-.4-2.8-1.1-.6-.8-.8-1.8-.6-3 .4-2.3 2.3-3.9 4.6-3.9 1.2 0 2.1.4 2.7 1.1.7.8.9 1.8.8 3z" fill="#009cde"/>
                 <path d="M124 7.2l-3.3 20.9c-.1.4.2.7.6.7h3.2c.5 0 1-.4 1.1-.9L128.9 7c.1-.4-.2-.7-.6-.7h-3.6c-.3 0-.6.2-.7.9z" fill="#009cde"/>
               </svg>
-              Pay with PayPal
+              {t("payWithPaypal")}
             </>
           )}
         </button>

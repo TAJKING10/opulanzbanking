@@ -12,6 +12,8 @@ interface Document {
   required: boolean;
   uploaded: boolean;
   file?: File;
+  fileName?: string; // persisted across serialization (localStorage)
+  tempId?: string;   // tempId from /api/upload/temp — used to attach file to admin email
 }
 
 interface EligibilityDocumentsStepProps {
@@ -27,59 +29,62 @@ export function EligibilityDocumentsStep({ data, onUpdate, onNext }: Eligibility
   const [documents, setDocuments] = React.useState<Document[]>(() => {
     const savedDocs: any[] = data.documents || [];
     const savedMap = new Map(savedDocs.map((d: any) => [d.id, d]));
+    const restore = (id: string) => {
+      const saved = savedMap.get(id);
+      return {
+        uploaded: !!saved?.uploaded,
+        file: saved?.file instanceof File ? saved.file : undefined,
+        fileName: saved?.fileName || (saved?.file?.name ?? undefined),
+      };
+    };
     return [
-      {
-        id: "passport",
-        name: t("passport"),
-        required: true,
-        uploaded: savedMap.has("passport"),
-        file: savedMap.get("passport")?.file,
-      },
-      {
-        id: "address-proof",
-        name: t("addressProof"),
-        required: true,
-        uploaded: savedMap.has("address-proof"),
-        file: savedMap.get("address-proof")?.file,
-      },
-      {
-        id: "income-proof",
-        name: t("incomeProof"),
-        required: data.mode === "private",
-        uploaded: savedMap.has("income-proof"),
-        file: savedMap.get("income-proof")?.file,
-      },
-      {
-        id: "wealth-statement",
-        name: t("wealthStatement"),
-        required: data.mode === "private",
-        uploaded: savedMap.has("wealth-statement"),
-        file: savedMap.get("wealth-statement")?.file,
-      },
+      { id: "passport",        name: t("passport"),       required: true,                    ...restore("passport") },
+      { id: "address-proof",   name: t("addressProof"),   required: true,                    ...restore("address-proof") },
+      { id: "income-proof",    name: t("incomeProof"),    required: data.mode === "private", ...restore("income-proof") },
+      { id: "wealth-statement",name: t("wealthStatement"),required: data.mode === "private", ...restore("wealth-statement") },
     ];
   });
 
-  const handleFileUpload = (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const validTypes = ["application/pdf", "image/jpeg", "image/png"];
-      if (!validTypes.includes(file.type)) {
-        alert("Please upload a PDF, JPG, or PNG file");
-        return;
+    if (!file) return;
+
+    const validTypes = ["application/pdf", "image/jpeg", "image/png",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    if (!validTypes.includes(file.type)) {
+      alert("Please upload a PDF, JPG, PNG, DOC, or DOCX file");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      alert("File size must be less than 10MB");
+      return;
+    }
+
+    // Optimistically mark as uploaded so the UI responds immediately
+    setDocuments((prev) =>
+      prev.map((doc) =>
+        doc.id === documentId ? { ...doc, uploaded: true, file, fileName: file.name } : doc
+      )
+    );
+
+    // Upload to temp store so the file can be attached to the admin email
+    try {
+      const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch(`${API}/api/upload/temp`, { method: "POST", body: form });
+      const json = res.ok ? await res.json() : null;
+      if (json?.tempId) {
+        setDocuments((prev) =>
+          prev.map((doc) =>
+            doc.id === documentId ? { ...doc, tempId: json.tempId } : doc
+          )
+        );
       }
-
-      if (file.size > 5 * 1024 * 1024) {
-        alert("File size must be less than 5MB");
-        return;
-      }
-
-      setDocuments((prev) =>
-        prev.map((doc) =>
-          doc.id === documentId ? { ...doc, uploaded: true, file } : doc
-        )
-      );
-
-      console.log(`Uploading ${file.name}...`);
+    } catch {
+      // Non-fatal: file is still tracked locally for UI purposes
+      console.warn("Temp upload failed for", file.name);
     }
   };
 
@@ -87,14 +92,17 @@ export function EligibilityDocumentsStep({ data, onUpdate, onNext }: Eligibility
   const allRequiredUploaded = requiredDocs.every((doc) => doc.uploaded);
   const canContinue = allRequiredUploaded;
 
-  // Update parent with validation status and documents
+  // Update parent with validation status and documents on every change
   React.useEffect(() => {
     onUpdate({
       isDocumentsStepValid: canContinue,
-      documents: documents.filter((doc) => doc.uploaded)
+      documents: documents.filter((doc) => doc.uploaded),
+      // Expose tempIds at top level for easy access in the notification call
+      documentTempIds: documents
+        .filter((doc) => doc.uploaded && doc.tempId)
+        .map((doc) => doc.tempId as string),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canContinue]);
+  }, [documents]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="space-y-8">
@@ -132,9 +140,9 @@ export function EligibilityDocumentsStep({ data, onUpdate, onNext }: Eligibility
                         {document.name}
                         {document.required && <span className="ml-1 text-red-500">*</span>}
                       </p>
-                      {document.uploaded && document.file && (
+                      {document.uploaded && (document.file || document.fileName) && (
                         <p className="mt-1 text-sm text-green-700">
-                          {tc("uploaded")}: {document.file.name}
+                          {tc("uploaded")}: {document.file?.name ?? document.fileName}
                         </p>
                       )}
                     </div>

@@ -211,7 +211,7 @@ export default function BookingClient() {
         serviceTitle,
         servicePrice: svc.price,
         appointmentDate: calendly.startTime || paymentDate,
-        appointmentTime: calendly.startTime || paymentDate,
+        appointmentTime: fmtTime(calendly.startTime, locale) || paymentDate,
         confirmationNumber: confNum,
         paypalOrderId: paypal.orderId,
         paypalStatus: paypal.status,
@@ -302,7 +302,7 @@ export default function BookingClient() {
   </div>
   <div class="footer">
     <p><strong>Thank you for choosing Opulanz Banking!</strong></p>
-    <p>For questions about your booking, please contact us at:<br><strong>support@opulanzbanking.com</strong></p>
+    <p>For questions about your booking, please contact us at:<br><strong>support@opulanz.com</strong></p>
     <p style="margin-top:20px;font-size:12px;">This is an official payment receipt from Opulanz Banking. Please keep this receipt for your records.</p>
   </div>
 </body>
@@ -511,7 +511,7 @@ export default function BookingClient() {
 
                     {/* Appointment */}
                     <div className="rounded-lg bg-gray-50 p-4">
-                      <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-brand-grayMed">Appointment</h4>
+                      <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-brand-grayMed">{t("step3.appointment")}</h4>
                       <div className="space-y-2">
                         <div className="flex items-center gap-3">
                           <Calendar className="h-4 w-4 text-brand-gold flex-shrink-0" />
@@ -671,7 +671,7 @@ export default function BookingClient() {
 
                     {/* Appointment */}
                     <div className="rounded-lg bg-gray-50 p-4">
-                      <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-brand-grayMed">Appointment</h4>
+                      <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-brand-grayMed">{t("step3.appointment")}</h4>
                       <div className="space-y-2">
                         <div className="flex items-center gap-3">
                           <Calendar className="h-4 w-4 flex-shrink-0 text-brand-gold" />

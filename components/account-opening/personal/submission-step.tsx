@@ -143,6 +143,34 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
       setApplicationId(id);
       setAppSaved(true);
       localStorage.removeItem("personal-account-progress");
+
+      // Send confirmation to client + admin notification to info@opulanz.com (non-fatal)
+      fetch(`${API}/api/notifications/open-account`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applicationId: id || `OPL-PERS-${Date.now()}`,
+          tempIds: data.documentTempIds || (data.documents || []).map((d: any) => d.tempId).filter(Boolean),
+          payload: {
+            email: userEmail,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            phone: fullPhone,
+            "Account Mode": data.mode === "private" ? "Private Banking" : "Current / Everyday Account",
+            "Residence": data.residence,
+            "Country": data.country,
+            "Currencies": Array.isArray(data.currencies) ? data.currencies.join(", ") : data.currencies,
+            "Monthly Transfers (EUR)": data.monthlyTransfers,
+            "Source of Funds": data.sourceOfFunds,
+            "Documents Uploaded": (data.documents || [])
+              .map((d: any) => d.fileName || d.file?.name || d.name || "Document")
+              .join(", ") || "None",
+            "PEP Screening": data.pepScreening ? "Yes" : "No",
+            "Submitted At": new Date().toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" }),
+          },
+        }),
+      }).catch((e) => console.warn("Email notification failed (non-fatal):", e));
+
       return id;
     } catch {
       setAppSaved(true);

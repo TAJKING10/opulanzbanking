@@ -34,7 +34,6 @@ export function Header({ locale }: HeaderProps) {
     { name: t("nav.investmentAdvisory"), href: "/investment-advisory" },
     { name: t("nav.lifeInsurance"), href: "/life-insurance" },
     { name: t("nav.accountingInvoicing"), href: "/invoicing-accounting" },
-    { name: t("nav.investment"), href: "/spv-investment" },
   ];
 
   React.useEffect(() => {

@@ -146,6 +146,30 @@ export default function ScheduleInvestmentMeetingPage() {
   const set = (field: keyof ClientProfile, value: any) =>
     setProfile(p => ({ ...p, [field]: value }));
 
+  const handleDocTypeChange = (value: string) => {
+    setProfile(p => ({ ...p, docType: value, docNumber: "", docExpiry: "", docIssuingCountry: "" }));
+    setErrors(p => { const e = { ...p }; delete e.docNumber; delete e.docExpiry; delete e.docIssuingCountry; return e; });
+  };
+
+  const validateEmailInline = (email: string) => {
+    if (!email.trim()) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setErrors(p => ({ ...p, email: "Please enter a valid email address" }));
+    } else {
+      setErrors(p => { const e = { ...p }; delete e.email; return e; });
+    }
+  };
+
+  const validatePhoneInline = (phone: string) => {
+    if (!phone.trim()) return;
+    const digits = phone.replace(/[\s\-().]/g, "");
+    if (!/^\+[1-9]\d{6,14}$/.test(digits)) {
+      setErrors(p => ({ ...p, phone: "Enter a valid international phone number starting with + (e.g. +352 26 12 34 56)" }));
+    } else {
+      setErrors(p => { const e = { ...p }; delete e.phone; return e; });
+    }
+  };
+
   const fullName = `${profile.firstName} ${profile.lastName}`.trim();
 
   // ── Validation ──────────────────────────────────────────────────────────────
@@ -202,6 +226,7 @@ export default function ScheduleInvestmentMeetingPage() {
     if (!validate()) return;
     setLoading(true);
     try {
+      // Save appointment to backend
       await fetchSafe(`${API}/api/appointments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -211,20 +236,16 @@ export default function ScheduleInvestmentMeetingPage() {
           meeting_type: "Investment Advisory",
           status: "pending",
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          notes: JSON.stringify({
-            phone: profile.phone,
-            nationality: profile.nationality,
-            address: `${profile.addressLine1}, ${profile.city}, ${profile.country}`,
-            docType: profile.docType,
-            docNumber: profile.docNumber,
-            profession: `${profile.professionalStatus} – ${profile.employerName}`,
-            annualIncome: profile.annualIncome,
-            initialInvestment: profile.initialInvestment,
-            missionType: profile.missionType,
-            riskTolerance: profile.riskTolerance,
-          }),
+          notes: JSON.stringify(profile),
         }),
       }).catch(() => null);
+
+      // Send confirmation email to client + admin notification to invest-ad@opulanz.com (non-fatal)
+      await fetchSafe(`${API}/api/notifications/investment-advisory`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ profile }),
+      }).catch((err) => console.warn("Email notification failed (non-fatal):", err));
     } finally {
       setLoading(false);
       setStep("confirmation");
@@ -264,10 +285,10 @@ export default function ScheduleInvestmentMeetingPage() {
                             </select>
                           </F>
                           <F label="First Name" required error={errors.firstName}>
-                            <Input value={profile.firstName} onChange={e => set("firstName", e.target.value)} className={errors.firstName ? "border-red-500" : ""} />
+                            <Input placeholder="Enter your first name" value={profile.firstName} onChange={e => set("firstName", e.target.value)} className={errors.firstName ? "border-red-500" : ""} />
                           </F>
                           <F label="Last Name" required error={errors.lastName}>
-                            <Input value={profile.lastName} onChange={e => set("lastName", e.target.value)} className={errors.lastName ? "border-red-500" : ""} />
+                            <Input placeholder="Enter your last name" value={profile.lastName} onChange={e => set("lastName", e.target.value)} className={errors.lastName ? "border-red-500" : ""} />
                           </F>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -275,12 +296,12 @@ export default function ScheduleInvestmentMeetingPage() {
                             <Input type="date" value={profile.dateOfBirth} onChange={e => set("dateOfBirth", e.target.value)} className={errors.dateOfBirth ? "border-red-500" : ""} />
                           </F>
                           <F label="Place of Birth" required error={errors.placeOfBirth}>
-                            <Input placeholder="City, Country" value={profile.placeOfBirth} onChange={e => set("placeOfBirth", e.target.value)} className={errors.placeOfBirth ? "border-red-500" : ""} />
+                            <Input placeholder="Enter city and country" value={profile.placeOfBirth} onChange={e => set("placeOfBirth", e.target.value)} className={errors.placeOfBirth ? "border-red-500" : ""} />
                           </F>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <F label="Nationality" required error={errors.nationality}>
-                            <Input placeholder="e.g. French, Luxembourgish" value={profile.nationality} onChange={e => set("nationality", e.target.value)} className={errors.nationality ? "border-red-500" : ""} />
+                            <Input placeholder="Enter your nationality" value={profile.nationality} onChange={e => set("nationality", e.target.value)} className={errors.nationality ? "border-red-500" : ""} />
                           </F>
                           <F label="Marital Status" required>
                             <select value={profile.maritalStatus} onChange={e => set("maritalStatus", e.target.value)} className={sel}>
@@ -306,10 +327,16 @@ export default function ScheduleInvestmentMeetingPage() {
                       <div className="px-6 pb-6 space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <F label="Email Address" required error={errors.email}>
-                            <Input type="email" placeholder="john.doe@example.com" value={profile.email} onChange={e => set("email", e.target.value)} className={errors.email ? "border-red-500" : ""} />
+                            <Input type="email" placeholder="Enter your email address" value={profile.email}
+                              onChange={e => { set("email", e.target.value); if (errors.email) setErrors(p => { const e2 = {...p}; delete e2.email; return e2; }); }}
+                              onBlur={e => validateEmailInline(e.target.value)}
+                              className={errors.email ? "border-red-500" : ""} />
                           </F>
                           <F label="Phone Number" required error={errors.phone}>
-                            <Input type="tel" placeholder="+352 123 456 789" value={profile.phone} onChange={e => set("phone", e.target.value)} className={errors.phone ? "border-red-500" : ""} />
+                            <Input type="tel" placeholder="Enter your phone number (e.g. +352 26 12 34 56)" value={profile.phone}
+                              onChange={e => { set("phone", e.target.value); if (errors.phone) setErrors(p => { const e2 = {...p}; delete e2.phone; return e2; }); }}
+                              onBlur={e => validatePhoneInline(e.target.value)}
+                              className={errors.phone ? "border-red-500" : ""} />
                           </F>
                         </div>
                       </div>
@@ -324,20 +351,20 @@ export default function ScheduleInvestmentMeetingPage() {
                     {open.address && (
                       <div className="px-6 pb-6 space-y-4">
                         <F label="Address Line 1" required error={errors.addressLine1}>
-                          <Input placeholder="Street number & name" value={profile.addressLine1} onChange={e => set("addressLine1", e.target.value)} className={errors.addressLine1 ? "border-red-500" : ""} />
+                          <Input placeholder="Enter street number and name" value={profile.addressLine1} onChange={e => set("addressLine1", e.target.value)} className={errors.addressLine1 ? "border-red-500" : ""} />
                         </F>
                         <F label="Address Line 2">
                           <Input placeholder="Apartment, suite, floor (optional)" value={profile.addressLine2} onChange={e => set("addressLine2", e.target.value)} />
                         </F>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                           <F label="City" required error={errors.city}>
-                            <Input value={profile.city} onChange={e => set("city", e.target.value)} className={errors.city ? "border-red-500" : ""} />
+                            <Input placeholder="Enter your city" value={profile.city} onChange={e => set("city", e.target.value)} className={errors.city ? "border-red-500" : ""} />
                           </F>
                           <F label="Postal Code" required error={errors.postalCode}>
-                            <Input value={profile.postalCode} onChange={e => set("postalCode", e.target.value)} className={errors.postalCode ? "border-red-500" : ""} />
+                            <Input placeholder="Enter postal code" value={profile.postalCode} onChange={e => set("postalCode", e.target.value)} className={errors.postalCode ? "border-red-500" : ""} />
                           </F>
                           <F label="Country" required error={errors.country}>
-                            <Input placeholder="e.g. France, Luxembourg" value={profile.country} onChange={e => set("country", e.target.value)} className={errors.country ? "border-red-500" : ""} />
+                            <Input placeholder="Enter your country" value={profile.country} onChange={e => set("country", e.target.value)} className={errors.country ? "border-red-500" : ""} />
                           </F>
                         </div>
                       </div>
@@ -353,7 +380,7 @@ export default function ScheduleInvestmentMeetingPage() {
                       <div className="px-6 pb-6 space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <F label="Document Type" required>
-                            <select value={profile.docType} onChange={e => set("docType", e.target.value)} className={sel}>
+                            <select value={profile.docType} onChange={e => handleDocTypeChange(e.target.value)} className={sel}>
                               <option value="passport">Passport</option>
                               <option value="national_id">National Identity Card</option>
                               <option value="drivers_license">Driver's Licence</option>
@@ -361,7 +388,7 @@ export default function ScheduleInvestmentMeetingPage() {
                             </select>
                           </F>
                           <F label="Document Number" required error={errors.docNumber}>
-                            <Input placeholder="e.g. AB1234567" value={profile.docNumber} onChange={e => set("docNumber", e.target.value)} className={errors.docNumber ? "border-red-500" : ""} />
+                            <Input placeholder="Enter document number" value={profile.docNumber} onChange={e => set("docNumber", e.target.value)} className={errors.docNumber ? "border-red-500" : ""} />
                           </F>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -369,7 +396,7 @@ export default function ScheduleInvestmentMeetingPage() {
                             <Input type="date" value={profile.docExpiry} onChange={e => set("docExpiry", e.target.value)} className={errors.docExpiry ? "border-red-500" : ""} />
                           </F>
                           <F label="Issuing Country" required error={errors.docIssuingCountry}>
-                            <Input placeholder="e.g. France, Luxembourg" value={profile.docIssuingCountry} onChange={e => set("docIssuingCountry", e.target.value)} className={errors.docIssuingCountry ? "border-red-500" : ""} />
+                            <Input placeholder="Enter issuing country" value={profile.docIssuingCountry} onChange={e => set("docIssuingCountry", e.target.value)} className={errors.docIssuingCountry ? "border-red-500" : ""} />
                           </F>
                         </div>
                       </div>
@@ -385,10 +412,10 @@ export default function ScheduleInvestmentMeetingPage() {
                       <div className="px-6 pb-6 space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <F label="Country of Tax Residence" required error={errors.taxCountry}>
-                            <Input placeholder="e.g. France, Luxembourg" value={profile.taxCountry} onChange={e => set("taxCountry", e.target.value)} className={errors.taxCountry ? "border-red-500" : ""} />
+                            <Input placeholder="Enter your country of tax residence" value={profile.taxCountry} onChange={e => set("taxCountry", e.target.value)} className={errors.taxCountry ? "border-red-500" : ""} />
                           </F>
                           <F label="Tax Identification Number (TIN)">
-                            <Input placeholder="e.g. FR12345678901" value={profile.taxId} onChange={e => set("taxId", e.target.value)} />
+                            <Input placeholder="Enter your tax identification number" value={profile.taxId} onChange={e => set("taxId", e.target.value)} />
                           </F>
                         </div>
                         <label className="flex items-start gap-3 cursor-pointer">
@@ -420,15 +447,15 @@ export default function ScheduleInvestmentMeetingPage() {
                             </select>
                           </F>
                           <F label="Industry / Sector">
-                            <Input placeholder="e.g. Finance, Technology, Real Estate" value={profile.sector} onChange={e => set("sector", e.target.value)} />
+                            <Input placeholder="Enter your industry or sector" value={profile.sector} onChange={e => set("sector", e.target.value)} />
                           </F>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <F label="Employer Name">
-                            <Input placeholder="Company or organisation name" value={profile.employerName} onChange={e => set("employerName", e.target.value)} />
+                            <Input placeholder="Enter company or organisation name" value={profile.employerName} onChange={e => set("employerName", e.target.value)} />
                           </F>
                           <F label="Job Title / Position">
-                            <Input placeholder="e.g. CEO, Engineer, Consultant" value={profile.position} onChange={e => set("position", e.target.value)} />
+                            <Input placeholder="Enter your job title or position" value={profile.position} onChange={e => set("position", e.target.value)} />
                           </F>
                         </div>
                       </div>
@@ -459,7 +486,7 @@ export default function ScheduleInvestmentMeetingPage() {
                       <div className="px-6 pb-6 space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <F label="Annual Income (EUR)" required error={errors.annualIncome}>
-                            <Input type="number" placeholder="e.g. 75000" value={profile.annualIncome} onChange={e => set("annualIncome", e.target.value)} className={errors.annualIncome ? "border-red-500" : ""} />
+                            <Input type="number" placeholder="Enter your annual income in EUR" value={profile.annualIncome} onChange={e => set("annualIncome", e.target.value)} className={errors.annualIncome ? "border-red-500" : ""} />
                           </F>
                           <F label="Main Income Source" required error={errors.incomeSource}>
                             <select value={profile.incomeSource} onChange={e => set("incomeSource", e.target.value)} className={`${sel} ${errors.incomeSource ? "border-red-500" : ""}`}>
@@ -476,18 +503,18 @@ export default function ScheduleInvestmentMeetingPage() {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <F label="Total Assets (EUR)">
-                            <Input type="number" placeholder="e.g. 500000" value={profile.totalAssets} onChange={e => set("totalAssets", e.target.value)} />
+                            <Input type="number" placeholder="Enter total asset value in EUR" value={profile.totalAssets} onChange={e => set("totalAssets", e.target.value)} />
                           </F>
                           <F label="Liquid Assets (EUR)">
-                            <Input type="number" placeholder="Cash, savings accounts" value={profile.liquidAssets} onChange={e => set("liquidAssets", e.target.value)} />
+                            <Input type="number" placeholder="Enter liquid asset value in EUR" value={profile.liquidAssets} onChange={e => set("liquidAssets", e.target.value)} />
                           </F>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <F label="Real Estate Value (EUR)">
-                            <Input type="number" placeholder="Total value of properties" value={profile.realEstateValue} onChange={e => set("realEstateValue", e.target.value)} />
+                            <Input type="number" placeholder="Enter total real estate value in EUR" value={profile.realEstateValue} onChange={e => set("realEstateValue", e.target.value)} />
                           </F>
                           <F label="Outstanding Debts / Loans (EUR)">
-                            <Input type="number" placeholder="Mortgages, personal loans" value={profile.outstandingDebts} onChange={e => set("outstandingDebts", e.target.value)} />
+                            <Input type="number" placeholder="Enter outstanding debt value in EUR" value={profile.outstandingDebts} onChange={e => set("outstandingDebts", e.target.value)} />
                           </F>
                         </div>
                       </div>
@@ -515,7 +542,7 @@ export default function ScheduleInvestmentMeetingPage() {
                           </select>
                         </F>
                         <F label="Additional Details">
-                          <textarea rows={3} placeholder="Please provide further context about the origin of your investment funds..."
+                          <textarea rows={3} placeholder="Provide additional context about the origin of your investment funds"
                             value={profile.originDetails} onChange={e => set("originDetails", e.target.value)}
                             className={`${inp} resize-none`} />
                         </F>
@@ -568,10 +595,10 @@ export default function ScheduleInvestmentMeetingPage() {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <F label="Expected Annual Return (%)">
-                            <Input type="number" step="0.1" placeholder="e.g. 5.0" value={profile.expectedReturn} onChange={e => set("expectedReturn", e.target.value)} />
+                            <Input type="number" step="0.1" placeholder="Enter expected return percentage" value={profile.expectedReturn} onChange={e => set("expectedReturn", e.target.value)} />
                           </F>
                           <F label="Maximum Acceptable Loss (%)">
-                            <Input type="number" step="0.1" placeholder="e.g. 10.0" value={profile.maxLossAcceptable} onChange={e => set("maxLossAcceptable", e.target.value)} />
+                            <Input type="number" step="0.1" placeholder="Enter maximum acceptable loss percentage" value={profile.maxLossAcceptable} onChange={e => set("maxLossAcceptable", e.target.value)} />
                           </F>
                         </div>
                       </div>
@@ -592,7 +619,7 @@ export default function ScheduleInvestmentMeetingPage() {
                           </select>
                         </F>
                         <F label="Planned Initial Investment (EUR)" required error={errors.initialInvestment}>
-                          <Input type="number" placeholder="Minimum €10,000" value={profile.initialInvestment}
+                          <Input type="number" placeholder="Enter planned initial investment in EUR" value={profile.initialInvestment}
                             onChange={e => set("initialInvestment", e.target.value)}
                             className={errors.initialInvestment ? "border-red-500" : ""} />
                           <p className="mt-1 text-xs text-brand-grayMed">Minimum initial investment: €10,000</p>

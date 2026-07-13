@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { Scale, FileCheck, Briefcase, Globe, CheckCircle, Shield, TrendingDown, UserCheck } from "lucide-react";
+import { Scale, FileCheck, Briefcase, Globe, CheckCircle, Shield, TrendingDown, UserCheck, X, ChevronDown } from "lucide-react";
 import { PageGuidance } from "@/components/page-guidance";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -12,6 +13,10 @@ import { Button } from "@/components/ui/button";
 
 export default function TaxAdvisoryPage({ params: { locale } }: { params: { locale: string } }) {
   const t = useTranslations();
+  const router = useRouter();
+  const [showPicker, setShowPicker] = React.useState(false);
+  const [selectedService, setSelectedService] = React.useState("");
+  const [pickerError, setPickerError] = React.useState(false);
 
   const services = [
     {
@@ -61,6 +66,18 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
     },
   ];
 
+  function openPicker() {
+    setSelectedService("");
+    setPickerError(false);
+    setShowPicker(true);
+  }
+
+  function handleContinue() {
+    if (!selectedService) { setPickerError(true); return; }
+    setShowPicker(false);
+    router.push(`/${locale}/tax-advisory/booking?service=${selectedService}`);
+  }
+
   const benefits = [
     t('taxAdvisory.benefits.1'),
     t('taxAdvisory.benefits.2'),
@@ -73,6 +90,68 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
 
   return (
     <>
+      {/* ── Service Picker Modal ──────────────────────────────────────────── */}
+      {showPicker && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowPicker(false)} />
+          <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl p-8">
+            <button
+              onClick={() => setShowPicker(false)}
+              className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <X className="h-5 w-5 text-gray-500" />
+            </button>
+            <h2 className="text-2xl font-bold text-brand-dark mb-2">{t('taxAdvisory.servicePicker.title')}</h2>
+            <p className="text-sm text-brand-grayMed mb-6">{t('taxAdvisory.servicePicker.description')}</p>
+            <div className="relative mb-2">
+              <select
+                value={selectedService}
+                onChange={(e) => { setSelectedService(e.target.value); setPickerError(false); }}
+                className={`w-full appearance-none rounded-xl border-2 bg-white px-4 py-3 pr-10 text-sm font-medium text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold transition-colors ${pickerError ? "border-red-400" : "border-gray-200 focus:border-brand-gold"}`}
+              >
+                <option value="">{t('taxAdvisory.servicePicker.placeholder')}</option>
+                {services.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.title} — {s.price}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
+            </div>
+            {pickerError && (
+              <p className="mb-4 text-xs text-red-500">{t('taxAdvisory.servicePicker.selectRequired')}</p>
+            )}
+            {selectedService && (
+              <div className="mb-4 mt-2 rounded-xl bg-brand-gold/10 border border-brand-gold/20 px-4 py-3">
+                {(() => {
+                  const svc = services.find(s => s.id === selectedService);
+                  return svc ? (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-semibold text-brand-dark">{svc.title}</span>
+                      <span className="text-base font-bold text-brand-gold">{svc.price}</span>
+                    </div>
+                  ) : null;
+                })()}
+              </div>
+            )}
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setShowPicker(false)}
+                className="flex-1 rounded-xl border-2 border-gray-200 py-3 text-sm font-semibold text-brand-dark hover:border-gray-300 transition-colors"
+              >
+                {t('taxAdvisory.servicePicker.cancel')}
+              </button>
+              <button
+                onClick={handleContinue}
+                className="flex-1 rounded-xl bg-brand-gold py-3 text-sm font-semibold text-white hover:bg-brand-goldDark transition-colors"
+              >
+                {t('taxAdvisory.servicePicker.continue')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <PageGuidance
         pageKey="tax-advisory"
         locale={locale}
@@ -90,7 +169,7 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
         subtitle={t('services.tax.description')}
         primaryCta={{
           label: t('taxAdvisory.hero.primaryCta'),
-          href: `/${locale}/tax-advisory/booking`,
+          onClick: openPicker,
         }}
         secondaryCta={{
           label: t('taxAdvisory.hero.secondaryCta'),
@@ -250,12 +329,12 @@ export default function TaxAdvisoryPage({ params: { locale } }: { params: { loca
             {t('taxAdvisory.cta.description')}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href={`/${locale}/tax-advisory/booking`}
+            <button
+              onClick={openPicker}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               {t('taxAdvisory.cta.schedule')}
-            </Link>
+            </button>
             <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { AccountOpeningLayout } from "@/components/account-opening/account-opening-layout";
@@ -16,7 +17,7 @@ import { ReviewSubmitStep } from "@/components/accounting/review-submit-step";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-export default function AccountingOnboardingPage() {
+function AccountingOnboardingInner() {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -241,9 +242,8 @@ export default function AccountingOnboardingPage() {
 
       sessionStorage.setItem('accounting-application', JSON.stringify(confirmationData));
 
-      // Save to backend + trigger emails (non-fatal if backend down)
+      // Save to backend (non-fatal if backend down)
       try {
-        const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
         await fetch(`${API}/api/applications`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -251,6 +251,44 @@ export default function AccountingOnboardingPage() {
         });
       } catch (apiErr) {
         console.warn("Backend save failed (non-fatal):", apiErr);
+      }
+
+      // Send confirmation email to client + admin notification to accounting@opulanz.com (non-fatal)
+      try {
+        if (formData.primaryContact?.email) {
+          await fetch(`${API}/api/notifications/accounting`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              applicationId: appId,
+              email: formData.primaryContact?.email || "",
+              // Attach uploaded document files to the admin email
+              tempIds: (formData.documents || []).map((doc: any) => doc.fileId).filter(Boolean),
+              legalName: formData.legalName,
+              tradeName: formData.tradeName,
+              companyType: formData.companyType,
+              registrationNumber: formData.registrationNumber,
+              vatNumber: formData.vatNumber,
+              countryOfIncorporation: formData.countryOfIncorporation,
+              businessActivity: formData.businessActivity,
+              employeesFTE: formData.employeesFTE,
+              turnoverLastFY: { amount: formData.turnoverLastFYAmount, currency: formData.turnoverLastFYCurrency },
+              turnoverCurrentFY: { amount: formData.turnoverCurrentFYAmount, currency: formData.turnoverCurrentFYCurrency },
+              salesInvoicesMonth: formData.salesInvoicesMonth,
+              purchaseInvoicesMonth: formData.purchaseInvoicesMonth,
+              payrollNeeded: formData.payrollNeeded,
+              payrollEmployees: formData.payrollEmployees,
+              multiCurrencyEnabled: formData.multiCurrencyEnabled,
+              multiCurrencies: formData.multiCurrencies,
+              primaryContact: formData.primaryContact,
+              registeredAddress: formData.registeredAddress,
+              operatingAddress: formData.operatingAddress,
+              accountingContact: formData.accountingContact,
+            }),
+          });
+        }
+      } catch (emailErr) {
+        console.warn("Email notification failed (non-fatal):", emailErr);
       }
 
       // Redirect to professional confirmation page
@@ -363,5 +401,13 @@ export default function AccountingOnboardingPage() {
     >
       {renderStep()}
     </AccountOpeningLayout>
+  );
+}
+
+export default function AccountingOnboardingPage() {
+  return (
+    <Suspense>
+      <AccountingOnboardingInner />
+    </Suspense>
   );
 }

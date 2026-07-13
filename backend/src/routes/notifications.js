@@ -7,11 +7,43 @@ const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
 const emailService = require('../services/emailService');
+const tempFileStore = require('../services/tempFileStore');
 
-// Reusable transporter
+/**
+ * Build a Nodemailer attachments array from an array of tempIds.
+ * Missing / expired entries are silently skipped.
+ * @param {string[]} tempIds
+ * @returns {{ filename: string, content: Buffer, contentType: string }[]}
+ */
+function buildAttachments(tempIds = []) {
+  const attachments = [];
+  for (const tempId of tempIds) {
+    const entry = tempFileStore.get(tempId);
+    if (entry) {
+      attachments.push({
+        filename: entry.originalname,
+        content: entry.buffer,
+        contentType: entry.mimetype,
+      });
+    }
+  }
+  return attachments;
+}
+
+/**
+ * Clean up temp store entries after they've been attached to an email.
+ * @param {string[]} tempIds
+ */
+function cleanupTempFiles(tempIds = []) {
+  tempIds.forEach((id) => tempFileStore.del(id));
+}
+
+// Reusable transporter — explicit SMTP to avoid Gmail "calendar invite" issue
 function createTransporter() {
   return nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
@@ -125,7 +157,7 @@ router.post('/appointment', async (req, res) => {
     }
 
     const transporter = createTransporter();
-    const teamEmail = process.env.TEAM_EMAIL || 'opulanz.banking@gmail.com';
+    const teamEmail = process.env.TEAM_EMAIL || 'support@opulanz.com';
     const priceDisplay = price ? `€${price}` : '€99.90';
 
     // 1. Confirmation email to customer
@@ -197,81 +229,220 @@ router.post('/appointment', async (req, res) => {
 
 /**
  * POST /api/notifications/company-formation
- * Send company formation confirmation to user + notification to admin
+ * Send company formation confirmation to client + notification to company-set@opulanz.com
  */
 router.post('/company-formation', async (req, res) => {
   try {
-    const { userEmail, userName, companyName, formType, reference } = req.body;
+    const {
+      userEmail, userName, companyName, formType, reference,
+      setupFeeAmount, shareholders, directors, managers,
+      registeredOffice, naceCode, capitalAmount, domiciliationNeeded,
+      tempIds = [],
+    } = req.body;
 
-    if (!userEmail || !userName || !reference) {
+    if (!userEmail || !reference) {
       return res.status(400).json({ success: false, error: 'Missing required fields' });
     }
 
-    const transporter = createTransporter();
-    const teamEmail = process.env.EMAIL_COMPANY_FORMATION || 'company-set@opulanz.com';
-    const displayCompany = companyName || 'Your company';
+    const nameParts = (userName || '').trim().split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
 
-    // 1. Confirmation email to user
-    await transporter.sendMail({
-      from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
-      to: userEmail,
-      subject: `Company Formation Dossier Received — Opulanz Banking`,
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
-          <div style="background:#b59354;padding:24px;text-align:center;">
-            <h1 style="color:#fff;margin:0;font-size:24px;letter-spacing:2px;">OPULANZ BANKING</h1>
-            <p style="color:#fff;margin:8px 0 0;opacity:0.9;">Formation Dossier Submitted</p>
-          </div>
-          <div style="padding:32px;background:#fff;">
-            <h2 style="color:#252623;margin-top:0;">Thank you, ${userName}!</h2>
-            <p style="color:#4b5563;">Your company formation dossier has been successfully submitted. Our team will review it and contact you within <strong>24–72 hours</strong> to proceed with the notarization and registration process.</p>
-            <div style="background:#f6f8f8;border-left:4px solid #b59354;padding:20px 24px;margin:24px 0;border-radius:0 8px 8px 0;">
-              <table style="width:100%;border-collapse:collapse;">
-                <tr><td style="padding:8px 0;color:#6b7280;width:160px;"><strong>Reference:</strong></td><td style="padding:8px 0;font-weight:600;color:#b59354;font-family:monospace;">${reference}</td></tr>
-                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Company Name:</strong></td><td style="padding:8px 0;font-weight:600;color:#252623;">${displayCompany}</td></tr>
-                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Structure:</strong></td><td style="padding:8px 0;">${formType || 'N/A'}</td></tr>
-                <tr><td style="padding:8px 0;color:#6b7280;"><strong>Submitted:</strong></td><td style="padding:8px 0;">${new Date().toLocaleDateString('en-US', { dateStyle: 'long' })}</td></tr>
-              </table>
-            </div>
-            <p style="color:#4b5563;">Please keep your reference number safe — you may be asked for it during follow-up.</p>
-            <p style="color:#4b5563;">Questions? <a href="mailto:support@opulanz.com" style="color:#b59354;">support@opulanz.com</a></p>
-          </div>
-          <div style="padding:16px 32px;background:#f6f8f8;text-align:center;">
-            <p style="color:#9ca3af;font-size:12px;margin:0;">© ${new Date().getFullYear()} Opulanz Banking. All rights reserved.</p>
-            <p style="color:#9ca3af;font-size:12px;margin:4px 0 0;">Luxembourg | France</p>
-          </div>
-        </div>
-      `,
-    });
+    const cfAttachments = buildAttachments(tempIds);
 
-    // 2. Admin notification
-    await transporter.sendMail({
-      from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
-      to: teamEmail,
-      subject: `[New Company Formation] ${displayCompany} — ${formType || 'N/A'}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
-          <div style="background:#252623;padding:24px;text-align:center;">
-            <h1 style="color:#b59354;margin:0;font-size:20px;">New Company Formation Dossier</h1>
-          </div>
-          <div style="padding:32px;background:#fff;">
-            <table style="width:100%;border-collapse:collapse;">
-              <tr><td style="padding:8px 0;color:#6b7280;width:160px;"><strong>Reference:</strong></td><td style="padding:8px 0;font-weight:600;font-family:monospace;">${reference}</td></tr>
-              <tr><td style="padding:8px 0;color:#6b7280;"><strong>Applicant:</strong></td><td style="padding:8px 0;">${userName}</td></tr>
-              <tr><td style="padding:8px 0;color:#6b7280;"><strong>Email:</strong></td><td style="padding:8px 0;"><a href="mailto:${userEmail}" style="color:#b59354;">${userEmail}</a></td></tr>
-              <tr><td style="padding:8px 0;color:#6b7280;"><strong>Company:</strong></td><td style="padding:8px 0;font-weight:600;">${displayCompany}</td></tr>
-              <tr><td style="padding:8px 0;color:#6b7280;"><strong>Structure:</strong></td><td style="padding:8px 0;">${formType || 'N/A'}</td></tr>
-              <tr><td style="padding:8px 0;color:#6b7280;"><strong>Submitted:</strong></td><td style="padding:8px 0;">${new Date().toLocaleString('en-US', { dateStyle: 'long', timeStyle: 'short' })}</td></tr>
-            </table>
-          </div>
-        </div>
-      `,
-    });
+    await emailService.sendApplicationEmails('company_formation', {
+      applicationId: reference,
+      payload: {
+        email: userEmail,
+        firstName,
+        lastName,
+        'Company Name': companyName || '',
+        'Company Structure': formType || '',
+        'Registered Office': registeredOffice || '',
+        'NACE Code': naceCode || '',
+        'Share Capital': capitalAmount || '',
+        'Shareholders': shareholders || '',
+        'Directors': directors || '',
+        'Managers': managers || '',
+        'Domiciliation Requested': domiciliationNeeded ? 'Yes' : 'No',
+        'Setup Fee': setupFeeAmount ? `€${setupFeeAmount}` : '',
+        'Payment Status': 'PAID',
+        'Reference': reference,
+        'Submitted At': new Date().toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short' }),
+      },
+    }, cfAttachments);
 
-    console.log(`📧 Company formation dossier submitted: ${userName} <${userEmail}> — ${displayCompany} (${reference})`);
+    cleanupTempFiles(tempIds);
+    console.log(`📧 [Company Formation] Emails sent → client: ${userEmail} · admin: company-set@opulanz.com${cfAttachments.length > 0 ? ` · ${cfAttachments.length} attachment(s)` : ''}`);
     res.json({ success: true, message: 'Company formation emails sent' });
   } catch (error) {
     console.error('Error sending company formation notification:', error);
+    res.status(500).json({ success: false, error: 'Failed to send notifications', message: error.message });
+  }
+});
+
+/**
+ * POST /api/notifications/open-account
+ * Send open account confirmation to client + full details to info@opulanz.com
+ */
+router.post('/open-account', async (req, res) => {
+  try {
+    const { applicationId, payload = {}, tempIds = [] } = req.body;
+
+    const clientEmail = payload.email || payload.contactEmail || payload.repEmail;
+    if (!clientEmail) {
+      return res.status(400).json({ success: false, error: 'Missing client email' });
+    }
+
+    const attachments = buildAttachments(tempIds);
+
+    await emailService.sendApplicationEmails(
+      'open_account',
+      { applicationId: applicationId || `OPL-${Date.now()}`, payload },
+      attachments,
+    );
+
+    cleanupTempFiles(tempIds);
+
+    console.log(`📧 [Open Account] Emails sent → client: ${clientEmail} · admin: info@opulanz.com`);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error sending open account notification:', error);
+    res.status(500).json({ success: false, error: 'Failed to send notifications', message: error.message });
+  }
+});
+
+/**
+ * POST /api/notifications/investment-advisory
+ * Send investment advisory profile confirmation to client + notification to invest-ad@opulanz.com
+ */
+router.post('/investment-advisory', async (req, res) => {
+  try {
+    const { profile, tempIds = [] } = req.body;
+
+    if (!profile || !profile.email) {
+      return res.status(400).json({ success: false, error: 'Missing client email' });
+    }
+
+    const fullName = `${profile.firstName || ''} ${profile.lastName || ''}`.trim() || 'Client';
+    const ref = `OPL-INV-${Date.now()}`;
+    const invAttachments = buildAttachments(tempIds);
+
+    await emailService.sendApplicationEmails('investment_advisory', {
+      applicationId: ref,
+      payload: {
+        email: profile.email,
+        firstName: profile.firstName || '',
+        lastName: profile.lastName || '',
+        'Title': profile.title || '',
+        'Date of Birth': profile.dateOfBirth || '',
+        'Place of Birth': profile.placeOfBirth || '',
+        'Nationality': profile.nationality || '',
+        'Marital Status': profile.maritalStatus || '',
+        'Phone': profile.phone || '',
+        'Address': [profile.addressLine1, profile.addressLine2, profile.city, profile.postalCode, profile.country].filter(Boolean).join(', '),
+        'Document Type': profile.docType || '',
+        'Document Number': profile.docNumber || '',
+        'Document Expiry': profile.docExpiry || '',
+        'Issuing Country': profile.docIssuingCountry || '',
+        'Tax Country': profile.taxCountry || '',
+        'Tax ID (TIN)': profile.taxId || '',
+        'US Person (FATCA)': profile.usPerson ? 'Yes' : 'No',
+        'Professional Status': profile.professionalStatus || '',
+        'Employer': profile.employerName || '',
+        'Position': profile.position || '',
+        'Sector': profile.sector || '',
+        'Dependants': profile.numberOfDependents || '',
+        'Annual Income (EUR)': profile.annualIncome ? `€${Number(profile.annualIncome).toLocaleString()}` : '',
+        'Income Source': profile.incomeSource || '',
+        'Total Assets (EUR)': profile.totalAssets ? `€${Number(profile.totalAssets).toLocaleString()}` : '',
+        'Liquid Assets (EUR)': profile.liquidAssets ? `€${Number(profile.liquidAssets).toLocaleString()}` : '',
+        'Real Estate (EUR)': profile.realEstateValue ? `€${Number(profile.realEstateValue).toLocaleString()}` : '',
+        'Outstanding Debts (EUR)': profile.outstandingDebts ? `€${Number(profile.outstandingDebts).toLocaleString()}` : '',
+        'Origin of Funds': profile.originOfFunds || '',
+        'Origin Details': profile.originDetails || '',
+        'Investment Experience': profile.investmentExperience || '',
+        'Risk Tolerance': profile.riskTolerance || '',
+        'Investment Horizon': profile.investmentHorizon || '',
+        'Investment Objective': profile.investmentObjective || '',
+        'Expected Return (%)': profile.expectedReturn || '',
+        'Max Acceptable Loss (%)': profile.maxLossAcceptable || '',
+        'Service Type': profile.missionType || '',
+        'Initial Investment (EUR)': profile.initialInvestment ? `€${Number(profile.initialInvestment).toLocaleString()}` : '',
+        'Submitted At': new Date().toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short' }),
+      },
+    }, invAttachments);
+
+    cleanupTempFiles(tempIds);
+    console.log(`📧 [Investment Advisory] Emails sent → client: ${profile.email} · admin: invest-ad@opulanz.com`);
+    res.json({ success: true, ref });
+  } catch (error) {
+    console.error('Error sending investment advisory notification:', error);
+    res.status(500).json({ success: false, error: 'Failed to send notifications', message: error.message });
+  }
+});
+
+/**
+ * POST /api/notifications/accounting
+ * Send accounting onboarding confirmation to client + notification to accounting@opulanz.com
+ */
+router.post('/accounting', async (req, res) => {
+  try {
+    const {
+      applicationId, legalName, tradeName, companyType,
+      registrationNumber, vatNumber, countryOfIncorporation,
+      businessActivity, employeesFTE,
+      turnoverLastFY, turnoverCurrentFY,
+      salesInvoicesMonth, purchaseInvoicesMonth,
+      payrollNeeded, payrollEmployees,
+      multiCurrencyEnabled, multiCurrencies,
+      primaryContact, registeredAddress,
+      tempIds = [],
+    } = req.body;
+
+    const clientEmail = primaryContact?.email;
+    if (!clientEmail) {
+      return res.status(400).json({ success: false, error: 'Missing client email' });
+    }
+
+    const clientName = `${primaryContact?.firstName || ''} ${primaryContact?.lastName || ''}`.trim() || 'Client';
+
+    const accountingAttachments = buildAttachments(tempIds);
+
+    await emailService.sendApplicationEmails('accounting', {
+      applicationId: applicationId || `OPL-ACC-${Date.now()}`,
+      payload: {
+        email: clientEmail,
+        firstName: primaryContact?.firstName || '',
+        lastName: primaryContact?.lastName || '',
+        'Legal Name': legalName || '',
+        'Trade Name': tradeName || '',
+        'Company Type': companyType || '',
+        'Registration Number': registrationNumber || '',
+        'VAT Number': vatNumber || '',
+        'Country of Incorporation': countryOfIncorporation || '',
+        'Business Activity': businessActivity || '',
+        'Employees (FTE)': employeesFTE || 0,
+        'Turnover Last FY': turnoverLastFY ? `${turnoverLastFY.amount} ${turnoverLastFY.currency}` : '',
+        'Turnover Current FY': turnoverCurrentFY ? `${turnoverCurrentFY.amount} ${turnoverCurrentFY.currency}` : '',
+        'Sales Invoices / Month': salesInvoicesMonth || 0,
+        'Purchase Invoices / Month': purchaseInvoicesMonth || 0,
+        'Payroll Needed': payrollNeeded ? `Yes (${payrollEmployees || 0} employees)` : 'No',
+        'Multi-Currency': multiCurrencyEnabled ? `Yes (${(multiCurrencies || []).join(', ')})` : 'No',
+        'Contact Role': primaryContact?.role || '',
+        'Contact Phone': primaryContact?.phone || '',
+        'Registered Address': registeredAddress
+          ? `${registeredAddress.street}, ${registeredAddress.city} ${registeredAddress.postal}, ${registeredAddress.country}`
+          : '',
+        'Submitted At': new Date().toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short' }),
+      },
+    }, accountingAttachments);
+
+    cleanupTempFiles(tempIds);
+    console.log(`📧 [Accounting] Emails sent → client: ${clientEmail} · admin: accounting@opulanz.com`);
+    res.json({ success: true, message: 'Accounting onboarding emails sent' });
+  } catch (error) {
+    console.error('Error sending accounting notification:', error);
     res.status(500).json({ success: false, error: 'Failed to send notifications', message: error.message });
   }
 });
@@ -285,7 +456,7 @@ router.post('/private-banking', async (req, res) => {
     const { ref, applicationId, firstName, lastName, email, phone, residence, country, currencies, monthlyTransfers, sourceOfFunds, documentsCount } = req.body;
 
     const transporter = createTransporter();
-    const TEAM_EMAIL = process.env.EMAIL_OPEN_ACCOUNT || 'info@opulanz.com';
+    const TEAM_EMAIL = process.env.EMAIL_PRIVATE_BANKING || 'contact@opulanz.com';
     const fullName = `${firstName || ''} ${lastName || ''}`.trim();
 
     // 1. Admin notification to contact@opulanz.com

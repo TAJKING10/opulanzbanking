@@ -155,7 +155,7 @@ Please keep this receipt for your records.
 
 For questions or support, contact us at:
 Email: opulanz.banking@gmail.com
-Web: www.opulanzbanking.com
+Web: www.opulanz.com
 
 Thank you for choosing Opulanz Banking!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

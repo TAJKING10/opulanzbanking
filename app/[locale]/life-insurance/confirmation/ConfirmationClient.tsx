@@ -316,7 +316,7 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
   <div class="footer">
     <p><strong>Thank you for choosing Opulanz Banking!</strong></p>
     <p>For questions about your booking, please contact us at:<br>
-    <strong>support@opulanzbanking.com</strong></p>
+    <strong>support@opulanz.com</strong></p>
     <p style="margin-top: 20px; font-size: 12px;">
       This is an official payment receipt from Opulanz Banking.<br>
       Please keep this receipt for your records.
@@ -499,7 +499,7 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
                     <p className="text-sm text-brand-grayMed">60-minute consultation</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-brand-gold">€{bookingData.price}.00</p>
+                    <p className="text-2xl font-bold text-brand-gold">€{parseFloat(bookingData.price || '0').toFixed(2)}</p>
                     <p className="text-xs text-brand-grayMed">incl. VAT</p>
                   </div>
                 </div>
@@ -609,8 +609,8 @@ export default function ConfirmationClient({ params: { locale } }: { params: { l
           <div className="mt-12 text-center border-t border-brand-grayLight pt-8">
             <p className="text-sm text-brand-grayMed">
               Questions about your booking? Contact us at{" "}
-              <a href="mailto:support@opulanzbanking.com" className="text-brand-gold hover:underline font-semibold">
-                support@opulanzbanking.com
+              <a href="mailto:support@opulanz.com" className="text-brand-gold hover:underline font-semibold">
+                support@opulanz.com
               </a>
             </p>
           </div>

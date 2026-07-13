@@ -27,7 +27,7 @@ export function DocUpload({
   uploadedDoc,
   onUpload,
   onRemove,
-  accept = ".pdf,.png,.jpg,.jpeg",
+  accept = ".pdf,.png,.jpg,.jpeg,.doc,.docx",
   helpText,
 }: DocUploadProps) {
   const [isDragging, setIsDragging] = React.useState(false);
@@ -61,20 +61,25 @@ export function DocUpload({
 
   const handleFile = async (file: File) => {
     setIsUploading(true);
-
-    // Simulate file upload (in real app, upload to server/S3)
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    const fileId = `file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-    onUpload({
-      type: documentType,
-      fileId,
-      fileName: file.name,
-      fileSize: file.size,
-    });
-
-    setIsUploading(false);
+    try {
+      const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch(`${API}/api/upload/temp`, { method: "POST", body: form });
+      const json = res.ok ? await res.json() : null;
+      const fileId = json?.tempId || `local_${Date.now()}`;
+      onUpload({ type: documentType, fileId, fileName: file.name, fileSize: file.size });
+    } catch {
+      // Non-fatal: track the file locally so the UI still shows it uploaded
+      onUpload({
+        type: documentType,
+        fileId: `local_${Date.now()}`,
+        fileName: file.name,
+        fileSize: file.size,
+      });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const formatFileSize = (bytes: number): string => {
@@ -149,7 +154,7 @@ export function DocUpload({
                 Drop file here or click to browse
               </p>
               <p className="text-xs text-brand-grayMed">
-                PDF, PNG, JPG (max 10MB)
+                PDF, PNG, JPG, DOC, DOCX (max 10MB)
               </p>
             </>
           )}

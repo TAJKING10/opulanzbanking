@@ -956,6 +956,18 @@
       "securePayment": "Payments are secured by PayPal. Your card details are never stored."
     }
   },
+  "paypalButtons": {
+    "loading": "Loading PayPal...",
+    "initFailed": "PayPal failed to initialize. Please refresh.",
+    "loadFailed": "Could not load PayPal. Check your connection.",
+    "timeout": "PayPal is taking too long. Please refresh.",
+    "captureFailed": "Payment approved but capture failed. Contact support.",
+    "paymentFailed": "Payment failed. Please try again.",
+    "startFailed": "Could not start payment. Please try again.",
+    "tryAgain": "Try Again",
+    "processing": "Processing...",
+    "payWithPaypal": "Pay with PayPal"
+  },
   "legal": {
     "terms": {
       "heroTitle": "Legal Terms & Conditions",
@@ -1338,7 +1350,7 @@
         "description": "We need to verify your identity and contact information for regulatory compliance.",
         "firstNamePlaceholder": "Enter your first name",
         "lastNamePlaceholder": "Enter your last name",
-        "emailPlaceholder": "your.email@example.com",
+        "emailPlaceholder": "Enter your email address",
         "phonePlaceholder": "+352 123 456 789"
       },
       "intent": {
@@ -1620,6 +1632,14 @@
       "primaryCta": "Schedule a Consultation",
       "secondaryCta": "View Services"
     },
+    "servicePicker": {
+      "title": "Select a Service",
+      "description": "Please choose the tax advisory service you need before booking your consultation.",
+      "placeholder": "Choose a service...",
+      "continue": "Continue to Booking",
+      "cancel": "Cancel",
+      "selectRequired": "Please select a service to continue."
+    },
     "services": {
       "overline": "Our Services",
       "title": "Tax Advisory Services",
@@ -1828,7 +1848,8 @@
         "checkCalendlyEmail": "Check your Calendly confirmation email",
         "proceedToPayment": "Proceed to Payment",
         "backToCalendar": "Back to Calendar",
-        "summary": "Booking Summary"
+        "summary": "Booking Summary",
+        "appointment": "Appointment"
       },
       "calendly": {
         "title": "Schedule Your Tax Advisory Consultation",

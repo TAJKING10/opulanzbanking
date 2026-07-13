@@ -40,12 +40,39 @@ const SERVICE_LABELS = {
 // ─── Transporter factory ────────────────────────────────────────────────────
 function createTransporter() {
   return nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
   });
+}
+
+// ─── Standard headers that prevent Gmail treating email as a calendar invite ─
+const TRANSACTIONAL_HEADERS = {
+  'X-Entity-Ref-ID': `opulanz-${Date.now()}`,
+  'X-Mailer': 'Opulanz Banking Mailer',
+  'Precedence': 'bulk',
+  'Auto-Submitted': 'auto-generated',
+};
+
+// ─── Strip HTML tags for plain-text fallback ─────────────────────────────────
+function htmlToText(html) {
+  return html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/tr>/gi, '\n')
+    .replace(/<\/td>/gi, '  ')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<\/div>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }
 
 // ─── Shared HTML layout helpers ─────────────────────────────────────────────
@@ -120,22 +147,31 @@ async function sendBookingEmails(serviceType, data) {
 
   const transporter = createTransporter();
 
+  const paymentDate = new Date().toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short' });
+  const amountFormatted = service.price > 0 ? `€${Number(service.price).toFixed(2)}` : 'Free consultation';
+
   // ── 1a. Email to CLIENT ────────────────────────────────────────────────────
   const clientHtml = `<div style="max-width:600px;margin:0 auto;">
-    ${emailHeader(`Booking Confirmed — ${serviceLabel}`, 'Your appointment is confirmed')}
+    ${emailHeader(`Booking Confirmed — ${service.title}`, 'Your appointment is confirmed')}
     <p style="color:#4b5563;font-size:14px;font-family:Arial,sans-serif;">Dear ${customerInfo.firstName},</p>
     <p style="color:#4b5563;font-size:14px;font-family:Arial,sans-serif;line-height:1.7;">
-      Thank you for booking with Opulanz Banking. Your ${serviceLabel.toLowerCase()} session is confirmed.
+      Thank you for booking with Opulanz Banking. Your <strong>${service.title}</strong> session is confirmed.
       You will receive a video conference link from Calendly shortly.
     </p>
     ${section('Your Booking Details',
       row('Confirmation #', `<strong style="color:#b59354;">${confirmationNumber}</strong>`) +
-      row('Service', service.title) +
+      row('Service', `<strong>${service.title}</strong>`) +
       row('Date', appointmentDate) +
       (appointmentTime ? row('Time', appointmentTime) : '') +
-      row('Format', 'Video Conference') +
-      (service.price > 0 ? row('Amount Paid', `€${service.price}`) : '')
+      row('Format', 'Video Conference')
     )}
+    ${service.price > 0 ? section('Payment Confirmation ✅',
+      row('Amount Paid', `<strong style="color:#b59354;font-size:15px;">${amountFormatted}</strong>`) +
+      row('Payment Method', 'PayPal') +
+      (payment && payment.orderId ? row('PayPal Order ID', payment.orderId) : '') +
+      row('Payment Date', paymentDate) +
+      row('Status', '<span style="color:#16a34a;font-weight:600;">COMPLETED</span>')
+    ) : ''}
     ${section('Your Contact Details',
       row('Name', fullName) +
       row('Email', customerInfo.email) +
@@ -151,13 +187,19 @@ async function sendBookingEmails(serviceType, data) {
   await transporter.sendMail({
     from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
     to: customerInfo.email,
-    subject: `✅ Booking Confirmed — ${service.title} · Ref ${confirmationNumber}`,
+    subject: `Booking Confirmed - ${service.title} - Ref ${confirmationNumber}`,
     html: clientHtml,
+    text: htmlToText(clientHtml),
+    headers: TRANSACTIONAL_HEADERS,
   });
 
   // ── 1b. Email to ADMIN ─────────────────────────────────────────────────────
   const adminHtml = `<div style="max-width:650px;margin:0 auto;">
-    ${adminHeader(serviceType, fullName)}
+    <div style="background:#252623;padding:20px 28px;border-radius:10px 10px 0 0;">
+      <h2 style="margin:0;color:#b59354;font-size:18px;font-family:Arial,sans-serif;">🔔 New Booking — ${service.title}</h2>
+      <p style="margin:6px 0 0;color:#9ca3af;font-size:12px;font-family:Arial,sans-serif;">Client: <strong style="color:#fff;">${fullName}</strong> · Received: ${paymentDate}</p>
+    </div>
+    <div style="background:#fff;border:1px solid #e5e7eb;padding:28px;border-radius:0 0 10px 10px;">
     ${section('Client Information',
       row('Full Name', fullName) +
       row('Email', `<a href="mailto:${customerInfo.email}" style="color:#b59354;">${customerInfo.email}</a>`) +
@@ -165,17 +207,19 @@ async function sendBookingEmails(serviceType, data) {
     )}
     ${section('Booking Details',
       row('Confirmation #', `<strong>${confirmationNumber}</strong>`) +
-      row('Service', service.title) +
+      row('Service Category', serviceLabel) +
+      row('Specific Service', `<strong>${service.title}</strong>`) +
       row('Date', appointmentDate) +
       (appointmentTime ? row('Time', appointmentTime) : '') +
-      (service.price >= 0 ? row('Amount', service.price > 0 ? `€${service.price}` : 'Free consultation') : '')
+      row('Amount', `<strong>${amountFormatted}</strong>`)
     )}
-    ${payment && payment.orderId ? section('Payment',
+    ${section('Payment',
       row('Method', 'PayPal') +
-      row('Order ID', payment.orderId) +
-      row('Status', payment.status || 'COMPLETED') +
-      (payment.payer && payment.payer.email ? row('Payer Email', payment.payer.email) : '')
-    ) : ''}
+      (payment && payment.orderId ? row('Order ID', payment.orderId) : '') +
+      row('Status', payment && payment.status ? payment.status : 'COMPLETED') +
+      (payment && payment.payer && payment.payer.email ? row('Payer Email', payment.payer.email) : '') +
+      row('Payment Date', paymentDate)
+    )}
     ${appointment && appointment.calendlyEventUrl ? section('Calendly',
       row('Event URL', `<a href="${appointment.calendlyEventUrl}" style="color:#b59354;">${appointment.calendlyEventUrl}</a>`) +
       (appointment.calendlyInviteeUrl ? row('Invitee URL', `<a href="${appointment.calendlyInviteeUrl}" style="color:#b59354;">${appointment.calendlyInviteeUrl}</a>`) : '')
@@ -187,8 +231,10 @@ async function sendBookingEmails(serviceType, data) {
     from: `"Opulanz Notifications" <${process.env.EMAIL_USER}>`,
     to: adminEmail,
     replyTo: customerInfo.email,
-    subject: `[${serviceLabel}] New Booking — ${fullName} · ${appointmentDate}`,
+    subject: `[${service.title}] New Booking - ${fullName} - ${amountFormatted} - ${appointmentDate}`,
     html: adminHtml,
+    text: htmlToText(adminHtml),
+    headers: TRANSACTIONAL_HEADERS,
   });
 
   console.log(`📧 [${serviceLabel}] Emails sent → client: ${customerInfo.email} · admin: ${adminEmail}`);
@@ -244,8 +290,10 @@ async function sendInvestmentAdvisoryEmails(data) {
   await transporter.sendMail({
     from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: `✅ Investment Advisory Session Confirmed — ${appointmentDate}`,
+    subject: `Investment Advisory Session Confirmed - ${appointmentDate}`,
     html: clientHtml,
+    text: htmlToText(clientHtml),
+    headers: TRANSACTIONAL_HEADERS,
   });
 
   // ── 2b. Email to ADMIN ─────────────────────────────────────────────────────
@@ -284,8 +332,10 @@ async function sendInvestmentAdvisoryEmails(data) {
     from: `"Opulanz Notifications" <${process.env.EMAIL_USER}>`,
     to: adminEmail,
     replyTo: email,
-    subject: `[Investment Advisory] New Booking — ${fullName} · ${appointmentDate}`,
+    subject: `[Investment Advisory] New Booking - ${fullName} - ${appointmentDate}`,
     html: adminHtml,
+    text: htmlToText(adminHtml),
+    headers: TRANSACTIONAL_HEADERS,
   });
 
   console.log(`📧 [Investment Advisory] Emails sent → client: ${email} · admin: ${adminEmail}`);
@@ -294,8 +344,10 @@ async function sendInvestmentAdvisoryEmails(data) {
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. APPLICATION EMAIL — Open Account / Company Formation / Accounting
 //    data: { applicationId, type, payload }
+//    attachments: optional Nodemailer attachments array added to admin email only
+//      e.g. [{ filename, content (Buffer), contentType }]
 // ─────────────────────────────────────────────────────────────────────────────
-async function sendApplicationEmails(applicationType, data) {
+async function sendApplicationEmails(applicationType, data, attachments = []) {
   const { applicationId, payload = {} } = data;
 
   const adminEmail = ADMIN_EMAILS[applicationType] || ADMIN_EMAILS.open_account;
@@ -352,8 +404,10 @@ async function sendApplicationEmails(applicationType, data) {
   await transporter.sendMail({
     from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
     to: clientEmail,
-    subject: `✅ Application Received — ${serviceLabel} · Ref ${refCode}`,
+    subject: `Application Received - ${serviceLabel} - Ref ${refCode}`,
     html: clientHtml,
+    text: htmlToText(clientHtml),
+    headers: TRANSACTIONAL_HEADERS,
   });
 
   // ── 3b. Email to ADMIN ─────────────────────────────────────────────────────
@@ -382,15 +436,21 @@ async function sendApplicationEmails(applicationType, data) {
     ${adminFooter()}
   </div>`;
 
-  await transporter.sendMail({
+  const adminMailOptions = {
     from: `"Opulanz Notifications" <${process.env.EMAIL_USER}>`,
     to: adminEmail,
     replyTo: clientEmail,
-    subject: `[${serviceLabel}] New Application #${applicationId} — ${clientName}`,
+    subject: `[${serviceLabel}] New Application #${applicationId} - ${clientName}`,
     html: adminHtml,
-  });
+    text: htmlToText(adminHtml),
+    headers: TRANSACTIONAL_HEADERS,
+  };
+  if (attachments.length > 0) {
+    adminMailOptions.attachments = attachments;
+  }
+  await transporter.sendMail(adminMailOptions);
 
-  console.log(`📧 [${serviceLabel}] Emails sent → client: ${clientEmail} · admin: ${adminEmail}`);
+  console.log(`📧 [${serviceLabel}] Emails sent → client: ${clientEmail} · admin: ${adminEmail}${attachments.length > 0 ? ` · ${attachments.length} attachment(s)` : ''}`);
 }
 
 module.exports = {

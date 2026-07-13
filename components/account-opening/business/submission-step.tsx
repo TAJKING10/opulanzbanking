@@ -167,6 +167,33 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
   // Called when Sumsub KYC passes
   async function handleSumsubComplete() {
     await saveApplication();
+
+    // Send admin notification with uploaded documents as attachments (non-blocking)
+    try {
+      const tempIds: string[] = data.documentTempIds || (data.documents || []).map((d: any) => d.tempId).filter(Boolean);
+      fetch(`${API}/api/notifications/open-account`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tempIds,
+          payload: {
+            accountType: "Business",
+            email: contactEmail,
+            phone: fullPhone,
+            "Company Name": data.companyName || "",
+            "Company Status": data.companyStatus || "",
+            "Registration Number": data.registrationNumber || "",
+            "Jurisdiction": data.jurisdiction || "",
+            "Directors": (data.directors || []).map((d: any) => `${d.firstName || ""} ${d.lastName || ""}`.trim()).join(", "),
+            "UBOs": (data.ubos || []).map((u: any) => `${u.firstName || ""} ${u.lastName || ""}`.trim()).join(", "),
+            "Formation Needed": data.formationNeeded ? "Yes" : "No",
+            "Formation Jurisdiction": data.formationJurisdiction || "",
+            "Documents Uploaded": (data.documents || []).map((d: any) => d.name || d.id).join(", "),
+          },
+        }),
+      }).catch(() => {});
+    } catch { /* non-blocking */ }
+
     try {
       await fetch(`${API}/api/auth/pre-register/send-email-otp`, {
         method: "POST",

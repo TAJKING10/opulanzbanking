@@ -11,27 +11,39 @@ const router = express.Router();
 const multer = require('multer');
 const azureStorage = require('../services/azureStorage');
 const { pool } = require('../config/db');
+const tempFileStore = require('../services/tempFileStore');
 
-// ── Multer config ─────────────────────────────────────────────────────────────
-// Memory storage: file is held in memory as a Buffer so we can stream it
-// directly to Azure without writing to disk.
+// ── Allowed MIME types ────────────────────────────────────────────────────────
+const ALLOWED_MIMES = [
+  'application/pdf',
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+];
+
+// ── Multer config (permanent upload → Azure Blob) ─────────────────────────────
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
     fileSize: 10 * 1024 * 1024, // 10 MB hard cap
   },
   fileFilter: (_req, file, cb) => {
-    const allowed = [
-      'application/pdf',
-      'image/png',
-      'image/jpeg',
-      'image/jpg',
-    ];
-    if (allowed.includes(file.mimetype)) {
+    if (ALLOWED_MIMES.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Only PDF, PNG, and JPG files are allowed'));
+      cb(new Error('Only PDF, PNG, JPG, DOC, and DOCX files are allowed'));
     }
+  },
+});
+
+// ── Multer config (temp upload → in-memory store for email attachments) ───────
+const uploadTemp = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    cb(null, ALLOWED_MIMES.includes(file.mimetype));
   },
 });
 
@@ -123,6 +135,29 @@ router.post('/', upload.single('file'), async (req, res) => {
     console.error('❌ Upload error:', error.message);
     res.status(500).json({ success: false, error: error.message });
   }
+});
+
+/**
+ * POST /api/upload/temp
+ *
+ * Stores the file in the in-memory temp store (30-min TTL) and returns a
+ * tempId. Used by the frontend to hold files until a form is submitted, at
+ * which point notification routes fetch the buffers and attach them to the
+ * admin email.
+ */
+router.post('/temp', uploadTemp.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, error: 'No file provided' });
+  }
+  const tempId = tempFileStore.put(req.file.buffer, req.file.originalname, req.file.mimetype);
+  console.log(`🗂️  Temp file stored: "${req.file.originalname}" (${(req.file.size / 1024).toFixed(1)} KB) → tempId: ${tempId}`);
+  res.status(201).json({
+    success: true,
+    tempId,
+    fileName: req.file.originalname,
+    fileSize: req.file.size,
+    mimeType: req.file.mimetype,
+  });
 });
 
 // ── Multer error handler ──────────────────────────────────────────────────────

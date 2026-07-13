@@ -281,7 +281,39 @@ export default function CompanyAccountPage() {
         }),
       }).catch(() => {});
 
-      setApplicationId(result.data?.id || null);
+      const appId = result.data?.id || null;
+      setApplicationId(appId);
+
+      // Send confirmation to client + admin notification to info@opulanz.com (non-fatal)
+      fetch(`${API}/api/notifications/open-account`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applicationId: appId || `OPL-CORP-${Date.now()}`,
+          payload: {
+            email: savedFormData?.contactEmail,
+            firstName: savedFormData?.representativeFirstName,
+            lastName: savedFormData?.representativeLastName,
+            "Representative Phone": `${savedFormData?.repPhoneCode || ""}${savedFormData?.representativePhone || ""}`,
+            "Company Name": savedFormData?.companyName,
+            "Legal Form": savedFormData?.legalForm,
+            "Registration Number": savedFormData?.registrationNumber,
+            "Date of Incorporation": savedFormData?.dateOfIncorporation,
+            "Company Address": [savedFormData?.companyAddress, savedFormData?.companyCity, savedFormData?.companyPostalCode, savedFormData?.companyCountry].filter(Boolean).join(", "),
+            "Business Activity": savedFormData?.businessActivity,
+            "Countries of Operation": Array.isArray(savedFormData?.activityCountries) ? savedFormData.activityCountries.join(", ") : savedFormData?.activityCountries,
+            "Monthly Volume": savedFormData?.expectedMonthlyVolume,
+            "Source of Funds": questionnaire.sourceOfFunds?.join(", "),
+            "Account Purpose": questionnaire.accountPurpose?.join(", "),
+            "Type of Inflow": Array.isArray(questionnaire.typeOfInflow) ? questionnaire.typeOfInflow.join(", ") : questionnaire.typeOfInflow,
+            "Transaction Nature": questionnaire.transactionNature,
+            "Expected Inflow": questionnaire.expectedInflow,
+            "US Securities": questionnaire.usSecurities,
+            "Submitted At": new Date().toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" }),
+          },
+        }),
+      }).catch((e) => console.warn("Email notification failed (non-fatal):", e));
+
       setStep("sumsub");
     } catch {
       alert("Failed to submit. Please try again.");

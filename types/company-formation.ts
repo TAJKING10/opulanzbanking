@@ -41,6 +41,7 @@ export interface UploadedFile {
   uploadedAt: string;
   fileUrl?: string;
   blobName?: string;
+  tempId?: string; // temp store key for email attachment
 }
 
 export interface CompanyFormationDossier {

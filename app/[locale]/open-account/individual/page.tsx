@@ -259,7 +259,37 @@ export default function IndividualAccountPage() {
       });
       if (!response.ok) throw new Error("Failed to submit");
       const result = await response.json();
-      setApplicationId(result.data?.id || null);
+      const appId = result.data?.id || null;
+      setApplicationId(appId);
+
+      // Send confirmation to client + admin notification to info@opulanz.com (non-fatal)
+      fetch(`${API}/api/notifications/open-account`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applicationId: appId || `OPL-IND-${Date.now()}`,
+          payload: {
+            email: savedFormData?.email,
+            firstName: savedFormData?.firstName,
+            lastName: savedFormData?.lastName,
+            phone: `${savedFormData?.phoneCode || ""}${savedFormData?.phoneNumber || ""}`,
+            "Date of Birth": savedFormData?.dateOfBirth,
+            "Nationality": savedFormData?.nationality,
+            "Address": [savedFormData?.address, savedFormData?.city, savedFormData?.postalCode, savedFormData?.country].filter(Boolean).join(", "),
+            "PEP Status": savedFormData?.isPEP ? "Yes" : "No",
+            "Monthly Volume": savedFormData?.expectedMonthlyVolume,
+            "Source of Funds": savedFormData?.sourceOfFunds,
+            "Economic Background": Array.isArray(questionnaire.economicBackground) ? questionnaire.economicBackground.join(", ") : questionnaire.economicBackground,
+            "Account Purpose": questionnaire.accountPurpose?.join(", "),
+            "Type of Inflow": Array.isArray(questionnaire.typeOfInflow) ? questionnaire.typeOfInflow.join(", ") : questionnaire.typeOfInflow,
+            "Investment Horizon": questionnaire.investmentHorizon,
+            "Expected Inflow": questionnaire.expectedInflow,
+            "US Securities": questionnaire.usSecurities,
+            "Submitted At": new Date().toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" }),
+          },
+        }),
+      }).catch((e) => console.warn("Email notification failed (non-fatal):", e));
+
       setStep("sumsub");
     } catch {
       alert("Failed to submit. Please try again.");

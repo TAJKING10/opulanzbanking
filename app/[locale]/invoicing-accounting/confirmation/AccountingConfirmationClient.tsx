@@ -230,7 +230,7 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
   <div class="footer">
     <p><strong>Thank you for choosing Opulanz Banking!</strong></p>
     <p>For questions about your application, please contact us at:<br>
-    <strong>accounting@opulanzbanking.com</strong></p>
+    <strong>accounting@opulanz.com</strong></p>
     <p style="margin-top: 20px; font-size: 12px;">
       This is an official application summary from Opulanz Banking.<br>
       Please keep this document for your records.<br>
@@ -487,8 +487,8 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
             </p>
             <p className="text-sm text-brand-grayMed">
               {t("contactTeam")}{" "}
-              <a href="mailto:accounting@opulanzbanking.com" className="text-brand-gold hover:underline font-semibold">
-                accounting@opulanzbanking.com
+              <a href="mailto:accounting@opulanz.com" className="text-brand-gold hover:underline font-semibold">
+                accounting@opulanz.com
               </a>
             </p>
             <p className="text-xs text-brand-grayMed mt-4">

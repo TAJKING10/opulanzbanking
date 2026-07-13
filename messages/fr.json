@@ -956,6 +956,18 @@
       "securePayment": "Paiements sécurisés par PayPal. Vos coordonnées bancaires ne sont jamais stockées."
     }
   },
+  "paypalButtons": {
+    "loading": "Chargement de PayPal...",
+    "initFailed": "Échec de l'initialisation de PayPal. Veuillez actualiser.",
+    "loadFailed": "Impossible de charger PayPal. Vérifiez votre connexion.",
+    "timeout": "PayPal prend trop de temps. Veuillez actualiser.",
+    "captureFailed": "Paiement approuvé mais la capture a échoué. Contactez le support.",
+    "paymentFailed": "Paiement échoué. Veuillez réessayer.",
+    "startFailed": "Impossible de démarrer le paiement. Veuillez réessayer.",
+    "tryAgain": "Réessayer",
+    "processing": "Traitement en cours...",
+    "payWithPaypal": "Payer avec PayPal"
+  },
   "legal": {
     "terms": {
       "heroTitle": "Conditions générales d'utilisation",
@@ -1338,7 +1350,7 @@
         "description": "Nous devons vérifier votre identité et vos coordonnées pour la conformité réglementaire.",
         "firstNamePlaceholder": "Entrez votre prénom",
         "lastNamePlaceholder": "Entrez votre nom",
-        "emailPlaceholder": "votre.email@exemple.com",
+        "emailPlaceholder": "Entrez votre adresse e-mail",
         "phonePlaceholder": "+352 123 456 789"
       },
       "intent": {
@@ -1620,6 +1632,14 @@
       "primaryCta": "Planifier une consultation",
       "secondaryCta": "Voir les services"
     },
+    "servicePicker": {
+      "title": "Sélectionner un service",
+      "description": "Veuillez choisir le service de conseil fiscal dont vous avez besoin avant de réserver votre consultation.",
+      "placeholder": "Choisissez un service...",
+      "continue": "Continuer vers la réservation",
+      "cancel": "Annuler",
+      "selectRequired": "Veuillez sélectionner un service pour continuer."
+    },
     "services": {
       "overline": "Nos Services",
       "title": "Services de conseil fiscal",
@@ -1828,7 +1848,8 @@
         "checkCalendlyEmail": "Vérifiez votre e-mail de confirmation Calendly",
         "proceedToPayment": "Procéder au paiement",
         "backToCalendar": "Retour au calendrier",
-        "summary": "Récapitulatif de la réservation"
+        "summary": "Récapitulatif de la réservation",
+        "appointment": "Rendez-vous"
       },
       "calendly": {
         "title": "Planifiez votre consultation fiscale",

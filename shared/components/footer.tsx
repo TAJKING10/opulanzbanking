@@ -14,10 +14,10 @@ export function Footer({ locale }: FooterProps) {
     <footer className="border-t border-brand-grayLight bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto max-w-7xl 3xl:max-w-[1600px] 4xl:max-w-[1800px] px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         {/* Links Grid at Top */}
-        <div className="flex flex-wrap justify-center gap-x-16 gap-y-8 mb-10 sm:mb-12">
+        <div className="flex flex-wrap justify-center gap-x-20 gap-y-8 mb-10 sm:mb-12">
 
           {/* Services Column */}
-          <div>
+          <div className="min-w-[180px]">
             <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-dark">
               {t("footer.sections.services")}
             </h3>
@@ -66,7 +66,7 @@ export function Footer({ locale }: FooterProps) {
           </div>
 
           {/* Company Column */}
-          <div>
+          <div className="min-w-[140px]">
             <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-dark">
               {t("footer.sections.company")}
             </h3>
@@ -99,7 +99,7 @@ export function Footer({ locale }: FooterProps) {
           </div>
 
           {/* Legal Column */}
-          <div>
+          <div className="min-w-[160px]">
             <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-dark">
               {t("footer.sections.legal")}
             </h3>

@@ -14,7 +14,7 @@ steps:
   displayName: 'Use Node.js 20'
 
 # 2️⃣ Install dependencies
-- script: npm ci
+- script: npm install --legacy-peer-deps
   displayName: 'Install dependencies'
 
 # 3️⃣ Build Next.js (NEXT_PUBLIC_* vars are loaded from .env.production automatically)

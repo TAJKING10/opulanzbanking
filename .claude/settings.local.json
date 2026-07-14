@@ -256,7 +256,8 @@
       "Bash(__NEW_LINE_6be32275bddfb267__ echo:*)",
       "Bash(__NEW_LINE_75bbab11a4a7ead9__ echo:*)",
       "Bash(__NEW_LINE_0d7f68643ea31707__ echo:*)",
-      "Bash(__NEW_LINE_2e4858e558f5535a__ echo:*)"
+      "Bash(__NEW_LINE_2e4858e558f5535a__ echo:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": [],
     "ask": []

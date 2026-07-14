@@ -217,17 +217,6 @@ export default function IndividualAccountPage() {
     } catch { /* quota or serialisation error – non-fatal */ }
   }, [step, savedFormData, applicationId, questionnaire]);
 
-  // Wipe session and return to the first step
-  const handleStartOver = React.useCallback(() => {
-    sessionStorage.removeItem(SESSION_KEY);
-    reset();
-    setSavedFormData(null);
-    setApplicationId(null);
-    setQuestionnaire({ economicBackground: [], accountPurpose: [], investmentHorizon: "", typeOfInflow: [], expectedInflow: "", usSecurities: "" });
-    setStep("form");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reset]);
-
   // Close dropdown on outside click
   React.useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -270,6 +259,16 @@ export default function IndividualAccountPage() {
   const isPEP = watch("isPEP");
   const consentKYC = watch("consentKYC");
   const consentTerms = watch("consentTerms");
+
+  // Wipe session and return to the first step (must be after useForm so reset is defined)
+  const handleStartOver = React.useCallback(() => {
+    sessionStorage.removeItem(SESSION_KEY);
+    reset();
+    setSavedFormData(null);
+    setApplicationId(null);
+    setQuestionnaire({ economicBackground: [], accountPurpose: [], investmentHorizon: "", typeOfInflow: [], expectedInflow: "", usSecurities: "" });
+    setStep("form");
+  }, [reset]);
 
   // ─── STEP 1: Store form data → go to questionnaire ──────────────────────────
   const onSubmit = async (data: WhitelabelKYCFormData) => {

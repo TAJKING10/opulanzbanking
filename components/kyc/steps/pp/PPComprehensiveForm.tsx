@@ -52,6 +52,13 @@ export function PPComprehensiveForm() {
     position: (data as any)?.holders?.holder1?.professionalSituation?.position || '',
     sector: (data as any)?.holders?.holder1?.professionalSituation?.sector || '',
 
+    // Identity Document
+    documentType: (data as any)?.holders?.holder1?.documentType || '',
+
+    // Regulatory Declarations
+    notUSPerson: (data as any)?.holders?.holder1?.notUSPerson || false,
+    notPEP: (data as any)?.holders?.holder1?.notPEP || false,
+
     // Joint Holder
     hasJointHolder: (data as any)?.holders?.holder2 ? true : false,
 
@@ -61,6 +68,7 @@ export function PPComprehensiveForm() {
     // Financial Situation
     annualIncome: (data as any)?.financialSituation?.annualIncome || '',
     incomeSource: (data as any)?.financialSituation?.incomeSource || '',
+    incomeSourceDetails: (data as any)?.financialSituation?.incomeSourceDetails || '',
     totalAssets: (data as any)?.financialSituation?.totalAssets || '',
     liquidAssets: (data as any)?.financialSituation?.liquidAssets || '',
     realEstateValue: (data as any)?.financialSituation?.realEstateValue || '',
@@ -127,6 +135,9 @@ export function PPComprehensiveForm() {
             position: formData.position,
             sector: formData.sector,
           },
+          documentType: formData.documentType,
+          notUSPerson: formData.notUSPerson,
+          notPEP: formData.notPEP,
         },
       },
       family: {
@@ -135,6 +146,7 @@ export function PPComprehensiveForm() {
       financialSituation: {
         annualIncome: formData.annualIncome,
         incomeSource: formData.incomeSource,
+        incomeSourceDetails: formData.incomeSourceDetails,
         totalAssets: formData.totalAssets,
         liquidAssets: formData.liquidAssets,
         realEstateValue: formData.realEstateValue,
@@ -418,6 +430,53 @@ export function PPComprehensiveForm() {
                   )}
                 </div>
               </div>
+
+              <div className="pt-4 border-t border-brand-grayLight">
+                <h4 className="font-semibold text-brand-dark mb-3">Identity Document</h4>
+                <div>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Document Type *</label>
+                  <select
+                    value={formData.documentType}
+                    onChange={(e) => handleChange('documentType', e.target.value)}
+                    className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
+                    required
+                  >
+                    <option value="">Select document type</option>
+                    <option value="passport">Passport</option>
+                    <option value="national_id">National Identity Card</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-brand-grayLight">
+                <h4 className="font-semibold text-brand-dark mb-3">Regulatory Declarations</h4>
+                <div className="space-y-3">
+                  <label className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={formData.notUSPerson}
+                      onChange={(e) => handleChange('notUSPerson', e.target.checked)}
+                      className="mt-1 h-4 w-4 text-brand-gold focus:ring-brand-gold rounded"
+                      required
+                    />
+                    <span className="text-sm text-brand-dark">
+                      <strong>I am not a US person *</strong> — I confirm that I am not a US citizen, US resident, or otherwise classified as a US person under FATCA regulations
+                    </span>
+                  </label>
+                  <label className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={formData.notPEP}
+                      onChange={(e) => handleChange('notPEP', e.target.checked)}
+                      className="mt-1 h-4 w-4 text-brand-gold focus:ring-brand-gold rounded"
+                      required
+                    />
+                    <span className="text-sm text-brand-dark">
+                      <strong>I am not a politically exposed person (PEP) *</strong> — I confirm that I am not, and have not been in the past 12 months, entrusted with a prominent public function
+                    </span>
+                  </label>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -481,6 +540,21 @@ export function PPComprehensiveForm() {
                   </select>
                 </div>
               </div>
+              {formData.incomeSource === 'other' && (
+                <div>
+                  <label className="block text-sm font-medium text-brand-dark mb-2">Please specify income source *</label>
+                  <textarea
+                    value={formData.incomeSourceDetails}
+                    onChange={(e) => handleChange('incomeSourceDetails', e.target.value)}
+                    className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
+                    rows={4}
+                    maxLength={1000}
+                    placeholder="Please describe your income source in detail"
+                    required
+                  />
+                  <p className="text-xs text-brand-grayMed mt-1 text-right">{formData.incomeSourceDetails.length} / 1000</p>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -682,27 +756,9 @@ export function PPComprehensiveForm() {
 
         {/* MISSION TYPE SECTION */}
         <div>
-          <SectionHeader title="6. Service Type & Initial Investment" section="mission" />
+          <SectionHeader title="6. Initial Investment" section="mission" />
           {expandedSections.mission && (
             <div className="bg-white border border-brand-grayLight rounded-xl p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-brand-dark mb-2">Type of Service *</label>
-                <select
-                  value={formData.missionType}
-                  onChange={(e) => handleChange('missionType', e.target.value)}
-                  className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
-                  required
-                >
-                  <option value="advisory">Investment Advisory (Conseil)</option>
-                  <option value="management">Portfolio Management (Gestion sous mandat)</option>
-                </select>
-                <p className="text-xs text-brand-grayMed mt-2">
-                  {formData.missionType === 'advisory'
-                    ? 'We provide recommendations, you make the final decisions'
-                    : 'We manage your portfolio with discretionary authority'}
-                </p>
-              </div>
-
               <div>
                 <label className="block text-sm font-medium text-brand-dark mb-2">Initial Investment Amount (EUR) *</label>
                 <input
@@ -739,19 +795,6 @@ export function PPComprehensiveForm() {
                 />
                 <span className="text-sm text-brand-dark">
                   <strong>Data Processing *:</strong> I consent to the processing of my personal data in accordance with GDPR and French data protection laws
-                </span>
-              </label>
-
-              <label className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  checked={formData.consentKYC}
-                  onChange={(e) => handleChange('consentKYC', e.target.checked)}
-                  className="mt-1 h-4 w-4 text-brand-gold focus:ring-brand-gold rounded"
-                  required
-                />
-                <span className="text-sm text-brand-dark">
-                  <strong>KYC/AML Compliance *:</strong> I authorize Opulanz to perform necessary KYC/AML checks and share information with regulatory authorities if required
                 </span>
               </label>
 
@@ -802,9 +845,15 @@ export function PPComprehensiveForm() {
           formData.taxCountry.trim() !== '' &&
           formData.taxIdentificationNumber.trim() !== '' &&
           formData.professionalStatus !== '' &&
+          // Section 4 – Document type selected
+          formData.documentType !== '' &&
+          // Section 5 – Regulatory declarations
+          formData.notUSPerson &&
+          formData.notPEP &&
           // Section 3 – Financial: annual income > 0 and income source selected
           Number(formData.annualIncome) > 0 &&
           formData.incomeSource !== '' &&
+          (formData.incomeSource !== 'other' || formData.incomeSourceDetails.trim().length > 0) &&
           // Section 4 – Origin of funds selected; details required when "other"
           formData.originOfFunds !== '' &&
           (formData.originOfFunds !== 'other' || formData.originDetails.trim().length > 0) &&
@@ -812,7 +861,6 @@ export function PPComprehensiveForm() {
           Number(formData.initialInvestment) >= 10000 &&
           // Section 7 – Required consents
           formData.consentDataProcessing &&
-          formData.consentKYC &&
           formData.consentElectronic
         }
         nextLabel="Continue to Review"

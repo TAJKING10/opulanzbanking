@@ -455,8 +455,13 @@ export function PPComprehensiveForm() {
                     onChange={(e) => handleChange('annualIncome', e.target.value)}
                     className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                     placeholder="e.g., 75000"
+                    min="1"
+                    step="1"
                     required
                   />
+                  {formData.annualIncome !== '' && Number(formData.annualIncome) <= 0 && (
+                    <p className="text-xs text-red-500 mt-1">Annual income must be greater than 0</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-brand-dark mb-2">Income Source *</label>
@@ -486,6 +491,8 @@ export function PPComprehensiveForm() {
                     onChange={(e) => handleChange('totalAssets', e.target.value)}
                     className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                     placeholder="e.g., 500000"
+                    min="0"
+                    step="1"
                   />
                 </div>
                 <div>
@@ -496,6 +503,8 @@ export function PPComprehensiveForm() {
                     onChange={(e) => handleChange('liquidAssets', e.target.value)}
                     className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                     placeholder="Cash, savings, etc."
+                    min="0"
+                    step="1"
                   />
                 </div>
               </div>
@@ -508,6 +517,8 @@ export function PPComprehensiveForm() {
                     value={formData.realEstateValue}
                     onChange={(e) => handleChange('realEstateValue', e.target.value)}
                     className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
+                    min="0"
+                    step="1"
                   />
                 </div>
                 <div>
@@ -518,6 +529,8 @@ export function PPComprehensiveForm() {
                     onChange={(e) => handleChange('outstandingDebts', e.target.value)}
                     className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                     placeholder="Mortgages, loans, etc."
+                    min="0"
+                    step="1"
                   />
                 </div>
               </div>
@@ -770,7 +783,11 @@ export function PPComprehensiveForm() {
         onNext={handleSubmit}
         onPrev={prevStep}
         canGoPrev={true}
-        canGoNext={formData.originOfFunds !== 'other' || formData.originDetails.trim().length > 0}
+        canGoNext={
+          Number(formData.annualIncome) > 0 &&
+          formData.incomeSource !== '' &&
+          (formData.originOfFunds !== 'other' || formData.originDetails.trim().length > 0)
+        }
         nextLabel="Continue to Review"
       />
     </div>

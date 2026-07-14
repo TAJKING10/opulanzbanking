@@ -249,7 +249,14 @@
       "Bash(grep -r \"NEXT_PUBLIC_PAYPAL\\\\|paypal.com/sdk\\\\|PayPalScriptProvider\" app/ components/ --include=*.tsx -l)",
       "Bash(BACKEND=\"https://rg-opulanz-backend-ffa3bgfze4a4g6gf.canadacentral-01.azurewebsites.net\")",
       "Bash(FRONTEND=\"https://www.opulanz.com\")",
-      "Bash(__NEW_LINE_facdee26e77bac29__ echo:*)"
+      "Bash(__NEW_LINE_facdee26e77bac29__ echo:*)",
+      "Bash(API=\"https://rg-opulanz-backend-ffa3bgfze4a4g6gf.canadacentral-01.azurewebsites.net\")",
+      "Bash(__NEW_LINE_5fd70c8542a486e5__ echo:*)",
+      "Bash(__NEW_LINE_79babcb0afffa879__ echo:*)",
+      "Bash(__NEW_LINE_6be32275bddfb267__ echo:*)",
+      "Bash(__NEW_LINE_75bbab11a4a7ead9__ echo:*)",
+      "Bash(__NEW_LINE_0d7f68643ea31707__ echo:*)",
+      "Bash(__NEW_LINE_2e4858e558f5535a__ echo:*)"
     ],
     "deny": [],
     "ask": []

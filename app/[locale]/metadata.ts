@@ -21,16 +21,18 @@ export function generateSEOMetadata({
   title,
   description,
 }: GenerateMetadataProps): Metadata {
-  const defaultTitle = 'Opulanz - Professional Digital Banking';
+  const defaultTitle = 'Opulanz - Professional Financial Services';
   const defaultDescription =
-    'Trusted digital banking, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg.';
+    'Trusted financial services, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg.';
 
   const pageTitle = title || defaultTitle;
   const pageDescription = description || defaultDescription;
   const url = `${baseUrl}/${locale}${pathname}`;
 
-  // Generate alternate language links
-  const languages: Record<string, string> = {};
+  // Generate alternate language links — x-default signals the fallback for unmatched locales
+  const languages: Record<string, string> = {
+    'x-default': `${baseUrl}/en${pathname}`,
+  };
   routing.locales.forEach((loc) => {
     languages[loc] = `${baseUrl}/${loc}${pathname}`;
   });
@@ -55,7 +57,7 @@ export function generateSEOMetadata({
           url: `${baseUrl}/images/opulanz-og-image.png`,
           width: 1200,
           height: 630,
-          alt: 'Opulanz Banking',
+          alt: 'Opulanz Financial Services',
         },
       ],
     },

@@ -1,7 +1,10 @@
-
+import type { Metadata } from 'next';
 import { Suspense } from "react";
-
 import AccountingConfirmationClient from "./AccountingConfirmationClient";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function Page({
     params : {locale},

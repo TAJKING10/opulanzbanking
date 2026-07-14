@@ -289,7 +289,7 @@ const content: Record<PageKey, { en: GuidanceContent; fr: GuidanceContent }> = {
       description: "MiFID II-compliant wealth management tailored to your goals.",
       steps: [
         { content: "Welcome to Investment Advisory. Our MiFID II-compliant advisors will build a strategy tailored to your goals and risk profile." },
-        { title: "Our Services", content: "Here are all our investment services — portfolio management, retirement planning, ESG investing, and more. Browse and choose what fits your needs.", target: "#services", position: "top" },
+        { title: "Our Services", content: "Here are all our investment services — portfolio management, retirement planning, ESG investing, and more. Browse and choose what fits your needs.", target: "#advisory-services", position: "top" },
         { title: "Schedule a Meeting", content: "Ready to get started? Click this button to schedule a free discovery call with one of our certified advisors.", target: "a[href*='investment-advisory/schedule']", position: "bottom" },
       ],
       tip: "All our advisors are MiFID II compliant and regulated by AMF/CSSF.",
@@ -299,7 +299,7 @@ const content: Record<PageKey, { en: GuidanceContent; fr: GuidanceContent }> = {
       description: "Gestion de patrimoine conforme MiFID II adaptée à vos objectifs.",
       steps: [
         { content: "Bienvenue au Conseil en Investissement. Nos conseillers conformes MiFID II élaboreront une stratégie adaptée à vos objectifs et à votre profil de risque." },
-        { title: "Nos Services", content: "Voici tous nos services d'investissement — gestion de portefeuille, planification retraite, investissement ESG et plus encore. Parcourez et choisissez ce qui correspond à vos besoins.", target: "#services", position: "top" },
+        { title: "Nos Services", content: "Voici tous nos services d'investissement — gestion de portefeuille, planification retraite, investissement ESG et plus encore. Parcourez et choisissez ce qui correspond à vos besoins.", target: "#advisory-services", position: "top" },
         { title: "Planifier une Réunion", content: "Prêt à commencer ? Cliquez sur ce bouton pour planifier un appel découverte gratuit avec l'un de nos conseillers certifiés.", target: "a[href*='investment-advisory/schedule']", position: "bottom" },
       ],
       tip: "Tous nos conseillers sont conformes MiFID II et agréés par l'AMF/CSSF.",

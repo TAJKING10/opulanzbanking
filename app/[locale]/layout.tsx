@@ -72,20 +72,6 @@ export default async function LocaleLayout({
         <link rel="apple-touch-icon" href="/images/opulanz-logo.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/images/opulanz-logo.png" />
         <link rel="apple-touch-startup-image" href="/images/opulanz-logo.png" />
-        {/* Additional hreflang tags for better SEO */}
-        {routing.locales.map((loc) => (
-          <link
-            key={loc}
-            rel="alternate"
-            hrefLang={loc}
-            href={`${process.env.NEXT_PUBLIC_BASE_URL || ''}/${loc}`}
-          />
-        ))}
-        <link
-          rel="alternate"
-          hrefLang="x-default"
-          href={`${process.env.NEXT_PUBLIC_BASE_URL || ''}/en`}
-        />
       </head>
       <body className="flex min-h-screen flex-col">
         <GoogleProvider>

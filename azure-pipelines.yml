@@ -17,7 +17,7 @@ steps:
 - script: npm ci
   displayName: 'Install dependencies'
 
-# 3️⃣ Build Next.js (reads .env.production automatically)
+# 3️⃣ Build Next.js (NEXT_PUBLIC_* vars are loaded from .env.production automatically)
 - script: npm run build
   displayName: 'Build Next.js app'
   env:

@@ -12,7 +12,7 @@ import { PayPalButtons } from "@/components/paypal-buttons";
 import { CheckCircle, ArrowLeft, ArrowRight, Clock, Video, Shield, User, Mail, Phone, Calendar, CreditCard } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const CALENDLY_URL = "https://calendly.com/opulanz-banking/investment-advisory";
+const CALENDLY_URL = "https://calendly.com/opulanz-banking/investment-advisory-clone";
 const CONSULTATION_PRICE = "99.90";
 const CONSULTATION_TITLE = "Investment Advisory Consultation";
 

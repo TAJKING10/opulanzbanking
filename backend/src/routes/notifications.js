@@ -393,6 +393,31 @@ router.post('/investment-advisory', async (req, res) => {
 });
 
 /**
+ * POST /api/notifications/investment-booking
+ * Send investment advisory booking confirmation to client + notification to invest-ad@opulanz.com
+ */
+router.post('/investment-booking', async (req, res) => {
+  try {
+    const { confirmationNumber, customerInfo, service, appointment, payment } = req.body;
+    if (!customerInfo || !customerInfo.email) {
+      return res.status(400).json({ success: false, error: 'Missing client email' });
+    }
+    await emailService.sendBookingEmails('investment_advisory', {
+      confirmationNumber: confirmationNumber || `CONF-${Date.now()}`,
+      customerInfo,
+      service: service || { id: 'investment-advisory', title: 'Investment Advisory Consultation', price: 99.90 },
+      appointment: appointment || {},
+      payment: payment || {},
+    });
+    console.log(`📧 [Investment Booking] Emails sent → client: ${customerInfo.email} · admin: invest-ad@opulanz.com`);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error sending investment booking notification:', error);
+    res.status(500).json({ success: false, error: 'Failed to send notifications', message: error.message });
+  }
+});
+
+/**
  * POST /api/notifications/accounting
  * Send accounting onboarding confirmation to client + notification to accounting@opulanz.com
  */

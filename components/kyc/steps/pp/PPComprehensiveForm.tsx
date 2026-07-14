@@ -547,16 +547,19 @@ export function PPComprehensiveForm() {
                   <option value="other">Other</option>
                 </select>
               </div>
+              {formData.originOfFunds === 'other' && (
               <div>
-                <label className="block text-sm font-medium text-brand-dark mb-2">Additional Details</label>
+                <label className="block text-sm font-medium text-brand-dark mb-2">Please specify *</label>
                 <textarea
                   value={formData.originDetails}
                   onChange={(e) => handleChange('originDetails', e.target.value)}
                   className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                   rows={3}
-                  placeholder="Provide additional context about the origin of your investment funds"
+                  placeholder="Describe the origin of your investment funds"
+                  required
                 />
               </div>
+              )}
             </div>
           )}
         </div>
@@ -765,7 +768,7 @@ export function PPComprehensiveForm() {
         onNext={handleSubmit}
         onPrev={prevStep}
         canGoPrev={true}
-        canGoNext={true}
+        canGoNext={formData.originOfFunds !== 'other' || formData.originDetails.trim().length > 0}
         nextLabel="Continue to Review"
       />
     </div>

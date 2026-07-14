@@ -178,6 +178,19 @@ export default function IndividualAccountPage() {
   const [iban, setIban] = React.useState("");
   const [bic, setBic] = React.useState("");
 
+  // Temp IDs for document attachments (uploaded immediately at file-selection so they survive sessionStorage serialisation)
+  const [indDocTempIds, setIndDocTempIds] = React.useState<string[]>([]);
+
+  async function uploadDocToTemp(file: File): Promise<string | null> {
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const r = await fetch(`${API}/api/upload/temp`, { method: "POST", body: form });
+      const j = r.ok ? await r.json() : null;
+      return j?.tempId ?? null;
+    } catch { return null; }
+  }
+
   // Computed helpers
   const userEmail = savedFormData?.email || "";
   const fullPhone = savedFormData ? `${savedFormData.phoneCode}${savedFormData.phoneNumber}` : "";
@@ -189,11 +202,12 @@ export default function IndividualAccountPage() {
     try {
       const raw = sessionStorage.getItem(SESSION_KEY);
       if (!raw) return;
-      const { step: s, savedFormData: fd, applicationId: appId, questionnaire: q } = JSON.parse(raw);
+      const { step: s, savedFormData: fd, applicationId: appId, questionnaire: q, indDocTempIds: ids } = JSON.parse(raw);
       if (s && s !== "form" && s !== "complete") {
         if (fd) setSavedFormData(fd);
         if (appId != null) setApplicationId(appId);
         if (q) setQuestionnaire(q);
+        if (ids) setIndDocTempIds(ids);
         setStep(s);
       }
     } catch { /* ignore corrupt session */ }
@@ -212,10 +226,10 @@ export default function IndividualAccountPage() {
         (savedFormData as any) || {};
       sessionStorage.setItem(
         SESSION_KEY,
-        JSON.stringify({ step, savedFormData: savedFormData ? serializableFormData : null, applicationId, questionnaire })
+        JSON.stringify({ step, savedFormData: savedFormData ? serializableFormData : null, applicationId, questionnaire, indDocTempIds })
       );
     } catch { /* quota or serialisation error – non-fatal */ }
-  }, [step, savedFormData, applicationId, questionnaire]);
+  }, [step, savedFormData, applicationId, questionnaire, indDocTempIds]);
 
   // Close dropdown on outside click
   React.useEffect(() => {
@@ -307,24 +321,13 @@ export default function IndividualAccountPage() {
       const appId = result.data?.id || null;
       setApplicationId(appId);
 
-      // Upload KYC documents to temp store so admin email gets attachments (non-fatal)
-      const indTempIds: string[] = [];
-      for (const file of [savedFormData?.idDocument?.[0], savedFormData?.selfie?.[0], savedFormData?.proofOfAddress?.[0]].filter(Boolean) as File[]) {
-        try {
-          const f = new FormData(); f.append("file", file);
-          const r = await fetch(`${API}/api/upload/temp`, { method: "POST", body: f });
-          const j = r.ok ? await r.json() : null;
-          if (j?.tempId) indTempIds.push(j.tempId);
-        } catch { /* non-fatal */ }
-      }
-
       // Send confirmation to client + admin notification to info@opulanz.com (non-fatal)
       fetch(`${API}/api/notifications/open-account`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           applicationId: appId || `OPL-IND-${Date.now()}`,
-          tempIds: indTempIds,
+          tempIds: indDocTempIds,
           payload: {
             email: savedFormData?.email,
             firstName: savedFormData?.firstName,
@@ -1123,15 +1126,15 @@ export default function IndividualAccountPage() {
                 <p className="text-sm text-brand-grayMed">{tAccount("form.documentDescription")}</p>
                 <div className="space-y-2">
                   <Label>{t("whitelabel.uploadId")}*</Label>
-                  <FileDropzone multiple={false} onFilesChange={(f) => setValue("idDocument", f)} error={errors.idDocument?.message} />
+                  <FileDropzone multiple={false} onFilesChange={async (f) => { setValue("idDocument", f); if (f[0]) { const id = await uploadDocToTemp(f[0]); if (id) setIndDocTempIds(prev => [...prev, id]); } }} error={errors.idDocument?.message} />
                 </div>
                 <div className="space-y-2">
                   <Label>{t("whitelabel.uploadSelfie")}*</Label>
-                  <FileDropzone multiple={false} acceptedTypes={[".jpg", ".jpeg", ".png"]} onFilesChange={(f) => setValue("selfie", f)} error={errors.selfie?.message} />
+                  <FileDropzone multiple={false} acceptedTypes={[".jpg", ".jpeg", ".png"]} onFilesChange={async (f) => { setValue("selfie", f); if (f[0]) { const id = await uploadDocToTemp(f[0]); if (id) setIndDocTempIds(prev => [...prev, id]); } }} error={errors.selfie?.message} />
                 </div>
                 <div className="space-y-2">
                   <Label>{t("whitelabel.uploadPoa")}*</Label>
-                  <FileDropzone multiple={false} onFilesChange={(f) => setValue("proofOfAddress", f)} error={errors.proofOfAddress?.message} />
+                  <FileDropzone multiple={false} onFilesChange={async (f) => { setValue("proofOfAddress", f); if (f[0]) { const id = await uploadDocToTemp(f[0]); if (id) setIndDocTempIds(prev => [...prev, id]); } }} error={errors.proofOfAddress?.message} />
                 </div>
               </div>
 

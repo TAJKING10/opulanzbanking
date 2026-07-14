@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { CheckCircle, ArrowLeft, ArrowRight, Clock, Video, Shield, User, Mail, Phone, Calendar } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const CALENDLY_BASE_EN = "https://calendly.com/opulanz-banking/investment-advisory-clone";
+const CALENDLY_BASE_EN = "https://calendly.com/opulanz-banking/life-insurance";
 const CALENDLY_BASE_FR = "https://calendly.com/opulanz-banking/assurance-vie";
 
 type Step = "contact" | "calendar" | "confirmation";

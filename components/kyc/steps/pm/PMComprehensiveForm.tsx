@@ -632,9 +632,11 @@ export function PMComprehensiveForm() {
                   value={formData.originDetails}
                   onChange={(e) => handleChange('originDetails', e.target.value)}
                   className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
-                  rows={3}
+                  rows={6}
+                  maxLength={2000}
                   placeholder={t('placeholders.originDetails')}
                 />
+                <p className="text-xs text-brand-grayMed mt-1 text-right">{formData.originDetails.length} / 2000</p>
               </div>
             </div>
           )}

@@ -261,10 +261,12 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
               id="sourceOfFundsDetails"
               value={formState.sourceOfFundsDetails}
               onChange={(e) => updateField("sourceOfFundsDetails", e.target.value)}
-              placeholder="Provide details about the source of funds"
-              rows={3}
+              placeholder="Describe the origin of your investment funds in detail (e.g. proceeds from sale of property, business income accumulated over X years, inheritance from…)"
+              rows={6}
+              maxLength={2000}
               required
             />
+            <p className="text-xs text-brand-grayMed text-right">{formState.sourceOfFundsDetails.length} / 2000</p>
           </div>
         )}
 
@@ -294,10 +296,12 @@ export function FinancialProfileStep({ data, onUpdate, onNext }: FinancialProfil
               id="sourceOfWealthDetails"
               value={formState.sourceOfWealthDetails}
               onChange={(e) => updateField("sourceOfWealthDetails", e.target.value)}
-              placeholder="Provide details about the source of wealth"
-              rows={3}
+              placeholder="Describe how you accumulated your overall wealth in detail (e.g. 15 years of professional income, sale of business, inheritance…)"
+              rows={6}
+              maxLength={2000}
               required
             />
+            <p className="text-xs text-brand-grayMed text-right">{formState.sourceOfWealthDetails.length} / 2000</p>
           </div>
         )}
       </div>

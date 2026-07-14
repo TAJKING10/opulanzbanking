@@ -554,10 +554,12 @@ export function PPComprehensiveForm() {
                   value={formData.originDetails}
                   onChange={(e) => handleChange('originDetails', e.target.value)}
                   className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
-                  rows={3}
-                  placeholder="Describe the origin of your investment funds"
+                  rows={6}
+                  maxLength={2000}
+                  placeholder="Describe the origin of your investment funds in detail (e.g. proceeds from sale of property, business income accumulated over X years, inheritance from…)"
                   required
                 />
+                <p className="text-xs text-brand-grayMed mt-1 text-right">{formData.originDetails.length} / 2000</p>
               </div>
               )}
             </div>

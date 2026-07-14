@@ -65,18 +65,19 @@ export function DocUpload({
       const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
       const form = new FormData();
       form.append("file", file);
-      const res = await fetch(`${API}/api/upload/temp`, { method: "POST", body: form });
-      const json = res.ok ? await res.json() : null;
-      const fileId = json?.tempId || `local_${Date.now()}`;
-      onUpload({ type: documentType, fileId, fileName: file.name, fileSize: file.size });
+      // Try up to 2 times so transient errors don't silently drop the attachment
+      let tempId: string | null = null;
+      for (let attempt = 0; attempt < 2 && !tempId; attempt++) {
+        try {
+          const res = await fetch(`${API}/api/upload/temp`, { method: "POST", body: form });
+          const json = res.ok ? await res.json() : null;
+          tempId = json?.tempId ?? null;
+        } catch { /* retry */ }
+      }
+      // Only pass a real tempId — omit fileId when upload failed so it won't pollute the tempIds list
+      onUpload({ type: documentType, fileId: tempId ?? "", fileName: file.name, fileSize: file.size });
     } catch {
-      // Non-fatal: track the file locally so the UI still shows it uploaded
-      onUpload({
-        type: documentType,
-        fileId: `local_${Date.now()}`,
-        fileName: file.name,
-        fileSize: file.size,
-      });
+      onUpload({ type: documentType, fileId: "", fileName: file.name, fileSize: file.size });
     } finally {
       setIsUploading(false);
     }

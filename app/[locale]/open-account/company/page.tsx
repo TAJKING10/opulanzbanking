@@ -182,16 +182,33 @@ export default function CompanyAccountPage() {
 
   const SESSION_KEY = "opulanz_corp_account_v1";
 
+  // tempIds of documents uploaded to backend (strings → survive sessionStorage)
+  const [corpDocTempIds, setCorpDocTempIds] = React.useState<string[]>([]);
+
+  // Upload a single File to the temp store and return its tempId (or null on failure)
+  async function uploadDocToTemp(file: File): Promise<string | null> {
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const r = await fetch(`${API}/api/upload/temp`, { method: "POST", body: form });
+      const j = r.ok ? await r.json() : null;
+      return j?.tempId ?? null;
+    } catch {
+      return null;
+    }
+  }
+
   // Restore session on mount so the user can resume after navigating away
   React.useEffect(() => {
     try {
       const raw = sessionStorage.getItem(SESSION_KEY);
       if (!raw) return;
-      const { step: s, savedFormData: fd, applicationId: appId, questionnaire: q } = JSON.parse(raw);
+      const { step: s, savedFormData: fd, applicationId: appId, questionnaire: q, corpDocTempIds: docIds } = JSON.parse(raw);
       if (s && s !== "form" && s !== "complete") {
         if (fd) setSavedFormData(fd);
         if (appId != null) setApplicationId(appId);
         if (q) setQuestionnaire(q);
+        if (Array.isArray(docIds)) setCorpDocTempIds(docIds);
         setStep(s);
       }
     } catch { /* ignore corrupt session */ }
@@ -209,10 +226,10 @@ export default function CompanyAccountPage() {
         (savedFormData as any) || {};
       sessionStorage.setItem(
         SESSION_KEY,
-        JSON.stringify({ step, savedFormData: savedFormData ? serializableFormData : null, applicationId, questionnaire })
+        JSON.stringify({ step, savedFormData: savedFormData ? serializableFormData : null, applicationId, questionnaire, corpDocTempIds })
       );
     } catch { /* non-fatal */ }
-  }, [step, savedFormData, applicationId, questionnaire]);
+  }, [step, savedFormData, applicationId, questionnaire, corpDocTempIds]);
 
   // Wipe session and return to the first step
   const handleStartOver = React.useCallback(() => {
@@ -328,24 +345,14 @@ export default function CompanyAccountPage() {
       const appId = result.data?.id || null;
       setApplicationId(appId);
 
-      // Upload company documents to temp store so admin email gets attachments (non-fatal)
-      const corpTempIds: string[] = [];
-      for (const file of [savedFormData?.statutes?.[0], savedFormData?.registerExtract?.[0], savedFormData?.uboDeclaration?.[0]].filter(Boolean) as File[]) {
-        try {
-          const f = new FormData(); f.append("file", file);
-          const r = await fetch(`${API}/api/upload/temp`, { method: "POST", body: f });
-          const j = r.ok ? await r.json() : null;
-          if (j?.tempId) corpTempIds.push(j.tempId);
-        } catch { /* non-fatal */ }
-      }
-
       // Send confirmation to client + admin notification to info@opulanz.com (non-fatal)
+      // corpDocTempIds were collected at file-selection time (strings, survive sessionStorage)
       fetch(`${API}/api/notifications/open-account`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           applicationId: appId || `OPL-CORP-${Date.now()}`,
-          tempIds: corpTempIds,
+          tempIds: corpDocTempIds,
           payload: {
             email: savedFormData?.contactEmail,
             firstName: savedFormData?.representativeFirstName,
@@ -990,15 +997,24 @@ export default function CompanyAccountPage() {
                 <p className="text-sm text-brand-grayMed">Please upload clear copies of the following documents (max 15MB each)</p>
                 <div className="space-y-2">
                   <Label>{t("whitelabel.uploadStatutes")}*</Label>
-                  <FileDropzone multiple={false} onFilesChange={(f) => setValue("statutes", f)} error={errors.statutes?.message} />
+                  <FileDropzone multiple={false} onFilesChange={async (f) => {
+                    setValue("statutes", f);
+                    if (f[0]) { const id = await uploadDocToTemp(f[0]); if (id) setCorpDocTempIds(prev => [...prev, id]); }
+                  }} error={errors.statutes?.message} />
                 </div>
                 <div className="space-y-2">
                   <Label>{t("whitelabel.uploadRegister")}*</Label>
-                  <FileDropzone multiple={false} onFilesChange={(f) => setValue("registerExtract", f)} error={errors.registerExtract?.message} />
+                  <FileDropzone multiple={false} onFilesChange={async (f) => {
+                    setValue("registerExtract", f);
+                    if (f[0]) { const id = await uploadDocToTemp(f[0]); if (id) setCorpDocTempIds(prev => [...prev, id]); }
+                  }} error={errors.registerExtract?.message} />
                 </div>
                 <div className="space-y-2">
                   <Label>{t("whitelabel.uploadUbo")}*</Label>
-                  <FileDropzone multiple={false} onFilesChange={(f) => setValue("uboDeclaration", f)} error={errors.uboDeclaration?.message} />
+                  <FileDropzone multiple={false} onFilesChange={async (f) => {
+                    setValue("uboDeclaration", f);
+                    if (f[0]) { const id = await uploadDocToTemp(f[0]); if (id) setCorpDocTempIds(prev => [...prev, id]); }
+                  }} error={errors.uboDeclaration?.message} />
                 </div>
               </div>
 

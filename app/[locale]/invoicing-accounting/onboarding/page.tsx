@@ -263,7 +263,7 @@ function AccountingOnboardingInner() {
               applicationId: appId,
               email: formData.primaryContact?.email || "",
               // Attach uploaded document files to the admin email
-              tempIds: (formData.documents || []).map((doc: any) => doc.fileId).filter(Boolean),
+              tempIds: (formData.documents || []).map((doc: any) => doc.fileId).filter((id: string) => id && !id.startsWith("local_")),
               legalName: formData.legalName,
               tradeName: formData.tradeName,
               companyType: formData.companyType,

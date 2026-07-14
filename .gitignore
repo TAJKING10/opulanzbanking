@@ -57,3 +57,4 @@ nul
 *.mobileprovision
 distribution_key.key
 *.p12
+.next/

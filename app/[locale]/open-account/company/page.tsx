@@ -180,6 +180,50 @@ export default function CompanyAccountPage() {
   const userEmail = savedFormData?.contactEmail || "";
   const fullPhone = savedFormData ? `${savedFormData.repPhoneCode}${savedFormData.representativePhone}` : "";
 
+  const SESSION_KEY = "opulanz_corp_account_v1";
+
+  // Restore session on mount so the user can resume after navigating away
+  React.useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(SESSION_KEY);
+      if (!raw) return;
+      const { step: s, savedFormData: fd, applicationId: appId, questionnaire: q } = JSON.parse(raw);
+      if (s && s !== "form" && s !== "complete") {
+        if (fd) setSavedFormData(fd);
+        if (appId != null) setApplicationId(appId);
+        if (q) setQuestionnaire(q);
+        setStep(s);
+      }
+    } catch { /* ignore corrupt session */ }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist step + data whenever they change (exclude File objects – not serialisable)
+  React.useEffect(() => {
+    if (step === "form" || step === "complete") {
+      sessionStorage.removeItem(SESSION_KEY);
+      return;
+    }
+    try {
+      const { statutes, registerExtract, uboDeclaration, ...serializableFormData } =
+        (savedFormData as any) || {};
+      sessionStorage.setItem(
+        SESSION_KEY,
+        JSON.stringify({ step, savedFormData: savedFormData ? serializableFormData : null, applicationId, questionnaire })
+      );
+    } catch { /* non-fatal */ }
+  }, [step, savedFormData, applicationId, questionnaire]);
+
+  // Wipe session and return to the first step
+  const handleStartOver = React.useCallback(() => {
+    sessionStorage.removeItem(SESSION_KEY);
+    setSavedFormData(null);
+    setApplicationId(null);
+    setQuestionnaire({ sourceOfFunds: [], accountPurpose: [], transactionNature: "", typeOfInflow: [], expectedInflow: "", usSecurities: "" });
+    setStep("form");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Close dropdown outside click
   React.useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -571,6 +615,20 @@ export default function CompanyAccountPage() {
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-brand-dark">Business Identity Verification</h2>
             <p className="text-brand-grayMed mt-1">We need to verify your company and representative identity.</p>
+          </div>
+          <div className="mb-4 flex items-center justify-between">
+            <button
+              onClick={() => setStep("questionnaire")}
+              className="flex items-center gap-1 text-sm text-brand-grayMed hover:text-brand-dark transition-colors"
+            >
+              ← Back to questionnaire
+            </button>
+            <button
+              onClick={handleStartOver}
+              className="text-xs text-red-500 hover:text-red-700 underline transition-colors"
+            >
+              Start Over
+            </button>
           </div>
           <SumsubKycWidget
             userId={userEmail}

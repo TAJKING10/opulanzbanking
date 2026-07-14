@@ -711,9 +711,14 @@ export function PPComprehensiveForm() {
                   onChange={(e) => handleChange('initialInvestment', e.target.value)}
                   className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                   placeholder="e.g., 50000"
+                  min="10000"
+                  step="1"
                   required
                 />
-                <p className="text-xs text-brand-grayMed mt-2">Minimum: €10,000</p>
+                {formData.initialInvestment !== '' && Number(formData.initialInvestment) < 10000 && (
+                  <p className="text-xs text-red-500 mt-1">Minimum initial investment is €10,000</p>
+                )}
+                <p className="text-xs text-brand-grayMed mt-1">Minimum: €10,000</p>
               </div>
             </div>
           )}
@@ -784,9 +789,31 @@ export function PPComprehensiveForm() {
         onPrev={prevStep}
         canGoPrev={true}
         canGoNext={
+          // Section 1 – Identity required text fields
+          formData.firstName.trim() !== '' &&
+          formData.lastName.trim() !== '' &&
+          formData.dateOfBirth !== '' &&
+          formData.placeOfBirth.trim() !== '' &&
+          formData.nationality.trim() !== '' &&
+          formData.addressLine1.trim() !== '' &&
+          formData.city.trim() !== '' &&
+          formData.postalCode.trim() !== '' &&
+          formData.country.trim() !== '' &&
+          formData.taxCountry.trim() !== '' &&
+          formData.taxIdentificationNumber.trim() !== '' &&
+          formData.professionalStatus !== '' &&
+          // Section 3 – Financial: annual income > 0 and income source selected
           Number(formData.annualIncome) > 0 &&
           formData.incomeSource !== '' &&
-          (formData.originOfFunds !== 'other' || formData.originDetails.trim().length > 0)
+          // Section 4 – Origin of funds selected; details required when "other"
+          formData.originOfFunds !== '' &&
+          (formData.originOfFunds !== 'other' || formData.originDetails.trim().length > 0) &&
+          // Section 6 – Initial investment minimum €10,000
+          Number(formData.initialInvestment) >= 10000 &&
+          // Section 7 – Required consents
+          formData.consentDataProcessing &&
+          formData.consentKYC &&
+          formData.consentElectronic
         }
         nextLabel="Continue to Review"
       />

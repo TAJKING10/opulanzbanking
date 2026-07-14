@@ -56,7 +56,7 @@ export function PPComprehensiveForm() {
     hasJointHolder: (data as any)?.holders?.holder2 ? true : false,
 
     // Family Information
-    numberOfDependents: (data as any)?.family?.numberOfDependents || 0,
+    numberOfDependents: (data as any)?.family?.numberOfDependents ?? 0,
 
     // Financial Situation
     annualIncome: (data as any)?.financialSituation?.annualIncome || '',
@@ -394,6 +394,7 @@ export function PPComprehensiveForm() {
                       />
                     </div>
                   </div>
+                  {['employed', 'self-employed'].includes(formData.professionalStatus) && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-brand-dark mb-2">Employer Name</label>
@@ -414,6 +415,7 @@ export function PPComprehensiveForm() {
                       />
                     </div>
                   </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -431,7 +433,7 @@ export function PPComprehensiveForm() {
                   type="number"
                   min="0"
                   value={formData.numberOfDependents}
-                  onChange={(e) => handleChange('numberOfDependents', parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleChange('numberOfDependents', e.target.value === '' ? 0 : parseInt(e.target.value))}
                   className="w-full px-4 py-2 border border-brand-grayLight rounded-lg focus:ring-2 focus:ring-brand-gold"
                 />
               </div>

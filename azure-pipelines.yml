@@ -8,7 +8,7 @@ pool:
 
 steps:
 # 1️⃣ Use Node.js 20
-- task: NodeTool@1
+- task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
@@ -16,6 +16,8 @@ steps:
 # 2️⃣ Install dependencies
 - script: npm install --legacy-peer-deps
   displayName: 'Install dependencies'
+  env:
+    NODE_ENV: development
 
 # 3️⃣ Build Next.js (NEXT_PUBLIC_* vars are loaded from .env.production automatically)
 - script: npm run build

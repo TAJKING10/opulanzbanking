@@ -50,13 +50,27 @@ export default function LifeInsuranceSchedulePage({ params: { locale } }: { para
   // Load Calendly script when calendar step is active
   useEffect(() => {
     if (step === "calendar" && !calendlyScriptLoaded) {
+      const win = window as any;
+      if (win.Calendly) { setCalendlyScriptLoaded(true); return; }
       const existing = document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]');
-      if (existing) { setCalendlyScriptLoaded(true); return; }
+      if (existing) {
+        const poll = setInterval(() => {
+          if (win.Calendly) { clearInterval(poll); setCalendlyScriptLoaded(true); }
+        }, 100);
+        return () => clearInterval(poll);
+      }
       const script = document.createElement('script');
       script.src = 'https://assets.calendly.com/assets/external/widget.js';
       script.async = true;
       script.onload = () => setCalendlyScriptLoaded(true);
       document.head.appendChild(script);
+    }
+  }, [step, calendlyScriptLoaded]);
+
+  // Initialise the inline widget once the script is ready
+  useEffect(() => {
+    if (step === "calendar" && calendlyScriptLoaded) {
+      (window as any).Calendly?.initInlineWidgets?.();
     }
   }, [step, calendlyScriptLoaded]);
 

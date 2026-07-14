@@ -1,17 +1,41 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { useEffect } from "react";
+import { useLocale } from "next-intl";
 import { Hero } from "@/components/hero";
 import { Card, CardContent } from "@/components/ui/card";
-import Script from "next/script";
 
 export default function ScheduleConsultationPage() {
-  const t = useTranslations();
   const locale = useLocale();
   const calendlyUrl = locale === "fr"
     ? "https://calendly.com/opulanz-banking/conseil-fiscal"
     : "https://calendly.com/opulanz-banking/tax-advisory";
+
+  // Load Calendly script and initialise inline widgets
+  useEffect(() => {
+    const win = window as any;
+    const init = () => win.Calendly?.initInlineWidgets?.();
+
+    if (win.Calendly) {
+      init();
+      return;
+    }
+
+    const existing = document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]');
+    if (existing) {
+      const poll = setInterval(() => {
+        if (win.Calendly) { clearInterval(poll); init(); }
+      }, 100);
+      return () => clearInterval(poll);
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    script.onload = init;
+    document.head.appendChild(script);
+  }, []);
 
   return (
     <>
@@ -33,12 +57,11 @@ export default function ScheduleConsultationPage() {
 
           <Card className="border-none shadow-lg">
             <CardContent className="p-4 md:p-8">
-              {/* Calendly inline widget */}
               <div
                 key={locale}
                 className="calendly-inline-widget"
                 data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d8ba4a`}
-                style={{ minWidth: '320px', height: '700px' }}
+                style={{ minWidth: "320px", height: "700px" }}
               />
             </CardContent>
           </Card>
@@ -86,40 +109,23 @@ export default function ScheduleConsultationPage() {
           <div className="mt-12 rounded-lg bg-brand-off p-8">
             <h3 className="mb-4 text-xl font-bold text-brand-dark">What to Prepare for Your Consultation</h3>
             <ul className="space-y-3 text-brand-grayMed">
-              <li className="flex items-start gap-3">
-                <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Overview of your business structure and current tax situation</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Recent tax returns (if available)</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>List of questions or specific concerns you'd like to address</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Information about any international operations or cross-border activities</span>
-              </li>
+              {[
+                "Overview of your business structure and current tax situation",
+                "Recent tax returns (if available)",
+                "List of questions or specific concerns you'd like to address",
+                "Information about any international operations or cross-border activities",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
       </section>
-
-      {/* Load Calendly widget script */}
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
     </>
   );
 }

@@ -1,572 +1,343 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations, useLocale } from "next-intl";
-import { Hero } from "@/components/hero";
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Script from "next/script";
-import { useState, useEffect, useRef } from "react";
-import { PayPalButtons } from "@/components/paypal-buttons";
+import { CheckCircle, ArrowLeft, ArrowRight, Clock, Video, Shield, User, Mail, Phone, Calendar } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const CALENDLY_URL = "https://calendly.com/opulanz-banking/investment-advisory";
 
-function fetchWithTimeout(url: string, options: RequestInit, timeoutMs = 5000) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeoutMs);
-  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(id));
+type Step = "contact" | "calendar" | "confirmation";
+
+interface ContactData { firstName: string; lastName: string; email: string; phone: string; }
+interface CalendlyData { eventUri?: string; inviteeUri?: string; startTime?: string; endTime?: string; }
+
+function fmtDate(iso?: string) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+}
+function fmtTime(iso?: string) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
 }
 
-export default function ScheduleInvestmentMeetingPage() {
-  const t = useTranslations("investmentAdvisory.schedule");
-  const locale = useLocale();
-  const dateLocale = locale === "fr" ? "fr-FR" : "en-US";
-
-  const [step, setStep] = useState<'contact' | 'calendar' | 'payment' | 'confirmation'>('contact');
-  const [contact, setContact] = useState({ firstName: "", lastName: "", email: "" });
-  const [errors, setErrors] = useState<{ firstName?: string; lastName?: string; email?: string }>({});
-  const [bookingData, setBookingData] = useState<any>(null);
+export default function InvestmentAdvisorySchedulePage({ params: { locale } }: { params: { locale: string } }) {
+  const router = useRouter();
+  const [step, setStep] = useState<Step>("contact");
+  const [contact, setContact] = useState<ContactData>({ firstName: "", lastName: "", email: "", phone: "" });
+  const [errors, setErrors] = useState<Partial<ContactData>>({});
+  const [calendly, setCalendly] = useState<CalendlyData>({});
   const [loading, setLoading] = useState(false);
-  const [paymentCompleted, setPaymentCompleted] = useState(false);
-  const [confirmationNumber, setConfirmationNumber] = useState('');
+  const [confirmationNumber, setConfirmationNumber] = useState("");
+  const [submitError, setSubmitError] = useState("");
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const calendlyRef = useRef<HTMLDivElement>(null);
-  // Calendly only sends URIs in event_scheduled — capture the actual ISO start time
-  // from date_and_time_selected which fires when the user picks a slot.
-  const selectedStartTimeRef = useRef<string | null>(null);
 
   const fullName = `${contact.firstName} ${contact.lastName}`.trim();
+  const dateStr = fmtDate(calendly.startTime);
+  const timeStr = fmtTime(calendly.startTime);
 
-  // If Calendly script was already loaded by a previous page navigation, onLoad won't fire
+  // Load Calendly script
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).Calendly) {
-      setCalendlyLoaded(true);
+    const win = window as any;
+    if (win.Calendly) { setCalendlyLoaded(true); return; }
+    const existing = document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]');
+    if (existing) {
+      const poll = setInterval(() => {
+        if (win.Calendly) { clearInterval(poll); setCalendlyLoaded(true); }
+      }, 100);
+      return () => clearInterval(poll);
     }
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    script.onload = () => setCalendlyLoaded(true);
+    document.head.appendChild(script);
   }, []);
 
+  // Initialise inline widget when step = calendar and script is loaded
   useEffect(() => {
-    const handleCalendlyEvent = (e: MessageEvent) => {
-      if (e.data.event && e.data.event.indexOf('calendly') === 0) {
-        if (e.data.event === 'calendly.date_and_time_selected') {
-          // Store the ISO start time; Calendly omits it from event_scheduled payload
-          selectedStartTimeRef.current = e.data.payload?.invitee_start_time ?? null;
-        }
-        if (e.data.event === 'calendly.event_scheduled') {
-          const startTime =
-            e.data.payload?.event?.start_time ??
-            selectedStartTimeRef.current;
-          setBookingData({
-            eventUri: e.data.payload.event.uri,
-            inviteeUri: e.data.payload.invitee.uri,
-            eventStartTime: startTime,
-            eventEndTime: e.data.payload?.event?.end_time ?? null,
-          });
-          setStep('payment');
-        }
-      }
-    };
-
-    window.addEventListener('message', handleCalendlyEvent);
-    return () => window.removeEventListener('message', handleCalendlyEvent);
-  }, []);
-
-  useEffect(() => {
-    if (step === 'calendar' && calendlyLoaded && calendlyRef.current) {
-      calendlyRef.current.innerHTML = '';
-      // @ts-ignore
-      window.Calendly?.initInlineWidget({
-        url: `https://calendly.com/opulanz-banking/investment-advisory?hide_event_type_details=1&primary_color=d0ab08&locale=${locale}`,
+    if (step === "calendar" && calendlyLoaded && calendlyRef.current) {
+      calendlyRef.current.innerHTML = "";
+      (window as any).Calendly?.initInlineWidget({
+        url: `${CALENDLY_URL}?hide_event_type_details=1&primary_color=b59354`,
         parentElement: calendlyRef.current,
         prefill: { name: fullName, email: contact.email },
       });
     }
-  }, [step, calendlyLoaded, locale]);
+  }, [step, calendlyLoaded]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Auto-proceed to confirmation after payment completes
+  // Listen for Calendly booking event
   useEffect(() => {
-    if (!paymentCompleted) return;
-    const timer = setTimeout(() => { handlePaymentComplete(); }, 1200);
-    return () => clearTimeout(timer);
-  }, [paymentCompleted]);
+    const handle = (e: MessageEvent) => {
+      if (e.data?.event === "calendly.event_scheduled") {
+        const p = e.data.payload || {};
+        const data: CalendlyData = {
+          eventUri: p.event?.uri,
+          inviteeUri: p.invitee?.uri,
+          startTime: p.event?.start_time,
+          endTime: p.event?.end_time,
+        };
+        setCalendly(data);
+        submitBooking(data);
+      }
+    };
+    window.addEventListener("message", handle);
+    return () => window.removeEventListener("message", handle);
+  }, [contact]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleContactSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const errs: { firstName?: string; lastName?: string; email?: string } = {};
-    if (!contact.firstName.trim()) errs.firstName = t("firstNameRequired");
-    if (!contact.lastName.trim()) errs.lastName = t("lastNameRequired");
-    if (!contact.email.trim()) errs.email = t("emailRequired");
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)) errs.email = t("emailInvalid");
+    const errs: Partial<ContactData> = {};
+    if (!contact.firstName.trim()) errs.firstName = "First name is required";
+    if (!contact.lastName.trim())  errs.lastName  = "Last name is required";
+    if (!contact.email.trim())     errs.email     = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)) errs.email = "Enter a valid email";
+    if (!contact.phone.trim())     errs.phone     = "Phone number is required";
     setErrors(errs);
     if (Object.keys(errs).length) return;
-    setStep('calendar');
+    setStep("calendar");
   }
 
-  const handleDownloadReceipt = () => {
-    const startDate = bookingData?.eventStartTime ? new Date(bookingData.eventStartTime) : null;
-    const dateStr = startDate
-      ? startDate.toLocaleDateString(dateLocale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-      : '—';
-    const timeStr = startDate
-      ? startDate.toLocaleTimeString(dateLocale, { hour: '2-digit', minute: '2-digit' })
-      : '—';
-    const paymentDateStr = new Date().toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' });
-
-    const html = `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8">
-<title>Opulanz Receipt ${confirmationNumber}</title>
-<style>
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:620px;margin:40px auto;padding:0 24px;color:#252623}
-  .print-note{background:#DBEAFE;border:1px solid #93C5FD;border-radius:6px;padding:12px 16px;font-size:12px;margin-bottom:24px;display:flex;align-items:center;gap:8px}
-  .print-note button{margin-left:auto;background:#1E3A5F;color:#fff;border:none;border-radius:4px;padding:6px 14px;font-size:12px;cursor:pointer}
-  .header{text-align:center;padding-bottom:20px;border-bottom:2px solid #B59354;margin-bottom:24px}
-  .logo{font-size:22px;font-weight:800;letter-spacing:.12em;color:#252623}
-  .logo span{color:#B59354}
-  .sub{font-size:13px;color:#6E6A60;margin-top:4px}
-  .conf-pill{display:inline-block;background:#FAF6EE;border:1.5px solid #B59354;border-radius:6px;padding:6px 16px;font-family:monospace;font-size:14px;font-weight:700;color:#886844;margin:12px 0}
-  .row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #E4DFD5;font-size:13px}
-  .row:last-child{border-bottom:none}
-  .lbl{color:#6E6A60}
-  .val{font-weight:600;color:#252623}
-  .total-row{padding:14px 0;border-top:2px solid #B59354;margin-top:8px}
-  .total-row .lbl{font-weight:700;color:#252623}
-  .total-row .val{font-size:18px;font-weight:700;color:#B59354}
-  .footer{margin-top:28px;padding-top:16px;border-top:1px solid #E4DFD5;font-size:11px;color:#6E6A60;text-align:center}
-  @media print{.print-note{display:none}}
-</style>
-</head>
-<body>
-<div class="print-note">
-  📄 To save as PDF: File → Print → Save as PDF
-  <button onclick="window.print()">Print / Save as PDF</button>
-</div>
-<div class="header">
-  <div class="logo">OPUL<span>ANZ</span></div>
-  <div class="sub">Investment Advisory — Payment Receipt</div>
-  <div class="conf-pill">${confirmationNumber}</div>
-</div>
-<div class="row"><span class="lbl">Service</span><span class="val">Investment Advisory Consultation</span></div>
-<div class="row"><span class="lbl">Client Name</span><span class="val">${fullName}</span></div>
-<div class="row"><span class="lbl">Email</span><span class="val">${contact.email}</span></div>
-<div class="row"><span class="lbl">Appointment Date</span><span class="val">${dateStr}</span></div>
-<div class="row"><span class="lbl">Appointment Time</span><span class="val">${timeStr}</span></div>
-<div class="row"><span class="lbl">Duration</span><span class="val">45 minutes</span></div>
-<div class="row"><span class="lbl">Format</span><span class="val">Video Conference</span></div>
-<div class="row"><span class="lbl">Payment Method</span><span class="val">PayPal</span></div>
-<div class="row"><span class="lbl">Payment Date</span><span class="val">${paymentDateStr}</span></div>
-<div class="row total-row"><span class="lbl">Total Paid</span><span class="val">€99.90</span></div>
-<div class="footer">Opulanz Banking · support@opulanzbanking.com<br>This receipt confirms your paid consultation booking.</div>
-</body></html>`;
-
-    const blob = new Blob([html], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Opulanz-Receipt-${confirmationNumber}.html`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const handlePaymentComplete = async () => {
+  async function submitBooking(cal: CalendlyData) {
     setLoading(true);
-    const confNum = `INV-${Date.now().toString(36).toUpperCase()}`;
-    setConfirmationNumber(confNum);
-
+    setSubmitError("");
     try {
-      if (!bookingData) throw new Error('No booking data available');
-
-      const startDate = bookingData.eventStartTime ? new Date(bookingData.eventStartTime) : null;
-
-      await fetchWithTimeout(`${API}/api/appointments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(`${API}/api/appointments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           full_name: fullName,
           email: contact.email,
-          calendly_id: bookingData.eventUri,
-          calendly_event_uri: bookingData.eventUri,
-          meeting_type: 'Investment Advisory',
-          status: 'confirmed',
-          start_time: bookingData.eventStartTime,
-          end_time: bookingData.eventEndTime,
+          phone: contact.phone,
+          calendly_event_uri: cal.eventUri || "",
+          calendly_invitee_uri: cal.inviteeUri || "",
+          meeting_type: "Investment Advisory",
+          status: "confirmed",
+          start_time: cal.startTime || new Date().toISOString(),
+          end_time: cal.endTime || "",
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          location: 'Video Conference',
-          notes: 'Paid consultation - €99.90'
-        })
-      }).catch(() => null);
-
-      await fetchWithTimeout(`${API}/api/notifications/appointment`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customerName: fullName,
-          customerEmail: contact.email,
-          appointmentDate: startDate ? startDate.toLocaleDateString(dateLocale, {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-          }) : '',
-          appointmentTime: startDate ? startDate.toLocaleTimeString(dateLocale, {
-            hour: '2-digit', minute: '2-digit'
-          }) : '',
-          meetingType: 'Investment Advisory'
-        })
-      }).catch(() => null);
-
-      setStep('confirmation');
-    } catch (error) {
-      console.error('Error processing payment:', error);
-      setStep('confirmation');
+          location: "Video Conference",
+          notes: "Free consultation booking",
+        }),
+      });
+      const json = await res.json();
+      if (json.confirmation_number) setConfirmationNumber(json.confirmation_number);
+      else if (json.data?.confirmation_number) setConfirmationNumber(json.data.confirmation_number);
+    } catch (err) {
+      console.error("Booking submission failed:", err);
+      setSubmitError("Booking saved via Calendly. Our team will confirm by email shortly.");
     } finally {
       setLoading(false);
+      setStep("confirmation");
     }
-  };
+  }
+
+  const stepList: Step[] = ["contact", "calendar", "confirmation"];
+  const stepIdx = stepList.indexOf(step);
 
   return (
     <>
-      <Hero
-        title={t("heroTitle")}
-        subtitle={t("heroSubtitle")}
-      />
+      {/* Hero */}
+      <section className="hero-gradient py-12 md:py-16">
+        <div className="container mx-auto max-w-4xl px-6 text-center">
+          <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+            Talk to an Investment Advisor
+          </h1>
+          <p className="text-lg text-white/90">
+            Schedule a free consultation with one of our licensed investment advisors.
+          </p>
+        </div>
+      </section>
 
       <section className="bg-white py-12">
-        <div className="container mx-auto max-w-5xl px-6">
+        <div className="container mx-auto max-w-4xl px-6">
 
-          {/* Step 0: Contact Details */}
-          {step === 'contact' && (
+          {/* Progress indicator */}
+          {step !== "confirmation" && (
+            <div className="mb-10 flex items-center justify-center gap-2">
+              {(["contact", "calendar"] as Step[]).map((s, i) => (
+                <React.Fragment key={s}>
+                  <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-all ${
+                    i < stepIdx ? "bg-brand-gold text-white" :
+                    i === stepIdx ? "bg-brand-goldLight text-brand-goldDark ring-4 ring-brand-goldLight/30" :
+                    "bg-gray-100 text-gray-400"
+                  }`}>
+                    {i < stepIdx ? <CheckCircle className="h-5 w-5" /> : i + 1}
+                  </div>
+                  {i < 1 && (
+                    <div className={`h-1 w-16 rounded transition-all ${i < stepIdx ? "bg-brand-gold" : "bg-gray-100"}`} />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          )}
+
+          {/* STEP 1: Contact */}
+          {step === "contact" && (
             <>
-              <div className="mb-8 text-center">
-                <h2 className="mb-4 text-2xl font-bold text-brand-dark md:text-3xl">
-                  {t("contactTitle")}
-                </h2>
-                <p className="text-brand-grayMed">
-                  {t("contactSubtitle")}
-                </p>
-              </div>
-
-              <Card className="border-none shadow-lg">
+              <SectionHeading
+                overline="STEP 1 OF 2"
+                title="Your Contact Details"
+                description="Enter your details so our advisor can confirm your appointment."
+              />
+              <Card className="mt-8 border-none shadow-lg">
                 <CardContent className="p-8">
                   <form onSubmit={handleContactSubmit} className="space-y-6">
                     <div className="grid gap-6 sm:grid-cols-2">
                       <div>
-                        <Label htmlFor="firstName">{t("firstName")} <span className="text-red-500">*</span></Label>
-                        <Input
-                          id="firstName"
-                          value={contact.firstName}
+                        <Label htmlFor="firstName">First Name <span className="text-red-500">*</span></Label>
+                        <Input id="firstName" value={contact.firstName}
                           onChange={(e) => setContact(p => ({ ...p, firstName: e.target.value }))}
-                          className={`mt-1 ${errors.firstName ? "border-red-500" : ""}`}
-                        />
+                          placeholder="John"
+                          className={`mt-1 ${errors.firstName ? "border-red-500" : ""}`} />
                         {errors.firstName && <p className="mt-1 text-sm text-red-500">{errors.firstName}</p>}
                       </div>
                       <div>
-                        <Label htmlFor="lastName">{t("lastName")} <span className="text-red-500">*</span></Label>
-                        <Input
-                          id="lastName"
-                          value={contact.lastName}
+                        <Label htmlFor="lastName">Last Name <span className="text-red-500">*</span></Label>
+                        <Input id="lastName" value={contact.lastName}
                           onChange={(e) => setContact(p => ({ ...p, lastName: e.target.value }))}
-                          className={`mt-1 ${errors.lastName ? "border-red-500" : ""}`}
-                        />
+                          placeholder="Doe"
+                          className={`mt-1 ${errors.lastName ? "border-red-500" : ""}`} />
                         {errors.lastName && <p className="mt-1 text-sm text-red-500">{errors.lastName}</p>}
                       </div>
                     </div>
                     <div>
-                      <Label htmlFor="email">{t("email")} <span className="text-red-500">*</span></Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={contact.email}
+                      <Label htmlFor="email">Email Address <span className="text-red-500">*</span></Label>
+                      <Input id="email" type="email" value={contact.email}
                         onChange={(e) => setContact(p => ({ ...p, email: e.target.value }))}
-                        className={`mt-1 ${errors.email ? "border-red-500" : ""}`}
-                      />
+                        placeholder="john.doe@example.com"
+                        className={`mt-1 ${errors.email ? "border-red-500" : ""}`} />
                       {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
                     </div>
-                    <div className="flex justify-end pt-2">
-                      <Button type="submit" className="bg-brand-gold text-white hover:bg-brand-goldDark">
-                        {t("continueToCalendar")}
+                    <div>
+                      <Label htmlFor="phone">Phone Number <span className="text-red-500">*</span></Label>
+                      <Input id="phone" type="tel" value={contact.phone}
+                        onChange={(e) => setContact(p => ({ ...p, phone: e.target.value }))}
+                        placeholder="+352 123 456 789"
+                        className={`mt-1 ${errors.phone ? "border-red-500" : ""}`} />
+                      {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2">
+                      <Button type="button" variant="outline" onClick={() => router.push(`/${locale}/investment-advisory`)} className="flex items-center gap-2">
+                        <ArrowLeft className="h-4 w-4" /> Back
+                      </Button>
+                      <Button type="submit" className="flex items-center gap-2 bg-brand-gold text-white hover:bg-brand-goldDark">
+                        Continue to Schedule <ArrowRight className="h-4 w-4" />
                       </Button>
                     </div>
                   </form>
                 </CardContent>
               </Card>
+
+              <div className="mt-12 grid gap-8 md:grid-cols-3">
+                {[
+                  { icon: Clock, title: "60-Minute Session", desc: "A thorough consultation with a licensed investment advisor." },
+                  { icon: Video, title: "Video Conference", desc: "Meet your advisor online from anywhere." },
+                  { icon: Shield, title: "Fully Confidential", desc: "Your information is kept strictly private." },
+                ].map(({ icon: Icon, title, desc }) => (
+                  <div key={title} className="text-center">
+                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
+                      <Icon className="h-6 w-6 text-brand-goldDark" />
+                    </div>
+                    <h3 className="mb-2 text-lg font-bold text-brand-dark">{title}</h3>
+                    <p className="text-sm text-brand-grayMed">{desc}</p>
+                  </div>
+                ))}
+              </div>
             </>
           )}
 
-          {/* Step 1: Calendar */}
-          {step === 'calendar' && (
+          {/* STEP 2: Calendly */}
+          {step === "calendar" && (
             <>
-              <div className="mb-8 text-center">
-                <h2 className="mb-4 text-2xl font-bold text-brand-dark md:text-3xl">
-                  {t("calendarTitle")}
-                </h2>
-                <p className="text-brand-grayMed">
-                  {t("calendarSubtitle")}
-                </p>
-              </div>
-
-              <Card className="border-none shadow-lg">
+              <SectionHeading
+                overline="STEP 2 OF 2"
+                title="Choose Your Appointment"
+                description="Select a date and time that works for you."
+              />
+              <Card className="mt-8 border-none shadow-lg">
                 <CardContent className="p-4 md:p-8">
-                  <div
-                    ref={calendlyRef}
-                    style={{ minWidth: '320px', height: '700px' }}
-                  />
+                  {loading ? (
+                    <div className="flex flex-col items-center justify-center py-16 gap-4">
+                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-brand-gold border-t-transparent" />
+                      <p className="text-brand-grayMed">Saving your booking...</p>
+                    </div>
+                  ) : (
+                    <div ref={calendlyRef} style={{ minWidth: "320px", height: "700px" }} />
+                  )}
                 </CardContent>
               </Card>
-
               <div className="mt-6 flex justify-start">
-                <Button variant="outline" onClick={() => setStep('contact')}>
-                  {t("backToContact")}
+                <Button variant="outline" onClick={() => setStep("contact")} className="flex items-center gap-2" disabled={loading}>
+                  <ArrowLeft className="h-4 w-4" /> Back to Contact
                 </Button>
               </div>
-
-              {/* Info Cards */}
-              <div className="mt-12 grid gap-8 md:grid-cols-3">
-                <div className="text-center">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
-                    <svg className="h-6 w-6 text-brand-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="mb-2 text-lg font-bold text-brand-dark">{t("info1Title")}</h3>
-                  <p className="text-sm text-brand-grayMed">{t("info1Desc")}</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
-                    <svg className="h-6 w-6 text-brand-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <h3 className="mb-2 text-lg font-bold text-brand-dark">{t("info2Title")}</h3>
-                  <p className="text-sm text-brand-grayMed">{t("info2Desc")}</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight">
-                    <svg className="h-6 w-6 text-brand-goldDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  </div>
-                  <h3 className="mb-2 text-lg font-bold text-brand-dark">{t("info3Title")}</h3>
-                  <p className="text-sm text-brand-grayMed">{t("info3Desc")}</p>
-                </div>
-              </div>
-
-              {/* What to Prepare */}
-              <div className="mt-12 rounded-lg bg-brand-off p-8">
-                <h3 className="mb-4 text-xl font-bold text-brand-dark">{t("prepareTitle")}</h3>
-                <ul className="space-y-3 text-brand-grayMed">
-                  {(["prepare1","prepare2","prepare3","prepare4","prepare5"] as const).map((key) => (
-                    <li key={key} className="flex items-start gap-3">
-                      <svg className="mt-1 h-5 w-5 flex-shrink-0 text-brand-gold" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span>{t(key)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </>
           )}
 
-          {/* Step 2: Payment */}
-          {step === 'payment' && bookingData && (
-            <>
-              <div className="mb-8 text-center">
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                  <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h2 className="mb-4 text-2xl font-bold text-brand-dark md:text-3xl">
-                  {t("slotReserved")}
-                </h2>
-                <p className="text-brand-grayMed">{t("completePaymentDesc")}</p>
+          {/* STEP 3: Confirmation */}
+          {step === "confirmation" && (
+            <div className="text-center py-8">
+              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+                <CheckCircle className="h-10 w-10 text-green-600" />
               </div>
+              <h2 className="mb-3 text-3xl font-bold text-brand-dark">Booking Confirmed!</h2>
+              <p className="mb-8 text-lg text-brand-grayMed max-w-xl mx-auto">
+                Your investment advisory consultation has been scheduled. A confirmation email has been sent to <strong>{contact.email}</strong>.
+              </p>
 
-              <Card className="mb-8 border-brand-gold/30 shadow-lg">
-                <CardContent className="p-8">
-                  <h3 className="mb-4 text-xl font-bold text-brand-dark">{t("appointmentDetails")}</h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                      <span className="text-brand-grayMed">{t("labelName")}</span>
-                      <span className="font-semibold text-brand-dark">{fullName}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                      <span className="text-brand-grayMed">{t("labelEmail")}</span>
-                      <span className="font-semibold text-brand-dark">{contact.email}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                      <span className="text-brand-grayMed">{t("labelDate")}</span>
-                      <span className="font-semibold text-brand-dark">
-                        {bookingData.eventStartTime
-                          ? new Date(bookingData.eventStartTime).toLocaleDateString(dateLocale, {
-                              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                            })
-                          : '—'}
-                      </span>
-                    </div>
-                    <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                      <span className="text-brand-grayMed">{t("labelTime")}</span>
-                      <span className="font-semibold text-brand-dark">
-                        {bookingData.eventStartTime
-                          ? new Date(bookingData.eventStartTime).toLocaleTimeString(dateLocale, {
-                              hour: '2-digit', minute: '2-digit'
-                            })
-                          : '—'}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-brand-grayMed">{t("labelDuration")}</span>
-                      <span className="font-semibold text-brand-dark">{t("duration45")}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-none shadow-lg">
-                <CardContent className="p-8 md:p-12">
-                  <div className="text-center">
-                    <div className="mb-6">
-                      <h3 className="mb-2 text-xl font-bold text-brand-dark">{t("completePaymentTitle")}</h3>
-                      <p className="text-3xl font-bold text-brand-gold">€99.90</p>
-                      <p className="mt-2 text-sm text-brand-grayMed">{t("oneTimePayment")}</p>
-                    </div>
-
-                    <div className="mx-auto max-w-md">
-                      <PayPalButtons
-                        amount="99.90"
-                        description="Investment Advisory Consultation - 45 minutes"
-                        onSuccess={() => setPaymentCompleted(true)}
-                      />
-
-                      <div className="mt-6 rounded-lg bg-blue-50 p-4">
-                        <p className="text-sm text-blue-800">
-                          <strong>{t("testingLabel")}</strong>{' '}
-                          {t("testingDesc")}{' '}
-                          <code className="rounded bg-blue-100 px-2 py-1">4111 1111 1111 1111</code>
-                          {' '}{t("testingDetails")}
-                        </p>
-                      </div>
-                    </div>
-
-                    {paymentCompleted && (
-                      <div className="mt-6">
-                        <div className="mb-4 rounded-lg bg-green-50 p-4 text-green-800">
-                          <div className="flex items-center justify-center gap-2">
-                            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                            </svg>
-                            <span className="font-semibold">{t("paymentSuccess")}</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-center gap-2 text-brand-grayMed text-sm">
-                          <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
-                          </svg>
-                          {loading ? t("processing") : t("redirecting")}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </>
-          )}
-
-          {/* Step 3: Confirmation */}
-          {step === 'confirmation' && bookingData && (
-            <>
-              <div className="text-center">
-                <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-                  <svg className="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+              {confirmationNumber && (
+                <div className="mx-auto mb-8 max-w-sm rounded-lg bg-brand-goldLight/20 border border-brand-gold/30 p-4">
+                  <p className="text-sm text-brand-grayMed mb-1">Confirmation Number</p>
+                  <p className="text-xl font-bold text-brand-gold font-mono">{confirmationNumber}</p>
                 </div>
-                <h2 className="mb-4 text-3xl font-bold text-brand-dark">
-                  {t("paymentConfirmed")}
-                </h2>
-                <p className="mb-4 text-brand-grayMed">
-                  {t("paymentConfirmedDesc")}
-                </p>
-                {confirmationNumber && (
-                  <div className="mb-8 inline-flex items-center gap-2 rounded-lg border border-brand-gold/50 bg-brand-gold/5 px-5 py-2">
-                    <span className="text-xs font-semibold uppercase tracking-widest text-brand-grayMed">Booking Ref</span>
-                    <span className="font-mono text-base font-bold text-brand-gold">{confirmationNumber}</span>
+              )}
+
+              {submitError && (
+                <p className="mb-6 text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg p-3 max-w-md mx-auto">{submitError}</p>
+              )}
+
+              <div className="mx-auto max-w-sm rounded-lg bg-gray-50 p-6 text-left space-y-3 mb-8">
+                <div className="flex items-center gap-3">
+                  <User className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                  <span className="text-brand-dark font-semibold">{fullName}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                  <span className="text-brand-dark">{contact.email}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                  <span className="text-brand-dark">{contact.phone}</span>
+                </div>
+                {dateStr && (
+                  <div className="flex items-center gap-3">
+                    <Calendar className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                    <span className="text-brand-dark">{dateStr}{timeStr ? ` · ${timeStr}` : ""}</span>
                   </div>
                 )}
-
-                <Card className="mb-8 border-brand-gold/30 shadow-lg">
-                  <CardContent className="p-8">
-                    <h3 className="mb-4 text-xl font-bold text-brand-dark">{t("confirmedAppointment")}</h3>
-                    <div className="space-y-3 text-left">
-                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                        <span className="text-brand-grayMed">{t("labelService")}</span>
-                        <span className="font-semibold text-brand-dark">{t("serviceName")}</span>
-                      </div>
-                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                        <span className="text-brand-grayMed">{t("labelName")}</span>
-                        <span className="font-semibold text-brand-dark">{fullName}</span>
-                      </div>
-                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                        <span className="text-brand-grayMed">{t("labelDate")}</span>
-                        <span className="font-semibold text-brand-dark">
-                          {new Date(bookingData.eventStartTime).toLocaleDateString(dateLocale, {
-                            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                          })}
-                        </span>
-                      </div>
-                      <div className="flex justify-between border-b border-brand-grayLight/30 pb-2">
-                        <span className="text-brand-grayMed">{t("labelTime")}</span>
-                        <span className="font-semibold text-brand-dark">
-                          {new Date(bookingData.eventStartTime).toLocaleTimeString(dateLocale, {
-                            hour: '2-digit', minute: '2-digit'
-                          })}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-brand-grayMed">{t("labelDuration")}</span>
-                        <span className="font-semibold text-brand-dark">{t("duration45")}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <div className="rounded-lg bg-brand-goldLight/20 p-6">
-                  <h4 className="mb-3 font-semibold text-brand-dark">{t("whatsNext")}</h4>
-                  <ul className="space-y-2 text-sm text-brand-grayMed">
-                    <li>✓ {t("next1", { email: contact.email })}</li>
-                    <li>✓ {t("next2")}</li>
-                    <li>✓ {t("next3")}</li>
-                    <li>✓ {t("next4")}</li>
-                  </ul>
-                </div>
-
-                <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                  <Button
-                    onClick={handleDownloadReceipt}
-                    variant="outline"
-                    className="border-brand-gold text-brand-gold hover:bg-brand-gold/10"
-                  >
-                    Download Receipt
-                  </Button>
-                  <Button
-                    onClick={() => window.location.href = `/${locale}`}
-                    className="bg-brand-gold text-white hover:bg-brand-goldDark"
-                  >
-                    {t("returnHome")}
-                  </Button>
-                </div>
               </div>
-            </>
+
+              <Button onClick={() => router.push(`/${locale}/investment-advisory`)} className="bg-brand-gold text-white hover:bg-brand-goldDark">
+                Back to Investment Advisory
+              </Button>
+            </div>
           )}
+
         </div>
       </section>
-
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="afterInteractive"
-        onLoad={() => setCalendlyLoaded(true)}
-      />
     </>
   );
 }

@@ -174,20 +174,24 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             title={t('home.trust.description')}
             description={t('home.trust.summary')}
           />
-          <div className="grid gap-8 md:grid-cols-2 3xl:grid-cols-4">
-            <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white/80 backdrop-blur-sm p-10 text-center shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:rotate-1 transform-gpu">
-              <h3 className="mb-3 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('home.regulatory.france')}</h3>
-              <p className="text-sm text-brand-grayMed leading-relaxed">
-                {t('home.regulatory.acpr')}
-              </p>
-              <div className="mt-6 h-1 w-16 mx-auto bg-gradient-to-r from-transparent via-brand-gold to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="mx-auto mt-8 flex w-full max-w-[720px] flex-col items-center justify-center gap-6 md:flex-row">
+            <div className="w-full max-w-[330px]">
+              <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white/80 backdrop-blur-sm p-10 text-center shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:rotate-1 transform-gpu">
+                <h3 className="mb-3 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('home.regulatory.france')}</h3>
+                <p className="text-sm text-brand-grayMed leading-relaxed">
+                  {t('home.regulatory.acpr')}
+                </p>
+                <div className="mt-6 h-1 w-16 mx-auto bg-gradient-to-r from-transparent via-brand-gold to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
             </div>
-            <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white/80 backdrop-blur-sm p-10 text-center shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 transform-gpu">
-              <h3 className="mb-3 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('home.regulatory.france')}</h3>
-              <p className="text-sm text-brand-grayMed leading-relaxed">
-                {t('home.regulatory.amf')}
-              </p>
-              <div className="mt-6 h-1 w-16 mx-auto bg-gradient-to-r from-transparent via-brand-gold to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="w-full max-w-[330px]">
+              <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white/80 backdrop-blur-sm p-10 text-center shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 transform-gpu">
+                <h3 className="mb-3 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('home.regulatory.france')}</h3>
+                <p className="text-sm text-brand-grayMed leading-relaxed">
+                  {t('home.regulatory.amf')}
+                </p>
+                <div className="mt-6 h-1 w-16 mx-auto bg-gradient-to-r from-transparent via-brand-gold to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
             </div>
           </div>
         </div>

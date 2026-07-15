@@ -3282,7 +3282,71 @@
           "nextStep1": "Notre équipe de conformité vérifiera vos documents d'identité.",
           "nextStep2": "Vous recevrez un e-mail avec le résultat de votre demande.",
           "nextStep3": "Une fois approuvé, votre IBAN sera généré et envoyé à votre adresse e-mail.",
-          "backToHomepage": "Retour à l'accueil"
+          "backToHomepage": "Retour à l'accueil",
+          "privateBanking": {
+            "title": "Soumettre votre demande",
+            "description": "Votre demande de banque privée sera transmise à notre équipe à contact@opulanz.com. Un gestionnaire de relation vous contactera directement.",
+            "summary": "Résumé de la demande",
+            "name": "Nom",
+            "email": "E-mail",
+            "phone": "Téléphone",
+            "documentsUploaded": "Documents téléchargés",
+            "submitButton": "Soumettre la demande",
+            "error": "Une erreur est survenue. Veuillez réessayer.",
+            "successTitle": "Demande soumise",
+            "successDesc": "Votre demande de banque privée a bien été reçue. Notre équipe vous contactera à {email} dans un délai de 1 à 2 jours ouvrables.",
+            "referenceNumber": "Numéro de référence"
+          },
+          "kyc": {
+            "title": "Vérification d'identité",
+            "description": "Pour créer votre compte, nous devons vérifier votre identité. Cela prend 2 à 3 minutes et est requis par la réglementation financière.",
+            "needsTitle": "Ce dont vous aurez besoin :",
+            "need1": "Une pièce d'identité officielle avec photo valide (passeport ou carte d'identité nationale)",
+            "need2": "Un appareil avec une caméra pour la vérification par selfie",
+            "need3": "Un justificatif de domicile (facture, relevé bancaire — datant de moins de 3 mois)"
+          },
+          "emailOtp": {
+            "title": "Vérifiez votre e-mail",
+            "description": "Nous avons envoyé un code de vérification à 6 chiffres à",
+            "verifyButton": "Vérifier l'e-mail",
+            "resendIn": "Renvoyer dans {n}s",
+            "resendButton": "Renvoyer le code"
+          },
+          "smsOtp": {
+            "title": "Vérification du téléphone",
+            "codeSentTo": "Code envoyé à",
+            "smsUnavailable": "SMS indisponible — code envoyé à",
+            "verifyButton": "Vérifier le téléphone",
+            "resendIn": "Renvoyer dans {n}s",
+            "resendButton": "Renvoyer le code"
+          },
+          "setPassword": {
+            "title": "Créez votre mot de passe",
+            "subtitle": "Définissez un mot de passe sécurisé pour protéger votre compte Opulanz",
+            "emailLabel": "E-mail",
+            "passwordLabel": "Mot de passe",
+            "passwordPlaceholder": "Minimum 8 caractères",
+            "confirmLabel": "Confirmer le mot de passe",
+            "confirmPlaceholder": "Ressaisissez votre mot de passe",
+            "strengthTooShort": "Trop court",
+            "strengthWeak": "Faible",
+            "strengthFair": "Moyen",
+            "strengthStrong": "Fort",
+            "errorMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+            "errorMismatch": "Les mots de passe ne correspondent pas",
+            "createButton": "Créer le compte"
+          },
+          "complete": {
+            "title": "Compte actif !",
+            "description": "Votre identité a été vérifiée et votre compte Opulanz est maintenant prêt. Un e-mail de bienvenue a été envoyé à {email}.",
+            "ibanLabel": "Votre IBAN",
+            "nextStepsTitle": "Prochaines étapes",
+            "nextStep1": "Connectez-vous avec votre e-mail et votre mot de passe — la double authentification par SMS et e-mail vous protège.",
+            "nextStep2": "Votre carte de débit sera expédiée dans 5 à 7 jours ouvrables.",
+            "nextStep3": "Alimentez votre compte via virement SEPA pour commencer à effectuer des transactions.",
+            "dashboardButton": "Accéder au tableau de bord",
+            "signInLink": "Se connecter à la place"
+          }
         }
       }
     },
@@ -3418,11 +3482,37 @@
       "secondaryButton": "Parler a un conseiller"
     },
     "schedule": {
-      "heroTitle": "Planifiez votre consultation en assurance vie",
-      "heroSubtitle": "Prenez rendez-vous avec nos conseillers experts pour discuter de vos besoins en assurance vie",
-      "overline": "Réservez une Consultation",
-      "title": "Choisissez l'Heure qui Vous Convient",
-      "description": "Rencontrez nos conseillers experts afin de discuter de vos besoins en assurance vie et de découvrir les meilleures options de couverture pour votre famille."
+      "heroTitle": "Parlez à un Conseiller en Assurance Vie",
+      "heroSubtitle": "Planifiez une consultation gratuite avec l'un de nos courtiers agréés.",
+      "step1Overline": "ÉTAPE 1 SUR 2",
+      "step1Title": "Vos Coordonnées",
+      "step1Desc": "Renseignez vos informations afin que notre conseiller puisse confirmer votre rendez-vous.",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "emailAddress": "Adresse e-mail",
+      "phoneNumber": "Numéro de téléphone",
+      "back": "Retour",
+      "continueToSchedule": "Continuer vers la planification",
+      "errFirstName": "Le prénom est requis",
+      "errLastName": "Le nom est requis",
+      "errEmail": "L'e-mail est requis",
+      "errEmailInvalid": "Veuillez entrer un e-mail valide",
+      "errPhone": "Le numéro de téléphone est requis",
+      "card1Title": "Séance de 60 minutes",
+      "card1Desc": "Une consultation approfondie avec un courtier agréé.",
+      "card2Title": "Vidéoconférence",
+      "card2Desc": "Rencontrez votre conseiller en ligne depuis n'importe où.",
+      "card3Title": "Entièrement Confidentiel",
+      "card3Desc": "Vos informations restent strictement privées.",
+      "step2Overline": "ÉTAPE 2 SUR 2",
+      "step2Title": "Choisissez votre rendez-vous",
+      "step2Desc": "Sélectionnez une date et une heure qui vous conviennent.",
+      "savingBooking": "Enregistrement de votre réservation et envoi de l'e-mail de confirmation...",
+      "backToContact": "Retour aux coordonnées",
+      "confirmTitle": "Réservation confirmée !",
+      "confirmDesc": "Votre consultation en assurance vie a été planifiée. Un e-mail de confirmation a été envoyé à {email}.",
+      "confirmationNumber": "Numéro de confirmation",
+      "backToLifeInsurance": "Retour à l'assurance vie"
     }
   },
   "regulatory": {

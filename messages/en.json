@@ -3282,7 +3282,71 @@
           "nextStep1": "Our compliance team will verify your identity documents.",
           "nextStep2": "You will receive an email with the outcome of your application.",
           "nextStep3": "Once approved, your IBAN will be generated and sent to your email.",
-          "backToHomepage": "Back to Homepage"
+          "backToHomepage": "Back to Homepage",
+          "privateBanking": {
+            "title": "Submit Your Application",
+            "description": "Your private banking application will be sent to our team at contact@opulanz.com. A relationship manager will reach out to you directly.",
+            "summary": "Application Summary",
+            "name": "Name",
+            "email": "Email",
+            "phone": "Phone",
+            "documentsUploaded": "Documents uploaded",
+            "submitButton": "Submit Application",
+            "error": "An error occurred. Please try again.",
+            "successTitle": "Application Submitted",
+            "successDesc": "Your private banking application has been received. Our team will contact you at {email} within 1–2 business days.",
+            "referenceNumber": "Reference Number"
+          },
+          "kyc": {
+            "title": "Identity Verification",
+            "description": "To create your account, we need to verify your identity. This takes 2–3 minutes and is required by financial regulations.",
+            "needsTitle": "What you'll need:",
+            "need1": "A valid government-issued photo ID (passport or national ID)",
+            "need2": "A device with a camera for the selfie check",
+            "need3": "Proof of address (utility bill, bank statement — last 3 months)"
+          },
+          "emailOtp": {
+            "title": "Check your email",
+            "description": "We sent a 6-digit verification code to",
+            "verifyButton": "Verify Email",
+            "resendIn": "Resend in {n}s",
+            "resendButton": "Resend code"
+          },
+          "smsOtp": {
+            "title": "Phone verification",
+            "codeSentTo": "Code sent to",
+            "smsUnavailable": "SMS unavailable — code sent to",
+            "verifyButton": "Verify Phone",
+            "resendIn": "Resend in {n}s",
+            "resendButton": "Resend code"
+          },
+          "setPassword": {
+            "title": "Create your password",
+            "subtitle": "Set a secure password to protect your Opulanz account",
+            "emailLabel": "Email",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "Minimum 8 characters",
+            "confirmLabel": "Confirm Password",
+            "confirmPlaceholder": "Re-enter your password",
+            "strengthTooShort": "Too short",
+            "strengthWeak": "Weak",
+            "strengthFair": "Fair",
+            "strengthStrong": "Strong",
+            "errorMinLength": "Password must be at least 8 characters",
+            "errorMismatch": "Passwords do not match",
+            "createButton": "Create Account"
+          },
+          "complete": {
+            "title": "Account Active!",
+            "description": "Your identity has been verified and your Opulanz account is now ready. A welcome email has been sent to {email}.",
+            "ibanLabel": "Your IBAN",
+            "nextStepsTitle": "Next Steps",
+            "nextStep1": "Sign in with your email and password — SMS & email 2FA keeps you secure.",
+            "nextStep2": "Your debit card will be mailed within 5–7 business days.",
+            "nextStep3": "Fund your account via SEPA transfer to start transacting.",
+            "dashboardButton": "Go to Dashboard",
+            "signInLink": "Sign in instead"
+          }
         }
       }
     },
@@ -3418,11 +3482,37 @@
       "secondaryButton": "Talk to an Advisor"
     },
     "schedule": {
-      "heroTitle": "Schedule Your Life Insurance Consultation",
-      "heroSubtitle": "Book a consultation with our expert advisors to discuss your life insurance needs",
-      "overline": "Book a Consultation",
-      "title": "Choose Your Preferred Time",
-      "description": "Meet with our expert advisors to discuss your life insurance needs and explore the best coverage options for your family."
+      "heroTitle": "Talk to a Life Insurance Advisor",
+      "heroSubtitle": "Schedule a free consultation with one of our licensed insurance brokers.",
+      "step1Overline": "STEP 1 OF 2",
+      "step1Title": "Your Contact Details",
+      "step1Desc": "Enter your details so our advisor can confirm your appointment.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "emailAddress": "Email Address",
+      "phoneNumber": "Phone Number",
+      "back": "Back",
+      "continueToSchedule": "Continue to Schedule",
+      "errFirstName": "First name is required",
+      "errLastName": "Last name is required",
+      "errEmail": "Email is required",
+      "errEmailInvalid": "Enter a valid email",
+      "errPhone": "Phone number is required",
+      "card1Title": "60-Minute Session",
+      "card1Desc": "A thorough consultation with a licensed insurance broker.",
+      "card2Title": "Video Conference",
+      "card2Desc": "Meet your advisor online from anywhere.",
+      "card3Title": "Fully Confidential",
+      "card3Desc": "Your information is kept strictly private.",
+      "step2Overline": "STEP 2 OF 2",
+      "step2Title": "Choose Your Appointment",
+      "step2Desc": "Select a date and time that works for you.",
+      "savingBooking": "Saving your booking and sending confirmation email...",
+      "backToContact": "Back to Contact",
+      "confirmTitle": "Booking Confirmed!",
+      "confirmDesc": "Your life insurance consultation has been scheduled. A confirmation email has been sent to {email}.",
+      "confirmationNumber": "Confirmation Number",
+      "backToLifeInsurance": "Back to Life Insurance"
     }
   },
   "regulatory": {

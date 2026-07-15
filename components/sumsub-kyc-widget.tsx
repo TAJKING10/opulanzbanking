@@ -189,7 +189,7 @@ export function SumsubKycWidget({
                 accessToken={accessToken}
                 expirationHandler={fetchToken}
                 config={{ lang: "en" }}
-                options={{ addViewportTag: false, adaptIframeHeight: true }}
+                options={{ addViewportTag: false, adaptIframeHeight: false }}
                 onMessage={(type: string, payload: any) => {
                   // Advance slider based on Sumsub events
                   if (type === "idCheck.onStepInitiated") {

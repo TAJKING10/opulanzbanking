@@ -7,6 +7,7 @@ import {
   CheckCircle2, Eye, EyeOff, Loader2, Mail, Phone,
   Shield, ExternalLink, RefreshCw
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
 import { setAuthToken } from "@/lib/auth";
 
@@ -72,6 +73,12 @@ interface SubmissionStepProps {
 
 export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) {
   const router = useRouter();
+  const tPB = useTranslations("accountOpening.personal.personalFunnel.submission.privateBanking");
+  const tKyc = useTranslations("accountOpening.personal.personalFunnel.submission.kyc");
+  const tEmail = useTranslations("accountOpening.personal.personalFunnel.submission.emailOtp");
+  const tSms = useTranslations("accountOpening.personal.personalFunnel.submission.smsOtp");
+  const tPwd = useTranslations("accountOpening.personal.personalFunnel.submission.setPassword");
+  const tDone = useTranslations("accountOpening.personal.personalFunnel.submission.complete");
 
   const [innerStep, setInnerStep] = React.useState<InnerStep>("kyc");
   const [applicationId, setApplicationId] = React.useState<number | null>(null);
@@ -248,8 +255,8 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
 
   async function handleSetPassword() {
     setPwdError("");
-    if (password.length < 8) { setPwdError("Password must be at least 8 characters"); return; }
-    if (password !== confirmPassword) { setPwdError("Passwords do not match"); return; }
+    if (password.length < 8) { setPwdError(tPwd("errorMinLength")); return; }
+    if (password !== confirmPassword) { setPwdError(tPwd("errorMismatch")); return; }
 
     setPwdLoading(true);
     try {
@@ -339,14 +346,15 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
             <CheckCircle2 className="h-10 w-10 text-green-600" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Application Submitted</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{tPB("successTitle")}</h2>
             <p className="text-gray-500 text-sm">
-              Your private banking application has been received. Our team will contact you at{" "}
-              <strong className="text-gray-900">{userEmail}</strong> within 1–2 business days.
+              {tPB("successDesc", { email: userEmail }).split(userEmail).map((part, i, arr) =>
+                i < arr.length - 1 ? <React.Fragment key={i}>{part}<strong className="text-gray-900">{userEmail}</strong></React.Fragment> : part
+              )}
             </p>
           </div>
           <div className="rounded-2xl bg-gradient-to-r from-[#b59354]/10 to-[#b59354]/5 border border-[#b59354]/20 p-6">
-            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">Reference Number</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">{tPB("referenceNumber")}</p>
             <p className="text-xl font-bold text-gray-900 font-mono tracking-wider">{privateRef}</p>
           </div>
         </div>
@@ -359,26 +367,27 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
             <Shield className="h-8 w-8 text-[#b59354]" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Submit Your Application</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{tPB("title")}</h2>
           <p className="text-gray-500 text-sm max-w-md mx-auto">
-            Your private banking application will be sent to our team at{" "}
-            <strong>contact@opulanz.com</strong>. A relationship manager will reach out to you directly.
+            {tPB("description").split("contact@opulanz.com").map((part, i, arr) =>
+              i < arr.length - 1 ? <React.Fragment key={i}>{part}<strong>contact@opulanz.com</strong></React.Fragment> : part
+            )}
           </p>
         </div>
 
         <div className="bg-gray-50 rounded-2xl border border-gray-100 p-6 space-y-3">
-          <p className="font-semibold text-gray-900">Application Summary</p>
+          <p className="font-semibold text-gray-900">{tPB("summary")}</p>
           <div className="text-sm text-gray-600 space-y-1">
-            <p><strong>Name:</strong> {data.firstName} {data.lastName}</p>
-            <p><strong>Email:</strong> {userEmail}</p>
-            <p><strong>Phone:</strong> {userPhone}</p>
-            <p><strong>Documents uploaded:</strong> {(data.documents || []).length}</p>
+            <p><strong>{tPB("name")}:</strong> {data.firstName} {data.lastName}</p>
+            <p><strong>{tPB("email")}:</strong> {userEmail}</p>
+            <p><strong>{tPB("phone")}:</strong> {userPhone}</p>
+            <p><strong>{tPB("documentsUploaded")}:</strong> {(data.documents || []).length}</p>
           </div>
         </div>
 
         {privateError && (
           <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700 text-center">
-            {privateError}
+            {tPB("error")}
           </div>
         )}
 
@@ -387,7 +396,7 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
           disabled={privateSubmitting}
           className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {privateSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Submit Application"}
+          {privateSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : tPB("submitButton")}
         </button>
       </div>
     );
@@ -401,16 +410,16 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
             <Shield className="h-8 w-8 text-[#b59354]" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Identity Verification</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{tKyc("title")}</h2>
           <p className="text-gray-500 text-sm max-w-md mx-auto">
-            To create your account, we need to verify your identity. This takes 2–3 minutes and is required by financial regulations.
+            {tKyc("description")}
           </p>
         </div>
 
         <div className="bg-gray-50 rounded-2xl border border-gray-100 p-6">
-          <h3 className="font-semibold text-gray-900 mb-3">What you'll need:</h3>
+          <h3 className="font-semibold text-gray-900 mb-3">{tKyc("needsTitle")}</h3>
           <ul className="space-y-2 text-sm text-gray-600">
-            {["A valid government-issued photo ID (passport or national ID)", "A device with a camera for the selfie check", "Proof of address (utility bill, bank statement — last 3 months)"].map((item, i) => (
+            {[tKyc("need1"), tKyc("need2"), tKyc("need3")].map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 <span className="text-[#b59354] font-bold mt-0.5">✓</span>
                 <span>{item}</span>
@@ -437,9 +446,9 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
             <Mail className="h-8 w-8 text-[#b59354]" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Check your email</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{tEmail("title")}</h2>
           <p className="text-gray-500 text-sm">
-            We sent a 6-digit verification code to<br />
+            {tEmail("description")}<br />
             <strong className="text-gray-900">{userEmail}</strong>
           </p>
         </div>
@@ -463,12 +472,12 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
           disabled={emailOtp.length !== 6 || otpLoading}
           className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {otpLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Verify Email"}
+          {otpLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : tEmail("verifyButton")}
         </button>
 
         <div className="text-center">
           {resendCooldown > 0 ? (
-            <p className="text-sm text-gray-400">Resend in {resendCooldown}s</p>
+            <p className="text-sm text-gray-400">{tEmail("resendIn", { n: resendCooldown })}</p>
           ) : (
             <button
               onClick={async () => {
@@ -479,7 +488,7 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
               }}
               className="text-sm text-[#b59354] hover:underline flex items-center gap-1 mx-auto"
             >
-              <RefreshCw className="h-3.5 w-3.5" /> Resend code
+              <RefreshCw className="h-3.5 w-3.5" /> {tEmail("resendButton")}
             </button>
           )}
         </div>
@@ -495,11 +504,11 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
             <Phone className="h-8 w-8 text-[#b59354]" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Phone verification</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{tSms("title")}</h2>
           <p className="text-gray-500 text-sm">
             {smsViaTwilio
-              ? <>Code sent to <strong className="text-gray-900">{fullPhone}</strong></>
-              : <>SMS unavailable — code sent to <strong className="text-gray-900">{userEmail}</strong></>
+              ? <>{tSms("codeSentTo")} <strong className="text-gray-900">{fullPhone}</strong></>
+              : <>{tSms("smsUnavailable")} <strong className="text-gray-900">{userEmail}</strong></>
             }
           </p>
         </div>
@@ -517,12 +526,12 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
           disabled={smsOtp.length !== 6 || otpLoading}
           className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {otpLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Verify Phone"}
+          {otpLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : tSms("verifyButton")}
         </button>
 
         <div className="text-center">
           {resendCooldown > 0 ? (
-            <p className="text-sm text-gray-400">Resend in {resendCooldown}s</p>
+            <p className="text-sm text-gray-400">{tSms("resendIn", { n: resendCooldown })}</p>
           ) : (
             <button
               onClick={async () => {
@@ -531,7 +540,7 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
               }}
               className="text-sm text-[#b59354] hover:underline flex items-center gap-1 mx-auto"
             >
-              <RefreshCw className="h-3.5 w-3.5" /> Resend code
+              <RefreshCw className="h-3.5 w-3.5" /> {tSms("resendButton")}
             </button>
           )}
         </div>
@@ -541,29 +550,30 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
 
   // ── Set Password ──────────────────────────────────────────────────────────
   if (innerStep === "set-password") {
+    const strengthLabel = password.length < 8 ? tPwd("strengthTooShort") : password.length < 12 ? tPwd("strengthWeak") : password.length < 16 ? tPwd("strengthFair") : tPwd("strengthStrong");
     return (
       <div className="max-w-md mx-auto space-y-6">
         <div className="text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#b59354]/10">
             <Shield className="h-8 w-8 text-[#b59354]" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Create your password</h2>
-          <p className="text-gray-500 text-sm">Set a secure password to protect your Opulanz account</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{tPwd("title")}</h2>
+          <p className="text-gray-500 text-sm">{tPwd("subtitle")}</p>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{tPwd("emailLabel")}</label>
             <input value={userEmail} disabled className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm bg-gray-50 text-gray-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{tPwd("passwordLabel")}</label>
             <div className="relative">
               <input
                 type={showPwd ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Minimum 8 characters"
+                placeholder={tPwd("passwordPlaceholder")}
                 className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/30 focus:border-[#b59354] pr-10"
               />
               <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -572,12 +582,12 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Confirm Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{tPwd("confirmLabel")}</label>
             <input
               type={showPwd ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Re-enter your password"
+              placeholder={tPwd("confirmPlaceholder")}
               className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354]/30 focus:border-[#b59354]"
             />
           </div>
@@ -590,9 +600,7 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
                   <div key={i} className={`h-1.5 flex-1 rounded-full transition-all ${password.length >= len ? ["bg-red-400", "bg-yellow-400", "bg-blue-400", "bg-green-500"][i] : "bg-gray-200"}`} />
                 ))}
               </div>
-              <p className="text-xs text-gray-400">
-                {password.length < 8 ? "Too short" : password.length < 12 ? "Weak" : password.length < 16 ? "Fair" : "Strong"}
-              </p>
+              <p className="text-xs text-gray-400">{strengthLabel}</p>
             </div>
           )}
 
@@ -607,7 +615,7 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
             disabled={!password || !confirmPassword || pwdLoading}
             className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            {pwdLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create Account"}
+            {pwdLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : tPwd("createButton")}
           </button>
         </div>
       </div>
@@ -621,28 +629,25 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
         <CheckCircle2 className="h-10 w-10 text-green-600" />
       </div>
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Account Active! 🎉</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">{tDone("title")} 🎉</h2>
         <p className="text-gray-500 text-sm">
-          Your identity has been verified and your Opulanz account is now ready.
-          A welcome email has been sent to <strong className="text-gray-900">{userEmail}</strong>.
+          {tDone("description", { email: userEmail }).split(userEmail).map((part, i, arr) =>
+            i < arr.length - 1 ? <React.Fragment key={i}>{part}<strong className="text-gray-900">{userEmail}</strong></React.Fragment> : part
+          )}
         </p>
       </div>
 
       {iban && (
         <div className="rounded-2xl bg-gradient-to-r from-[#b59354]/10 to-[#b59354]/5 border border-[#b59354]/20 p-6">
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">Your IBAN</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">{tDone("ibanLabel")}</p>
           <p className="text-xl font-bold text-gray-900 font-mono tracking-wider">{iban}</p>
           {bic && <p className="text-sm text-gray-400 mt-1">BIC: <span className="font-semibold text-gray-700">{bic}</span></p>}
         </div>
       )}
 
       <div className="bg-gray-50 rounded-2xl border border-gray-100 p-5 text-left space-y-2">
-        <h3 className="font-bold text-gray-900">Next Steps</h3>
-        {[
-          "Sign in with your email and password — SMS & email 2FA keeps you secure.",
-          "Your debit card will be mailed within 5–7 business days.",
-          "Fund your account via SEPA transfer to start transacting.",
-        ].map((s, i) => (
+        <h3 className="font-bold text-gray-900">{tDone("nextStepsTitle")}</h3>
+        {[tDone("nextStep1"), tDone("nextStep2"), tDone("nextStep3")].map((s, i) => (
           <div key={i} className="flex items-start gap-2 text-sm text-gray-600">
             <span className="text-green-500 font-bold mt-0.5">✓</span>
             <span>{s}</span>
@@ -654,11 +659,11 @@ export function SubmissionStep({ data, onUpdate, locale }: SubmissionStepProps) 
         onClick={() => router.push(`/${locale}/dashboard`)}
         className="w-full py-3 bg-[#b59354] text-white rounded-xl font-semibold text-sm hover:bg-[#886844] transition-colors flex items-center justify-center gap-2"
       >
-        Go to Dashboard <ExternalLink className="h-4 w-4" />
+        {tDone("dashboardButton")} <ExternalLink className="h-4 w-4" />
       </button>
 
       <Link href={`/${locale}/login`} className="block text-sm text-gray-400 hover:text-gray-600">
-        Sign in instead
+        {tDone("signInLink")}
       </Link>
     </div>
   );

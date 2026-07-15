@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { SumsubKycWidget } from "@/components/sumsub-kyc-widget";
 import { setAuthToken } from "@/lib/auth";
+import { PhoneInput, isValidEmail } from "@/components/ui/phone-input";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -80,8 +81,14 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
   // Contact info (collected in first step since business form has no phone)
   const primaryEmail = data.directors?.[0]?.email || data.email || "";
   const [contactEmail, setContactEmail] = React.useState(primaryEmail);
-  const [contactPhone, setContactPhone] = React.useState(data.phone || "");
+  const [contactDialCode, setContactDialCode] = React.useState("+352");
+  const [contactPhoneNumber, setContactPhoneNumber] = React.useState("");
   const [contactInfoError, setContactInfoError] = React.useState("");
+  const [emailTouched, setEmailTouched] = React.useState(false);
+  const emailError =
+    emailTouched && contactEmail && !isValidEmail(contactEmail)
+      ? "Please enter a valid email address (e.g. name@example.com)"
+      : "";
 
   // OTP state
   const [emailOtp, setEmailOtp] = React.useState("");
@@ -103,7 +110,7 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
   const [bic, setBic] = React.useState("");
 
   // Derived
-  const fullPhone = contactPhone.startsWith("+") ? contactPhone : `+${contactPhone}`;
+  const fullPhone = `${contactDialCode}${contactPhoneNumber}`;
 
   // Resend cooldown countdown
   React.useEffect(() => {
@@ -153,11 +160,11 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
   // Contact info → KYC
   async function handleContactInfoNext() {
     setContactInfoError("");
-    if (!contactEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) {
+    if (!contactEmail || !isValidEmail(contactEmail)) {
       setContactInfoError("Please enter a valid email address");
       return;
     }
-    if (!contactPhone || contactPhone.replace(/\D/g, "").length < 7) {
+    if (!contactPhoneNumber || contactPhoneNumber.replace(/\D/g, "").length < 5) {
       setContactInfoError("Please enter a valid phone number");
       return;
     }
@@ -329,21 +336,31 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
               type="email"
               value={contactEmail}
               onChange={(e) => setContactEmail(e.target.value)}
+              onBlur={() => setEmailTouched(true)}
               placeholder="contact@company.com"
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#b59354] focus:outline-none text-sm transition-colors"
+              className={`w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none ${
+                emailError
+                  ? "border-red-400 focus:border-red-400"
+                  : "border-gray-200 focus:border-[#b59354]"
+              }`}
             />
+            {emailError && (
+              <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                <span>⚠</span> {emailError}
+              </p>
+            )}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Contact Phone Number</label>
-            <input
-              type="tel"
-              value={contactPhone}
-              onChange={(e) => setContactPhone(e.target.value)}
-              placeholder="+33 6 12 34 56 78"
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#b59354] focus:outline-none text-sm transition-colors"
+            <PhoneInput
+              dialCode={contactDialCode}
+              number={contactPhoneNumber}
+              onDialCodeChange={setContactDialCode}
+              onNumberChange={setContactPhoneNumber}
+              placeholder="Phone number"
+              className="h-12 rounded-xl border-2 border-gray-200 focus-within:border-[#b59354] focus-within:ring-0"
             />
-            <p className="text-xs text-gray-400 mt-1">Include country code (e.g. +33 for France)</p>
           </div>
         </div>
 

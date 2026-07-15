@@ -1356,6 +1356,7 @@ export function PersonalFunnel({ onSwitchMode, locale }: PersonalFunnelProps) {
               variant="outline"
               onClick={handleBack}
               disabled={isSubmitting}
+              className="hover:text-brand-dark hover:bg-brand-grayLight/20 hover:border-brand-grayLight"
             >
               <ArrowLeft className="mr-2 h-5 w-5" />
               Back

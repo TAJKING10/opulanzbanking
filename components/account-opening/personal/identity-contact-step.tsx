@@ -4,8 +4,8 @@ import * as React from "react";
 import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Check, Mail, Phone, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
+import { PhoneInput, isValidEmail } from "@/components/ui/phone-input";
 
 interface IdentityContactStepProps {
   data: any;
@@ -17,62 +17,58 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
   const t = useTranslations("accountForms.personal.identity");
   const tc = useTranslations("accountForms.common");
 
-  const [formState, setFormState] = React.useState({
-    firstName: data.firstName || "",
-    lastName: data.lastName || "",
-    email: data.email || "",
-    phone: data.phone || "",
-  });
+  // Parse stored phone back into dialCode + number if possible
+  const storedPhone: string = data.phone || "";
+  const matchedDial = storedPhone
+    ? [...["+352", "+33", "+44", "+1"]].find((d) => storedPhone.startsWith(d)) ||
+      "+352"
+    : "+352";
+  const storedNumber = storedPhone.startsWith(matchedDial)
+    ? storedPhone.slice(matchedDial.length).trim()
+    : storedPhone;
 
-  const [verification, setVerification] = React.useState({
-    emailVerified: data.emailVerified || false,
-    phoneVerified: data.phoneVerified || false,
-    emailOtp: "",
-    phoneOtp: "",
-    showEmailOtp: false,
-    showPhoneOtp: false,
-    emailSent: false,
-    phoneSent: false,
-  });
+  const [firstName, setFirstName] = React.useState(data.firstName || "");
+  const [lastName, setLastName] = React.useState(data.lastName || "");
+  const [email, setEmail] = React.useState(data.email || "");
+  const [dialCode, setDialCode] = React.useState(matchedDial);
+  const [phoneNumber, setPhoneNumber] = React.useState(storedNumber);
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormState((prev) => ({ ...prev, [field]: value }));
-    onUpdate({ [field]: value });
-  };
+  const [emailTouched, setEmailTouched] = React.useState(false);
+  const [phoneTouched, setPhoneTouched] = React.useState(false);
 
-  const sendEmailOtp = async () => {
-    setVerification((prev) => ({ ...prev, emailSent: true, showEmailOtp: true }));
-  };
+  const emailError =
+    emailTouched && email && !isValidEmail(email)
+      ? "Please enter a valid email address (e.g. name@example.com)"
+      : "";
 
-  const sendPhoneOtp = async () => {
-    setVerification((prev) => ({ ...prev, phoneSent: true, showPhoneOtp: true }));
-  };
-
-  const verifyEmailOtp = () => {
-    if (verification.emailOtp.length === 6) {
-      setVerification((prev) => ({ ...prev, emailVerified: true, showEmailOtp: false }));
-      onUpdate({ emailVerified: true });
-    }
-  };
-
-  const verifyPhoneOtp = () => {
-    if (verification.phoneOtp.length === 6) {
-      setVerification((prev) => ({ ...prev, phoneVerified: true, showPhoneOtp: false }));
-      onUpdate({ phoneVerified: true });
-    }
-  };
+  const phoneError =
+    phoneTouched && phoneNumber.replace(/\D/g, "").length < 5
+      ? "Please enter a valid phone number"
+      : "";
 
   const isFormValid =
-    formState.firstName?.trim() &&
-    formState.lastName?.trim() &&
-    formState.email?.trim() &&
-    formState.phone?.trim();
+    firstName.trim() &&
+    lastName.trim() &&
+    isValidEmail(email) &&
+    phoneNumber.replace(/\D/g, "").length >= 5;
 
-  // Update parent with validation status
+  // Push combined phone to parent whenever dial or number changes
   React.useEffect(() => {
-    onUpdate({ isIdentityStepValid: isFormValid });
+    const combined = `${dialCode}${phoneNumber}`;
+    onUpdate({
+      firstName,
+      lastName,
+      email,
+      phone: combined,
+      isIdentityStepValid: !!(
+        firstName.trim() &&
+        lastName.trim() &&
+        isValidEmail(email) &&
+        phoneNumber.replace(/\D/g, "").length >= 5
+      ),
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFormValid, formState.firstName, formState.lastName, formState.email, formState.phone]);
+  }, [firstName, lastName, email, dialCode, phoneNumber]);
 
   return (
     <div className="space-y-8">
@@ -89,8 +85,8 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
             <Input
               id="firstName"
               type="text"
-              value={formState.firstName}
-              onChange={(e) => handleInputChange("firstName", e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               placeholder={t("firstNamePlaceholder")}
               required
             />
@@ -101,8 +97,8 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
             <Input
               id="lastName"
               type="text"
-              value={formState.lastName}
-              onChange={(e) => handleInputChange("lastName", e.target.value)}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               placeholder={t("lastNamePlaceholder")}
               required
             />
@@ -115,27 +111,43 @@ export function IdentityContactStep({ data, onUpdate, onNext }: IdentityContactS
           <Input
             id="email"
             type="email"
-            value={formState.email}
-            onChange={(e) => handleInputChange("email", e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={() => setEmailTouched(true)}
             placeholder={t("emailPlaceholder")}
+            className={emailError ? "border-red-400 focus-visible:ring-red-300" : ""}
             required
           />
+          {emailError && (
+            <p className="text-sm text-red-500 flex items-center gap-1.5">
+              <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+              {emailError}
+            </p>
+          )}
         </div>
 
         {/* Phone */}
         <div className="space-y-2">
           <Label htmlFor="phone">{tc("phoneNumber")} *</Label>
-          <Input
-            id="phone"
-            type="tel"
-            value={formState.phone}
-            onChange={(e) => handleInputChange("phone", e.target.value)}
+          <PhoneInput
+            dialCode={dialCode}
+            number={phoneNumber}
+            onDialCodeChange={setDialCode}
+            onNumberChange={(v) => {
+              setPhoneNumber(v);
+              setPhoneTouched(true);
+            }}
             placeholder={t("phonePlaceholder")}
-            required
           />
+          {phoneError && (
+            <p className="text-sm text-red-500 flex items-center gap-1.5">
+              <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+              {phoneError}
+            </p>
+          )}
         </div>
 
-        {!isFormValid && (
+        {!isFormValid && (emailTouched || phoneTouched) && (
           <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-amber-600" />
             <div className="text-sm text-amber-900">

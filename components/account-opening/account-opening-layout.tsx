@@ -76,7 +76,7 @@ export function AccountOpeningLayout({
                 variant="outline"
                 onClick={onBack}
                 disabled={!canGoBack || isLoading}
-                className="min-w-32 border-brand-grayLight text-brand-dark hover:bg-brand-grayLight/10"
+                className="min-w-32 border-brand-grayLight text-brand-dark hover:bg-brand-grayLight/20 hover:text-brand-dark hover:border-brand-grayLight"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 {t("back")}

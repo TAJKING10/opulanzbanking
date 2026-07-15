@@ -16,6 +16,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormStepper, Step } from "./form-stepper";
 import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Plus, Trash2, Clock, FileText, Upload, X } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { COUNTRY_DIAL_CODES } from "@/components/ui/phone-input";
 import type {
   BusinessApplication,
   PersonalIdentity,
@@ -652,10 +660,47 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
               <Label htmlFor="mobile">
                 Mobile Phone <span className="text-red-500">*</span>
               </Label>
-              <Input id="mobile" type="tel" {...contactForm.register("mobile")} />
-              {contactForm.formState.errors.mobile && (
+              <div className="flex items-center border border-input rounded-md bg-background h-10 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                <Select
+                  value={contactForm.watch("countryCode") || ""}
+                  onValueChange={(v) => contactForm.setValue("countryCode", v, { shouldValidate: true })}
+                >
+                  <SelectTrigger className="h-full border-0 bg-transparent hover:bg-transparent focus:ring-0 focus:ring-offset-0 w-[120px] px-3 gap-1.5 shrink-0">
+                    <SelectValue placeholder="Code">
+                      {contactForm.watch("countryCode") && (
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xl leading-none">
+                            {COUNTRY_DIAL_CODES.find((c) => c.dial === contactForm.watch("countryCode"))?.flag}
+                          </span>
+                          <span className="text-sm font-medium">{contactForm.watch("countryCode")}</span>
+                        </div>
+                      )}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    {COUNTRY_DIAL_CODES.map((item) => (
+                      <SelectItem key={`${item.dial}-${item.country}`} value={item.dial}>
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl">{item.flag}</span>
+                          <span className="text-sm font-medium w-[52px]">{item.dial}</span>
+                          <span className="text-sm text-muted-foreground">{item.country}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <div className="h-5 w-px bg-border shrink-0" />
+                <Input
+                  id="mobile"
+                  type="tel"
+                  {...contactForm.register("mobile")}
+                  placeholder="Phone number"
+                  className="flex-1 h-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-3 shadow-none rounded-none"
+                />
+              </div>
+              {(contactForm.formState.errors.countryCode || contactForm.formState.errors.mobile) && (
                 <p className="text-sm text-red-500">
-                  {contactForm.formState.errors.mobile.message}
+                  {contactForm.formState.errors.countryCode?.message || contactForm.formState.errors.mobile?.message}
                 </p>
               )}
             </div>
@@ -1268,7 +1313,7 @@ export function BusinessFunnel({ onSwitchMode, locale }: BusinessFunnelProps) {
         {/* Navigation */}
         {currentStep > 1 && currentStep < 7 && (
           <div className="flex items-center justify-between gap-4 mt-8 pt-8 border-t">
-            <Button variant="outline" onClick={handleBack} disabled={isSubmitting}>
+            <Button variant="outline" onClick={handleBack} disabled={isSubmitting} className="hover:text-brand-dark hover:bg-brand-grayLight/20 hover:border-brand-grayLight">
               <ArrowLeft className="mr-2 h-5 w-5" />
               Back
             </Button>

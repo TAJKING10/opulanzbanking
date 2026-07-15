@@ -139,7 +139,7 @@ export default function CompanyFormationPage() {
             className="mb-12"
           />
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {companyForms.map((form) => (
               <Card
                 key={form.id}
@@ -150,31 +150,33 @@ export default function CompanyFormationPage() {
                   <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-goldLight">
                     <Building2 className="h-7 w-7 text-brand-goldDark" />
                   </div>
-                  <CardTitle className="text-xl">{form.name}</CardTitle>
-                  <p className="text-sm text-brand-grayMed">{form.fullName}</p>
+                  <div className="min-h-[74px]">
+                    <CardTitle className="text-xl">{form.name}</CardTitle>
+                    <p className="text-sm text-brand-grayMed">{form.fullName}</p>
+                  </div>
                 </CardHeader>
                 <CardContent className="flex flex-1 flex-col gap-4">
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
+                  <div className="min-h-[112px] space-y-2 text-sm">
+                    <div className="grid grid-cols-[1fr_auto] items-start gap-3">
                       <span className="text-brand-grayMed">{t("minCapitalLabel")}</span>
-                      <span className="font-semibold text-brand-dark">
+                      <span className="max-w-[110px] text-right font-semibold text-brand-dark">
                         {form.minCapital}
                       </span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[1fr_auto] items-start gap-3">
                       <span className="text-brand-grayMed">{t("shareholdersLabel")}</span>
-                      <span className="font-semibold text-brand-dark">
+                      <span className="max-w-[110px] text-right font-semibold text-brand-dark">
                         {t("minPrefix")} {form.minShareholders}
                       </span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[1fr_auto] items-start gap-3">
                       <span className="text-brand-grayMed">{t("liabilityLabel")}</span>
-                      <span className="font-semibold text-brand-dark">
+                      <span className="max-w-[110px] text-right font-semibold text-brand-dark">
                         {form.liability}
                       </span>
                     </div>
                   </div>
-                  <ul className="space-y-2 border-t border-brand-grayLight pt-4">
+                  <ul className="min-h-[120px] space-y-2 border-t border-brand-grayLight pt-4">
                     {form.features.map((feature) => (
                       <li
                         key={feature}

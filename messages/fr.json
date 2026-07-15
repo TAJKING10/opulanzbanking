@@ -455,6 +455,7 @@
         "purpose": "Objet social",
         "registeredOffice": "Adresse du siège social",
         "atLeastOneShareholder": "Veuillez ajouter au moins un associé avant de continuer.",
+        "ownershipMustEqual100": "La répartition totale des associés doit être égale à 100% (actuellement {percent}%). Veuillez ajuster les pourcentages avant de continuer.",
         "atLeastOneManager": "Veuillez ajouter au moins un gérant avant de continuer.",
         "atLeastOneDirector": "Veuillez ajouter au moins un administrateur avant de continuer.",
         "capitalMinimum": "Le capital social doit être d'au moins {amount}."

@@ -455,6 +455,7 @@
         "purpose": "Company Purpose",
         "registeredOffice": "Registered Office Address",
         "atLeastOneShareholder": "Please add at least one shareholder before continuing.",
+        "ownershipMustEqual100": "Total shareholder ownership must equal 100% (currently {percent}%). Please adjust the percentages before continuing.",
         "atLeastOneManager": "Please add at least one manager before continuing.",
         "atLeastOneDirector": "Please add at least one director before continuing.",
         "capitalMinimum": "Share capital must be at least {amount}."

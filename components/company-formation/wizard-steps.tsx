@@ -443,7 +443,8 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
           type="number"
           min={rules.minCapital}
           max={rules.maxCapital !== Infinity ? rules.maxCapital : undefined}
-          value={capitalAmount}
+          value={capitalAmount === 0 ? "" : capitalAmount}
+          placeholder="0"
           onChange={(e) => setCapitalAmount(parseFloat(e.target.value) || 0)}
         />
         <p className="text-xs text-brand-grayMed">
@@ -467,7 +468,8 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
             type="number"
             min="25"
             max="100"
-            value={paidUpPercent}
+            value={paidUpPercent === 0 ? "" : paidUpPercent}
+            placeholder="100"
             onChange={(e) => setPaidUpPercent(parseFloat(e.target.value) || 100)}
           />
           <p className="text-xs text-brand-grayMed">
@@ -508,7 +510,8 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
                     <Label>{t("amountEur")}</Label>
                     <Input
                       type="number"
-                      value={contribution.amount}
+                      value={contribution.amount === 0 ? "" : contribution.amount}
+                      placeholder="0"
                       onChange={(e) => updateContribution(contribution.id, { amount: parseFloat(e.target.value) || 0 })}
                     />
                   </div>

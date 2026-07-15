@@ -101,6 +101,11 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
           setValidationMessage(t("validation.atLeastOneShareholder"));
           return false;
         }
+        const totalOwnership = dossier.shareholders.reduce((sum, p) => sum + (p.sharePercent || 0), 0);
+        if (totalOwnership !== 100) {
+          setValidationMessage(t("validation.ownershipMustEqual100", { percent: totalOwnership }));
+          return false;
+        }
         const rules = COMPANY_FORM_RULES[dossier.formType!];
         if (rules?.requiresManagers && !dossier.managers?.length) {
           setValidationMessage(t("validation.atLeastOneManager"));

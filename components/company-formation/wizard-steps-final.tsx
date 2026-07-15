@@ -69,7 +69,6 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
           type="number"
           min="0"
           value={expectedTurnover === 0 ? "" : expectedTurnover}
-          placeholder="0"
           onChange={(e) => setExpectedTurnover(parseFloat(e.target.value) || 0)}
           placeholder={t("expectedTurnoverPlaceholder")}
         />
@@ -87,7 +86,6 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
           type="number"
           min="0"
           value={numberOfEmployees === 0 ? "" : numberOfEmployees}
-          placeholder="0"
           onChange={(e) => setNumberOfEmployees(parseInt(e.target.value) || 0)}
           placeholder={t("numberOfEmployeesPlaceholder")}
         />

@@ -47,6 +47,11 @@ export default function BusinessAccountPage() {
     formationNeeded: false,
     formationJurisdiction: "",
     documents: [],
+    // Contact person fields — populated from first director in DirectorsUBOsStep
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
     consents: {
       processing: false,
       dataSharing: false,

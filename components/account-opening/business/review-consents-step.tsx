@@ -17,6 +17,27 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
   const t = useTranslations("accountForms.business.review");
   const tc = useTranslations("accountForms.common");
 
+  // Normalize contact-person fields: direct keys take priority, then fall back
+  // to the first director entry (populated by DirectorsUBOsStep).
+  const firstDirector = data.directors?.[0];
+  const summaryData = {
+    fullName: [
+      data.firstName || firstDirector?.firstName || "",
+      data.lastName  || firstDirector?.lastName  || "",
+    ]
+      .filter(Boolean)
+      .join(" ") || null,
+    email: data.email || firstDirector?.email || null,
+    phone: data.phone || null,
+    residence: data.residence || data.residencyStatus || null,
+    accountType: data.accountType || null,
+    documentCount: data.documents?.length || 0,
+    mode: data.mode || null,
+  };
+
+  console.log("[BusinessReview] raw formData:", data);
+  console.log("[BusinessReview] normalized summaryData:", summaryData);
+
   const [consents, setConsents] = React.useState({
     processing: data.consents?.processing || false,
     dataSharing: data.consents?.dataSharing || false,
@@ -64,7 +85,7 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
               <div>
                 <p className="text-sm font-medium text-brand-dark">{tc("fullName")}</p>
                 <p className="text-sm text-brand-grayMed">
-                  {data.firstName} {data.lastName}
+                  {summaryData.fullName || tc("notProvided")}
                 </p>
               </div>
             </div>
@@ -73,13 +94,9 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
               <Mail className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
                 <p className="text-sm font-medium text-brand-dark">{tc("email")}</p>
-                <p className="text-sm text-brand-grayMed">{data.email}</p>
-                {data.emailVerified && (
-                  <span className="inline-flex items-center gap-1 text-xs text-green-600">
-                    <CheckCircle className="h-3 w-3" />
-                    {tc("verified")}
-                  </span>
-                )}
+                <p className="text-sm text-brand-grayMed">
+                  {summaryData.email || tc("notProvided")}
+                </p>
               </div>
             </div>
 
@@ -87,34 +104,8 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
               <Phone className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
                 <p className="text-sm font-medium text-brand-dark">{tc("phone")}</p>
-                <p className="text-sm text-brand-grayMed">{data.phone}</p>
-                {data.phoneVerified && (
-                  <span className="inline-flex items-center gap-1 text-xs text-green-600">
-                    <CheckCircle className="h-3 w-3" />
-                    {tc("verified")}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <MapPin className="h-5 w-5 flex-shrink-0 text-brand-gold" />
-              <div>
-                <p className="text-sm font-medium text-brand-dark">{tc("residence")}</p>
                 <p className="text-sm text-brand-grayMed">
-                  {data.residence === "resident-europe"
-                    ? `${tc("europeanResident")} - ${data.country}`
-                    : tc("nonResident")}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <FileText className="h-5 w-5 flex-shrink-0 text-brand-gold" />
-              <div>
-                <p className="text-sm font-medium text-brand-dark">{tc("accountType")}</p>
-                <p className="text-sm text-brand-grayMed">
-                  {data.mode === "current" ? tc("currentAccount") : tc("privateBanking")}
+                  {summaryData.phone || tc("notProvided")}
                 </p>
               </div>
             </div>
@@ -126,7 +117,7 @@ export function BusinessReviewConsentsStep({ data, onUpdate, onNext }: BusinessR
                 <p className="text-sm text-brand-grayMed">
                   {data.uploadLater
                     ? tc("toBeUploadedLater")
-                    : `${data.documents?.length || 0} ${tc("documentsUploaded")}`}
+                    : `${summaryData.documentCount} ${tc("documentsUploaded")}`}
                 </p>
               </div>
             </div>

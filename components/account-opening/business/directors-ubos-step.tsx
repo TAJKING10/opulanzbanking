@@ -69,11 +69,21 @@ export function DirectorsUBOsStep({ data, onUpdate, onNext }: DirectorsUBOsStepP
     directors.every((d) => d.firstName && d.lastName && d.email) &&
     ubos.every((u) => u.firstName && u.lastName && u.email && u.ownership);
 
-  // Update parent with validation status
+  // Update parent on every change so the review step always has fresh data.
+  // Also promote the first director's identity fields to the top level so
+  // BusinessReviewConsentsStep can read data.firstName / data.email directly.
   React.useEffect(() => {
-    onUpdate({ directors, ubos, isDirectorsStepValid });
+    const first = directors[0];
+    onUpdate({
+      directors,
+      ubos,
+      isDirectorsStepValid,
+      firstName: first?.firstName || "",
+      lastName: first?.lastName || "",
+      email: first?.email || "",
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDirectorsStepValid]);
+  }, [directors, ubos]);
 
   return (
     <div className="space-y-8">

@@ -17,6 +17,26 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
   const t = useTranslations("accountForms.personal.review");
   const tc = useTranslations("accountForms.common");
 
+  // Normalize summary fields with fallbacks
+  const summaryData = {
+    fullName: [data.firstName, data.lastName].filter(Boolean).join(" ") || null,
+    email: data.email || data.emailAddress || null,
+    phone: data.phone || data.phoneNumber || null,
+    residence: data.residence || data.residencyStatus || null,
+    country: data.country || null,
+    mode: data.mode || null,
+    documentCount: data.documents?.length || 0,
+    uploadLater: data.uploadLater || false,
+    currencies: data.currencies || [],
+    monthlyTransfers: data.monthlyTransfers,
+    sourceOfFunds: data.sourceOfFunds || null,
+    sourceOfFundsOther: data.sourceOfFundsOther || null,
+    pepScreening: data.pepScreening,
+  };
+
+  console.log("[PersonalReview] raw formData:", data);
+  console.log("[PersonalReview] normalized summaryData:", summaryData);
+
   const [consents, setConsents] = React.useState({
     processing: data.consents?.processing || false,
     dataSharing: data.consents?.dataSharing || false,
@@ -67,7 +87,7 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               <div>
                 <p className="text-sm font-medium text-brand-dark">{tc("fullName")}</p>
                 <p className="text-sm text-brand-grayMed">
-                  {data.firstName} {data.lastName}
+                  {summaryData.fullName || tc("notProvided")}
                 </p>
               </div>
             </div>
@@ -76,7 +96,9 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               <Mail className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
                 <p className="text-sm font-medium text-brand-dark">{tc("email")}</p>
-                <p className="text-sm text-brand-grayMed">{data.email}</p>
+                <p className="text-sm text-brand-grayMed">
+                  {summaryData.email || tc("notProvided")}
+                </p>
                 {data.emailVerified && (
                   <span className="inline-flex items-center gap-1 text-xs text-green-600">
                     <CheckCircle className="h-3 w-3" />
@@ -90,7 +112,9 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               <Phone className="h-5 w-5 flex-shrink-0 text-brand-gold" />
               <div>
                 <p className="text-sm font-medium text-brand-dark">{tc("phone")}</p>
-                <p className="text-sm text-brand-grayMed">{data.phone}</p>
+                <p className="text-sm text-brand-grayMed">
+                  {summaryData.phone || tc("notProvided")}
+                </p>
                 {data.phoneVerified && (
                   <span className="inline-flex items-center gap-1 text-xs text-green-600">
                     <CheckCircle className="h-3 w-3" />
@@ -105,9 +129,11 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               <div>
                 <p className="text-sm font-medium text-brand-dark">{tc("residence")}</p>
                 <p className="text-sm text-brand-grayMed">
-                  {data.residence === "resident-europe"
-                    ? `${tc("europeanResident")} - ${data.country}`
-                    : tc("nonResident")}
+                  {summaryData.residence === "resident-europe"
+                    ? `${tc("europeanResident")} - ${summaryData.country}`
+                    : summaryData.residence
+                    ? tc("nonResident")
+                    : tc("notProvided")}
                 </p>
               </div>
             </div>
@@ -117,7 +143,11 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               <div>
                 <p className="text-sm font-medium text-brand-dark">{tc("accountType")}</p>
                 <p className="text-sm text-brand-grayMed">
-                  {data.mode === "current" ? tc("currentAccount") : tc("privateBanking")}
+                  {summaryData.mode === "current"
+                    ? tc("currentAccount")
+                    : summaryData.mode
+                    ? tc("privateBanking")
+                    : tc("notProvided")}
                 </p>
               </div>
             </div>
@@ -127,26 +157,26 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               <div>
                 <p className="text-sm font-medium text-brand-dark">{tc("documents")}</p>
                 <p className="text-sm text-brand-grayMed">
-                  {data.uploadLater
+                  {summaryData.uploadLater
                     ? tc("toBeUploadedLater")
-                    : `${data.documents?.length || 0} ${tc("documentsUploaded")}`}
+                    : `${summaryData.documentCount} ${tc("documentsUploaded")}`}
                 </p>
               </div>
             </div>
 
-            {data.currencies && data.currencies.length > 0 && (
+            {summaryData.currencies.length > 0 && (
               <div className="flex items-start gap-3">
                 <Coins className="h-5 w-5 flex-shrink-0 text-brand-gold" />
                 <div>
                   <p className="text-sm font-medium text-brand-dark">{tc("currenciesNeeded")}</p>
                   <p className="text-sm text-brand-grayMed">
-                    {data.currencies.join(", ")}
+                    {summaryData.currencies.join(", ")}
                   </p>
                 </div>
               </div>
             )}
 
-            {data.monthlyTransfers !== undefined && (
+            {summaryData.monthlyTransfers !== undefined && (
               <div className="flex items-start gap-3">
                 <TrendingUp className="h-5 w-5 flex-shrink-0 text-brand-gold" />
                 <div>
@@ -157,27 +187,27 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
                       currency: "EUR",
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
-                    }).format(data.monthlyTransfers)}
-                    {data.monthlyTransfers >= 1000000 ? "+" : ""}
+                    }).format(summaryData.monthlyTransfers)}
+                    {summaryData.monthlyTransfers >= 1000000 ? "+" : ""}
                   </p>
                 </div>
               </div>
             )}
 
-            {data.sourceOfFunds && (
+            {summaryData.sourceOfFunds && (
               <div className="flex items-start gap-3">
                 <Wallet className="h-5 w-5 flex-shrink-0 text-brand-gold" />
                 <div>
                   <p className="text-sm font-medium text-brand-dark">{tc("primarySourceOfFunds")}</p>
                   <p className="text-sm text-brand-grayMed">
-                    {data.sourceOfFunds === "salary" && tc("salary")}
-                    {data.sourceOfFunds === "dividends" && tc("dividends")}
-                    {data.sourceOfFunds === "business" && tc("businessIncome")}
-                    {data.sourceOfFunds === "asset-sale" && tc("assetSale")}
-                    {data.sourceOfFunds === "savings" && tc("savings")}
-                    {data.sourceOfFunds === "other" && data.sourceOfFundsOther
-                      ? `${tc("other")}: ${data.sourceOfFundsOther}`
-                      : data.sourceOfFunds === "other"
+                    {summaryData.sourceOfFunds === "salary" && tc("salary")}
+                    {summaryData.sourceOfFunds === "dividends" && tc("dividends")}
+                    {summaryData.sourceOfFunds === "business" && tc("businessIncome")}
+                    {summaryData.sourceOfFunds === "asset-sale" && tc("assetSale")}
+                    {summaryData.sourceOfFunds === "savings" && tc("savings")}
+                    {summaryData.sourceOfFunds === "other" && summaryData.sourceOfFundsOther
+                      ? `${tc("other")}: ${summaryData.sourceOfFundsOther}`
+                      : summaryData.sourceOfFunds === "other"
                       ? tc("other")
                       : ""}
                   </p>
@@ -185,13 +215,13 @@ export function ReviewConsentsStep({ data, onUpdate, onNext }: ReviewConsentsSte
               </div>
             )}
 
-            {data.pepScreening !== undefined && (
+            {summaryData.pepScreening !== undefined && (
               <div className="flex items-start gap-3">
                 <ShieldCheck className="h-5 w-5 flex-shrink-0 text-brand-gold" />
                 <div>
                   <p className="text-sm font-medium text-brand-dark">{tc("pepScreeningLabel")}</p>
                   <p className="text-sm text-brand-grayMed">
-                    {data.pepScreening ? tc("pepConfirmed") : tc("pepNotConfirmed")}
+                    {summaryData.pepScreening ? tc("pepConfirmed") : tc("pepNotConfirmed")}
                   </p>
                 </div>
               </div>

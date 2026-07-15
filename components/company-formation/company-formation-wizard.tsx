@@ -118,11 +118,6 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
         return true;
       }
       case 4: {
-        const rules = COMPANY_FORM_RULES[dossier.formType!];
-        if (rules && rules.minCapital > 0 && (!dossier.capitalAmount || dossier.capitalAmount < rules.minCapital)) {
-          setValidationMessage(t("validation.capitalMinimum", { amount: `€${rules.minCapital.toLocaleString()}` }));
-          return false;
-        }
         return true;
       }
       default:

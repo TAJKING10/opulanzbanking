@@ -47,7 +47,7 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
     <div className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="naceCode">
-          {t("naceCode")} <span className="text-red-500">*</span>
+          {t("naceCode")}
         </Label>
         <Input
           id="naceCode"
@@ -62,13 +62,14 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
 
       <div className="space-y-2">
         <Label htmlFor="expectedTurnover">
-          {t("expectedTurnover")} <span className="text-red-500">*</span>
+          {t("expectedTurnover")}
         </Label>
         <Input
           id="expectedTurnover"
           type="number"
           min="0"
-          value={expectedTurnover}
+          value={expectedTurnover === 0 ? "" : expectedTurnover}
+          placeholder="0"
           onChange={(e) => setExpectedTurnover(parseFloat(e.target.value) || 0)}
           placeholder={t("expectedTurnoverPlaceholder")}
         />
@@ -85,7 +86,8 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
           id="numberOfEmployees"
           type="number"
           min="0"
-          value={numberOfEmployees}
+          value={numberOfEmployees === 0 ? "" : numberOfEmployees}
+          placeholder="0"
           onChange={(e) => setNumberOfEmployees(parseInt(e.target.value) || 0)}
           placeholder={t("numberOfEmployeesPlaceholder")}
         />

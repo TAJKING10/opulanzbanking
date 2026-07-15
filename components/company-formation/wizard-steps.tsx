@@ -436,7 +436,7 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
     <div className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="capitalAmount">
-          {t("capitalAmount")} <span className="text-red-500">*</span>
+          {t("capitalAmount")}
         </Label>
         <Input
           id="capitalAmount"

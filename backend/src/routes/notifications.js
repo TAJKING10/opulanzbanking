@@ -250,7 +250,7 @@ router.post('/company-formation', async (req, res) => {
       tempIds = [],
     } = req.body;
 
-    if (!userEmail || !reference) {
+    if (!reference) {
       return res.status(400).json({ success: false, error: 'Missing required fields' });
     }
 

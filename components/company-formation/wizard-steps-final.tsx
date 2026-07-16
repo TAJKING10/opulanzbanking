@@ -534,37 +534,35 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
           ...(dossier.uploads?.capitalCertificate?.tempId ? [dossier.uploads.capitalCertificate.tempId] : []),
         ];
 
-        if (userEmail) {
-          await fetch(`${apiUrl}/api/notifications/company-formation`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              userEmail,
-              userName,
-              companyName: dossier.proposedNames?.[0] || "",
-              formType: dossier.formType,
-              reference: dossier.userRef,
-              setupFeeAmount: setupFee,
-              registeredOffice: dossier.registeredOffice || "",
-              naceCode: dossier.naceCode || "",
-              capitalAmount: dossier.capitalAmount ? `€${dossier.capitalAmount.toLocaleString()}` : "",
-              domiciliationNeeded: dossier.domiciliationNeeded || false,
-              shareholders: (dossier.shareholders || [])
-                .map((s: any) => `${s.firstName} ${s.lastName}`.trim())
-                .filter(Boolean)
-                .join(", "),
-              directors: (dossier.directors || [])
-                .map((d: any) => `${d.firstName} ${d.lastName}`.trim())
-                .filter(Boolean)
-                .join(", "),
-              managers: (dossier.managers || [])
-                .map((m: any) => `${m.firstName} ${m.lastName}`.trim())
-                .filter(Boolean)
-                .join(", "),
-              tempIds: allTempIds,
-            }),
-          });
-        }
+        await fetch(`${apiUrl}/api/notifications/company-formation`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userEmail: userEmail || "",
+            userName,
+            companyName: dossier.proposedNames?.[0] || "",
+            formType: dossier.formType,
+            reference: dossier.userRef,
+            setupFeeAmount: setupFee,
+            registeredOffice: dossier.registeredOffice || "",
+            naceCode: dossier.naceCode || "",
+            capitalAmount: dossier.capitalAmount ? `€${dossier.capitalAmount.toLocaleString()}` : "",
+            domiciliationNeeded: dossier.domiciliationNeeded || false,
+            shareholders: (dossier.shareholders || [])
+              .map((s: any) => `${s.firstName} ${s.lastName}`.trim())
+              .filter(Boolean)
+              .join(", "),
+            directors: (dossier.directors || [])
+              .map((d: any) => `${d.firstName} ${d.lastName}`.trim())
+              .filter(Boolean)
+              .join(", "),
+            managers: (dossier.managers || [])
+              .map((m: any) => `${m.firstName} ${m.lastName}`.trim())
+              .filter(Boolean)
+              .join(", "),
+            tempIds: allTempIds,
+          }),
+        });
       } catch (emailErr) {
         console.warn("Email notification failed (non-fatal):", emailErr);
       }

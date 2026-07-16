@@ -402,7 +402,7 @@
         "simulationNote": "Ceci est une simulation. En production, les fichiers seraient téléchargés vers un stockage cloud sécurisé."
       },
       "step8": {
-        "dossierSummary": "Résumé du dossier",
+        "dossierSummary": "Résumé",
         "companyType": "Type de société",
         "companyName": "Nom de la société",
         "notProvided": "Non fourni",
@@ -437,17 +437,17 @@
         "termsConditions": "Conditions générales",
         "acceptPrivacy": "J'accepte la",
         "privacyPolicy": "Politique de confidentialité",
-        "submitDossier": "Soumettre le dossier de création",
+        "submitDossier": "SOUMETTRE",
         "completePaymentFirst": "Veuillez effectuer le paiement avant de soumettre",
         "acceptAllConsents": "Veuillez accepter tous les consentements pour soumettre",
         "submitted": {
-          "title": "Dossier de création soumis !",
-          "description": "Votre dossier de création de société a été créé. Notre équipe l'examinera et vous contactera dans les 24 à 72 heures pour procéder à la notarisation et à l'enregistrement.",
+          "title": "Formation soumise !",
+          "description": "Votre demande de création de société a été soumise. Notre équipe l'examinera et vous contactera dans les 24 à 72 heures pour procéder à la notarisation et à l'enregistrement.",
           "reference": "Référence :",
           "emailConfirmation": "Vous recevrez un e-mail de confirmation sous peu.",
           "returnHome": "Retour à l'accueil"
         },
-        "submitError": "Échec de la soumission du dossier de création. Veuillez réessayer ou contacter le support."
+        "submitError": "Échec de la soumission. Veuillez réessayer ou contacter le support."
       },
       "validation": {
         "required": "Veuillez remplir tous les champs obligatoires",

@@ -157,21 +157,21 @@ export default function CompanyFormationPage() {
                 </CardHeader>
                 <CardContent className="flex flex-1 flex-col gap-4">
                   <div className="min-h-[112px] space-y-2 text-sm">
-                    <div className="grid grid-cols-[1fr_auto] items-start gap-3">
-                      <span className="text-brand-grayMed">{t("minCapitalLabel")}</span>
-                      <span className="max-w-[110px] text-right font-semibold text-brand-dark">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="shrink-0 text-brand-grayMed">{t("minCapitalLabel")}</span>
+                      <span className="text-right font-semibold text-brand-dark">
                         {form.minCapital}
                       </span>
                     </div>
-                    <div className="grid grid-cols-[1fr_auto] items-start gap-3">
-                      <span className="text-brand-grayMed">{t("shareholdersLabel")}</span>
-                      <span className="max-w-[110px] text-right font-semibold text-brand-dark">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="shrink-0 text-brand-grayMed">{t("shareholdersLabel")}</span>
+                      <span className="text-right font-semibold text-brand-dark">
                         {t("minPrefix")} {form.minShareholders}
                       </span>
                     </div>
-                    <div className="grid grid-cols-[1fr_auto] items-start gap-3">
-                      <span className="text-brand-grayMed">{t("liabilityLabel")}</span>
-                      <span className="max-w-[110px] text-right font-semibold text-brand-dark">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="shrink-0 text-brand-grayMed">{t("liabilityLabel")}</span>
+                      <span className="text-right font-semibold text-brand-dark">
                         {form.liability}
                       </span>
                     </div>

@@ -101,11 +101,6 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
           setValidationMessage(t("validation.atLeastOneShareholder"));
           return false;
         }
-        const totalOwnership = dossier.shareholders.reduce((sum, p) => sum + (p.sharePercent || 0), 0);
-        if (totalOwnership !== 100) {
-          setValidationMessage(t("validation.ownershipMustEqual100", { percent: totalOwnership }));
-          return false;
-        }
         const rules = COMPANY_FORM_RULES[dossier.formType!];
         if (rules?.requiresManagers && !dossier.managers?.length) {
           setValidationMessage(t("validation.atLeastOneManager"));
@@ -244,7 +239,6 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
                 {t("back")}
               </Button>
               <div className="flex gap-4">
-                <Button variant="ghost">{t("saveResume")}</Button>
                 {currentStep < WIZARD_STEPS.length ? (
                   <Button
                     variant="primary"

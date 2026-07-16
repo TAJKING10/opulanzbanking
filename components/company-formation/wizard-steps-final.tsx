@@ -32,8 +32,14 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
   const t = useTranslations("companyFormation.wizard.step5");
 
   const [naceCode, setNaceCode] = React.useState(dossier.naceCode || "");
-  const [expectedTurnover, setExpectedTurnover] = React.useState(dossier.expectedTurnover || 0);
-  const [numberOfEmployees, setNumberOfEmployees] = React.useState(dossier.numberOfEmployees || 0);
+  const [expectedTurnoverStr, setExpectedTurnoverStr] = React.useState(
+    dossier.expectedTurnover ? String(dossier.expectedTurnover) : ""
+  );
+  const expectedTurnover = parseFloat(expectedTurnoverStr) || 0;
+  const [numberOfEmployeesStr, setNumberOfEmployeesStr] = React.useState(
+    dossier.numberOfEmployees ? String(dossier.numberOfEmployees) : ""
+  );
+  const numberOfEmployees = parseInt(numberOfEmployeesStr) || 0;
 
   React.useEffect(() => {
     updateDossier({
@@ -66,12 +72,11 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
         </Label>
         <Input
           id="expectedTurnover"
-          type="number"
-          min="0"
-          value={expectedTurnover === 0 ? "" : expectedTurnover}
-          placeholder="0"
-          onChange={(e) => setExpectedTurnover(parseFloat(e.target.value) || 0)}
+          type="text"
+          inputMode="decimal"
+          value={expectedTurnoverStr}
           placeholder={t("expectedTurnoverPlaceholder")}
+          onChange={(e) => setExpectedTurnoverStr(e.target.value)}
         />
         <p className="text-xs text-brand-grayMed">
           {t("expectedTurnoverHelp")}
@@ -84,12 +89,11 @@ export function Step5Activity({ dossier, updateDossier }: StepProps) {
         </Label>
         <Input
           id="numberOfEmployees"
-          type="number"
-          min="0"
-          value={numberOfEmployees === 0 ? "" : numberOfEmployees}
-          placeholder="0"
-          onChange={(e) => setNumberOfEmployees(parseInt(e.target.value) || 0)}
+          type="text"
+          inputMode="numeric"
+          value={numberOfEmployeesStr}
           placeholder={t("numberOfEmployeesPlaceholder")}
+          onChange={(e) => setNumberOfEmployeesStr(e.target.value)}
         />
         <p className="text-xs text-brand-grayMed">
           {t("numberOfEmployeesHelp")}
@@ -351,7 +355,7 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
       {!dossier.domiciliationNeeded && (
         <div>
           <h3 className="mb-2 text-lg font-bold text-brand-dark">
-            {t("leaseTitle")} <span className="text-red-500">*</span>
+            {t("leaseTitle")}
           </h3>
           <p className="mb-4 text-sm text-brand-grayMed">
             {t("leaseDesc")}
@@ -451,7 +455,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
   const feeByType: Record<string, number> = {
     SARL: 2900,
     "SARL-S": 1500,
-    SA: 1500,
+    SA: 3900,
     SCSp: 12000,
     SOLE: 500,
   };
@@ -672,21 +676,38 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
           <p className="mb-4 text-sm text-brand-grayMed">
             {t("feeDescription")}
           </p>
-          <Button
-            onClick={handlePayment}
-            disabled={isProcessing}
-            className="w-full"
-            size="lg"
-          >
-            {isProcessing ? (
-              <>{t("processing")}</>
-            ) : (
-              <>
-                <CreditCard className="mr-2 h-5 w-5" />
-                {t("paySetupFee")}
-              </>
-            )}
-          </Button>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button
+              onClick={handlePayment}
+              disabled={isProcessing}
+              className="w-full"
+              size="lg"
+            >
+              {isProcessing ? (
+                <>{t("processing")}</>
+              ) : (
+                <>
+                  <CreditCard className="mr-2 h-5 w-5" />
+                  {t("paySetupFee")}
+                </>
+              )}
+            </Button>
+            <Button
+              onClick={handlePayment}
+              disabled={isProcessing}
+              variant="outline"
+              className="w-full border-[#003087] text-[#003087] hover:bg-[#003087]/5"
+              size="lg"
+            >
+              {isProcessing ? (
+                <>{t("processing")}</>
+              ) : (
+                <span className="text-base font-bold tracking-tight">
+                  Pay<span className="text-[#009cde]">Pal</span>
+                </span>
+              )}
+            </Button>
+          </div>
         </div>
       )}
 
@@ -751,7 +772,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
         size="lg"
         className="w-full"
       >
-        {isProcessing ? t("processing") : t("submitDossier")}
+        {isProcessing ? t("processing") : "SUBMIT"}
       </Button>
 
       {(!termsAccepted || !privacyAccepted || !accuracyConfirmed) && (

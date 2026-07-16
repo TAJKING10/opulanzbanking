@@ -402,7 +402,7 @@
         "simulationNote": "This is a simulation. In production, files would be uploaded to secure cloud storage."
       },
       "step8": {
-        "dossierSummary": "Dossier Summary",
+        "dossierSummary": "Summary",
         "companyType": "Company Type",
         "companyName": "Company Name",
         "notProvided": "Not provided",
@@ -441,13 +441,13 @@
         "completePaymentFirst": "Please complete payment before submitting",
         "acceptAllConsents": "Please accept all consents to submit",
         "submitted": {
-          "title": "Formation Dossier Submitted!",
-          "description": "Your company formation dossier has been created. Our team will review it and contact you within 24-72 hours to proceed with the notarization and registration process.",
+          "title": "Formation Submitted!",
+          "description": "Your company formation has been submitted. Our team will review it and contact you within 24-72 hours to proceed with the notarization and registration process.",
           "reference": "Reference:",
           "emailConfirmation": "You'll receive an email confirmation shortly.",
           "returnHome": "Return to Home"
         },
-        "submitError": "Failed to submit the formation dossier. Please try again or contact support."
+        "submitError": "Failed to submit the formation. Please try again or contact support."
       },
       "validation": {
         "required": "Please fill in all required fields",

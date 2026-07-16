@@ -90,6 +90,7 @@ export function CompanyFormationWizard({ initialFormType, onBack }: CompanyForma
         if (!dossier.proposedNames?.[0]?.trim()) missingFields.push(t("validation.proposedName"));
         if (!dossier.purpose?.trim()) missingFields.push(t("validation.purpose"));
         if (!dossier.registeredOffice?.trim()) missingFields.push(t("validation.registeredOffice"));
+        if (!dossier.contactEmail?.trim()) missingFields.push(t("validation.contactEmail"));
         if (missingFields.length > 0) {
           setValidationMessage(`${t("validation.required")}: ${missingFields.join(", ")}`);
           return false;
@@ -344,6 +345,7 @@ function Step2GeneralInfo({ dossier, updateDossier, showErrors }: StepProps) {
   const [purpose, setPurpose] = React.useState(dossier.purpose || "");
   const [registeredOffice, setRegisteredOffice] = React.useState(dossier.registeredOffice || "");
   const [duration, setDuration] = React.useState(dossier.duration || t("durationDefault"));
+  const [contactEmail, setContactEmail] = React.useState(dossier.contactEmail || "");
 
   React.useEffect(() => {
     const names = [primaryName, alternateName].filter(Boolean);
@@ -352,8 +354,9 @@ function Step2GeneralInfo({ dossier, updateDossier, showErrors }: StepProps) {
       purpose,
       registeredOffice,
       duration,
+      contactEmail,
     });
-  }, [primaryName, alternateName, purpose, registeredOffice, duration]);
+  }, [primaryName, alternateName, purpose, registeredOffice, duration, contactEmail]);
 
   return (
     <div className="space-y-6">
@@ -373,6 +376,26 @@ function Step2GeneralInfo({ dossier, updateDossier, showErrors }: StepProps) {
         )}
         <p className="text-xs text-brand-grayMed">
           {t("proposedNameHelp")}
+        </p>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="contactEmail">
+          {t("contactEmail")} <span className="text-red-500">*</span>
+        </Label>
+        <Input
+          id="contactEmail"
+          type="email"
+          value={contactEmail}
+          onChange={(e) => setContactEmail(e.target.value)}
+          placeholder={t("contactEmailPlaceholder")}
+          className={showErrors && !contactEmail.trim() ? "border-red-500 focus-visible:ring-red-500" : ""}
+        />
+        {showErrors && !contactEmail.trim() && (
+          <p className="text-xs text-red-500">This field is required.</p>
+        )}
+        <p className="text-xs text-brand-grayMed">
+          {t("contactEmailHelp")}
         </p>
       </div>
 

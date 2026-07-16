@@ -295,7 +295,10 @@
         "registeredOfficeHelp": "Ou sélectionnez le service de domiciliation à l'étape 6",
         "duration": "Durée de la société",
         "durationDefault": "illimitée",
-        "durationHelp": "La plupart des sociétés choisissent \"illimitée\""
+        "durationHelp": "La plupart des sociétés choisissent \"illimitée\"",
+        "contactEmail": "Adresse e-mail de contact",
+        "contactEmailPlaceholder": "votre@email.com",
+        "contactEmailHelp": "Nous utiliserons cet e-mail pour vous envoyer une confirmation et pour toutes les communications"
       },
       "step3": {
         "shareholders": "Actionnaires",
@@ -454,6 +457,7 @@
         "proposedName": "Nom légal proposé",
         "purpose": "Objet social",
         "registeredOffice": "Adresse du siège social",
+        "contactEmail": "Adresse e-mail de contact",
         "atLeastOneShareholder": "Veuillez ajouter au moins un associé avant de continuer.",
         "ownershipMustEqual100": "La répartition totale des associés doit être égale à 100% (actuellement {percent}%). Veuillez ajuster les pourcentages avant de continuer.",
         "atLeastOneManager": "Veuillez ajouter au moins un gérant avant de continuer.",

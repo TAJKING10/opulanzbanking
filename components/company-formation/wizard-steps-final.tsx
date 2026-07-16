@@ -522,7 +522,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
           dossier.shareholders?.[0] ||
           dossier.managers?.[0] ||
           dossier.directors?.[0];
-        const userEmail = primaryPerson?.email;
+        const userEmail = dossier.contactEmail || primaryPerson?.email || "";
         const userName = primaryPerson
           ? `${primaryPerson.firstName} ${primaryPerson.lastName}`.trim()
           : "Applicant";

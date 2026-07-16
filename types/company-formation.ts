@@ -54,6 +54,7 @@ export interface CompanyFormationDossier {
   registeredOffice: string;
   duration: string;
   country: "LU";
+  contactEmail?: string;
 
   // Step 3: People
   shareholders: Person[];

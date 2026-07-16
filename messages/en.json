@@ -295,7 +295,10 @@
         "registeredOfficeHelp": "Or select domiciliation service in Step 6",
         "duration": "Company Duration",
         "durationDefault": "unlimited",
-        "durationHelp": "Most companies choose \"unlimited\""
+        "durationHelp": "Most companies choose \"unlimited\"",
+        "contactEmail": "Contact Email",
+        "contactEmailPlaceholder": "your@email.com",
+        "contactEmailHelp": "We will use this email to send you a confirmation and for all communications"
       },
       "step3": {
         "shareholders": "Shareholders",
@@ -454,6 +457,7 @@
         "proposedName": "Proposed Legal Name",
         "purpose": "Company Purpose",
         "registeredOffice": "Registered Office Address",
+        "contactEmail": "Contact Email",
         "atLeastOneShareholder": "Please add at least one shareholder before continuing.",
         "ownershipMustEqual100": "Total shareholder ownership must equal 100% (currently {percent}%). Please adjust the percentages before continuing.",
         "atLeastOneManager": "Please add at least one manager before continuing.",

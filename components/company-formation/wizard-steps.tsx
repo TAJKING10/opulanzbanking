@@ -139,12 +139,6 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                 onDelete={() => deletePerson(person.id, "shareholder")}
               />
             ))}
-            {totalSharePercent !== 100 && (
-              <div className="flex items-center gap-2 rounded-xl bg-yellow-50 p-4 text-sm text-yellow-900">
-                <AlertCircle className="h-5 w-5" />
-                <span>{t("totalOwnership", { percent: totalSharePercent })}</span>
-              </div>
-            )}
           </div>
         )}
       </div>

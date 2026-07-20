@@ -353,11 +353,7 @@ async function sendApplicationEmails(applicationType, data, attachments = []) {
   const adminEmail = ADMIN_EMAILS[applicationType] || ADMIN_EMAILS.open_account;
   const serviceLabel = SERVICE_LABELS[applicationType] || applicationType;
 
-  const clientEmail = payload.email || payload.contactEmail || payload.directorEmail;
-  if (!clientEmail) {
-    console.warn(`[emailService] No client email found for application #${applicationId} — skipping client email`);
-    return;
-  }
+  const clientEmail = payload.email || payload.contactEmail || payload.directorEmail || '';
 
   const clientName = payload.firstName
     ? `${payload.firstName} ${payload.lastName || ''}`.trim()
@@ -401,14 +397,18 @@ async function sendApplicationEmails(applicationType, data, attachments = []) {
     ${emailFooter()}
   </div>`;
 
-  await transporter.sendMail({
-    from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
-    to: clientEmail,
-    subject: `Application Received - ${serviceLabel} - Ref ${refCode}`,
-    html: clientHtml,
-    text: htmlToText(clientHtml),
-    headers: TRANSACTIONAL_HEADERS,
-  });
+  if (clientEmail) {
+    await transporter.sendMail({
+      from: `"Opulanz Banking" <${process.env.EMAIL_USER}>`,
+      to: clientEmail,
+      subject: `Application Received - ${serviceLabel} - Ref ${refCode}`,
+      html: clientHtml,
+      text: htmlToText(clientHtml),
+      headers: TRANSACTIONAL_HEADERS,
+    });
+  } else {
+    console.warn(`[emailService] No client email — skipping client confirmation for #${applicationId}`);
+  }
 
   // ── 3b. Email to ADMIN ─────────────────────────────────────────────────────
   // Build a table of all payload fields dynamically
@@ -439,7 +439,7 @@ async function sendApplicationEmails(applicationType, data, attachments = []) {
   const adminMailOptions = {
     from: `"Opulanz Notifications" <${process.env.EMAIL_USER}>`,
     to: adminEmail,
-    replyTo: clientEmail,
+    ...(clientEmail ? { replyTo: clientEmail } : {}),
     subject: `[${serviceLabel}] New Application #${applicationId} - ${clientName}`,
     html: adminHtml,
     text: htmlToText(adminHtml),

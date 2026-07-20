@@ -260,7 +260,8 @@
       "Bash(npm uninstall:*)",
       "Bash(pip install:*)",
       "Bash(del:*)",
-      "Bash(\"C:/Users/Toufi/AndroidStudioProjects/azuree/.env\":*)"
+      "Bash(\"C:/Users/Toufi/AndroidStudioProjects/azuree/.env\":*)",
+      "Bash(npx --yes pdf-parse-cli \"C:/Users/Toufi/Downloads/Physical person 2025 03 03 - PARCOURS CLIENT QCC Profil de risques PP_vf VC.pdf\")"
     ],
     "deny": [],
     "ask": []

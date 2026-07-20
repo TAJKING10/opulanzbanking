@@ -168,12 +168,24 @@ function CompletionScreen({
   locale,
   clientName,
   emailStatus,
+  pdfBase64,
+  pdfFilename,
 }: {
   onRestart: () => void;
   locale: string;
   clientName: string;
   emailStatus: "idle" | "sending" | "sent" | "error";
+  pdfBase64?: string;
+  pdfFilename?: string;
 }) {
+  const handleDownload = () => {
+    if (!pdfBase64) return;
+    const link = document.createElement("a");
+    link.href = `data:application/pdf;base64,${pdfBase64}`;
+    link.download = pdfFilename || "QCC.pdf";
+    link.click();
+  };
+
   return (
     <div className="text-center py-10 space-y-6">
       <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
@@ -228,6 +240,20 @@ function CompletionScreen({
         ))}
       </div>
 
+      {/* Download copy */}
+      {pdfBase64 && (
+        <div className="mx-auto max-w-sm">
+          <button
+            type="button"
+            onClick={handleDownload}
+            className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-brand-gold bg-brand-gold/5 px-4 py-3 text-sm font-semibold text-brand-goldDark hover:bg-brand-gold/10 transition-colors"
+          >
+            <FileText className="h-4 w-4 flex-shrink-0" />
+            Download my signed PDF copy
+          </button>
+        </div>
+      )}
+
       <div className="flex flex-col gap-3 sm:flex-row justify-center">
         <Button asChild variant="outline" size="lg">
           <Link href={`/${locale}/investment-advisory`}>
@@ -262,6 +288,8 @@ export default function InvestmentAdvisoryTestPage({
   const [showDocuSign, setShowDocuSign] = React.useState(false);
   const [completed, setCompleted] = React.useState(false);
   const [emailStatus, setEmailStatus] = React.useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [signedPdfBase64, setSignedPdfBase64] = React.useState<string | undefined>(undefined);
+  const [signedPdfFilename, setSignedPdfFilename] = React.useState<string | undefined>(undefined);
 
   const prototypeRef = React.useRef<HTMLDivElement>(null);
 
@@ -302,6 +330,8 @@ export default function InvestmentAdvisoryTestPage({
     setCompleted(false);
     setShowDocuSign(false);
     setEmailStatus("idle");
+    setSignedPdfBase64(undefined);
+    setSignedPdfFilename(undefined);
     setStepError("");
     scrollToWizard();
   };
@@ -340,6 +370,13 @@ export default function InvestmentAdvisoryTestPage({
       // Generate PDF with the typed signature embedded
       const pdfBase64 = await generateQCCPdf(formData, signedName);
       const formSummary = buildFormSummary(formData);
+
+      // Save PDF locally so the download button works on the completion screen
+      const docPrefix = clientType === "company" ? "DCE" : "QCC";
+      const safeName = (resolvedClientName || "Client").replace(/\s+/g, "-");
+      const filename = `${docPrefix}-${safeName}-${dateStr.replace(/\s/g, "-")}.pdf`;
+      setSignedPdfBase64(pdfBase64);
+      setSignedPdfFilename(filename);
 
       const res = await fetch("/api/send-questionnaire", {
         method: "POST",
@@ -715,6 +752,8 @@ export default function InvestmentAdvisoryTestPage({
                 locale={locale}
                 clientName={clientName}
                 emailStatus={emailStatus}
+                pdfBase64={signedPdfBase64}
+                pdfFilename={signedPdfFilename}
               />
             )}
           </div>

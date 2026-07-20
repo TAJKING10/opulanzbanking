@@ -30,17 +30,22 @@ export async function POST(req: NextRequest) {
     const transporter = makeTransporter();
     const from = `"Advensys Insurance Finance — Opulanz" <${process.env.EMAIL_USER}>`;
     const safeName = (clientName || "Client").replace(/\s+/g, "-");
-    const pdfFilename = `QCC-${safeName}-${date}.pdf`;
+    const docPrefix = (clientType?.toLowerCase().includes("morale") || clientType?.toLowerCase().includes("pm")) ? "DCE" : "QCC";
+    const pdfFilename = `${docPrefix}-${safeName}-${date}.pdf`;
 
     const attachments = pdfBase64
       ? [{ filename: pdfFilename, content: pdfBase64, encoding: "base64" as const }]
       : [];
 
+    // Determine document type tag: DCE for legal entity, QCC for natural person
+    const isLegalEntity = clientType?.toLowerCase().includes("morale") || clientType?.toLowerCase().includes("pm");
+    const docTag = isLegalEntity ? "[DCE]" : "[QCC]";
+
     // ── 1. Email to admin ─────────────────────────────────────────────────────
     await transporter.sendMail({
       from,
       to: ADMIN_EMAIL,
-      subject: `[QCC] Nouveau questionnaire signé — ${clientName} — ${date}`,
+      subject: `${docTag} Nouveau questionnaire signé — ${clientName} — ${date}`,
       html: `
         <div style="font-family:Arial,sans-serif;max-width:640px;color:#252623;">
           <div style="background:#b59354;padding:24px 28px;border-radius:12px 12px 0 0;">
@@ -110,7 +115,7 @@ export async function POST(req: NextRequest) {
       await transporter.sendMail({
         from,
         to: clientEmail,
-        subject: `Confirmation — Votre questionnaire QCC a été reçu · Advensys Insurance Finance`,
+        subject: `Confirmation — Votre questionnaire ${isLegalEntity ? "DCE" : "QCC"} a été reçu · Advensys Insurance Finance`,
         html: `
           <div style="font-family:Arial,sans-serif;max-width:600px;color:#252623;">
             <div style="background:#b59354;padding:24px 28px;border-radius:12px 12px 0 0;">

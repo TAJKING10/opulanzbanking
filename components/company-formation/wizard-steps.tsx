@@ -65,7 +65,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
   };
 
   const isPersonValid = (p: Person | null) =>
-    !!(p && p.firstName.trim() && p.lastName.trim() && p.dob && p.nationality.trim() && p.address.trim());
+    !!(p && p.firstName.trim() && p.lastName.trim() && p.dob && p.nationality.trim());
 
   const savePerson = () => {
     if (!editingPerson || !editingType) return;
@@ -296,7 +296,7 @@ export function Step3People({ dossier, updateDossier }: StepProps) {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>{t("address")} *</Label>
+                <Label>{t("address")}</Label>
                 <Input
                   value={editingPerson.address}
                   onChange={(e) => setEditingPerson({ ...editingPerson, address: e.target.value })}
@@ -396,11 +396,17 @@ function PersonCard({ person, showPep, pepLabel, editLabel, ownershipLabel, onEd
 export function Step4Capital({ dossier, updateDossier }: StepProps) {
   const t = useTranslations("companyFormation.wizard.step4");
 
-  const [capitalAmount, setCapitalAmount] = React.useState(dossier.capitalAmount || 0);
-  const [paidUpPercent, setPaidUpPercent] = React.useState(dossier.capitalPaidUpPercent || 100);
+  const [capitalAmountStr, setCapitalAmountStr] = React.useState(
+    dossier.capitalAmount ? String(dossier.capitalAmount) : ""
+  );
+  const [paidUpPercentStr, setPaidUpPercentStr] = React.useState(
+    dossier.capitalPaidUpPercent ? String(dossier.capitalPaidUpPercent) : "100"
+  );
   const [contributions, setContributions] = React.useState<Contribution[]>(dossier.contributions || []);
 
   const rules = COMPANY_FORM_RULES[dossier.formType!];
+  const capitalAmount = parseFloat(capitalAmountStr) || 0;
+  const paidUpPercent = parseFloat(paidUpPercentStr) || 100;
 
   React.useEffect(() => {
     updateDossier({
@@ -408,7 +414,7 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
       capitalPaidUpPercent: (rules as any).requiresPaidUpPercent ? paidUpPercent : undefined,
       contributions,
     });
-  }, [capitalAmount, paidUpPercent, contributions]);
+  }, [capitalAmountStr, paidUpPercentStr, contributions]);
 
   const addContribution = () => {
     const newContribution: Contribution = {
@@ -440,12 +446,14 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
         </Label>
         <Input
           id="capitalAmount"
-          type="number"
-          min={rules.minCapital}
-          max={rules.maxCapital !== Infinity ? rules.maxCapital : undefined}
-          value={capitalAmount === 0 ? "" : capitalAmount}
+          type="text"
+          inputMode="decimal"
+          value={capitalAmountStr}
           placeholder="0"
-          onChange={(e) => setCapitalAmount(parseFloat(e.target.value) || 0)}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v === "" || /^\d*\.?\d*$/.test(v)) setCapitalAmountStr(v);
+          }}
         />
         <p className="text-xs text-brand-grayMed">
           {rules.minCapital === 0 ? t("noMinRequired") : t("minimum", { amount: `€${rules.minCapital.toLocaleString()}` })}
@@ -465,12 +473,14 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
           </Label>
           <Input
             id="paidUpPercent"
-            type="number"
-            min="25"
-            max="100"
-            value={paidUpPercent === 0 ? "" : paidUpPercent}
+            type="text"
+            inputMode="decimal"
+            value={paidUpPercentStr}
             placeholder="100"
-            onChange={(e) => setPaidUpPercent(parseFloat(e.target.value) || 100)}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (v === "" || /^\d*\.?\d*$/.test(v)) setPaidUpPercentStr(v);
+            }}
           />
           <p className="text-xs text-brand-grayMed">
             {t("paidUpHelp")}
@@ -509,10 +519,16 @@ export function Step4Capital({ dossier, updateDossier }: StepProps) {
                   <div className="space-y-2">
                     <Label>{t("amountEur")}</Label>
                     <Input
-                      type="number"
-                      value={contribution.amount === 0 ? "" : contribution.amount}
+                      type="text"
+                      inputMode="decimal"
+                      value={contribution.amount === 0 ? "" : String(contribution.amount)}
                       placeholder="0"
-                      onChange={(e) => updateContribution(contribution.id, { amount: parseFloat(e.target.value) || 0 })}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        if (v === "" || /^\d*\.?\d*$/.test(v)) {
+                          updateContribution(contribution.id, { amount: parseFloat(v) || 0 });
+                        }
+                      }}
                     />
                   </div>
                   <div className="flex items-end">

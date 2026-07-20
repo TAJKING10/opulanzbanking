@@ -295,7 +295,10 @@
         "registeredOfficeHelp": "Ou sélectionnez le service de domiciliation à l'étape 6",
         "duration": "Durée de la société",
         "durationDefault": "illimitée",
-        "durationHelp": "La plupart des sociétés choisissent \"illimitée\""
+        "durationHelp": "La plupart des sociétés choisissent \"illimitée\"",
+        "contactEmail": "Adresse e-mail de contact",
+        "contactEmailPlaceholder": "votre@email.com",
+        "contactEmailHelp": "Nous enverrons votre confirmation et les mises à jour de votre dossier à cette adresse"
       },
       "step3": {
         "shareholders": "Actionnaires",
@@ -402,7 +405,7 @@
         "simulationNote": "Ceci est une simulation. En production, les fichiers seraient téléchargés vers un stockage cloud sécurisé."
       },
       "step8": {
-        "dossierSummary": "Résumé du dossier",
+        "dossierSummary": "Résumé",
         "companyType": "Type de société",
         "companyName": "Nom de la société",
         "notProvided": "Non fourni",
@@ -437,11 +440,11 @@
         "termsConditions": "Conditions générales",
         "acceptPrivacy": "J'accepte la",
         "privacyPolicy": "Politique de confidentialité",
-        "submitDossier": "Soumettre le dossier de création",
+        "submitDossier": "SOUMETTRE",
         "completePaymentFirst": "Veuillez effectuer le paiement avant de soumettre",
         "acceptAllConsents": "Veuillez accepter tous les consentements pour soumettre",
         "submitted": {
-          "title": "Dossier de création soumis !",
+          "title": "Formation soumise !",
           "description": "Votre dossier de création de société a été créé. Notre équipe l'examinera et vous contactera dans les 24 à 72 heures pour procéder à la notarisation et à l'enregistrement.",
           "reference": "Référence :",
           "emailConfirmation": "Vous recevrez un e-mail de confirmation sous peu.",
@@ -458,7 +461,8 @@
         "ownershipMustEqual100": "La répartition totale des associés doit être égale à 100% (actuellement {percent}%). Veuillez ajuster les pourcentages avant de continuer.",
         "atLeastOneManager": "Veuillez ajouter au moins un gérant avant de continuer.",
         "atLeastOneDirector": "Veuillez ajouter au moins un administrateur avant de continuer.",
-        "capitalMinimum": "Le capital social doit être d'au moins {amount}."
+        "capitalMinimum": "Le capital social doit être d'au moins {amount}.",
+        "contactEmail": "Adresse e-mail de contact"
       }
     },
     "process": {

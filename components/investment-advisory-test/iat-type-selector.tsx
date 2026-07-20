@@ -35,13 +35,13 @@ export function IATTypeSelector({ onSelect }: Props) {
             <User className="h-8 w-8 text-brand-gold" />
           </div>
           <div>
-            <p className="text-base font-bold text-brand-dark">Personne Physique</p>
+            <p className="text-base font-bold text-brand-dark">Natural Person</p>
             <p className="text-xs text-brand-grayMed mt-1">
-              Particulier, investisseur individuel ou co-titulaire
+              Individual, individual investor or joint owner
             </p>
           </div>
           <span className="mt-2 inline-block rounded-full bg-brand-gold px-4 py-1.5 text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity">
-            Sélectionner
+            Select
           </span>
         </button>
 
@@ -54,13 +54,13 @@ export function IATTypeSelector({ onSelect }: Props) {
             <Building2 className="h-8 w-8 text-brand-gold" />
           </div>
           <div>
-            <p className="text-base font-bold text-brand-dark">Personne Morale</p>
+            <p className="text-base font-bold text-brand-dark">Legal Entity</p>
             <p className="text-xs text-brand-grayMed mt-1">
-              Société, holding, SCI ou autre entité juridique
+              Company, holding company, SCI or other legal entity
             </p>
           </div>
           <span className="mt-2 inline-block rounded-full bg-brand-gold px-4 py-1.5 text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity">
-            Sélectionner
+            Select
           </span>
         </button>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CheckCircle, X, Pen, FileText, Shield, Lock, AlertCircle } from "lucide-react";
+import { CheckCircle, X, Pen, FileText, Shield, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Props {
@@ -47,9 +47,6 @@ export function IATDocuSignModal({
     setPhase("done");
     setTimeout(() => onSigned(typedName.trim()), 2500);
   };
-
-  const nameMatches =
-    typedName.trim().toLowerCase() === clientName.trim().toLowerCase();
 
   if (!isOpen) return null;
 
@@ -153,11 +150,10 @@ export function IATDocuSignModal({
           <div className="p-6 space-y-6">
             <div className="space-y-2">
               <p className="text-sm font-semibold text-brand-dark">
-                Signez en tapant votre nom complet
+                Signez en tapant votre signature
               </p>
               <p className="text-xs text-brand-grayMed">
-                Saisissez votre nom exactement tel qu'il apparaît sur le document :{" "}
-                <strong>{clientName}</strong>
+                Saisissez la signature que vous souhaitez apposer sur le document.
               </p>
             </div>
 
@@ -176,22 +172,16 @@ export function IATDocuSignModal({
                 className="w-full rounded-xl border border-brand-grayLight px-4 py-3 text-lg font-semibold italic text-brand-dark placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold"
                 style={{ fontFamily: "'Georgia', serif" }}
               />
-              {typedName && !nameMatches && (
-                <p className="text-xs text-amber-700 flex items-center gap-1">
-                  <AlertCircle className="h-3 w-3 flex-shrink-0" />
-                  Le nom doit correspondre exactement à : <strong>{clientName}</strong>
-                </p>
-              )}
-              {typedName && nameMatches && (
+              {typedName.trim() && (
                 <p className="text-xs text-green-700 flex items-center gap-1">
                   <CheckCircle className="h-3 w-3 flex-shrink-0" />
-                  Nom validé
+                  Signature prête
                 </p>
               )}
             </div>
 
             {/* Signature preview */}
-            {nameMatches && (
+            {typedName.trim() && (
               <div className="rounded-xl border-2 border-dashed border-brand-gold bg-amber-50 px-6 py-4 text-center">
                 <p className="text-xs text-brand-grayMed mb-1">Aperçu de votre signature</p>
                 <p
@@ -228,7 +218,7 @@ export function IATDocuSignModal({
                 variant="primary"
                 className="flex-1"
                 onClick={handleSign}
-                disabled={!nameMatches || !consented}
+                disabled={!typedName.trim() || !consented}
               >
                 <Pen className="mr-2 h-4 w-4" />
                 Signer le document

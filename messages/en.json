@@ -295,7 +295,10 @@
         "registeredOfficeHelp": "Or select domiciliation service in Step 6",
         "duration": "Company Duration",
         "durationDefault": "unlimited",
-        "durationHelp": "Most companies choose \"unlimited\""
+        "durationHelp": "Most companies choose \"unlimited\"",
+        "contactEmail": "Contact Email",
+        "contactEmailPlaceholder": "your@email.com",
+        "contactEmailHelp": "We will send your confirmation and application updates to this address"
       },
       "step3": {
         "shareholders": "Shareholders",
@@ -402,7 +405,7 @@
         "simulationNote": "This is a simulation. In production, files would be uploaded to secure cloud storage."
       },
       "step8": {
-        "dossierSummary": "Dossier Summary",
+        "dossierSummary": "Summary",
         "companyType": "Company Type",
         "companyName": "Company Name",
         "notProvided": "Not provided",
@@ -437,11 +440,11 @@
         "termsConditions": "Terms & Conditions",
         "acceptPrivacy": "I accept the",
         "privacyPolicy": "Privacy Policy",
-        "submitDossier": "Submit Formation Dossier",
+        "submitDossier": "SUBMIT",
         "completePaymentFirst": "Please complete payment before submitting",
         "acceptAllConsents": "Please accept all consents to submit",
         "submitted": {
-          "title": "Formation Dossier Submitted!",
+          "title": "Formation Submitted!",
           "description": "Your company formation dossier has been created. Our team will review it and contact you within 24-72 hours to proceed with the notarization and registration process.",
           "reference": "Reference:",
           "emailConfirmation": "You'll receive an email confirmation shortly.",
@@ -458,7 +461,8 @@
         "ownershipMustEqual100": "Total shareholder ownership must equal 100% (currently {percent}%). Please adjust the percentages before continuing.",
         "atLeastOneManager": "Please add at least one manager before continuing.",
         "atLeastOneDirector": "Please add at least one director before continuing.",
-        "capitalMinimum": "Share capital must be at least {amount}."
+        "capitalMinimum": "Share capital must be at least {amount}.",
+        "contactEmail": "Contact Email"
       }
     },
     "process": {

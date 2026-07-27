@@ -139,7 +139,14 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
             directors: data.directors || [],
             ubos: data.ubos || [],
             formationDetails: data.formationDetails || null,
-            documents: data.documents?.map((doc: any) => ({ name: doc.name, type: doc.type, size: doc.size })) || [],
+            documents: data.documents?.map((doc: any) => ({
+              name: doc.name,
+              id: doc.id,
+              fileName: doc.fileName,
+              fileUrl: doc.fileUrl,
+              blobName: doc.blobName,
+              size: doc.size,
+            })) || [],
             consents: data.consents || {},
             contactEmail,
             contactPhone: fullPhone,
@@ -151,6 +158,28 @@ export function BusinessSubmissionStep({ data, onUpdate, locale }: BusinessSubmi
       const id = result.data?.id || null;
       setApplicationId(id);
       localStorage.removeItem("business-account-progress");
+
+      // Link uploaded documents to the application in the DB
+      if (id) {
+        const docsWithUrls = (data.documents || []).filter((doc: any) => doc.fileUrl);
+        for (const doc of docsWithUrls) {
+          try {
+            await fetch(`${API}/api/admin/link-document`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                applicationId: id,
+                fileName: doc.fileName || doc.name,
+                fileUrl: doc.fileUrl,
+                blobName: doc.blobName,
+                type: doc.id || "other",
+                size: doc.size,
+              }),
+            });
+          } catch { /* non-blocking */ }
+        }
+      }
+
       return id;
     } catch {
       return null;

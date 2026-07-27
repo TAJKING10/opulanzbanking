@@ -9,6 +9,32 @@ const nodemailer = require('nodemailer');
 const rateLimit = require('express-rate-limit');
 const emailService = require('../services/emailService');
 const tempFileStore = require('../services/tempFileStore');
+const { pool } = require('../config/db');
+
+// Auto-create support_contacts table
+(async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS support_contacts (
+        id SERIAL PRIMARY KEY,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(100),
+        subject VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        status VARCHAR(20) DEFAULT 'open' CHECK (status IN ('open', 'replied', 'closed')),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_support_contacts_email ON support_contacts(email);
+      CREATE INDEX IF NOT EXISTS idx_support_contacts_status ON support_contacts(status);
+    `);
+    console.log('support_contacts table ready');
+  } catch (err) {
+    console.error('support_contacts table init error:', err.message);
+  }
+})();
 
 // Rate limit for public contact form: 5 requests per IP per 15 minutes
 const contactRateLimit = rateLimit({
@@ -136,6 +162,13 @@ router.post('/contact', contactRateLimit, async (req, res) => {
         </div>
       `,
     });
+
+    // Save to DB so admin can view and reply
+    await pool.query(
+      `INSERT INTO support_contacts (first_name, last_name, email, phone, subject, message, status)
+       VALUES ($1, $2, $3, $4, $5, $6, 'open')`,
+      [firstName, lastName, email, phone || null, subject, message]
+    ).catch(err => console.warn('Could not save contact to DB:', err.message));
 
     console.log(`📧 Support contact from ${fullName} <${email}> — Subject: ${subject}`);
 

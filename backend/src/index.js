@@ -38,6 +38,7 @@ const investmentsRoutes = require('./routes/investments');
 const investmentContactRoutes = require('./routes/investment-contact');
 const supportRoutes = require('./routes/support');
 const supportChatsRoutes = require('./routes/support-chats');
+const adminRoutes = require('./routes/admin');
 const paypalRoutes = require('./routes/paypal');
 const chatRoutes = require('./routes/chat');
 
@@ -79,7 +80,7 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-admin-token'],
 }));
 
 // Rate limiting — protect auth and contact endpoints
@@ -131,6 +132,7 @@ app.use('/api/investment/investments', investmentsRoutes);
 app.use('/api/investment/contact', contactLimiter, investmentContactRoutes);
 app.use('/api/support', contactLimiter, supportRoutes);
 app.use('/api/support-chats', supportChatsRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/chat', chatRoutes); // AI chat — moved from Next.js API route for Capacitor compatibility
 
 // Health check endpoint

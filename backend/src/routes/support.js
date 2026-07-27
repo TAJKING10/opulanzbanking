@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
+const { pool } = require('../config/db');
 
 const emailTransporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -104,6 +105,14 @@ router.post('/contact', async (req, res) => {
         </html>
       `,
     });
+
+    // Save to DB
+    await pool.query(
+      `INSERT INTO support_contacts (first_name, last_name, email, phone, subject, message, status)
+       VALUES ($1, $2, $3, $4, $5, $6, 'open')
+       ON CONFLICT DO NOTHING`,
+      [firstName, lastName, email, phone || null, subject, message]
+    ).catch(err => console.warn('Could not save support contact to DB:', err.message));
 
     console.log(`📧 Support request from ${email} → sent to support@opulanz.com`);
     res.json({ success: true, message: 'Your message has been sent.' });

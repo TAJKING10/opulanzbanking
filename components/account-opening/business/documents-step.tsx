@@ -11,7 +11,9 @@ interface Document {
   required: boolean;
   uploaded: boolean;
   file?: File;
-  tempId?: string;
+  fileUrl?: string;
+  blobName?: string;
+  fileName?: string;
 }
 
 interface BusinessDocumentsStepProps {
@@ -96,22 +98,25 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
       )
     );
 
-    // Upload to temp store so file can be attached to admin email
+    // Upload to permanent Azure Blob Storage so admin can download later
     try {
       const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
       const form = new FormData();
       form.append("file", file);
-      const res = await fetch(`${API}/api/upload/temp`, { method: "POST", body: form });
+      form.append("type", documentId);
+      const res = await fetch(`${API}/api/upload`, { method: "POST", body: form });
       const json = res.ok ? await res.json() : null;
-      if (json?.tempId) {
+      if (json?.data?.fileUrl) {
         setDocuments((prev) =>
           prev.map((doc) =>
-            doc.id === documentId ? { ...doc, tempId: json.tempId } : doc
+            doc.id === documentId
+              ? { ...doc, fileUrl: json.data.fileUrl, blobName: json.data.blobName, fileName: file.name }
+              : doc
           )
         );
       }
     } catch {
-      console.warn("Temp upload failed for", file.name);
+      console.warn("Upload failed for", file.name);
     }
   };
 
@@ -122,10 +127,14 @@ export function BusinessDocumentsStep({ data, onUpdate, onNext }: BusinessDocume
   // Update parent with validation status and tempIds for email attachments
   React.useEffect(() => {
     onUpdate({
-      documents: documents.filter((doc) => doc.uploaded),
-      documentTempIds: documents
-        .filter((doc) => doc.uploaded && doc.tempId)
-        .map((doc) => doc.tempId as string),
+      documents: documents.filter((doc) => doc.uploaded).map((doc) => ({
+        id: doc.id,
+        name: doc.name,
+        fileName: doc.fileName || doc.file?.name,
+        fileUrl: doc.fileUrl,
+        blobName: doc.blobName,
+        size: doc.file?.size,
+      })),
       isDocumentsStepValid,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

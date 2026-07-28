@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CheckCircle, X, Pen, AlertCircle, Loader2, Lock } from "lucide-react";
+import { CheckCircle, X, Pen, AlertCircle, Loader2, Lock, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Props {
@@ -27,6 +27,7 @@ export function IATDocuSignModal({
   const [signingUrl, setSigningUrl] = React.useState("");
   const [envelopeId, setEnvelopeId] = React.useState("");
   const [errorMsg, setErrorMsg] = React.useState("");
+  const popupRef = React.useRef<Window | null>(null);
 
   // When the modal opens and we have a PDF, create the DocuSign envelope
   React.useEffect(() => {
@@ -36,7 +37,7 @@ export function IATDocuSignModal({
     setEnvelopeId("");
     setErrorMsg("");
 
-    const appUrl = typeof window !== "undefined" ? window.location.origin : "http://localhost:3002";
+    const appUrl = typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
     const returnUrl = `${appUrl}/api/docusign/return`;
 
     fetch("/api/docusign/sign", {
@@ -67,6 +68,28 @@ export function IATDocuSignModal({
       });
   }, [isOpen, pdfBase64, clientName, clientEmail]);
 
+  // Open popup when signing URL is ready
+  React.useEffect(() => {
+    if (phase !== "signing" || !signingUrl) return;
+    const w = 900, h = 700;
+    const left = Math.max(0, (window.screen.width - w) / 2);
+    const top = Math.max(0, (window.screen.height - h) / 2);
+    const popup = window.open(
+      signingUrl,
+      "docusign_signing",
+      `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`
+    );
+    popupRef.current = popup;
+  }, [phase, signingUrl]);
+
+  // Close popup if modal is closed externally
+  React.useEffect(() => {
+    if (!isOpen && popupRef.current && !popupRef.current.closed) {
+      popupRef.current.close();
+      popupRef.current = null;
+    }
+  }, [isOpen]);
+
   // Listen for postMessage from the DocuSign return page (/api/docusign/return)
   React.useEffect(() => {
     if (!isOpen) return;
@@ -74,9 +97,11 @@ export function IATDocuSignModal({
       if (event.data?.type !== "docusign_event") return;
       const ev: string = event.data.event ?? "";
       if (ev === "signing_complete") {
+        popupRef.current = null;
         setPhase("done");
         setTimeout(() => onSigned(envelopeId), 2000);
       } else if (ev === "cancel" || ev === "decline") {
+        popupRef.current = null;
         onClose();
       }
     };
@@ -141,14 +166,48 @@ export function IATDocuSignModal({
           </div>
         )}
 
-        {/* DocuSign iframe */}
-        {phase === "signing" && signingUrl && (
-          <iframe
-            src={signingUrl}
-            className="w-full h-full border-0"
-            title="DocuSign Electronic Signature"
-            allow="camera; microphone"
-          />
+        {/* Waiting for popup signing */}
+        {phase === "signing" && (
+          <div className="flex h-full items-center justify-center bg-white">
+            <div className="text-center space-y-6 px-6 max-w-md">
+              <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-[#FFCC00]/20 mx-auto">
+                <ExternalLink className="h-10 w-10 text-[#005880]" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-xl font-bold text-gray-900">
+                  Fenêtre DocuSign ouverte
+                </h2>
+                <p className="text-sm text-gray-500">
+                  Une fenêtre DocuSign s'est ouverte pour signer votre document.
+                  Veuillez compléter la signature dans cette fenêtre.
+                </p>
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin text-brand-gold" />
+                <span className="text-xs text-gray-400">En attente de la signature…</span>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  if (signingUrl) {
+                    const w = 900, h = 700;
+                    const left = Math.max(0, (window.screen.width - w) / 2);
+                    const top = Math.max(0, (window.screen.height - h) / 2);
+                    const popup = window.open(
+                      signingUrl,
+                      "docusign_signing",
+                      `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`
+                    );
+                    popupRef.current = popup;
+                  }
+                }}
+                className="text-xs"
+              >
+                Rouvrir la fenêtre DocuSign
+              </Button>
+            </div>
+          </div>
         )}
 
         {/* Done */}

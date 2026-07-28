@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-const ADMIN_EMAIL = "tax-ad@opulanz.com";
+const ADMIN_EMAIL = "invest-ad@opulanz.com";
 
 function makeTransporter() {
   return nodemailer.createTransport({
@@ -182,7 +182,7 @@ export async function POST(req: NextRequest) {
               </p>
               <p style="font-size:13px;color:#555;line-height:1.6;margin:0 0 20px;">
                 Si vous avez des questions avant votre rendez-vous, n'hésitez pas à nous contacter
-                à l'adresse <a href="mailto:tax-ad@opulanz.com" style="color:#b59354;">tax-ad@opulanz.com</a>.
+                à l'adresse <a href="mailto:invest-ad@opulanz.com" style="color:#b59354;">invest-ad@opulanz.com</a>.
               </p>
 
               <p style="font-size:13px;color:#252623;font-weight:600;margin:0 0 4px;">

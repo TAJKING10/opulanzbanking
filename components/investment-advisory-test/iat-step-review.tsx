@@ -2,13 +2,14 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CheckCircle, ChevronDown } from "lucide-react";
+import { CheckCircle, ChevronDown, Loader2 } from "lucide-react";
 import type { IATFormData, Consents } from "./iat-types";
 import { SECTOR_LABELS } from "./iat-types";
 
 interface Props {
   formData: IATFormData;
   onSign: () => void;
+  isGeneratingPdf?: boolean;
   error: string;
   setError: (e: string) => void;
   onChange: (data: Partial<IATFormData>) => void;
@@ -79,7 +80,7 @@ const RISK_LABELS: Record<string, string> = {
   C: "Placement C — Risque élevé",
 };
 
-export function IATStepReview({ formData, onSign, error, setError, onChange }: Props) {
+export function IATStepReview({ formData, onSign, isGeneratingPdf, error, setError, onChange }: Props) {
   const { clientType, titulaire1, titulaire2, hasTitulaire2, maritalStatus,
     personalFinancial, companyIdentity, companyFinancial, productKnowledge,
     objectives, esg, consents } = formData;
@@ -290,9 +291,16 @@ export function IATStepReview({ formData, onSign, error, setError, onChange }: P
         size="lg"
         className="w-full"
         onClick={handleSign}
-        disabled={!allConsents}
+        disabled={!allConsents || isGeneratingPdf}
       >
-        Signer le questionnaire
+        {isGeneratingPdf ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Génération du document…
+          </>
+        ) : (
+          "Signer le questionnaire"
+        )}
       </Button>
     </div>
   );

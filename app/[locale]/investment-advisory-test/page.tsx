@@ -286,6 +286,8 @@ export default function InvestmentAdvisoryTestPage({
   const [formData, setFormData] = React.useState<IATFormData>(defaultFormData);
   const [stepError, setStepError] = React.useState("");
   const [showDocuSign, setShowDocuSign] = React.useState(false);
+  const [pdfForSigning, setPdfForSigning] = React.useState("");
+  const [isGeneratingPdf, setIsGeneratingPdf] = React.useState(false);
   const [completed, setCompleted] = React.useState(false);
   const [emailStatus, setEmailStatus] = React.useState<"idle" | "sending" | "sent" | "error">("idle");
   const [signedPdfBase64, setSignedPdfBase64] = React.useState<string | undefined>(undefined);
@@ -336,11 +338,26 @@ export default function InvestmentAdvisoryTestPage({
     scrollToWizard();
   };
 
-  const handleSign = () => {
-    setShowDocuSign(true);
+  // Step 1: generate PDF BEFORE opening DocuSign (DocuSign needs the PDF to create the envelope)
+  const handleSign = async () => {
+    setIsGeneratingPdf(true);
+    try {
+      const { generateQCCPdf } = await import(
+        "@/components/investment-advisory-test/iat-pdf"
+      );
+      const pdf = await generateQCCPdf(formData);
+      setPdfForSigning(pdf);
+      setShowDocuSign(true);
+    } catch (err) {
+      console.error("[handleSign] PDF generation failed:", err);
+      setStepError("Erreur lors de la génération du PDF. Veuillez réessayer.");
+    } finally {
+      setIsGeneratingPdf(false);
+    }
   };
 
-  const handleSigned = async (signedName: string) => {
+  // Step 2: called by the modal after DocuSign signing_complete event
+  const handleSigned = async (envelopeId: string) => {
     setShowDocuSign(false);
     setCompleted(true);
     setEmailStatus("sending");
@@ -367,17 +384,38 @@ export default function InvestmentAdvisoryTestPage({
         hour: "2-digit", minute: "2-digit",
       });
 
-      // Generate PDF with the typed signature embedded
-      const pdfBase64 = await generateQCCPdf(formData, signedName);
+      const signedName = `Signé via DocuSign (${envelopeId})`;
+      const pdfBase64 = await generateQCCPdf(formData, resolvedClientName);
       const formSummary = buildFormSummary(formData);
 
-      // Save PDF locally so the download button works on the completion screen
       const docPrefix = clientType === "company" ? "DCE" : "QCC";
       const safeName = (resolvedClientName || "Client").replace(/\s+/g, "-");
       const filename = `${docPrefix}-${safeName}-${dateStr.replace(/\s/g, "-")}.pdf`;
       setSignedPdfBase64(pdfBase64);
       setSignedPdfFilename(filename);
 
+      const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+      // Save to database so it appears in admin panel
+      fetch(`${API}/api/applications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "investment_advisory",
+          status: "submitted",
+          payload: {
+            clientName: resolvedClientName,
+            email: resolvedClientEmail,
+            clientType: clientType === "personal" ? "PP" : "PM",
+            envelopeId,
+            signedAt: now.toISOString(),
+            submittedAt: now.toISOString(),
+            formData,
+          },
+        }),
+      }).catch(() => {});
+
+      // Send emails (admin + client confirmation with PDF)
       const res = await fetch("/api/send-questionnaire", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -390,6 +428,7 @@ export default function InvestmentAdvisoryTestPage({
           date: dateStr,
           signatureDate,
           signedName,
+          envelopeId,
         }),
       });
 
@@ -724,6 +763,7 @@ export default function InvestmentAdvisoryTestPage({
                             formData={formData}
                             onChange={updateFormData}
                             onSign={handleSign}
+                            isGeneratingPdf={isGeneratingPdf}
                             error={stepError}
                             setError={setStepError}
                           />
@@ -859,7 +899,7 @@ export default function InvestmentAdvisoryTestPage({
             ? formData.titulaire1.email
             : formData.companyIdentity.representative.email
         }
-        pdfBase64=""
+        pdfBase64={pdfForSigning}
         onClose={() => setShowDocuSign(false)}
         onSigned={handleSigned}
       />

@@ -11,6 +11,7 @@ interface Props {
   clientName: string;
   clientEmail: string;
   pdfBase64: string;
+  pdfPageCount?: number;
 }
 
 type Phase = "loading" | "signing" | "done" | "error";
@@ -22,6 +23,7 @@ export function IATDocuSignModal({
   clientName,
   clientEmail,
   pdfBase64,
+  pdfPageCount = 1,
 }: Props) {
   const [phase, setPhase] = React.useState<Phase>("loading");
   const [signingUrl, setSigningUrl] = React.useState("");
@@ -43,7 +45,7 @@ export function IATDocuSignModal({
     fetch("/api/docusign/sign", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pdfBase64, clientName, clientEmail, returnUrl }),
+      body: JSON.stringify({ pdfBase64, clientName, clientEmail, returnUrl, pdfPageCount }),
     })
       .then((r) => r.json())
       .then((data) => {

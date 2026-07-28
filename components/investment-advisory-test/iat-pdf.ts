@@ -1,6 +1,36 @@
 // PDF Generation for QCC (Questionnaire de Connaissance du Client)
-// Uses jsPDF (already installed as dependency)
+// Uses jsPDF (already installed as dependency) + pdf-lib for template loading
 import type { IATFormData } from "./iat-types";
+
+/**
+ * Loads the official QCC template PDF (PP or PM) and returns
+ * { base64, pageCount } ready for DocuSign.
+ */
+export async function loadTemplatePdf(
+  clientType: "personal" | "company"
+): Promise<{ base64: string; pageCount: number }> {
+  const url =
+    clientType === "personal"
+      ? "/templates/qcc-pp.pdf"
+      : "/templates/qcc-pm.pdf";
+
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`Failed to load template PDF: ${url}`);
+  const arrayBuf = await resp.arrayBuffer();
+
+  // Get page count via pdf-lib
+  const { PDFDocument } = await import("pdf-lib");
+  const pdfDoc = await PDFDocument.load(arrayBuf);
+  const pageCount = pdfDoc.getPageCount();
+
+  // Convert to base64
+  const bytes = new Uint8Array(arrayBuf);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+  const base64 = btoa(binary);
+
+  return { base64, pageCount };
+}
 import { SECTOR_LABELS } from "./iat-types";
 
 const GOLD = [181, 147, 84] as const;

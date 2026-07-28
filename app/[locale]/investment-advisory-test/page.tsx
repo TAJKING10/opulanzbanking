@@ -338,19 +338,25 @@ export default function InvestmentAdvisoryTestPage({
     scrollToWizard();
   };
 
-  // Step 1: generate PDF BEFORE opening DocuSign (DocuSign needs the PDF to create the envelope)
+  const [pdfPageCount, setPdfPageCount] = React.useState(1);
+
+  // Step 1: fill template PDF with form data BEFORE opening DocuSign
   const handleSign = async () => {
     setIsGeneratingPdf(true);
     try {
-      const { generateQCCPdf } = await import(
-        "@/components/investment-advisory-test/iat-pdf"
+      const { fillTemplatePdf } = await import(
+        "@/components/investment-advisory-test/iat-pdf-filler"
       );
-      const pdf = await generateQCCPdf(formData);
-      setPdfForSigning(pdf);
+      const { base64, pageCount } = await fillTemplatePdf(
+        clientType === "company" ? "company" : "personal",
+        formData
+      );
+      setPdfForSigning(base64);
+      setPdfPageCount(pageCount);
       setShowDocuSign(true);
     } catch (err) {
-      console.error("[handleSign] PDF generation failed:", err);
-      setStepError("Erreur lors de la génération du PDF. Veuillez réessayer.");
+      console.error("[handleSign] PDF fill failed:", err);
+      setStepError(`Erreur lors de la génération du PDF: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -363,8 +369,11 @@ export default function InvestmentAdvisoryTestPage({
     setEmailStatus("sending");
 
     try {
-      const { generateQCCPdf, buildFormSummary } = await import(
+      const { buildFormSummary } = await import(
         "@/components/investment-advisory-test/iat-pdf"
+      );
+      const { fillTemplatePdf } = await import(
+        "@/components/investment-advisory-test/iat-pdf-filler"
       );
 
       const resolvedClientName =
@@ -385,7 +394,11 @@ export default function InvestmentAdvisoryTestPage({
       });
 
       const signedName = `Signé via DocuSign (${envelopeId})`;
-      const pdfBase64 = await generateQCCPdf(formData, resolvedClientName);
+      // Re-generate the filled PDF as the signed copy
+      const { base64: pdfBase64 } = await fillTemplatePdf(
+        clientType === "company" ? "company" : "personal",
+        formData
+      );
       const formSummary = buildFormSummary(formData);
 
       const docPrefix = clientType === "company" ? "DCE" : "QCC";
@@ -900,6 +913,7 @@ export default function InvestmentAdvisoryTestPage({
             : formData.companyIdentity.representative.email
         }
         pdfBase64={pdfForSigning}
+        pdfPageCount={pdfPageCount}
         onClose={() => setShowDocuSign(false)}
         onSigned={handleSigned}
       />

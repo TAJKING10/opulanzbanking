@@ -54,12 +54,16 @@ export async function POST(req: NextRequest) {
       clientName,
       clientEmail,
       returnUrl,
+      pdfPageCount = 1,
     } = (await req.json()) as {
       pdfBase64: string;
       clientName: string;
       clientEmail: string;
       returnUrl: string;
+      pdfPageCount?: number;
     };
+
+    const lastPage = String(pdfPageCount);
 
     const { CLIENT_ID, ACCOUNT_ID, BASE_URI, AUTH_SERVER } = getEnv();
 
@@ -112,19 +116,22 @@ export async function POST(req: NextRequest) {
             tabs: {
               signHereTabs: [
                 {
-                  documentId: "1",
-                  pageNumber: "1",
-                  xPosition: "100",
-                  yPosition: "680",
-                  scaleValue: "1",
+                  // Anchor to "Lu et approuve" text in the SIGNATURES section
+                  anchorString: "Lu et approuv",
+                  anchorUnits: "pixels",
+                  anchorXOffset: "10",
+                  anchorYOffset: "20",
+                  anchorIgnoreIfNotPresent: "false",
+                  scaleValue: "0.8",
                 },
               ],
               dateSignedTabs: [
                 {
-                  documentId: "1",
-                  pageNumber: "1",
-                  xPosition: "100",
-                  yPosition: "720",
+                  anchorString: "Lu et approuv",
+                  anchorUnits: "pixels",
+                  anchorXOffset: "300",
+                  anchorYOffset: "30",
+                  anchorIgnoreIfNotPresent: "false",
                 },
               ],
             },

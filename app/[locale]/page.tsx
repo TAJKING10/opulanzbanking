@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { ArrowRight } from 'lucide-react';
@@ -7,6 +8,27 @@ import { AppInstallBanner } from '@/components/app-install-banner';
 import { SectionHeading } from '@/components/section-heading';
 import { ServiceCard } from '@/components/service-card';
 import { PageGuidance } from '@/components/page-guidance';
+import { generateSEOMetadata } from './metadata';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return generateSEOMetadata({
+    locale,
+    pathname: '',
+    title:
+      locale === 'fr'
+        ? 'Opulanz — Services de Paiement & Financiers | France & Luxembourg'
+        : 'Opulanz — Payment & Financial Services | France & Luxembourg',
+    description:
+      locale === 'fr'
+        ? 'Comptes de paiement réglementés, création d\'entreprise, conseil en investissement, fiscalité et assurance vie pour les entreprises en France et au Luxembourg.'
+        : 'Regulated payment accounts, company formation, investment advisory, tax consulting, and life insurance for businesses in France and Luxembourg.',
+  });
+}
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

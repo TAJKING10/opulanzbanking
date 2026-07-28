@@ -60,6 +60,38 @@ export default async function LocaleLayout({
           name="viewport"
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
+        {/* Organization + WebSite JSON-LD structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                '@context': 'https://schema.org',
+                '@type': 'FinancialService',
+                '@id': 'https://www.opulanz.com/#organization',
+                name: 'Opulanz',
+                url: 'https://www.opulanz.com',
+                logo: 'https://www.opulanz.com/images/opulanz-logo.png',
+                description:
+                  'Regulated payment accounts, company formation, investment advisory, tax consulting, and life insurance for businesses in France and Luxembourg.',
+                areaServed: ['FR', 'LU'],
+                contactPoint: {
+                  '@type': 'ContactPoint',
+                  contactType: 'customer service',
+                  availableLanguage: ['English', 'French'],
+                },
+              },
+              {
+                '@context': 'https://schema.org',
+                '@type': 'WebSite',
+                '@id': 'https://www.opulanz.com/#website',
+                url: 'https://www.opulanz.com',
+                name: 'Opulanz',
+                publisher: { '@id': 'https://www.opulanz.com/#organization' },
+              },
+            ]),
+          }}
+        />
         {/* PWA manifest */}
         <link rel="manifest" href="/manifest.json" />
         {/* Android PWA */}

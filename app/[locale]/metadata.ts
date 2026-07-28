@@ -21,9 +21,9 @@ export function generateSEOMetadata({
   title,
   description,
 }: GenerateMetadataProps): Metadata {
-  const defaultTitle = 'Opulanz - Professional Financial Services';
+  const defaultTitle = 'Opulanz — Payment & Financial Services | France & Luxembourg';
   const defaultDescription =
-    'Trusted financial services, company formation, and advisory services for entrepreneurs and businesses in France and Luxembourg.';
+    'Regulated payment accounts, company formation, investment advisory, tax consulting, and life insurance for businesses in France and Luxembourg.';
 
   const pageTitle = title || defaultTitle;
   const pageDescription = description || defaultDescription;

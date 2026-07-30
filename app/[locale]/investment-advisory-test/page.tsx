@@ -7,6 +7,7 @@ import {
   Target, FileText, ShieldCheck, TrendingUp, ClipboardList,
   BookOpen, ArrowRight, AlertCircle, Mail,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,8 +31,6 @@ import { IATDocuSignModal } from "@/components/investment-advisory-test/iat-docu
 import { IATTechSection } from "@/components/investment-advisory-test/iat-tech-section";
 import {
   defaultFormData,
-  PP_STEP_LABELS,
-  PM_STEP_LABELS,
   type IATFormData,
   type ClientType,
 } from "@/components/investment-advisory-test/iat-types";
@@ -178,6 +177,8 @@ function CompletionScreen({
   pdfBase64?: string;
   pdfFilename?: string;
 }) {
+  const t = useTranslations("iat");
+
   const handleDownload = () => {
     if (!pdfBase64) return;
     const link = document.createElement("a");
@@ -185,6 +186,8 @@ function CompletionScreen({
     link.download = pdfFilename || "QCC.pdf";
     link.click();
   };
+
+  const name = clientName ? `, ${clientName}` : "";
 
   return (
     <div className="text-center py-10 space-y-6">
@@ -194,12 +197,10 @@ function CompletionScreen({
 
       <div>
         <h2 className="text-2xl font-bold text-brand-dark mb-2">
-          Questionnaire complété et signé
+          {t("completion.title")}
         </h2>
         <p className="text-brand-grayMed max-w-xl mx-auto text-sm leading-relaxed">
-          Merci{clientName ? `, ${clientName}` : ""}. Votre questionnaire de connaissance client (QCC) a été
-          signé électroniquement. Un PDF récapitulatif a été transmis à votre conseiller Advensys
-          Insurance Finance.
+          {t("completion.subtitle", { name })}
         </p>
       </div>
 
@@ -208,30 +209,30 @@ function CompletionScreen({
         {emailStatus === "sending" && (
           <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800 flex items-center gap-2">
             <Mail className="h-4 w-4 flex-shrink-0 animate-pulse" />
-            Envoi du questionnaire PDF en cours…
+            {t("completion.emailSending")}
           </div>
         )}
         {emailStatus === "sent" && (
           <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 flex items-center gap-2">
             <CheckCircle className="h-4 w-4 flex-shrink-0" />
-            Questionnaire PDF envoyé à votre conseiller avec succès.
+            {t("completion.emailSent")}
           </div>
         )}
         {emailStatus === "error" && (
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 flex items-center gap-2">
             <AlertCircle className="h-4 w-4 flex-shrink-0" />
-            L&apos;envoi de l&apos;email a échoué. Votre conseiller sera contacté manuellement.
+            {t("completion.emailError")}
           </div>
         )}
       </div>
 
       <div className="mx-auto max-w-sm rounded-2xl border border-brand-grayLight bg-gray-50 p-5 text-left space-y-2">
         {[
-          "Questionnaire de connaissance complété",
-          "Rendez-vous de consultation sélectionné",
-          "Déclarations et consentements acceptés",
-          "Questionnaire signé électroniquement",
-          "PDF transmis au conseiller",
+          t("completion.checklistCompleted"),
+          t("completion.checklistAppointment"),
+          t("completion.checklistConsents"),
+          t("completion.checklistSigned"),
+          t("completion.checklistPdf"),
         ].map((item) => (
           <div key={item} className="flex items-center gap-2.5">
             <CheckCircle className="h-4 w-4 flex-shrink-0 text-brand-gold" />
@@ -249,7 +250,7 @@ function CompletionScreen({
             className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-brand-gold bg-brand-gold/5 px-4 py-3 text-sm font-semibold text-brand-goldDark hover:bg-brand-gold/10 transition-colors"
           >
             <FileText className="h-4 w-4 flex-shrink-0" />
-            Download my signed PDF copy
+            {t("completion.downloadBtn")}
           </button>
         </div>
       )}
@@ -257,11 +258,11 @@ function CompletionScreen({
       <div className="flex flex-col gap-3 sm:flex-row justify-center">
         <Button asChild variant="outline" size="lg">
           <Link href={`/${locale}/investment-advisory`}>
-            Retour à la page Conseil en Investissement
+            {t("completion.backBtn")}
           </Link>
         </Button>
         <Button variant="primary" size="lg" onClick={onRestart}>
-          Recommencer le questionnaire
+          {t("completion.restartBtn")}
         </Button>
       </div>
     </div>
@@ -278,6 +279,7 @@ export default function InvestmentAdvisoryTestPage({
   params: { locale: string };
 }) {
   const { locale } = params;
+  const t = useTranslations("iat");
 
   // Wizard state
   const [started, setStarted] = React.useState(false);
@@ -394,7 +396,6 @@ export default function InvestmentAdvisoryTestPage({
       });
 
       const signedName = `Signé via DocuSign (${envelopeId})`;
-      // Re-generate the filled PDF as the signed copy
       const { base64: pdfBase64 } = await fillTemplatePdf(
         clientType === "company" ? "company" : "personal",
         formData
@@ -409,7 +410,6 @@ export default function InvestmentAdvisoryTestPage({
 
       const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-      // Save to database so it appears in admin panel
       fetch(`${API}/api/applications`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -428,7 +428,6 @@ export default function InvestmentAdvisoryTestPage({
         }),
       }).catch(() => {});
 
-      // Send emails (admin + client confirmation with PDF)
       const res = await fetch("/api/send-questionnaire", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -451,7 +450,9 @@ export default function InvestmentAdvisoryTestPage({
     }
   };
 
-  const stepLabels = clientType === "company" ? PM_STEP_LABELS : PP_STEP_LABELS;
+  const ppStepLabels = t.raw("ppStepLabels") as string[];
+  const pmStepLabels = t.raw("pmStepLabels") as string[];
+  const stepLabels = clientType === "company" ? pmStepLabels : ppStepLabels;
 
   const clientName =
     clientType === "personal"
@@ -459,8 +460,8 @@ export default function InvestmentAdvisoryTestPage({
       : formData.companyIdentity.companyName;
 
   const stepTitle = clientType
-    ? `Étape ${step} sur 8 — ${stepLabels[step - 1]}`
-    : "Questionnaire de Connaissance du Client";
+    ? t("wizard.stepTitle", { step: String(step), label: stepLabels[step - 1] ?? "" })
+    : t("wizard.questionnaireTitle");
 
   return (
     <>
@@ -613,18 +614,17 @@ export default function InvestmentAdvisoryTestPage({
               <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-gold/10">
                 <Target className="h-7 w-7 text-brand-gold" />
               </div>
-              <h2 className="mb-3 text-2xl font-bold text-brand-dark">Compléter votre QCC</h2>
+              <h2 className="mb-3 text-2xl font-bold text-brand-dark">{t("wizard.startCTA")}</h2>
               <p className="mb-6 text-brand-grayMed text-sm max-w-lg mx-auto">
-                Questionnaire de Connaissance du Client (QCC) — disponible pour les personnes physiques
-                et les personnes morales. Conforme MiFID II / DDA.
+                {t("wizard.startDesc")}
               </p>
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <Button variant="primary" size="lg" onClick={startPrototype}>
-                  Démarrer le questionnaire
+                  {t("wizard.startBtn")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <a href="#consultation-info">Book a Consultation</a>
+                  <a href="#consultation-info">{t("wizard.bookConsultation")}</a>
                 </Button>
               </div>
             </div>
@@ -677,7 +677,7 @@ export default function InvestmentAdvisoryTestPage({
                               onClick={() => { setClientType(null); setStepError(""); }}
                               className="text-xs text-brand-grayMed hover:text-brand-gold underline underline-offset-2"
                             >
-                              ← Changer de type de client
+                              {t("wizard.changeClientType")}
                             </button>
                           </div>
                         )}
@@ -706,6 +706,8 @@ export default function InvestmentAdvisoryTestPage({
                             formData={formData}
                             onChange={updateFormData}
                             onNext={() => goToStep(4)}
+                            error={stepError}
+                            setError={setStepError}
                           />
                         )}
 
@@ -733,6 +735,8 @@ export default function InvestmentAdvisoryTestPage({
                             formData={formData}
                             onChange={updateFormData}
                             onNext={() => goToStep(4)}
+                            error={stepError}
+                            setError={setStepError}
                           />
                         )}
 
@@ -760,6 +764,8 @@ export default function InvestmentAdvisoryTestPage({
                             formData={formData}
                             onChange={updateFormData}
                             onNext={() => goToStep(7)}
+                            error={stepError}
+                            setError={setStepError}
                           />
                         )}
                         {step === 7 && (
@@ -790,7 +796,7 @@ export default function InvestmentAdvisoryTestPage({
                               onClick={() => goToStep(step - 1)}
                               className="text-sm text-brand-grayMed hover:text-brand-dark underline underline-offset-2"
                             >
-                              ← Étape précédente
+                              {t("wizard.previousStep")}
                             </button>
                           </div>
                         )}

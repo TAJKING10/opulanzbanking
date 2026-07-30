@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import type { IATFormData, CompanyFinancial } from "./iat-types";
 
 interface Props {
@@ -13,17 +14,6 @@ interface Props {
   error: string;
   setError: (e: string) => void;
 }
-
-const FUND_ORIGINS = [
-  ["revenus_pro", "Revenus professionnels"],
-  ["cession_actifs_pro", "Cession(s) d'actifs professionnels"],
-  ["cession_immo", "Cession(s) immobilière(s)"],
-  ["epargne", "Épargne constituée"],
-  ["cession_mob", "Cession(s) mobilière(s)"],
-  ["assurance_vie", "Assurance-vie"],
-  ["heritage", "Héritage – Donation – Succession"],
-  ["autre", "Autres"],
-] as const;
 
 function AmountPct({
   amountLabel,
@@ -65,9 +55,21 @@ function AmountPct({
 }
 
 export function IATpmStep2({ formData, onChange, onNext, error, setError }: Props) {
+  const t = useTranslations("iat");
   const fin = formData.companyFinancial;
   const up = (field: keyof CompanyFinancial, val: unknown) =>
     onChange({ companyFinancial: { ...fin, [field]: val } });
+
+  const FUND_ORIGINS: [string, string][] = [
+    ["revenus_pro", t("pmStep2.fundOriginRevenusPro")],
+    ["cession_actifs_pro", t("pmStep2.fundOriginCessionActifsPro")],
+    ["cession_immo", t("pmStep2.fundOriginCessionImmo")],
+    ["epargne", t("pmStep2.fundOriginEpargne")],
+    ["cession_mob", t("pmStep2.fundOriginCessionMob")],
+    ["assurance_vie", t("pmStep2.fundOriginAssuranceVie")],
+    ["heritage", t("pmStep2.fundOriginHeritage")],
+    ["autre", t("pmStep2.fundOriginAutre")],
+  ];
 
   const toggleOrigin = (key: string) => {
     const prev = fin.fundOrigins;
@@ -76,10 +78,11 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
   };
 
   const handleNext = () => {
-    if (!fin.amountToInvest.trim()) {
-      setError("Veuillez indiquer le montant prévu à investir.");
-      return;
-    }
+    if (!fin.amountToInvest.trim()) { setError(t("pmStep2.errAmount")); return; }
+    if (!fin.fundNature) { setError(t("pmStep2.errFundNature")); return; }
+    if (fin.fundOrigins.length === 0) { setError(t("pmStep2.errFundOrigins")); return; }
+    const hasComposition = [fin.bankingSavings, fin.financialSavings, fin.capitalizationContracts, fin.realEstate, fin.professional].some((v) => v?.trim());
+    if (!hasComposition) { setError(t("pmStep2.errComposition")); return; }
     setError("");
     onNext();
   };
@@ -89,10 +92,10 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
       {/* Données financières */}
       <div className="space-y-4">
         <h3 className="font-semibold text-brand-dark text-sm border-b border-brand-grayLight pb-2">
-          Données financières (dernier exercice clos)
+          {t("pmStep2.financialTitle")}
         </h3>
         <div>
-          <Label>Date de clôture de l'exercice</Label>
+          <Label>{t("pmStep2.fiscalYearEnd")}</Label>
           <Input
             type="date"
             value={fin.fiscalYearEnd}
@@ -102,26 +105,26 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
         </div>
         <div className="grid grid-cols-1 gap-3">
           <div>
-            <Label>Montant total du bilan (€)</Label>
-            <Input value={fin.totalBalance} onChange={(e) => up("totalBalance", e.target.value)} className="mt-1" placeholder="Ex. : 2 500 000 €" />
+            <Label>{t("pmStep2.totalBalance")}</Label>
+            <Input value={fin.totalBalance} onChange={(e) => up("totalBalance", e.target.value)} className="mt-1" placeholder={t("pmStep2.totalBalancePlaceholder")} />
           </div>
           <div>
-            <Label>Chiffre d'affaires net ou résultat net (€)</Label>
-            <Input value={fin.revenue} onChange={(e) => up("revenue", e.target.value)} className="mt-1" placeholder="Ex. : 800 000 €" />
+            <Label>{t("pmStep2.revenue")}</Label>
+            <Input value={fin.revenue} onChange={(e) => up("revenue", e.target.value)} className="mt-1" placeholder={t("pmStep2.revenuePlaceholder")} />
           </div>
           <div>
-            <Label>Capitaux propres (€)</Label>
-            <Input value={fin.equity} onChange={(e) => up("equity", e.target.value)} className="mt-1" placeholder="Ex. : 1 200 000 €" />
+            <Label>{t("pmStep2.equity")}</Label>
+            <Input value={fin.equity} onChange={(e) => up("equity", e.target.value)} className="mt-1" placeholder={t("pmStep2.equityPlaceholder")} />
           </div>
           <div>
-            <Label>Engagements financiers (% des revenus annuels)</Label>
-            <Input value={fin.financialCommitments} onChange={(e) => up("financialCommitments", e.target.value)} className="mt-1" placeholder="Ex. : 25 %" />
+            <Label>{t("pmStep2.financialCommitments")}</Label>
+            <Input value={fin.financialCommitments} onChange={(e) => up("financialCommitments", e.target.value)} className="mt-1" placeholder={t("pmStep2.financialCommitmentsPlaceholder")} />
           </div>
         </div>
         <div>
-          <Label>Type d'imposition</Label>
+          <Label>{t("pmStep2.taxType")}</Label>
           <div className="flex gap-6 mt-2">
-            {[["IS", "Impôt sur les sociétés (IS)"], ["IR", "Impôt sur le revenu (IR)"]].map(([val, lbl]) => (
+            {[["IS", t("pmStep2.taxIS")], ["IR", t("pmStep2.taxIR")]].map(([val, lbl]) => (
               <label key={val} className="flex items-center gap-2 cursor-pointer text-sm">
                 <input
                   type="radio"
@@ -139,44 +142,44 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
 
       {/* Patrimoine */}
       <div className="space-y-4">
-        <h3 className="font-semibold text-brand-dark text-sm border-b border-brand-grayLight pb-2">
-          Composition du patrimoine de la structure
+        <h3 className="font-bold text-red-600 text-sm border-b border-brand-grayLight pb-2">
+          {t("pmStep2.patrimoineTitle")}
         </h3>
         <AmountPct
-          amountLabel="Épargne bancaire"
-          pctLabel="% du patrimoine"
+          amountLabel={t("pmStep2.bankingSavings")}
+          pctLabel={t("pmStep2.pctLabel")}
           amountField="bankingSavings"
           pctField="bankingSavingsPct"
           fin={fin}
           up={(f, v) => up(f, v)}
         />
         <AmountPct
-          amountLabel="Épargne financière"
-          pctLabel="% du patrimoine"
+          amountLabel={t("pmStep2.financialSavings")}
+          pctLabel={t("pmStep2.pctLabel")}
           amountField="financialSavings"
           pctField="financialSavingsPct"
           fin={fin}
           up={(f, v) => up(f, v)}
         />
         <AmountPct
-          amountLabel="Contrats de capitalisation"
-          pctLabel="% du patrimoine"
+          amountLabel={t("pmStep2.capitalizationContracts")}
+          pctLabel={t("pmStep2.pctLabel")}
           amountField="capitalizationContracts"
           pctField="capitalizationContractsPct"
           fin={fin}
           up={(f, v) => up(f, v)}
         />
         <AmountPct
-          amountLabel="Patrimoine immobilier"
-          pctLabel="% du patrimoine"
+          amountLabel={t("pmStep2.realEstate")}
+          pctLabel={t("pmStep2.pctLabel")}
           amountField="realEstate"
           pctField="realEstatePct"
           fin={fin}
           up={(f, v) => up(f, v)}
         />
         <AmountPct
-          amountLabel="Patrimoine professionnel"
-          pctLabel="% du patrimoine"
+          amountLabel={t("pmStep2.professional")}
+          pctLabel={t("pmStep2.pctLabel")}
           amountField="professional"
           pctField="professionalPct"
           fin={fin}
@@ -184,16 +187,16 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
         />
         <div className="grid grid-cols-3 gap-3 items-end">
           <div className="col-span-2">
-            <Label>Autres (précisez)</Label>
+            <Label>{t("pmStep2.otherDesc")}</Label>
             <Input
               value={fin.otherDesc}
               onChange={(e) => up("otherDesc", e.target.value)}
               className="mt-1"
-              placeholder="Nature des autres actifs"
+              placeholder={t("pmStep2.otherDescPlaceholder")}
             />
           </div>
           <div>
-            <Label>% du patrimoine</Label>
+            <Label>{t("pmStep2.pctLabel")}</Label>
             <Input
               value={fin.otherPct}
               onChange={(e) => up("otherPct", e.target.value)}
@@ -207,12 +210,12 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
       {/* Fonds */}
       <div className="space-y-4">
         <h3 className="font-semibold text-brand-dark text-sm border-b border-brand-grayLight pb-2">
-          Origine des fonds affectés au mandat
+          {t("pmStep2.fundsTitle")}
         </h3>
         <div>
-          <Label>Nature des avoirs à investir</Label>
+          <Label><span className="font-bold text-red-600">{t("pmStep2.fundNature")}</span></Label>
           <div className="flex gap-4 mt-2">
-            {[["liquidities", "Liquidités"], ["financial_instruments", "Instruments financiers"], ["both", "Les deux"]].map(([val, lbl]) => (
+            {[["liquidities", t("pmStep2.liquidities")], ["financial_instruments", t("pmStep2.financialInstruments")], ["both", t("pmStep2.both")]].map(([val, lbl]) => (
               <label key={val} className="flex items-center gap-2 cursor-pointer text-sm">
                 <input
                   type="radio"
@@ -227,16 +230,16 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
           </div>
         </div>
         <div>
-          <Label>Montant prévu des avoirs à investir *</Label>
+          <Label><span className="font-bold text-red-600">{t("pmStep2.amountToInvest")}</span></Label>
           <Input
             value={fin.amountToInvest}
             onChange={(e) => up("amountToInvest", e.target.value)}
             className="mt-1"
-            placeholder="Ex. : 200 000 €"
+            placeholder={t("pmStep2.amountToInvestPlaceholder")}
           />
         </div>
         <div>
-          <Label>Origine économique des avoirs</Label>
+          <Label><span className="font-bold text-red-600">{t("pmStep2.fundOrigins")}</span></Label>
           <div className="grid grid-cols-2 gap-2 mt-2">
             {FUND_ORIGINS.map(([key, lbl]) => (
               <label key={key} className="flex items-center gap-2 cursor-pointer text-sm">
@@ -253,18 +256,18 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
               value={fin.fundOriginOther}
               onChange={(e) => up("fundOriginOther", e.target.value)}
               className="mt-2"
-              placeholder="Précisez l'origine"
+              placeholder={t("pmStep2.fundOriginOtherPlaceholder")}
             />
           )}
         </div>
         <div>
-          <Label>Établissement bancaire d'origine</Label>
-          <Input value={fin.bankOrigin} onChange={(e) => up("bankOrigin", e.target.value)} className="mt-1" placeholder="Nom de la banque" />
+          <Label><span className="font-bold text-red-600">{t("pmStep2.bankOrigin")}</span></Label>
+          <Input value={fin.bankOrigin} onChange={(e) => up("bankOrigin", e.target.value)} className="mt-1" placeholder={t("pmStep2.bankOriginPlaceholder")} />
         </div>
         <div>
-          <Label>Modalités d'alimentation du mandat</Label>
+          <Label>{t("pmStep2.fundingModality")}</Label>
           <div className="flex gap-4 mt-2">
-            {[["portfolio_transfer", "Transfert de portefeuille"], ["check", "Chèque"], ["wire", "Virement"]].map(([val, lbl]) => (
+            {[["portfolio_transfer", t("pmStep2.portfolioTransfer")], ["check", t("pmStep2.check")], ["wire", t("pmStep2.wire")]].map(([val, lbl]) => (
               <label key={val} className="flex items-center gap-2 cursor-pointer text-sm">
                 <input
                   type="radio"
@@ -282,7 +285,7 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
 
       {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
       <Button variant="primary" size="lg" className="w-full" onClick={handleNext}>
-        Suivant — Documents
+        {t("pmStep2.nextBtn")}
       </Button>
     </div>
   );

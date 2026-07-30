@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { Building2, User } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { ClientType } from "./iat-types";
 
 interface Props {
@@ -8,21 +9,22 @@ interface Props {
 }
 
 export function IATTypeSelector({ onSelect }: Props) {
+  const t = useTranslations("iat");
+
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-brand-dark mb-1">
-          Questionnaire de Connaissance du Client
+          {t("typeSelector.heading")}
         </h2>
         <p className="text-sm text-brand-grayMed">
-          Veuillez sélectionner votre profil afin d'accéder au questionnaire adapté à votre situation.
+          {t("typeSelector.subtext")}
         </p>
       </div>
 
       <div className="rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 text-xs text-blue-900">
-        <strong>Informations préalables.</strong> En fournissant ces informations, vous permettez à
-        Advensys Insurance Finance de délivrer un conseil adapté à votre situation patrimoniale,
-        conformément à la réglementation MiFID II / DDA.
+        <strong>{t("typeSelector.disclaimerStrong")}</strong>{" "}
+        {t("typeSelector.disclaimer")}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -35,13 +37,13 @@ export function IATTypeSelector({ onSelect }: Props) {
             <User className="h-8 w-8 text-brand-gold" />
           </div>
           <div>
-            <p className="text-base font-bold text-brand-dark">Natural Person</p>
+            <p className="text-base font-bold text-brand-dark">{t("typeSelector.naturalPersonTitle")}</p>
             <p className="text-xs text-brand-grayMed mt-1">
-              Individual, individual investor or joint owner
+              {t("typeSelector.naturalPersonDesc")}
             </p>
           </div>
           <span className="mt-2 inline-block rounded-full bg-brand-gold px-4 py-1.5 text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity">
-            Select
+            {t("typeSelector.select")}
           </span>
         </button>
 
@@ -54,13 +56,13 @@ export function IATTypeSelector({ onSelect }: Props) {
             <Building2 className="h-8 w-8 text-brand-gold" />
           </div>
           <div>
-            <p className="text-base font-bold text-brand-dark">Legal Entity</p>
+            <p className="text-base font-bold text-brand-dark">{t("typeSelector.legalEntityTitle")}</p>
             <p className="text-xs text-brand-grayMed mt-1">
-              Company, holding company, SCI or other legal entity
+              {t("typeSelector.legalEntityDesc")}
             </p>
           </div>
           <span className="mt-2 inline-block rounded-full bg-brand-gold px-4 py-1.5 text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity">
-            Select
+            {t("typeSelector.select")}
           </span>
         </button>
       </div>

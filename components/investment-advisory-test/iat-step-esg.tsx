@@ -3,6 +3,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Leaf } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { IATFormData, ESGData } from "./iat-types";
 import { ESG_IMPACT_FACTORS } from "./iat-types";
 
@@ -10,6 +11,8 @@ interface Props {
   formData: IATFormData;
   onChange: (data: Partial<IATFormData>) => void;
   onNext: () => void;
+  error: string;
+  setError: (e: string) => void;
 }
 
 function PctGroup({
@@ -17,17 +20,25 @@ function PctGroup({
   name,
   value,
   onChange,
+  pct5,
+  pct25,
+  pct50,
+  pctNone,
 }: {
   label: string;
   name: string;
   value: string;
   onChange: (v: string) => void;
+  pct5: string;
+  pct25: string;
+  pct50: string;
+  pctNone: string;
 }) {
   return (
     <div className="space-y-2">
       <p className="text-sm font-medium text-brand-dark">{label}</p>
       <div className="flex flex-wrap gap-2">
-        {([["5", "≥ 5 %"], ["25", "≥ 25 %"], ["50", "≥ 50 %"], ["none", "Aucun"]] as [string, string][]).map(([val, lbl]) => (
+        {([["5", pct5], ["25", pct25], ["50", pct50], ["none", pctNone]] as [string, string][]).map(([val, lbl]) => (
           <button
             key={val}
             type="button"
@@ -46,10 +57,17 @@ function PctGroup({
   );
 }
 
-export function IATStepESG({ formData, onChange, onNext }: Props) {
+export function IATStepESG({ formData, onChange, onNext, error, setError }: Props) {
+  const t = useTranslations("iat");
   const esg = formData.esg;
   const up = (field: keyof ESGData, val: unknown) =>
     onChange({ esg: { ...esg, [field]: val } });
+
+  const handleNext = () => {
+    if (esg.wantsESG === null) { setError(t("esg.errWantsESG")); return; }
+    setError("");
+    onNext();
+  };
 
   const toggleImpact = (id: string) => {
     const prev = esg.negativeImpacts;
@@ -62,16 +80,14 @@ export function IATStepESG({ formData, onChange, onNext }: Props) {
       <div className="flex items-start gap-3 rounded-xl bg-green-50 border border-green-200 px-4 py-3">
         <Leaf className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
         <p className="text-xs text-green-900">
-          Les préférences en matière de durabilité sont recueillies conformément aux exigences
-          MiFID II (règlement SFDR / Taxonomie européenne). Elles permettent d'orienter la sélection
-          des instruments financiers lorsque des produits ESG adaptés sont disponibles.
+          {t("esg.disclaimer")}
         </p>
       </div>
 
       {/* Main ESG question */}
       <div className="space-y-3">
-        <h3 className="font-semibold text-brand-dark">
-          Souhaitez-vous intégrer des critères de durabilité dans vos choix d'investissements ?
+        <h3 className="font-bold text-red-600">
+          {t("esg.mainQuestion")}
         </h3>
         <div className="flex gap-6">
           {([true, false] as const).map((v) => (
@@ -83,7 +99,7 @@ export function IATStepESG({ formData, onChange, onNext }: Props) {
                 onChange={() => up("wantsESG", v)}
                 className="accent-brand-gold"
               />
-              {v ? "Oui" : "Non"}
+              {v ? t("esg.yes") : t("esg.no")}
             </label>
           ))}
         </div>
@@ -93,32 +109,37 @@ export function IATStepESG({ formData, onChange, onNext }: Props) {
         <>
           {/* Taxonomy */}
           <PctGroup
-            label="1. Préférences en matière d'intégration de supports alignés avec la Taxonomie Européenne"
+            label={t("esg.taxonomyLabel")}
             name="taxonomy"
             value={esg.taxonomyPct}
             onChange={(v) => up("taxonomyPct", v)}
+            pct5={t("esg.pct5")}
+            pct25={t("esg.pct25")}
+            pct50={t("esg.pct50")}
+            pctNone={t("esg.pctNone")}
           />
           {esg.taxonomyPct && esg.taxonomyPct !== "none" && (
             <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-xs text-amber-800">
-              Actuellement, peu de produits financiers ESG ont une part significative
-              d'investissements durables alignée avec la Taxonomie européenne. Si vous sélectionnez
-              ce critère, l'offre disponible peut être limitée, mais s'améliorera progressivement.
+              {t("esg.taxonomyWarning")}
             </div>
           )}
 
           {/* Sustainable investment % */}
           <PctGroup
-            label="2. Souhaits en termes d'intégration d'investissements durables au sein de votre placement"
+            label={t("esg.sustainableLabel")}
             name="sustainable"
             value={esg.sustainablePct}
             onChange={(v) => up("sustainablePct", v)}
+            pct5={t("esg.pct5")}
+            pct25={t("esg.pct25")}
+            pct50={t("esg.pct50")}
+            pctNone={t("esg.pctNone")}
           />
 
           {/* Impact on factors */}
           <div className="space-y-3">
-            <h3 className="font-semibold text-brand-dark text-sm">
-              3. Souhaitez-vous sélectionner vos investissements en fonction de leur impact sur les
-              facteurs de durabilité ?
+            <h3 className="font-bold text-red-600 text-sm">
+              {t("esg.impactFactorsTitle")}
             </h3>
             <div className="flex gap-6">
               {([true, false] as const).map((v) => (
@@ -130,7 +151,7 @@ export function IATStepESG({ formData, onChange, onNext }: Props) {
                     onChange={() => up("impactFactors", v)}
                     className="accent-brand-gold"
                   />
-                  {v ? "Oui" : "Non"}
+                  {v ? t("esg.yes") : t("esg.no")}
                 </label>
               ))}
             </div>
@@ -138,16 +159,16 @@ export function IATStepESG({ formData, onChange, onNext }: Props) {
             {esg.impactFactors && (
               <div className="space-y-2">
                 <p className="text-xs text-brand-grayMed">
-                  Précisez les effets sur lesquels vous souhaitez minimiser les incidences négatives :
+                  {t("esg.impactFactorsNote")}
                 </p>
                 <div className="grid grid-cols-1 gap-2">
-                  {ESG_IMPACT_FACTORS.map(({ id, label }) => (
+                  {ESG_IMPACT_FACTORS.map(({ id }) => (
                     <label key={id} className="flex items-center gap-2 cursor-pointer text-sm">
                       <Checkbox
                         checked={esg.negativeImpacts.includes(id)}
                         onCheckedChange={() => toggleImpact(id)}
                       />
-                      {label}
+                      {t(`esg.impact.${id}` as any)}
                     </label>
                   ))}
                 </div>
@@ -157,8 +178,9 @@ export function IATStepESG({ formData, onChange, onNext }: Props) {
         </>
       )}
 
-      <Button variant="primary" size="lg" className="w-full" onClick={onNext}>
-        Suivant — Prise de rendez-vous
+      {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
+      <Button variant="primary" size="lg" className="w-full" onClick={handleNext}>
+        {t("esg.nextBtn")}
       </Button>
     </div>
   );

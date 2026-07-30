@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { IATFormData, Titulaire, MaritalStatus } from "./iat-types";
 
 interface Props {
@@ -49,11 +50,13 @@ function TitulaireForm({
   label,
   data,
   onChange,
+  t,
 }: {
   id: string;
   label: string;
   data: Titulaire;
   onChange: (d: Partial<Titulaire>) => void;
+  t: ReturnType<typeof useTranslations>;
 }) {
   const up = (field: keyof Titulaire, val: unknown) =>
     onChange({ [field]: val } as Partial<Titulaire>);
@@ -66,7 +69,7 @@ function TitulaireForm({
 
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <Label>Civilité</Label>
+          <Label>{t("ppStep1.civility")}</Label>
           <select
             value={data.civility}
             onChange={(e) => up("civility", e.target.value)}
@@ -78,7 +81,7 @@ function TitulaireForm({
           </select>
         </div>
         <div>
-          <Label>Nom *</Label>
+          <Label><span className="font-bold text-red-600">{t("ppStep1.lastName")}</span></Label>
           <Input
             value={data.lastName}
             onChange={(e) => up("lastName", e.target.value)}
@@ -87,19 +90,19 @@ function TitulaireForm({
           />
         </div>
         <div>
-          <Label>Prénom(s) *</Label>
+          <Label><span className="font-bold text-red-600">{t("ppStep1.firstName")}</span></Label>
           <Input
             value={data.firstName}
             onChange={(e) => up("firstName", e.target.value)}
             className="mt-1"
-            placeholder="Prénom"
+            placeholder={t("ppStep1.firstName")}
           />
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label>Nom de jeune fille</Label>
+          <Label>{t("ppStep1.maidenName")}</Label>
           <Input
             value={data.maidenName}
             onChange={(e) => up("maidenName", e.target.value)}
@@ -107,19 +110,19 @@ function TitulaireForm({
           />
         </div>
         <div>
-          <Label>Nationalité *</Label>
+          <Label><span className="font-bold text-red-600">{t("ppStep1.nationality")}</span></Label>
           <Input
             value={data.nationality}
             onChange={(e) => up("nationality", e.target.value)}
             className="mt-1"
-            placeholder="Ex. : Française"
+            placeholder={t("ppStep1.nationalityPlaceholder")}
           />
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label>Date de naissance *</Label>
+          <Label><span className="font-bold text-red-600">{t("ppStep1.birthDate")}</span></Label>
           <Input
             type="date"
             value={data.birthDate}
@@ -128,7 +131,7 @@ function TitulaireForm({
           />
         </div>
         <div>
-          <Label>Lieu de naissance</Label>
+          <Label>{t("ppStep1.birthPlace")}</Label>
           <Input
             value={data.birthPlace}
             onChange={(e) => up("birthPlace", e.target.value)}
@@ -138,18 +141,18 @@ function TitulaireForm({
       </div>
 
       <div>
-        <Label>Adresse complète *</Label>
+        <Label><span className="font-bold text-red-600">{t("ppStep1.address")}</span></Label>
         <Input
           value={data.address}
           onChange={(e) => up("address", e.target.value)}
           className="mt-1"
-          placeholder="N° rue, code postal, ville, pays"
+          placeholder={t("ppStep1.addressPlaceholder")}
         />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label>Email *</Label>
+          <Label><span className="font-bold text-red-600">{t("ppStep1.email")}</span></Label>
           <Input
             type="email"
             value={data.email}
@@ -158,7 +161,7 @@ function TitulaireForm({
           />
         </div>
         <div>
-          <Label>Téléphone *</Label>
+          <Label><span className="font-bold text-red-600">{t("ppStep1.phone")}</span></Label>
           <Input
             type="tel"
             value={data.phone}
@@ -169,10 +172,10 @@ function TitulaireForm({
       </div>
 
       <div>
-        <Label>Résidence fiscale</Label>
+        <Label><span className="font-bold text-red-600">{t("ppStep1.fiscalResidence")}</span></Label>
         <RadioGroup
           name={`fiscal-${id}`}
-          options={[["France", "France"], ["Other", "Autre"]]}
+          options={[["France", t("ppStep1.fiscalFrance")], ["Other", t("ppStep1.fiscalOther")]]}
           value={data.fiscalResidence}
           onChange={(v) => up("fiscalResidence", v)}
         />
@@ -181,16 +184,16 @@ function TitulaireForm({
             value={data.fiscalResidenceOther}
             onChange={(e) => up("fiscalResidenceOther", e.target.value)}
             className="mt-2"
-            placeholder="Pays de résidence fiscale"
+            placeholder={t("ppStep1.fiscalOtherPlaceholder")}
           />
         )}
       </div>
 
       <div>
-        <Label>Êtes-vous une personne américaine (US Person) ?</Label>
+        <Label><span className="font-bold text-red-600">{t("ppStep1.usPerson")}</span></Label>
         <RadioGroup
           name={`fatca-${id}`}
-          options={[["true", "OUI"], ["false", "NON"]]}
+          options={[["true", t("ppStep1.usYes")], ["false", t("ppStep1.usNo")]]}
           value={data.isUSPerson === null ? "" : String(data.isUSPerson)}
           onChange={(v) => up("isUSPerson", v === "true")}
         />
@@ -198,7 +201,7 @@ function TitulaireForm({
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label>Profession</Label>
+          <Label><span className="font-bold text-red-600">{t("ppStep1.profession")}</span></Label>
           <Input
             value={data.profession}
             onChange={(e) => up("profession", e.target.value)}
@@ -211,14 +214,14 @@ function TitulaireForm({
               checked={data.isRetired}
               onCheckedChange={(v) => up("isRetired", !!v)}
             />
-            Retraite / Chômage
+            {t("ppStep1.retired")}
           </label>
         </div>
       </div>
       {data.isRetired && (
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label>Depuis le</Label>
+            <Label>{t("ppStep1.retiredSince")}</Label>
             <Input
               type="date"
               value={data.retiredSince}
@@ -227,7 +230,7 @@ function TitulaireForm({
             />
           </div>
           <div>
-            <Label>Ancienne profession</Label>
+            <Label>{t("ppStep1.formerProfession")}</Label>
             <Input
               value={data.formerProfession}
               onChange={(e) => up("formerProfession", e.target.value)}
@@ -243,12 +246,12 @@ function TitulaireForm({
             checked={data.isBusinessOwner}
             onCheckedChange={(v) => up("isBusinessOwner", !!v)}
           />
-          Chef d'entreprise
+          {t("ppStep1.businessOwner")}
         </label>
         {data.isBusinessOwner && (
           <div className="mt-3 grid grid-cols-2 gap-3">
             <div>
-              <Label>Dénomination</Label>
+              <Label>{t("ppStep1.companyName")}</Label>
               <Input
                 value={data.companyName}
                 onChange={(e) => up("companyName", e.target.value)}
@@ -256,7 +259,7 @@ function TitulaireForm({
               />
             </div>
             <div>
-              <Label>Forme juridique</Label>
+              <Label>{t("ppStep1.legalForm")}</Label>
               <Input
                 value={data.companyLegalForm}
                 onChange={(e) => up("companyLegalForm", e.target.value)}
@@ -264,7 +267,7 @@ function TitulaireForm({
               />
             </div>
             <div className="col-span-2">
-              <Label>Adresse siège social</Label>
+              <Label>{t("ppStep1.companySiege")}</Label>
               <Input
                 value={data.companySiege}
                 onChange={(e) => up("companySiege", e.target.value)}
@@ -281,9 +284,11 @@ function TitulaireForm({
 function MaritalForm({
   data,
   onChange,
+  t,
 }: {
   data: MaritalStatus;
   onChange: (d: Partial<MaritalStatus>) => void;
+  t: ReturnType<typeof useTranslations>;
 }) {
   const up = (field: keyof MaritalStatus, val: unknown) =>
     onChange({ [field]: val } as Partial<MaritalStatus>);
@@ -291,18 +296,18 @@ function MaritalForm({
   return (
     <div className="space-y-4">
       <h3 className="font-semibold text-brand-dark text-sm border-b border-brand-grayLight pb-2">
-        Situation matrimoniale
+        {t("ppStep1.maritalTitle")}
       </h3>
 
       <RadioGroup
         name="marital-status"
         options={[
-          ["married", "Marié(e)"],
-          ["pacs", "Pacsé(e)"],
-          ["divorced", "Divorcé(e)"],
-          ["widowed", "Veuf(ve)"],
-          ["single", "Célibataire"],
-          ["freeUnion", "Union libre"],
+          ["married", t("ppStep1.married")],
+          ["pacs", t("ppStep1.pacs")],
+          ["divorced", t("ppStep1.divorced")],
+          ["widowed", t("ppStep1.widowed")],
+          ["single", t("ppStep1.single")],
+          ["freeUnion", t("ppStep1.freeUnion")],
         ]}
         value={data.status}
         onChange={(v) => up("status", v)}
@@ -311,7 +316,7 @@ function MaritalForm({
       {data.status === "married" && (
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label>Date du mariage</Label>
+            <Label>{t("ppStep1.marriageDate")}</Label>
             <Input
               type="date"
               value={data.marriageDate}
@@ -320,22 +325,22 @@ function MaritalForm({
             />
           </div>
           <div>
-            <Label>Contrat de mariage</Label>
+            <Label>{t("ppStep1.marriageContractLabel")}</Label>
             <RadioGroup
               name="marriage-contract"
-              options={[["true", "Oui"], ["false", "Non"]]}
+              options={[["true", t("review.yes")], ["false", t("review.no")]]}
               value={data.marriageContract === null ? "" : String(data.marriageContract)}
               onChange={(v) => up("marriageContract", v === "true")}
             />
           </div>
           {data.marriageContract && (
             <div className="col-span-2">
-              <Label>Régime matrimonial</Label>
+              <Label>{t("ppStep1.marriageRegimeLabel")}</Label>
               <Input
                 value={data.marriageRegime}
                 onChange={(e) => up("marriageRegime", e.target.value)}
                 className="mt-1"
-                placeholder="Ex. : Communauté réduite aux acquêts"
+                placeholder={t("ppStep1.marriageRegimePlaceholder")}
               />
             </div>
           )}
@@ -345,7 +350,7 @@ function MaritalForm({
       {data.status === "pacs" && (
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label>Date du PACS</Label>
+            <Label>{t("ppStep1.pacsDate")}</Label>
             <Input
               type="date"
               value={data.pacsDate}
@@ -354,10 +359,10 @@ function MaritalForm({
             />
           </div>
           <div>
-            <Label>Convention de PACS</Label>
+            <Label>{t("ppStep1.pacsConventionLabel")}</Label>
             <RadioGroup
               name="pacs-convention"
-              options={[["true", "Oui"], ["false", "Non"]]}
+              options={[["true", t("review.yes")], ["false", t("review.no")]]}
               value={data.pacsConvention === null ? "" : String(data.pacsConvention)}
               onChange={(v) => up("pacsConvention", v === "true")}
             />
@@ -367,7 +372,7 @@ function MaritalForm({
 
       {data.status === "divorced" && (
         <div>
-          <Label>Date du divorce</Label>
+          <Label>{t("ppStep1.divorceDate")}</Label>
           <Input
             type="date"
             value={data.divorceDate}
@@ -379,7 +384,7 @@ function MaritalForm({
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label>Nombre d'enfant(s)</Label>
+          <Label>{t("ppStep1.numberOfChildren")}</Label>
           <Input
             type="number"
             min={0}
@@ -389,7 +394,7 @@ function MaritalForm({
           />
         </div>
         <div>
-          <Label>Dont à charge fiscalement</Label>
+          <Label>{t("ppStep1.childrenAtCharge")}</Label>
           <Input
             type="number"
             min={0}
@@ -404,24 +409,15 @@ function MaritalForm({
 }
 
 export function IATppStep1({ formData, onChange, onNext, error, setError }: Props) {
+  const t = useTranslations("iat");
+
   const handleNext = () => {
     const t1 = formData.titulaire1;
-    if (!t1.lastName.trim()) {
-      setError("Le nom du Titulaire 1 est requis.");
-      return;
-    }
-    if (!t1.firstName.trim()) {
-      setError("Le prénom du Titulaire 1 est requis.");
-      return;
-    }
-    if (!t1.email.trim()) {
-      setError("L'email du Titulaire 1 est requis.");
-      return;
-    }
-    if (!t1.nationality.trim()) {
-      setError("La nationalité est requise.");
-      return;
-    }
+    if (!t1.lastName.trim()) { setError(t("ppStep1.errLastName")); return; }
+    if (!t1.firstName.trim()) { setError(t("ppStep1.errFirstName")); return; }
+    if (!t1.email.trim()) { setError(t("ppStep1.errEmail")); return; }
+    if (!t1.nationality.trim()) { setError(t("ppStep1.errNationality")); return; }
+    if (!t1.profession.trim() && !t1.isRetired) { setError(t("ppStep1.errProfession")); return; }
     setError("");
     onNext();
   };
@@ -429,15 +425,15 @@ export function IATppStep1({ formData, onChange, onNext, error, setError }: Prop
   return (
     <div className="space-y-8">
       <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-xs text-amber-800">
-        <strong>Mise en garde.</strong> Ce questionnaire doit être renseigné de manière exhaustive et
-        sincère. Toute modification de votre situation doit être signalée à votre conseiller.
+        <strong>{t("ppStep1.warningStrong")}</strong> {t("ppStep1.warning")}
       </div>
 
       <TitulaireForm
         id="t1"
-        label="Titulaire 1"
+        label={t("ppStep1.titulaire1Label")}
         data={formData.titulaire1}
         onChange={(d) => onChange({ titulaire1: { ...formData.titulaire1, ...d } })}
+        t={t}
       />
 
       <div>
@@ -452,18 +448,19 @@ export function IATppStep1({ formData, onChange, onNext, error, setError }: Prop
             <Plus className="h-4 w-4" />
           )}
           {formData.hasTitulaire2
-            ? "Supprimer le Titulaire 2"
-            : "Ajouter un Titulaire 2 / mandataire"}
+            ? t("ppStep1.removeTitulaire2")
+            : t("ppStep1.addTitulaire2")}
         </button>
         {formData.hasTitulaire2 && (
           <div className="mt-6">
             <TitulaireForm
               id="t2"
-              label="Titulaire 2 / Mandataire"
+              label={t("ppStep1.titulaire2Label")}
               data={formData.titulaire2}
               onChange={(d) =>
                 onChange({ titulaire2: { ...formData.titulaire2, ...d } })
               }
+              t={t}
             />
           </div>
         )}
@@ -474,12 +471,13 @@ export function IATppStep1({ formData, onChange, onNext, error, setError }: Prop
         onChange={(d) =>
           onChange({ maritalStatus: { ...formData.maritalStatus, ...d } })
         }
+        t={t}
       />
 
       {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
 
       <Button variant="primary" size="lg" className="w-full" onClick={handleNext}>
-        Suivant — Situation financière
+        {t("ppStep1.nextBtn")}
       </Button>
     </div>
   );

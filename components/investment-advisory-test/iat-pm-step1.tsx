@@ -4,12 +4,12 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import type {
   IATFormData,
   CompanyIdentity,
   LegalRepresentative,
   CompanySector,
-  SECTOR_LABELS,
 } from "./iat-types";
 import { SECTOR_LABELS as SECTORS } from "./iat-types";
 
@@ -25,40 +25,47 @@ function RepForm({
   label,
   data,
   onChange,
+  required,
+  t,
 }: {
   label: string;
   data: LegalRepresentative;
   onChange: (d: Partial<LegalRepresentative>) => void;
+  required?: boolean;
+  t: ReturnType<typeof useTranslations>;
 }) {
   const up = (field: keyof LegalRepresentative, val: unknown) =>
     onChange({ [field]: val } as Partial<LegalRepresentative>);
+
+  const R = ({ children }: { children: React.ReactNode }) =>
+    required ? <span className="font-bold text-red-600">{children}</span> : <>{children}</>;
 
   return (
     <div className="space-y-3">
       <h4 className="text-xs font-bold text-brand-grayMed uppercase tracking-wide">{label}</h4>
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <Label>Nom</Label>
+          <Label><R>{t("pmStep1.repLastName")}</R></Label>
           <Input value={data.lastName} onChange={(e) => up("lastName", e.target.value)} className="mt-1" />
         </div>
         <div>
-          <Label>Prénom</Label>
+          <Label><R>{t("pmStep1.repFirstName")}</R></Label>
           <Input value={data.firstName} onChange={(e) => up("firstName", e.target.value)} className="mt-1" />
         </div>
         <div>
-          <Label>Fonction</Label>
+          <Label>{t("pmStep1.repFunction")}</Label>
           <Input value={data.function} onChange={(e) => up("function", e.target.value)} className="mt-1" />
         </div>
         <div>
-          <Label>Téléphone</Label>
+          <Label><R>{t("pmStep1.repPhone")}</R></Label>
           <Input type="tel" value={data.phone} onChange={(e) => up("phone", e.target.value)} className="mt-1" />
         </div>
         <div>
-          <Label>Email</Label>
+          <Label><R>{t("pmStep1.repEmail")}</R></Label>
           <Input type="email" value={data.email} onChange={(e) => up("email", e.target.value)} className="mt-1" />
         </div>
         <div>
-          <Label>PPE ?</Label>
+          <Label>{t("pmStep1.pep")}</Label>
           <div className="flex gap-3 mt-2">
             {([true, false] as const).map((v) => (
               <label key={String(v)} className="flex items-center gap-1.5 cursor-pointer text-sm">
@@ -69,7 +76,7 @@ function RepForm({
                   onChange={() => up("isPEP", v)}
                   className="accent-brand-gold"
                 />
-                {v ? "Oui" : "Non"}
+                {v ? t("pmStep1.yesUC") : t("pmStep1.noUC")}
               </label>
             ))}
           </div>
@@ -80,6 +87,7 @@ function RepForm({
 }
 
 export function IATpmStep1({ formData, onChange, onNext, error, setError }: Props) {
+  const t = useTranslations("iat");
   const ci = formData.companyIdentity;
   const up = (field: keyof CompanyIdentity, val: unknown) =>
     onChange({ companyIdentity: { ...ci, [field]: val } });
@@ -91,11 +99,15 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
   };
 
   const handleNext = () => {
-    if (!ci.companyName.trim()) { setError("La dénomination de la société est requise."); return; }
-    if (!ci.legalForm.trim()) { setError("La forme juridique est requise."); return; }
-    if (!ci.rcs.trim()) { setError("Le numéro d'identification (RCS) est requis."); return; }
-    if (!ci.representative.lastName.trim()) { setError("Le nom du représentant légal est requis."); return; }
-    if (!ci.representative.email.trim()) { setError("L'email du représentant légal est requis."); return; }
+    if (!ci.companyName.trim()) { setError(t("pmStep1.errCompanyName")); return; }
+    if (!ci.legalForm.trim()) { setError(t("pmStep1.errLegalForm")); return; }
+    if (!ci.address.trim()) { setError(t("pmStep1.errAddress")); return; }
+    if (!ci.country.trim()) { setError(t("pmStep1.errCountry")); return; }
+    if (!ci.rcs.trim()) { setError(t("pmStep1.errRcs")); return; }
+    if (!ci.representative.firstName.trim()) { setError(t("pmStep1.errRepFirstName")); return; }
+    if (!ci.representative.lastName.trim()) { setError(t("pmStep1.errRepLastName")); return; }
+    if (!ci.representative.phone.trim()) { setError(t("pmStep1.errRepPhone")); return; }
+    if (!ci.representative.email.trim()) { setError(t("pmStep1.errRepEmail")); return; }
     setError("");
     onNext();
   };
@@ -103,51 +115,50 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
   return (
     <div className="space-y-8">
       <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-xs text-amber-800">
-        <strong>Mise en garde.</strong> Ce questionnaire doit être renseigné et signé par le représentant
-        légal de la personne morale, disposant de l'intégralité des autorisations nécessaires.
+        <strong>{t("pmStep1.warningStrong")}</strong> {t("pmStep1.warning")}
       </div>
 
       {/* Company info */}
       <div className="space-y-4">
         <h3 className="font-semibold text-brand-dark text-sm border-b border-brand-grayLight pb-2">
-          Présentation de la personne morale
+          {t("pmStep1.companyTitle")}
         </h3>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label>Dénomination *</Label>
+            <Label><span className="font-bold text-red-600">{t("pmStep1.companyName")}</span></Label>
             <Input value={ci.companyName} onChange={(e) => up("companyName", e.target.value)} className="mt-1" />
           </div>
           <div>
-            <Label>Forme juridique *</Label>
-            <Input value={ci.legalForm} onChange={(e) => up("legalForm", e.target.value)} className="mt-1" placeholder="SAS, SARL, SA, SCI…" />
+            <Label><span className="font-bold text-red-600">{t("pmStep1.legalForm")}</span></Label>
+            <Input value={ci.legalForm} onChange={(e) => up("legalForm", e.target.value)} className="mt-1" placeholder={t("pmStep1.legalFormPlaceholder")} />
           </div>
         </div>
         <div>
-          <Label>Adresse / Siège social</Label>
+          <Label><span className="font-bold text-red-600">{t("pmStep1.address")}</span></Label>
           <Input value={ci.address} onChange={(e) => up("address", e.target.value)} className="mt-1" />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label>Pays</Label>
-            <Input value={ci.country} onChange={(e) => up("country", e.target.value)} className="mt-1" placeholder="France" />
+            <Label><span className="font-bold text-red-600">{t("pmStep1.country")}</span></Label>
+            <Input value={ci.country} onChange={(e) => up("country", e.target.value)} className="mt-1" placeholder={t("pmStep1.countryPlaceholder")} />
           </div>
           <div>
-            <Label>N° d'identification (RCS) *</Label>
-            <Input value={ci.rcs} onChange={(e) => up("rcs", e.target.value)} className="mt-1" placeholder="123 456 789" />
+            <Label><span className="font-bold text-red-600">{t("pmStep1.rcs")}</span></Label>
+            <Input value={ci.rcs} onChange={(e) => up("rcs", e.target.value)} className="mt-1" placeholder={t("pmStep1.rcsPlaceholder")} />
           </div>
         </div>
 
         {/* Sectors */}
         <div>
-          <Label>Secteur(s) d'activité</Label>
+          <Label>{t("pmStep1.sectors")}</Label>
           <div className="mt-2 grid grid-cols-2 gap-2">
-            {(Object.entries(SECTORS) as [CompanySector, string][]).map(([key, lbl]) => (
+            {(Object.keys(SECTORS) as CompanySector[]).map((key) => (
               <label key={key} className="flex items-center gap-2 cursor-pointer text-sm">
                 <Checkbox
                   checked={ci.sectors.includes(key)}
                   onCheckedChange={() => toggleSector(key)}
                 />
-                {lbl}
+                {t(`sectors.${key}` as any)}
               </label>
             ))}
           </div>
@@ -156,16 +167,16 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
               value={ci.sectorOther}
               onChange={(e) => up("sectorOther", e.target.value)}
               className="mt-2"
-              placeholder="Précisez le secteur"
+              placeholder={t("pmStep1.sectorOtherPlaceholder")}
             />
           )}
         </div>
 
         {/* Geo zone */}
         <div>
-          <Label>Zone géographique de l'activité</Label>
+          <Label>{t("pmStep1.geoZone")}</Label>
           <div className="flex gap-4 mt-2">
-            {[["EU", "Union européenne"], ["Non-EU", "Hors UE"], ["Both", "Les deux"]].map(([val, lbl]) => (
+            {[["EU", t("pmStep1.geoZoneEU")], ["Non-EU", t("pmStep1.geoZoneNonEU")], ["Both", t("pmStep1.geoZoneBoth")]].map(([val, lbl]) => (
               <label key={val} className="flex items-center gap-2 cursor-pointer text-sm">
                 <input
                   type="radio"
@@ -183,14 +194,14 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
               value={ci.geoZoneOther}
               onChange={(e) => up("geoZoneOther", e.target.value)}
               className="mt-2"
-              placeholder="Précisez les pays"
+              placeholder={t("pmStep1.geoZoneOtherPlaceholder")}
             />
           )}
         </div>
 
         {/* Regulated */}
         <div>
-          <Label>L'activité est-elle réglementée ?</Label>
+          <Label>{t("pmStep1.regulated")}</Label>
           <div className="flex gap-4 mt-2">
             {([true, false] as const).map((v) => (
               <label key={String(v)} className="flex items-center gap-2 cursor-pointer text-sm">
@@ -201,7 +212,7 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
                   onChange={() => up("isRegulated", v)}
                   className="accent-brand-gold"
                 />
-                {v ? "Oui" : "Non"}
+                {v ? t("pmStep1.yesUC") : t("pmStep1.noUC")}
               </label>
             ))}
           </div>
@@ -210,14 +221,14 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
               value={ci.regulator}
               onChange={(e) => up("regulator", e.target.value)}
               className="mt-2"
-              placeholder="Régulateur / Autorité de tutelle"
+              placeholder={t("pmStep1.regulatorPlaceholder")}
             />
           )}
         </div>
 
         {/* Listed */}
         <div>
-          <Label>La société est-elle cotée ?</Label>
+          <Label>{t("pmStep1.listed")}</Label>
           <div className="flex gap-4 mt-2">
             {([true, false] as const).map((v) => (
               <label key={String(v)} className="flex items-center gap-2 cursor-pointer text-sm">
@@ -228,7 +239,7 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
                   onChange={() => up("isListed", v)}
                   className="accent-brand-gold"
                 />
-                {v ? "Oui" : "Non"}
+                {v ? t("pmStep1.yesUC") : t("pmStep1.noUC")}
               </label>
             ))}
           </div>
@@ -237,7 +248,7 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
               value={ci.markets}
               onChange={(e) => up("markets", e.target.value)}
               className="mt-2"
-              placeholder="Marché(s) de cotation"
+              placeholder={t("pmStep1.marketsPlaceholder")}
             />
           )}
         </div>
@@ -246,23 +257,26 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
       {/* Representatives */}
       <div className="space-y-6">
         <h3 className="font-semibold text-brand-dark text-sm border-b border-brand-grayLight pb-2">
-          Personnes habilitées
+          {t("pmStep1.representativesTitle")}
         </h3>
         <RepForm
-          label="Représentant légal / Signataire *"
+          label={t("pmStep1.rep1Label")}
           data={ci.representative}
           onChange={(d) => up("representative", { ...ci.representative, ...d })}
+          required
+          t={t}
         />
         <RepForm
-          label="Associé / Second signataire (optionnel)"
+          label={t("pmStep1.rep2Label")}
           data={ci.associate2}
           onChange={(d) => up("associate2", { ...ci.associate2, ...d })}
+          t={t}
         />
       </div>
 
       {/* FATCA */}
       <div>
-        <Label>Un des actionnaires de la société est-il américain (US Person) ?</Label>
+        <Label>{t("pmStep1.fatca")}</Label>
         <div className="flex gap-4 mt-2">
           {([true, false] as const).map((v) => (
             <label key={String(v)} className="flex items-center gap-2 cursor-pointer text-sm">
@@ -273,7 +287,7 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
                 onChange={() => up("hasUSPerson", v)}
                 className="accent-brand-gold"
               />
-              {v ? "OUI" : "NON"}
+              {v ? t("pmStep1.yesUC") : t("pmStep1.noUC")}
             </label>
           ))}
         </div>
@@ -281,7 +295,7 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
 
       {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
       <Button variant="primary" size="lg" className="w-full" onClick={handleNext}>
-        Suivant — Situation financière
+        {t("pmStep1.nextBtn")}
       </Button>
     </div>
   );

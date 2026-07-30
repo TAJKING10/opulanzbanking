@@ -2,6 +2,7 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useTranslations } from "next-intl";
 import type { IATFormData, ObjectivesData, RiskProfile, Horizon, MaxLoss, PatrimonyPct, PastLoss } from "./iat-types";
 
 interface Props {
@@ -11,30 +12,6 @@ interface Props {
   error: string;
   setError: (e: string) => void;
 }
-
-const RISK_PROFILES = [
-  {
-    value: "A" as RiskProfile,
-    label: "Placement A — Risque faible",
-    desc: "Tout en privilégiant la protection de votre capital sur la durée, vous acceptez une diversification partielle de vos investissements sur des actifs plus volatils et donc plus risqués.",
-    color: "border-green-400 bg-green-50",
-    active: "border-green-500 bg-green-100 ring-2 ring-green-400",
-  },
-  {
-    value: "B" as RiskProfile,
-    label: "Placement B — Risque moyen",
-    desc: "En acceptant de diversifier significativement vos actifs sur des supports à forte volatilité pouvant entraîner une perte en capital, vous êtes à la recherche d'une valorisation importante de votre investissement.",
-    color: "border-amber-400 bg-amber-50",
-    active: "border-amber-500 bg-amber-100 ring-2 ring-amber-400",
-  },
-  {
-    value: "C" as RiskProfile,
-    label: "Placement C — Risque élevé",
-    desc: "En contrepartie d'une perte potentielle partielle, voire totale, de votre épargne, vous cherchez avant tout à maximiser la performance de votre investissement.",
-    color: "border-red-400 bg-red-50",
-    active: "border-red-500 bg-red-100 ring-2 ring-red-400",
-  },
-] as const;
 
 function RadioGrid<T extends string>({
   name,
@@ -68,14 +45,39 @@ function RadioGrid<T extends string>({
 }
 
 export function IATStepObjectives({ formData, onChange, onNext, error, setError }: Props) {
+  const t = useTranslations("iat");
   const obj = formData.objectives;
   const up = (field: keyof ObjectivesData, val: unknown) =>
     onChange({ objectives: { ...obj, [field]: val } });
 
+  const RISK_PROFILES = [
+    {
+      value: "A" as RiskProfile,
+      label: t("objectives.profileA"),
+      desc: t("objectives.profileADesc"),
+      color: "border-green-400 bg-green-50",
+      active: "border-green-500 bg-green-100 ring-2 ring-green-400",
+    },
+    {
+      value: "B" as RiskProfile,
+      label: t("objectives.profileB"),
+      desc: t("objectives.profileBDesc"),
+      color: "border-amber-400 bg-amber-50",
+      active: "border-amber-500 bg-amber-100 ring-2 ring-amber-400",
+    },
+    {
+      value: "C" as RiskProfile,
+      label: t("objectives.profileC"),
+      desc: t("objectives.profileCDesc"),
+      color: "border-red-400 bg-red-50",
+      active: "border-red-500 bg-red-100 ring-2 ring-red-400",
+    },
+  ] as const;
+
   const handleNext = () => {
-    if (!obj.riskProfile) { setError("Veuillez sélectionner votre profil de risque (A, B ou C)."); return; }
-    if (!obj.horizon) { setError("Veuillez indiquer votre horizon d'investissement."); return; }
-    if (!obj.maxLoss) { setError("Veuillez indiquer le niveau de perte maximale acceptable."); return; }
+    if (!obj.riskProfile) { setError(t("objectives.errRiskProfile")); return; }
+    if (!obj.horizon) { setError(t("objectives.errHorizon")); return; }
+    if (!obj.maxLoss) { setError(t("objectives.errMaxLoss")); return; }
     setError("");
     onNext();
   };
@@ -85,19 +87,19 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
       {/* Objectives */}
       <div className="space-y-3">
         <div>
-          <h3 className="font-semibold text-brand-dark text-sm">
-            Quels sont vos objectifs d'investissement ?
+          <h3 className="font-bold text-red-600 text-sm">
+            {t("objectives.objectivesTitle")}
           </h3>
-          <p className="text-xs text-brand-grayMed mt-0.5">Cochez tous ceux qui s'appliquent</p>
+          <p className="text-xs text-brand-grayMed mt-0.5">{t("objectives.objectivesSubtext")}</p>
         </div>
         <div className="grid grid-cols-2 gap-2">
           {([
-            ["capitalPreservation", "Préservation du capital"],
-            ["capitalGrowth", "Valorisation du capital"],
-            ["diversification", "Diversification des actifs"],
-            ["incomeSearch", "Recherche de revenus"],
-            ["transmission", "Transmission patrimoniale"],
-            ["taxOptimization", "Optimisation fiscale"],
+            ["capitalPreservation", t("objectives.capitalPreservation")],
+            ["capitalGrowth", t("objectives.capitalGrowth")],
+            ["diversification", t("objectives.diversification")],
+            ["incomeSearch", t("objectives.incomeSearch")],
+            ["transmission", t("objectives.transmission")],
+            ["taxOptimization", t("objectives.taxOptimization")],
           ] as [keyof ObjectivesData, string][]).map(([field, lbl]) => (
             <label key={field} className="flex items-center gap-2 cursor-pointer text-sm">
               <Checkbox
@@ -109,13 +111,13 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
           ))}
         </div>
         <div>
-          <label className="text-xs text-brand-grayMed">Autre objectif</label>
+          <label className="text-xs text-brand-grayMed">{t("objectives.otherObjective")}</label>
           <input
             type="text"
             value={obj.other}
             onChange={(e) => up("other", e.target.value)}
             className="mt-1 w-full rounded-xl border border-brand-grayLight px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold"
-            placeholder="Précisez..."
+            placeholder={t("objectives.otherPlaceholder")}
           />
         </div>
       </div>
@@ -123,11 +125,11 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
       {/* Risk profile */}
       <div className="space-y-3">
         <div>
-          <h3 className="font-semibold text-brand-dark text-sm">
-            Quelle est votre tolérance au risque ? *
+          <h3 className="font-bold text-red-600 text-sm">
+            {t("objectives.riskTitle")}
           </h3>
           <p className="text-xs text-brand-grayMed mt-0.5">
-            Choisissez le profil avec lequel vous vous sentiez le plus à l'aise
+            {t("objectives.riskSubtext")}
           </p>
         </div>
         <div className="space-y-3">
@@ -149,16 +151,16 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* Past loss experience */}
       <div className="space-y-3">
-        <h3 className="font-semibold text-brand-dark text-sm">
-          Avez-vous déjà effectué un investissement qui a connu une baisse de valeur ?
+        <h3 className="font-bold text-red-600 text-sm">
+          {t("objectives.pastLossTitle")}
         </h3>
         <RadioGrid
           name="past-loss"
           options={[
-            ["none", "Non"],
-            ["<10", "Oui, < 10 %"],
-            ["10-20", "Oui, 10 – 20 %"],
-            [">20", "Oui, > 20 %"],
+            ["none", t("objectives.pastLossNone")],
+            ["<10", t("objectives.pastLossBelow10")],
+            ["10-20", t("objectives.pastLoss10to20")],
+            [">20", t("objectives.pastLossAbove20")],
           ] as [PastLoss, string][]}
           value={obj.pastLoss}
           onChange={(v) => up("pastLoss", v)}
@@ -166,15 +168,15 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
         {obj.pastLoss === "none" && (
           <div className="space-y-2">
             <p className="text-xs font-medium text-brand-grayMed">
-              Si cela arrivait, quelle serait votre réaction ?
+              {t("objectives.reactionNoPriorLabel")}
             </p>
             <RadioGrid
               name="reaction-no-prior"
               options={[
-                ["re-invest", "Je réinvestis pour profiter des opportunités"],
-                ["sell-all", "Je vends tout pour réinvestir sur des supports moins risqués"],
-                ["sell-partial", "Je vends une partie seulement"],
-                ["nothing", "Je ne change rien"],
+                ["re-invest", t("objectives.reInvest")],
+                ["sell-all", t("objectives.sellAll")],
+                ["sell-partial", t("objectives.sellPartial")],
+                ["nothing", t("objectives.nothing")],
               ]}
               value={obj.reactionNoPriorLoss}
               onChange={(v) => up("reactionNoPriorLoss", v)}
@@ -184,15 +186,15 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
         {obj.pastLoss && obj.pastLoss !== "none" && (
           <div className="space-y-2">
             <p className="text-xs font-medium text-brand-grayMed">
-              Quelle a été votre réaction face à cette baisse ?
+              {t("objectives.reactionPriorLabel")}
             </p>
             <RadioGrid
               name="reaction-prior"
               options={[
-                ["re-invest", "J'ai réinvesti pour profiter des opportunités"],
-                ["sell-all", "J'ai tout vendu pour réinvestir sur des supports moins risqués"],
-                ["sell-partial", "J'ai vendu une partie seulement"],
-                ["nothing", "Je n'ai rien changé"],
+                ["re-invest", t("objectives.reInvestPast")],
+                ["sell-all", t("objectives.sellAllPast")],
+                ["sell-partial", t("objectives.sellPartialPast")],
+                ["nothing", t("objectives.nothingPast")],
               ]}
               value={obj.reactionPriorLoss}
               onChange={(v) => up("reactionPriorLoss", v)}
@@ -203,15 +205,15 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* Gain reaction */}
       <div className="space-y-3">
-        <h3 className="font-semibold text-brand-dark text-sm">
-          La valeur de votre investissement augmente de 20 %. Comment réagissez-vous ?
+        <h3 className="font-bold text-red-600 text-sm">
+          {t("objectives.gainReactionTitle")}
         </h3>
         <RadioGrid
           name="gain-reaction"
           options={[
-            ["hold", "Je conserve ma position"],
-            ["reinvest-less", "Je réinvestis un montant inférieur ou égal au montant initial"],
-            ["reinvest-more", "Je réinvestis un montant supérieur au montant initial"],
+            ["hold", t("objectives.hold")],
+            ["reinvest-less", t("objectives.reinvestLess")],
+            ["reinvest-more", t("objectives.reinvestMore")],
           ]}
           value={obj.reactionToGain}
           onChange={(v) => up("reactionToGain", v as ObjectivesData["reactionToGain"])}
@@ -220,16 +222,16 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* Horizon */}
       <div className="space-y-3">
-        <h3 className="font-semibold text-brand-dark text-sm">
-          Sur quel horizon souhaitez-vous réaliser ce placement ? *
+        <h3 className="font-bold text-red-600 text-sm">
+          {t("objectives.horizonTitle")}
         </h3>
         <RadioGrid
           name="horizon"
           options={[
-            ["<1", "< 1 an"],
-            ["1-3", "1 à 3 ans"],
-            ["3-5", "3 à 5 ans"],
-            [">5", "> 5 ans"],
+            ["<1", t("objectives.horizonBelow1")],
+            ["1-3", t("objectives.horizon1to3")],
+            ["3-5", t("objectives.horizon3to5")],
+            [">5", t("objectives.horizonAbove5")],
           ] as [Horizon, string][]}
           value={obj.horizon}
           onChange={(v) => up("horizon", v)}
@@ -238,14 +240,14 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* Liquidity */}
       <div className="space-y-3">
-        <h3 className="font-semibold text-brand-dark text-sm">
-          Le critère de liquidité est-il important dans le cadre de ce placement ?
+        <h3 className="font-bold text-red-600 text-sm">
+          {t("objectives.liquidityTitle")}
         </h3>
         <RadioGrid
           name="liquidity"
           options={[
-            ["true", "Oui — je dois pouvoir disposer de mon argent à tout moment"],
-            ["false", "Non — je dispose de liquidités accessibles rapidement par ailleurs"],
+            ["true", t("objectives.liquidityYes")],
+            ["false", t("objectives.liquidityNo")],
           ]}
           value={obj.liquidityNeeded === null ? "" : String(obj.liquidityNeeded)}
           onChange={(v) => up("liquidityNeeded", v === "true")}
@@ -254,17 +256,17 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* Max loss */}
       <div className="space-y-3">
-        <h3 className="font-semibold text-brand-dark text-sm">
-          Quel niveau de perte maximale êtes-vous prêt(e) à subir sur ce placement ? *
+        <h3 className="font-bold text-red-600 text-sm">
+          {t("objectives.maxLossTitle")}
         </h3>
         <RadioGrid
           name="max-loss"
           options={[
-            ["none", "Aucune perte"],
-            ["10", "Maximum 10 %"],
-            ["25", "Maximum 25 %"],
-            ["50", "Maximum 50 %"],
-            ["100", "Jusqu'à 100 %"],
+            ["none", t("objectives.maxLossNone")],
+            ["10", t("objectives.maxLoss10")],
+            ["25", t("objectives.maxLoss25")],
+            ["50", t("objectives.maxLoss50")],
+            ["100", t("objectives.maxLoss100")],
           ] as [MaxLoss, string][]}
           value={obj.maxLoss}
           onChange={(v) => up("maxLoss", v)}
@@ -273,17 +275,17 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* % of patrimony */}
       <div className="space-y-3">
-        <h3 className="font-semibold text-brand-dark text-sm">
-          Quel pourcentage de votre patrimoine total représente le montant que vous envisagez d'investir ?
+        <h3 className="font-bold text-red-600 text-sm">
+          {t("objectives.patrimonyPctTitle")}
         </h3>
         <RadioGrid
           name="patrimony-pct"
           options={[
-            ["<10", "Moins de 10 %"],
-            ["10-25", "10 % – 25 %"],
-            ["25-50", "25 % – 50 %"],
-            ["50-75", "50 % – 75 %"],
-            [">75", "Plus de 75 %"],
+            ["<10", t("objectives.patrimonyBelow10")],
+            ["10-25", t("objectives.patrimony10to25")],
+            ["25-50", t("objectives.patrimony25to50")],
+            ["50-75", t("objectives.patrimony50to75")],
+            [">75", t("objectives.patrimonyAbove75")],
           ] as [PatrimonyPct, string][]}
           value={obj.percentOfPatrimony}
           onChange={(v) => up("percentOfPatrimony", v)}
@@ -292,7 +294,7 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
       <Button variant="primary" size="lg" className="w-full" onClick={handleNext}>
-        Suivant — Investissements durables
+        {t("objectives.nextBtn")}
       </Button>
     </div>
   );

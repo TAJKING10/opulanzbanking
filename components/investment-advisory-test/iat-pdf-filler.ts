@@ -48,24 +48,39 @@ export async function fillTemplatePdf(
       .replace(/[^\x00-\xFF]/g, "?");  // fallback for anything else
   }
 
-  /** Write text at pdf2json (x, y) coordinates */
+  /** Write text at pdf2json (x, y) coordinates.
+   *  maxW: optional explicit max width in PDF points; defaults to page-right-margin minus x.
+   */
   function text(
     pg: ReturnType<typeof page>,
     value: string | null | undefined,
     x: number,
     y: number,
     size = 8.5,
-    color: RGB = BLUE
+    color: RGB = BLUE,
+    maxW?: number
   ) {
     if (!value) return;
-    const str = sanitize(String(value));
+    let str = sanitize(String(value));
     // Blank lines are 0.16 units below the label y positions in pdf2json
     const ty = y + 0.16;
-    // White background to cover underscores
+    // Max available width in PDF points.
+    // Left-column fields (x < 16.8 units ≈ page mid) are capped at the midpoint so they
+    // never bleed into the right (T2 / second-column) area.
+    const defaultMax = x < 16.8
+      ? px(16.8) - px(x) - 5   // left column → up to page centre
+      : pageW - 20 - px(x);    // right column → up to right margin
+    const maxPts = maxW ?? defaultMax;
+    // Truncate using real font metrics so text never overflows its field
+    while (str.length > 1 && font.widthOfTextAtSize(str, size) > maxPts) {
+      str = str.slice(0, -1);
+    }
+    const strW = font.widthOfTextAtSize(str, size);
+    // White background to cover underscores — sized to actual text width
     pg.drawRectangle({
       x: px(x) - 1,
       y: py(ty) - 1,
-      width: Math.min(str.length * (size * 0.55) + 4, 580 - px(x)),
+      width: strW + 4,
       height: size + 2,
       color: rgb(1, 1, 1),
       opacity: 0.92,
@@ -100,8 +115,8 @@ export async function fillTemplatePdf(
     text(p2, t1.lastName,    2.34, 12.30);
     text(p2, t1.maidenName,  6.30, 12.90);
     text(p2, t1.firstName,   2.34, 14.10);
-    text(p2, t1.birthDate,   4.09, 14.73);
-    text(p2, t1.birthPlace,  10.50, 14.73);
+    text(p2, t1.birthDate,   4.09, 14.73, 8.5, BLUE, px(10.0) - px(4.09) - 4);
+    text(p2, t1.birthPlace,  10.50, 14.73, 8.5, BLUE, px(16.5) - px(10.50) - 4);
     text(p2, t1.nationality, 4.78, 15.34);
     text(p2, t1.address,     4.11, 15.95);
     text(p2, t1.email,       2.34, 19.00);
@@ -109,7 +124,7 @@ export async function fillTemplatePdf(
 
     // Fiscal residence T1
     if (t1.fiscalResidence === "France") check(p2, 6.23,  22.81);
-    if (t1.fiscalResidence === "Other")  { check(p2, 9.03, 22.81); text(p2, t1.fiscalResidenceOther, 11.00, 22.65); }
+    if (t1.fiscalResidence === "Other")  { check(p2, 9.03, 22.81); text(p2, t1.fiscalResidenceOther, 11.00, 22.65, 8.5, BLUE, px(16.5) - px(11.00) - 4); }
 
     text(p2, t1.profession,  2.34, 24.48);
     if (t1.isRetired) check(p2, 2.34, 25.25);
@@ -131,7 +146,7 @@ export async function fillTemplatePdf(
       text(p2, t2.email,       18.94, 20.22);
       text(p2, t2.phone,       18.94, 21.43);
       if (t2.fiscalResidence === "France") check(p2, 22.82, 24.03);
-      if (t2.fiscalResidence === "Other")  { check(p2, 26.03, 24.03); text(p2, t2.fiscalResidenceOther, 27.59, 23.87); }
+      if (t2.fiscalResidence === "Other")  { check(p2, 26.03, 24.03); text(p2, t2.fiscalResidenceOther, 27.59, 23.87, 8.5, BLUE, px(33.0) - px(27.59) - 4); }
       text(p2, t2.profession,  18.94, 25.70);
       if (t2.isUSPerson === true)  check(p2, 18.94, 34.39);
       if (t2.isUSPerson === false) check(p2, 21.16, 34.39);
@@ -241,8 +256,8 @@ export async function fillTemplatePdf(
     });
     text(p3, fin.fundOriginOther, 28.02, 34.87);
 
-    // Bank origin
-    text(p3, fin.bankOrigin, 11.20, 36.29);
+    // Bank origin (field extends toward right margin, not capped at column mid)
+    text(p3, fin.bankOrigin, 11.20, 36.29, 8.5, BLUE, px(28.0) - px(11.20) - 5);
 
     // ── Page 6 (idx 5): Product knowledge — monetary, bonds, stocks, SCPI ─
     const p6 = page(5);
@@ -519,7 +534,7 @@ export async function fillTemplatePdf(
     };
     fin.fundOrigins.forEach(o => { if (originPM[o]) check(p3, ...originPM[o]); });
     text(p3, fin.fundOriginOther, 19.49, 20.10);
-    text(p3, fin.bankOrigin, 11.07, 22.23);
+    text(p3, fin.bankOrigin, 11.07, 22.23, 8.5, BLUE, px(28.0) - px(11.07) - 5);
 
     // Funding modality
     if (fin.fundingModality === "portfolio_transfer") check(p3, 3.47,  24.51);

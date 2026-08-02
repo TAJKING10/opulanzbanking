@@ -374,9 +374,6 @@ export default function InvestmentAdvisoryTestPage({
       const { buildFormSummary } = await import(
         "@/components/investment-advisory-test/iat-pdf"
       );
-      const { fillTemplatePdf } = await import(
-        "@/components/investment-advisory-test/iat-pdf-filler"
-      );
 
       const resolvedClientName =
         clientType === "personal"
@@ -396,10 +393,30 @@ export default function InvestmentAdvisoryTestPage({
       });
 
       const signedName = `Signé via DocuSign (${envelopeId})`;
-      const { base64: pdfBase64 } = await fillTemplatePdf(
-        clientType === "company" ? "company" : "personal",
-        formData
-      );
+
+      // Download the SIGNED PDF from DocuSign (contains the actual embedded signature)
+      let pdfBase64: string;
+      try {
+        const dlResp = await fetch("/api/docusign/download", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ envelopeId }),
+        });
+        if (!dlResp.ok) throw new Error(`HTTP ${dlResp.status}`);
+        const dlData = await dlResp.json() as { success: boolean; pdfBase64: string };
+        if (!dlData.success || !dlData.pdfBase64) throw new Error("No PDF returned");
+        pdfBase64 = dlData.pdfBase64;
+      } catch {
+        // Fallback: re-fill the filled template (DocuSign signature not embedded)
+        const { fillTemplatePdf } = await import(
+          "@/components/investment-advisory-test/iat-pdf-filler"
+        );
+        const { base64 } = await fillTemplatePdf(
+          clientType === "company" ? "company" : "personal",
+          formData
+        );
+        pdfBase64 = base64;
+      }
       const formSummary = buildFormSummary(formData);
 
       const docPrefix = clientType === "company" ? "DCE" : "QCC";

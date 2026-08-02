@@ -24,7 +24,8 @@ steps:
 - script: |
     cp -r public .next/standalone/public
     cp -r .next/static .next/standalone/.next/static
-    echo "✅ Static assets copied into standalone output"
+    cp web.config .next/standalone/web.config
+    echo "✅ Static assets and web.config copied into standalone output"
   displayName: 'Copy static assets to standalone'
 
 # 5️⃣ Archive the standalone output for deployment

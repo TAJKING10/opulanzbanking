@@ -11,7 +11,6 @@ steps:
     curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
     sudo apt-get install -y nodejs
     node --version
-    npm --version
   displayName: 'Install Node.js 20'
 
 - script: npm install --legacy-peer-deps
@@ -26,20 +25,36 @@ steps:
     NODE_TLS_REJECT_UNAUTHORIZED: '0'
 
 - script: |
-    cp -r public .next/standalone/public
-    cp -r .next/static .next/standalone/.next/static
-    cp web.config .next/standalone/web.config
-    echo "=== CSS files in standalone ==="
-    ls .next/standalone/.next/static/css/
-    echo "=== Done ==="
-  displayName: 'Copy static assets and verify'
+    echo "=== CSS files from build ==="
+    ls .next/static/css/
+    echo "=== Build OK ==="
+  displayName: 'Verify build CSS'
 
 - script: |
-    cd .next/standalone
-    zip -r "$(Build.ArtifactStagingDirectory)/frontend.zip" . --exclude "*.git*"
+    mkdir deploy
+    cp -r .next deploy/
+    cp -r public deploy/
+    cp -r messages deploy/
+    cp -r i18n deploy/
+    cp -r lib deploy/
+    cp next.config.js deploy/
+    cp package.json deploy/
+    cp package-lock.json deploy/ 2>/dev/null || true
+    echo "Installing production dependencies..."
+    cd deploy && npm install --legacy-peer-deps --omit=dev
+    echo "=== CSS still present after install ==="
+    ls .next/static/css/
+  displayName: 'Prepare deployment package'
+
+- script: |
+    cd deploy
+    zip -r "$(Build.ArtifactStagingDirectory)/frontend.zip" . \
+      --exclude "*.git*" --exclude "node_modules/.cache/*"
     echo "=== CSS files in zip ==="
-    unzip -l "$(Build.ArtifactStagingDirectory)/frontend.zip" | grep "\.css" | head -10
-  displayName: 'Zip standalone and verify CSS in zip'
+    unzip -l "$(Build.ArtifactStagingDirectory)/frontend.zip" | grep "\.css"
+    echo "=== Zip size ==="
+    du -sh "$(Build.ArtifactStagingDirectory)/frontend.zip"
+  displayName: 'Create and verify deployment zip'
 
 - task: AzureCLI@2
   inputs:
@@ -56,7 +71,7 @@ steps:
       az webapp config set \
         --name rg-opulanz-frontend \
         --resource-group "$RESOURCE_GROUP" \
-        --startup-file 'node server.js'
+        --startup-file 'node_modules/.bin/next start'
       az webapp deployment source config-zip \
         --name rg-opulanz-frontend \
         --resource-group "$RESOURCE_GROUP" \

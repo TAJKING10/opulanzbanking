@@ -40,6 +40,13 @@ steps:
     cp next.config.js deploy/
     cp package.json deploy/
     cp package-lock.json deploy/ 2>/dev/null || true
+    # Write a startup script that handles PORT correctly
+    cat > deploy/start.sh << 'EOF'
+#!/bin/bash
+cd /home/site/wwwroot
+exec node_modules/.bin/next start -p ${PORT:-8080}
+EOF
+    chmod +x deploy/start.sh
     echo "Installing production dependencies..."
     cd deploy && npm install --legacy-peer-deps --omit=dev
     echo "=== CSS still present after install ==="
@@ -71,7 +78,7 @@ steps:
       az webapp config set \
         --name rg-opulanz-frontend \
         --resource-group "$RESOURCE_GROUP" \
-        --startup-file 'node_modules/.bin/next start'
+        --startup-file 'bash start.sh'
       az webapp deployment source config-zip \
         --name rg-opulanz-frontend \
         --resource-group "$RESOURCE_GROUP" \

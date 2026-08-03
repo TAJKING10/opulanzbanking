@@ -44,10 +44,11 @@ const securityHeaders = [
 ];
 
 const isMobileBuild = process.env.NEXT_OUTPUT === 'export';
+const isStandaloneBuild = process.env.NEXT_OUTPUT === 'standalone';
 
 const nextConfig = {
-  // 'export' for Capacitor mobile builds, 'standalone' for web/Azure deployment
-  output: isMobileBuild ? 'export' : 'standalone',
+  // 'export' for Capacitor mobile, 'standalone' when explicitly requested, undefined for next start
+  output: isMobileBuild ? 'export' : isStandaloneBuild ? 'standalone' : undefined,
   // Required for Capacitor: static files need trailing slashes for proper routing
   trailingSlash: isMobileBuild ? true : false,
   typescript: {

@@ -45,11 +45,24 @@ steps:
     replaceExistingArchive: true
   displayName: 'Archive standalone build'
 
-- task: AzureWebApp@1
+- task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure-Service-Connection'
-    appType: 'webAppLinux'
-    appName: 'rg-opulanz-frontend'
-    package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
-    startUpCommand: 'node server.js'
-  displayName: 'Deploy to Azure App Service'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      RESOURCE_GROUP=$(az webapp list --query "[?name=='rg-opulanz-frontend'].resourceGroup | [0]" -o tsv)
+      echo "Resource group: $RESOURCE_GROUP"
+      az webapp config set \
+        --name rg-opulanz-frontend \
+        --resource-group "$RESOURCE_GROUP" \
+        --startup-file 'node server.js'
+      az webapp deploy \
+        --name rg-opulanz-frontend \
+        --resource-group "$RESOURCE_GROUP" \
+        --src-path "$(Build.ArtifactStagingDirectory)/frontend.zip" \
+        --type zip \
+        --clean true \
+        --async false
+      echo "Deployment complete"
+  displayName: 'Deploy to Azure App Service (clean)'

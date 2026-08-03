@@ -7,10 +7,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: NodeTool@1
-  inputs:
-    versionSpec: '20.x'
-  displayName: 'Use Node.js 20'
+- script: |
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    node --version
+    npm --version
+  displayName: 'Install Node.js 20'
 
 - script: npm install --legacy-peer-deps
   displayName: 'Install dependencies'
@@ -27,8 +29,12 @@ steps:
     cp -r public .next/standalone/public
     cp -r .next/static .next/standalone/.next/static
     cp web.config .next/standalone/web.config
-    echo "Static assets and web.config copied into standalone output"
-  displayName: 'Copy static assets to standalone'
+    echo "=== Verifying deployment contents ==="
+    ls -la .next/standalone/
+    ls -la .next/standalone/.next/
+    ls -la .next/standalone/.next/static/css/ | head -5
+    echo "=== CSS files present ==="
+  displayName: 'Copy static assets and verify'
 
 - task: ArchiveFiles@2
   inputs:
@@ -39,11 +45,11 @@ steps:
     replaceExistingArchive: true
   displayName: 'Archive standalone build'
 
-- task: AzureWebApp@2
+- task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure-Service-Connection'
     appType: 'webAppLinux'
     appName: 'rg-opulanz-frontend'
     package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
     startUpCommand: 'node server.js'
-  displayName: 'Deploy to App Service'
+  displayName: 'Deploy to Azure App Service'

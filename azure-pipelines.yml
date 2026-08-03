@@ -29,21 +29,17 @@ steps:
     cp -r public .next/standalone/public
     cp -r .next/static .next/standalone/.next/static
     cp web.config .next/standalone/web.config
-    echo "=== Verifying deployment contents ==="
-    ls -la .next/standalone/
-    ls -la .next/standalone/.next/
-    ls -la .next/standalone/.next/static/css/ | head -5
-    echo "=== CSS files present ==="
+    echo "=== CSS files in standalone ==="
+    ls .next/standalone/.next/static/css/
+    echo "=== Done ==="
   displayName: 'Copy static assets and verify'
 
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '.next/standalone'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
-    replaceExistingArchive: true
-  displayName: 'Archive standalone build'
+- script: |
+    cd .next/standalone
+    zip -r "$(Build.ArtifactStagingDirectory)/frontend.zip" . --exclude "*.git*"
+    echo "=== CSS files in zip ==="
+    unzip -l "$(Build.ArtifactStagingDirectory)/frontend.zip" | grep "\.css" | head -10
+  displayName: 'Zip standalone and verify CSS in zip'
 
 - task: AzureCLI@2
   inputs:
@@ -61,12 +57,9 @@ steps:
         --name rg-opulanz-frontend \
         --resource-group "$RESOURCE_GROUP" \
         --startup-file 'node server.js'
-      az webapp deploy \
+      az webapp deployment source config-zip \
         --name rg-opulanz-frontend \
         --resource-group "$RESOURCE_GROUP" \
-        --src-path "$(Build.ArtifactStagingDirectory)/frontend.zip" \
-        --type zip \
-        --clean true \
-        --async false
+        --src "$(Build.ArtifactStagingDirectory)/frontend.zip"
       echo "Deployment complete"
-  displayName: 'Deploy to Azure App Service (clean)'
+  displayName: 'Deploy to Azure App Service'

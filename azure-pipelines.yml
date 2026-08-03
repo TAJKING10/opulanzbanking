@@ -7,26 +7,22 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-# 1️⃣ Use Node.js 20
-- task: NodeTool@0
+- task: NodeTool@1
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20'
 
-# 2️⃣ Install dependencies
 - script: npm install --legacy-peer-deps
   displayName: 'Install dependencies'
   env:
     NODE_ENV: development
 
-# 3️⃣ Build Next.js (NEXT_PUBLIC_* vars are loaded from .env.production automatically)
 - script: npm run build
   displayName: 'Build Next.js app'
   env:
     NODE_ENV: production
     NODE_TLS_REJECT_UNAUTHORIZED: '0'
 
-# 4️⃣ Copy public + static assets into standalone output
 - script: |
     cp -r public .next/standalone/public
     cp -r .next/static .next/standalone/.next/static
@@ -34,7 +30,6 @@ steps:
     echo "Static assets and web.config copied into standalone output"
   displayName: 'Copy static assets to standalone'
 
-# 5️⃣ Archive the standalone output for deployment
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '.next/standalone'
@@ -44,10 +39,10 @@ steps:
     replaceExistingArchive: true
   displayName: 'Archive standalone build'
 
-# 6️⃣ Deploy to Azure App Service
-- task: AzureWebApp@1
+- task: AzureWebApp@2
   inputs:
     azureSubscription: 'Azure-Service-Connection'
+    appType: 'webAppLinux'
     appName: 'rg-opulanz-frontend'
     package: '$(Build.ArtifactStagingDirectory)/frontend.zip'
     startUpCommand: 'node server.js'

@@ -465,6 +465,26 @@ function Step2GeneralInfo({ dossier, updateDossier, showErrors }: StepProps) {
           {t("durationHelp")}
         </p>
       </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="contactEmail">
+          {t("contactEmail")} <span className="text-red-500">*</span>
+        </Label>
+        <Input
+          id="contactEmail"
+          type="email"
+          value={contactEmail}
+          onChange={(e) => setContactEmail(e.target.value)}
+          placeholder={t("contactEmailPlaceholder")}
+          className={showErrors && !contactEmail.trim() ? "border-red-500 focus-visible:ring-red-500" : ""}
+        />
+        {showErrors && !contactEmail.trim() && (
+          <p className="text-xs text-red-500">This field is required.</p>
+        )}
+        <p className="text-xs text-brand-grayMed">
+          {t("contactEmailHelp")}
+        </p>
+      </div>
     </div>
   );
 }

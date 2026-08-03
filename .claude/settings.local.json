@@ -257,7 +257,13 @@
       "Bash(__NEW_LINE_75bbab11a4a7ead9__ echo:*)",
       "Bash(__NEW_LINE_0d7f68643ea31707__ echo:*)",
       "Bash(__NEW_LINE_2e4858e558f5535a__ echo:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(pip install:*)",
+      "Bash(del:*)",
+      "Bash(\"C:/Users/Toufi/AndroidStudioProjects/azuree/.env\":*)",
+      "Bash(npx --yes pdf-parse-cli \"C:/Users/Toufi/Downloads/Physical person 2025 03 03 - PARCOURS CLIENT QCC Profil de risques PP_vf VC.pdf\")",
+      "Bash(cp \"C:/Users/Toufi/Downloads/Physical person 2025 03 03 - PARCOURS CLIENT QCC Profil de risques PP_vf VC 3333.pdf\" \"C:/Users/Toufi/AndroidStudioProjects/azuree/public/templates/qcc-pp.pdf\")",
+      "Bash(cp \"C:/Users/Toufi/Downloads/Company 2025 03 19 - PARCOURS CLIENT QCC Profil de risques PM_vf VC \\(1\\).pdf\" \"C:/Users/Toufi/AndroidStudioProjects/azuree/public/templates/qcc-pm.pdf\")"
     ],
     "deny": [],
     "ask": []

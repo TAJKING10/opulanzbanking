@@ -95,6 +95,9 @@ export interface CompanyFormationDossier {
     accuracyConfirmed: boolean;
   };
 
+  // Contact
+  contactEmail?: string;
+
   // Metadata
   createdAt: string;
   updatedAt: string;

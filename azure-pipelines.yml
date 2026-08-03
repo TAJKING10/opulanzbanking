@@ -53,6 +53,10 @@ steps:
     inlineScript: |
       RESOURCE_GROUP=$(az webapp list --query "[?name=='rg-opulanz-frontend'].resourceGroup | [0]" -o tsv)
       echo "Resource group: $RESOURCE_GROUP"
+      az webapp config appsettings set \
+        --name rg-opulanz-frontend \
+        --resource-group "$RESOURCE_GROUP" \
+        --settings SCM_DO_BUILD_DURING_DEPLOYMENT=false
       az webapp config set \
         --name rg-opulanz-frontend \
         --resource-group "$RESOURCE_GROUP" \

@@ -4300,5 +4300,103 @@
       "religion_associatif": "Religion, Activité associative",
       "autre": "Autre"
     }
+  },
+  "mortgage": {
+    "hero": {
+      "title": "Votre prêt immobilier, entre de bonnes mains.",
+      "subtitle": "Opulanz rassemble votre profil financier et vos pièces justificatives, puis soumet votre dossier à notre réseau de banques partenaires en France et au Luxembourg — pour que vous receviez les meilleures offres sans la charge administrative.",
+      "primaryCta": "Commencer ma demande",
+      "secondaryCta": "Comment ça fonctionne"
+    },
+    "overview": {
+      "overline": "Services Hypothécaires",
+      "title": "Un intermédiaire de confiance vers les meilleures conditions de prêt",
+      "description": "En tant qu'intermédiaire en crédit réglementé, nous travaillons pour votre compte afin de soumettre votre dossier à notre réseau de banques partenaires en France et au Luxembourg — pour obtenir des conditions compétitives sans charge administrative.",
+      "badge1": "France & Luxembourg",
+      "badge2": "Sécurisé RGPD",
+      "badge3": "Accès Multi-banques",
+      "whyTitle": "Pourquoi Opulanz pour votre prêt ?",
+      "benefit1": "Plus de 19 ans d'expertise en services financiers européens",
+      "benefit2": "Accès simultané à plusieurs banques partenaires",
+      "benefit3": "Spécialistes des dossiers transfrontaliers et non-résidents",
+      "benefit4": "Documents chiffrés — conformité RGPD totale",
+      "benefit5": "Suivi en temps réel du dossier, du dépôt à la signature"
+    },
+    "howItWorks": {
+      "overline": "Le Processus",
+      "title": "Quatre étapes vers votre offre de prêt",
+      "step1": {
+        "title": "Pré-qualification",
+        "description": "Décrivez votre projet — type de bien, prix, apport, revenus et situation professionnelle. Nous vérifions votre éligibilité avant tout contact bancaire."
+      },
+      "step2": {
+        "title": "Collecte des documents",
+        "description": "Déposez vos pièces justificatives en toute sécurité. Votre dossier est automatiquement vérifié selon notre checklist prête pour les banques."
+      },
+      "step3": {
+        "title": "Soumission aux banques",
+        "description": "Avec votre accord, votre dossier complet est transmis aux banques partenaires — chiffré, conforme et entièrement confidentiel."
+      },
+      "step4": {
+        "title": "Offre & Signature",
+        "description": "Recevez les offres bancaires depuis votre tableau de bord Opulanz. Comparez, choisissez la meilleure option et signez."
+      }
+    },
+    "features": {
+      "overline": "Pourquoi Nous Choisir",
+      "title": "Expertise professionnelle en courtage immobilier",
+      "description": "En tant qu'intermédiaire en crédit réglementé, nous vous offrons conseils d'experts et accès multi-banques pour votre financement immobilier en France et au Luxembourg.",
+      "expertise": {
+        "title": "Expertise locale",
+        "description": "Connaissance approfondie des critères d'octroi en France et au Luxembourg, y compris les profils transfrontaliers et non-résidents."
+      },
+      "secure": {
+        "title": "Sécurisé & RGPD",
+        "description": "Documents chiffrés sur infrastructure Azure, traités en conformité totale avec le RGPD et supprimés après traitement."
+      },
+      "multibank": {
+        "title": "Accès multi-banques",
+        "description": "Soumission simultanée à plusieurs banques partenaires pour maximiser vos chances et obtenir le taux le plus compétitif."
+      },
+      "tracking": {
+        "title": "Suivi en temps réel",
+        "description": "Suivez chaque étape de votre demande — du dépôt des documents à la signature de l'offre — depuis votre espace Opulanz."
+      }
+    },
+    "markets": {
+      "overline": "Couverture",
+      "title": "France & Luxembourg",
+      "description": "Courtage immobilier spécialisé sur les deux marchés, avec expertise transfrontalière pour les profils internationaux et de la Grande Région.",
+      "lu": {
+        "title": "Luxembourg",
+        "subtitle": "Bureau de Clervaux — réglementé CSSF",
+        "fact1": "LTV typique jusqu'à 80% pour les résidents ; ajusté pour les non-résidents",
+        "fact2": "Durées jusqu'à 30 ans ; taux variable et fixe disponibles",
+        "fact3": "Banques partenaires : BGL BNP Paribas, ING, Spuerkeess, Post Luxembourg",
+        "fact4": "Encadré par la CSSF et le droit financier luxembourgeois"
+      },
+      "fr": {
+        "title": "France",
+        "subtitle": "Bureau de Paris — ACPR / ORIAS n° 21003660",
+        "fact1": "Loi Scrivener : délai légal de réflexion de 11 jours avant signature",
+        "fact2": "Conformité au Taux d'Usure vérifiée sur toutes les offres",
+        "fact3": "Financement jusqu'à 110% frais de notaire inclus pour profils éligibles",
+        "fact4": "Processus entièrement réglementé ACPR sous ORIAS n° 21003660"
+      },
+      "crossborder": {
+        "title": "Profils transfrontaliers & internationaux",
+        "description": "Opulanz est spécialisé dans les dossiers transfrontaliers — que vous soyez résident luxembourgeois achetant en France, ressortissant français acquérant un bien au Luxembourg, ou professionnel international actif dans la Grande Région. Nos conseillers gèrent la complexité réglementaire à votre place."
+      }
+    },
+    "cta": {
+      "title": "Prêt à déposer votre demande de prêt ?",
+      "description": "Déposez votre demande en ligne en quelques minutes. Notre équipe examine votre dossier et vous contacte sous 24 heures pour convenir de la suite.",
+      "primaryButton": "Commencer ma demande",
+      "secondaryButton": "Parler à un conseiller",
+      "badge1": "Réponse 24h",
+      "badge2": "Sécurisé RGPD",
+      "badge3": "Sans engagement"
+    },
+    "legal": "Opulanz agit en qualité d'intermédiaire en crédit et non en tant que prêteur. Tout financement immobilier est soumis à l'approbation bancaire et aux conditions standard d'octroi de crédit. Groupe Advensys Luxembourg S.A. — ORIAS n° 21003660, sous supervision de l'ACPR. Autorisé par le Ministère de l'Économie du Luxembourg. Responsabilité civile professionnelle MMA IARD France."
   }
 }

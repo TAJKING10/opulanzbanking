@@ -16,7 +16,6 @@ import {
   Send,
   PenLine,
 } from "lucide-react";
-import { PageGuidance } from "@/components/page-guidance";
 import { useTranslations } from "next-intl";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
@@ -68,20 +67,6 @@ export default function MortgagePage({
 
   return (
     <>
-      <PageGuidance
-        pageKey="mortgage"
-        locale={locale}
-        title="Mortgage"
-        description="Expert mortgage brokerage for France and Luxembourg — we submit your file to partner banks so you get the best offers."
-        steps={[
-          { content: "Welcome to Mortgage Services. Opulanz acts as your regulated credit intermediary, handling your dossier from document collection through to bank offer." },
-          { title: "How It Works", content: "This section explains our 4-step process — pre-qualification, document upload, bank submission, and offer acceptance.", target: "#how-it-works", position: "bottom" },
-          { title: "Our Features", content: "See what sets Opulanz apart — local expertise, GDPR-secure handling, multi-bank access, and real-time tracking.", target: "#features", position: "top" },
-          { title: "Start Application", content: "Click here to begin your mortgage application. Our team will review your profile within 24 hours.", target: "a[href*='support']", position: "bottom" },
-        ]}
-        tip="Cross-border profiles (Luxembourg residents buying in France, or vice versa) are our speciality."
-      />
-
       <Hero
         title={t("hero.title")}
         subtitle={t("hero.subtitle")}

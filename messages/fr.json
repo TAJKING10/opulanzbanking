@@ -3705,30 +3705,30 @@
   "mortgage": {
     "hero": {
       "title": "Votre prêt immobilier, entre de bonnes mains.",
-      "subtitle": "Opulanz rassemble votre profil financier et vos pièces justificatives, puis soumet votre dossier à notre réseau de banques partenaires en France et au Luxembourg — pour que vous receviez les meilleures offres sans la charge administrative.",
+      "subtitle": "Opulanz rassemble votre profil financier et vos documents justificatifs, puis soumet votre dossier à notre réseau de banques partenaires en France et au Luxembourg. Vous recevez les meilleures offres sans la charge administrative.",
       "primaryCta": "Commencer ma demande",
       "secondaryCta": "Comment ça fonctionne"
     },
     "overview": {
       "overline": "Services Hypothécaires",
       "title": "Un intermédiaire de confiance vers les meilleures conditions de prêt",
-      "description": "En tant qu'intermédiaire en crédit réglementé, nous travaillons pour votre compte afin de soumettre votre dossier à notre réseau de banques partenaires en France et au Luxembourg — pour obtenir des conditions compétitives sans charge administrative.",
+      "description": "En tant qu'intermédiaire de crédit réglementé, nous agissons en votre nom pour soumettre votre dossier à notre réseau de banques partenaires en France et au Luxembourg, en obtenant des taux compétitifs sans la charge administrative.",
       "badge1": "France & Luxembourg",
       "badge2": "Sécurisé RGPD",
-      "badge3": "Accès Multi-banques",
+      "badge3": "Accès multibanque",
       "whyTitle": "Pourquoi Opulanz pour votre prêt ?",
       "benefit1": "Plus de 19 ans d'expertise en services financiers européens",
       "benefit2": "Accès simultané à plusieurs banques partenaires",
       "benefit3": "Spécialistes des dossiers transfrontaliers et non-résidents",
-      "benefit4": "Documents chiffrés — conformité RGPD totale",
-      "benefit5": "Suivi en temps réel du dossier, du dépôt à la signature"
+      "benefit4": "Gestion des documents chiffrée avec conformité RGPD complète",
+      "benefit5": "Suivi en direct du dossier du dépôt à l'offre signée"
     },
     "howItWorks": {
       "overline": "Le Processus",
       "title": "Quatre étapes vers votre offre de prêt",
       "step1": {
         "title": "Pré-qualification",
-        "description": "Décrivez votre projet — type de bien, prix, apport, revenus et situation professionnelle. Nous vérifions votre éligibilité avant tout contact bancaire."
+        "description": "Partagez les détails de votre projet: type de bien, prix d'achat, apport, revenus et situation professionnelle. Nous évaluons votre éligibilité avant de contacter toute banque."
       },
       "step2": {
         "title": "Collecte des documents",
@@ -3736,11 +3736,11 @@
       },
       "step3": {
         "title": "Soumission aux banques",
-        "description": "Avec votre accord, votre dossier complet est transmis aux banques partenaires — chiffré, conforme et entièrement confidentiel."
+        "description": "Avec votre consentement, votre dossier complet est transmis aux banques partenaires, chiffré et entièrement confidentiel tout au long du processus."
       },
       "step4": {
-        "title": "Offre & Signature",
-        "description": "Recevez les offres bancaires depuis votre tableau de bord Opulanz. Comparez, choisissez la meilleure option et signez."
+        "title": "Offre et Signature",
+        "description": "Recevez les offres bancaires directement dans votre tableau de bord Opulanz. Comparez vos options, choisissez les meilleures conditions et procédez à la signature."
       }
     },
     "features": {
@@ -3752,7 +3752,7 @@
         "description": "Connaissance approfondie des critères d'octroi en France et au Luxembourg, y compris les profils transfrontaliers et non-résidents."
       },
       "secure": {
-        "title": "Sécurisé & RGPD",
+        "title": "Sécurisé et RGPD",
         "description": "Documents chiffrés sur infrastructure Azure, traités en conformité totale avec le RGPD et supprimés après traitement."
       },
       "multibank": {
@@ -3760,8 +3760,8 @@
         "description": "Soumission simultanée à plusieurs banques partenaires pour maximiser vos chances et obtenir le taux le plus compétitif."
       },
       "tracking": {
-        "title": "Suivi en temps réel",
-        "description": "Suivez chaque étape de votre demande — du dépôt des documents à la signature de l'offre — depuis votre espace Opulanz."
+        "title": "Suivi en direct",
+        "description": "Suivez chaque étape de votre demande, du dépôt des documents à l'offre signée, directement dans votre compte Opulanz."
       }
     },
     "markets": {
@@ -3770,7 +3770,7 @@
       "description": "Courtage immobilier spécialisé sur les deux marchés, avec expertise transfrontalière pour les profils internationaux et de la Grande Région.",
       "lu": {
         "title": "Luxembourg",
-        "subtitle": "Bureau de Clervaux — réglementé CSSF",
+        "subtitle": "Réglementé CSSF · Bureau de Clervaux",
         "fact1": "LTV typique jusqu'à 80% pour les résidents ; ajusté pour les non-résidents",
         "fact2": "Durées jusqu'à 30 ans ; taux variable et fixe disponibles",
         "fact3": "Banques partenaires : BGL BNP Paribas, ING, Spuerkeess, Post Luxembourg",
@@ -3778,15 +3778,15 @@
       },
       "fr": {
         "title": "France",
-        "subtitle": "Bureau de Paris — ACPR / ORIAS n° 21003660",
+        "subtitle": "Réglementé ACPR · ORIAS n° 21003660 · Bureau de Paris",
         "fact1": "Loi Scrivener : délai légal de réflexion de 11 jours avant signature",
         "fact2": "Conformité au Taux d'Usure vérifiée sur toutes les offres",
         "fact3": "Financement jusqu'à 110% frais de notaire inclus pour profils éligibles",
         "fact4": "Processus entièrement réglementé ACPR sous ORIAS n° 21003660"
       },
       "crossborder": {
-        "title": "Profils transfrontaliers & internationaux",
-        "description": "Opulanz est spécialisé dans les dossiers transfrontaliers — que vous soyez résident luxembourgeois achetant en France, ressortissant français acquérant un bien au Luxembourg, ou professionnel international actif dans la Grande Région. Nos conseillers gèrent la complexité réglementaire à votre place."
+        "title": "Profils transfrontaliers et internationaux",
+        "description": "Opulanz est spécialisé dans les dossiers hypothécaires transfrontaliers. Que vous soyez un résident luxembourgeois achetant en France, un ressortissant français acquérant un bien au Luxembourg, ou un professionnel international travaillant dans la Grande Région, nos conseillers gèrent toute la complexité réglementaire en votre nom."
       }
     },
     "cta": {
@@ -3798,6 +3798,6 @@
       "badge2": "Sécurisé RGPD",
       "badge3": "Sans engagement"
     },
-    "legal": "Opulanz agit en qualité d'intermédiaire en crédit et non en tant que prêteur. Tout financement immobilier est soumis à l'approbation bancaire et aux conditions standard d'octroi de crédit. Groupe Advensys Luxembourg S.A. — ORIAS n° 21003660, sous supervision de l'ACPR. Autorisé par le Ministère de l'Économie du Luxembourg. Responsabilité civile professionnelle MMA IARD France."
+    "legal": "Opulanz agit en qualité d'intermédiaire de crédit et non de prêteur. Le financement hypothécaire est soumis à l'approbation bancaire et aux conditions de crédit standard. Groupe Advensys Luxembourg S.A., ORIAS n° 21003660, sous supervision ACPR. Agréé par le Ministère de l'Économie du Luxembourg. Garantie professionnelle MMA IARD France."
   }
 }

@@ -3705,30 +3705,30 @@
   "mortgage": {
     "hero": {
       "title": "Your mortgage, handled by experts.",
-      "subtitle": "Opulanz gathers your financial profile and supporting documents, then submits your case to our partner bank network in France and Luxembourg — so you receive the best offers without the paperwork burden.",
+      "subtitle": "Opulanz gathers your financial profile and supporting documents, then submits your case to our partner bank network in France and Luxembourg. You receive the best offers without the paperwork burden.",
       "primaryCta": "Start My Application",
       "secondaryCta": "How It Works"
     },
     "overview": {
       "overline": "Mortgage Services",
       "title": "A trusted bridge to the best mortgage conditions",
-      "description": "As a regulated credit intermediary, we work on your behalf to submit your dossier to our network of partner banks in France and Luxembourg — securing competitive rates without the administrative burden.",
+      "description": "As a regulated credit intermediary, we work on your behalf to submit your dossier to our network of partner banks in France and Luxembourg, securing competitive rates without the administrative burden.",
       "badge1": "France & Luxembourg",
       "badge2": "GDPR Secure",
-      "badge3": "Multi-Bank Access",
+      "badge3": "Multibank Access",
       "whyTitle": "Why Opulanz for your mortgage?",
       "benefit1": "19+ years of European financial services expertise",
       "benefit2": "Access to multiple partner banks simultaneously",
       "benefit3": "Cross-border and non-resident case specialists",
-      "benefit4": "Encrypted document handling — GDPR compliant",
-      "benefit5": "Real-time case tracking from upload to signed offer"
+      "benefit4": "Encrypted document handling with full GDPR compliance",
+      "benefit5": "Live case tracking from document upload to signed offer"
     },
     "howItWorks": {
       "overline": "The Process",
       "title": "Four steps to your mortgage offer",
       "step1": {
         "title": "Pre-Qualification",
-        "description": "Tell us about your project — property type, price, contribution, income, and employment. We review your eligibility before any bank is contacted."
+        "description": "Share your project details including property type, purchase price, contribution, income and employment. We assess your eligibility before contacting any bank."
       },
       "step2": {
         "title": "Document Collection",
@@ -3736,11 +3736,11 @@
       },
       "step3": {
         "title": "Bank Submission",
-        "description": "With your consent, your complete file is transmitted to partner banks — encrypted, compliant, and fully confidential."
+        "description": "With your consent, your complete file is transmitted to partner banks, encrypted and fully confidential throughout the entire process."
       },
       "step4": {
-        "title": "Offer & Signature",
-        "description": "Receive bank offers in your Opulanz dashboard. Compare, choose the best option, and proceed to signature."
+        "title": "Offer and Signature",
+        "description": "Receive bank offers directly in your Opulanz dashboard. Compare your options, choose the best conditions and proceed to signature."
       }
     },
     "features": {
@@ -3752,7 +3752,7 @@
         "description": "Deep knowledge of lending requirements in France and Luxembourg, including cross-border and non-resident profiles."
       },
       "secure": {
-        "title": "Secure & GDPR",
+        "title": "Secure and GDPR",
         "description": "Documents encrypted on Azure infrastructure, processed in full GDPR compliance, and purged after completion."
       },
       "multibank": {
@@ -3760,8 +3760,8 @@
         "description": "Simultaneous submission to multiple partner banks to maximise your chances and find the most competitive rate."
       },
       "tracking": {
-        "title": "Real-Time Tracking",
-        "description": "Follow every step of your application — from document upload to signed offer — directly in your Opulanz account."
+        "title": "Live Case Tracking",
+        "description": "Follow every step of your application, from document upload to signed offer, directly inside your Opulanz account."
       }
     },
     "markets": {
@@ -3770,7 +3770,7 @@
       "description": "Specialised mortgage brokerage across both markets, with cross-border expertise for international and frontier-zone profiles.",
       "lu": {
         "title": "Luxembourg",
-        "subtitle": "Clervaux office — CSSF regulated",
+        "subtitle": "CSSF Regulated · Clervaux Office",
         "fact1": "Typical LTV up to 80% for residents; adjusted for non-residents",
         "fact2": "Loan terms up to 30 years; variable and fixed rates available",
         "fact3": "Partner banks: BGL BNP Paribas, ING, Spuerkeess, Post Luxembourg",
@@ -3778,15 +3778,15 @@
       },
       "fr": {
         "title": "France",
-        "subtitle": "Paris office — ACPR / ORIAS n° 21003660",
+        "subtitle": "ACPR Regulated · ORIAS n° 21003660 · Paris Office",
         "fact1": "Loi Scrivener: mandatory 11-day reflection period before signing",
         "fact2": "Taux d'Usure compliance verified on all offers",
         "fact3": "Financing up to 110% including notary fees for eligible profiles",
         "fact4": "Full ACPR-regulated process under ORIAS n° 21003660"
       },
       "crossborder": {
-        "title": "Cross-border & international profiles",
-        "description": "Opulanz specialises in cross-border mortgage cases — whether you are a Luxembourg resident purchasing in France, a French national acquiring property in Luxembourg, or an international professional working in the Greater Region. Our advisors handle the regulatory complexity so you don't have to."
+        "title": "Cross-Border and International Profiles",
+        "description": "Opulanz specialises in cross-border mortgage cases. Whether you are a Luxembourg resident purchasing in France, a French national acquiring property in Luxembourg, or an international professional working in the Greater Region, our advisors manage the full regulatory complexity on your behalf."
       }
     },
     "cta": {
@@ -3798,6 +3798,6 @@
       "badge2": "GDPR Secure",
       "badge3": "No Commitment"
     },
-    "legal": "Opulanz acts as a credit intermediary and not as a lender. Mortgage financing is subject to bank approval and standard credit conditions. Groupe Advensys Luxembourg S.A. — ORIAS n° 21003660, under ACPR supervision. Luxembourg Ministry of Economy authorised. MMA IARD France professional indemnity."
+    "legal": "Opulanz acts as a credit intermediary and not as a lender. Mortgage financing is subject to bank approval and standard credit conditions. Groupe Advensys Luxembourg S.A., ORIAS n° 21003660, under ACPR supervision. Luxembourg Ministry of Economy authorised. MMA IARD France professional indemnity."
   }
 }

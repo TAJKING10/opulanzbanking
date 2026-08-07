@@ -106,12 +106,27 @@ export default function MortgagePage({
                 {(["badge1", "badge2", "badge3"] as const).map((key) => (
                   <div
                     key={key}
-                    className="group inline-flex items-center gap-2 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 px-4 py-2.5 rounded-xl border border-brand-gold/20 hover:border-brand-gold/40 transition-all hover:shadow-md"
+                    className="group inline-flex items-center gap-2 bg-white px-4 py-2.5 rounded-full border border-brand-grayLight hover:border-brand-gold/40 transition-all hover:shadow-md"
                   >
-                    <Home className="h-5 w-5 text-brand-gold group-hover:scale-110 transition-transform" />
+                    <Home className="h-4 w-4 text-brand-gold" />
                     <span className="text-sm font-semibold text-brand-dark">
                       {t(`overview.${key}` as any)}
                     </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Stats row */}
+              <div className="grid grid-cols-4 divide-x divide-brand-grayLight border border-brand-grayLight rounded-2xl overflow-hidden mt-4">
+                {[
+                  { num: "19+", label: "Years of expertise" },
+                  { num: "12+", label: "Partner banks" },
+                  { num: "2",   label: "Markets covered" },
+                  { num: "24h", label: "Response time" },
+                ].map((s) => (
+                  <div key={s.label} className="bg-white py-5 px-4 text-center">
+                    <div className="text-2xl font-extrabold text-brand-gold tracking-tight leading-none mb-1">{s.num}</div>
+                    <div className="text-xs text-brand-grayMed leading-snug">{s.label}</div>
                   </div>
                 ))}
               </div>
@@ -309,17 +324,51 @@ export default function MortgagePage({
             </div>
           </div>
 
-          {/* Cross-border banner */}
-          <div className="relative bg-gradient-to-r from-brand-gold/10 via-brand-gold/5 to-brand-gold/10 rounded-2xl p-8 border border-brand-gold/20">
-            <div className="flex items-start gap-6">
-              <span className="text-4xl flex-shrink-0">🌍</span>
-              <div>
-                <h3 className="text-xl font-bold text-brand-dark mb-3">
-                  {t("markets.crossborder.title")}
-                </h3>
-                <p className="text-brand-grayMed leading-relaxed">
-                  {t("markets.crossborder.description")}
-                </p>
+          {/* Cross-border — two-panel card */}
+          <div className="rounded-2xl overflow-hidden border border-brand-gold/20 shadow-lg grid md:grid-cols-[260px_1fr]">
+            {/* Gold left panel */}
+            <div className="relative bg-gradient-to-br from-brand-goldDark via-brand-gold to-[#C8A96A] p-8 flex flex-col justify-between overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
+              <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-white/7 pointer-events-none" />
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center mb-6">
+                  <Globe className="h-7 w-7 text-white" />
+                </div>
+                <div className="text-xs font-bold tracking-widest uppercase text-white/70 mb-2">Coverage</div>
+                <div className="text-xl font-extrabold text-white leading-tight">Cross-Border<br />Expertise</div>
+              </div>
+              <div className="relative z-10 flex flex-col gap-2 mt-8">
+                <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-lg px-3 py-2 text-sm font-bold text-white">
+                  🇱🇺 Luxembourg
+                </div>
+                <div className="pl-4">
+                  <ArrowRight className="h-4 w-4 text-white/50 rotate-90" />
+                </div>
+                <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-lg px-3 py-2 text-sm font-bold text-white">
+                  🇫🇷 France
+                </div>
+              </div>
+            </div>
+
+            {/* Content right panel */}
+            <div className="bg-white p-8 flex flex-col justify-center gap-5">
+              <h3 className="text-xl font-bold text-brand-dark">
+                {t("markets.crossborder.title")}
+              </h3>
+              <p className="text-sm text-brand-grayMed leading-relaxed">
+                {t("markets.crossborder.description")}
+              </p>
+              <div className="flex flex-col gap-2">
+                {[
+                  "Luxembourg residents purchasing property in France",
+                  "French nationals acquiring property in Luxembourg",
+                  "International professionals in the Greater Region",
+                ].map((profile) => (
+                  <div key={profile} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3 border border-brand-grayLight text-sm text-brand-dark">
+                    <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                    {profile}
+                  </div>
+                ))}
               </div>
             </div>
           </div>

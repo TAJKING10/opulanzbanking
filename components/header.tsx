@@ -62,7 +62,7 @@ export function Header({ locale }: HeaderProps) {
           className="flex items-center gap-3 transition-opacity hover:opacity-80"
         >
           <img
-            src={`${process.env.NODE_ENV === 'production' ? '/opulanzbanking' : ''}/images/opulanz-logo.png`}
+            src="/images/opulanz-logo.png"
             alt="Opulanz Logo"
             width={60}
             height={60}

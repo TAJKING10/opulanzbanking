@@ -72,7 +72,7 @@ export default function MortgagePage({
         subtitle={t("hero.subtitle")}
         primaryCta={{
           label: t("hero.primaryCta"),
-          href: `/${locale}/support`,
+          href: `/${locale}/mortgage/apply`,
         }}
         secondaryCta={{
           label: t("hero.secondaryCta"),
@@ -408,7 +408,7 @@ export default function MortgagePage({
 
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
-                href={`/${locale}/support`}
+                href={`/${locale}/mortgage/apply`}
                 className="inline-flex h-14 min-w-56 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
               >
                 {t("cta.primaryButton")}

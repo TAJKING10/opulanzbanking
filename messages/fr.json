@@ -3798,6 +3798,91 @@
       "badge2": "Sécurisé RGPD",
       "badge3": "Sans engagement"
     },
-    "legal": "Opulanz agit en qualité d'intermédiaire de crédit et non de prêteur. Le financement hypothécaire est soumis à l'approbation bancaire et aux conditions de crédit standard. Groupe Advensys Luxembourg S.A., ORIAS n° 21003660, sous supervision ACPR. Agréé par le Ministère de l'Économie du Luxembourg. Garantie professionnelle MMA IARD France."
+    "legal": "Opulanz agit en qualité d'intermédiaire de crédit et non de prêteur. Le financement hypothécaire est soumis à l'approbation bancaire et aux conditions de crédit standard. Groupe Advensys Luxembourg S.A., ORIAS n° 21003660, sous supervision ACPR. Agréé par le Ministère de l'Économie du Luxembourg. Garantie professionnelle MMA IARD France.",
+    "apply": {
+      "overline": "Demande de Crédit Immobilier",
+      "title": "Démarrer votre demande de crédit",
+      "backToMortgage": "Retour au Crédit Immobilier",
+      "errors": {
+        "required": "Ce champ est obligatoire",
+        "invalidEmail": "Veuillez saisir une adresse e-mail valide",
+        "requiredDocs": "Veuillez télécharger tous les documents obligatoires avant de continuer",
+        "consent": "Vous devez donner votre consentement pour soumettre la demande"
+      },
+      "step1": {
+        "title": "Pré-qualification",
+        "market": "Marché cible",
+        "markets": {
+          "france": "France",
+          "luxembourg": "Luxembourg"
+        },
+        "propertyType": "Type de bien",
+        "propertyTypes": {
+          "primary": "Résidence principale",
+          "secondary": "Résidence secondaire",
+          "investment": "Bien locatif"
+        },
+        "purchasePrice": "Prix d’acquisition",
+        "contribution": "Apport personnel",
+        "ltvLabel": "Ratio prêt/valeur estimé (LTV)",
+        "monthlyIncome": "Revenus nets mensuels",
+        "employment": "Situation professionnelle",
+        "selectEmployment": "Sélectionner une situation",
+        "employmentTypes": {
+          "employee": "Salarié",
+          "selfEmployed": "Indépendant / TNS",
+          "civilServant": "Fonctionnaire",
+          "retired": "Retraité"
+        },
+        "contactTitle": "Vos coordonnées",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "name": "Nom",
+        "email": "Adresse e-mail",
+        "phone": "Téléphone (optionnel)",
+        "ltv": "LTV"
+      },
+      "step2": {
+        "title": "Collecte de documents",
+        "required": "Obligatoire",
+        "optional": "Optionnel",
+        "upload": "Télécharger",
+        "fileHint": "PDF, JPG ou PNG, max 10 Mo",
+        "securityNote": "Vos documents sont chiffrés et conservés de manière sécurisée sur l’infrastructure Azure, en pleine conformité RGPD. Ils sont accessibles uniquement à votre conseiller Opulanz.",
+        "docs": {
+          "id": "Pièce d’identité officielle (passeport ou carte nationale)",
+          "payslips": "3 derniers bulletins de salaire ou justificatifs de revenus",
+          "bankStatements": "3 derniers relevés de compte bancaire",
+          "proofAddress": "Justificatif de domicile (facture ou bail, daté de moins de 3 mois)",
+          "taxReturn": "Dernier avis d’imposition",
+          "propertyDetails": "Détails du bien ou promesse de vente (si disponible)"
+        }
+      },
+      "step3": {
+        "summaryTitle": "Récapitulatif de la demande",
+        "consentText": "Je consens à ce qu’Opulanz (Groupe Advensys Luxembourg S.A., ORIAS n°…21003660) collecte et traite mes données personnelles et mes documents aux fins d’évaluation et de soumission de ma demande de crédit immobilier auprès de ses banques partenaires en France et au Luxembourg. Je comprends que mes données seront traitées conformément au RGPD et à la Politique de confidentialité d’Opulanz.",
+        "legalNote": "Opulanz agit en qualité d’intermédiaire en crédit et non en tant que prêteur. Tout financement est soumis à l’accord de la banque. Réglementé par l’ACPR sous ORIAS n°…21003660 et le Ministère de l’Économie du Luxembourg."
+      },
+      "step4": {
+        "title": "Offre et Signature",
+        "what1": "Une fois votre dossier soumis, les conseillers Opulanz le prépareront et le transmettront aux banques partenaires dans les 24 heures.",
+        "what2": "Votre dossier est soumis simultanément à notre réseau de banques partenaires. Vous recevrez une vue consolidée de toutes les offres directement dans votre espace Opulanz.",
+        "what3": "Choisissez la meilleure offre et votre conseiller Opulanz vous accompagnera jusqu’à la signature et la finalisation du financement.",
+        "note": "Délai moyen entre la soumission du dossier et la première offre : 5 à 8 jours ouvrables, selon la banque et le marché."
+      },
+      "nav": {
+        "back": "Retour",
+        "cancel": "Annuler",
+        "next": "Continuer",
+        "submit": "Soumettre la demande"
+      },
+      "success": {
+        "title": "Demande soumise",
+        "line1": "Merci. Votre demande de crédit immobilier a bien été reçue.",
+        "line2": "Votre conseiller Opulanz examinera votre dossier et vous contactera dans les 24 heures pour discuter des prochaines étapes.",
+        "summaryTitle": "Votre soumission",
+        "back": "Retour à la page Crédit Immobilier"
+      }
+    }
   }
 }

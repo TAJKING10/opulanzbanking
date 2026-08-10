@@ -3798,6 +3798,91 @@
       "badge2": "GDPR Secure",
       "badge3": "No Commitment"
     },
-    "legal": "Opulanz acts as a credit intermediary and not as a lender. Mortgage financing is subject to bank approval and standard credit conditions. Groupe Advensys Luxembourg S.A., ORIAS n° 21003660, under ACPR supervision. Luxembourg Ministry of Economy authorised. MMA IARD France professional indemnity."
+    "legal": "Opulanz acts as a credit intermediary and not as a lender. Mortgage financing is subject to bank approval and standard credit conditions. Groupe Advensys Luxembourg S.A., ORIAS n° 21003660, under ACPR supervision. Luxembourg Ministry of Economy authorised. MMA IARD France professional indemnity.",
+    "apply": {
+      "overline": "Mortgage Application",
+      "title": "Start your mortgage application",
+      "backToMortgage": "Back to Mortgage",
+      "errors": {
+        "required": "This field is required",
+        "invalidEmail": "Please enter a valid email address",
+        "requiredDocs": "Please upload all required documents before continuing",
+        "consent": "You must give your consent to submit the application"
+      },
+      "step1": {
+        "title": "Pre-Qualification",
+        "market": "Target market",
+        "markets": {
+          "france": "France",
+          "luxembourg": "Luxembourg"
+        },
+        "propertyType": "Property type",
+        "propertyTypes": {
+          "primary": "Primary Residence",
+          "secondary": "Secondary Home",
+          "investment": "Investment Property"
+        },
+        "purchasePrice": "Purchase price",
+        "contribution": "Personal contribution",
+        "ltvLabel": "Estimated loan-to-value (LTV)",
+        "monthlyIncome": "Net monthly income",
+        "employment": "Employment type",
+        "selectEmployment": "Select employment type",
+        "employmentTypes": {
+          "employee": "Salaried Employee",
+          "selfEmployed": "Self-Employed",
+          "civilServant": "Civil Servant",
+          "retired": "Retired"
+        },
+        "contactTitle": "Your contact details",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "name": "Name",
+        "email": "Email address",
+        "phone": "Phone number (optional)",
+        "ltv": "LTV"
+      },
+      "step2": {
+        "title": "Document Collection",
+        "required": "Required",
+        "optional": "Optional",
+        "upload": "Upload file",
+        "fileHint": "PDF, JPG or PNG, max 10 MB",
+        "securityNote": "Your documents are encrypted and stored securely on Azure infrastructure in full GDPR compliance. They are accessible only to your assigned Opulanz advisor.",
+        "docs": {
+          "id": "Government-issued ID (passport or national ID)",
+          "payslips": "Last 3 payslips or proof of income",
+          "bankStatements": "Last 3 bank statements",
+          "proofAddress": "Proof of address (utility bill or lease, dated within 3 months)",
+          "taxReturn": "Last tax return",
+          "propertyDetails": "Property details or sales agreement (if available)"
+        }
+      },
+      "step3": {
+        "summaryTitle": "Application summary",
+        "consentText": "I consent to Opulanz (Groupe Advensys Luxembourg S.A., ORIAS n°…21003660) collecting and processing my personal data and documents for the purpose of assessing and submitting my mortgage application to its partner banks in France and Luxembourg. I understand that my data will be processed in accordance with the GDPR and Opulanz’s Privacy Policy.",
+        "legalNote": "Opulanz acts as a credit intermediary and not as a lender. Financing is subject to bank approval. Regulated by ACPR under ORIAS n°…21003660 and the Luxembourg Ministry of Economy."
+      },
+      "step4": {
+        "title": "Offer and Signature",
+        "what1": "Once your file is submitted, Opulanz advisors will review and prepare your complete dossier for bank submission within 24 hours.",
+        "what2": "Your file is simultaneously submitted to our partner bank network. You will receive a consolidated view of all offers directly in your Opulanz dashboard.",
+        "what3": "Choose the best offer and your Opulanz advisor will accompany you through to signature and final completion.",
+        "note": "Average time from file submission to first offer: 5–8 business days, depending on the bank and market."
+      },
+      "nav": {
+        "back": "Back",
+        "cancel": "Cancel",
+        "next": "Continue",
+        "submit": "Submit Application"
+      },
+      "success": {
+        "title": "Application submitted",
+        "line1": "Thank you. Your mortgage application has been received.",
+        "line2": "Your Opulanz advisor will review your file and contact you within 24 hours to discuss next steps.",
+        "summaryTitle": "Your submission",
+        "back": "Back to Mortgage page"
+      }
+    }
   }
 }

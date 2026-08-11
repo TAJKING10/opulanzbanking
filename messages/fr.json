@@ -35,8 +35,8 @@
   },
   "hero": {
     "home": {
-      "title": "Service de paiement pour les entreprises modernes",
-      "subtitle": "Services de paiement numériques de confiance, assistance en montage de sociétés, fond d'investissement et services de conseil pour entrepreneurs et entreprises en France et au Luxembourg",
+      "title": "Tous vos services financiers, en un seul endroit",
+      "subtitle": "Paiements, comptabilité et facturation, assistance en constitution de sociétés, conseil en investissement et fiscal, et assurance.\n\nPour les entrepreneurs et les entreprises en France et au Luxembourg.",
       "primaryCta": "Ouvrir un compte",
       "secondaryCta": "En savoir plus"
     },
@@ -71,7 +71,7 @@
       "licensesTitle": "Nos activités réglementées",
       "licensesDescription": "Nos activités réglementées sont exercées par des entités agréées du groupe :",
       "cert1Title": "Intermédiation (France)",
-      "cert1Description": "Advensys Insurance-Finance, ORIAS n° 21003660 : courtier (opérations de banque, services de paiement, assurance) sous contrôle de l'ACPR, et Conseiller en Investissements Financiers sous contrôle de l'AMF.",
+      "cert1Description": "Advensys Insurance-Finance, ORIAS n° 21003660 : courtier en opérations de banque, en services de paiement et en assurance sous le contrôle de l'ACPR, et Conseiller en Investissements Financiers, membre de La Compagnie CIF (association agréée par l'AMF), sous le contrôle de l'AMF.",
       "cert2Title": "Comptabilité (Luxembourg)",
       "cert2Description": "Exercée sous autorisation du Ministère de l'Économie du Grand-Duché de Luxembourg.",
       "cert3Title": "Comptes et paiements",
@@ -1174,7 +1174,7 @@
     },
     "description": "La plateforme financière et de services tout-en-un pour les entreprises. Une marque du Groupe Advensys Luxembourg S.A., forte de plus de 19 ans d'expérience dans les solutions complètes aux entreprises en Europe.",
     "copyright": "© {year} Opulanz. Tous droits réservés.",
-    "regulated": "Opulanz est une marque du Groupe Advensys Luxembourg S.A. (RCS Luxembourg B197138). Services d'intermédiation fournis par Advensys Insurance-Finance SARL — ORIAS n° 21003660 : courtier (COBSP/COA) sous le contrôle de l'ACPR, Conseiller en Investissements Financiers (CIF) sous le contrôle de l'AMF. Opulanz n'est pas un établissement de crédit."
+    "regulated": "Opulanz est une marque du Groupe Advensys Luxembourg S.A. (RCS Luxembourg B197138). Services d'intermédiation fournis par Advensys Insurance-Finance SARL — ORIAS n° 21003660 : courtier en opérations de banque, en services de paiement et en assurance sous le contrôle de l'ACPR ; Conseiller en Investissements Financiers, membre de La Compagnie CIF, sous le contrôle de l'AMF. Opulanz n'est pas un établissement de crédit."
   },
   "home": {
     "services": {

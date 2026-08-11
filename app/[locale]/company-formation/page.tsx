@@ -150,13 +150,13 @@ export default function CompanyFormationPage() {
                   <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-goldLight">
                     <Building2 className="h-7 w-7 text-brand-goldDark" />
                   </div>
-                  <div className="min-h-[74px]">
+                  <div>
                     <CardTitle className="text-xl">{form.name}</CardTitle>
                     <p className="text-sm text-brand-grayMed">{form.fullName}</p>
                   </div>
                 </CardHeader>
                 <CardContent className="flex flex-1 flex-col gap-4">
-                  <div className="min-h-[112px] space-y-2 text-sm">
+                  <div className="space-y-2 text-sm">
                     <div className="flex items-start justify-between gap-2">
                       <span className="shrink-0 text-brand-grayMed">{t("minCapitalLabel")}</span>
                       <span className="text-right font-semibold text-brand-dark">
@@ -176,7 +176,7 @@ export default function CompanyFormationPage() {
                       </span>
                     </div>
                   </div>
-                  <ul className="min-h-[120px] space-y-2 border-t border-brand-grayLight pt-4">
+                  <ul className="space-y-2 border-t border-brand-grayLight pt-4">
                     {form.features.map((feature) => (
                       <li
                         key={feature}

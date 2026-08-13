@@ -1,4 +1,7 @@
-trigger: none
+trigger:
+  branches:
+    include:
+      - main
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -14,11 +17,12 @@ steps:
 - script: npm ci
   displayName: 'Install dependencies'
 
-# 3️⃣ Build Next.js (NEXT_PUBLIC_* vars are loaded from .env.production automatically)
+# 3️⃣ Build Next.js in standalone mode (required for App Service node server.js deployment)
 - script: npm run build
   displayName: 'Build Next.js app'
   env:
     NODE_ENV: production
+    NEXT_OUTPUT: standalone
 
 # 4️⃣ Copy public + static assets into standalone output
 - script: |

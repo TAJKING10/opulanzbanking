@@ -46,14 +46,16 @@ export function Hero({
             {title}
           </h1>
           {subtitle && (
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mx-auto mt-6 max-w-2xl text-balance text-lg text-white/90 md:text-xl"
             >
-              {subtitle}
-            </motion.p>
+              {subtitle.split("\n\n").map((part, i) => (
+                <p key={i} className={i > 0 ? "mt-4" : undefined}>{part}</p>
+              ))}
+            </motion.div>
           )}
           {(primaryCta || secondaryCta) && (
             <motion.div

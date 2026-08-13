@@ -208,7 +208,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </div>
             <div className="w-full max-w-[330px]">
               <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white/80 backdrop-blur-sm p-10 text-center shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 transform-gpu">
-                <h3 className="mb-3 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('home.regulatory.france')}</h3>
                 <p className="text-sm text-brand-grayMed leading-relaxed">
                   {t('home.regulatory.amf')}
                 </p>

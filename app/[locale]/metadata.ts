@@ -1,12 +1,14 @@
 import { Metadata } from 'next';
 import { routing } from '@/i18n/routing';
 
-const rawBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.opulanz.com';
-// Never expose internal Azure App Service hostnames in canonical / OG tags.
-// If the env var still points at the staging host, fall back to the branded domain.
-const baseUrl = rawBaseUrl.includes('azurewebsites.net')
-  ? 'https://www.opulanz.com'
-  : rawBaseUrl;
+const rawBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+// Strip internal hostnames from canonical/OG URLs so search engines never
+// index staging addresses. Fall back to the branded domain only when the
+// env var is explicitly set to a real public host.
+const baseUrl =
+  rawBaseUrl && !rawBaseUrl.includes('localhost') && !rawBaseUrl.includes('azurewebsites.net')
+    ? rawBaseUrl
+    : 'https://www.opulanz.com';
 
 interface GenerateMetadataProps {
   locale: string;

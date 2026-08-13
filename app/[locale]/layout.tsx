@@ -45,22 +45,6 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={poppins.className}>
-      <head>
-        {/* Additional hreflang tags for better SEO */}
-        {routing.locales.map((loc) => (
-          <link
-            key={loc}
-            rel="alternate"
-            hrefLang={loc}
-            href={`${process.env.NEXT_PUBLIC_BASE_URL || ''}/${loc}`}
-          />
-        ))}
-        <link
-          rel="alternate"
-          hrefLang="x-default"
-          href={`${process.env.NEXT_PUBLIC_BASE_URL || ''}/en`}
-        />
-      </head>
       <body className="flex min-h-screen flex-col">
         <NextIntlClientProvider messages={messages}>
           <Header locale={locale} />

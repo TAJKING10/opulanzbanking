@@ -24,11 +24,12 @@ export function generateSEOMetadata({
   const pageDescription = description || defaultDescription;
   const url = `${baseUrl}/${locale}${pathname}`;
 
-  // Generate alternate language links
+  // Generate alternate language links — one entry per locale, plus x-default
   const languages: Record<string, string> = {};
   routing.locales.forEach((loc) => {
     languages[loc] = `${baseUrl}/${loc}${pathname}`;
   });
+  languages['x-default'] = `${baseUrl}/en${pathname}`;
 
   return {
     title: pageTitle,

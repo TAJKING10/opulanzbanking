@@ -17,7 +17,7 @@ export function Footer({ locale }: FooterProps) {
         <div className="mx-auto mb-10 flex w-full max-w-[680px] flex-col gap-y-8 sm:mb-12 md:flex-row md:items-start md:justify-center md:gap-x-14">
 
           {/* Services Column */}
-          <div className="w-full md:w-[220px]">
+          <div className="w-full text-center md:w-[220px]">
             <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-brand-dark">
               {t("footer.sections.services")}
             </h3>
@@ -68,7 +68,7 @@ export function Footer({ locale }: FooterProps) {
           </div>
 
           {/* Company Column */}
-          <div className="w-full md:w-[150px]">
+          <div className="w-full text-center md:w-[150px]">
             <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-brand-dark">
               {t("footer.sections.company")}
             </h3>
@@ -101,7 +101,7 @@ export function Footer({ locale }: FooterProps) {
           </div>
 
           {/* Legal Column */}
-          <div className="w-full md:w-[180px]">
+          <div className="w-full text-center md:w-[180px]">
             <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-brand-dark">
               {t("footer.sections.legal")}
             </h3>

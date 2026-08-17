@@ -6,6 +6,15 @@ const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.NEXT_PUBLIC_ENVIRONMENT === 'production';
+
+  // Hide/Redirect spv-investment in production
+  if (isProduction && pathname.includes('/spv-investment')) {
+    const segments = pathname.split('/');
+    const locale = segments[1] || 'en';
+    const redirectLocale = ['en', 'fr'].includes(locale) ? locale : 'en';
+    return NextResponse.redirect(new URL(`/${redirectLocale}`, req.url));
+  }
 
   // Admin panel bypasses i18n entirely
   if (pathname.startsWith('/admin')) {

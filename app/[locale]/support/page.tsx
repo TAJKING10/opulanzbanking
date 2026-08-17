@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { Phone, Mail, MessageCircle, HelpCircle, FileText, Clock, CheckCircle, AlertCircle, Loader2, ExternalLink } from "lucide-react";
+import { Phone, Mail, MessageCircle, HelpCircle, Clock, CheckCircle, AlertCircle, Loader2, ExternalLink } from "lucide-react";
 import { PageGuidance } from "@/components/page-guidance";
 import ReactCountryFlag from "react-country-flag";
 import { Hero } from "@/components/hero";
@@ -372,27 +372,7 @@ export default function SupportPage() {
             className="mb-12"
           />
 
-          <div className="grid gap-8 md:grid-cols-3">
-            {/* Documentation → Legal Terms */}
-            <Card className="card-hover border-none text-center">
-              <CardContent className="p-8">
-                <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-goldLight">
-                  <FileText className="h-8 w-8 text-brand-goldDark" />
-                </div>
-                <h3 className="mb-3 text-xl font-bold text-brand-dark">
-                  {t("resources.documentation.title")}
-                </h3>
-                <p className="mb-6 text-sm text-brand-grayMed">
-                  {t("resources.documentation.description")}
-                </p>
-                <a href={`/${locale}/legal/terms`}>
-                  <Button variant="outline" className="flex items-center gap-2">
-                    {t("resources.documentation.button")} <ExternalLink className="h-4 w-4" />
-                  </Button>
-                </a>
-              </CardContent>
-            </Card>
-
+          <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
             {/* Help Center → scroll to FAQ */}
             <Card className="card-hover border-none text-center">
               <CardContent className="p-8">

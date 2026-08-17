@@ -55,7 +55,13 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
       image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=500&fit=crop',
       href: `/${locale}/spv-investment`,
     },
-  ];
+  ].filter(service => {
+    if (service.href.endsWith('/spv-investment')) {
+      const isProduction = process.env.NODE_ENV === 'production' || process.env.NEXT_PUBLIC_ENVIRONMENT === 'production';
+      return !isProduction;
+    }
+    return true;
+  });
 
   const featureKeys = [
     { key: "expertFinancial", icon: Calculator },

@@ -36,7 +36,7 @@
   "hero": {
     "home": {
       "title": "Tous vos services financiers, en un seul endroit",
-      "subtitle": "Paiements, comptabilité et facturation, assistance en constitution de sociétés, conseil en investissement et fiscal, et assurance.\n\nPour les entrepreneurs et les entreprises en France et au Luxembourg.",
+      "subtitle": "Service de paiements, comptabilité et facturation, assistance en constitution de sociétés, conseil en investissement et fiscal, et assurance.\n\nPour les entrepreneurs et les entreprises en France et au Luxembourg.",
       "primaryCta": "Ouvrir un compte",
       "secondaryCta": "En savoir plus"
     },
@@ -76,8 +76,8 @@
       "cert2Description": "Exercée sous autorisation du Ministère de l'Économie du Grand-Duché de Luxembourg.",
       "cert3Title": "Comptes et paiements",
       "cert3Description": "Fournis via notre partenaire agréé, établissement de monnaie électronique (EME) agréé au sein de l'Union européenne.",
-      "cert4Title": "Assurance RC Pro",
-      "cert4Description": "Advensys Insurance-Finance SARL est couvert par une assurance responsabilité civile professionnelle souscrite auprès de MMA IARD France.",
+      "cert4Title": "Assurance Vie",
+      "cert4Description": "Contrat d'assurance vie dédié Luxembourgeois pour particuliers et entreprises",
       "whyTitle": "Pourquoi Opulanz ?",
       "whyDescription": "Ce qui fait de nous votre partenaire de confiance",
       "benefit1Title": "Plateforme tout-en-un",

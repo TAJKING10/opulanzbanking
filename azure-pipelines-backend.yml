@@ -46,7 +46,8 @@ steps:
           { "name": "NARVI_API_URL", "value": "$(NARVI_API_URL)" },
           { "name": "NARVI_API_KEY_ID", "value": "$(NARVI_API_KEY_ID)" },
           { "name": "EMAIL_USER", "value": "$(EMAIL_USER)" },
-          { "name": "EMAIL_PASS", "value": "$(EMAIL_PASS)" }
+          { "name": "EMAIL_PASS", "value": "$(EMAIL_PASS)" },
+          { "name": "ADMIN_PASSWORD", "value": "Opulanz2025" }
         ]
 
   - task: AzureWebApp@1

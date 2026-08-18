@@ -5,13 +5,10 @@ import Link from "next/link";
 import {
   Home,
   FileText,
-  Shield,
-  Users,
   CheckCircle,
   Lock,
   Building2,
   Globe,
-  ArrowRight,
   ClipboardList,
   Send,
   PenLine,
@@ -20,7 +17,6 @@ import { PageGuidance } from "@/components/page-guidance";
 import { useTranslations } from "next-intl";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function MortgagePage({
   params: { locale },
@@ -50,20 +46,6 @@ export default function MortgagePage({
     t("overview.benefit3"),
     t("overview.benefit4"),
     t("overview.benefit5"),
-  ];
-
-  const luFacts = [
-    t("markets.lu.fact1"),
-    t("markets.lu.fact2"),
-    t("markets.lu.fact3"),
-    t("markets.lu.fact4"),
-  ];
-
-  const frFacts = [
-    t("markets.fr.fact1"),
-    t("markets.fr.fact2"),
-    t("markets.fr.fact3"),
-    t("markets.fr.fact4"),
   ];
 
   return (
@@ -260,131 +242,6 @@ export default function MortgagePage({
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* Markets — France & Luxembourg */}
-      <section className="relative bg-white py-12 md:py-16 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-brand-goldLight/10 rounded-full blur-3xl" />
-
-        <div className="container mx-auto max-w-7xl px-6 relative z-10">
-          <SectionHeading
-            overline={t("markets.overline")}
-            title={t("markets.title")}
-            description={t("markets.description")}
-            className="mb-10"
-          />
-
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            {/* Luxembourg */}
-            <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2" />
-              <Card className="relative border-none shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:-translate-y-1 bg-white/80 backdrop-blur-sm h-full">
-                <CardHeader className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <span className="text-4xl">🇱🇺</span>
-                    <div>
-                      <CardTitle className="text-xl group-hover:text-brand-gold transition-colors">
-                        {t("markets.lu.title")}
-                      </CardTitle>
-                      <p className="text-sm text-brand-grayMed mt-1">
-                        {t("markets.lu.subtitle")}
-                      </p>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {luFacts.map((fact, idx) => (
-                      <li key={idx} className="flex items-start gap-3 text-sm text-brand-grayMed">
-                        <ArrowRight className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                        {fact}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* France */}
-            <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-brand-gold/5 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2" />
-              <Card className="relative border-none shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:-translate-y-1 bg-white/80 backdrop-blur-sm h-full">
-                <CardHeader className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <span className="text-4xl">🇫🇷</span>
-                    <div>
-                      <CardTitle className="text-xl group-hover:text-brand-gold transition-colors">
-                        {t("markets.fr.title")}
-                      </CardTitle>
-                      <p className="text-sm text-brand-grayMed mt-1">
-                        {t("markets.fr.subtitle")}
-                      </p>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {frFacts.map((fact, idx) => (
-                      <li key={idx} className="flex items-start gap-3 text-sm text-brand-grayMed">
-                        <ArrowRight className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                        {fact}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* Cross-border — two-panel gold card */}
-          <div className="rounded-2xl overflow-hidden border border-brand-gold/20 shadow-lg grid md:grid-cols-[260px_1fr]">
-            {/* Gold left panel */}
-            <div className="relative bg-gradient-to-br from-brand-goldDark via-brand-gold to-[#C8A96A] p-8 flex flex-col justify-between overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
-              <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-white/7 pointer-events-none" />
-              <div className="relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center mb-6">
-                  <Globe className="h-7 w-7 text-white" />
-                </div>
-                <div className="text-xs font-bold tracking-widest uppercase text-white/70 mb-2">Coverage</div>
-                <div className="text-xl font-extrabold text-white leading-tight">Cross-Border<br />Expertise</div>
-              </div>
-              <div className="relative z-10 flex flex-col gap-2 mt-8">
-                <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-lg px-3 py-2 text-sm font-bold text-white">
-                  🇱🇺 Luxembourg
-                </div>
-                <div className="pl-4">
-                  <ArrowRight className="h-4 w-4 text-white/50 rotate-90" />
-                </div>
-                <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-lg px-3 py-2 text-sm font-bold text-white">
-                  🇫🇷 France
-                </div>
-              </div>
-            </div>
-            {/* Content right panel */}
-            <div className="bg-white p-8 flex flex-col justify-center gap-5">
-              <h3 className="text-xl font-bold text-brand-dark">
-                {t("markets.crossborder.title")}
-              </h3>
-              <p className="text-sm text-brand-grayMed leading-relaxed">
-                {t("markets.crossborder.description")}
-              </p>
-              <div className="flex flex-col gap-2">
-                {[
-                  "Luxembourg residents purchasing property in France",
-                  "French nationals acquiring property in Luxembourg",
-                  "International professionals in the Greater Region",
-                ].map((profile) => (
-                  <div key={profile} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3 border border-brand-grayLight text-sm text-brand-dark">
-                    <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                    {profile}
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>

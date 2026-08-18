@@ -245,6 +245,80 @@ export default function MortgagePage({
         </div>
       </section>
 
+      {/* Lombard Credit */}
+      <section className="bg-white py-12 md:py-16">
+        <div className="container mx-auto max-w-4xl px-6">
+          {/* Header */}
+          <div className="mb-10">
+            <div className="text-xs font-bold uppercase tracking-widest text-brand-gold mb-3">
+              {t("lombard.overline")}
+            </div>
+            <h2 className="text-3xl font-bold text-brand-dark mb-4">
+              {t("lombard.title")}
+            </h2>
+            <p className="text-brand-grayMed leading-relaxed">
+              {t("lombard.description")}
+            </p>
+          </div>
+
+          {/* How we help */}
+          <div className="mb-8 rounded-2xl border border-brand-grayLight bg-gray-50 p-6">
+            <h3 className="text-base font-bold text-brand-dark mb-2">
+              {t("lombard.howWeHelp.title")}
+            </h3>
+            <p className="text-sm text-brand-grayMed leading-relaxed">
+              {t("lombard.howWeHelp.description")}
+            </p>
+          </div>
+
+          {/* Uses + Features — two columns */}
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* Typical uses */}
+            <div className="rounded-2xl border border-brand-grayLight p-6">
+              <h3 className="text-base font-bold text-brand-dark mb-4">
+                {t("lombard.uses.title")}
+              </h3>
+              <ul className="space-y-3">
+                {(["item1", "item2", "item3", "item4"] as const).map((k) => (
+                  <li key={k} className="flex items-start gap-3 text-sm text-brand-grayMed">
+                    <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
+                    {t(`lombard.uses.${k}` as any)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Key features */}
+            <div className="rounded-2xl border border-brand-grayLight p-6">
+              <h3 className="text-base font-bold text-brand-dark mb-4">
+                {t("lombard.features.title")}
+              </h3>
+              <ul className="space-y-3">
+                {(["item1", "item2", "item3", "item4"] as const).map((k) => (
+                  <li key={k} className="flex items-start gap-3 text-sm text-brand-grayMed">
+                    <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
+                    {t(`lombard.features.${k}` as any)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Important risk warning */}
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6">
+            <h3 className="text-base font-bold text-amber-800 mb-3">
+              {t("lombard.important.title")}
+            </h3>
+            <p className="text-sm text-amber-900 leading-relaxed mb-4">
+              {t("lombard.important.body")}
+            </p>
+            <p className="text-xs text-amber-700 leading-relaxed border-t border-amber-200 pt-4">
+              {t("lombard.important.legal")}
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Legal notice */}
       <div className="bg-gray-50 py-6 px-6">
         <div className="container mx-auto max-w-7xl">

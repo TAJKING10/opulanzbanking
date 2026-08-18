@@ -4397,6 +4397,34 @@
       "badge2": "GDPR Secure",
       "badge3": "No Commitment"
     },
+    "lombard": {
+      "overline": "Lombard Credit",
+      "title": "Borrow against your investment portfolio — without selling it.",
+      "description": "A Lombard loan lets you access liquidity secured by your securities portfolio, so you can finance a project or seize an opportunity while keeping your investments in place and your strategy on track.",
+      "howWeHelp": {
+        "title": "How we help",
+        "description": "As a registered credit intermediary, Opulanz introduces your file to our partner banks in France and Luxembourg and helps you compare the terms available to you. The loan itself is granted by the lending bank, not by Opulanz."
+      },
+      "uses": {
+        "title": "Typical uses",
+        "item1": "Financing a property purchase without liquidating your portfolio",
+        "item2": "Bridging a short-term liquidity need",
+        "item3": "Funding a business project or investment opportunity",
+        "item4": "Optimising cash flow without triggering a capital-gains event"
+      },
+      "features": {
+        "title": "Key features",
+        "item1": "Credit line secured by eligible securities (equities, bonds, funds)",
+        "item2": "Advance rate depending on the type and quality of the pledged assets",
+        "item3": "Flexible drawdown and repayment terms",
+        "item4": "Interest charged only on the amount actually drawn"
+      },
+      "important": {
+        "title": "Important — please read",
+        "body": "A Lombard loan involves real risk. If the value of your pledged portfolio falls, the bank may issue a margin call, requiring you to provide additional collateral or repay part of the loan. If you cannot meet it, the bank may sell your securities, potentially at an unfavourable time and at a loss. Interest rates may vary. Borrowing to invest amplifies both gains and losses. Lombard credit is not suitable for every investor, and eligibility depends on the composition of your portfolio.",
+        "legal": "Opulanz acts as a credit intermediary and not as a lender. Any loan is subject to the lending bank's approval and conditions. Where the financing relates to an investment strategy, advice is provided under our Financial Investment Advisor (CIF) status. Advensys Insurance-Finance SARL — ORIAS n° 21003660, broker under ACPR oversight, CIF member of La Compagnie CIF under AMF oversight."
+      }
+    },
     "legal": "Opulanz acts as a credit intermediary and not as a lender. Mortgage financing is subject to bank approval and standard credit conditions. ORIAS n° 21003660",
     "apply": {
       "overline": "Mortgage Application",

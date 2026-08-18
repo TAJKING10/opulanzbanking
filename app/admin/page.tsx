@@ -33,14 +33,10 @@ export default function AdminLoginPage() {
       } else if (res.status === 401) {
         setError("Incorrect password.");
       } else {
-        // If no ADMIN_PASSWORD is set, any attempt gets through
-        localStorage.setItem("admin_token", password || "open");
-        router.push("/admin/dashboard");
+        setError("Authentication error. Please try again.");
       }
     } catch {
-      // Backend might not have ADMIN_PASSWORD — let through
-      localStorage.setItem("admin_token", password || "open");
-      router.push("/admin/dashboard");
+      setError("Cannot reach the authentication server. Please try again later.");
     } finally {
       setLoading(false);
     }

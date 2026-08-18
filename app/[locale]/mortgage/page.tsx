@@ -114,12 +114,11 @@ export default function MortgagePage({
               </div>
 
               {/* Stats row */}
-              <div className="grid grid-cols-4 divide-x divide-brand-grayLight border border-brand-grayLight rounded-2xl overflow-hidden mt-4">
+              <div className="grid grid-cols-3 divide-x divide-brand-grayLight border border-brand-grayLight rounded-2xl overflow-hidden mt-4">
                 {[
                   { num: "19+", label: "Years of expertise" },
                   { num: "12+", label: "Partner banks" },
                   { num: "2",   label: "Markets covered" },
-                  { num: "24h", label: "Response time" },
                 ].map((s) => (
                   <div key={s.label} className="bg-white py-5 px-4 text-center">
                     <div className="text-2xl font-extrabold text-brand-gold tracking-tight leading-none mb-1">{s.num}</div>

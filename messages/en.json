@@ -4399,30 +4399,30 @@
     },
     "lombard": {
       "overline": "Lombard Credit",
-      "title": "Borrow against your investment portfolio — without selling it.",
-      "description": "A Lombard loan lets you access liquidity secured by your securities portfolio, so you can finance a project or seize an opportunity while keeping your investments in place and your strategy on track.",
+      "title": "Unlock Liquidity from Your Portfolio — Without Liquidating It",
+      "description": "A Lombard facility allows you to borrow against the value of your investment portfolio, giving you access to capital while your assets remain invested and your long-term strategy stays intact.",
       "howWeHelp": {
-        "title": "How we help",
-        "description": "As a registered credit intermediary, Opulanz introduces your file to our partner banks in France and Luxembourg and helps you compare the terms available to you. The loan itself is granted by the lending bank, not by Opulanz."
+        "title": "Our Role",
+        "description": "Opulanz acts as a regulated credit intermediary. We structure your application, present your file to our network of partner banks across France and Luxembourg, and guide you through a comparison of available terms. The credit facility is extended by the selected lending institution — not by Opulanz."
       },
       "uses": {
-        "title": "Typical uses",
-        "item1": "Financing a property purchase without liquidating your portfolio",
-        "item2": "Bridging a short-term liquidity need",
-        "item3": "Funding a business project or investment opportunity",
-        "item4": "Optimising cash flow without triggering a capital-gains event"
+        "title": "Common Applications",
+        "item1": "Financing a real estate acquisition without disrupting your investment portfolio",
+        "item2": "Addressing a short-term liquidity requirement",
+        "item3": "Funding a business venture or a time-sensitive investment opportunity",
+        "item4": "Optimising cash flow without triggering a taxable disposal event"
       },
       "features": {
-        "title": "Key features",
-        "item1": "Credit line secured by eligible securities (equities, bonds, funds)",
-        "item2": "Advance rate depending on the type and quality of the pledged assets",
-        "item3": "Flexible drawdown and repayment terms",
-        "item4": "Interest charged only on the amount actually drawn"
+        "title": "Facility Characteristics",
+        "item1": "Secured credit line against eligible securities — equities, bonds and investment funds",
+        "item2": "Advance rate determined by the nature and credit quality of the pledged assets",
+        "item3": "Flexible drawdown and repayment schedule tailored to your needs",
+        "item4": "Interest accrues only on amounts actually drawn"
       },
       "important": {
-        "title": "Important — please read",
-        "body": "A Lombard loan involves real risk. If the value of your pledged portfolio falls, the bank may issue a margin call, requiring you to provide additional collateral or repay part of the loan. If you cannot meet it, the bank may sell your securities, potentially at an unfavourable time and at a loss. Interest rates may vary. Borrowing to invest amplifies both gains and losses. Lombard credit is not suitable for every investor, and eligibility depends on the composition of your portfolio.",
-        "legal": "Opulanz acts as a credit intermediary and not as a lender. Any loan is subject to the lending bank's approval and conditions. Where the financing relates to an investment strategy, advice is provided under our Financial Investment Advisor (CIF) status. Advensys Insurance-Finance SARL — ORIAS n° 21003660, broker under ACPR oversight, CIF member of La Compagnie CIF under AMF oversight."
+        "title": "Risk Disclosure — Please Read Before Proceeding",
+        "body": "A Lombard facility carries material risk. Should the market value of your pledged portfolio decline, the lending bank may issue a margin call, requiring you to post additional collateral or partially repay the outstanding balance. Failure to meet a margin call may result in the forced sale of your securities, potentially at an inopportune time and below fair value. Interest rates are subject to change. Leverage amplifies both investment gains and losses. This facility may not be appropriate for all investors; suitability is assessed on the specific composition and quality of your portfolio.",
+        "legal": "Opulanz acts as a credit intermediary and not as a lender. All credit facilities are subject to the approval and conditions of the lending institution. Where the financing relates to an investment strategy, advisory services are provided in our capacity as a registered Financial Investment Advisor (CIF). Advensys Insurance-Finance SARL — ORIAS n° 21003660 — operates as a broker under ACPR oversight and as a CIF member of La Compagnie CIF, under the supervision of the AMF."
       }
     },
     "legal": "Opulanz acts as a credit intermediary and not as a lender. Mortgage financing is subject to bank approval and standard credit conditions. ORIAS n° 21003660",

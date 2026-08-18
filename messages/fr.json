@@ -4399,30 +4399,30 @@
     },
     "lombard": {
       "overline": "Crédit Lombard",
-      "title": "Empruntez adossé à votre portefeuille — sans le vendre.",
-      "description": "Le crédit lombard vous permet d'obtenir des liquidités garanties par votre portefeuille de titres : vous financez un projet ou saisissez une opportunité tout en conservant vos investissements et votre stratégie.",
+      "title": "Mobilisez les liquidités de votre portefeuille — sans le céder",
+      "description": "Le crédit lombard est une facilité de financement adossée à la valeur de votre portefeuille de titres. Vous accédez à des capitaux tout en maintenant vos positions investies et en préservant la continuité de votre stratégie patrimoniale.",
       "howWeHelp": {
-        "title": "Notre rôle",
-        "description": "En qualité d'intermédiaire en crédit, Opulanz présente votre dossier à ses banques partenaires en France et au Luxembourg et vous aide à comparer les conditions proposées. Le prêt est octroyé par la banque prêteuse, et non par Opulanz."
+        "title": "Notre intervention",
+        "description": "Opulanz intervient en qualité d'intermédiaire en crédit réglementé. Nous constituons votre dossier, le soumettons à notre réseau de banques partenaires en France et au Luxembourg, et vous accompagnons dans la comparaison des conditions proposées. La facilité de crédit est accordée par l'établissement prêteur retenu — et non par Opulanz."
       },
       "uses": {
-        "title": "Cas d'usage",
-        "item1": "Financer un achat immobilier sans liquider votre portefeuille",
-        "item2": "Répondre à un besoin de trésorerie ponctuel",
-        "item3": "Financer un projet d'entreprise ou une opportunité d'investissement",
-        "item4": "Optimiser votre trésorerie sans déclencher de plus-value imposable"
+        "title": "Principales utilisations",
+        "item1": "Financer une acquisition immobilière sans désinvestir votre portefeuille",
+        "item2": "Répondre à un besoin ponctuel de liquidités",
+        "item3": "Financer un projet d'entreprise ou une opportunité d'investissement sous contrainte de temps",
+        "item4": "Optimiser votre trésorerie sans déclencher de cession fiscalement imposable"
       },
       "features": {
-        "title": "Caractéristiques",
-        "item1": "Ligne de crédit garantie par des titres éligibles (actions, obligations, fonds)",
-        "item2": "Quotité de financement variable selon la nature et la qualité des actifs nantis",
-        "item3": "Souplesse de tirage et de remboursement",
-        "item4": "Intérêts dus uniquement sur les montants effectivement tirés"
+        "title": "Caractéristiques de la facilité",
+        "item1": "Ligne de crédit garantie par des titres éligibles — actions, obligations et fonds d'investissement",
+        "item2": "Quotité de financement déterminée selon la nature et la qualité de crédit des actifs nantis",
+        "item3": "Modalités de tirage et de remboursement adaptées à votre situation",
+        "item4": "Intérêts calculés uniquement sur les montants effectivement tirés"
       },
       "important": {
-        "title": "Important — à lire attentivement",
-        "body": "Le crédit lombard comporte un risque réel. En cas de baisse de la valeur du portefeuille nanti, la banque peut procéder à un appel de marge : vous devrez apporter des garanties complémentaires ou rembourser une partie du prêt. À défaut, la banque peut vendre vos titres, éventuellement à un moment défavorable et à perte. Les taux d'intérêt peuvent varier. S'endetter pour investir amplifie les gains comme les pertes. Le crédit lombard ne convient pas à tous les investisseurs et l'éligibilité dépend de la composition de votre portefeuille.",
-        "legal": "Opulanz agit en qualité d'intermédiaire en crédit et non en qualité de prêteur. Tout prêt est soumis à l'accord et aux conditions de la banque prêteuse. Lorsque le financement porte sur une stratégie d'investissement, le conseil est fourni au titre de notre statut de Conseiller en Investissements Financiers (CIF). Advensys Insurance-Finance SARL — ORIAS n° 21003660, courtier sous le contrôle de l'ACPR, CIF membre de La Compagnie CIF sous le contrôle de l'AMF."
+        "title": "Information sur les risques — À lire avant toute démarche",
+        "body": "Le crédit lombard comporte des risques significatifs. Si la valeur de marché de votre portefeuille nanti venait à baisser, la banque prêteuse pourrait émettre un appel de marge, vous imposant de constituer des garanties complémentaires ou de rembourser partiellement l'encours. En cas d'impossibilité d'y répondre, la banque pourrait procéder à la liquidation forcée de vos titres, potentiellement dans des conditions de marché défavorables et à perte. Les taux d'intérêt sont susceptibles de varier. L'effet de levier amplifie aussi bien les gains que les pertes. Cette facilité n'est pas adaptée à tous les profils d'investisseurs ; l'éligibilité est appréciée au regard de la composition et de la qualité de votre portefeuille.",
+        "legal": "Opulanz agit en qualité d'intermédiaire en crédit et non en qualité de prêteur. Toute facilité de crédit est soumise à l'approbation et aux conditions de l'établissement prêteur. Lorsque le financement s'inscrit dans le cadre d'une stratégie d'investissement, le conseil est délivré au titre de notre statut de Conseiller en Investissements Financiers (CIF). Advensys Insurance-Finance SARL — ORIAS n° 21003660 — exerce en qualité de courtier sous contrôle de l'ACPR et de CIF membre de La Compagnie CIF, sous le contrôle de l'AMF."
       }
     },
     "legal": "Opulanz agit en qualité d'intermédiaire en crédit et non en tant que prêteur. Tout financement immobilier est soumis à l'approbation bancaire et aux conditions standard d'octroi de crédit. ORIAS n° 21003660",

@@ -341,8 +341,8 @@ export default function MortgagePage({
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              {(["badge1", "badge2", "badge3"] as const).map((key) => (
+            <div className="grid md:grid-cols-2 gap-6 mb-8 max-w-md mx-auto">
+              {(["badge2", "badge3"] as const).map((key) => (
                 <div key={key} className="text-center bg-white/10 rounded-xl p-4">
                   <CheckCircle className="h-8 w-8 text-white mx-auto mb-2" />
                   <p className="text-sm text-white font-semibold">{t(`cta.${key}`)}</p>

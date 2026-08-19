@@ -9,7 +9,6 @@ export default function AdminLoginPage() {
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
 
-  // Auto-redirect if already logged in
   React.useEffect(() => {
     if (typeof window !== "undefined" && localStorage.getItem("admin_token")) {
       router.replace("/admin/dashboard");
@@ -23,18 +22,23 @@ export default function AdminLoginPage() {
 
     try {
       const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-      const res = await fetch(`${API}/api/admin/stats`, {
-        headers: { "x-admin-token": password },
+      const res = await fetch(`${API}/api/admin/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
       });
+      const data = await res.json().catch(() => ({}));
 
-      if (res.ok) {
-        localStorage.setItem("admin_token", password);
+      if (res.ok && data.success && data.data?.token) {
+        localStorage.setItem("admin_token", data.data.token);
         router.push("/admin/dashboard");
-      } else if (res.status === 401) {
-        setError("Incorrect password.");
-      } else {
-        setError("Authentication error. Please try again.");
+        return;
       }
+      if (res.status === 401) {
+        setError(data.error || "Incorrect password.");
+        return;
+      }
+      setError(data.error || "Authentication error. Please try again.");
     } catch {
       setError("Cannot reach the authentication server. Please try again later.");
     } finally {

@@ -17,6 +17,12 @@ import { getCurrentAdmin } from "@/lib/investment-api";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
+function adminHeaders(extra: Record<string, string> = {}): Record<string, string> {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("admin_token") || "" : "";
+  return { "x-admin-token": token, ...extra };
+}
+
 type Chat = {
   id: number;
   visitor_name: string;
@@ -84,7 +90,7 @@ export default function AdminSupportPage() {
   // Fetch all chats
   const fetchChats = React.useCallback(async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/support-chats`);
+      const res = await fetch(`${API_BASE}/api/support-chats`, { headers: adminHeaders() });
       const data = await res.json();
       if (data.success) setChats(data.data);
     } catch { /* ignore */ }
@@ -150,7 +156,7 @@ export default function AdminSupportPage() {
     try {
       await fetch(`${API_BASE}/api/support-chats/${selectedId}/messages`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: adminHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ sender_type: "admin", sender_name: adminName, content: text }),
       });
       // Refresh chat list to update status
@@ -164,7 +170,7 @@ export default function AdminSupportPage() {
     try {
       await fetch(`${API_BASE}/api/support-chats/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: adminHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ status: "closed" }),
       });
       fetchChats();
@@ -177,7 +183,7 @@ export default function AdminSupportPage() {
     try {
       await fetch(`${API_BASE}/api/support-chats/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: adminHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ status: "active" }),
       });
       fetchChats();

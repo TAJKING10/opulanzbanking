@@ -87,6 +87,22 @@ const STATUS_COLORS: Record<string, string> = {
   cancelled:    "bg-red-100 text-red-700",
   closed:       "bg-gray-100 text-gray-600",
   draft:        "bg-gray-100 text-gray-600",
+  scheduled:    "bg-blue-100 text-blue-700",
+  completed:    "bg-green-100 text-green-700",
+  new:          "bg-blue-100 text-blue-700",
+  contacted:    "bg-cyan-100 text-cyan-700",
+  qualified:    "bg-indigo-100 text-indigo-700",
+  converted:    "bg-green-100 text-green-700",
+  no_show:      "bg-red-100 text-red-700",
+};
+
+/** Allowed status transitions per submission source (must match backend) */
+const STATUS_OPTIONS: Record<string, string[]> = {
+  application:        ["submitted", "under_review", "approved", "rejected"],
+  tax_booking:        ["pending", "confirmed", "completed", "cancelled"],
+  life_booking:       ["pending", "confirmed", "completed", "cancelled"],
+  appointment:        ["scheduled", "confirmed", "completed", "cancelled", "no_show"],
+  investment_inquiry:["new", "contacted", "qualified", "converted", "closed"],
 };
 
 function getToken() {
@@ -105,6 +121,7 @@ function fmt(date: string) {
 export default function AdminDashboard() {
   const router = useRouter();
   const [tab, setTab] = React.useState<"overview" | "submissions" | "support" | "contacts">("overview");
+  const [submissionService, setSubmissionService] = React.useState("all");
 
   // Check auth
   React.useEffect(() => {
@@ -115,6 +132,13 @@ export default function AdminDashboard() {
     localStorage.removeItem("admin_token");
     router.replace("/admin");
   };
+
+  const openSubmissions = (serviceKey: string) => {
+    setSubmissionService(serviceKey);
+    setTab("submissions");
+  };
+
+  const openSupport = () => setTab("support");
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f6f8f8]">
@@ -135,7 +159,10 @@ export default function AdminDashboard() {
               ] as const).map(t => (
                 <button
                   key={t.key}
-                  onClick={() => setTab(t.key)}
+                  onClick={() => {
+                    if (t.key === "submissions") setSubmissionService("all");
+                    setTab(t.key);
+                  }}
                   className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                     tab === t.key
                       ? "bg-[#b59354] text-white"
@@ -158,9 +185,16 @@ export default function AdminDashboard() {
 
       {/* Content */}
       <main className="flex-1 max-w-screen-xl mx-auto w-full px-6 py-6">
-        {tab === "overview"     && <OverviewTab />}
+        {tab === "overview"     && (
+          <OverviewTab onOpenSubmissions={openSubmissions} onOpenSupport={openSupport} />
+        )}
         {tab === "contacts"     && <ContactsTab />}
-        {tab === "submissions"  && <SubmissionsTab />}
+        {tab === "submissions"  && (
+          <SubmissionsTab
+            initialService={submissionService}
+            onServiceChange={setSubmissionService}
+          />
+        )}
         {tab === "support"      && <SupportTab />}
       </main>
     </div>
@@ -168,7 +202,13 @@ export default function AdminDashboard() {
 }
 
 // ─── Overview Tab ─────────────────────────────────────────────────────────────
-function OverviewTab() {
+function OverviewTab({
+  onOpenSubmissions,
+  onOpenSupport,
+}: {
+  onOpenSubmissions: (serviceKey: string) => void;
+  onOpenSupport: () => void;
+}) {
   const [stats, setStats] = React.useState<Stats | null>(null);
   const [loading, setLoading] = React.useState(true);
 
@@ -186,15 +226,22 @@ function OverviewTab() {
   if (loading) return <LoadingSpinner />;
 
   const s = stats?.summary || {};
-  const cards = [
-    { label: "Individual Accounts", value: s.individual || 0,          color: "from-blue-500 to-blue-600",      icon: "👤" },
-    { label: "Company Accounts",    value: s.company || 0,             color: "from-indigo-500 to-indigo-600",  icon: "🏢" },
-    { label: "Company Formation",   value: s.company_formation || 0,   color: "from-purple-500 to-purple-600",  icon: "⚖️" },
-    { label: "Accounting",          value: s.accounting || 0,          color: "from-emerald-500 to-emerald-600",icon: "📊" },
-    { label: "Tax Advisory",        value: s.tax_advisory || 0,        color: "from-amber-500 to-amber-600",    icon: "🧾" },
-    { label: "Life Insurance",      value: s.life_insurance || 0,      color: "from-red-500 to-red-600",        icon: "❤️" },
-    { label: "Investment Advisory", value: s.investment_advisory || 0, color: "from-cyan-500 to-cyan-600",      icon: "📈" },
-    { label: "Support Chats Open",  value: s.support_open || 0,        color: "from-orange-500 to-orange-600",  icon: "💬" },
+  const cards: Array<{
+    label: string;
+    value: number;
+    color: string;
+    icon: string;
+    action: "submissions" | "support";
+    serviceKey?: string;
+  }> = [
+    { label: "Individual Accounts", value: s.individual || 0,          color: "from-blue-500 to-blue-600",      icon: "👤", action: "submissions", serviceKey: "individual" },
+    { label: "Company Accounts",    value: s.company || 0,             color: "from-indigo-500 to-indigo-600",  icon: "🏢", action: "submissions", serviceKey: "company" },
+    { label: "Company Formation",   value: s.company_formation || 0,   color: "from-purple-500 to-purple-600",  icon: "⚖️", action: "submissions", serviceKey: "company_formation" },
+    { label: "Accounting",          value: s.accounting || 0,          color: "from-emerald-500 to-emerald-600",icon: "📊", action: "submissions", serviceKey: "accounting" },
+    { label: "Tax Advisory",        value: s.tax_advisory || 0,        color: "from-amber-500 to-amber-600",    icon: "🧾", action: "submissions", serviceKey: "tax_advisory" },
+    { label: "Life Insurance",      value: s.life_insurance || 0,      color: "from-red-500 to-red-600",        icon: "❤️", action: "submissions", serviceKey: "life_insurance" },
+    { label: "Investment Advisory", value: s.investment_advisory || 0, color: "from-cyan-500 to-cyan-600",      icon: "📈", action: "submissions", serviceKey: "investment_advisory" },
+    { label: "Support Chats Open",  value: s.support_open || 0,        color: "from-orange-500 to-orange-600",  icon: "💬", action: "support" },
   ];
 
   const total = (s.individual||0)+(s.company||0)+(s.company_formation||0)+
@@ -206,10 +253,19 @@ function OverviewTab() {
       <div>
         <h2 className="text-xl font-bold text-gray-900">Overview</h2>
         <p className="text-sm text-gray-500 mt-0.5">Total submissions across all services: <strong>{total}</strong></p>
+        <p className="text-xs text-gray-400 mt-1">Click a card to view its list</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {cards.map(card => (
-          <div key={card.label} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <button
+            key={card.label}
+            type="button"
+            onClick={() => {
+              if (card.action === "support") onOpenSupport();
+              else if (card.serviceKey) onOpenSubmissions(card.serviceKey);
+            }}
+            className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-left transition-all hover:shadow-md hover:border-[#b59354]/60 focus:outline-none focus:ring-2 focus:ring-[#b59354]/40"
+          >
             <div className={`bg-gradient-to-r ${card.color} p-4 flex items-center justify-between`}>
               <span className="text-white font-bold text-2xl">{card.value}</span>
               <span className="text-2xl">{card.icon}</span>
@@ -217,7 +273,7 @@ function OverviewTab() {
             <div className="p-3">
               <p className="text-sm font-medium text-gray-700">{card.label}</p>
             </div>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -237,10 +293,16 @@ function OverviewTab() {
 }
 
 // ─── Submissions Tab ──────────────────────────────────────────────────────────
-function SubmissionsTab() {
+function SubmissionsTab({
+  initialService = "all",
+  onServiceChange,
+}: {
+  initialService?: string;
+  onServiceChange?: (service: string) => void;
+}) {
   const [submissions, setSubmissions]   = React.useState<Submission[]>([]);
   const [loading, setLoading]           = React.useState(true);
-  const [service, setService]           = React.useState("all");
+  const [service, setService]           = React.useState(initialService);
   const [search, setSearch]             = React.useState("");
   const [selected, setSelected]         = React.useState<Submission | null>(null);
   const [replyOpen, setReplyOpen]       = React.useState(false);
@@ -252,7 +314,22 @@ function SubmissionsTab() {
   const [docs, setDocs]                 = React.useState<Array<{id:number;file_name:string;file_url:string;mime_type:string|null;type:string}>>([]);
   const [attachFiles, setAttachFiles]   = React.useState<File[]>([]);
   const [attachDocs, setAttachDocs]     = React.useState<number[]>([]);
+  const [statusUpdating, setStatusUpdating] = React.useState(false);
+  const [rejectReason, setRejectReason]  = React.useState("");
   const fileInputRef                    = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    setService(initialService);
+    setSelected(null);
+    setReplyOpen(false);
+  }, [initialService]);
+
+  const changeService = (next: string) => {
+    setService(next);
+    setSelected(null);
+    setReplyOpen(false);
+    onServiceChange?.(next);
+  };
 
   const load = React.useCallback(() => {
     setLoading(true);
@@ -310,6 +387,38 @@ function SubmissionsTab() {
         setDocs([...dbDocs, ...payloadDocs] as never[]);
       })
       .catch(() => setDocs(payloadDocs as never[]));
+  };
+
+  const updateStatus = async (newStatus: string, rejectionReason?: string) => {
+    if (!selected) return;
+    setStatusUpdating(true);
+    try {
+      const res = await fetch(`${API}/api/admin/submissions/${selected.source}/${selected.rawId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", "x-admin-token": getToken() },
+        body: JSON.stringify({
+          status: newStatus,
+          ...(newStatus === "rejected" && (rejectionReason ?? rejectReason)
+            ? { rejection_reason: rejectionReason ?? rejectReason }
+            : {}),
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSelected({ ...selected, status: newStatus });
+        setSubmissions(prev =>
+          prev.map(s => (s.id === selected.id ? { ...s, status: newStatus } : s))
+        );
+        showToast(`Status updated to ${newStatus.replace(/_/g, " ")}`);
+        setRejectReason("");
+      } else {
+        showToast(`Error: ${data.error}`);
+      }
+    } catch {
+      showToast("Failed to update status.");
+    } finally {
+      setStatusUpdating(false);
+    }
   };
 
   const sendReply = async () => {
@@ -383,7 +492,7 @@ function SubmissionsTab() {
           />
           <select
             value={service}
-            onChange={e => setService(e.target.value)}
+            onChange={e => changeService(e.target.value)}
             className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354] bg-white"
           >
             {SERVICES.map(s => (
@@ -454,17 +563,47 @@ function SubmissionsTab() {
                   )}
                   <p className="text-xs text-gray-400 mt-1">Submitted: {fmt(selected.createdAt)}</p>
                 </div>
-                {selected.clientEmail && (
-                  <button
-                    onClick={() => setReplyOpen(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#b59354] to-[#886844] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                    </svg>
-                    Reply via Email
-                  </button>
-                )}
+                <div className="flex flex-col items-end gap-2">
+                  {selected.clientEmail && (
+                    <button
+                      onClick={() => setReplyOpen(true)}
+                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#b59354] to-[#886844] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                      </svg>
+                      Reply via Email
+                    </button>
+                  )}
+                  {STATUS_OPTIONS[selected.source] && (
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs text-gray-500">Status</label>
+                      <select
+                        value={selected.status}
+                        disabled={statusUpdating}
+                        onChange={e => {
+                          const next = e.target.value;
+                          if (next === selected.status) return;
+                          if (next === "rejected" && selected.source === "application") {
+                            const reason = window.prompt("Rejection reason (optional):") || "";
+                            setRejectReason(reason);
+                            updateStatus(next, reason);
+                            return;
+                          }
+                          updateStatus(next);
+                        }}
+                        className="text-xs px-2 py-1.5 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#b59354] disabled:opacity-50"
+                      >
+                        {STATUS_OPTIONS[selected.source].map(s => (
+                          <option key={s} value={s}>{s.replace(/_/g, " ")}</option>
+                        ))}
+                        {!STATUS_OPTIONS[selected.source].includes(selected.status) && (
+                          <option value={selected.status}>{selected.status}</option>
+                        )}
+                      </select>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Service email note */}
@@ -1025,6 +1164,7 @@ function ContactsTab() {
           toEmail: selected.email,
           toName: `${selected.first_name} ${selected.last_name}`.trim(),
           serviceType: "open_account",
+          submissionRef: `contact-${selected.id}`,
           subject: replySubject || `Re: ${selected.subject}`,
           message: replyMsg,
         }),

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/db');
+const { adminAuth, adminAuthIfAdminSender } = require('../middleware/adminAuth');
 
 // Auto-create tables on startup
 async function initTables() {
@@ -55,7 +56,7 @@ router.post('/', async (req, res) => {
 });
 
 // GET / - Get all chats (for admin)
-router.get('/', async (req, res) => {
+router.get('/', adminAuth, async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT
@@ -77,7 +78,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET /stats - Get open chat count (for badge in admin nav)
-router.get('/stats', async (req, res) => {
+router.get('/stats', adminAuth, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT COUNT(*)::int AS open_count FROM support_chats WHERE status IN ('waiting', 'active')`
@@ -111,7 +112,8 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /:id/messages - Add a message to a chat
-router.post('/:id/messages', async (req, res) => {
+// Visitors may post freely; admin sender_type requires x-admin-token
+router.post('/:id/messages', adminAuthIfAdminSender, async (req, res) => {
   const { id } = req.params;
   const { sender_type, sender_name, content } = req.body;
   if (!sender_type || !content || !['visitor', 'admin'].includes(sender_type)) {
@@ -144,8 +146,8 @@ router.post('/:id/messages', async (req, res) => {
   }
 });
 
-// PATCH /:id - Update chat status (close, reopen)
-router.patch('/:id', async (req, res) => {
+// PATCH /:id - Update chat status (close, reopen) — admin only
+router.patch('/:id', adminAuth, async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
   if (!['waiting', 'active', 'closed'].includes(status)) {

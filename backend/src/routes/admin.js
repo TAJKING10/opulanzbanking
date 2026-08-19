@@ -1,10 +1,17 @@
 /**
  * Opulanz Admin Routes
  *
- * GET  /api/admin/stats          - Overview stats for all 6 services
- * GET  /api/admin/submissions    - All submissions across all services
- * POST /api/admin/reply          - Send email reply from service-specific inbox
- * POST /api/admin/support-reply  - Reply to support chat + send email
+ * POST /api/admin/login              - Validate admin password
+ * GET  /api/admin/stats              - Overview stats for all services
+ * GET  /api/admin/submissions         - All submissions across all services
+ * PATCH /api/admin/submissions/:source/:id - Update submission status
+ * POST /api/admin/reply             - Send email reply from service-specific inbox
+ * POST /api/admin/support-reply      - Reply to support chat + send email
+ * GET  /api/admin/contacts           - Support form messages
+ * PATCH /api/admin/contacts/:id      - Update contact status
+ * GET  /api/admin/documents/:id      - Documents for an application
+ * GET  /api/admin/replies/:ref       - Reply history for a submission
+ * POST /api/admin/link-document      - Link uploaded Azure doc to application
  */
 
 const express = require('express');
@@ -14,10 +21,20 @@ const nodemailer = require('nodemailer');
 const multer = require('multer');
 const https = require('https');
 const http = require('http');
+const { adminAuth } = require('../middleware/adminAuth');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
 
-// Auto-create submission_replies table
+/** Parse multipart when present; leave JSON body alone otherwise */
+function optionalMultipart(req, res, next) {
+  const ct = req.headers['content-type'] || '';
+  if (ct.includes('multipart/form-data')) {
+    return upload.array('attachments', 10)(req, res, next);
+  }
+  next();
+}
+
+// Auto-create admin-related tables
 (async () => {
   try {
     await pool.query(`
@@ -32,10 +49,25 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 
         sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
       CREATE INDEX IF NOT EXISTS idx_submission_replies_ref ON submission_replies(submission_ref);
+
+      CREATE TABLE IF NOT EXISTS support_contacts (
+        id SERIAL PRIMARY KEY,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(100),
+        subject VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        status VARCHAR(20) DEFAULT 'open' CHECK (status IN ('open', 'replied', 'closed')),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_support_contacts_email ON support_contacts(email);
+      CREATE INDEX IF NOT EXISTS idx_support_contacts_status ON support_contacts(status);
     `);
-    console.log('submission_replies table ready');
+    console.log('Admin tables (submission_replies, support_contacts) ready');
   } catch (err) {
-    console.error('submission_replies table init error:', err.message);
+    console.error('Admin tables init error:', err.message);
   }
 })();
 
@@ -61,15 +93,13 @@ const SERVICE_LABELS = {
   accounting:          'Accounting & Invoicing',
 };
 
-function adminAuth(req, res, next) {
-  const adminPass = process.env.ADMIN_PASSWORD;
-  if (!adminPass) return next();
-  const token = req.headers['x-admin-token'];
-  if (token !== adminPass) {
-    return res.status(401).json({ success: false, error: 'Unauthorized' });
-  }
-  next();
-}
+const STATUS_BY_SOURCE = {
+  application:         ['draft', 'submitted', 'under_review', 'approved', 'rejected'],
+  tax_booking:         ['pending', 'confirmed', 'completed', 'cancelled'],
+  life_booking:        ['pending', 'confirmed', 'completed', 'cancelled'],
+  appointment:         ['scheduled', 'confirmed', 'completed', 'cancelled', 'no_show'],
+  investment_inquiry:  ['new', 'contacted', 'qualified', 'converted', 'closed'],
+};
 
 function createTransporter() {
   return nodemailer.createTransport({
@@ -79,6 +109,36 @@ function createTransporter() {
     auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
   });
 }
+
+// ─── POST /api/admin/login ──────────────────────────────────────────────────
+router.post('/login', async (req, res) => {
+  try {
+    const { password } = req.body || {};
+    const adminPass = process.env.ADMIN_PASSWORD;
+
+    if (!adminPass) {
+      if (process.env.NODE_ENV === 'production') {
+        return res.status(503).json({
+          success: false,
+          error: 'Admin access is not configured. Set ADMIN_PASSWORD.',
+        });
+      }
+      return res.json({
+        success: true,
+        data: { token: password || 'dev-open', mode: 'dev' },
+        message: 'ADMIN_PASSWORD not set — using open mode (development only)',
+      });
+    }
+
+    if (!password || password !== adminPass) {
+      return res.status(401).json({ success: false, error: 'Incorrect password.' });
+    }
+
+    res.json({ success: true, data: { token: adminPass } });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 // ─── GET /api/admin/stats ────────────────────────────────────────────────────
 router.get('/stats', adminAuth, async (req, res) => {
@@ -355,8 +415,83 @@ router.get('/submissions', adminAuth, async (req, res) => {
   }
 });
 
+// ─── PATCH /api/admin/submissions/:source/:id ────────────────────────────────
+// Update status for any submission source used by the admin dashboard
+router.patch('/submissions/:source/:id', adminAuth, async (req, res) => {
+  try {
+    const { source, id } = req.params;
+    const { status, rejection_reason } = req.body || {};
+
+    if (!status) {
+      return res.status(400).json({ success: false, error: 'status is required' });
+    }
+
+    const allowed = STATUS_BY_SOURCE[source];
+    if (!allowed) {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid source. Must be one of: ${Object.keys(STATUS_BY_SOURCE).join(', ')}`,
+      });
+    }
+    if (!allowed.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid status for ${source}. Must be one of: ${allowed.join(', ')}`,
+      });
+    }
+
+    let result;
+    if (source === 'application') {
+      const updates = ['status = $1', 'updated_at = CURRENT_TIMESTAMP'];
+      const params = [status];
+      if (status === 'approved') updates.push('approved_at = CURRENT_TIMESTAMP');
+      if (status === 'rejected') {
+        updates.push('rejected_at = CURRENT_TIMESTAMP');
+        if (rejection_reason !== undefined) {
+          params.push(rejection_reason);
+          updates.push(`rejection_reason = $${params.length}`);
+        }
+      }
+      params.push(id);
+      result = await pool.query(
+        `UPDATE applications SET ${updates.join(', ')} WHERE id = $${params.length} RETURNING *`,
+        params
+      );
+    } else if (source === 'tax_booking') {
+      result = await pool.query(
+        `UPDATE tax_advisory_bookings SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *`,
+        [status, id]
+      );
+    } else if (source === 'life_booking') {
+      result = await pool.query(
+        `UPDATE life_insurance_bookings SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *`,
+        [status, id]
+      );
+    } else if (source === 'appointment') {
+      result = await pool.query(
+        `UPDATE appointments SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *`,
+        [status, id]
+      );
+    } else if (source === 'investment_inquiry') {
+      result = await pool.query(
+        `UPDATE investment_inquiries SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *`,
+        [status, id]
+      );
+    }
+
+    if (!result || result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Submission not found' });
+    }
+
+    res.json({ success: true, data: result.rows[0] });
+  } catch (err) {
+    console.error('Admin status update error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // ─── POST /api/admin/reply ───────────────────────────────────────────────────
-router.post('/reply', adminAuth, upload.array('attachments', 10), async (req, res) => {
+router.post('/reply', adminAuth, optionalMultipart, async (req, res) => {
   try {
     const { toEmail, toName, serviceType, subject, message, submissionRef, adminName = 'Opulanz Support Team' } = req.body;
     if (!toEmail || !message) {
@@ -448,7 +583,8 @@ router.post('/reply', adminAuth, upload.array('attachments', 10), async (req, re
 });
 
 // ─── POST /api/admin/link-document ───────────────────────────────────────────
-// Called by frontend after application is created to register uploaded Azure docs
+// Called by public account-opening forms after upload — keep unauthenticated
+// (only inserts metadata for an existing application_id; no privileged data returned)
 router.post('/link-document', async (req, res) => {
   try {
     const { applicationId, fileName, fileUrl, blobName, type = 'other', size } = req.body;

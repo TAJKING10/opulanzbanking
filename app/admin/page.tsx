@@ -33,10 +33,15 @@ export default function AdminLoginPage() {
       } else if (res.status === 401) {
         setError("Incorrect password.");
       } else {
-        setError("Authentication error. Please try again.");
+        let detail = "";
+        try { const j = await res.json(); detail = j.error || ""; } catch { /* ignore */ }
+        setError(`Server error ${res.status}${detail ? ": " + detail : ""}. Please contact support.`);
       }
-    } catch {
-      setError("Cannot reach the authentication server. Please try again later.");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "";
+      setError(msg.includes("fetch") || msg.includes("network") || msg.includes("Failed")
+        ? "Cannot reach the authentication server. Check your connection."
+        : "Unexpected error. Please try again.");
     } finally {
       setLoading(false);
     }

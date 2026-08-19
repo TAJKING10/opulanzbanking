@@ -4486,6 +4486,7 @@
         }
       },
       "step3": {
+        "title": "Review & Submit",
         "summaryTitle": "Application summary",
         "consentText": "I consent to Opulanz (Groupe Advensys Luxembourg S.A., ORIAS n°…21003660) collecting and processing my personal data and documents for the purpose of assessing and submitting my mortgage application to its partner banks in France and Luxembourg. I understand that my data will be processed in accordance with the GDPR and Opulanz’s Privacy Policy.",
         "legalNote": "Opulanz acts as a credit intermediary and not as a lender. Financing is subject to bank approval. Regulated by ACPR under ORIAS n°…21003660 and the Luxembourg Ministry of Economy."

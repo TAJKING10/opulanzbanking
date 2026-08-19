@@ -380,23 +380,6 @@ export default function MortgageApplyPage({
               </div>
             </div>
 
-            {/* LTV indicator */}
-            {ltvValue !== null && (
-              <div className="rounded-xl bg-brand-gold/5 border border-brand-gold/20 px-5 py-4 flex items-center gap-4">
-                <div className="flex-1">
-                  <div className="text-xs text-brand-grayMed font-medium mb-1">{t("step1.ltvLabel")}</div>
-                  <div className="h-2 bg-brand-grayLight rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all ${ltvValue > 90 ? "bg-red-400" : ltvValue > 80 ? "bg-amber-400" : "bg-brand-gold"}`}
-                      style={{ width: `${Math.min(ltvValue, 100)}%` }}
-                    />
-                  </div>
-                </div>
-                <div className={`text-xl font-extrabold ${ltvValue > 90 ? "text-red-500" : ltvValue > 80 ? "text-amber-500" : "text-brand-gold"}`}>
-                  {ltvValue}%
-                </div>
-              </div>
-            )}
 
             {/* Income + Employment */}
             <div className="grid md:grid-cols-2 gap-6">

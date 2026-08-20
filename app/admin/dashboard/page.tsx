@@ -151,6 +151,9 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [tab, setTab] = React.useState<"overview" | "submissions" | "support" | "contacts">("overview");
   const [submissionService, setSubmissionService] = React.useState("all");
+  const [submissionSearch, setSubmissionSearch] = React.useState("");
+  const [contactSearch, setContactSearch] = React.useState("");
+  const [selectedChatId, setSelectedChatId] = React.useState<number | null>(null);
 
   // Check auth
   React.useEffect(() => {
@@ -162,23 +165,50 @@ export default function AdminDashboard() {
     router.replace("/admin");
   };
 
-  const openSubmissions = (serviceKey: string) => {
+  const openSubmissions = (serviceKey: string, search = "") => {
     setSubmissionService(serviceKey);
+    setSubmissionSearch(search);
     setTab("submissions");
   };
 
-  const openSupport = () => setTab("support");
+  const openSupport = (chatId: number | null = null) => {
+    setSelectedChatId(chatId);
+    setTab("support");
+  };
+
+  const openContacts = (search = "") => {
+    setContactSearch(search);
+    setTab("contacts");
+  };
+
+  const handleGlobalSelect = (item: {
+    type: "submission" | "contact" | "chat";
+    id: string | number;
+    service?: string;
+    title?: string;
+    email?: string;
+    subtitle?: string;
+  }) => {
+    if (item.type === "submission") {
+      openSubmissions(item.service || "all", item.email || item.title || String(item.id));
+    } else if (item.type === "contact") {
+      openContacts(item.email || item.title || String(item.id));
+    } else if (item.type === "chat") {
+      openSupport(Number(item.id));
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f6f8f8]">
       {/* Top Bar */}
       <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-30">
-        <div className="max-w-screen-xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-6">
+        <div className="max-w-screen-xl mx-auto px-6 h-14 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-6 flex-shrink-0">
             <span className="text-lg font-bold tracking-widest text-[#b59354]">OPULANZ</span>
-            <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">Admin Panel</span>
+            <span className="text-xs text-gray-400 font-medium uppercase tracking-wider hidden sm:inline">Admin Panel</span>
           </div>
-          <div className="flex items-center gap-4">
+          <GlobalSearchBar onSelect={handleGlobalSelect} />
+          <div className="flex items-center gap-4 flex-shrink-0">
             <nav className="flex gap-1">
               {([
                 { key: "overview",     label: "Overview" },
@@ -189,7 +219,12 @@ export default function AdminDashboard() {
                 <button
                   key={t.key}
                   onClick={() => {
-                    if (t.key === "submissions") setSubmissionService("all");
+                    if (t.key === "submissions") {
+                      setSubmissionService("all");
+                      setSubmissionSearch("");
+                    }
+                    if (t.key === "contacts") setContactSearch("");
+                    if (t.key === "support") setSelectedChatId(null);
                     setTab(t.key);
                   }}
                   className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
@@ -215,17 +250,187 @@ export default function AdminDashboard() {
       {/* Content */}
       <main className="flex-1 max-w-screen-xl mx-auto w-full px-6 py-6">
         {tab === "overview"     && (
-          <OverviewTab onOpenSubmissions={openSubmissions} onOpenSupport={openSupport} />
+          <OverviewTab onOpenSubmissions={openSubmissions} onOpenSupport={() => openSupport()} />
         )}
-        {tab === "contacts"     && <ContactsTab />}
+        {tab === "contacts"     && (
+          <ContactsTab initialSearch={contactSearch} />
+        )}
         {tab === "submissions"  && (
           <SubmissionsTab
             initialService={submissionService}
+            initialSearch={submissionSearch}
             onServiceChange={setSubmissionService}
           />
         )}
-        {tab === "support"      && <SupportTab />}
+        {tab === "support"      && (
+          <SupportTab initialChatId={selectedChatId} />
+        )}
       </main>
+    </div>
+  );
+}
+
+// ─── Global Search ────────────────────────────────────────────────────────────
+type GlobalSearchItem = {
+  type: "submission" | "contact" | "chat";
+  id: string | number;
+  status?: string;
+  service?: string;
+  title: string;
+  subtitle?: string;
+  email?: string;
+  createdAt?: string;
+};
+
+function GlobalSearchBar({
+  onSelect,
+}: {
+  onSelect: (item: GlobalSearchItem) => void;
+}) {
+  const [query, setQuery] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [results, setResults] = React.useState<{
+    submissions: GlobalSearchItem[];
+    contacts: GlobalSearchItem[];
+    chats: GlobalSearchItem[];
+  }>({ submissions: [], contacts: [], chats: [] });
+  const wrapRef = React.useRef<HTMLDivElement>(null);
+  const debounceRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  React.useEffect(() => {
+    const onDocClick = (e: MouseEvent) => {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
+
+  React.useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    const q = query.trim();
+    if (q.length < 2) {
+      setResults({ submissions: [], contacts: [], chats: [] });
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    debounceRef.current = setTimeout(() => {
+      fetch(`${API}/api/admin/search?q=${encodeURIComponent(q)}`, {
+        headers: { "x-admin-token": getToken() },
+      })
+        .then(r => {
+          if (r.status === 401) {
+            localStorage.removeItem("admin_token");
+            window.location.href = "/admin";
+            return null;
+          }
+          return r.json();
+        })
+        .then(d => {
+          if (d?.success) {
+            setResults({
+              submissions: d.data.submissions || [],
+              contacts: d.data.contacts || [],
+              chats: d.data.chats || [],
+            });
+            setOpen(true);
+          }
+        })
+        .catch(() => {})
+        .finally(() => setLoading(false));
+    }, 300);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query]);
+
+  const total =
+    results.submissions.length + results.contacts.length + results.chats.length;
+
+  const pick = (item: GlobalSearchItem) => {
+    onSelect(item);
+    setQuery("");
+    setOpen(false);
+  };
+
+  const Section = ({
+    label,
+    items,
+  }: {
+    label: string;
+    items: GlobalSearchItem[];
+  }) => {
+    if (!items.length) return null;
+    return (
+      <div className="py-1">
+        <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+          {label}
+        </p>
+        {items.map(item => (
+          <button
+            key={`${item.type}-${item.id}`}
+            type="button"
+            onClick={() => pick(item)}
+            className="w-full px-3 py-2 text-left hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">{item.title}</p>
+                <p className="text-xs text-gray-500 truncate">
+                  {item.service
+                    ? `${SERVICE_LABELS[item.service] || item.service} · `
+                    : ""}
+                  {item.subtitle}
+                </p>
+              </div>
+              {item.status && (
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${STATUS_COLORS[item.status] || "bg-gray-100 text-gray-600"}`}>
+                  {item.status.replace(/_/g, " ")}
+                </span>
+              )}
+            </div>
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div ref={wrapRef} className="relative flex-1 max-w-md hidden md:block">
+      <div className="relative">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z" />
+        </svg>
+        <input
+          value={query}
+          onChange={e => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => query.trim().length >= 2 && setOpen(true)}
+          placeholder="Search submissions, contacts, chats..."
+          className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-xl text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#b59354]"
+        />
+        {loading && (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-[#b59354] border-t-transparent rounded-full animate-spin" />
+        )}
+      </div>
+      {open && query.trim().length >= 2 && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden z-50 max-h-[420px] overflow-y-auto">
+          {loading && total === 0 ? (
+            <p className="px-4 py-6 text-sm text-gray-400 text-center">Searching...</p>
+          ) : total === 0 ? (
+            <p className="px-4 py-6 text-sm text-gray-400 text-center">No matches for “{query.trim()}”</p>
+          ) : (
+            <>
+              <Section label="Submissions" items={results.submissions} />
+              <Section label="Support Messages" items={results.contacts} />
+              <Section label="Live Chats" items={results.chats} />
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -421,15 +626,17 @@ function OverviewTab({
 // ─── Submissions Tab ──────────────────────────────────────────────────────────
 function SubmissionsTab({
   initialService = "all",
+  initialSearch = "",
   onServiceChange,
 }: {
   initialService?: string;
+  initialSearch?: string;
   onServiceChange?: (service: string) => void;
 }) {
   const [submissions, setSubmissions]   = React.useState<Submission[]>([]);
   const [loading, setLoading]           = React.useState(true);
   const [service, setService]           = React.useState(initialService);
-  const [search, setSearch]             = React.useState("");
+  const [search, setSearch]             = React.useState(initialSearch);
   const [selected, setSelected]         = React.useState<Submission | null>(null);
   const [replyOpen, setReplyOpen]       = React.useState(false);
   const [replySending, setReplySending] = React.useState(false);
@@ -452,6 +659,12 @@ function SubmissionsTab({
     setSelected(null);
     setReplyOpen(false);
   }, [initialService]);
+
+  React.useEffect(() => {
+    setSearch(initialSearch || "");
+    setSelected(null);
+    setReplyOpen(false);
+  }, [initialSearch]);
 
   const changeService = (next: string) => {
     setService(next);
@@ -1090,7 +1303,7 @@ function SubmissionsTab({
 }
 
 // ─── Support Tab ──────────────────────────────────────────────────────────────
-function SupportTab() {
+function SupportTab({ initialChatId = null }: { initialChatId?: number | null }) {
   const [chats, setChats]               = React.useState<SupportChat[]>([]);
   const [loading, setLoading]           = React.useState(true);
   const [selected, setSelected]         = React.useState<SupportChat | null>(null);
@@ -1130,6 +1343,13 @@ function SupportTab() {
       setChatLoading(false);
     }
   };
+
+  React.useEffect(() => {
+    if (!initialChatId || !chats.length) return;
+    const match = chats.find(c => c.id === initialChatId);
+    if (match) loadChat(match);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialChatId, chats]);
 
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -1363,17 +1583,23 @@ interface Contact {
   created_at: string;
 }
 
-function ContactsTab() {
+function ContactsTab({ initialSearch = "" }: { initialSearch?: string }) {
   const [contacts, setContacts]         = React.useState<Contact[]>([]);
   const [loading, setLoading]           = React.useState(true);
   const [selected, setSelected]         = React.useState<Contact | null>(null);
   const [filter, setFilter]             = React.useState<"all"|"open"|"replied"|"closed">("all");
-  const [search, setSearch]             = React.useState("");
+  const [search, setSearch]             = React.useState(initialSearch);
   const [replyOpen, setReplyOpen]       = React.useState(false);
   const [replyMsg, setReplyMsg]         = React.useState("");
   const [replySubject, setReplySubject] = React.useState("");
   const [replySending, setReplySending] = React.useState(false);
   const [toast, setToast]               = React.useState("");
+
+  React.useEffect(() => {
+    setSearch(initialSearch || "");
+    setSelected(null);
+    setReplyOpen(false);
+  }, [initialSearch]);
 
   const load = React.useCallback(() => {
     setLoading(true);

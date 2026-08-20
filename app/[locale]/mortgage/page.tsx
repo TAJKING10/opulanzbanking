@@ -95,7 +95,6 @@ export default function MortgagePage({
                 overline={t("overview.overline")}
                 title={t("overview.title")}
                 align="left"
-                className="mb-6"
               />
               <p className="text-lg text-brand-grayMed leading-relaxed">
                 {t("overview.description")}
@@ -323,15 +322,6 @@ export default function MortgagePage({
         </div>
       </section>
 
-      {/* Legal notice */}
-      <div className="bg-gray-50 py-6 px-6">
-        <div className="container mx-auto max-w-7xl">
-          <p className="text-xs text-brand-grayMed text-center leading-relaxed">
-            {t("legal")}
-          </p>
-        </div>
-      </div>
-
       {/* CTA */}
       <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-5xl px-6">
@@ -354,7 +344,7 @@ export default function MortgagePage({
               ))}
             </div>
 
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row mb-8">
               <Link
                 href={`/${locale}/mortgage/apply`}
                 className="inline-flex h-14 min-w-56 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
@@ -368,6 +358,10 @@ export default function MortgagePage({
                 {t("cta.secondaryButton")}
               </Link>
             </div>
+
+            <p className="text-xs text-white/50 text-center leading-relaxed border-t border-white/10 pt-6">
+              {t("legal")}
+            </p>
           </div>
         </div>
       </section>

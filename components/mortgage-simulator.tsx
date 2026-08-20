@@ -123,7 +123,7 @@ export function MortgageSimulator({ locale }: { locale: string }) {
   return (
     <section
       id="simulator"
-      className="relative bg-gradient-to-b from-gray-50 via-white to-gray-50 py-14 md:py-20 overflow-hidden"
+      className="relative bg-gradient-to-b from-gray-50 via-white to-gray-50 py-12 md:py-16 overflow-hidden"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-16 -right-24 w-80 h-80 bg-brand-gold/6 rounded-full blur-3xl" />

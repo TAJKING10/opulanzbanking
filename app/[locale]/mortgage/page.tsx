@@ -17,6 +17,7 @@ import { PageGuidance } from "@/components/page-guidance";
 import { useTranslations } from "next-intl";
 import { Hero } from "@/components/hero";
 import { SectionHeading } from "@/components/section-heading";
+import { MortgageSimulator } from "@/components/mortgage-simulator";
 
 export default function MortgagePage({
   params: { locale },
@@ -244,6 +245,9 @@ export default function MortgagePage({
           </div>
         </div>
       </section>
+
+      {/* Mortgage Simulator */}
+      <MortgageSimulator locale={locale} />
 
       {/* Lombard Credit */}
       <section className="bg-white py-12 md:py-16">

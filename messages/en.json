@@ -4397,6 +4397,34 @@
       "badge2": "GDPR Secure",
       "badge3": "No Commitment"
     },
+    "simulator": {
+      "overline": "Mortgage Simulator",
+      "title": "What can you afford to borrow?",
+      "description": "Adjust the inputs to get an instant estimate of your borrowing capacity and monthly payments.",
+      "inputs": {
+        "title": "Your Details",
+        "income": "Net monthly income",
+        "duration": "Loan duration",
+        "years": "years",
+        "rate": "Interest rate",
+        "contribution": "Personal contribution",
+        "existing": "Existing loan payments"
+      },
+      "results": {
+        "budget": "Property budget",
+        "budgetSub": "Loan + your contribution of",
+        "maxLoan": "Max loan",
+        "monthly": "Monthly payment",
+        "perMonth": "per month",
+        "dti": "Debt-to-income ratio",
+        "dtiNote": "Banks typically allow a maximum of 33% in France and Luxembourg",
+        "ctaText": "Ready to apply? Start your file — our advisors will handle the rest.",
+        "ctaButton": "Start your application",
+        "emptyIncome": "Enter your monthly income above to see your estimated borrowing capacity.",
+        "emptyDTI": "Your existing loan payments exceed 33% of income. Reducing them will unlock borrowing capacity."
+      },
+      "disclaimer": "This simulator provides an indicative estimate only, based on a 33% debt-to-income ratio. Actual offers depend on your complete profile and bank assessments. Opulanz acts as a regulated credit intermediary (ORIAS n°21003660)."
+    },
     "lombard": {
       "overline": "Lombard Credit",
       "title": "Unlock Liquidity from Your Portfolio — Without Liquidating It",

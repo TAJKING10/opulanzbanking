@@ -4397,6 +4397,34 @@
       "badge2": "Sécurisé RGPD",
       "badge3": "Sans engagement"
     },
+    "simulator": {
+      "overline": "Simulateur Hypothécaire",
+      "title": "Quelle est votre capacité d'emprunt ?",
+      "description": "Ajustez les paramètres pour obtenir une estimation instantanée de votre capacité d'emprunt et de vos mensualités.",
+      "inputs": {
+        "title": "Vos informations",
+        "income": "Revenu mensuel net",
+        "duration": "Durée du prêt",
+        "years": "ans",
+        "rate": "Taux d'intérêt",
+        "contribution": "Apport personnel",
+        "existing": "Mensualités de crédits existants"
+      },
+      "results": {
+        "budget": "Budget immobilier",
+        "budgetSub": "Prêt + votre apport de",
+        "maxLoan": "Montant max du prêt",
+        "monthly": "Mensualité",
+        "perMonth": "par mois",
+        "dti": "Taux d'endettement",
+        "dtiNote": "Les banques autorisent généralement un maximum de 33 % en France et au Luxembourg",
+        "ctaText": "Prêt à déposer votre dossier ? Nos conseillers s'occupent du reste.",
+        "ctaButton": "Démarrer votre demande",
+        "emptyIncome": "Saisissez votre revenu mensuel pour estimer votre capacité d'emprunt.",
+        "emptyDTI": "Vos mensualités existantes dépassent 33 % de vos revenus. Réduisez-les pour débloquer votre capacité d'emprunt."
+      },
+      "disclaimer": "Ce simulateur fournit une estimation indicative uniquement, basée sur un taux d'endettement de 33 %. Les offres réelles dépendent de votre profil complet et des évaluations bancaires. Opulanz agit en tant qu'intermédiaire en crédit réglementé (ORIAS n°21003660)."
+    },
     "lombard": {
       "overline": "Crédit Lombard",
       "title": "Mobilisez les liquidités de votre portefeuille — sans le céder",

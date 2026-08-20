@@ -11,6 +11,9 @@
  * PATCH /api/admin/contacts/:id      - Update contact status
  * GET  /api/admin/documents/:id      - Documents for an application
  * GET  /api/admin/replies/:ref       - Reply history for a submission
+ * GET  /api/admin/notes/:ref         - Internal notes for a submission
+ * POST /api/admin/notes              - Add internal note (not emailed)
+ * DELETE /api/admin/notes/:id        - Delete an internal note
  * POST /api/admin/link-document      - Link uploaded Azure doc to application
  */
 
@@ -64,8 +67,17 @@ function optionalMultipart(req, res, next) {
       );
       CREATE INDEX IF NOT EXISTS idx_support_contacts_email ON support_contacts(email);
       CREATE INDEX IF NOT EXISTS idx_support_contacts_status ON support_contacts(status);
+
+      CREATE TABLE IF NOT EXISTS submission_notes (
+        id SERIAL PRIMARY KEY,
+        submission_ref VARCHAR(255) NOT NULL,
+        author_name VARCHAR(255) DEFAULT 'Admin',
+        note TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_submission_notes_ref ON submission_notes(submission_ref);
     `);
-    console.log('Admin tables (submission_replies, support_contacts) ready');
+    console.log('Admin tables (submission_replies, support_contacts, submission_notes) ready');
   } catch (err) {
     console.error('Admin tables init error:', err.message);
   }
@@ -143,13 +155,46 @@ router.post('/login', async (req, res) => {
 // ─── GET /api/admin/stats ────────────────────────────────────────────────────
 router.get('/stats', adminAuth, async (req, res) => {
   try {
-    const [apps, taxBookings, lifeBookings, invAppointments, invInquiries, chats] = await Promise.all([
+    const [
+      apps, taxBookings, lifeBookings, invAppointments, invInquiries, chats,
+      recentApps, recentTax, recentLife, recentAppts, recentInv, openChats,
+    ] = await Promise.all([
       pool.query(`SELECT type, COUNT(*)::int AS count FROM applications GROUP BY type ORDER BY type`),
       pool.query(`SELECT COUNT(*)::int AS count FROM tax_advisory_bookings`).catch(() => ({ rows: [{ count: 0 }] })),
       pool.query(`SELECT COUNT(*)::int AS count FROM life_insurance_bookings`).catch(() => ({ rows: [{ count: 0 }] })),
       pool.query(`SELECT COUNT(*)::int AS count FROM appointments`).catch(() => ({ rows: [{ count: 0 }] })),
       pool.query(`SELECT COUNT(*)::int AS count FROM investment_inquiries`).catch(() => ({ rows: [{ count: 0 }] })),
-      pool.query(`SELECT status, COUNT(*)::int AS count FROM support_chats GROUP BY status`),
+      pool.query(`SELECT status, COUNT(*)::int AS count FROM support_chats GROUP BY status`).catch(() => ({ rows: [] })),
+      pool.query(
+        `SELECT id, type, status, payload, created_at FROM applications ORDER BY created_at DESC LIMIT 5`
+      ).catch(() => ({ rows: [] })),
+      pool.query(
+        `SELECT id, confirmation_number, status, customer_info, created_at
+         FROM tax_advisory_bookings ORDER BY created_at DESC LIMIT 5`
+      ).catch(() => ({ rows: [] })),
+      pool.query(
+        `SELECT id, confirmation_number, status, customer_info, created_at
+         FROM life_insurance_bookings ORDER BY created_at DESC LIMIT 5`
+      ).catch(() => ({ rows: [] })),
+      pool.query(
+        `SELECT id, full_name, email, status, meeting_type, created_at
+         FROM appointments ORDER BY created_at DESC LIMIT 5`
+      ).catch(() => ({ rows: [] })),
+      pool.query(
+        `SELECT id, full_name, email, status, created_at
+         FROM investment_inquiries ORDER BY created_at DESC LIMIT 5`
+      ).catch(() => ({ rows: [] })),
+      pool.query(`
+        SELECT
+          sc.id, sc.visitor_name, sc.visitor_email, sc.status, sc.last_message_at, sc.created_at,
+          (SELECT content FROM support_messages WHERE chat_id = sc.id ORDER BY created_at DESC LIMIT 1) AS last_message
+        FROM support_chats sc
+        WHERE sc.status IN ('waiting', 'active')
+        ORDER BY
+          CASE WHEN sc.status = 'waiting' THEN 0 ELSE 1 END,
+          sc.last_message_at DESC
+        LIMIT 5
+      `).catch(() => ({ rows: [] })),
     ]);
 
     const summary = {
@@ -172,7 +217,107 @@ router.get('/stats', adminAuth, async (req, res) => {
       else if (r.type === 'insurance')    summary.life_insurance    += r.count;
     });
 
-    res.json({ success: true, data: { summary, applications: apps.rows, supportChats: chats.rows } });
+    const serviceMap = {
+      individual: 'individual', company: 'company',
+      accounting: 'accounting', company_formation: 'company_formation',
+      insurance: 'life_insurance',
+    };
+
+    const recentSubmissions = [];
+
+    recentApps.rows.forEach(r => {
+      const p = r.payload || {};
+      const service = serviceMap[r.type] || r.type;
+      let clientName = p.firstName
+        ? `${p.firstName} ${p.lastName || ''}`.trim()
+        : (p.companyName || p.company_name || 'N/A');
+      let clientEmail = p.email || p.contactEmail || p.directorEmail || null;
+      if (service === 'company_formation' || service === 'accounting') {
+        const pc = p.primaryContact || p.contact || {};
+        const people = [...(p.shareholders || []), ...(p.managers || []), ...(p.directors || [])];
+        const first = people[0] || pc;
+        if (!clientEmail) clientEmail = first.email || pc.email || null;
+        if (!clientName || clientName === 'N/A') {
+          clientName = first.firstName
+            ? `${first.firstName} ${first.lastName || ''}`.trim()
+            : (p.companyName || p.company_name || 'N/A');
+        }
+      }
+      recentSubmissions.push({
+        id: r.id,
+        service,
+        status: r.status,
+        clientName,
+        clientEmail,
+        createdAt: r.created_at,
+      });
+    });
+
+    recentTax.rows.forEach(r => {
+      const ci = r.customer_info || {};
+      recentSubmissions.push({
+        id: `tax-${r.id}`,
+        service: 'tax_advisory',
+        status: r.status,
+        clientName: ci.firstName ? `${ci.firstName} ${ci.lastName || ''}`.trim() : 'N/A',
+        clientEmail: ci.email || null,
+        createdAt: r.created_at,
+      });
+    });
+
+    recentLife.rows.forEach(r => {
+      const ci = r.customer_info || {};
+      recentSubmissions.push({
+        id: `life-${r.id}`,
+        service: 'life_insurance',
+        status: r.status,
+        clientName: ci.firstName ? `${ci.firstName} ${ci.lastName || ''}`.trim() : 'N/A',
+        clientEmail: ci.email || null,
+        createdAt: r.created_at,
+      });
+    });
+
+    recentAppts.rows.forEach(r => {
+      const mt = (r.meeting_type || '').toLowerCase();
+      let service = 'investment_advisory';
+      if (mt.includes('tax')) service = 'tax_advisory';
+      else if (mt.includes('account') || mt.includes('opening')) service = 'individual';
+      else if (mt.includes('insurance')) service = 'life_insurance';
+      recentSubmissions.push({
+        id: `appt-${r.id}`,
+        service,
+        status: r.status || 'confirmed',
+        clientName: r.full_name || 'N/A',
+        clientEmail: r.email || null,
+        createdAt: r.created_at,
+      });
+    });
+
+    recentInv.rows.forEach(r => {
+      recentSubmissions.push({
+        id: `inv-${r.id}`,
+        service: 'investment_advisory',
+        status: r.status || 'new',
+        clientName: r.full_name || 'N/A',
+        clientEmail: r.email || null,
+        createdAt: r.created_at,
+      });
+    });
+
+    recentSubmissions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    res.json({
+      success: true,
+      data: {
+        summary,
+        applications: apps.rows,
+        supportChats: chats.rows,
+        recentActivity: {
+          submissions: recentSubmissions.slice(0, 5),
+          openChats: openChats.rows,
+        },
+      },
+    });
   } catch (err) {
     console.error('Admin stats error:', err.message);
     res.status(500).json({ success: false, error: err.message });
@@ -634,6 +779,59 @@ router.get('/replies/:ref', adminAuth, async (req, res) => {
       [req.params.ref]
     );
     res.json({ success: true, data: result.rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ─── GET /api/admin/notes/:ref ───────────────────────────────────────────────
+router.get('/notes/:ref', adminAuth, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, submission_ref, author_name, note, created_at
+       FROM submission_notes WHERE submission_ref = $1 ORDER BY created_at ASC`,
+      [req.params.ref]
+    );
+    res.json({ success: true, data: result.rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ─── POST /api/admin/notes ───────────────────────────────────────────────────
+router.post('/notes', adminAuth, async (req, res) => {
+  try {
+    const { submissionRef, note, authorName } = req.body || {};
+    if (!submissionRef || !note || !String(note).trim()) {
+      return res.status(400).json({ success: false, error: 'submissionRef and note are required' });
+    }
+    const result = await pool.query(
+      `INSERT INTO submission_notes (submission_ref, author_name, note)
+       VALUES ($1, $2, $3)
+       RETURNING id, submission_ref, author_name, note, created_at`,
+      [
+        String(submissionRef).trim(),
+        (authorName || 'Admin').trim().slice(0, 255),
+        String(note).trim(),
+      ]
+    );
+    res.json({ success: true, data: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ─── DELETE /api/admin/notes/:id ─────────────────────────────────────────────
+router.delete('/notes/:id', adminAuth, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `DELETE FROM submission_notes WHERE id = $1 RETURNING id`,
+      [req.params.id]
+    );
+    if (!result.rows.length) {
+      return res.status(404).json({ success: false, error: 'Note not found' });
+    }
+    res.json({ success: true, data: { id: result.rows[0].id } });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

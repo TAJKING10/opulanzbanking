@@ -437,6 +437,9 @@ function SubmissionsTab({
   const [replySubject, setReplySubject] = React.useState("");
   const [toast, setToast]               = React.useState("");
   const [replies, setReplies]           = React.useState<Array<{id:number;subject:string|null;message:string;sent_at:string}>>([]);
+  const [notes, setNotes]               = React.useState<Array<{id:number;author_name:string;note:string;created_at:string}>>([]);
+  const [noteText, setNoteText]         = React.useState("");
+  const [noteSaving, setNoteSaving]     = React.useState(false);
   const [docs, setDocs]                 = React.useState<Array<{id:number;file_name:string;file_url:string;mime_type:string|null;type:string}>>([]);
   const [attachFiles, setAttachFiles]   = React.useState<File[]>([]);
   const [attachDocs, setAttachDocs]     = React.useState<number[]>([]);
@@ -488,6 +491,63 @@ function SubmissionsTab({
       .then(r => r.json())
       .then(d => { if (d.success) setReplies(d.data); })
       .catch(() => {});
+  };
+
+  const loadNotes = (sub: Submission) => {
+    const ref = sub.confirmationNumber || String(sub.id);
+    fetch(`${API}/api/admin/notes/${encodeURIComponent(ref)}`, {
+      headers: { "x-admin-token": getToken() },
+    })
+      .then(r => r.json())
+      .then(d => { if (d.success) setNotes(d.data); })
+      .catch(() => setNotes([]));
+  };
+
+  const addNote = async () => {
+    if (!selected || !noteText.trim() || noteSaving) return;
+    setNoteSaving(true);
+    const ref = selected.confirmationNumber || String(selected.id);
+    try {
+      const res = await fetch(`${API}/api/admin/notes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-token": getToken() },
+        body: JSON.stringify({
+          submissionRef: ref,
+          note: noteText.trim(),
+          authorName: "Admin",
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setNotes(prev => [...prev, data.data]);
+        setNoteText("");
+        showToast("Internal note saved (not emailed).");
+      } else {
+        showToast(`Error: ${data.error}`);
+      }
+    } catch {
+      showToast("Failed to save note.");
+    } finally {
+      setNoteSaving(false);
+    }
+  };
+
+  const deleteNote = async (id: number) => {
+    try {
+      const res = await fetch(`${API}/api/admin/notes/${id}`, {
+        method: "DELETE",
+        headers: { "x-admin-token": getToken() },
+      });
+      const data = await res.json();
+      if (data.success) {
+        setNotes(prev => prev.filter(n => n.id !== id));
+        showToast("Note deleted.");
+      } else {
+        showToast(`Error: ${data.error}`);
+      }
+    } catch {
+      showToast("Failed to delete note.");
+    }
   };
 
   const loadDocs = (sub: Submission) => {
@@ -637,7 +697,19 @@ function SubmissionsTab({
             submissions.map(sub => (
               <button
                 key={sub.id}
-                onClick={() => { setSelected(sub); setReplyOpen(false); setReplies([]); setDocs([]); setAttachFiles([]); setAttachDocs([]); loadReplies(sub); loadDocs(sub); }}
+                onClick={() => {
+                  setSelected(sub);
+                  setReplyOpen(false);
+                  setReplies([]);
+                  setNotes([]);
+                  setNoteText("");
+                  setDocs([]);
+                  setAttachFiles([]);
+                  setAttachDocs([]);
+                  loadReplies(sub);
+                  loadNotes(sub);
+                  loadDocs(sub);
+                }}
                 className={`w-full text-left p-4 bg-white rounded-xl border transition-all ${
                   selected?.id === sub.id
                     ? "border-[#b59354] shadow-md"
@@ -814,6 +886,59 @@ function SubmissionsTab({
                   </div>
                 </div>
               )}
+
+              {/* Internal Notes (never emailed) */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">Internal Notes</h3>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                    Private · not emailed to client
+                  </span>
+                </div>
+                {notes.length === 0 ? (
+                  <div className="bg-slate-50 rounded-xl p-4 text-center text-sm text-gray-400 mb-3">
+                    No internal notes yet
+                  </div>
+                ) : (
+                  <div className="space-y-2 mb-3">
+                    {notes.map(n => (
+                      <div key={n.id} className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                        <div className="flex items-start justify-between gap-3 mb-1">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="text-xs font-semibold text-slate-700">{n.author_name || "Admin"}</span>
+                            <span className="text-[10px] text-slate-400">{fmt(n.created_at)}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => deleteNote(n.id)}
+                            className="text-[10px] text-red-500 hover:text-red-600 flex-shrink-0"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                        <p className="text-sm text-slate-800 whitespace-pre-wrap leading-relaxed">{n.note}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div className="flex gap-2">
+                  <textarea
+                    value={noteText}
+                    onChange={e => setNoteText(e.target.value)}
+                    placeholder="Add a private note for your team..."
+                    rows={2}
+                    className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354] resize-none bg-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={addNote}
+                    disabled={noteSaving || !noteText.trim()}
+                    className="self-end px-4 py-2 bg-slate-800 text-white text-sm font-medium rounded-lg hover:bg-slate-700 disabled:opacity-50 transition-colors"
+                  >
+                    {noteSaving ? "Saving..." : "Add note"}
+                  </button>
+                </div>
+              </div>
 
               {/* Reply History */}
               <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Reply History</h3>

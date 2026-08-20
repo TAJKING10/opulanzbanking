@@ -48,6 +48,25 @@ interface SupportMessage {
 
 interface Stats {
   summary: Record<string, number>;
+  recentActivity?: {
+    submissions: Array<{
+      id: string | number;
+      service: string;
+      status: string;
+      clientName: string;
+      clientEmail: string | null;
+      createdAt: string;
+    }>;
+    openChats: Array<{
+      id: number;
+      visitor_name: string;
+      visitor_email: string;
+      status: string;
+      last_message: string | null;
+      last_message_at: string;
+      created_at: string;
+    }>;
+  };
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -73,6 +92,16 @@ const SERVICE_EMAILS: Record<string, string> = {
   company:             "company-set@opulanz.com",
   company_formation:   "company-set@opulanz.com",
   accounting:          "accounting@opulanz.com",
+};
+
+const SERVICE_LABELS: Record<string, string> = {
+  individual: "Individual Account",
+  company: "Company Account",
+  company_formation: "Company Formation",
+  accounting: "Accounting",
+  tax_advisory: "Tax Advisory",
+  life_insurance: "Life Insurance",
+  investment_advisory: "Investment Advisory",
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -248,6 +277,9 @@ function OverviewTab({
                 (s.accounting||0)+(s.tax_advisory||0)+(s.life_insurance||0)+
                 (s.investment_advisory||0);
 
+  const recentSubs = stats?.recentActivity?.submissions || [];
+  const openChats = stats?.recentActivity?.openChats || [];
+
   return (
     <div className="space-y-6">
       <div>
@@ -275,6 +307,100 @@ function OverviewTab({
             </div>
           </button>
         ))}
+      </div>
+
+      {/* Recent activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+            <div>
+              <h3 className="font-semibold text-gray-900">Recent submissions</h3>
+              <p className="text-xs text-gray-400 mt-0.5">Latest 5 across all services</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => onOpenSubmissions("all")}
+              className="text-xs font-medium text-[#b59354] hover:underline"
+            >
+              View all
+            </button>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {recentSubs.length === 0 ? (
+              <p className="px-5 py-8 text-sm text-gray-400 text-center">No submissions yet</p>
+            ) : (
+              recentSubs.map(item => (
+                <button
+                  key={String(item.id)}
+                  type="button"
+                  onClick={() => onOpenSubmissions(item.service)}
+                  className="w-full px-5 py-3 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{item.clientName}</p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {SERVICE_LABELS[item.service] || item.service.replace(/_/g, " ")}
+                        {item.clientEmail ? ` · ${item.clientEmail}` : ""}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${STATUS_COLORS[item.status] || "bg-gray-100 text-gray-600"}`}>
+                        {item.status.replace(/_/g, " ")}
+                      </span>
+                      <span className="text-[10px] text-gray-400">{fmt(item.createdAt)}</span>
+                    </div>
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+            <div>
+              <h3 className="font-semibold text-gray-900">Open chats</h3>
+              <p className="text-xs text-gray-400 mt-0.5">Waiting and active conversations</p>
+            </div>
+            <button
+              type="button"
+              onClick={onOpenSupport}
+              className="text-xs font-medium text-[#b59354] hover:underline"
+            >
+              View all
+            </button>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {openChats.length === 0 ? (
+              <p className="px-5 py-8 text-sm text-gray-400 text-center">No open chats</p>
+            ) : (
+              openChats.map(chat => (
+                <button
+                  key={chat.id}
+                  type="button"
+                  onClick={onOpenSupport}
+                  className="w-full px-5 py-3 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{chat.visitor_name}</p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {chat.last_message || chat.visitor_email}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${STATUS_COLORS[chat.status] || "bg-gray-100 text-gray-600"}`}>
+                        {chat.status}
+                      </span>
+                      <span className="text-[10px] text-gray-400">{fmt(chat.last_message_at || chat.created_at)}</span>
+                    </div>
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">

@@ -157,15 +157,28 @@ export function MortgageSimulator({ locale }: { locale: string }) {
   // Loan
   const [duration, setDuration] = React.useState(20);
   const [rate, setRate] = React.useState(4.0);
-  const [contribMode, setContribMode] = React.useState<"amount" | "percent">("amount");
   const [contribAmount, setContribAmount] = React.useState(50000);
-  const [contribPct, setContribPct] = React.useState(20);
   const [existing, setExisting] = React.useState(0);
 
   const { result, totalIncome, maxMonthly } = computeResult(
     income, 0, false, dependents,
-    existing, duration, rate, contribAmount, contribMode, contribPct,
+    existing, duration, rate, contribAmount, "amount", 20,
   );
+
+  // Derived % = contribution / (contribution + maxLoan) * 100
+  const maxLoan = result?.maxLoan ?? 0;
+  const derivedPct = maxLoan > 0
+    ? Math.round((contribAmount / (contribAmount + maxLoan)) * 100)
+    : 0;
+
+  function handlePctChange(pct: number) {
+    const clamped = Math.min(95, Math.max(0, pct));
+    if (maxLoan > 0) {
+      // contribution = maxLoan * pct / (1 - pct)
+      const newContrib = Math.round(maxLoan * (clamped / 100) / (1 - clamped / 100));
+      setContribAmount(Math.max(0, newContrib));
+    }
+  }
 
   // Build warnings
   const warnings: string[] = [];
@@ -314,63 +327,48 @@ export function MortgageSimulator({ locale }: { locale: string }) {
                 onChange={setRate}
               />
 
-              {/* Down payment with €/% toggle */}
+              {/* Down payment — linked € and % inputs */}
               <div className="mb-5">
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-semibold text-brand-dark">{t("inputs.downPayment")}</label>
-                  <div className="flex rounded-lg border border-brand-grayLight overflow-hidden text-xs">
-                    <button
-                      type="button"
-                      onClick={() => setContribMode("amount")}
-                      className={`px-3 py-1 font-bold transition-colors ${
-                        contribMode === "amount" ? "bg-brand-gold text-white" : "bg-white text-brand-grayMed hover:bg-gray-50"
-                      }`}
-                    >
-                      €
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setContribMode("percent")}
-                      className={`px-3 py-1 font-bold transition-colors ${
-                        contribMode === "percent" ? "bg-brand-gold text-white" : "bg-white text-brand-grayMed hover:bg-gray-50"
-                      }`}
-                    >
-                      %
-                    </button>
-                  </div>
-                </div>
-                {contribMode === "amount" ? (
+                <label className="text-sm font-semibold text-brand-dark block mb-2">{t("inputs.downPayment")}</label>
+                <div className="grid grid-cols-2 gap-3">
+                  {/* € amount */}
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-grayMed text-sm font-semibold">€</span>
                     <input
                       type="number"
                       min={0}
-                      step={5000}
+                      step={1000}
                       value={contribAmount}
                       onChange={(e) => setContribAmount(Math.max(0, Number(e.target.value) || 0))}
                       className="w-full pl-8 pr-3 py-2.5 border border-brand-grayLight rounded-xl text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-colors"
                     />
                   </div>
-                ) : (
-                  <>
-                    <SliderField
-                      label=""
-                      value={contribPct}
-                      displayValue={`${contribPct}%`}
-                      min={5}
-                      max={50}
+                  {/* % amount — auto-calculated, also editable */}
+                  <div className="relative">
+                    <input
+                      type="number"
+                      min={0}
+                      max={95}
                       step={1}
-                      minLabel="5%"
-                      maxLabel="50%"
-                      onChange={setContribPct}
+                      value={derivedPct}
+                      onChange={(e) => handlePctChange(Number(e.target.value) || 0)}
+                      disabled={maxLoan === 0}
+                      className="w-full pl-3 pr-8 py-2.5 border border-brand-grayLight rounded-xl text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-colors disabled:bg-gray-50 disabled:text-brand-grayMed"
                     />
-                    {result && (
-                      <p className="text-xs text-brand-grayMed -mt-3">
-                        ≈ {fmt(result.contribution)} {t("inputs.ofPropertyValue")}
-                      </p>
-                    )}
-                  </>
-                )}
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-grayMed text-sm font-semibold">%</span>
+                  </div>
+                </div>
+                {/* Info notes */}
+                <div className="mt-3 space-y-1.5">
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-brand-gold mt-1.5 flex-shrink-0" />
+                    <p className="text-xs text-brand-grayMed leading-relaxed">{t("inputs.downPaymentNote1")}</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-brand-gold mt-1.5 flex-shrink-0" />
+                    <p className="text-xs text-brand-grayMed leading-relaxed">{t("inputs.downPaymentNote2")}</p>
+                  </div>
+                </div>
               </div>
 
               <NumberField

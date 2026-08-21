@@ -4419,7 +4419,8 @@
         "years": "ans",
         "rate": "Taux d'intérêt",
         "downPayment": "Apport personnel",
-        "ofPropertyValue": "de la valeur estimée du bien",
+        "downPaymentNote1": "Apport minimum à partir de 15 %.",
+        "downPaymentNote2": "L'apport peut ne pas être nécessaire si vous mettez en garantie votre propre bien.",
         "contribution": "Apport personnel",
         "existing": "Mensualités de crédits existants"
       },

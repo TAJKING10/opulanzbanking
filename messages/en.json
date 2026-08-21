@@ -4419,7 +4419,8 @@
         "years": "years",
         "rate": "Interest rate",
         "downPayment": "Down payment",
-        "ofPropertyValue": "of estimated property value",
+        "downPaymentNote1": "Down payment starting from 15%.",
+        "downPaymentNote2": "Down payment may not be needed if you collateralize your own property.",
         "contribution": "Personal contribution",
         "existing": "Existing loan payments"
       },

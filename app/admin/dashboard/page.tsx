@@ -2436,13 +2436,79 @@ function DocumentPreviewModal({
   const isImage = /\.(png|jpg|jpeg|gif|webp|svg|bmp|ico)$/i.test(name) || /^data:image\//i.test(url);
   const isPdf = /\.pdf$/i.test(name);
   const [downloading, setDownloading] = React.useState(false);
+  const [previewSrc, setPreviewSrc] = React.useState<string | null>(null);
+  const [loadingPreview, setLoadingPreview] = React.useState(isImage || isPdf);
+  const [previewError, setPreviewError] = React.useState<string | null>(null);
+
+  // Azure Blob URLs cannot be embedded in iframes (X-Frame-Options / CSP).
+  // Fetch via our admin proxy (or direct URL) and preview from a same-origin blob: URL.
+  React.useEffect(() => {
+    if (!isImage && !isPdf) {
+      setLoadingPreview(false);
+      return;
+    }
+
+    let objectUrl: string | null = null;
+    let cancelled = false;
+
+    (async () => {
+      setLoadingPreview(true);
+      setPreviewError(null);
+      try {
+        let blob: Blob | null = null;
+
+        if (blobName) {
+          const res = await fetch(
+            `${API}/api/admin/download-file?blobName=${encodeURIComponent(blobName)}&fileName=${encodeURIComponent(name)}&inline=1`,
+            { headers: { "x-admin-token": getToken() } }
+          );
+          if (res.ok) blob = await res.blob();
+        }
+
+        if (!blob && url) {
+          const res = await fetch(url);
+          if (res.ok) blob = await res.blob();
+        }
+
+        if (!blob) throw new Error("Unable to load file for preview");
+
+        if (isPdf && blob.type !== "application/pdf") {
+          blob = new Blob([await blob.arrayBuffer()], { type: "application/pdf" });
+        }
+
+        objectUrl = URL.createObjectURL(blob);
+        if (!cancelled) setPreviewSrc(objectUrl);
+      } catch (err) {
+        console.error("Preview load failed:", err);
+        if (!cancelled) {
+          setPreviewError("This file cannot be previewed here. Use Download or Open in new tab.");
+          // Fall back to original URL for images only (may still work)
+          if (isImage) setPreviewSrc(url);
+        }
+      } finally {
+        if (!cancelled) setLoadingPreview(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [url, blobName, name, isImage, isPdf]);
 
   const handleDownload = async () => {
     setDownloading(true);
     const ok = await forceDownloadFile({ fileName: name, url, blobName });
     setDownloading(false);
     if (!ok) {
-      // last resort: open URL (may view instead of download on cross-origin)
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  const openInNewTab = () => {
+    if (previewSrc) {
+      window.open(previewSrc, "_blank", "noopener,noreferrer");
+    } else {
       window.open(url, "_blank", "noopener,noreferrer");
     }
   };
@@ -2471,14 +2537,13 @@ function DocumentPreviewModal({
             <p className="text-sm font-semibold text-gray-800 truncate">{name}</p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            <a
-              href={url}
-              target="_blank"
-              rel="noreferrer"
+            <button
+              type="button"
+              onClick={openInNewTab}
               className="text-xs px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
             >
               Open in new tab ↗
-            </a>
+            </button>
             <button
               type="button"
               onClick={handleDownload}
@@ -2499,37 +2564,39 @@ function DocumentPreviewModal({
 
         {/* Content */}
         <div className="flex-1 flex items-center justify-center overflow-auto bg-gray-100 p-4">
-          {isImage ? (
+          {loadingPreview ? (
+            <div className="text-center py-12">
+              <div className="w-8 h-8 border-4 border-[#b59354] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+              <p className="text-sm text-gray-500">Loading preview…</p>
+            </div>
+          ) : isImage && previewSrc ? (
             <img
-              src={url}
+              src={previewSrc}
               alt={name}
               className="max-w-full max-h-full object-contain rounded-lg shadow-md"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-                (e.target as HTMLImageElement).parentElement!.innerHTML =
-                  '<div class="text-center py-12"><p class="text-4xl mb-3">⚠️</p><p class="text-sm text-gray-500">Unable to load image</p></div>';
-              }}
+              onError={() => setPreviewError("Unable to load image")}
             />
-          ) : isPdf ? (
+          ) : isPdf && previewSrc ? (
             <iframe
-              src={url}
+              src={previewSrc}
               title={name}
               className="w-full h-full rounded-lg border border-gray-200 bg-white"
             />
           ) : (
             <div className="text-center py-12">
-              <p className="text-5xl mb-4">📎</p>
+              <p className="text-5xl mb-4">{previewError ? "⚠️" : "📎"}</p>
               <p className="text-gray-700 font-medium mb-1">{name}</p>
-              <p className="text-sm text-gray-500 mb-4">This file type cannot be previewed in the browser.</p>
+              <p className="text-sm text-gray-500 mb-4">
+                {previewError || "This file type cannot be previewed in the browser."}
+              </p>
               <div className="flex items-center justify-center gap-3">
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  onClick={openInNewTab}
                   className="px-4 py-2 bg-[#b59354] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
                 >
                   Open in new tab
-                </a>
+                </button>
                 <button
                   type="button"
                   onClick={handleDownload}

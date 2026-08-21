@@ -17,7 +17,7 @@ const CSP = [
   // Connections: backend API + OAuth + KYC + chat
   "connect-src 'self' http://localhost:5000 https://*.opulanz.com https://*.azurewebsites.net https://accounts.google.com https://oauth2.googleapis.com https://api.sumsub.com https://*.tawk.to wss://*.tawk.to https://www.paypal.com https://www.sandbox.paypal.com https://api-m.sandbox.paypal.com https://api-m.paypal.com https://calendly.com https://*.calendly.com https://demo.docusign.net https://account-d.docusign.com https://*.docusign.net",
   // Frames: Sumsub KYC widget + PayPal checkout + DocuSign embedded signing
-  "frame-src 'self' https://api.sumsub.com https://*.sumsub.com https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com https://accounts.google.com https://calendly.com https://*.calendly.com https://demo.docusign.net https://*.docusign.net https://*.docusign.com https://account-d.docusign.com",
+  "frame-src 'self' blob: https://api.sumsub.com https://*.sumsub.com https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com https://accounts.google.com https://calendly.com https://*.calendly.com https://demo.docusign.net https://*.docusign.net https://*.docusign.com https://account-d.docusign.com",
   // Media
   "media-src 'self' blob:",
   // Workers for Next.js

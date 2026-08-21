@@ -916,7 +916,12 @@ router.get('/download-file', adminAuth, async (req, res) => {
 
     res.setHeader('Content-Type', contentType);
     res.setHeader('Content-Length', buffer.length);
-    res.setHeader('Content-Disposition', `attachment; filename="${safeName}"`);
+    // inline = preview in browser/iframe; default attachment = force download
+    const inline = String(req.query.inline || '') === '1' || String(req.query.disposition || '') === 'inline';
+    res.setHeader(
+      'Content-Disposition',
+      `${inline ? 'inline' : 'attachment'}; filename="${safeName}"`
+    );
     res.setHeader('Cache-Control', 'no-store');
     res.send(buffer);
   } catch (err) {

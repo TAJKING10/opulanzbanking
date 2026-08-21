@@ -39,9 +39,11 @@ export interface UploadedFile {
   size: number;
   type: string;
   uploadedAt: string;
+  /** Azure Blob URL — used by admin for View / Download */
+  url?: string;
   fileUrl?: string;
   blobName?: string;
-  tempId?: string; // temp store key for email attachment
+  tempId?: string; // optional temp store key for email attachment
 }
 
 export interface CompanyFormationDossier {
@@ -95,8 +97,7 @@ export interface CompanyFormationDossier {
     accuracyConfirmed: boolean;
   };
 
-  // Contact
-  contactEmail?: string;
+
 
   // Metadata
   createdAt: string;

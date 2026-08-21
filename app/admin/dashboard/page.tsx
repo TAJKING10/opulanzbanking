@@ -10,6 +10,7 @@ interface PayloadFile {
   type?: string;
   id?: string;
   url?: string;
+  blobName?: string;
 }
 
 interface Submission {
@@ -48,6 +49,25 @@ interface SupportMessage {
 
 interface Stats {
   summary: Record<string, number>;
+  recentActivity?: {
+    submissions: Array<{
+      id: string | number;
+      service: string;
+      status: string;
+      clientName: string;
+      clientEmail: string | null;
+      createdAt: string;
+    }>;
+    openChats: Array<{
+      id: number;
+      visitor_name: string;
+      visitor_email: string;
+      status: string;
+      last_message: string | null;
+      last_message_at: string;
+      created_at: string;
+    }>;
+  };
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -73,6 +93,16 @@ const SERVICE_EMAILS: Record<string, string> = {
   company:             "company-set@opulanz.com",
   company_formation:   "company-set@opulanz.com",
   accounting:          "accounting@opulanz.com",
+};
+
+const SERVICE_LABELS: Record<string, string> = {
+  individual: "Individual Account",
+  company: "Company Account",
+  company_formation: "Company Formation",
+  accounting: "Accounting",
+  tax_advisory: "Tax Advisory",
+  life_insurance: "Life Insurance",
+  investment_advisory: "Investment Advisory",
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -110,6 +140,65 @@ function getToken() {
   return localStorage.getItem("admin_token") || "";
 }
 
+/** Resolve a viewable URL — refreshes Azure SAS via blobName when needed */
+async function resolveFileUrl(opts: { url?: string | null; blobName?: string | null }): Promise<string | null> {
+  if (opts.blobName) {
+    try {
+      const res = await fetch(`${API}/api/admin/file-url?blobName=${encodeURIComponent(opts.blobName)}`, {
+        headers: { "x-admin-token": getToken() },
+      });
+      const data = await res.json();
+      if (data.success && data.url) return data.url as string;
+    } catch {
+      // fall through to stored url
+    }
+  }
+  return opts.url || null;
+}
+
+/**
+ * Force a real file download.
+ * Cross-origin Azure URLs ignore the HTML `download` attribute and just open in a tab —
+ * so we stream via our same-origin admin proxy whenever blobName is available.
+ */
+async function forceDownloadFile(opts: {
+  fileName: string;
+  url?: string | null;
+  blobName?: string | null;
+}): Promise<boolean> {
+  try {
+    let blob: Blob | null = null;
+
+    if (opts.blobName) {
+      const res = await fetch(
+        `${API}/api/admin/download-file?blobName=${encodeURIComponent(opts.blobName)}&fileName=${encodeURIComponent(opts.fileName)}`,
+        { headers: { "x-admin-token": getToken() } }
+      );
+      if (!res.ok) throw new Error(`Download failed (${res.status})`);
+      blob = await res.blob();
+    } else if (opts.url) {
+      const res = await fetch(opts.url);
+      if (!res.ok) throw new Error(`Download failed (${res.status})`);
+      blob = await res.blob();
+    }
+
+    if (!blob) return false;
+
+    const objectUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    a.download = opts.fileName || "download";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(objectUrl);
+    return true;
+  } catch (err) {
+    console.error("forceDownloadFile failed:", err);
+    return false;
+  }
+}
+
 function fmt(date: string) {
   if (!date) return "—";
   return new Date(date).toLocaleDateString("en-GB", {
@@ -122,6 +211,9 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [tab, setTab] = React.useState<"overview" | "submissions" | "support" | "contacts">("overview");
   const [submissionService, setSubmissionService] = React.useState("all");
+  const [submissionSearch, setSubmissionSearch] = React.useState("");
+  const [contactSearch, setContactSearch] = React.useState("");
+  const [selectedChatId, setSelectedChatId] = React.useState<number | null>(null);
 
   // Check auth
   React.useEffect(() => {
@@ -133,23 +225,50 @@ export default function AdminDashboard() {
     router.replace("/admin");
   };
 
-  const openSubmissions = (serviceKey: string) => {
+  const openSubmissions = (serviceKey: string, search = "") => {
     setSubmissionService(serviceKey);
+    setSubmissionSearch(search);
     setTab("submissions");
   };
 
-  const openSupport = () => setTab("support");
+  const openSupport = (chatId: number | null = null) => {
+    setSelectedChatId(chatId);
+    setTab("support");
+  };
+
+  const openContacts = (search = "") => {
+    setContactSearch(search);
+    setTab("contacts");
+  };
+
+  const handleGlobalSelect = (item: {
+    type: "submission" | "contact" | "chat";
+    id: string | number;
+    service?: string;
+    title?: string;
+    email?: string;
+    subtitle?: string;
+  }) => {
+    if (item.type === "submission") {
+      openSubmissions(item.service || "all", item.email || item.title || String(item.id));
+    } else if (item.type === "contact") {
+      openContacts(item.email || item.title || String(item.id));
+    } else if (item.type === "chat") {
+      openSupport(Number(item.id));
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f6f8f8]">
       {/* Top Bar */}
       <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-30">
-        <div className="max-w-screen-xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-6">
+        <div className="max-w-screen-xl mx-auto px-6 h-14 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-6 flex-shrink-0">
             <span className="text-lg font-bold tracking-widest text-[#b59354]">OPULANZ</span>
-            <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">Admin Panel</span>
+            <span className="text-xs text-gray-400 font-medium uppercase tracking-wider hidden sm:inline">Admin Panel</span>
           </div>
-          <div className="flex items-center gap-4">
+          <GlobalSearchBar onSelect={handleGlobalSelect} />
+          <div className="flex items-center gap-4 flex-shrink-0">
             <nav className="flex gap-1">
               {([
                 { key: "overview",     label: "Overview" },
@@ -160,7 +279,12 @@ export default function AdminDashboard() {
                 <button
                   key={t.key}
                   onClick={() => {
-                    if (t.key === "submissions") setSubmissionService("all");
+                    if (t.key === "submissions") {
+                      setSubmissionService("all");
+                      setSubmissionSearch("");
+                    }
+                    if (t.key === "contacts") setContactSearch("");
+                    if (t.key === "support") setSelectedChatId(null);
                     setTab(t.key);
                   }}
                   className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
@@ -186,17 +310,187 @@ export default function AdminDashboard() {
       {/* Content */}
       <main className="flex-1 max-w-screen-xl mx-auto w-full px-6 py-6">
         {tab === "overview"     && (
-          <OverviewTab onOpenSubmissions={openSubmissions} onOpenSupport={openSupport} />
+          <OverviewTab onOpenSubmissions={openSubmissions} onOpenSupport={() => openSupport()} />
         )}
-        {tab === "contacts"     && <ContactsTab />}
+        {tab === "contacts"     && (
+          <ContactsTab initialSearch={contactSearch} />
+        )}
         {tab === "submissions"  && (
           <SubmissionsTab
             initialService={submissionService}
+            initialSearch={submissionSearch}
             onServiceChange={setSubmissionService}
           />
         )}
-        {tab === "support"      && <SupportTab />}
+        {tab === "support"      && (
+          <SupportTab initialChatId={selectedChatId} />
+        )}
       </main>
+    </div>
+  );
+}
+
+// ─── Global Search ────────────────────────────────────────────────────────────
+type GlobalSearchItem = {
+  type: "submission" | "contact" | "chat";
+  id: string | number;
+  status?: string;
+  service?: string;
+  title: string;
+  subtitle?: string;
+  email?: string;
+  createdAt?: string;
+};
+
+function GlobalSearchBar({
+  onSelect,
+}: {
+  onSelect: (item: GlobalSearchItem) => void;
+}) {
+  const [query, setQuery] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [results, setResults] = React.useState<{
+    submissions: GlobalSearchItem[];
+    contacts: GlobalSearchItem[];
+    chats: GlobalSearchItem[];
+  }>({ submissions: [], contacts: [], chats: [] });
+  const wrapRef = React.useRef<HTMLDivElement>(null);
+  const debounceRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  React.useEffect(() => {
+    const onDocClick = (e: MouseEvent) => {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
+
+  React.useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    const q = query.trim();
+    if (q.length < 2) {
+      setResults({ submissions: [], contacts: [], chats: [] });
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    debounceRef.current = setTimeout(() => {
+      fetch(`${API}/api/admin/search?q=${encodeURIComponent(q)}`, {
+        headers: { "x-admin-token": getToken() },
+      })
+        .then(r => {
+          if (r.status === 401) {
+            localStorage.removeItem("admin_token");
+            window.location.href = "/admin";
+            return null;
+          }
+          return r.json();
+        })
+        .then(d => {
+          if (d?.success) {
+            setResults({
+              submissions: d.data.submissions || [],
+              contacts: d.data.contacts || [],
+              chats: d.data.chats || [],
+            });
+            setOpen(true);
+          }
+        })
+        .catch(() => {})
+        .finally(() => setLoading(false));
+    }, 300);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query]);
+
+  const total =
+    results.submissions.length + results.contacts.length + results.chats.length;
+
+  const pick = (item: GlobalSearchItem) => {
+    onSelect(item);
+    setQuery("");
+    setOpen(false);
+  };
+
+  const Section = ({
+    label,
+    items,
+  }: {
+    label: string;
+    items: GlobalSearchItem[];
+  }) => {
+    if (!items.length) return null;
+    return (
+      <div className="py-1">
+        <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+          {label}
+        </p>
+        {items.map(item => (
+          <button
+            key={`${item.type}-${item.id}`}
+            type="button"
+            onClick={() => pick(item)}
+            className="w-full px-3 py-2 text-left hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">{item.title}</p>
+                <p className="text-xs text-gray-500 truncate">
+                  {item.service
+                    ? `${SERVICE_LABELS[item.service] || item.service} · `
+                    : ""}
+                  {item.subtitle}
+                </p>
+              </div>
+              {item.status && (
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${STATUS_COLORS[item.status] || "bg-gray-100 text-gray-600"}`}>
+                  {item.status.replace(/_/g, " ")}
+                </span>
+              )}
+            </div>
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div ref={wrapRef} className="relative flex-1 max-w-md hidden md:block">
+      <div className="relative">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z" />
+        </svg>
+        <input
+          value={query}
+          onChange={e => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => query.trim().length >= 2 && setOpen(true)}
+          placeholder="Search submissions, contacts, chats..."
+          className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-xl text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#b59354]"
+        />
+        {loading && (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-[#b59354] border-t-transparent rounded-full animate-spin" />
+        )}
+      </div>
+      {open && query.trim().length >= 2 && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden z-50 max-h-[420px] overflow-y-auto">
+          {loading && total === 0 ? (
+            <p className="px-4 py-6 text-sm text-gray-400 text-center">Searching...</p>
+          ) : total === 0 ? (
+            <p className="px-4 py-6 text-sm text-gray-400 text-center">No matches for “{query.trim()}”</p>
+          ) : (
+            <>
+              <Section label="Submissions" items={results.submissions} />
+              <Section label="Support Messages" items={results.contacts} />
+              <Section label="Live Chats" items={results.chats} />
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -248,6 +542,9 @@ function OverviewTab({
                 (s.accounting||0)+(s.tax_advisory||0)+(s.life_insurance||0)+
                 (s.investment_advisory||0);
 
+  const recentSubs = stats?.recentActivity?.submissions || [];
+  const openChats = stats?.recentActivity?.openChats || [];
+
   return (
     <div className="space-y-6">
       <div>
@@ -277,6 +574,100 @@ function OverviewTab({
         ))}
       </div>
 
+      {/* Recent activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+            <div>
+              <h3 className="font-semibold text-gray-900">Recent submissions</h3>
+              <p className="text-xs text-gray-400 mt-0.5">Latest 5 across all services</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => onOpenSubmissions("all")}
+              className="text-xs font-medium text-[#b59354] hover:underline"
+            >
+              View all
+            </button>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {recentSubs.length === 0 ? (
+              <p className="px-5 py-8 text-sm text-gray-400 text-center">No submissions yet</p>
+            ) : (
+              recentSubs.map(item => (
+                <button
+                  key={String(item.id)}
+                  type="button"
+                  onClick={() => onOpenSubmissions(item.service)}
+                  className="w-full px-5 py-3 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{item.clientName}</p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {SERVICE_LABELS[item.service] || item.service.replace(/_/g, " ")}
+                        {item.clientEmail ? ` · ${item.clientEmail}` : ""}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${STATUS_COLORS[item.status] || "bg-gray-100 text-gray-600"}`}>
+                        {item.status.replace(/_/g, " ")}
+                      </span>
+                      <span className="text-[10px] text-gray-400">{fmt(item.createdAt)}</span>
+                    </div>
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+            <div>
+              <h3 className="font-semibold text-gray-900">Open chats</h3>
+              <p className="text-xs text-gray-400 mt-0.5">Waiting and active conversations</p>
+            </div>
+            <button
+              type="button"
+              onClick={onOpenSupport}
+              className="text-xs font-medium text-[#b59354] hover:underline"
+            >
+              View all
+            </button>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {openChats.length === 0 ? (
+              <p className="px-5 py-8 text-sm text-gray-400 text-center">No open chats</p>
+            ) : (
+              openChats.map(chat => (
+                <button
+                  key={chat.id}
+                  type="button"
+                  onClick={onOpenSupport}
+                  className="w-full px-5 py-3 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{chat.visitor_name}</p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {chat.last_message || chat.visitor_email}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${STATUS_COLORS[chat.status] || "bg-gray-100 text-gray-600"}`}>
+                        {chat.status}
+                      </span>
+                      <span className="text-[10px] text-gray-400">{fmt(chat.last_message_at || chat.created_at)}</span>
+                    </div>
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <h3 className="font-semibold text-gray-900 mb-4">Service Email Routing</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -295,15 +686,17 @@ function OverviewTab({
 // ─── Submissions Tab ──────────────────────────────────────────────────────────
 function SubmissionsTab({
   initialService = "all",
+  initialSearch = "",
   onServiceChange,
 }: {
   initialService?: string;
+  initialSearch?: string;
   onServiceChange?: (service: string) => void;
 }) {
   const [submissions, setSubmissions]   = React.useState<Submission[]>([]);
   const [loading, setLoading]           = React.useState(true);
   const [service, setService]           = React.useState(initialService);
-  const [search, setSearch]             = React.useState("");
+  const [search, setSearch]             = React.useState(initialSearch);
   const [selected, setSelected]         = React.useState<Submission | null>(null);
   const [replyOpen, setReplyOpen]       = React.useState(false);
   const [replySending, setReplySending] = React.useState(false);
@@ -311,11 +704,15 @@ function SubmissionsTab({
   const [replySubject, setReplySubject] = React.useState("");
   const [toast, setToast]               = React.useState("");
   const [replies, setReplies]           = React.useState<Array<{id:number;subject:string|null;message:string;sent_at:string}>>([]);
+  const [notes, setNotes]               = React.useState<Array<{id:number;author_name:string;note:string;created_at:string}>>([]);
+  const [noteText, setNoteText]         = React.useState("");
+  const [noteSaving, setNoteSaving]     = React.useState(false);
   const [docs, setDocs]                 = React.useState<Array<{id:number;file_name:string;file_url:string;mime_type:string|null;type:string}>>([]);
   const [attachFiles, setAttachFiles]   = React.useState<File[]>([]);
   const [attachDocs, setAttachDocs]     = React.useState<number[]>([]);
   const [statusUpdating, setStatusUpdating] = React.useState(false);
   const [rejectReason, setRejectReason]  = React.useState("");
+  const [previewDoc, setPreviewDoc]     = React.useState<{ url: string; name: string; blobName?: string } | null>(null);
   const fileInputRef                    = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -323,6 +720,12 @@ function SubmissionsTab({
     setSelected(null);
     setReplyOpen(false);
   }, [initialService]);
+
+  React.useEffect(() => {
+    setSearch(initialSearch || "");
+    setSelected(null);
+    setReplyOpen(false);
+  }, [initialSearch]);
 
   const changeService = (next: string) => {
     setService(next);
@@ -364,8 +767,65 @@ function SubmissionsTab({
       .catch(() => {});
   };
 
+  const loadNotes = (sub: Submission) => {
+    const ref = sub.confirmationNumber || String(sub.id);
+    fetch(`${API}/api/admin/notes/${encodeURIComponent(ref)}`, {
+      headers: { "x-admin-token": getToken() },
+    })
+      .then(r => r.json())
+      .then(d => { if (d.success) setNotes(d.data); })
+      .catch(() => setNotes([]));
+  };
+
+  const addNote = async () => {
+    if (!selected || !noteText.trim() || noteSaving) return;
+    setNoteSaving(true);
+    const ref = selected.confirmationNumber || String(selected.id);
+    try {
+      const res = await fetch(`${API}/api/admin/notes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-token": getToken() },
+        body: JSON.stringify({
+          submissionRef: ref,
+          note: noteText.trim(),
+          authorName: "Admin",
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setNotes(prev => [...prev, data.data]);
+        setNoteText("");
+        showToast("Internal note saved (not emailed).");
+      } else {
+        showToast(`Error: ${data.error}`);
+      }
+    } catch {
+      showToast("Failed to save note.");
+    } finally {
+      setNoteSaving(false);
+    }
+  };
+
+  const deleteNote = async (id: number) => {
+    try {
+      const res = await fetch(`${API}/api/admin/notes/${id}`, {
+        method: "DELETE",
+        headers: { "x-admin-token": getToken() },
+      });
+      const data = await res.json();
+      if (data.success) {
+        setNotes(prev => prev.filter(n => n.id !== id));
+        showToast("Note deleted.");
+      } else {
+        showToast(`Error: ${data.error}`);
+      }
+    } catch {
+      showToast("Failed to delete note.");
+    }
+  };
+
   const loadDocs = (sub: Submission) => {
-    // Payload files (company formation, accounting, etc.) — no Azure URL available
+    // Payload files (company formation, accounting, etc.)
     const payloadDocs = (sub.payloadFiles || []).map((f, i) => ({
       id: -(i + 1),
       file_name: f.filename,
@@ -373,6 +833,7 @@ function SubmissionsTab({
       mime_type: f.type || null,
       type: f.type || "uploaded_file",
       size: f.size,
+      blob_name: f.blobName || null,
       fromPayload: true,
     }));
 
@@ -479,6 +940,16 @@ function SubmissionsTab({
         </div>
       )}
 
+      {/* Document Preview Modal */}
+      {previewDoc && (
+        <DocumentPreviewModal
+          url={previewDoc.url}
+          name={previewDoc.name}
+          blobName={previewDoc.blobName}
+          onClose={() => setPreviewDoc(null)}
+        />
+      )}
+
       {/* Left: List */}
       <div className="w-[380px] flex-shrink-0 flex flex-col gap-3">
         {/* Filters */}
@@ -511,7 +982,19 @@ function SubmissionsTab({
             submissions.map(sub => (
               <button
                 key={sub.id}
-                onClick={() => { setSelected(sub); setReplyOpen(false); setReplies([]); setDocs([]); setAttachFiles([]); setAttachDocs([]); loadReplies(sub); loadDocs(sub); }}
+                onClick={() => {
+                  setSelected(sub);
+                  setReplyOpen(false);
+                  setReplies([]);
+                  setNotes([]);
+                  setNoteText("");
+                  setDocs([]);
+                  setAttachFiles([]);
+                  setAttachDocs([]);
+                  loadReplies(sub);
+                  loadNotes(sub);
+                  loadDocs(sub);
+                }}
                 className={`w-full text-left p-4 bg-white rounded-xl border transition-all ${
                   selected?.id === sub.id
                     ? "border-[#b59354] shadow-md"
@@ -615,21 +1098,14 @@ function SubmissionsTab({
               {/* Payload details */}
               <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Submission Data</h3>
               <div className="bg-gray-50 rounded-xl p-4 mb-6">
-                <table className="w-full text-sm">
-                  <tbody>
-                    {Object.entries(selected.payload || {}).map(([key, value]) => {
-                      if (value === null || value === undefined || value === "") return null;
-                      const label = key.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
-                      const display = typeof value === "object" ? JSON.stringify(value) : String(value);
-                      return (
-                        <tr key={key} className="border-b border-gray-100 last:border-0">
-                          <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{label}</td>
-                          <td className="py-2 text-gray-900 break-all">{display}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                <PayloadRenderer
+                  payload={selected.payload || {}}
+                  onPreview={async (url, name, blobName) => {
+                    const resolved = await resolveFileUrl({ url, blobName });
+                    if (resolved) setPreviewDoc({ url: resolved, name, blobName });
+                    else showToast("File URL unavailable.");
+                  }}
+                />
               </div>
 
               {/* Attached Documents */}
@@ -637,13 +1113,30 @@ function SubmissionsTab({
                 <div className="mb-6">
                   <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Attached Files ({docs.length})</h3>
                   <div className="space-y-2">
-                    {(docs as Array<{id:number;file_name:string;file_url:string;mime_type:string|null;type:string;size?:number;file_size?:number;fromPayload?:boolean}>).map(doc => {
+                    {(docs as Array<{id:number;file_name:string;file_url:string;mime_type:string|null;type:string;size?:number;file_size?:number;blob_name?:string|null;fromPayload?:boolean}>).map(doc => {
                       const isPdf = doc.mime_type === "application/pdf" || doc.file_name?.endsWith(".pdf");
                       const isImg = doc.mime_type?.startsWith("image/") || /\.(png|jpg|jpeg|gif|webp)$/i.test(doc.file_name || "");
                       const icon = isPdf ? "📄" : isImg ? "🖼️" : "📎";
-                      const hasUrl = !!doc.file_url;
+                      const hasUrl = !!(doc.file_url || doc.blob_name);
                       const rawSize = doc.size || doc.file_size;
                       const sizeStr = rawSize ? (rawSize > 1024*1024 ? `${(rawSize/1024/1024).toFixed(1)} MB` : `${Math.round(rawSize/1024)} KB`) : null;
+                      const openFile = async (download = false) => {
+                        if (download) {
+                          const ok = await forceDownloadFile({
+                            fileName: doc.file_name,
+                            url: doc.file_url,
+                            blobName: doc.blob_name,
+                          });
+                          if (!ok) showToast("Download failed.");
+                          return;
+                        }
+                        const resolved = await resolveFileUrl({ url: doc.file_url, blobName: doc.blob_name });
+                        if (!resolved) {
+                          showToast("File URL unavailable.");
+                          return;
+                        }
+                        setPreviewDoc({ url: resolved, name: doc.file_name, blobName: doc.blob_name || undefined });
+                      };
                       return (
                         <div key={doc.id} className="flex items-center justify-between p-3 bg-blue-50 border border-blue-100 rounded-xl">
                           <div className="flex items-center gap-3 min-w-0">
@@ -653,28 +1146,27 @@ function SubmissionsTab({
                               <p className="text-xs text-gray-500 capitalize">
                                 {doc.type?.replace(/_/g, " ")}
                                 {sizeStr ? ` · ${sizeStr}` : ""}
-                                {doc.fromPayload && !hasUrl ? " · stored in Azure" : ""}
+                                {hasUrl ? " · Azure" : ""}
                               </p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2 ml-3 flex-shrink-0">
                             {hasUrl ? (
                               <>
-                                <a
-                                  href={doc.file_url}
-                                  target="_blank"
-                                  rel="noreferrer"
+                                <button
+                                  type="button"
+                                  onClick={() => openFile(false)}
                                   className="text-xs px-3 py-1 bg-white border border-blue-200 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
                                 >
                                   View
-                                </a>
-                                <a
-                                  href={doc.file_url}
-                                  download={doc.file_name}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => openFile(true)}
                                   className="text-xs px-3 py-1 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
                                 >
                                   Download
-                                </a>
+                                </button>
                               </>
                             ) : (
                               <span className="text-xs px-3 py-1 bg-amber-50 border border-amber-200 text-amber-600 rounded-lg">
@@ -688,6 +1180,59 @@ function SubmissionsTab({
                   </div>
                 </div>
               )}
+
+              {/* Internal Notes (never emailed) */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">Internal Notes</h3>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                    Private · not emailed to client
+                  </span>
+                </div>
+                {notes.length === 0 ? (
+                  <div className="bg-slate-50 rounded-xl p-4 text-center text-sm text-gray-400 mb-3">
+                    No internal notes yet
+                  </div>
+                ) : (
+                  <div className="space-y-2 mb-3">
+                    {notes.map(n => (
+                      <div key={n.id} className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                        <div className="flex items-start justify-between gap-3 mb-1">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="text-xs font-semibold text-slate-700">{n.author_name || "Admin"}</span>
+                            <span className="text-[10px] text-slate-400">{fmt(n.created_at)}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => deleteNote(n.id)}
+                            className="text-[10px] text-red-500 hover:text-red-600 flex-shrink-0"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                        <p className="text-sm text-slate-800 whitespace-pre-wrap leading-relaxed">{n.note}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div className="flex gap-2">
+                  <textarea
+                    value={noteText}
+                    onChange={e => setNoteText(e.target.value)}
+                    placeholder="Add a private note for your team..."
+                    rows={2}
+                    className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354] resize-none bg-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={addNote}
+                    disabled={noteSaving || !noteText.trim()}
+                    className="self-end px-4 py-2 bg-slate-800 text-white text-sm font-medium rounded-lg hover:bg-slate-700 disabled:opacity-50 transition-colors"
+                  >
+                    {noteSaving ? "Saving..." : "Add note"}
+                  </button>
+                </div>
+              </div>
 
               {/* Reply History */}
               <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Reply History</h3>
@@ -839,7 +1384,7 @@ function SubmissionsTab({
 }
 
 // ─── Support Tab ──────────────────────────────────────────────────────────────
-function SupportTab() {
+function SupportTab({ initialChatId = null }: { initialChatId?: number | null }) {
   const [chats, setChats]               = React.useState<SupportChat[]>([]);
   const [loading, setLoading]           = React.useState(true);
   const [selected, setSelected]         = React.useState<SupportChat | null>(null);
@@ -879,6 +1424,13 @@ function SupportTab() {
       setChatLoading(false);
     }
   };
+
+  React.useEffect(() => {
+    if (!initialChatId || !chats.length) return;
+    const match = chats.find(c => c.id === initialChatId);
+    if (match) loadChat(match);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialChatId, chats]);
 
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -1112,17 +1664,23 @@ interface Contact {
   created_at: string;
 }
 
-function ContactsTab() {
+function ContactsTab({ initialSearch = "" }: { initialSearch?: string }) {
   const [contacts, setContacts]         = React.useState<Contact[]>([]);
   const [loading, setLoading]           = React.useState(true);
   const [selected, setSelected]         = React.useState<Contact | null>(null);
   const [filter, setFilter]             = React.useState<"all"|"open"|"replied"|"closed">("all");
-  const [search, setSearch]             = React.useState("");
+  const [search, setSearch]             = React.useState(initialSearch);
   const [replyOpen, setReplyOpen]       = React.useState(false);
   const [replyMsg, setReplyMsg]         = React.useState("");
   const [replySubject, setReplySubject] = React.useState("");
   const [replySending, setReplySending] = React.useState(false);
   const [toast, setToast]               = React.useState("");
+
+  React.useEffect(() => {
+    setSearch(initialSearch || "");
+    setSelected(null);
+    setReplyOpen(false);
+  }, [initialSearch]);
 
   const load = React.useCallback(() => {
     setLoading(true);
@@ -1370,6 +1928,532 @@ function ContactsTab() {
             </div>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Payload Renderer ─────────────────────────────────────────────────────────
+
+/** Country code → full name (common EU + a few extras) */
+const COUNTRY_NAMES: Record<string, string> = {
+  LU: "Luxembourg", DE: "Germany", FR: "France", BE: "Belgium", NL: "Netherlands",
+  AT: "Austria", CH: "Switzerland", IT: "Italy", ES: "Spain", PT: "Portugal",
+  GB: "United Kingdom", IE: "Ireland", US: "United States", CA: "Canada",
+  SE: "Sweden", DK: "Denmark", NO: "Norway", FI: "Finland", PL: "Poland",
+  CZ: "Czech Republic", LV: "Latvia", LT: "Lithuania", EE: "Estonia",
+  GR: "Greece", HU: "Hungary", RO: "Romania", BG: "Bulgaria", SK: "Slovakia",
+  HR: "Croatia", SI: "Slovenia", CY: "Cyprus", MT: "Malta",
+  IN: "India", CN: "China", JP: "Japan", AU: "Australia", BR: "Brazil",
+  AE: "United Arab Emirates", SG: "Singapore", HK: "Hong Kong",
+};
+
+/** Keys to hide from the Submission Data table (already shown elsewhere or internal) */
+const HIDDEN_KEYS = new Set([
+  "id", "ids", "created_at", "createdAt", "updated_at", "updatedAt",
+  "user_ref", "userRef", "confirmation_number", "confirmationNumber",
+  "uploadedFiles", "files", "attachments", "documents",  // shown in Attached Files section
+  "status", "service", "service_type", "serviceType",
+]);
+
+/** Keys that contain person arrays (directors, shareholders, managers, beneficiaries) */
+const PERSON_ARRAY_KEYS = new Set([
+  "directors", "Directors", "shareholders", "Shareholders",
+  "managers", "Managers", "beneficiaries", "Beneficiaries",
+  "contacts", "signatories",
+]);
+
+/** Keys that contain consent/boolean maps */
+const CONSENT_KEYS = new Set([
+  "consents", "Consents", "consent", "agreements", "termsAccepted",
+]);
+
+/** Keys that contain upload-related data */
+const UPLOAD_KEYS = new Set([
+  "uploads", "Uploads", "upload",
+]);
+
+/** Convert camelCase / snake_case key into a readable label */
+function prettyLabel(key: string): string {
+  return key
+    .replace(/([a-z])([A-Z])/g, "$1 $2")  // camelCase → camel Case
+    .replace(/_/g, " ")                     // snake_case → snake case
+    .replace(/\b\w/g, c => c.toUpperCase()) // capitalize words
+    .replace(/\bId\b/g, "ID")
+    .replace(/\bUrl\b/g, "URL")
+    .replace(/\bDob\b/g, "Date of Birth")
+    .replace(/\bPep\b/g, "PEP")
+    .replace(/\bIs Pep\b/gi, "Politically Exposed Person")
+    .trim();
+}
+
+/** Check if a string looks like an ISO date */
+function isIsoDate(v: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}(T|\s)/.test(v);
+}
+
+/** Format a single primitive value nicely */
+function formatValue(key: string, value: unknown): React.ReactNode {
+  if (value === null || value === undefined || value === "") return null;
+
+  // Booleans
+  if (typeof value === "boolean") {
+    return value
+      ? <span className="inline-flex items-center gap-1 text-green-700"><span className="text-green-500">✓</span> Yes</span>
+      : <span className="inline-flex items-center gap-1 text-red-600"><span className="text-red-400">✗</span> No</span>;
+  }
+
+  // Numbers
+  if (typeof value === "number") {
+    // amounts / capital
+    if (/amount|capital|price|fee|cost|salary|revenue/i.test(key) && value > 0) {
+      return `€ ${value.toLocaleString()}`;
+    }
+    if (/percent|share/i.test(key)) {
+      return `${value}%`;
+    }
+    return String(value);
+  }
+
+  if (typeof value === "string") {
+    // Country codes (2-letter uppercase)
+    if (/^[A-Z]{2}$/.test(value) && COUNTRY_NAMES[value] &&
+        /country|nationality|nation|citizenship/i.test(key)) {
+      return `${COUNTRY_NAMES[value]} (${value})`;
+    }
+    // ISO dates
+    if (isIsoDate(value)) {
+      try {
+        const d = new Date(value);
+        // If it has time component, show date+time; otherwise just date
+        if (value.includes("T") && !value.endsWith("T00:00:00.000Z")) {
+          return d.toLocaleDateString("en-GB", {
+            day: "2-digit", month: "short", year: "numeric",
+            hour: "2-digit", minute: "2-digit",
+          });
+        }
+        return d.toLocaleDateString("en-GB", {
+          day: "2-digit", month: "short", year: "numeric",
+        });
+      } catch { return value; }
+    }
+    // Email addresses — make clickable
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      return <a href={`mailto:${value}`} className="text-[#b59354] hover:underline">{value}</a>;
+    }
+    // Phone numbers — make clickable
+    if (/^\+?\d[\d\s\-()]{6,}$/.test(value.trim())) {
+      return <a href={`tel:${value.replace(/\s/g, "")}`} className="text-[#b59354] hover:underline">{value}</a>;
+    }
+    // URLs
+    if (/^https?:\/\//i.test(value)) {
+      return <a href={value} target="_blank" rel="noreferrer" className="text-[#b59354] hover:underline break-all">{value}</a>;
+    }
+    return value;
+  }
+
+  return String(value);
+}
+
+/** Renders a single person (director/shareholder/manager) as a mini card */
+function PersonCard({ person, index, role }: { person: Record<string, unknown>; index: number; role: string }) {
+  const name = [person.firstName, person.lastName].filter(Boolean).join(" ") || `${role} ${index + 1}`;
+  const personFields: Array<[string, unknown]> = Object.entries(person).filter(
+    ([k, v]) => v !== null && v !== undefined && v !== "" && !["id", "firstName", "lastName"].includes(k)
+  );
+
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl p-4">
+      <div className="flex items-center gap-2 mb-2">
+        <span className="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold">
+          {(name[0] || "?").toUpperCase()}
+        </span>
+        <div>
+          <p className="text-sm font-semibold text-gray-900">{name}</p>
+          {person.roles != null && (
+            <p className="text-[10px] text-gray-500">
+              {Array.isArray(person.roles) ? (person.roles as string[]).join(", ") : String(person.roles)}
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+        {personFields.map(([k, v]) => {
+          if (k === "roles") return null; // already shown above
+          const formatted = formatValue(k, v);
+          if (formatted === null) return null;
+          return (
+            <div key={k} className="py-1">
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider">{prettyLabel(k)}</p>
+              <p className="text-xs text-gray-800">{formatted}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** Renders a consent/boolean map as a checklist */
+function ConsentDisplay({ consents }: { consents: Record<string, unknown> }) {
+  return (
+    <div className="space-y-1.5">
+      {Object.entries(consents).map(([k, v]) => {
+        if (v === null || v === undefined) return null;
+        const checked = v === true || v === "true";
+        return (
+          <div key={k} className="flex items-center gap-2">
+            <span className={`w-5 h-5 rounded-md flex items-center justify-center text-xs ${
+              checked ? "bg-green-100 text-green-600" : "bg-red-100 text-red-500"
+            }`}>
+              {checked ? "✓" : "✗"}
+            </span>
+            <span className="text-sm text-gray-700">{prettyLabel(k)}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Renders uploads section with view/download buttons */
+function UploadSection({ uploads, onPreview }: { uploads: Record<string, unknown>; onPreview?: (url: string, name: string, blobName?: string) => void }) {
+  // uploads may have { ids: [...], capitalCertificate: ..., leaseOrDomiciliation: [...] }
+  const items: Array<{ label: string; files: Array<{ name: string; url?: string; id?: string; blobName?: string }> }> = [];
+
+  for (const [k, v] of Object.entries(uploads)) {
+    if (k === "ids" && Array.isArray(v)) {
+      const files = v.filter(f => f && (f.filename || f.name || f.id)).map(f => ({
+        name: f.filename || f.name || f.id || "File",
+        url: f.url || f.fileUrl,
+        id: f.id,
+        blobName: f.blobName,
+      }));
+      if (files.length > 0) items.push({ label: "Uploaded Documents", files });
+    } else if (Array.isArray(v) && v.length > 0) {
+      const files = v.filter(f => f && typeof f === "object").map(f => ({
+        name: f.filename || f.name || f.id || "File",
+        url: f.url || f.fileUrl,
+        id: f.id,
+        blobName: f.blobName,
+      }));
+      if (files.length > 0) items.push({ label: prettyLabel(k), files });
+    } else if (v && typeof v === "object" && !Array.isArray(v)) {
+      const f = v as Record<string, unknown>;
+      if (f.filename || f.name || f.id) {
+        items.push({
+          label: prettyLabel(k),
+          files: [{
+            name: (f.filename || f.name || f.id || "File") as string,
+            url: (f.url || f.fileUrl) as string | undefined,
+            blobName: f.blobName as string | undefined,
+          }],
+        });
+      }
+    } else if (v === null || v === undefined || (Array.isArray(v) && v.length === 0)) {
+      items.push({ label: prettyLabel(k), files: [] });
+    }
+  }
+
+  if (items.length === 0 || items.every(i => i.files.length === 0)) {
+    return <span className="text-sm text-gray-400 italic">No files uploaded</span>;
+  }
+
+  return (
+    <div className="space-y-2">
+      {items.map((group, gi) => (
+        <div key={gi}>
+          {items.length > 1 && <p className="text-xs text-gray-500 font-medium mb-1">{group.label}</p>}
+          {group.files.length === 0 ? (
+            <p className="text-xs text-gray-400 italic">None</p>
+          ) : (
+            <div className="space-y-1.5">
+              {group.files.map((file, fi) => {
+                const canOpen = !!(file.url || file.blobName);
+                return (
+                <div key={fi} className="flex items-center justify-between p-2.5 bg-blue-50 border border-blue-100 rounded-lg">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-base">{file.name.endsWith(".pdf") ? "📄" : /\.(png|jpg|jpeg|gif|webp)$/i.test(file.name) ? "🖼️" : "📎"}</span>
+                    <span className="text-sm text-gray-800 truncate">{file.name}</span>
+                  </div>
+                  {canOpen ? (
+                    <div className="flex items-center gap-1.5 ml-2 flex-shrink-0">
+                      <button type="button" onClick={() => onPreview?.(file.url || "", file.name, file.blobName)} className="text-xs px-2.5 py-1 bg-white border border-blue-200 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                        View
+                      </button>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const ok = await forceDownloadFile({
+                            fileName: file.name,
+                            url: file.url,
+                            blobName: file.blobName,
+                          });
+                          if (!ok) console.warn("Download failed for", file.name);
+                        }}
+                        className="text-xs px-2.5 py-1 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        Download
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="text-[10px] px-2 py-0.5 bg-amber-50 border border-amber-200 text-amber-600 rounded-md ml-2">No URL</span>
+                  )}
+                </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Main payload renderer — replaces raw JSON.stringify display */
+function PayloadRenderer({ payload, onPreview }: { payload: Record<string, unknown>; onPreview?: (url: string, name: string, blobName?: string) => void }) {
+  // Separate entries into categories
+  const personSections: Array<{ key: string; label: string; items: Record<string, unknown>[] }> = [];
+  const consentSections: Array<{ key: string; label: string; data: Record<string, unknown> }> = [];
+  const uploadSections: Array<{ key: string; label: string; data: Record<string, unknown> }> = [];
+  const regularEntries: Array<[string, unknown]> = [];
+
+  for (const [key, value] of Object.entries(payload)) {
+    if (HIDDEN_KEYS.has(key)) continue;
+    if (value === null || value === undefined || value === "") continue;
+
+    // Empty arrays
+    if (Array.isArray(value) && value.length === 0) continue;
+
+    if (PERSON_ARRAY_KEYS.has(key) && Array.isArray(value)) {
+      personSections.push({ key, label: prettyLabel(key), items: value as Record<string, unknown>[] });
+    } else if (CONSENT_KEYS.has(key) && typeof value === "object" && !Array.isArray(value)) {
+      consentSections.push({ key, label: prettyLabel(key), data: value as Record<string, unknown> });
+    } else if (UPLOAD_KEYS.has(key) && typeof value === "object") {
+      uploadSections.push({ key, label: prettyLabel(key), data: value as Record<string, unknown> });
+    } else {
+      regularEntries.push([key, value]);
+    }
+  }
+
+  return (
+    <div className="space-y-5">
+      {/* Regular key-value pairs */}
+      {regularEntries.length > 0 && (
+        <table className="w-full text-sm">
+          <tbody>
+            {regularEntries.map(([key, value]) => {
+              // If it's an object/array that isn't handled above, render it nicely
+              if (typeof value === "object" && value !== null) {
+                // Nested object — render sub-fields
+                if (!Array.isArray(value)) {
+                  const obj = value as Record<string, unknown>;
+                  const subEntries = Object.entries(obj).filter(([, v]) => v !== null && v !== undefined && v !== "");
+                  if (subEntries.length === 0) return null;
+                  return (
+                    <tr key={key} className="border-b border-gray-100 last:border-0">
+                      <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{prettyLabel(key)}</td>
+                      <td className="py-2">
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                          {subEntries.map(([sk, sv]) => {
+                            const formatted = formatValue(sk, sv);
+                            if (formatted === null) return null;
+                            return (
+                              <div key={sk}>
+                                <span className="text-[10px] text-gray-400 uppercase tracking-wider">{prettyLabel(sk)}</span>
+                                <p className="text-sm text-gray-800">{formatted}</p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                }
+                // Array of primitives
+                if (Array.isArray(value)) {
+                  return (
+                    <tr key={key} className="border-b border-gray-100 last:border-0">
+                      <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{prettyLabel(key)}</td>
+                      <td className="py-2 text-gray-900">{(value as unknown[]).map(String).join(", ")}</td>
+                    </tr>
+                  );
+                }
+              }
+
+              const formatted = formatValue(key, value);
+              if (formatted === null) return null;
+              return (
+                <tr key={key} className="border-b border-gray-100 last:border-0">
+                  <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{prettyLabel(key)}</td>
+                  <td className="py-2 text-gray-900">{formatted}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+
+      {/* Person sections (directors, shareholders, managers) */}
+      {personSections.map(section => (
+        <div key={section.key}>
+          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
+            <span>👥</span> {section.label} ({section.items.length})
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {section.items.map((person, i) => (
+              <PersonCard key={i} person={person} index={i} role={section.label.replace(/s$/, "")} />
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* Consent sections */}
+      {consentSections.map(section => (
+        <div key={section.key}>
+          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
+            <span>📋</span> {section.label}
+          </h4>
+          <div className="bg-white border border-gray-200 rounded-xl p-3">
+            <ConsentDisplay consents={section.data} />
+          </div>
+        </div>
+      ))}
+
+      {/* Upload sections */}
+      {uploadSections.map(section => (
+        <div key={section.key}>
+          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
+            <span>📂</span> {section.label}
+          </h4>
+          <UploadSection uploads={section.data} onPreview={onPreview} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Document Preview Modal ──────────────────────────────────────────────────
+function DocumentPreviewModal({
+  url,
+  name,
+  blobName,
+  onClose,
+}: {
+  url: string;
+  name: string;
+  blobName?: string;
+  onClose: () => void;
+}) {
+  const isImage = /\.(png|jpg|jpeg|gif|webp|svg|bmp|ico)$/i.test(name) || /^data:image\//i.test(url);
+  const isPdf = /\.pdf$/i.test(name);
+  const [downloading, setDownloading] = React.useState(false);
+
+  const handleDownload = async () => {
+    setDownloading(true);
+    const ok = await forceDownloadFile({ fileName: name, url, blobName });
+    setDownloading(false);
+    if (!ok) {
+      // last resort: open URL (may view instead of download on cross-origin)
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  // Close on Escape
+  React.useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+        style={{ width: "min(90vw, 1000px)", height: "min(85vh, 800px)" }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200 bg-gray-50 flex-shrink-0">
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="text-lg">{isImage ? "🖼️" : isPdf ? "📄" : "📎"}</span>
+            <p className="text-sm font-semibold text-gray-800 truncate">{name}</p>
+          </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Open in new tab ↗
+            </a>
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={downloading}
+              className="text-xs px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            >
+              {downloading ? "Downloading…" : "Download"}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-200 hover:text-gray-700 transition-colors text-lg leading-none"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 flex items-center justify-center overflow-auto bg-gray-100 p-4">
+          {isImage ? (
+            <img
+              src={url}
+              alt={name}
+              className="max-w-full max-h-full object-contain rounded-lg shadow-md"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+                (e.target as HTMLImageElement).parentElement!.innerHTML =
+                  '<div class="text-center py-12"><p class="text-4xl mb-3">⚠️</p><p class="text-sm text-gray-500">Unable to load image</p></div>';
+              }}
+            />
+          ) : isPdf ? (
+            <iframe
+              src={url}
+              title={name}
+              className="w-full h-full rounded-lg border border-gray-200 bg-white"
+            />
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-5xl mb-4">📎</p>
+              <p className="text-gray-700 font-medium mb-1">{name}</p>
+              <p className="text-sm text-gray-500 mb-4">This file type cannot be previewed in the browser.</p>
+              <div className="flex items-center justify-center gap-3">
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-4 py-2 bg-[#b59354] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  Open in new tab
+                </a>
+                <button
+                  type="button"
+                  onClick={handleDownload}
+                  disabled={downloading}
+                  className="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  {downloading ? "Downloading…" : "Download"}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

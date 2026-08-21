@@ -278,29 +278,37 @@ export function Step7Documents({ dossier, updateDossier }: StepProps) {
         break;
     }
 
-    // Upload to temp store so file can be attached to admin email
+    // Upload to Azure Blob Storage (permanent) so admin can view/download
     try {
       const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
       const form = new FormData();
       form.append("file", file);
-      const res = await fetch(`${API}/api/upload/temp`, { method: "POST", body: form });
+      form.append("type", `company_formation/${type}`);
+      const res = await fetch(`${API}/api/upload`, { method: "POST", body: form });
       const json = res.ok ? await res.json() : null;
-      if (json?.tempId) {
-        const withTempId = { ...uploadedFile, tempId: json.tempId };
+      if (json?.data?.fileUrl) {
+        const withAzure: UploadedFile = {
+          ...uploadedFile,
+          url: json.data.fileUrl,
+          fileUrl: json.data.fileUrl,
+          blobName: json.data.blobName,
+        };
         switch (type) {
           case "id":
-            setIdDocs((prev) => prev.map((f) => f.id === uploadedFile.id ? withTempId : f));
+            setIdDocs((prev) => prev.map((f) => (f.id === uploadedFile.id ? withAzure : f)));
             break;
           case "lease":
-            setLeaseDocs((prev) => prev.map((f) => f.id === uploadedFile.id ? withTempId : f));
+            setLeaseDocs((prev) => prev.map((f) => (f.id === uploadedFile.id ? withAzure : f)));
             break;
           case "capital":
-            setCapitalCert(withTempId);
+            setCapitalCert(withAzure);
             break;
         }
+      } else {
+        console.warn("Azure upload returned no fileUrl for", file.name, json);
       }
     } catch {
-      console.warn("Temp upload failed for", file.name);
+      console.warn("Azure upload failed for", file.name);
     }
 
     // Reset input
@@ -527,7 +535,20 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
           ? `${primaryPerson.firstName} ${primaryPerson.lastName}`.trim()
           : "Applicant";
 
-        // Collect all tempIds from uploaded documents
+        // Collect Azure blob refs for email attachments (files stored permanently in Azure)
+        const azureFiles = [
+          ...(dossier.uploads?.ids || []),
+          ...(dossier.uploads?.leaseOrDomiciliation || []),
+          ...(dossier.uploads?.capitalCertificate ? [dossier.uploads.capitalCertificate] : []),
+        ]
+          .filter((f: any) => f?.blobName)
+          .map((f: any) => ({
+            blobName: f.blobName,
+            filename: f.filename,
+            mimeType: f.type,
+          }));
+
+        // Legacy tempIds (if any older uploads still have them)
         const allTempIds = [
           ...(dossier.uploads?.ids || []).map((f: any) => f.tempId).filter(Boolean),
           ...(dossier.uploads?.leaseOrDomiciliation || []).map((f: any) => f.tempId).filter(Boolean),
@@ -561,6 +582,7 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
               .filter(Boolean)
               .join(", "),
             tempIds: allTempIds,
+            azureFiles,
           }),
         });
       } catch (emailErr) {

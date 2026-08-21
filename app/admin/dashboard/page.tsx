@@ -1047,17 +1047,6 @@ function SubmissionsTab({
                   <p className="text-xs text-gray-400 mt-1">Submitted: {fmt(selected.createdAt)}</p>
                 </div>
                 <div className="flex flex-col items-end gap-2">
-                  {selected.clientEmail && (
-                    <button
-                      onClick={() => setReplyOpen(true)}
-                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#b59354] to-[#886844] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                      </svg>
-                      Reply via Email
-                    </button>
-                  )}
                   {STATUS_OPTIONS[selected.source] && (
                     <div className="flex items-center gap-2">
                       <label className="text-xs text-gray-500">Status</label>
@@ -1261,6 +1250,21 @@ function SubmissionsTab({
                       <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">{r.message}</p>
                     </div>
                   ))}
+                </div>
+              )}
+
+              {/* Reply via Email button at the bottom */}
+              {selected.clientEmail && !replyOpen && (
+                <div className="mt-8 flex justify-end">
+                  <button
+                    onClick={() => setReplyOpen(true)}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#b59354] to-[#886844] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity shadow-sm"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                    </svg>
+                    Reply via Email
+                  </button>
                 </div>
               )}
             </div>

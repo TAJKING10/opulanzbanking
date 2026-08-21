@@ -174,8 +174,22 @@ async function forceDownloadFile(opts: {
         `${API}/api/admin/download-file?blobName=${encodeURIComponent(opts.blobName)}&fileName=${encodeURIComponent(opts.fileName)}`,
         { headers: { "x-admin-token": getToken() } }
       );
-      if (!res.ok) throw new Error(`Download failed (${res.status})`);
-      blob = await res.blob();
+      if (res.ok) {
+        blob = await res.blob();
+      } else if (opts.url) {
+        // Live often returns 503 when AZURE_STORAGE_* env vars are missing — fall back to stored URL
+        console.warn(`download-file returned ${res.status}; falling back to stored URL`);
+        const fallback = await fetch(opts.url);
+        if (!fallback.ok) throw new Error(`Download failed (${res.status})`);
+        blob = await fallback.blob();
+      } else {
+        let detail = "";
+        try {
+          const errJson = await res.json();
+          detail = errJson?.error ? `: ${errJson.error}` : "";
+        } catch { /* ignore */ }
+        throw new Error(`Download failed (${res.status})${detail}`);
+      }
     } else if (opts.url) {
       const res = await fetch(opts.url);
       if (!res.ok) throw new Error(`Download failed (${res.status})`);
@@ -703,7 +717,7 @@ function SubmissionsTab({
   const [replyMsg, setReplyMsg]         = React.useState("");
   const [replySubject, setReplySubject] = React.useState("");
   const [toast, setToast]               = React.useState("");
-  const [replies, setReplies]           = React.useState<Array<{id:number;subject:string|null;message:string;sent_at:string}>>([]);
+  const [replies, setReplies]           = React.useState<Array<{id:number;subject:string|null;message:string;sent_at:string;attachments?:any[]}>>([]);
   const [notes, setNotes]               = React.useState<Array<{id:number;author_name:string;note:string;created_at:string}>>([]);
   const [noteText, setNoteText]         = React.useState("");
   const [noteSaving, setNoteSaving]     = React.useState(false);
@@ -896,10 +910,14 @@ function SubmissionsTab({
       form.append("message", replyMsg);
       // Attach uploaded files
       attachFiles.forEach(f => form.append("attachments", f));
-      // Attach selected existing docs by URL
-      const selectedDocs = docs
+      // Attach selected existing docs by URL / blobName
+      const selectedDocs = (docs as Array<{id:number;file_name:string;file_url:string;blob_name?:string|null}>)
         .filter(d => attachDocs.includes(d.id))
-        .map(d => ({ name: d.file_name, url: d.file_url }));
+        .map(d => ({
+          name: d.file_name,
+          url: d.file_url || "",
+          blobName: d.blob_name || null,
+        }));
       form.append("existingDocUrls", JSON.stringify(selectedDocs));
 
       const res = await fetch(`${API}/api/admin/reply`, {
@@ -1247,7 +1265,73 @@ function SubmissionsTab({
                       {r.subject && (
                         <p className="text-xs font-medium text-gray-600 mb-1">Subject: {r.subject}</p>
                       )}
-                      <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">{r.message}</p>
+                      <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                        {String(r.message || "").replace(/\n\n?\[Attachments:[^\]]*\]\s*$/i, "").trim()}
+                      </p>
+                      {(() => {
+                        const structured = Array.isArray(r.attachments) ? r.attachments.filter(Boolean) : [];
+                        // Legacy replies only stored names in the message body
+                        const legacyMatch = String(r.message || "").match(/\[Attachments:\s*([^\]]+)\]/i);
+                        const legacy = legacyMatch
+                          ? legacyMatch[1].split(",").map(s => s.trim()).filter(Boolean).map(filename => ({ filename, url: null, blobName: null }))
+                          : [];
+                        const atts = structured.length > 0 ? structured : legacy;
+                        if (atts.length === 0) return null;
+                        return (
+                          <div className="mt-3 pt-3 border-t border-[#b59354]/10 space-y-2">
+                            <p className="text-[10px] font-semibold uppercase tracking-wide text-[#886844]">Attachments ({atts.length})</p>
+                            {atts.map((att: any, ai: number) => {
+                              const filename = att.filename || att.fileName || att.name || "file";
+                              const blobName = att.blobName || att.blob_name || null;
+                              const url = att.url || att.fileUrl || att.file_url || null;
+                              const canOpen = !!(blobName || url);
+                              const isPdf = /\.pdf$/i.test(filename);
+                              const isImg = /\.(png|jpg|jpeg|gif|webp)$/i.test(filename);
+                              const icon = isPdf ? "📄" : isImg ? "🖼️" : "📎";
+                              return (
+                                <div
+                                  key={ai}
+                                  className="flex items-center justify-between gap-2 p-2.5 bg-white border border-[#b59354]/20 rounded-lg"
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span>{icon}</span>
+                                    <span className="text-xs text-gray-800 truncate">{filename}</span>
+                                  </div>
+                                  {canOpen ? (
+                                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                                      <button
+                                        type="button"
+                                        onClick={async () => {
+                                          const resolved = await resolveFileUrl({ url, blobName });
+                                          if (resolved) setPreviewDoc({ url: resolved, name: filename, blobName: blobName || undefined });
+                                          else showToast("Attachment unavailable.");
+                                        }}
+                                        className="text-[11px] px-2.5 py-1 border border-blue-200 text-blue-600 rounded-md hover:bg-blue-50"
+                                      >
+                                        View
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={async () => {
+                                          const ok = await forceDownloadFile({ fileName: filename, url, blobName });
+                                          if (!ok) showToast("Download failed.");
+                                        }}
+                                        className="text-[11px] px-2.5 py-1 border border-gray-200 text-gray-600 rounded-md hover:bg-gray-50"
+                                      >
+                                        Download
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <span className="text-[10px] px-2 py-1 bg-amber-50 border border-amber-200 text-amber-600 rounded-md">
+                                      No file stored
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      })()}
                     </div>
                   ))}
                 </div>

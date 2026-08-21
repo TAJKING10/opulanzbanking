@@ -54,6 +54,7 @@ function optionalMultipart(req, res, next) {
         sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
       CREATE INDEX IF NOT EXISTS idx_submission_replies_ref ON submission_replies(submission_ref);
+      ALTER TABLE submission_replies ADD COLUMN IF NOT EXISTS attachments JSONB;
 
       CREATE TABLE IF NOT EXISTS support_contacts (
         id SERIAL PRIMARY KEY,
@@ -686,12 +687,36 @@ router.post('/reply', adminAuth, optionalMultipart, async (req, res) => {
 
     // Build attachments: uploaded files + any existingDocUrls fetched from Azure
     const mailAttachments = [];
+    const dbAttachments = [];
 
-    // 1. Files uploaded directly in the form
+    // 1. Files uploaded directly in the form — upload them permanently to Azure
     if (req.files && req.files.length > 0) {
-      req.files.forEach(f => {
+      for (const f of req.files) {
+        const safeName = f.originalname.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+        const blobPath = `reply-attachments/${Date.now()}-${safeName}`;
+        let uploadResult;
+
+        try {
+          if (azureStorage.isConfigured) {
+            uploadResult = await azureStorage.uploadDocument(f.buffer, blobPath, f.mimetype);
+          } else {
+            uploadResult = {
+              url: `http://localhost:5000/mock-docs/mock-${Date.now()}-${safeName}`,
+              blobName: `mock-${Date.now()}-${safeName}`,
+            };
+          }
+        } catch (upErr) {
+          console.warn('⚠️ Azure upload failed for reply attachment:', upErr.message);
+          uploadResult = { url: '', blobName: '' };
+        }
+
         mailAttachments.push({ filename: f.originalname, content: f.buffer, contentType: f.mimetype });
-      });
+        dbAttachments.push({
+          filename: f.originalname,
+          url: uploadResult.url || null,
+          blobName: uploadResult.blobName || null,
+        });
+      }
     }
 
     // 2. Existing document URLs passed from the frontend (fetch and attach)
@@ -702,16 +727,44 @@ router.post('/reply', adminAuth, optionalMultipart, async (req, res) => {
 
     for (const doc of existingDocUrls) {
       try {
-        const buf = await new Promise((resolve, reject) => {
-          const mod = doc.url.startsWith('https') ? https : http;
-          mod.get(doc.url, r => {
-            const chunks = [];
-            r.on('data', c => chunks.push(c));
-            r.on('end', () => resolve(Buffer.concat(chunks)));
-            r.on('error', reject);
-          }).on('error', reject);
-        });
+        let buf = null;
+
+        // Prefer Azure blob download when blobName is available (more reliable than SAS URL fetch)
+        if (doc.blobName && azureStorage.isConfigured) {
+          try {
+            buf = await azureStorage.downloadDocument(doc.blobName);
+          } catch (azureErr) {
+            console.warn(`Azure download failed for ${doc.name}:`, azureErr.message);
+          }
+        }
+
+        if (!buf && doc.url) {
+          buf = await new Promise((resolve, reject) => {
+            const mod = doc.url.startsWith('https') ? https : http;
+            mod.get(doc.url, r => {
+              if (r.statusCode && r.statusCode >= 400) {
+                reject(new Error(`HTTP ${r.statusCode}`));
+                return;
+              }
+              const chunks = [];
+              r.on('data', c => chunks.push(c));
+              r.on('end', () => resolve(Buffer.concat(chunks)));
+              r.on('error', reject);
+            }).on('error', reject);
+          });
+        }
+
+        if (!buf) {
+          console.warn(`Could not load existing doc ${doc.name} — skipped`);
+          continue;
+        }
+
         mailAttachments.push({ filename: doc.name, content: buf });
+        dbAttachments.push({
+          filename: doc.name,
+          url: doc.url || null,
+          blobName: doc.blobName || null,
+        });
       } catch (e) {
         console.warn(`Could not fetch doc ${doc.name}:`, e.message);
       }
@@ -729,17 +782,27 @@ router.post('/reply', adminAuth, optionalMultipart, async (req, res) => {
 
     await transporter.sendMail(mailOptions);
 
-    // Save reply to DB
-    const attachmentNames = mailAttachments.map(a => a.filename).join(', ');
-    await pool.query(
-      `INSERT INTO submission_replies (submission_ref, service_type, to_email, to_name, subject, message)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [submissionRef || toEmail, serviceType || 'general', toEmail, toName || null,
-       subject || null, message + (attachmentNames ? `\n\n[Attachments: ${attachmentNames}]` : '')]
-    ).catch(err => console.warn('Could not save reply to DB:', err.message));
+    // Save reply to DB (including structured attachment metadata for View/Download in admin)
+    try {
+      await pool.query(
+        `INSERT INTO submission_replies (submission_ref, service_type, to_email, to_name, subject, message, attachments)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [submissionRef || toEmail, serviceType || 'general', toEmail, toName || null,
+         subject || null, message, JSON.stringify(dbAttachments)]
+      );
+    } catch (err) {
+      console.error('Could not save reply to DB:', err.message);
+      // Fallback without attachments column (older DBs)
+      await pool.query(
+        `INSERT INTO submission_replies (submission_ref, service_type, to_email, to_name, subject, message)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [submissionRef || toEmail, serviceType || 'general', toEmail, toName || null,
+         subject || null, message]
+      ).catch(e2 => console.error('Reply DB fallback also failed:', e2.message));
+    }
 
-    console.log(`[Admin Reply] → ${toEmail} | replyTo: ${fromInbox}`);
-    res.json({ success: true });
+    console.log(`[Admin Reply] → ${toEmail} | replyTo: ${fromInbox}${dbAttachments.length ? ` | ${dbAttachments.length} attachment(s)` : ''}`);
+    res.json({ success: true, attachments: dbAttachments });
   } catch (err) {
     console.error('Admin reply error:', err.message);
     res.status(500).json({ success: false, error: err.message });
@@ -807,7 +870,10 @@ router.get('/file-url', adminAuth, async (req, res) => {
       return res.status(400).json({ success: false, error: 'blobName query param required' });
     }
     if (!azureStorage.isConfigured) {
-      return res.status(503).json({ success: false, error: 'Azure Storage is not configured' });
+      return res.status(503).json({
+        success: false,
+        error: 'Azure Storage is not configured on this server. Set AZURE_STORAGE_CONNECTION_STRING and AZURE_STORAGE_CONTAINER_NAME, then restart.',
+      });
     }
     const url = azureStorage.getSasUrl(blobName, 60);
     if (!url) {
@@ -832,7 +898,10 @@ router.get('/download-file', adminAuth, async (req, res) => {
       return res.status(400).json({ success: false, error: 'blobName query param required' });
     }
     if (!azureStorage.isConfigured) {
-      return res.status(503).json({ success: false, error: 'Azure Storage is not configured' });
+      return res.status(503).json({
+        success: false,
+        error: 'Azure Storage is not configured on this server. Set AZURE_STORAGE_CONNECTION_STRING and AZURE_STORAGE_CONTAINER_NAME, then restart.',
+      });
     }
 
     const buffer = await azureStorage.downloadDocument(blobName);

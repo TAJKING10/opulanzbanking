@@ -152,7 +152,6 @@ export function MortgageSimulator({ locale }: { locale: string }) {
   // Applicant
   const [hasCoApplicant, setHasCoApplicant] = React.useState(false);
   const [income, setIncome] = React.useState(5000);
-  const [coIncome, setCoIncome] = React.useState(3000);
   const [dependents, setDependents] = React.useState(0);
 
   // Loan
@@ -164,15 +163,15 @@ export function MortgageSimulator({ locale }: { locale: string }) {
   const [existing, setExisting] = React.useState(0);
 
   const { result, totalIncome, maxMonthly } = computeResult(
-    income, coIncome, hasCoApplicant, dependents,
+    income, 0, false, dependents,
     existing, duration, rate, contribAmount, contribMode, contribPct,
   );
 
   // Build warnings
   const warnings: string[] = [];
-  if (totalIncome > 0) {
+  if (income > 0) {
     const minRequired = hasCoApplicant ? MIN_INCOME_JOINT : MIN_INCOME_SOLO;
-    if (totalIncome < minRequired) {
+    if (income < minRequired) {
       warnings.push(hasCoApplicant ? t("warnings.minIncomeJoint") : t("warnings.minIncomeSolo"));
     }
   }
@@ -247,33 +246,18 @@ export function MortgageSimulator({ locale }: { locale: string }) {
                 </button>
               </div>
 
-              {/* Primary income */}
+              {/* Income — single field, label changes based on applicant type */}
               <SliderField
-                label={hasCoApplicant ? t("inputs.incomeYours") : t("inputs.income")}
+                label={hasCoApplicant ? t("inputs.incomeCombined") : t("inputs.income")}
                 value={income}
                 displayValue={`€${income.toLocaleString()}`}
                 min={1000}
-                max={20000}
+                max={30000}
                 step={500}
                 minLabel="€1,000"
-                maxLabel="€20,000"
+                maxLabel="€30,000"
                 onChange={setIncome}
               />
-
-              {/* Co-applicant income (conditional) */}
-              {hasCoApplicant && (
-                <SliderField
-                  label={t("inputs.coIncome")}
-                  value={coIncome}
-                  displayValue={`€${coIncome.toLocaleString()}`}
-                  min={500}
-                  max={20000}
-                  step={500}
-                  minLabel="€500"
-                  maxLabel="€20,000"
-                  onChange={setCoIncome}
-                />
-              )}
 
               {/* Dependents */}
               <div>

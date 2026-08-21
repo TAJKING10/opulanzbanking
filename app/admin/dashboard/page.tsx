@@ -140,7 +140,7 @@ function getToken() {
   return localStorage.getItem("admin_token") || "";
 }
 
-/** Resolve a viewable/downloadable URL — refreshes Azure SAS via blobName when needed */
+/** Resolve a viewable URL — refreshes Azure SAS via blobName when needed */
 async function resolveFileUrl(opts: { url?: string | null; blobName?: string | null }): Promise<string | null> {
   if (opts.blobName) {
     try {
@@ -154,6 +154,49 @@ async function resolveFileUrl(opts: { url?: string | null; blobName?: string | n
     }
   }
   return opts.url || null;
+}
+
+/**
+ * Force a real file download.
+ * Cross-origin Azure URLs ignore the HTML `download` attribute and just open in a tab —
+ * so we stream via our same-origin admin proxy whenever blobName is available.
+ */
+async function forceDownloadFile(opts: {
+  fileName: string;
+  url?: string | null;
+  blobName?: string | null;
+}): Promise<boolean> {
+  try {
+    let blob: Blob | null = null;
+
+    if (opts.blobName) {
+      const res = await fetch(
+        `${API}/api/admin/download-file?blobName=${encodeURIComponent(opts.blobName)}&fileName=${encodeURIComponent(opts.fileName)}`,
+        { headers: { "x-admin-token": getToken() } }
+      );
+      if (!res.ok) throw new Error(`Download failed (${res.status})`);
+      blob = await res.blob();
+    } else if (opts.url) {
+      const res = await fetch(opts.url);
+      if (!res.ok) throw new Error(`Download failed (${res.status})`);
+      blob = await res.blob();
+    }
+
+    if (!blob) return false;
+
+    const objectUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    a.download = opts.fileName || "download";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(objectUrl);
+    return true;
+  } catch (err) {
+    console.error("forceDownloadFile failed:", err);
+    return false;
+  }
 }
 
 function fmt(date: string) {
@@ -669,7 +712,7 @@ function SubmissionsTab({
   const [attachDocs, setAttachDocs]     = React.useState<number[]>([]);
   const [statusUpdating, setStatusUpdating] = React.useState(false);
   const [rejectReason, setRejectReason]  = React.useState("");
-  const [previewDoc, setPreviewDoc]     = React.useState<{ url: string; name: string } | null>(null);
+  const [previewDoc, setPreviewDoc]     = React.useState<{ url: string; name: string; blobName?: string } | null>(null);
   const fileInputRef                    = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -902,6 +945,7 @@ function SubmissionsTab({
         <DocumentPreviewModal
           url={previewDoc.url}
           name={previewDoc.name}
+          blobName={previewDoc.blobName}
           onClose={() => setPreviewDoc(null)}
         />
       )}
@@ -1058,7 +1102,7 @@ function SubmissionsTab({
                   payload={selected.payload || {}}
                   onPreview={async (url, name, blobName) => {
                     const resolved = await resolveFileUrl({ url, blobName });
-                    if (resolved) setPreviewDoc({ url: resolved, name });
+                    if (resolved) setPreviewDoc({ url: resolved, name, blobName });
                     else showToast("File URL unavailable.");
                   }}
                 />
@@ -1077,21 +1121,21 @@ function SubmissionsTab({
                       const rawSize = doc.size || doc.file_size;
                       const sizeStr = rawSize ? (rawSize > 1024*1024 ? `${(rawSize/1024/1024).toFixed(1)} MB` : `${Math.round(rawSize/1024)} KB`) : null;
                       const openFile = async (download = false) => {
+                        if (download) {
+                          const ok = await forceDownloadFile({
+                            fileName: doc.file_name,
+                            url: doc.file_url,
+                            blobName: doc.blob_name,
+                          });
+                          if (!ok) showToast("Download failed.");
+                          return;
+                        }
                         const resolved = await resolveFileUrl({ url: doc.file_url, blobName: doc.blob_name });
                         if (!resolved) {
                           showToast("File URL unavailable.");
                           return;
                         }
-                        if (download) {
-                          const a = document.createElement("a");
-                          a.href = resolved;
-                          a.download = doc.file_name;
-                          a.target = "_blank";
-                          a.rel = "noopener noreferrer";
-                          a.click();
-                        } else {
-                          setPreviewDoc({ url: resolved, name: doc.file_name });
-                        }
+                        setPreviewDoc({ url: resolved, name: doc.file_name, blobName: doc.blob_name || undefined });
                       };
                       return (
                         <div key={doc.id} className="flex items-center justify-between p-3 bg-blue-50 border border-blue-100 rounded-xl">
@@ -2140,14 +2184,12 @@ function UploadSection({ uploads, onPreview }: { uploads: Record<string, unknown
                       <button
                         type="button"
                         onClick={async () => {
-                          const resolved = await resolveFileUrl({ url: file.url, blobName: file.blobName });
-                          if (!resolved) return;
-                          const a = document.createElement("a");
-                          a.href = resolved;
-                          a.download = file.name;
-                          a.target = "_blank";
-                          a.rel = "noopener noreferrer";
-                          a.click();
+                          const ok = await forceDownloadFile({
+                            fileName: file.name,
+                            url: file.url,
+                            blobName: file.blobName,
+                          });
+                          if (!ok) console.warn("Download failed for", file.name);
                         }}
                         className="text-xs px-2.5 py-1 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
                       >
@@ -2292,9 +2334,30 @@ function PayloadRenderer({ payload, onPreview }: { payload: Record<string, unkno
 }
 
 // ─── Document Preview Modal ──────────────────────────────────────────────────
-function DocumentPreviewModal({ url, name, onClose }: { url: string; name: string; onClose: () => void }) {
+function DocumentPreviewModal({
+  url,
+  name,
+  blobName,
+  onClose,
+}: {
+  url: string;
+  name: string;
+  blobName?: string;
+  onClose: () => void;
+}) {
   const isImage = /\.(png|jpg|jpeg|gif|webp|svg|bmp|ico)$/i.test(name) || /^data:image\//i.test(url);
   const isPdf = /\.pdf$/i.test(name);
+  const [downloading, setDownloading] = React.useState(false);
+
+  const handleDownload = async () => {
+    setDownloading(true);
+    const ok = await forceDownloadFile({ fileName: name, url, blobName });
+    setDownloading(false);
+    if (!ok) {
+      // last resort: open URL (may view instead of download on cross-origin)
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  };
 
   // Close on Escape
   React.useEffect(() => {
@@ -2328,13 +2391,14 @@ function DocumentPreviewModal({ url, name, onClose }: { url: string; name: strin
             >
               Open in new tab ↗
             </a>
-            <a
-              href={url}
-              download={name}
-              className="text-xs px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={downloading}
+              className="text-xs px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
             >
-              Download
-            </a>
+              {downloading ? "Downloading…" : "Download"}
+            </button>
             <button
               type="button"
               onClick={onClose}
@@ -2378,13 +2442,14 @@ function DocumentPreviewModal({ url, name, onClose }: { url: string; name: strin
                 >
                   Open in new tab
                 </a>
-                <a
-                  href={url}
-                  download={name}
-                  className="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                <button
+                  type="button"
+                  onClick={handleDownload}
+                  disabled={downloading}
+                  className="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
                 >
-                  Download
-                </a>
+                  {downloading ? "Downloading…" : "Download"}
+                </button>
               </div>
             </div>
           )}

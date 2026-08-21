@@ -799,7 +799,7 @@ router.get('/documents/:applicationId', adminAuth, async (req, res) => {
 });
 
 // ─── GET /api/admin/file-url ─────────────────────────────────────────────────
-// Returns a fresh SAS URL for an Azure blob (admin View/Download)
+// Returns a fresh SAS URL for an Azure blob (admin View)
 router.get('/file-url', adminAuth, async (req, res) => {
   try {
     const blobName = req.query.blobName;
@@ -815,6 +815,43 @@ router.get('/file-url', adminAuth, async (req, res) => {
     }
     res.json({ success: true, url, blobName });
   } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ─── GET /api/admin/download-file ────────────────────────────────────────────
+// Streams an Azure blob with Content-Disposition: attachment (forces Save As)
+router.get('/download-file', adminAuth, async (req, res) => {
+  try {
+    const blobName = req.query.blobName;
+    const fileName = (typeof req.query.fileName === 'string' && req.query.fileName)
+      ? req.query.fileName
+      : (typeof blobName === 'string' ? blobName.split('/').pop() : 'download');
+
+    if (!blobName || typeof blobName !== 'string') {
+      return res.status(400).json({ success: false, error: 'blobName query param required' });
+    }
+    if (!azureStorage.isConfigured) {
+      return res.status(503).json({ success: false, error: 'Azure Storage is not configured' });
+    }
+
+    const buffer = await azureStorage.downloadDocument(blobName);
+    const safeName = String(fileName).replace(/[^\w.\- ()[\]]+/g, '_');
+    const lower = safeName.toLowerCase();
+    const contentType =
+      lower.endsWith('.png') ? 'image/png' :
+      lower.endsWith('.jpg') || lower.endsWith('.jpeg') ? 'image/jpeg' :
+      lower.endsWith('.pdf') ? 'application/pdf' :
+      lower.endsWith('.webp') ? 'image/webp' :
+      'application/octet-stream';
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Length', buffer.length);
+    res.setHeader('Content-Disposition', `attachment; filename="${safeName}"`);
+    res.setHeader('Cache-Control', 'no-store');
+    res.send(buffer);
+  } catch (err) {
+    console.error('Admin download-file error:', err.message);
     res.status(500).json({ success: false, error: err.message });
   }
 });

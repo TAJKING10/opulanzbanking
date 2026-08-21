@@ -26,6 +26,7 @@ const multer = require('multer');
 const https = require('https');
 const http = require('http');
 const { adminAuth } = require('../middleware/adminAuth');
+const azureStorage = require('../services/azureStorage');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
 
@@ -377,11 +378,28 @@ router.get('/submissions', adminAuth, async (req, res) => {
 
       // Extract files from payload
       const payloadFiles = [];
-      // company_formation: payload.uploads.ids
-      if (p.uploads && Array.isArray(p.uploads.ids)) {
-        p.uploads.ids.forEach(f => {
-          payloadFiles.push({ filename: f.filename || f.name || f.id, size: f.size, type: f.type, id: f.id });
-        });
+      // company_formation: payload.uploads.{ids, leaseOrDomiciliation, capitalCertificate}
+      if (p.uploads && typeof p.uploads === 'object') {
+        const pushUpload = (f, fallbackType) => {
+          if (!f || !(f.filename || f.name || f.id || f.fileName)) return;
+          payloadFiles.push({
+            filename: f.filename || f.fileName || f.name || f.id,
+            size: f.size,
+            type: f.type || fallbackType,
+            id: f.id,
+            url: f.url || f.fileUrl || null,
+            blobName: f.blobName || null,
+          });
+        };
+        if (Array.isArray(p.uploads.ids)) {
+          p.uploads.ids.forEach((f) => pushUpload(f, 'id_document'));
+        }
+        if (Array.isArray(p.uploads.leaseOrDomiciliation)) {
+          p.uploads.leaseOrDomiciliation.forEach((f) => pushUpload(f, 'lease'));
+        }
+        if (p.uploads.capitalCertificate) {
+          pushUpload(p.uploads.capitalCertificate, 'capital_certificate');
+        }
       }
       // company (business account) & accounting: payload.documents
       if (Array.isArray(p.documents)) {
@@ -766,7 +784,36 @@ router.get('/documents/:applicationId', adminAuth, async (req, res) => {
        FROM documents WHERE application_id = $1 ORDER BY created_at DESC`,
       [req.params.applicationId]
     );
-    res.json({ success: true, data: result.rows });
+    // Refresh SAS URLs for private Azure blobs so View/Download works
+    const data = result.rows.map((row) => {
+      if (row.blob_name && azureStorage.isConfigured) {
+        const sasUrl = azureStorage.getSasUrl(row.blob_name, 60 * 24);
+        if (sasUrl) return { ...row, file_url: sasUrl };
+      }
+      return row;
+    });
+    res.json({ success: true, data });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ─── GET /api/admin/file-url ─────────────────────────────────────────────────
+// Returns a fresh SAS URL for an Azure blob (admin View/Download)
+router.get('/file-url', adminAuth, async (req, res) => {
+  try {
+    const blobName = req.query.blobName;
+    if (!blobName || typeof blobName !== 'string') {
+      return res.status(400).json({ success: false, error: 'blobName query param required' });
+    }
+    if (!azureStorage.isConfigured) {
+      return res.status(503).json({ success: false, error: 'Azure Storage is not configured' });
+    }
+    const url = azureStorage.getSasUrl(blobName, 60);
+    if (!url) {
+      return res.status(500).json({ success: false, error: 'Could not generate SAS URL' });
+    }
+    res.json({ success: true, url, blobName });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

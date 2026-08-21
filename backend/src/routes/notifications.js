@@ -9,6 +9,7 @@ const nodemailer = require('nodemailer');
 const rateLimit = require('express-rate-limit');
 const emailService = require('../services/emailService');
 const tempFileStore = require('../services/tempFileStore');
+const azureStorage = require('../services/azureStorage');
 const { pool } = require('../config/db');
 
 // Auto-create support_contacts table
@@ -61,6 +62,30 @@ function buildAttachments(tempIds = []) {
         content: entry.buffer,
         contentType: entry.mimetype,
       });
+    }
+  }
+  return attachments;
+}
+
+/**
+ * Build attachments by downloading blobs from Azure Storage.
+ * @param {Array<{ blobName: string, filename?: string, fileName?: string, mimeType?: string }>} azureFiles
+ */
+async function buildAzureAttachments(azureFiles = []) {
+  const attachments = [];
+  if (!azureStorage.isConfigured || !Array.isArray(azureFiles)) return attachments;
+
+  for (const file of azureFiles) {
+    if (!file?.blobName) continue;
+    try {
+      const buffer = await azureStorage.downloadDocument(file.blobName);
+      attachments.push({
+        filename: file.filename || file.fileName || file.blobName.split('/').pop() || 'document',
+        content: buffer,
+        contentType: file.mimeType || file.type || 'application/octet-stream',
+      });
+    } catch (err) {
+      console.warn(`⚠️  Could not attach Azure blob ${file.blobName}:`, err.message);
     }
   }
   return attachments;
@@ -281,6 +306,7 @@ router.post('/company-formation', async (req, res) => {
       setupFeeAmount, shareholders, directors, managers,
       registeredOffice, naceCode, capitalAmount, domiciliationNeeded,
       tempIds = [],
+      azureFiles = [],
     } = req.body;
 
     if (!reference) {
@@ -291,7 +317,9 @@ router.post('/company-formation', async (req, res) => {
     const firstName = nameParts[0] || '';
     const lastName = nameParts.slice(1).join(' ') || '';
 
-    const cfAttachments = buildAttachments(tempIds);
+    const tempAttachments = buildAttachments(tempIds);
+    const azureAttachments = await buildAzureAttachments(azureFiles);
+    const cfAttachments = [...tempAttachments, ...azureAttachments];
 
     await emailService.sendApplicationEmails('company_formation', {
       applicationId: reference,

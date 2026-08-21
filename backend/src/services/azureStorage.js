@@ -1,4 +1,4 @@
-const { BlobServiceClient } = require('@azure/storage-blob');
+const { BlobServiceClient, generateBlobSASQueryParameters, BlobSASPermissions, StorageSharedKeyCredential } = require('@azure/storage-blob');
 
 class AzureStorageService {
   constructor() {
@@ -15,6 +15,14 @@ class AzureStorageService {
       this.blobServiceClient = BlobServiceClient.fromConnectionString(this.connectionString);
       this.containerClient = this.blobServiceClient.getContainerClient(this.containerName);
       this.isConfigured = true;
+
+      // Parse account name + key for SAS generation
+      const accountName = /AccountName=([^;]+)/i.exec(this.connectionString)?.[1];
+      const accountKey = /AccountKey=([^;]+)/i.exec(this.connectionString)?.[1];
+      if (accountName && accountKey) {
+        this.sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey);
+        this.accountName = accountName;
+      }
     } catch (error) {
       console.error('Failed to initialize Azure Storage:', error.message);
       this.isConfigured = false;
@@ -69,8 +77,11 @@ class AzureStorageService {
         }
       });
 
+      // Prefer a time-limited SAS URL so browsers can View/Download private blobs
+      const url = this.getSasUrl(blobName, 60 * 24 * 7) || blockBlobClient.url;
+
       return {
-        url: blockBlobClient.url,
+        url,
         blobName: blobName,
         containerName: this.containerName
       };
@@ -132,17 +143,38 @@ class AzureStorageService {
    * Get a SAS URL for temporary access to a document
    * @param {string} blobName - The blob name
    * @param {number} expiryMinutes - Minutes until the URL expires (default: 60)
-   * @returns {Promise<string>}
+   * @returns {string|null}
+   */
+  getSasUrl(blobName, expiryMinutes = 60) {
+    if (!this.isConfigured || !this.sharedKeyCredential) {
+      return null;
+    }
+
+    const expiresOn = new Date(Date.now() + expiryMinutes * 60 * 1000);
+    const sas = generateBlobSASQueryParameters(
+      {
+        containerName: this.containerName,
+        blobName,
+        permissions: BlobSASPermissions.parse('r'),
+        expiresOn,
+      },
+      this.sharedKeyCredential
+    ).toString();
+
+    const blockBlobClient = this.containerClient.getBlockBlobClient(blobName);
+    return `${blockBlobClient.url}?${sas}`;
+  }
+
+  /**
+   * Get a SAS URL for temporary access to a document (async alias)
    */
   async getDocumentUrl(blobName, expiryMinutes = 60) {
     if (!this.isConfigured) {
       throw new Error('Azure Storage is not configured');
     }
-
-    const blockBlobClient = this.containerClient.getBlockBlobClient(blobName);
-
-    // For now, return the blob URL (in production, you'd generate a SAS token)
-    return blockBlobClient.url;
+    const sasUrl = this.getSasUrl(blobName, expiryMinutes);
+    if (sasUrl) return sasUrl;
+    return this.containerClient.getBlockBlobClient(blobName).url;
   }
 }
 

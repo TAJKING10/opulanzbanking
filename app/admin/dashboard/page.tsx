@@ -10,6 +10,7 @@ interface PayloadFile {
   type?: string;
   id?: string;
   url?: string;
+  blobName?: string;
 }
 
 interface Submission {
@@ -137,6 +138,22 @@ const STATUS_OPTIONS: Record<string, string[]> = {
 function getToken() {
   if (typeof window === "undefined") return "";
   return localStorage.getItem("admin_token") || "";
+}
+
+/** Resolve a viewable/downloadable URL — refreshes Azure SAS via blobName when needed */
+async function resolveFileUrl(opts: { url?: string | null; blobName?: string | null }): Promise<string | null> {
+  if (opts.blobName) {
+    try {
+      const res = await fetch(`${API}/api/admin/file-url?blobName=${encodeURIComponent(opts.blobName)}`, {
+        headers: { "x-admin-token": getToken() },
+      });
+      const data = await res.json();
+      if (data.success && data.url) return data.url as string;
+    } catch {
+      // fall through to stored url
+    }
+  }
+  return opts.url || null;
 }
 
 function fmt(date: string) {
@@ -652,6 +669,7 @@ function SubmissionsTab({
   const [attachDocs, setAttachDocs]     = React.useState<number[]>([]);
   const [statusUpdating, setStatusUpdating] = React.useState(false);
   const [rejectReason, setRejectReason]  = React.useState("");
+  const [previewDoc, setPreviewDoc]     = React.useState<{ url: string; name: string } | null>(null);
   const fileInputRef                    = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -764,7 +782,7 @@ function SubmissionsTab({
   };
 
   const loadDocs = (sub: Submission) => {
-    // Payload files (company formation, accounting, etc.) — no Azure URL available
+    // Payload files (company formation, accounting, etc.)
     const payloadDocs = (sub.payloadFiles || []).map((f, i) => ({
       id: -(i + 1),
       file_name: f.filename,
@@ -772,6 +790,7 @@ function SubmissionsTab({
       mime_type: f.type || null,
       type: f.type || "uploaded_file",
       size: f.size,
+      blob_name: f.blobName || null,
       fromPayload: true,
     }));
 
@@ -876,6 +895,15 @@ function SubmissionsTab({
         <div className="fixed top-20 right-6 z-50 bg-gray-900 text-white px-5 py-3 rounded-xl shadow-lg text-sm animate-fade-in">
           {toast}
         </div>
+      )}
+
+      {/* Document Preview Modal */}
+      {previewDoc && (
+        <DocumentPreviewModal
+          url={previewDoc.url}
+          name={previewDoc.name}
+          onClose={() => setPreviewDoc(null)}
+        />
       )}
 
       {/* Left: List */}
@@ -1026,21 +1054,14 @@ function SubmissionsTab({
               {/* Payload details */}
               <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Submission Data</h3>
               <div className="bg-gray-50 rounded-xl p-4 mb-6">
-                <table className="w-full text-sm">
-                  <tbody>
-                    {Object.entries(selected.payload || {}).map(([key, value]) => {
-                      if (value === null || value === undefined || value === "") return null;
-                      const label = key.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
-                      const display = typeof value === "object" ? JSON.stringify(value) : String(value);
-                      return (
-                        <tr key={key} className="border-b border-gray-100 last:border-0">
-                          <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{label}</td>
-                          <td className="py-2 text-gray-900 break-all">{display}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                <PayloadRenderer
+                  payload={selected.payload || {}}
+                  onPreview={async (url, name, blobName) => {
+                    const resolved = await resolveFileUrl({ url, blobName });
+                    if (resolved) setPreviewDoc({ url: resolved, name });
+                    else showToast("File URL unavailable.");
+                  }}
+                />
               </div>
 
               {/* Attached Documents */}
@@ -1048,13 +1069,30 @@ function SubmissionsTab({
                 <div className="mb-6">
                   <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Attached Files ({docs.length})</h3>
                   <div className="space-y-2">
-                    {(docs as Array<{id:number;file_name:string;file_url:string;mime_type:string|null;type:string;size?:number;file_size?:number;fromPayload?:boolean}>).map(doc => {
+                    {(docs as Array<{id:number;file_name:string;file_url:string;mime_type:string|null;type:string;size?:number;file_size?:number;blob_name?:string|null;fromPayload?:boolean}>).map(doc => {
                       const isPdf = doc.mime_type === "application/pdf" || doc.file_name?.endsWith(".pdf");
                       const isImg = doc.mime_type?.startsWith("image/") || /\.(png|jpg|jpeg|gif|webp)$/i.test(doc.file_name || "");
                       const icon = isPdf ? "📄" : isImg ? "🖼️" : "📎";
-                      const hasUrl = !!doc.file_url;
+                      const hasUrl = !!(doc.file_url || doc.blob_name);
                       const rawSize = doc.size || doc.file_size;
                       const sizeStr = rawSize ? (rawSize > 1024*1024 ? `${(rawSize/1024/1024).toFixed(1)} MB` : `${Math.round(rawSize/1024)} KB`) : null;
+                      const openFile = async (download = false) => {
+                        const resolved = await resolveFileUrl({ url: doc.file_url, blobName: doc.blob_name });
+                        if (!resolved) {
+                          showToast("File URL unavailable.");
+                          return;
+                        }
+                        if (download) {
+                          const a = document.createElement("a");
+                          a.href = resolved;
+                          a.download = doc.file_name;
+                          a.target = "_blank";
+                          a.rel = "noopener noreferrer";
+                          a.click();
+                        } else {
+                          setPreviewDoc({ url: resolved, name: doc.file_name });
+                        }
+                      };
                       return (
                         <div key={doc.id} className="flex items-center justify-between p-3 bg-blue-50 border border-blue-100 rounded-xl">
                           <div className="flex items-center gap-3 min-w-0">
@@ -1064,28 +1102,27 @@ function SubmissionsTab({
                               <p className="text-xs text-gray-500 capitalize">
                                 {doc.type?.replace(/_/g, " ")}
                                 {sizeStr ? ` · ${sizeStr}` : ""}
-                                {doc.fromPayload && !hasUrl ? " · stored in Azure" : ""}
+                                {hasUrl ? " · Azure" : ""}
                               </p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2 ml-3 flex-shrink-0">
                             {hasUrl ? (
                               <>
-                                <a
-                                  href={doc.file_url}
-                                  target="_blank"
-                                  rel="noreferrer"
+                                <button
+                                  type="button"
+                                  onClick={() => openFile(false)}
                                   className="text-xs px-3 py-1 bg-white border border-blue-200 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
                                 >
                                   View
-                                </a>
-                                <a
-                                  href={doc.file_url}
-                                  download={doc.file_name}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => openFile(true)}
                                   className="text-xs px-3 py-1 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
                                 >
                                   Download
-                                </a>
+                                </button>
                               </>
                             ) : (
                               <span className="text-xs px-3 py-1 bg-amber-50 border border-amber-200 text-amber-600 rounded-lg">
@@ -1847,6 +1884,511 @@ function ContactsTab({ initialSearch = "" }: { initialSearch?: string }) {
             </div>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Payload Renderer ─────────────────────────────────────────────────────────
+
+/** Country code → full name (common EU + a few extras) */
+const COUNTRY_NAMES: Record<string, string> = {
+  LU: "Luxembourg", DE: "Germany", FR: "France", BE: "Belgium", NL: "Netherlands",
+  AT: "Austria", CH: "Switzerland", IT: "Italy", ES: "Spain", PT: "Portugal",
+  GB: "United Kingdom", IE: "Ireland", US: "United States", CA: "Canada",
+  SE: "Sweden", DK: "Denmark", NO: "Norway", FI: "Finland", PL: "Poland",
+  CZ: "Czech Republic", LV: "Latvia", LT: "Lithuania", EE: "Estonia",
+  GR: "Greece", HU: "Hungary", RO: "Romania", BG: "Bulgaria", SK: "Slovakia",
+  HR: "Croatia", SI: "Slovenia", CY: "Cyprus", MT: "Malta",
+  IN: "India", CN: "China", JP: "Japan", AU: "Australia", BR: "Brazil",
+  AE: "United Arab Emirates", SG: "Singapore", HK: "Hong Kong",
+};
+
+/** Keys to hide from the Submission Data table (already shown elsewhere or internal) */
+const HIDDEN_KEYS = new Set([
+  "id", "ids", "created_at", "createdAt", "updated_at", "updatedAt",
+  "user_ref", "userRef", "confirmation_number", "confirmationNumber",
+  "uploadedFiles", "files", "attachments", "documents",  // shown in Attached Files section
+  "status", "service", "service_type", "serviceType",
+]);
+
+/** Keys that contain person arrays (directors, shareholders, managers, beneficiaries) */
+const PERSON_ARRAY_KEYS = new Set([
+  "directors", "Directors", "shareholders", "Shareholders",
+  "managers", "Managers", "beneficiaries", "Beneficiaries",
+  "contacts", "signatories",
+]);
+
+/** Keys that contain consent/boolean maps */
+const CONSENT_KEYS = new Set([
+  "consents", "Consents", "consent", "agreements", "termsAccepted",
+]);
+
+/** Keys that contain upload-related data */
+const UPLOAD_KEYS = new Set([
+  "uploads", "Uploads", "upload",
+]);
+
+/** Convert camelCase / snake_case key into a readable label */
+function prettyLabel(key: string): string {
+  return key
+    .replace(/([a-z])([A-Z])/g, "$1 $2")  // camelCase → camel Case
+    .replace(/_/g, " ")                     // snake_case → snake case
+    .replace(/\b\w/g, c => c.toUpperCase()) // capitalize words
+    .replace(/\bId\b/g, "ID")
+    .replace(/\bUrl\b/g, "URL")
+    .replace(/\bDob\b/g, "Date of Birth")
+    .replace(/\bPep\b/g, "PEP")
+    .replace(/\bIs Pep\b/gi, "Politically Exposed Person")
+    .trim();
+}
+
+/** Check if a string looks like an ISO date */
+function isIsoDate(v: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}(T|\s)/.test(v);
+}
+
+/** Format a single primitive value nicely */
+function formatValue(key: string, value: unknown): React.ReactNode {
+  if (value === null || value === undefined || value === "") return null;
+
+  // Booleans
+  if (typeof value === "boolean") {
+    return value
+      ? <span className="inline-flex items-center gap-1 text-green-700"><span className="text-green-500">✓</span> Yes</span>
+      : <span className="inline-flex items-center gap-1 text-red-600"><span className="text-red-400">✗</span> No</span>;
+  }
+
+  // Numbers
+  if (typeof value === "number") {
+    // amounts / capital
+    if (/amount|capital|price|fee|cost|salary|revenue/i.test(key) && value > 0) {
+      return `€ ${value.toLocaleString()}`;
+    }
+    if (/percent|share/i.test(key)) {
+      return `${value}%`;
+    }
+    return String(value);
+  }
+
+  if (typeof value === "string") {
+    // Country codes (2-letter uppercase)
+    if (/^[A-Z]{2}$/.test(value) && COUNTRY_NAMES[value] &&
+        /country|nationality|nation|citizenship/i.test(key)) {
+      return `${COUNTRY_NAMES[value]} (${value})`;
+    }
+    // ISO dates
+    if (isIsoDate(value)) {
+      try {
+        const d = new Date(value);
+        // If it has time component, show date+time; otherwise just date
+        if (value.includes("T") && !value.endsWith("T00:00:00.000Z")) {
+          return d.toLocaleDateString("en-GB", {
+            day: "2-digit", month: "short", year: "numeric",
+            hour: "2-digit", minute: "2-digit",
+          });
+        }
+        return d.toLocaleDateString("en-GB", {
+          day: "2-digit", month: "short", year: "numeric",
+        });
+      } catch { return value; }
+    }
+    // Email addresses — make clickable
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      return <a href={`mailto:${value}`} className="text-[#b59354] hover:underline">{value}</a>;
+    }
+    // Phone numbers — make clickable
+    if (/^\+?\d[\d\s\-()]{6,}$/.test(value.trim())) {
+      return <a href={`tel:${value.replace(/\s/g, "")}`} className="text-[#b59354] hover:underline">{value}</a>;
+    }
+    // URLs
+    if (/^https?:\/\//i.test(value)) {
+      return <a href={value} target="_blank" rel="noreferrer" className="text-[#b59354] hover:underline break-all">{value}</a>;
+    }
+    return value;
+  }
+
+  return String(value);
+}
+
+/** Renders a single person (director/shareholder/manager) as a mini card */
+function PersonCard({ person, index, role }: { person: Record<string, unknown>; index: number; role: string }) {
+  const name = [person.firstName, person.lastName].filter(Boolean).join(" ") || `${role} ${index + 1}`;
+  const personFields: Array<[string, unknown]> = Object.entries(person).filter(
+    ([k, v]) => v !== null && v !== undefined && v !== "" && !["id", "firstName", "lastName"].includes(k)
+  );
+
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl p-4">
+      <div className="flex items-center gap-2 mb-2">
+        <span className="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold">
+          {(name[0] || "?").toUpperCase()}
+        </span>
+        <div>
+          <p className="text-sm font-semibold text-gray-900">{name}</p>
+          {person.roles != null && (
+            <p className="text-[10px] text-gray-500">
+              {Array.isArray(person.roles) ? (person.roles as string[]).join(", ") : String(person.roles)}
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+        {personFields.map(([k, v]) => {
+          if (k === "roles") return null; // already shown above
+          const formatted = formatValue(k, v);
+          if (formatted === null) return null;
+          return (
+            <div key={k} className="py-1">
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider">{prettyLabel(k)}</p>
+              <p className="text-xs text-gray-800">{formatted}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** Renders a consent/boolean map as a checklist */
+function ConsentDisplay({ consents }: { consents: Record<string, unknown> }) {
+  return (
+    <div className="space-y-1.5">
+      {Object.entries(consents).map(([k, v]) => {
+        if (v === null || v === undefined) return null;
+        const checked = v === true || v === "true";
+        return (
+          <div key={k} className="flex items-center gap-2">
+            <span className={`w-5 h-5 rounded-md flex items-center justify-center text-xs ${
+              checked ? "bg-green-100 text-green-600" : "bg-red-100 text-red-500"
+            }`}>
+              {checked ? "✓" : "✗"}
+            </span>
+            <span className="text-sm text-gray-700">{prettyLabel(k)}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Renders uploads section with view/download buttons */
+function UploadSection({ uploads, onPreview }: { uploads: Record<string, unknown>; onPreview?: (url: string, name: string, blobName?: string) => void }) {
+  // uploads may have { ids: [...], capitalCertificate: ..., leaseOrDomiciliation: [...] }
+  const items: Array<{ label: string; files: Array<{ name: string; url?: string; id?: string; blobName?: string }> }> = [];
+
+  for (const [k, v] of Object.entries(uploads)) {
+    if (k === "ids" && Array.isArray(v)) {
+      const files = v.filter(f => f && (f.filename || f.name || f.id)).map(f => ({
+        name: f.filename || f.name || f.id || "File",
+        url: f.url || f.fileUrl,
+        id: f.id,
+        blobName: f.blobName,
+      }));
+      if (files.length > 0) items.push({ label: "Uploaded Documents", files });
+    } else if (Array.isArray(v) && v.length > 0) {
+      const files = v.filter(f => f && typeof f === "object").map(f => ({
+        name: f.filename || f.name || f.id || "File",
+        url: f.url || f.fileUrl,
+        id: f.id,
+        blobName: f.blobName,
+      }));
+      if (files.length > 0) items.push({ label: prettyLabel(k), files });
+    } else if (v && typeof v === "object" && !Array.isArray(v)) {
+      const f = v as Record<string, unknown>;
+      if (f.filename || f.name || f.id) {
+        items.push({
+          label: prettyLabel(k),
+          files: [{
+            name: (f.filename || f.name || f.id || "File") as string,
+            url: (f.url || f.fileUrl) as string | undefined,
+            blobName: f.blobName as string | undefined,
+          }],
+        });
+      }
+    } else if (v === null || v === undefined || (Array.isArray(v) && v.length === 0)) {
+      items.push({ label: prettyLabel(k), files: [] });
+    }
+  }
+
+  if (items.length === 0 || items.every(i => i.files.length === 0)) {
+    return <span className="text-sm text-gray-400 italic">No files uploaded</span>;
+  }
+
+  return (
+    <div className="space-y-2">
+      {items.map((group, gi) => (
+        <div key={gi}>
+          {items.length > 1 && <p className="text-xs text-gray-500 font-medium mb-1">{group.label}</p>}
+          {group.files.length === 0 ? (
+            <p className="text-xs text-gray-400 italic">None</p>
+          ) : (
+            <div className="space-y-1.5">
+              {group.files.map((file, fi) => {
+                const canOpen = !!(file.url || file.blobName);
+                return (
+                <div key={fi} className="flex items-center justify-between p-2.5 bg-blue-50 border border-blue-100 rounded-lg">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-base">{file.name.endsWith(".pdf") ? "📄" : /\.(png|jpg|jpeg|gif|webp)$/i.test(file.name) ? "🖼️" : "📎"}</span>
+                    <span className="text-sm text-gray-800 truncate">{file.name}</span>
+                  </div>
+                  {canOpen ? (
+                    <div className="flex items-center gap-1.5 ml-2 flex-shrink-0">
+                      <button type="button" onClick={() => onPreview?.(file.url || "", file.name, file.blobName)} className="text-xs px-2.5 py-1 bg-white border border-blue-200 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                        View
+                      </button>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const resolved = await resolveFileUrl({ url: file.url, blobName: file.blobName });
+                          if (!resolved) return;
+                          const a = document.createElement("a");
+                          a.href = resolved;
+                          a.download = file.name;
+                          a.target = "_blank";
+                          a.rel = "noopener noreferrer";
+                          a.click();
+                        }}
+                        className="text-xs px-2.5 py-1 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        Download
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="text-[10px] px-2 py-0.5 bg-amber-50 border border-amber-200 text-amber-600 rounded-md ml-2">No URL</span>
+                  )}
+                </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Main payload renderer — replaces raw JSON.stringify display */
+function PayloadRenderer({ payload, onPreview }: { payload: Record<string, unknown>; onPreview?: (url: string, name: string, blobName?: string) => void }) {
+  // Separate entries into categories
+  const personSections: Array<{ key: string; label: string; items: Record<string, unknown>[] }> = [];
+  const consentSections: Array<{ key: string; label: string; data: Record<string, unknown> }> = [];
+  const uploadSections: Array<{ key: string; label: string; data: Record<string, unknown> }> = [];
+  const regularEntries: Array<[string, unknown]> = [];
+
+  for (const [key, value] of Object.entries(payload)) {
+    if (HIDDEN_KEYS.has(key)) continue;
+    if (value === null || value === undefined || value === "") continue;
+
+    // Empty arrays
+    if (Array.isArray(value) && value.length === 0) continue;
+
+    if (PERSON_ARRAY_KEYS.has(key) && Array.isArray(value)) {
+      personSections.push({ key, label: prettyLabel(key), items: value as Record<string, unknown>[] });
+    } else if (CONSENT_KEYS.has(key) && typeof value === "object" && !Array.isArray(value)) {
+      consentSections.push({ key, label: prettyLabel(key), data: value as Record<string, unknown> });
+    } else if (UPLOAD_KEYS.has(key) && typeof value === "object") {
+      uploadSections.push({ key, label: prettyLabel(key), data: value as Record<string, unknown> });
+    } else {
+      regularEntries.push([key, value]);
+    }
+  }
+
+  return (
+    <div className="space-y-5">
+      {/* Regular key-value pairs */}
+      {regularEntries.length > 0 && (
+        <table className="w-full text-sm">
+          <tbody>
+            {regularEntries.map(([key, value]) => {
+              // If it's an object/array that isn't handled above, render it nicely
+              if (typeof value === "object" && value !== null) {
+                // Nested object — render sub-fields
+                if (!Array.isArray(value)) {
+                  const obj = value as Record<string, unknown>;
+                  const subEntries = Object.entries(obj).filter(([, v]) => v !== null && v !== undefined && v !== "");
+                  if (subEntries.length === 0) return null;
+                  return (
+                    <tr key={key} className="border-b border-gray-100 last:border-0">
+                      <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{prettyLabel(key)}</td>
+                      <td className="py-2">
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                          {subEntries.map(([sk, sv]) => {
+                            const formatted = formatValue(sk, sv);
+                            if (formatted === null) return null;
+                            return (
+                              <div key={sk}>
+                                <span className="text-[10px] text-gray-400 uppercase tracking-wider">{prettyLabel(sk)}</span>
+                                <p className="text-sm text-gray-800">{formatted}</p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                }
+                // Array of primitives
+                if (Array.isArray(value)) {
+                  return (
+                    <tr key={key} className="border-b border-gray-100 last:border-0">
+                      <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{prettyLabel(key)}</td>
+                      <td className="py-2 text-gray-900">{(value as unknown[]).map(String).join(", ")}</td>
+                    </tr>
+                  );
+                }
+              }
+
+              const formatted = formatValue(key, value);
+              if (formatted === null) return null;
+              return (
+                <tr key={key} className="border-b border-gray-100 last:border-0">
+                  <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{prettyLabel(key)}</td>
+                  <td className="py-2 text-gray-900">{formatted}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+
+      {/* Person sections (directors, shareholders, managers) */}
+      {personSections.map(section => (
+        <div key={section.key}>
+          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
+            <span>👥</span> {section.label} ({section.items.length})
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {section.items.map((person, i) => (
+              <PersonCard key={i} person={person} index={i} role={section.label.replace(/s$/, "")} />
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* Consent sections */}
+      {consentSections.map(section => (
+        <div key={section.key}>
+          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
+            <span>📋</span> {section.label}
+          </h4>
+          <div className="bg-white border border-gray-200 rounded-xl p-3">
+            <ConsentDisplay consents={section.data} />
+          </div>
+        </div>
+      ))}
+
+      {/* Upload sections */}
+      {uploadSections.map(section => (
+        <div key={section.key}>
+          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
+            <span>📂</span> {section.label}
+          </h4>
+          <UploadSection uploads={section.data} onPreview={onPreview} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Document Preview Modal ──────────────────────────────────────────────────
+function DocumentPreviewModal({ url, name, onClose }: { url: string; name: string; onClose: () => void }) {
+  const isImage = /\.(png|jpg|jpeg|gif|webp|svg|bmp|ico)$/i.test(name) || /^data:image\//i.test(url);
+  const isPdf = /\.pdf$/i.test(name);
+
+  // Close on Escape
+  React.useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+        style={{ width: "min(90vw, 1000px)", height: "min(85vh, 800px)" }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200 bg-gray-50 flex-shrink-0">
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="text-lg">{isImage ? "🖼️" : isPdf ? "📄" : "📎"}</span>
+            <p className="text-sm font-semibold text-gray-800 truncate">{name}</p>
+          </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Open in new tab ↗
+            </a>
+            <a
+              href={url}
+              download={name}
+              className="text-xs px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Download
+            </a>
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-200 hover:text-gray-700 transition-colors text-lg leading-none"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 flex items-center justify-center overflow-auto bg-gray-100 p-4">
+          {isImage ? (
+            <img
+              src={url}
+              alt={name}
+              className="max-w-full max-h-full object-contain rounded-lg shadow-md"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+                (e.target as HTMLImageElement).parentElement!.innerHTML =
+                  '<div class="text-center py-12"><p class="text-4xl mb-3">⚠️</p><p class="text-sm text-gray-500">Unable to load image</p></div>';
+              }}
+            />
+          ) : isPdf ? (
+            <iframe
+              src={url}
+              title={name}
+              className="w-full h-full rounded-lg border border-gray-200 bg-white"
+            />
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-5xl mb-4">📎</p>
+              <p className="text-gray-700 font-medium mb-1">{name}</p>
+              <p className="text-sm text-gray-500 mb-4">This file type cannot be previewed in the browser.</p>
+              <div className="flex items-center justify-center gap-3">
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-4 py-2 bg-[#b59354] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                >
+                  Open in new tab
+                </a>
+                <a
+                  href={url}
+                  download={name}
+                  className="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  Download
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

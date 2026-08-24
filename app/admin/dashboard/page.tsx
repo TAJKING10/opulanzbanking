@@ -223,9 +223,10 @@ function fmt(date: string) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function AdminDashboard() {
   const router = useRouter();
-  const [tab, setTab] = React.useState<"overview" | "submissions" | "support" | "contacts">("overview");
+  const [tab, setTab] = React.useState<"overview" | "submissions" | "pipeline" | "support" | "contacts">("overview");
   const [submissionService, setSubmissionService] = React.useState("all");
   const [submissionSearch, setSubmissionSearch] = React.useState("");
+  const [pipelineService, setPipelineService] = React.useState("company_formation");
   const [contactSearch, setContactSearch] = React.useState("");
   const [selectedChatId, setSelectedChatId] = React.useState<number | null>(null);
 
@@ -289,6 +290,7 @@ export default function AdminDashboard() {
                 { key: "contacts",     label: "Support Messages" },
                 { key: "support",      label: "Live Chats" },
                 { key: "submissions",  label: "Submissions" },
+                { key: "pipeline",     label: "Pipeline" },
               ] as const).map(t => (
                 <button
                   key={t.key}
@@ -334,6 +336,17 @@ export default function AdminDashboard() {
             initialService={submissionService}
             initialSearch={submissionSearch}
             onServiceChange={setSubmissionService}
+          />
+        )}
+        {tab === "pipeline" && (
+          <PipelineTab
+            initialService={pipelineService}
+            onServiceChange={setPipelineService}
+            onOpenSubmission={(serviceKey, search) => {
+              setSubmissionService(serviceKey);
+              setSubmissionSearch(search);
+              setTab("submissions");
+            }}
           />
         )}
         {tab === "support"      && (
@@ -697,6 +710,413 @@ function OverviewTab({
   );
 }
 
+/** Map admin service filter → submission source (for status columns + PATCH) */
+const SERVICE_TO_SOURCE: Record<string, string> = {
+  individual: "application",
+  company: "application",
+  company_formation: "application",
+  accounting: "application",
+  tax_advisory: "tax_booking",
+  life_insurance: "life_booking",
+  investment_advisory: "investment_inquiry",
+};
+
+const PIPELINE_SERVICES = SERVICES.filter(s => s.key !== "all");
+
+const COLUMN_ACCENTS: Record<string, string> = {
+  submitted: "border-t-blue-500",
+  under_review: "border-t-amber-500",
+  approved: "border-t-green-500",
+  rejected: "border-t-red-500",
+  draft: "border-t-gray-400",
+  pending: "border-t-amber-500",
+  confirmed: "border-t-blue-500",
+  completed: "border-t-green-500",
+  cancelled: "border-t-red-500",
+  scheduled: "border-t-indigo-500",
+  no_show: "border-t-red-500",
+  new: "border-t-blue-500",
+  contacted: "border-t-cyan-500",
+  qualified: "border-t-violet-500",
+  converted: "border-t-green-500",
+  closed: "border-t-gray-500",
+};
+
+// ─── Pipeline Tab (Kanban) ────────────────────────────────────────────────────
+function PipelineTab({
+  initialService = "company_formation",
+  onServiceChange,
+  onOpenSubmission,
+}: {
+  initialService?: string;
+  onServiceChange?: (service: string) => void;
+  onOpenSubmission?: (service: string, search: string) => void;
+}) {
+  const [service, setService] = React.useState(
+    initialService === "all" ? "company_formation" : initialService
+  );
+  const [submissions, setSubmissions] = React.useState<Submission[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [toast, setToast] = React.useState("");
+  const [draggingId, setDraggingId] = React.useState<string | number | null>(null);
+  const [dropTarget, setDropTarget] = React.useState<string | null>(null);
+  const [updatingId, setUpdatingId] = React.useState<string | number | null>(null);
+  const [rejectModal, setRejectModal] = React.useState<{
+    sub: Submission;
+    status: string;
+  } | null>(null);
+  const [rejectReason, setRejectReason] = React.useState("");
+
+  const source = SERVICE_TO_SOURCE[service] || "application";
+  const columns = STATUS_OPTIONS[source] || STATUS_OPTIONS.application;
+
+  const showToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(""), 3000);
+  };
+
+  const load = React.useCallback(() => {
+    setLoading(true);
+    const params = new URLSearchParams({ service });
+    fetch(`${API}/api/admin/submissions?${params}`, {
+      headers: { "x-admin-token": getToken() },
+    })
+      .then(r => {
+        if (r.status === 401) {
+          localStorage.removeItem("admin_token");
+          window.location.href = "/admin";
+          return null;
+        }
+        return r.json();
+      })
+      .then(d => {
+        if (d?.success) setSubmissions(d.data);
+      })
+      .catch(err => console.error("Pipeline fetch error:", err))
+      .finally(() => setLoading(false));
+  }, [service]);
+
+  React.useEffect(() => {
+    load();
+  }, [load]);
+
+  React.useEffect(() => {
+    if (initialService && initialService !== "all") setService(initialService);
+  }, [initialService]);
+
+  const changeService = (next: string) => {
+    setService(next);
+    onServiceChange?.(next);
+  };
+
+  const byStatus = React.useMemo(() => {
+    const map: Record<string, Submission[]> = {};
+    for (const col of columns) map[col] = [];
+    map.__other = [];
+    for (const sub of submissions) {
+      if (map[sub.status]) map[sub.status].push(sub);
+      else map.__other.push(sub);
+    }
+    // Newest first within each column
+    for (const key of Object.keys(map)) {
+      map[key].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    }
+    return map;
+  }, [submissions, columns]);
+
+  const applyStatus = async (sub: Submission, newStatus: string, rejectionReason?: string) => {
+    if (sub.status === newStatus) return;
+    const allowed = STATUS_OPTIONS[sub.source] || [];
+    if (!allowed.includes(newStatus)) {
+      showToast(`Cannot move to "${newStatus.replace(/_/g, " ")}" for this item.`);
+      return;
+    }
+
+    setUpdatingId(sub.id);
+    const prevStatus = sub.status;
+    // Optimistic
+    setSubmissions(prev =>
+      prev.map(s => (s.id === sub.id ? { ...s, status: newStatus } : s))
+    );
+
+    try {
+      const res = await fetch(`${API}/api/admin/submissions/${sub.source}/${sub.rawId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", "x-admin-token": getToken() },
+        body: JSON.stringify({
+          status: newStatus,
+          ...(newStatus === "rejected" && rejectionReason
+            ? { rejection_reason: rejectionReason }
+            : {}),
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`Moved to ${newStatus.replace(/_/g, " ")}`);
+      } else {
+        setSubmissions(prev =>
+          prev.map(s => (s.id === sub.id ? { ...s, status: prevStatus } : s))
+        );
+        showToast(`Error: ${data.error}`);
+      }
+    } catch {
+      setSubmissions(prev =>
+        prev.map(s => (s.id === sub.id ? { ...s, status: prevStatus } : s))
+      );
+      showToast("Failed to update status.");
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const handleDrop = (status: string) => {
+    setDropTarget(null);
+    const sub = submissions.find(s => s.id === draggingId);
+    setDraggingId(null);
+    if (!sub || sub.status === status) return;
+
+    if (status === "rejected") {
+      setRejectModal({ sub, status });
+      setRejectReason("");
+      return;
+    }
+    applyStatus(sub, status);
+  };
+
+  const serviceMeta = PIPELINE_SERVICES.find(s => s.key === service);
+
+  return (
+    <div className="space-y-4">
+      {toast && (
+        <div className="fixed top-16 right-6 z-50 px-4 py-2.5 bg-gray-900 text-white text-sm rounded-xl shadow-lg">
+          {toast}
+        </div>
+      )}
+
+      {/* Header / filters */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">Pipeline Board</h2>
+          <p className="text-xs text-gray-500 mt-0.5">
+            Drag cards across columns to update status · Click a card to open full details
+          </p>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <select
+            value={service}
+            onChange={e => changeService(e.target.value)}
+            className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354] bg-white min-w-[200px]"
+          >
+            {PIPELINE_SERVICES.map(s => (
+              <option key={s.key} value={s.key}>{s.label}</option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={load}
+            className="px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      {/* Service chips */}
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {PIPELINE_SERVICES.map(s => (
+          <button
+            key={s.key}
+            type="button"
+            onClick={() => changeService(s.key)}
+            className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+              service === s.key
+                ? "bg-[#b59354] text-white"
+                : "bg-white border border-gray-200 text-gray-600 hover:border-[#b59354]/40"
+            }`}
+          >
+            <span className={`inline-block w-2 h-2 rounded-full mr-1.5 ${s.color}`} />
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="flex gap-3 overflow-x-auto pb-4 min-h-[520px]">
+          {columns.map(status => {
+            const cards = byStatus[status] || [];
+            const isOver = dropTarget === status;
+            return (
+              <div
+                key={status}
+                onDragOver={e => {
+                  e.preventDefault();
+                  setDropTarget(status);
+                }}
+                onDragLeave={() => setDropTarget(prev => (prev === status ? null : prev))}
+                onDrop={e => {
+                  e.preventDefault();
+                  handleDrop(status);
+                }}
+                className={`flex-shrink-0 w-[280px] flex flex-col rounded-2xl border bg-gray-50/80 border-t-4 ${
+                  COLUMN_ACCENTS[status] || "border-t-gray-400"
+                } ${isOver ? "border-[#b59354] bg-[#b59354]/5" : "border-gray-200"}`}
+              >
+                <div className="px-3 py-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${STATUS_COLORS[status] || "bg-gray-100 text-gray-600"}`}>
+                      {status.replace(/_/g, " ")}
+                    </span>
+                  </div>
+                  <span className="text-xs font-bold text-gray-500 tabular-nums">{cards.length}</span>
+                </div>
+
+                <div className="flex-1 px-2 pb-3 space-y-2 overflow-y-auto max-h-[calc(100vh-280px)]">
+                  {cards.length === 0 ? (
+                    <div className="mx-1 py-8 text-center text-xs text-gray-400 border border-dashed border-gray-200 rounded-xl">
+                      Drop here
+                    </div>
+                  ) : (
+                    cards.map(sub => (
+                      <div
+                        key={sub.id}
+                        draggable={updatingId !== sub.id}
+                        onDragStart={() => setDraggingId(sub.id)}
+                        onDragEnd={() => {
+                          setDraggingId(null);
+                          setDropTarget(null);
+                        }}
+                        onClick={() =>
+                          onOpenSubmission?.(
+                            sub.service || service,
+                            sub.clientEmail || sub.clientName || String(sub.id)
+                          )
+                        }
+                        className={`bg-white rounded-xl border border-gray-200 p-3 shadow-sm cursor-grab active:cursor-grabbing hover:border-[#b59354]/50 hover:shadow transition-all ${
+                          draggingId === sub.id ? "opacity-40 scale-[0.98]" : ""
+                        } ${updatingId === sub.id ? "opacity-60 pointer-events-none" : ""}`}
+                      >
+                        <div className="flex items-start justify-between gap-2 mb-1.5">
+                          <p className="text-sm font-semibold text-gray-900 leading-snug line-clamp-2">
+                            {sub.clientName || "N/A"}
+                          </p>
+                          <span className={`flex-shrink-0 w-2 h-2 rounded-full mt-1.5 ${serviceMeta?.color || "bg-gray-400"}`} />
+                        </div>
+                        {sub.clientEmail && (
+                          <p className="text-[11px] text-gray-500 truncate mb-2">{sub.clientEmail}</p>
+                        )}
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[10px] text-gray-400 capitalize truncate">
+                            {(sub.service || service).replace(/_/g, " ")}
+                          </span>
+                          <span className="text-[10px] text-gray-400 flex-shrink-0">
+                            {sub.createdAt
+                              ? new Date(sub.createdAt).toLocaleDateString("en-GB", {
+                                  day: "2-digit",
+                                  month: "short",
+                                })
+                              : ""}
+                          </span>
+                        </div>
+                        {updatingId === sub.id && (
+                          <p className="text-[10px] text-[#b59354] mt-2">Updating…</p>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            );
+          })}
+
+          {(byStatus.__other?.length || 0) > 0 && (
+            <div className="flex-shrink-0 w-[280px] flex flex-col rounded-2xl border border-gray-200 bg-gray-50/80 border-t-4 border-t-gray-400">
+              <div className="px-3 py-3 flex items-center justify-between">
+                <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-gray-100 text-gray-600">
+                  other
+                </span>
+                <span className="text-xs font-bold text-gray-500">{byStatus.__other.length}</span>
+              </div>
+              <div className="flex-1 px-2 pb-3 space-y-2 overflow-y-auto max-h-[calc(100vh-280px)]">
+                {byStatus.__other.map(sub => (
+                  <div
+                    key={sub.id}
+                    onClick={() =>
+                      onOpenSubmission?.(
+                        sub.service || service,
+                        sub.clientEmail || sub.clientName || String(sub.id)
+                      )
+                    }
+                    className="bg-white rounded-xl border border-gray-200 p-3 shadow-sm cursor-pointer hover:border-[#b59354]/50"
+                  >
+                    <p className="text-sm font-semibold text-gray-900">{sub.clientName}</p>
+                    <p className="text-[11px] text-gray-500 truncate">{sub.clientEmail}</p>
+                    <p className="text-[10px] text-amber-600 mt-1 capitalize">
+                      status: {sub.status.replace(/_/g, " ")}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Reject reason modal */}
+      {rejectModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setRejectModal(null)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl w-full max-w-md p-5"
+            onClick={e => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-bold text-gray-900 mb-1">Reject submission</h3>
+            <p className="text-sm text-gray-500 mb-4">
+              {rejectModal.sub.clientName}
+              {rejectModal.sub.clientEmail ? ` · ${rejectModal.sub.clientEmail}` : ""}
+            </p>
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">
+              Rejection reason
+            </label>
+            <textarea
+              value={rejectReason}
+              onChange={e => setRejectReason(e.target.value)}
+              rows={3}
+              placeholder="Optional note for the record…"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#b59354] resize-none mb-4"
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setRejectModal(null)}
+                className="px-4 py-2 text-sm border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  const { sub, status } = rejectModal;
+                  setRejectModal(null);
+                  await applyStatus(sub, status, rejectReason.trim() || undefined);
+                }}
+                className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700"
+              >
+                Confirm reject
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Submissions Tab ──────────────────────────────────────────────────────────
 function SubmissionsTab({
   initialService = "all",
@@ -765,6 +1185,34 @@ function SubmissionsTab({
   }, [service, search]);
 
   React.useEffect(() => { load(); }, [load]);
+
+  // When opened from Pipeline with a search, auto-select the best match
+  React.useEffect(() => {
+    if (!initialSearch || loading || submissions.length === 0) return;
+    const q = initialSearch.toLowerCase();
+    const match =
+      submissions.find(s => s.clientEmail?.toLowerCase() === q) ||
+      submissions.find(s => s.clientName?.toLowerCase() === q) ||
+      submissions.find(s =>
+        s.clientEmail?.toLowerCase().includes(q) ||
+        s.clientName?.toLowerCase().includes(q) ||
+        String(s.id).includes(q)
+      ) ||
+      submissions[0];
+    if (match) {
+      setSelected(match);
+      setReplyOpen(false);
+      setReplies([]);
+      setNotes([]);
+      setNoteText("");
+      setDocs([]);
+      loadReplies(match);
+      loadNotes(match);
+      loadDocs(match);
+    }
+    // intentionally only when incoming search / list settles
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialSearch, loading, submissions]);
 
   const showToast = (msg: string) => {
     setToast(msg);

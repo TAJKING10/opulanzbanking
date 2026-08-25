@@ -627,7 +627,7 @@ router.post('/mortgage', async (req, res) => {
     const {
       applicationId, firstName, lastName, email, phone,
       market, propertyType, purchasePrice, contribution,
-      monthlyIncome, employment, tempIds = []
+      monthlyIncome, employment, tempIds = [], files = []
     } = req.body;
 
     if (!email) {
@@ -636,6 +636,23 @@ router.post('/mortgage', async (req, res) => {
 
     const name = `${firstName || ''} ${lastName || ''}`.trim() || 'Client';
     const attachments = buildAttachments(tempIds);
+
+    // If files are permanently uploaded to Azure, download and attach them to the email
+    if (files && Array.isArray(files)) {
+      for (const file of files) {
+        if (file.blobName) {
+          try {
+            const fileBuf = await azureStorage.downloadDocument(file.blobName);
+            attachments.push({
+              filename: file.filename || file.name || 'document',
+              content: fileBuf,
+            });
+          } catch (azureErr) {
+            console.error(`Error downloading Azure document ${file.blobName} for mortgage email:`, azureErr.message);
+          }
+        }
+      }
+    }
 
     await emailService.sendApplicationEmails('mortgage', {
       applicationId: applicationId || `OPL-${Date.now()}`,

@@ -108,17 +108,35 @@ export default function MortgageApplyPage({
   const [form, setForm] = React.useState<FormData>(empty);
   const [submitted, setSubmitted] = React.useState(false);
   const [errors, setErrors] = React.useState<Record<string, string>>({});
-  const [docTempIds, setDocTempIds] = React.useState<Record<string, string[]>>({});
+  interface AzureUploadedFile {
+    name: string;
+    size: number;
+    type: string;
+    url: string;
+    blobName: string;
+  }
+
+  const [azureFiles, setAzureFiles] = React.useState<Record<string, AzureUploadedFile[]>>({});
   const [isUploading, setIsUploading] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  async function uploadDocToTemp(file: File): Promise<string | null> {
+  async function uploadDocToAzure(file: File, slotId: string): Promise<AzureUploadedFile | null> {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const r = await fetch(`${API}/api/upload/temp`, { method: "POST", body: formData });
+      formData.append("type", slotId);
+      const r = await fetch(`${API}/api/upload`, { method: "POST", body: formData });
       const j = r.ok ? await r.json() : null;
-      return j?.tempId ?? null;
+      if (j && j.success && j.data) {
+        return {
+          name: file.name,
+          size: file.size,
+          type: slotId,
+          url: j.data.fileUrl,
+          blobName: j.data.blobName,
+        };
+      }
+      return null;
     } catch { return null; }
   }
 
@@ -129,13 +147,13 @@ export default function MortgageApplyPage({
 
   const addDoc = async (slotId: string, files: File[]) => {
     setIsUploading(true);
-    const newTempIds: string[] = [];
     const newFiles: File[] = [];
+    const newAzureFiles: AzureUploadedFile[] = [];
 
     for (const file of files) {
-      const tempId = await uploadDocToTemp(file);
-      if (tempId) {
-        newTempIds.push(tempId);
+      const uploadResult = await uploadDocToAzure(file, slotId);
+      if (uploadResult) {
+        newAzureFiles.push(uploadResult);
         newFiles.push(file);
       }
     }
@@ -145,9 +163,9 @@ export default function MortgageApplyPage({
         ...prev,
         docs: { ...prev.docs, [slotId]: [...(prev.docs[slotId] || []), ...newFiles] },
       }));
-      setDocTempIds((prev) => ({
+      setAzureFiles((prev) => ({
         ...prev,
-        [slotId]: [...(prev[slotId] || []), ...newTempIds],
+        [slotId]: [...(prev[slotId] || []), ...newAzureFiles],
       }));
     }
     setIsUploading(false);
@@ -159,7 +177,7 @@ export default function MortgageApplyPage({
       updated.splice(idx, 1);
       return { ...prev, docs: { ...prev.docs, [slotId]: updated } };
     });
-    setDocTempIds((prev) => {
+    setAzureFiles((prev) => {
       const updated = [...(prev[slotId] || [])];
       updated.splice(idx, 1);
       return { ...prev, [slotId]: updated };
@@ -213,6 +231,8 @@ export default function MortgageApplyPage({
 
     setIsLoading(true);
     try {
+      const allAzureFiles = Object.values(azureFiles).flat();
+
       const payload = {
         firstName: form.firstName,
         lastName: form.lastName,
@@ -224,6 +244,7 @@ export default function MortgageApplyPage({
         contribution: form.contribution,
         monthlyIncome: form.monthlyIncome,
         employment: form.employment,
+        files: allAzureFiles,
       };
 
       // 1. Create mortgage application record in DB
@@ -240,17 +261,14 @@ export default function MortgageApplyPage({
       const appData = appResponse.ok ? await appResponse.json() : null;
       const appId = appData?.data?.id ?? `OPL-${Date.now()}`;
 
-      // 2. Collect all uploaded temp IDs
-      const allTempIds = Object.values(docTempIds).flat();
-
-      // 3. Trigger email notification
+      // 2. Trigger email notification with Azure download instructions
       await fetch(`${API}/api/notifications/mortgage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           applicationId: appId,
           ...payload,
-          tempIds: allTempIds,
+          files: allAzureFiles,
         }),
       });
 

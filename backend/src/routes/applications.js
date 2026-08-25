@@ -60,10 +60,10 @@ router.post('/', async (req, res) => {
     const { type, status = 'draft', payload = {} } = req.body;
 
     // Validation
-    if (!type || !['individual', 'company', 'accounting', 'insurance', 'company_formation'].includes(type)) {
+    if (!type || !['individual', 'company', 'accounting', 'insurance', 'company_formation', 'mortgage'].includes(type)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid type. Must be "individual", "company", "accounting", "insurance", or "company_formation"'
+        error: 'Invalid type. Must be "individual", "company", "accounting", "insurance", "company_formation", or "mortgage"'
       });
     }
 
@@ -160,6 +160,7 @@ router.post('/', async (req, res) => {
       // Send admin notification via emailService (routes to correct inbox by type)
       const appType = type === 'company_formation' ? 'company_formation'
         : type === 'accounting' ? 'accounting'
+        : type === 'mortgage' ? 'mortgage'
         : 'open_account';
       emailService.sendApplicationEmails(appType, {
         applicationId: application.id,

@@ -95,6 +95,7 @@ const ADMIN_EMAILS = {
   company:             process.env.EMAIL_COMPANY_FORMATION   || 'company-set@opulanz.com',
   company_formation:   process.env.EMAIL_COMPANY_FORMATION   || 'company-set@opulanz.com',
   accounting:          process.env.EMAIL_ACCOUNTING          || 'accounting@opulanz.com',
+  mortgage:            process.env.EMAIL_MORTGAGE            || 'mortgages@opulanz.com',
 };
 
 const SERVICE_LABELS = {
@@ -106,6 +107,7 @@ const SERVICE_LABELS = {
   company:             'Company Account',
   company_formation:   'Company Formation',
   accounting:          'Accounting & Invoicing',
+  mortgage:            'Mortgage Application',
 };
 
 const STATUS_BY_SOURCE = {
@@ -205,6 +207,7 @@ router.get('/stats', adminAuth, async (req, res) => {
       company:             0,
       accounting:          0,
       company_formation:   0,
+      mortgage:            0,
       life_insurance:      (lifeBookings.rows[0]?.count || 0),
       tax_advisory:        (taxBookings.rows[0]?.count || 0),
       investment_advisory: (invAppointments.rows[0]?.count || 0) + (invInquiries.rows[0]?.count || 0),
@@ -218,12 +221,16 @@ router.get('/stats', adminAuth, async (req, res) => {
       else if (r.type === 'accounting')   summary.accounting        += r.count;
       else if (r.type === 'company_formation') summary.company_formation += r.count;
       else if (r.type === 'insurance')    summary.life_insurance    += r.count;
+      else if (r.type === 'mortgage')     summary.mortgage          += r.count;
     });
 
     const serviceMap = {
-      individual: 'individual', company: 'company',
-      accounting: 'accounting', company_formation: 'company_formation',
+      individual: 'individual',
+      company: 'company',
+      accounting: 'accounting',
+      company_formation: 'company_formation',
       insurance: 'life_insurance',
+      mortgage: 'mortgage',
     };
 
     const recentSubmissions = [];

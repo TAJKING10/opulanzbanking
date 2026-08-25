@@ -618,4 +618,50 @@ router.post('/private-banking', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/notifications/mortgage
+ * Send mortgage application confirmation to client + notification to mortgages@opulanz.com
+ */
+router.post('/mortgage', async (req, res) => {
+  try {
+    const {
+      applicationId, firstName, lastName, email, phone,
+      market, propertyType, purchasePrice, contribution,
+      monthlyIncome, employment, tempIds = []
+    } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Missing client email' });
+    }
+
+    const name = `${firstName || ''} ${lastName || ''}`.trim() || 'Client';
+    const attachments = buildAttachments(tempIds);
+
+    await emailService.sendApplicationEmails('mortgage', {
+      applicationId: applicationId || `OPL-${Date.now()}`,
+      payload: {
+        email,
+        firstName,
+        lastName,
+        phone: phone || '',
+        'Target Market': market || '',
+        'Property Type': propertyType || '',
+        'Purchase Price (EUR)': purchasePrice ? `€${Number(purchasePrice).toLocaleString()}` : '',
+        'Contribution (EUR)': contribution ? `€${Number(contribution).toLocaleString()}` : '',
+        'Monthly Income (EUR)': monthlyIncome ? `€${Number(monthlyIncome).toLocaleString()}` : '',
+        'Employment Status': employment || '',
+        'Submitted At': new Date().toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short' }),
+      },
+    }, attachments);
+
+    cleanupTempFiles(tempIds);
+
+    console.log(`📧 [Mortgage] Emails sent → client: ${email} · admin: mortgages@opulanz.com`);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error sending mortgage notification:', error);
+    res.status(500).json({ success: false, error: 'Failed to send notifications', message: error.message });
+  }
+});
+
 module.exports = router;

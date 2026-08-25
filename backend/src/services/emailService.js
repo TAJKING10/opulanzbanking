@@ -13,6 +13,7 @@
  *   open_account       → info@opulanz.com
  *   company_formation  → company-set@opulanz.com
  *   accounting         → accounting@opulanz.com
+ *   mortgage           → mortgages@opulanz.com
  */
 
 const nodemailer = require('nodemailer');
@@ -25,6 +26,7 @@ const ADMIN_EMAILS = {
   open_account:        process.env.EMAIL_OPEN_ACCOUNT        || 'info@opulanz.com',
   company_formation:   process.env.EMAIL_COMPANY_FORMATION   || 'company-set@opulanz.com',
   accounting:          process.env.EMAIL_ACCOUNTING          || 'accounting@opulanz.com',
+  mortgage:            process.env.EMAIL_MORTGAGE            || 'mortgages@opulanz.com',
 };
 
 // ─── Service display names ──────────────────────────────────────────────────
@@ -35,6 +37,7 @@ const SERVICE_LABELS = {
   open_account:        'Account Opening',
   company_formation:   'Company Formation',
   accounting:          'Accounting & Invoicing',
+  mortgage:            'Mortgage Application',
 };
 
 // ─── Transporter factory ────────────────────────────────────────────────────
@@ -370,6 +373,7 @@ async function sendApplicationEmails(applicationType, data, attachments = []) {
     open_account: 'Our compliance team will review your KYC/KYB documents. We will contact you within 2 business days.',
     company_formation: 'Our company formation specialists will review your submission and contact you to begin the registration process.',
     accounting: 'Our accounting team will review your requirements and contact you to set up your account.',
+    mortgage: 'Our mortgage advisors will review your documents and eligibility simulator details, then contact you to begin the bank pre-qualification.',
   }[applicationType] || 'Our team will review your submission and contact you shortly.';
 
   const clientHtml = `<div style="max-width:600px;margin:0 auto;">

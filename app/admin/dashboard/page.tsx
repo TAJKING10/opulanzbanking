@@ -79,6 +79,7 @@ const SERVICES = [
   { key: "company",            label: "Company Account",     color: "bg-indigo-500" },
   { key: "company_formation",  label: "Company Formation",   color: "bg-purple-500" },
   { key: "accounting",         label: "Accounting",          color: "bg-emerald-500" },
+  { key: "mortgage",           label: "Mortgage Application",color: "bg-amber-600" },
   { key: "tax_advisory",       label: "Tax Advisory",        color: "bg-amber-500" },
   { key: "life_insurance",     label: "Life Insurance",      color: "bg-red-500" },
   { key: "investment_advisory",label: "Investment Advisory", color: "bg-cyan-500" },
@@ -93,6 +94,7 @@ const SERVICE_EMAILS: Record<string, string> = {
   company:             "company-set@opulanz.com",
   company_formation:   "company-set@opulanz.com",
   accounting:          "accounting@opulanz.com",
+  mortgage:            "mortgages@opulanz.com",
 };
 
 const SERVICE_LABELS: Record<string, string> = {
@@ -100,6 +102,7 @@ const SERVICE_LABELS: Record<string, string> = {
   company: "Company Account",
   company_formation: "Company Formation",
   accounting: "Accounting",
+  mortgage: "Mortgage Application",
   tax_advisory: "Tax Advisory",
   life_insurance: "Life Insurance",
   investment_advisory: "Investment Advisory",
@@ -559,6 +562,7 @@ function OverviewTab({
     { label: "Company Accounts",    value: s.company || 0,             color: "from-indigo-500 to-indigo-600",  icon: "🏢", action: "submissions", serviceKey: "company" },
     { label: "Company Formation",   value: s.company_formation || 0,   color: "from-purple-500 to-purple-600",  icon: "⚖️", action: "submissions", serviceKey: "company_formation" },
     { label: "Accounting",          value: s.accounting || 0,          color: "from-emerald-500 to-emerald-600",icon: "📊", action: "submissions", serviceKey: "accounting" },
+    { label: "Mortgage",            value: s.mortgage || 0,            color: "from-amber-600 to-amber-700",    icon: "🏠", action: "submissions", serviceKey: "mortgage" },
     { label: "Tax Advisory",        value: s.tax_advisory || 0,        color: "from-amber-500 to-amber-600",    icon: "🧾", action: "submissions", serviceKey: "tax_advisory" },
     { label: "Life Insurance",      value: s.life_insurance || 0,      color: "from-red-500 to-red-600",        icon: "❤️", action: "submissions", serviceKey: "life_insurance" },
     { label: "Investment Advisory", value: s.investment_advisory || 0, color: "from-cyan-500 to-cyan-600",      icon: "📈", action: "submissions", serviceKey: "investment_advisory" },
@@ -566,7 +570,7 @@ function OverviewTab({
   ];
 
   const total = (s.individual||0)+(s.company||0)+(s.company_formation||0)+
-                (s.accounting||0)+(s.tax_advisory||0)+(s.life_insurance||0)+
+                (s.accounting||0)+(s.mortgage||0)+(s.tax_advisory||0)+(s.life_insurance||0)+
                 (s.investment_advisory||0);
 
   const recentSubs = stats?.recentActivity?.submissions || [];
@@ -716,6 +720,7 @@ const SERVICE_TO_SOURCE: Record<string, string> = {
   company: "application",
   company_formation: "application",
   accounting: "application",
+  mortgage: "application",
   tax_advisory: "tax_booking",
   life_insurance: "life_booking",
   investment_advisory: "investment_inquiry",

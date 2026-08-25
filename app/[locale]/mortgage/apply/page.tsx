@@ -94,6 +94,8 @@ function ltv(form: FormData) {
   return Math.round(((price - contrib) / price) * 100);
 }
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export default function MortgageApplyPage({
   params: { locale },
 }: {
@@ -106,17 +108,49 @@ export default function MortgageApplyPage({
   const [form, setForm] = React.useState<FormData>(empty);
   const [submitted, setSubmitted] = React.useState(false);
   const [errors, setErrors] = React.useState<Record<string, string>>({});
+  const [docTempIds, setDocTempIds] = React.useState<Record<string, string[]>>({});
+  const [isUploading, setIsUploading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  async function uploadDocToTemp(file: File): Promise<string | null> {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const r = await fetch(`${API}/api/upload/temp`, { method: "POST", body: formData });
+      const j = r.ok ? await r.json() : null;
+      return j?.tempId ?? null;
+    } catch { return null; }
+  }
 
   const set = (key: keyof FormData, value: unknown) => {
     setForm((prev) => ({ ...prev, [key]: value }));
     setErrors((prev) => { const e = { ...prev }; delete e[key]; return e; });
   };
 
-  const addDoc = (slotId: string, files: File[]) => {
-    setForm((prev) => ({
-      ...prev,
-      docs: { ...prev.docs, [slotId]: [...(prev.docs[slotId] || []), ...files] },
-    }));
+  const addDoc = async (slotId: string, files: File[]) => {
+    setIsUploading(true);
+    const newTempIds: string[] = [];
+    const newFiles: File[] = [];
+
+    for (const file of files) {
+      const tempId = await uploadDocToTemp(file);
+      if (tempId) {
+        newTempIds.push(tempId);
+        newFiles.push(file);
+      }
+    }
+
+    if (newFiles.length > 0) {
+      setForm((prev) => ({
+        ...prev,
+        docs: { ...prev.docs, [slotId]: [...(prev.docs[slotId] || []), ...newFiles] },
+      }));
+      setDocTempIds((prev) => ({
+        ...prev,
+        [slotId]: [...(prev[slotId] || []), ...newTempIds],
+      }));
+    }
+    setIsUploading(false);
   };
 
   const removeDoc = (slotId: string, idx: number) => {
@@ -124,6 +158,11 @@ export default function MortgageApplyPage({
       const updated = [...(prev.docs[slotId] || [])];
       updated.splice(idx, 1);
       return { ...prev, docs: { ...prev.docs, [slotId]: updated } };
+    });
+    setDocTempIds((prev) => {
+      const updated = [...(prev[slotId] || [])];
+      updated.splice(idx, 1);
+      return { ...prev, [slotId]: updated };
     });
   };
 
@@ -166,13 +205,63 @@ export default function MortgageApplyPage({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const submit = () => {
+  const submit = async () => {
     if (!form.consent) {
       setErrors({ consent: t("errors.consent") });
       return;
     }
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    setIsLoading(true);
+    try {
+      const payload = {
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        market: form.market,
+        propertyType: form.propertyType,
+        purchasePrice: form.purchasePrice,
+        contribution: form.contribution,
+        monthlyIncome: form.monthlyIncome,
+        employment: form.employment,
+      };
+
+      // 1. Create mortgage application record in DB
+      const appResponse = await fetch(`${API}/api/applications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "mortgage",
+          status: "submitted",
+          payload,
+        }),
+      });
+
+      const appData = appResponse.ok ? await appResponse.json() : null;
+      const appId = appData?.data?.id ?? `OPL-${Date.now()}`;
+
+      // 2. Collect all uploaded temp IDs
+      const allTempIds = Object.values(docTempIds).flat();
+
+      // 3. Trigger email notification
+      await fetch(`${API}/api/notifications/mortgage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applicationId: appId,
+          ...payload,
+          tempIds: allTempIds,
+        }),
+      });
+
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      console.error("Mortgage submission error:", err);
+      alert("Submission failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const ltvValue = ltv(form);
@@ -514,15 +603,16 @@ export default function MortgageApplyPage({
                       </div>
                     )}
 
-                    <label className="flex items-center gap-3 cursor-pointer group">
+                    <label className={`flex items-center gap-3 ${isUploading ? "opacity-50 pointer-events-none" : "cursor-pointer"} group`}>
                       <div className="flex items-center gap-2 px-4 py-2 rounded-lg border border-brand-grayLight bg-gray-50 group-hover:border-brand-gold/40 group-hover:bg-brand-gold/5 transition-all text-sm text-brand-grayMed group-hover:text-brand-dark">
                         <Upload className="h-4 w-4" />
-                        {t("step2.upload")}
+                        {isUploading ? "Uploading..." : t("step2.upload")}
                       </div>
                       <span className="text-xs text-brand-grayMed">{t("step2.fileHint")}</span>
                       <input
                         type="file"
                         multiple
+                        disabled={isUploading}
                         accept=".pdf,.jpg,.jpeg,.png"
                         className="sr-only"
                         onChange={(e) => {
@@ -681,9 +771,10 @@ export default function MortgageApplyPage({
           {step === 3 && (
             <button
               onClick={submit}
-              className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-brand-gold to-brand-goldDark text-white text-sm font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all"
+              disabled={isLoading || isUploading}
+              className={`inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-brand-gold to-brand-goldDark text-white text-sm font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all ${(isLoading || isUploading) ? "opacity-50 pointer-events-none" : ""}`}
             >
-              {t("nav.submit")}
+              {isLoading ? "Submitting..." : t("nav.submit")}
               <Send className="h-4 w-4" />
             </button>
           )}

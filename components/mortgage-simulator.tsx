@@ -5,10 +5,13 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Calculator, Home, CreditCard, TrendingUp, AlertCircle, AlertTriangle, User, Users } from "lucide-react";
 
-const DEPENDENT_COST = 350; // monthly deduction per dependent (FR/LU standard)
+const DEPENDENT_COST = 350;
 const MIN_INCOME_SOLO = 900;
 const MIN_INCOME_JOINT = 1200;
 const MIN_LOAN = 20000;
+// Minimum monthly disposable income after all obligations (FR/LU "reste à vivre")
+const MIN_RESTE_SOLO = 900;
+const MIN_RESTE_JOINT = 1200;
 
 function computeResult(
   income: number,
@@ -23,10 +26,20 @@ function computeResult(
   contribPct: number,
 ) {
   const totalIncome = hasCoApplicant ? income + coIncome : income;
-  const effectiveIncome = Math.max(0, totalIncome - dependents * DEPENDENT_COST);
-  const maxMonthly = effectiveIncome * 0.33 - existing;
+  if (totalIncome <= 0) return { result: null, totalIncome, maxMonthly: 0 };
 
-  if (maxMonthly <= 0 || totalIncome <= 0) {
+  // France (HCSF 2021-R-01) / Luxembourg (CSSF 23/837):
+  // DTI = (all debt payments) / net income ≤ 33%
+  const dtiLimit = totalIncome * 0.33 - existing;
+
+  // Separate "reste à vivre" check: income minus ALL obligations must meet a minimum
+  const minReste = (hasCoApplicant ? MIN_RESTE_JOINT : MIN_RESTE_SOLO) + dependents * DEPENDENT_COST;
+  const resteLimit = totalIncome - minReste - existing;
+
+  // Binding constraint is whichever is more restrictive
+  const maxMonthly = Math.min(dtiLimit, resteLimit);
+
+  if (maxMonthly <= 0) {
     return { result: null, totalIncome, maxMonthly };
   }
 
@@ -51,6 +64,7 @@ function computeResult(
       maxLoan,
       propertyBudget,
       monthlyPayment: maxMonthly,
+      // Standard FR/LU DTI: (all debt payments) / net income
       debtRatio: Math.round(((maxMonthly + existing) / totalIncome) * 100),
       contribution,
     },
@@ -161,7 +175,7 @@ export function MortgageSimulator({ locale }: { locale: string }) {
   const [existing, setExisting] = React.useState(0);
 
   const { result, totalIncome, maxMonthly } = computeResult(
-    income, 0, false, dependents,
+    income, 0, hasCoApplicant, dependents,
     existing, duration, rate, contribAmount, "amount", 20,
   );
 
@@ -266,7 +280,7 @@ export function MortgageSimulator({ locale }: { locale: string }) {
                 displayValue={`€${income.toLocaleString()}`}
                 min={1000}
                 max={30000}
-                step={500}
+                step={100}
                 minLabel="€1,000"
                 maxLabel="€30,000"
                 onChange={setIncome}

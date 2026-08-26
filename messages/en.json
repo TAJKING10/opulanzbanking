@@ -4437,7 +4437,7 @@
         "monthly": "Monthly payment",
         "perMonth": "per month",
         "dti": "Debt-to-income ratio",
-        "dtiNote": "Banks typically allow a maximum of 33% in France and Luxembourg",
+        "dtiNote": "Max 33% in France & Luxembourg — lenders also verify minimum disposable income",
         "jointApplication": "Joint application",
         "ctaText": "Ready to apply? Start your file — our advisors will handle the rest.",
         "ctaButton": "Start your application",

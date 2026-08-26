@@ -4437,7 +4437,7 @@
         "monthly": "Mensualité",
         "perMonth": "par mois",
         "dti": "Taux d'endettement",
-        "dtiNote": "Les banques autorisent généralement un maximum de 33 % en France et au Luxembourg",
+        "dtiNote": "Max 33 % en France et au Luxembourg — les banques vérifient aussi le reste à vivre",
         "jointApplication": "Demande conjointe",
         "ctaText": "Prêt à déposer votre dossier ? Nos conseillers s'occupent du reste.",
         "ctaButton": "Démarrer votre demande",

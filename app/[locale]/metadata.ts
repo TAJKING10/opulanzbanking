@@ -5,7 +5,7 @@ const rawBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
 // Strip internal hostnames from canonical/OG URLs so search engines never
 // index staging addresses. Fall back to the branded domain only when the
 // env var is explicitly set to a real public host.
-const baseUrl =
+export const baseUrl =
   rawBaseUrl && !rawBaseUrl.includes('localhost') && !rawBaseUrl.includes('azurewebsites.net')
     ? rawBaseUrl
     : 'https://www.opulanz.com';

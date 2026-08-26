@@ -11,6 +11,10 @@ type Route = {
   changeFrequency: ChangeFreq;
 };
 
+const isProduction =
+  process.env.NODE_ENV === 'production' ||
+  process.env.NEXT_PUBLIC_ENVIRONMENT === 'production';
+
 const publicRoutes: Route[] = [
   { path: '', priority: 1.0, changeFrequency: 'weekly' },
   { path: '/about', priority: 0.8, changeFrequency: 'monthly' },
@@ -25,9 +29,12 @@ const publicRoutes: Route[] = [
   { path: '/tax-advisory/tax-compliance', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/tax-advisory/personal-tax-advisory', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/investment-advisory', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/mortgage', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/life-insurance', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/invoicing-accounting', priority: 0.7, changeFrequency: 'monthly' },
-  { path: '/spv-investment', priority: 0.7, changeFrequency: 'monthly' },
+  ...(isProduction
+    ? []
+    : [{ path: '/spv-investment', priority: 0.7, changeFrequency: 'monthly' as const }]),
   { path: '/legal/privacy', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/legal/terms', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/legal/mentions', priority: 0.3, changeFrequency: 'yearly' },

@@ -7,7 +7,7 @@ import { GoogleProvider } from '@/components/google-provider';
 import { TawkChat } from '@/components/tawk-chat';
 import { LiveChat } from '@/components/live-chat';
 import { routing } from '@/i18n/routing';
-import { generateSEOMetadata } from './metadata';
+import { generateSEOMetadata, baseUrl } from './metadata';
 import { CapacitorInit } from '@/components/capacitor-init';
 import '@/app/globals.css';
 
@@ -68,10 +68,10 @@ export default async function LocaleLayout({
               {
                 '@context': 'https://schema.org',
                 '@type': 'FinancialService',
-                '@id': 'https://www.opulanz.com/#organization',
+                '@id': `${baseUrl}/#organization`,
                 name: 'Opulanz',
-                url: 'https://www.opulanz.com',
-                logo: 'https://www.opulanz.com/images/opulanz-logo.png',
+                url: baseUrl,
+                logo: `${baseUrl}/images/opulanz-logo.png`,
                 description:
                   'Regulated payment accounts, company formation, investment advisory, tax consulting, and life insurance for businesses in France and Luxembourg.',
                 areaServed: ['FR', 'LU'],
@@ -84,10 +84,10 @@ export default async function LocaleLayout({
               {
                 '@context': 'https://schema.org',
                 '@type': 'WebSite',
-                '@id': 'https://www.opulanz.com/#website',
-                url: 'https://www.opulanz.com',
+                '@id': `${baseUrl}/#website`,
+                url: baseUrl,
                 name: 'Opulanz',
-                publisher: { '@id': 'https://www.opulanz.com/#organization' },
+                publisher: { '@id': `${baseUrl}/#organization` },
               },
             ]),
           }}

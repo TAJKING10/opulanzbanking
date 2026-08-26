@@ -14,12 +14,15 @@ Disallow: /en/signup
 Disallow: /fr/signup
 Disallow: /en/kyc
 Disallow: /fr/kyc
-
 # SPV private portals and admin
 Disallow: /en/spv-investment/portal
 Disallow: /fr/spv-investment/portal
 Disallow: /en/spv-investment/admin
 Disallow: /fr/spv-investment/admin
+
+# Mortgage application wizard (private)
+Disallow: /en/mortgage/apply
+Disallow: /fr/mortgage/apply
 
 # Account opening forms (private)
 Disallow: /en/open-account/start

@@ -187,18 +187,18 @@ export function MortgageSimulator({ locale }: { locale: string }) {
     }
   }
 
-  // Build warnings
+  // Minimum income warning — shown as a full-width banner; suppresses results panel
+  const minRequired = hasCoApplicant ? MIN_INCOME_JOINT : MIN_INCOME_SOLO;
+  const incomeWarning = income > 0 && income < minRequired
+    ? (hasCoApplicant ? t("warnings.minIncomeJoint") : t("warnings.minIncomeSolo"))
+    : null;
+
+  // Other contextual warnings shown inside the results column
   const warnings: string[] = [];
-  if (income > 0) {
-    const minRequired = hasCoApplicant ? MIN_INCOME_JOINT : MIN_INCOME_SOLO;
-    if (income < minRequired) {
-      warnings.push(hasCoApplicant ? t("warnings.minIncomeJoint") : t("warnings.minIncomeSolo"));
-    }
-  }
-  if (result && result.maxLoan < MIN_LOAN) {
+  if (!incomeWarning && result && result.maxLoan < MIN_LOAN) {
     warnings.push(t("warnings.minLoan"));
   }
-  if (maxMonthly <= 0 && totalIncome > 0) {
+  if (!incomeWarning && maxMonthly <= 0 && totalIncome > 0) {
     warnings.push(t("warnings.negativeDTI"));
   }
 
@@ -229,6 +229,14 @@ export function MortgageSimulator({ locale }: { locale: string }) {
           <h2 className="text-3xl md:text-4xl font-bold text-brand-dark mb-3">{t("title")}</h2>
           <p className="text-brand-grayMed max-w-xl mx-auto text-base leading-relaxed">{t("description")}</p>
         </div>
+
+        {/* Full-width income warning — suppresses the results panel */}
+        {incomeWarning && (
+          <div className="mb-8 flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
+            <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-amber-800 leading-relaxed">{incomeWarning}</p>
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-2 gap-8 items-start">
           {/* ── Inputs ── */}
@@ -386,10 +394,10 @@ export function MortgageSimulator({ locale }: { locale: string }) {
             </div>
           </div>
 
-          {/* ── Results ── */}
+          {/* ── Results ── hidden when income is below minimum threshold */}
           <div className="space-y-4">
-            {/* Warnings */}
-            {warnings.length > 0 && (
+            {/* Contextual warnings (minLoan, negativeDTI) */}
+            {!incomeWarning && warnings.length > 0 && (
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-2">
                 {warnings.map((w, i) => (
                   <div key={i} className="flex items-start gap-2">
@@ -400,7 +408,7 @@ export function MortgageSimulator({ locale }: { locale: string }) {
               </div>
             )}
 
-            {result && result.maxLoan >= MIN_LOAN ? (
+            {!incomeWarning && result && result.maxLoan >= MIN_LOAN ? (
               <>
                 {/* Property budget — hero card */}
                 <div className="relative overflow-hidden bg-gradient-to-br from-brand-gold via-brand-gold to-brand-goldDark rounded-2xl shadow-xl p-8">

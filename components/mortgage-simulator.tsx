@@ -154,8 +154,10 @@ function NumberField({
           onChange={(e) => {
             const v = e.target.value;
             if (v === "" || /^\d+$/.test(v)) {
-              setRaw(v);
-              onChange(Math.max(0, Number(v) || 0));
+              // Strip leading zeros so typing "7" into "0" gives "7", not "07"
+              const normalized = v === "" ? "" : v.replace(/^0+(\d)/, "$1");
+              setRaw(normalized);
+              onChange(Math.max(0, Number(normalized) || 0));
             }
           }}
           onBlur={() => {

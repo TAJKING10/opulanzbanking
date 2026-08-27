@@ -188,6 +188,34 @@ export function MortgageSimulator({ locale }: { locale: string }) {
   const [contribAmount, setContribAmount] = React.useState(50000);
   const [existing, setExisting] = React.useState(0);
 
+  // Preserve scroll position across locale switches
+  React.useEffect(() => {
+    const SCROLL_KEY = "opulanz_scroll";
+    const path = window.location.pathname.replace(/^\/(en|fr)/, "") || "/";
+
+    // Restore only when: same page, different locale, happened within 5 s (= locale switch)
+    try {
+      const raw = sessionStorage.getItem(SCROLL_KEY);
+      if (raw) {
+        const { p, y, loc, ts } = JSON.parse(raw);
+        if (p === path && loc !== locale && y > 0 && Date.now() - ts < 5000) {
+          sessionStorage.removeItem(SCROLL_KEY);
+          setTimeout(() => window.scrollTo({ top: y, behavior: "instant" }), 80);
+        }
+      }
+    } catch {}
+
+    const save = () => {
+      try {
+        sessionStorage.setItem(SCROLL_KEY, JSON.stringify(
+          { p: path, y: window.scrollY, loc: locale, ts: Date.now() }
+        ));
+      } catch {}
+    };
+    window.addEventListener("scroll", save, { passive: true });
+    return () => window.removeEventListener("scroll", save);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Restore state after a locale navigation so values survive language switches
   React.useEffect(() => {
     try {

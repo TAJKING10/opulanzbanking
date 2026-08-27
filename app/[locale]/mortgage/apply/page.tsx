@@ -117,7 +117,8 @@ export default function MortgageApplyPage({
   }
 
   const [azureFiles, setAzureFiles] = React.useState<Record<string, AzureUploadedFile[]>>({});
-  const [isUploading, setIsUploading] = React.useState(false);
+  const [uploadingSlots, setUploadingSlots] = React.useState<Record<string, boolean>>({});
+  const isAnyUploading = Object.values(uploadingSlots).some(Boolean);
   const [isLoading, setIsLoading] = React.useState(false);
 
   async function uploadDocToAzure(file: File, slotId: string): Promise<AzureUploadedFile | null> {
@@ -146,7 +147,7 @@ export default function MortgageApplyPage({
   };
 
   const addDoc = async (slotId: string, files: File[]) => {
-    setIsUploading(true);
+    setUploadingSlots((prev) => ({ ...prev, [slotId]: true }));
     const newFiles: File[] = [];
     const newAzureFiles: AzureUploadedFile[] = [];
 
@@ -168,7 +169,7 @@ export default function MortgageApplyPage({
         [slotId]: [...(prev[slotId] || []), ...newAzureFiles],
       }));
     }
-    setIsUploading(false);
+    setUploadingSlots((prev) => ({ ...prev, [slotId]: false }));
   };
 
   const removeDoc = (slotId: string, idx: number) => {
@@ -621,16 +622,16 @@ export default function MortgageApplyPage({
                       </div>
                     )}
 
-                    <label className={`flex items-center gap-3 ${isUploading ? "opacity-50 pointer-events-none" : "cursor-pointer"} group`}>
+                    <label className={`flex items-center gap-3 ${uploadingSlots[slot.id] ? "opacity-50 pointer-events-none" : "cursor-pointer"} group`}>
                       <div className="flex items-center gap-2 px-4 py-2 rounded-lg border border-brand-grayLight bg-gray-50 group-hover:border-brand-gold/40 group-hover:bg-brand-gold/5 transition-all text-sm text-brand-grayMed group-hover:text-brand-dark">
                         <Upload className="h-4 w-4" />
-                        {isUploading ? "Uploading..." : t("step2.upload")}
+                        {uploadingSlots[slot.id] ? "Uploading..." : t("step2.upload")}
                       </div>
                       <span className="text-xs text-brand-grayMed">{t("step2.fileHint")}</span>
                       <input
                         type="file"
                         multiple
-                        disabled={isUploading}
+                        disabled={!!uploadingSlots[slot.id]}
                         accept=".pdf,.jpg,.jpeg,.png"
                         className="sr-only"
                         onChange={(e) => {
@@ -789,8 +790,8 @@ export default function MortgageApplyPage({
           {step === 3 && (
             <button
               onClick={submit}
-              disabled={isLoading || isUploading}
-              className={`inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-brand-gold to-brand-goldDark text-white text-sm font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all ${(isLoading || isUploading) ? "opacity-50 pointer-events-none" : ""}`}
+              disabled={isLoading || isAnyUploading}
+              className={`inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-brand-gold to-brand-goldDark text-white text-sm font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all ${(isLoading || isAnyUploading) ? "opacity-50 pointer-events-none" : ""}`}
             >
               {isLoading ? "Submitting..." : t("nav.submit")}
               <Send className="h-4 w-4" />

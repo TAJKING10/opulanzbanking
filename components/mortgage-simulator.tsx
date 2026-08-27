@@ -350,7 +350,7 @@ export function MortgageSimulator({ locale }: { locale: string }) {
                       className="w-full pl-8 pr-3 py-2.5 border border-brand-grayLight rounded-xl text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-colors"
                     />
                   </div>
-                  {/* % amount — auto-calculated, also editable */}
+                  {/* % amount — auto-calculated, also editable; disabled when no valid loan result */}
                   <div className="relative">
                     <input
                       type="number"
@@ -359,10 +359,10 @@ export function MortgageSimulator({ locale }: { locale: string }) {
                       step={1}
                       value={derivedPct}
                       onChange={(e) => handlePctChange(Number(e.target.value) || 0)}
-                      disabled={maxLoan === 0}
-                      className="w-full pl-3 pr-8 py-2.5 border border-brand-grayLight rounded-xl text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-colors disabled:bg-gray-50 disabled:text-brand-grayMed"
+                      disabled={maxLoan < MIN_LOAN}
+                      className="w-full pl-3 pr-8 py-2.5 border border-brand-grayLight rounded-xl text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-colors disabled:bg-gray-100 disabled:text-brand-grayMed disabled:cursor-not-allowed disabled:opacity-60"
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-grayMed text-sm font-semibold">%</span>
+                    <span className={`absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold transition-opacity ${maxLoan < MIN_LOAN ? "text-brand-grayMed opacity-40" : "text-brand-grayMed"}`}>%</span>
                   </div>
                 </div>
                 {/* Info notes */}

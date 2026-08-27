@@ -278,10 +278,10 @@ export function MortgageSimulator({ locale }: { locale: string }) {
                 label={hasCoApplicant ? t("inputs.incomeCombined") : t("inputs.income")}
                 value={income}
                 displayValue={`€${income.toLocaleString()}`}
-                min={1000}
+                min={0}
                 max={30000}
                 step={100}
-                minLabel="€1,000"
+                minLabel="€0"
                 maxLabel="€30,000"
                 onChange={setIncome}
               />

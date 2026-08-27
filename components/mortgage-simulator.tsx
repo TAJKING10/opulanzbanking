@@ -9,9 +9,6 @@ const DEPENDENT_COST = 350;
 const MIN_INCOME_SOLO = 900;
 const MIN_INCOME_JOINT = 1200;
 const MIN_LOAN = 20000;
-// Minimum monthly disposable income after all obligations (FR/LU "reste à vivre")
-const MIN_RESTE_SOLO = 900;
-const MIN_RESTE_JOINT = 1200;
 
 function computeResult(
   income: number,
@@ -28,16 +25,13 @@ function computeResult(
   const totalIncome = hasCoApplicant ? income + coIncome : income;
   if (totalIncome <= 0) return { result: null, totalIncome, maxMonthly: 0 };
 
-  // France (HCSF 2021-R-01) / Luxembourg (CSSF 23/837):
-  // DTI = (all debt payments) / net income ≤ 33%
-  const dtiLimit = totalIncome * 0.33 - existing;
+  // Deduct dependent living costs first, then apply 33% DTI cap
+  // This ensures each additional dependent reduces the borrowing capacity
+  const effectiveIncome = totalIncome - dependents * DEPENDENT_COST;
+  if (effectiveIncome <= 0) return { result: null, totalIncome, maxMonthly: 0 };
 
-  // Separate "reste à vivre" check: income minus ALL obligations must meet a minimum
-  const minReste = (hasCoApplicant ? MIN_RESTE_JOINT : MIN_RESTE_SOLO) + dependents * DEPENDENT_COST;
-  const resteLimit = totalIncome - minReste - existing;
-
-  // Binding constraint is whichever is more restrictive
-  const maxMonthly = Math.min(dtiLimit, resteLimit);
+  // France (HCSF 2021-R-01) / Luxembourg (CSSF 23/837): DTI ≤ 33% of effective income
+  const maxMonthly = effectiveIncome * 0.33 - existing;
 
   if (maxMonthly <= 0) {
     return { result: null, totalIncome, maxMonthly };
@@ -64,8 +58,7 @@ function computeResult(
       maxLoan,
       propertyBudget,
       monthlyPayment: maxMonthly,
-      // Standard FR/LU DTI: (all debt payments) / net income
-      debtRatio: Math.round(((maxMonthly + existing) / totalIncome) * 100),
+      debtRatio: Math.round(((maxMonthly + existing) / effectiveIncome) * 100),
       contribution,
     },
     totalIncome,

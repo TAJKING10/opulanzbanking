@@ -172,6 +172,8 @@ function NumberField({
   );
 }
 
+const SIM_STORAGE_KEY = "opulanz_sim";
+
 export function MortgageSimulator({ locale }: { locale: string }) {
   const t = useTranslations("mortgage.simulator");
 
@@ -185,6 +187,31 @@ export function MortgageSimulator({ locale }: { locale: string }) {
   const [rate, setRate] = React.useState(4.0);
   const [contribAmount, setContribAmount] = React.useState(50000);
   const [existing, setExisting] = React.useState(0);
+
+  // Restore state after a locale navigation so values survive language switches
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem(SIM_STORAGE_KEY);
+      if (!saved) return;
+      const s = JSON.parse(saved);
+      if (typeof s.income === "number") setIncome(s.income);
+      if (typeof s.hasCoApplicant === "boolean") setHasCoApplicant(s.hasCoApplicant);
+      if (typeof s.dependents === "number") setDependents(s.dependents);
+      if (typeof s.duration === "number") setDuration(s.duration);
+      if (typeof s.rate === "number") setRate(s.rate);
+      if (typeof s.contribAmount === "number") setContribAmount(s.contribAmount);
+      if (typeof s.existing === "number") setExisting(s.existing);
+    } catch {}
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Persist on every change so locale switches don't wipe the user's inputs
+  React.useEffect(() => {
+    try {
+      localStorage.setItem(SIM_STORAGE_KEY, JSON.stringify(
+        { income, hasCoApplicant, dependents, duration, rate, contribAmount, existing }
+      ));
+    } catch {}
+  }, [income, hasCoApplicant, dependents, duration, rate, contribAmount, existing]);
 
   const { result, totalIncome, maxMonthly } = computeResult(
     income, 0, hasCoApplicant, dependents,

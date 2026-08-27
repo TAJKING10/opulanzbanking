@@ -121,6 +121,29 @@ export default function MortgageApplyPage({
   const isAnyUploading = Object.values(uploadingSlots).some(Boolean);
   const [isLoading, setIsLoading] = React.useState(false);
 
+  const APPLY_KEY = "opulanz_apply";
+
+  // Restore text fields and step after a locale navigation (File objects cannot be serialised)
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem(APPLY_KEY);
+      if (!saved) return;
+      const s = JSON.parse(saved);
+      if (s.form) setForm((prev) => ({ ...prev, ...s.form, docs: {} }));
+      if (s.azureFiles) setAzureFiles(s.azureFiles);
+      if (s.step && s.step >= 1 && s.step <= 3) setStep(s.step as Step);
+    } catch {}
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Persist form text + step on every change so locale switches don't wipe the data
+  React.useEffect(() => {
+    if (submitted) return;
+    try {
+      const { docs, ...formWithoutFiles } = form;
+      localStorage.setItem(APPLY_KEY, JSON.stringify({ form: formWithoutFiles, azureFiles, step }));
+    } catch {}
+  }, [form, azureFiles, step, submitted]);
+
   async function uploadDocToAzure(file: File, slotId: string): Promise<AzureUploadedFile | null> {
     try {
       const formData = new FormData();
@@ -274,6 +297,7 @@ export default function MortgageApplyPage({
       });
 
       setSubmitted(true);
+      try { localStorage.removeItem(APPLY_KEY); } catch {}
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       console.error("Mortgage submission error:", err);

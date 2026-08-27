@@ -135,17 +135,36 @@ function NumberField({
   value: number;
   onChange: (v: number) => void;
 }) {
+  const [raw, setRaw] = React.useState(String(value));
+
+  // Keep raw in sync if the parent resets the value externally
+  React.useEffect(() => {
+    if (Number(raw) !== value) setRaw(String(value));
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div>
       <label className="text-sm font-semibold text-brand-dark block mb-1.5">{label}</label>
       <div className="relative">
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-grayMed text-sm font-semibold">€</span>
         <input
-          type="number"
-          min={0}
-          step={1000}
-          value={value}
-          onChange={(e) => onChange(Math.max(0, Number(e.target.value) || 0))}
+          type="text"
+          inputMode="numeric"
+          value={raw}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v === "" || /^\d+$/.test(v)) {
+              // Strip leading zeros so typing "7" into "0" gives "7", not "07"
+              const normalized = v === "" ? "" : v.replace(/^0+(\d)/, "$1");
+              setRaw(normalized);
+              onChange(Math.max(0, Number(normalized) || 0));
+            }
+          }}
+          onBlur={() => {
+            const n = Math.max(0, Number(raw) || 0);
+            setRaw(String(n));
+            onChange(n);
+          }}
           className="w-full pl-8 pr-3 py-2.5 border border-brand-grayLight rounded-xl text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-colors"
         />
       </div>

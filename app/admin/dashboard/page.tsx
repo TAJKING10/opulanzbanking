@@ -226,7 +226,7 @@ function fmt(date: string) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function AdminDashboard() {
   const router = useRouter();
-  const [tab, setTab] = React.useState<"overview" | "submissions" | "pipeline" | "support" | "contacts">("overview");
+  const [tab, setTab] = React.useState<"overview" | "submissions" | "pipeline" | "support" | "contacts" | "help">("overview");
   const [submissionService, setSubmissionService] = React.useState("all");
   const [submissionSearch, setSubmissionSearch] = React.useState("");
   const [pipelineService, setPipelineService] = React.useState("company_formation");
@@ -294,6 +294,7 @@ export default function AdminDashboard() {
                 { key: "support",      label: "Live Chats" },
                 { key: "submissions",  label: "Submissions" },
                 { key: "pipeline",     label: "Pipeline" },
+                { key: "help",         label: "Help" },
               ] as const).map(t => (
                 <button
                   key={t.key}
@@ -355,6 +356,7 @@ export default function AdminDashboard() {
         {tab === "support"      && (
           <SupportTab initialChatId={selectedChatId} />
         )}
+        {tab === "help"         && <HelpTab />}
       </main>
     </div>
   );
@@ -3063,6 +3065,439 @@ function DocumentPreviewModal({
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+// ─── Help Tab ─────────────────────────────────────────────────────────────────
+function HelpTab() {
+  const [lang, setLang] = React.useState<"en" | "fr">("en");
+  const [openSection, setOpenSection] = React.useState<string | null>("login");
+
+  const toggle = (id: string) => setOpenSection(prev => (prev === id ? null : id));
+
+  const T = lang === "en";
+
+  const Chip = ({ cls, label }: { cls: string; label: string }) => (
+    <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold ${cls}`}>{label}</span>
+  );
+
+  const Flow = ({ chips }: { chips: Array<{ cls: string; label: string }> }) => (
+    <div className="flex items-center gap-1.5 flex-wrap my-2">
+      {chips.map((c, i) => (
+        <React.Fragment key={c.label}>
+          <Chip cls={c.cls} label={c.label} />
+          {i < chips.length - 1 && <span className="text-gray-400 text-xs">→</span>}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+
+  const Section = ({
+    id, num, en, fr, children,
+  }: {
+    id: string; num: string; en: string; fr: string; children: React.ReactNode;
+  }) => {
+    const open = openSection === id;
+    return (
+      <div className="border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm">
+        <button
+          type="button"
+          onClick={() => toggle(id)}
+          className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-bold text-[#b59354] w-6">{num}</span>
+            <span className="text-sm font-semibold text-gray-900">{T ? en : fr}</span>
+          </div>
+          <svg
+            className={`w-4 h-4 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        {open && (
+          <div className="px-5 pb-5 pt-1 border-t border-gray-100 text-sm text-gray-600 space-y-3">
+            {children}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const Note = ({ children }: { children: React.ReactNode }) => (
+    <div className="bg-amber-50 border-l-4 border-[#b59354] rounded-r-xl px-4 py-3 text-xs text-amber-800 leading-relaxed">
+      {children}
+    </div>
+  );
+
+  const Tip = ({ children }: { children: React.ReactNode }) => (
+    <div className="bg-blue-50 border-l-4 border-blue-400 rounded-r-xl px-4 py-3 text-xs text-blue-800 leading-relaxed">
+      {children}
+    </div>
+  );
+
+  const Steps = ({ items }: { items: string[] }) => (
+    <ol className="space-y-2">
+      {items.map((item, i) => (
+        <li key={i} className="flex gap-3 text-xs text-gray-600">
+          <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#b59354] text-white text-[10px] font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
+          <span dangerouslySetInnerHTML={{ __html: item }} />
+        </li>
+      ))}
+    </ol>
+  );
+
+  const Bullets = ({ items }: { items: string[] }) => (
+    <ul className="space-y-1.5">
+      {items.map((item, i) => (
+        <li key={i} className="flex gap-2 text-xs text-gray-600">
+          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b59354] flex-shrink-0" />
+          <span dangerouslySetInnerHTML={{ __html: item }} />
+        </li>
+      ))}
+    </ul>
+  );
+
+  const Table = ({ head, rows }: { head: string[]; rows: string[][] }) => (
+    <div className="overflow-x-auto rounded-xl border border-gray-100">
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="bg-[#252623]">
+            {head.map(h => (
+              <th key={h} className="px-3 py-2 text-left font-semibold text-[#b59354] tracking-wide">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, i) => (
+            <tr key={i} className="border-t border-gray-100 hover:bg-gray-50">
+              {row.map((cell, j) => (
+                <td key={j} className="px-3 py-2 text-gray-600" dangerouslySetInnerHTML={{ __html: cell }} />
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  return (
+    <div className="max-w-3xl mx-auto space-y-4 pb-10">
+      {/* Header */}
+      <div className="bg-[#252623] rounded-2xl px-6 py-5 flex items-center justify-between">
+        <div>
+          <p className="text-xs text-[#b59354]/60 font-semibold tracking-widest uppercase mb-1">
+            {T ? "User Manual — Internal Use Only" : "Manuel Utilisateur — Usage Interne"}
+          </p>
+          <h2 className="text-xl font-bold text-white">
+            {T ? "Admin Dashboard Help" : "Aide Tableau de Bord Admin"}
+          </h2>
+          <p className="text-sm text-white/50 mt-1">
+            {T ? "Luxembourg Operations Team · August 2026" : "Équipe Opérations Luxembourg · Août 2026"}
+          </p>
+        </div>
+        <div className="flex rounded-lg overflow-hidden border border-[#b59354]/30">
+          <button
+            type="button"
+            onClick={() => setLang("en")}
+            className={`px-4 py-1.5 text-xs font-bold transition-colors ${lang === "en" ? "bg-[#b59354] text-white" : "text-[#b59354]/60 hover:text-[#b59354]"}`}
+          >EN</button>
+          <button
+            type="button"
+            onClick={() => setLang("fr")}
+            className={`px-4 py-1.5 text-xs font-bold transition-colors ${lang === "fr" ? "bg-[#b59354] text-white" : "text-[#b59354]/60 hover:text-[#b59354]"}`}
+          >FR</button>
+        </div>
+      </div>
+
+      {/* Section 1 — Login */}
+      <Section id="login" num="01" en="Logging In" fr="Connexion">
+        {T ? (
+          <>
+            <p>The admin panel is accessible at <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">/admin</code> and requires the team admin password.</p>
+            <Steps items={[
+              'Navigate to <code class="bg-gray-100 px-1 rounded">/admin</code> in your browser.',
+              'Enter the <strong>admin password</strong> provided by your team lead and click <strong>Sign In</strong>.',
+              'You are redirected automatically to the dashboard.',
+              'Your session persists in the browser until you click <strong>Logout</strong>.',
+            ]} />
+            <Note><strong>Logout:</strong> Always click Logout when leaving a shared computer. <strong>Locked out?</strong> Contact your team lead — do not share the password via email or messaging.</Note>
+          </>
+        ) : (
+          <>
+            <p>Le panneau admin est accessible à <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">/admin</code> et nécessite le mot de passe administrateur.</p>
+            <Steps items={[
+              'Allez à <code class="bg-gray-100 px-1 rounded">/admin</code> dans votre navigateur.',
+              'Saisissez le <strong>mot de passe admin</strong> fourni par votre responsable et cliquez sur <strong>Sign In</strong>.',
+              'Vous êtes redirigé automatiquement vers le tableau de bord.',
+              'Votre session persiste dans le navigateur jusqu\'au clic sur <strong>Logout</strong>.',
+            ]} />
+            <Note><strong>Déconnexion :</strong> Cliquez toujours sur Logout en quittant un ordinateur partagé. <strong>Bloqué ?</strong> Contactez votre responsable — ne partagez pas le mot de passe par e-mail.</Note>
+          </>
+        )}
+      </Section>
+
+      {/* Section 2 — Overview */}
+      <Section id="overview" num="02" en="Overview Tab" fr="Onglet Vue d'ensemble">
+        {T ? (
+          <>
+            <p>The first screen after login. Shows live submission counts for every service and recent activity.</p>
+            <Bullets items={[
+              '<strong>Statistics cards</strong> — nine colour-coded cards showing total records per service. Click any card to jump to that service\'s filtered Submissions list.',
+              '<strong>Recent submissions</strong> — the latest 5 entries across all services.',
+              '<strong>Open chats</strong> — live conversations waiting for a reply.',
+              '<strong>Service email routing</strong> — which Opulanz address is used per service (see Section 9).',
+            ]} />
+          </>
+        ) : (
+          <>
+            <p>Premier écran après la connexion. Affiche le nombre de soumissions par service et l'activité récente.</p>
+            <Bullets items={[
+              '<strong>Cartes statistiques</strong> — neuf cartes colorées affichant le total de dossiers par service. Cliquez sur une carte pour accéder à la liste filtrée des Dossiers.',
+              '<strong>Dossiers récents</strong> — les 5 dernières entrées tous services confondus.',
+              '<strong>Chats ouverts</strong> — conversations en attente de réponse.',
+              '<strong>Routage e-mails</strong> — quelle adresse Opulanz est utilisée par service (voir Section 9).',
+            ]} />
+          </>
+        )}
+      </Section>
+
+      {/* Section 3 — Submissions */}
+      <Section id="submissions" num="03" en="Submissions Tab" fr="Onglet Dossiers">
+        {T ? (
+          <>
+            <p>View, manage, and respond to individual client applications. Left panel = list, right panel = detail.</p>
+            <Bullets items={[
+              '<strong>Search</strong> by client name, email, or reference number — press Enter or wait for results.',
+              '<strong>Service dropdown</strong> — filter to one service or leave on All Services.',
+              '<strong>Select a record</strong> — click any list card to open full detail on the right.',
+            ]} />
+            <p className="font-semibold text-gray-700 pt-1">{T ? "Inside a record you can:" : ""}</p>
+            <Bullets items={[
+              '<strong>Update status</strong> — use the Status dropdown top-right of the detail panel. Changes save immediately. Selecting <em>Rejected</em> prompts for an optional reason.',
+              '<strong>Reply by email</strong> — click the gold Reply button, write your message, optionally attach files or existing docs, then Send. All replies are logged.',
+              '<strong>Internal notes</strong> — private team annotations, never sent to the client. Save Note / Delete.',
+              '<strong>View / Download documents</strong> — files uploaded by the client. Click View for inline preview or Download to save.',
+            ]} />
+            <Note>The amber box inside each record shows which Opulanz address the reply will come from. Check it before sending.</Note>
+          </>
+        ) : (
+          <>
+            <p>Consultez, gérez et répondez aux demandes clients individuelles. Panneau gauche = liste, panneau droit = détail.</p>
+            <Bullets items={[
+              '<strong>Recherche</strong> par nom, e-mail ou référence — appuyez sur Entrée ou attendez.',
+              '<strong>Menu service</strong> — filtrez sur un service ou laissez sur Tous les services.',
+              '<strong>Sélectionner un dossier</strong> — cliquez sur une carte pour ouvrir le détail à droite.',
+            ]} />
+            <p className="font-semibold text-gray-700 pt-1">Dans un dossier vous pouvez :</p>
+            <Bullets items={[
+              '<strong>Modifier le statut</strong> — menu déroulant Status en haut à droite. Sauvegarde immédiate. <em>Rejected</em> demande un motif optionnel.',
+              '<strong>Répondre par e-mail</strong> — bouton doré Reply, rédigez, joignez des fichiers si besoin, puis Send. Toutes les réponses sont journalisées.',
+              '<strong>Notes internes</strong> — annotations privées, jamais envoyées au client. Save Note / Delete.',
+              '<strong>Consulter / Télécharger des documents</strong> — fichiers uploadés par le client. View pour prévisualisation ou Download pour sauvegarder.',
+            ]} />
+            <Note>L'encadré amber dans chaque dossier indique l'adresse Opulanz expéditrice. Vérifiez avant d'envoyer.</Note>
+          </>
+        )}
+      </Section>
+
+      {/* Section 4 — Pipeline */}
+      <Section id="pipeline" num="04" en="Pipeline Board" fr="Tableau Pipeline">
+        {T ? (
+          <>
+            <p>Kanban view of submissions for one service at a time, organised by status columns.</p>
+            <Steps items={[
+              'Select a service using the dropdown or the coloured chips below it.',
+              'Cards appear in columns matching their current status.',
+              'Drag a card to a new column to update its status — the column highlights gold on hover.',
+              'Dropping into <strong>Rejected</strong> opens a modal for an optional rejection reason.',
+              'Click a card (without dragging) to open its full detail in the Submissions tab.',
+            ]} />
+            <Tip>Use the Pipeline at the start of the day to spot everything sitting in <em>Submitted</em> or <em>Pending</em> and prioritise follow-ups.</Tip>
+          </>
+        ) : (
+          <>
+            <p>Vue Kanban des soumissions pour un service à la fois, organisée par colonnes de statut.</p>
+            <Steps items={[
+              'Sélectionnez un service via le menu déroulant ou les puces colorées.',
+              'Les cartes s\'affichent dans les colonnes correspondant à leur statut.',
+              'Faites glisser une carte vers une nouvelle colonne pour mettre à jour son statut — la colonne se surligne en doré.',
+              'Déposer dans <strong>Rejected</strong> ouvre une fenêtre pour un motif optionnel.',
+              'Cliquez sur une carte (sans la glisser) pour ouvrir son détail dans l\'onglet Dossiers.',
+            ]} />
+            <Tip>Utilisez le Pipeline en début de journée pour repérer tout ce qui est en <em>Submitted</em> ou <em>Pending</em> et prioriser vos relances.</Tip>
+          </>
+        )}
+      </Section>
+
+      {/* Section 5 — Support Messages */}
+      <Section id="support-messages" num="05" en="Support Messages Tab" fr="Onglet Messages Support">
+        {T ? (
+          <>
+            <p>Displays messages submitted through the website contact form — asynchronous enquiries waiting for a reply.</p>
+            <Bullets items={[
+              'Search by visitor name or email.',
+              'Click a row to open the full message thread on the right.',
+              'Reply by email directly from the detail panel.',
+              'Mark resolved once the matter is closed.',
+            ]} />
+            <Note><strong>Support Messages vs Live Chats:</strong> Support messages are contact form submissions; Live Chats happen in real time on the website and need faster attention.</Note>
+          </>
+        ) : (
+          <>
+            <p>Affiche les messages soumis via le formulaire de contact du site — demandes asynchrones en attente de réponse.</p>
+            <Bullets items={[
+              'Recherche par nom ou e-mail du visiteur.',
+              'Cliquez sur une ligne pour ouvrir le fil de messages à droite.',
+              'Répondez par e-mail directement depuis le panneau de détail.',
+              'Marquez résolu une fois le sujet traité.',
+            ]} />
+            <Note><strong>Messages Support vs Chats en Direct :</strong> Les messages support sont des soumissions de formulaire ; les chats en direct se déroulent en temps réel et nécessitent une attention plus rapide.</Note>
+          </>
+        )}
+      </Section>
+
+      {/* Section 6 — Live Chats */}
+      <Section id="live-chats" num="06" en="Live Chats Tab" fr="Onglet Chats en Direct">
+        {T ? (
+          <>
+            <p>Real-time conversations started by visitors on the Opulanz website. Chats waiting for a reply are top priority.</p>
+            <Steps items={[
+              'Click a chat row to open the conversation.',
+              'Read the visitor\'s messages in the thread.',
+              'Type your reply at the bottom and press Enter or click Send.',
+              'Mark the chat as <strong>closed</strong> once resolved to clear it from the active queue.',
+            ]} />
+            <Note><strong>Response time matters.</strong> Visitors in "waiting" status are online right now — aim to respond within a few minutes.</Note>
+          </>
+        ) : (
+          <>
+            <p>Conversations en temps réel initiées par les visiteurs du site Opulanz. Les chats en attente sont la priorité absolue.</p>
+            <Steps items={[
+              'Cliquez sur une ligne de chat pour ouvrir la conversation.',
+              'Lisez les messages du visiteur dans le fil.',
+              'Tapez votre réponse en bas et appuyez sur Entrée ou cliquez Send.',
+              'Marquez le chat comme <strong>closed</strong> une fois résolu pour le retirer de la file active.',
+            ]} />
+            <Note><strong>Le temps de réponse est essentiel.</strong> Les visiteurs en statut "waiting" sont en ligne maintenant — visez une réponse en quelques minutes.</Note>
+          </>
+        )}
+      </Section>
+
+      {/* Section 7 — Search */}
+      <Section id="search" num="07" en="Global Search" fr="Recherche Globale">
+        {T ? (
+          <>
+            <p>The search bar in the top navigation searches submissions, support messages, and live chats simultaneously.</p>
+            <Bullets items={[
+              'Click the search field in the topbar and type at least 2 characters.',
+              'Results are grouped by type: Submissions, Support Messages, Live Chats.',
+              'Click any result to jump to that record in the right tab.',
+              'Press Escape or click elsewhere to close the dropdown.',
+            ]} />
+            <Tip>Use Global Search first whenever a client calls or emails — type their name or reference number to find their record instantly.</Tip>
+          </>
+        ) : (
+          <>
+            <p>La barre de recherche en haut effectue une recherche simultanée dans les dossiers, messages support et chats.</p>
+            <Bullets items={[
+              'Cliquez sur le champ de recherche en haut et tapez au moins 2 caractères.',
+              'Résultats groupés par type : Dossiers, Messages Support, Chats en Direct.',
+              'Cliquez sur un résultat pour accéder au dossier dans l\'onglet correspondant.',
+              'Appuyez sur Échap ou cliquez ailleurs pour fermer.',
+            ]} />
+            <Tip>Utilisez la Recherche Globale en premier quand un client appelle — tapez son nom ou référence pour trouver son dossier instantanément.</Tip>
+          </>
+        )}
+      </Section>
+
+      {/* Section 8 — Status Reference */}
+      <Section id="statuses" num="08" en="Status Reference" fr="Référence des Statuts">
+        <div className="space-y-4">
+          <div>
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+              {T ? "Applications — Individual, Company, Formation, Accounting, Mortgage" : "Demandes — Individuel, Société, Formation, Comptabilité, Hypothèque"}
+            </p>
+            <Flow chips={[
+              { cls: "bg-blue-100 text-blue-700", label: "submitted" },
+              { cls: "bg-yellow-100 text-yellow-800", label: "under review" },
+              { cls: "bg-green-100 text-green-700", label: "approved" },
+              { cls: "bg-red-100 text-red-700", label: "rejected" },
+            ]} />
+            <Table
+              head={[T ? "Status" : "Statut", T ? "Meaning" : "Signification"]}
+              rows={T ? [
+                ["<span class='bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-[10px] font-semibold'>submitted</span>", "Form received, awaiting team review"],
+                ["<span class='bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full text-[10px] font-semibold'>under review</span>", "Team is reviewing the application and documents"],
+                ["<span class='bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-[10px] font-semibold'>approved</span>", "Application accepted — notify and onboard the client"],
+                ["<span class='bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-[10px] font-semibold'>rejected</span>", "Application declined — rejection reason stored internally"],
+              ] : [
+                ["<span class='bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-[10px] font-semibold'>submitted</span>", "Formulaire reçu, en attente de révision"],
+                ["<span class='bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full text-[10px] font-semibold'>under review</span>", "L'équipe examine la demande et les documents"],
+                ["<span class='bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-[10px] font-semibold'>approved</span>", "Demande acceptée — notifier et intégrer le client"],
+                ["<span class='bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-[10px] font-semibold'>rejected</span>", "Demande refusée — motif conservé en interne"],
+              ]}
+            />
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+              {T ? "Bookings — Tax Advisory & Life Insurance" : "Rendez-vous — Conseil Fiscal & Assurance Vie"}
+            </p>
+            <Flow chips={[
+              { cls: "bg-amber-100 text-amber-800", label: "pending" },
+              { cls: "bg-blue-100 text-blue-700", label: "confirmed" },
+              { cls: "bg-green-100 text-green-700", label: "completed" },
+              { cls: "bg-gray-100 text-gray-600", label: "cancelled" },
+            ]} />
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+              {T ? "Enquiries — Investment Advisory" : "Demandes — Conseil en Investissement"}
+            </p>
+            <Flow chips={[
+              { cls: "bg-blue-100 text-blue-700", label: "new" },
+              { cls: "bg-cyan-100 text-cyan-700", label: "contacted" },
+              { cls: "bg-violet-100 text-violet-700", label: "qualified" },
+              { cls: "bg-green-100 text-green-700", label: "converted" },
+              { cls: "bg-gray-100 text-gray-600", label: "closed" },
+            ]} />
+          </div>
+        </div>
+      </Section>
+
+      {/* Section 9 — Email Routing */}
+      <Section id="email-routing" num="09" en="Email Routing Reference" fr="Référence Routage Email">
+        {T ? (
+          <>
+            <p>When you reply to a client from the Submissions tab, the email comes from the address below for that service.</p>
+          </>
+        ) : (
+          <>
+            <p>Lorsque vous répondez à un client depuis l'onglet Dossiers, l'e-mail provient de l'adresse indiquée pour ce service.</p>
+          </>
+        )}
+        <Table
+          head={[T ? "Service" : "Service", T ? "Sender Address" : "Adresse Expéditrice"]}
+          rows={[
+            [T ? "Individual Account" : "Compte Individuel", "<code class='bg-gray-100 px-1 rounded'>info@opulanz.com</code>"],
+            [T ? "Company Account" : "Compte Société", "<code class='bg-gray-100 px-1 rounded'>company-set@opulanz.com</code>"],
+            [T ? "Company Formation" : "Création de Société", "<code class='bg-gray-100 px-1 rounded'>company-set@opulanz.com</code>"],
+            [T ? "Accounting" : "Comptabilité", "<code class='bg-gray-100 px-1 rounded'>accounting@opulanz.com</code>"],
+            [T ? "Mortgage" : "Hypothèque", "<code class='bg-gray-100 px-1 rounded'>mortgages@opulanz.com</code>"],
+            [T ? "Tax Advisory" : "Conseil Fiscal", "<code class='bg-gray-100 px-1 rounded'>tax-ad@opulanz.com</code>"],
+            [T ? "Life Insurance" : "Assurance Vie", "<code class='bg-gray-100 px-1 rounded'>insurance@opulanz.com</code>"],
+            [T ? "Investment Advisory" : "Conseil en Investissement", "<code class='bg-gray-100 px-1 rounded'>invest-ad@opulanz.com</code>"],
+          ]}
+        />
+        <Note>
+          {T
+            ? <><strong>Always</strong> check the amber notice box inside the submission detail before replying — if a record was moved between services, the sender address may differ from what you expect.</>
+            : <><strong>Vérifiez toujours</strong> l'encadré amber dans le détail du dossier avant de répondre — si un dossier a changé de service, l'adresse expéditrice peut être différente.</>
+          }
+        </Note>
+      </Section>
     </div>
   );
 }

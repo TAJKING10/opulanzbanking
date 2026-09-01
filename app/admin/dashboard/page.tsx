@@ -3073,8 +3073,11 @@ function DocumentPreviewModal({
 function HelpTab() {
   const [lang, setLang] = React.useState<"en" | "fr">("en");
   const [openSection, setOpenSection] = React.useState<string | null>("login");
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   const toggle = (id: string) => setOpenSection(prev => (prev === id ? null : id));
+  const expandAll = () => setOpenSection("ALL");
+  const collapseAll = () => setOpenSection(null);
 
   const T = lang === "en";
 
@@ -3094,13 +3097,21 @@ function HelpTab() {
   );
 
   const Section = ({
-    id, num, en, fr, children,
+    id, num, en, fr, tags = [], children,
   }: {
-    id: string; num: string; en: string; fr: string; children: React.ReactNode;
+    id: string; num: string; en: string; fr: string; tags?: string[]; children: React.ReactNode;
   }) => {
-    const open = openSection === id;
+    const title = T ? en : fr;
+    const matchesSearch = !searchQuery.trim() || 
+      title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      num.includes(searchQuery) ||
+      tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    if (!matchesSearch) return null;
+
+    const open = openSection === "ALL" || openSection === id;
     return (
-      <div className="border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm">
+      <div className="border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm transition-all">
         <button
           type="button"
           onClick={() => toggle(id)}
@@ -3108,7 +3119,7 @@ function HelpTab() {
         >
           <div className="flex items-center gap-3">
             <span className="text-xs font-bold text-[#b59354] w-6">{num}</span>
-            <span className="text-sm font-semibold text-gray-900">{T ? en : fr}</span>
+            <span className="text-sm font-semibold text-gray-900">{title}</span>
           </div>
           <svg
             className={`w-4 h-4 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
@@ -3118,7 +3129,7 @@ function HelpTab() {
           </svg>
         </button>
         {open && (
-          <div className="px-5 pb-5 pt-1 border-t border-gray-100 text-sm text-gray-600 space-y-3">
+          <div className="px-5 pb-5 pt-2 border-t border-gray-100 text-sm text-gray-600 space-y-3">
             {children}
           </div>
         )}
@@ -3134,6 +3145,12 @@ function HelpTab() {
 
   const Tip = ({ children }: { children: React.ReactNode }) => (
     <div className="bg-blue-50 border-l-4 border-blue-400 rounded-r-xl px-4 py-3 text-xs text-blue-800 leading-relaxed">
+      {children}
+    </div>
+  );
+
+  const Warning = ({ children }: { children: React.ReactNode }) => (
+    <div className="bg-red-50 border-l-4 border-red-500 rounded-r-xl px-4 py-3 text-xs text-red-800 leading-relaxed">
       {children}
     </div>
   );
@@ -3184,21 +3201,21 @@ function HelpTab() {
   );
 
   return (
-    <div className="max-w-3xl mx-auto space-y-4 pb-10">
+    <div className="max-w-3xl mx-auto space-y-4 pb-12">
       {/* Header */}
-      <div className="bg-[#252623] rounded-2xl px-6 py-5 flex items-center justify-between">
+      <div className="bg-[#252623] rounded-2xl px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <p className="text-xs text-[#b59354]/60 font-semibold tracking-widest uppercase mb-1">
-            {T ? "User Manual — Internal Use Only" : "Manuel Utilisateur — Usage Interne"}
+            {T ? "User Manual & Operations Guide — Internal Use Only" : "Manuel Utilisateur & Guide Opérations — Usage Interne"}
           </p>
           <h2 className="text-xl font-bold text-white">
-            {T ? "Admin Dashboard Help" : "Aide Tableau de Bord Admin"}
+            {T ? "Admin Dashboard Help & SOPs" : "Aide & Procédures Tableau de Bord Admin"}
           </h2>
           <p className="text-sm text-white/50 mt-1">
-            {T ? "Luxembourg Operations Team · August 2026" : "Équipe Opérations Luxembourg · Août 2026"}
+            {T ? "Luxembourg Operations & Compliance Team · Complete Reference" : "Équipe Opérations & Conformité Luxembourg · Référence Complète"}
           </p>
         </div>
-        <div className="flex rounded-lg overflow-hidden border border-[#b59354]/30">
+        <div className="flex rounded-lg overflow-hidden border border-[#b59354]/30 flex-shrink-0">
           <button
             type="button"
             onClick={() => setLang("en")}
@@ -3212,8 +3229,40 @@ function HelpTab() {
         </div>
       </div>
 
+      {/* Search and Expand/Collapse Controls */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+        <div className="relative flex-1">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={T ? "Search help topics (e.g., DocuSign, Azure, Mortgage, KYC, Status)..." : "Rechercher un sujet (ex. DocuSign, Azure, Hypothèque, KYC, Statut)..."}
+            className="w-full pl-9 pr-4 py-2 text-xs rounded-lg border border-gray-200 focus:outline-none focus:ring-1 focus:ring-[#b59354]"
+          />
+          <svg className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={expandAll}
+            className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-[#b59354] hover:bg-gray-50 rounded-lg border border-gray-200"
+          >
+            {T ? "Expand All" : "Tout déplier"}
+          </button>
+          <button
+            type="button"
+            onClick={collapseAll}
+            className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-[#b59354] hover:bg-gray-50 rounded-lg border border-gray-200"
+          >
+            {T ? "Collapse All" : "Tout replier"}
+          </button>
+        </div>
+      </div>
+
       {/* Section 1 — Login */}
-      <Section id="login" num="01" en="Logging In" fr="Connexion">
+      <Section id="login" num="01" en="Logging In & Session Management" fr="Connexion & Gestion de Session" tags={["password", "auth", "security", "token", "logout"]}>
         {T ? (
           <>
             <p>The admin panel is accessible at <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">/admin</code> and requires the team admin password.</p>
@@ -3240,46 +3289,48 @@ function HelpTab() {
       </Section>
 
       {/* Section 2 — Overview */}
-      <Section id="overview" num="02" en="Overview Tab" fr="Onglet Vue d'ensemble">
+      <Section id="overview" num="02" en="Overview Tab & Operational KPIs" fr="Onglet Vue d'ensemble & Indicateurs" tags={["kpi", "stats", "cards", "activity", "summary"]}>
         {T ? (
           <>
             <p>The first screen after login. Shows live submission counts for every service and recent activity.</p>
             <Bullets items={[
-              '<strong>Statistics cards</strong> — nine colour-coded cards showing total records per service. Click any card to jump to that service\'s filtered Submissions list.',
-              '<strong>Recent submissions</strong> — the latest 5 entries across all services.',
-              '<strong>Open chats</strong> — live conversations waiting for a reply.',
-              '<strong>Service email routing</strong> — which Opulanz address is used per service (see Section 9).',
+              '<strong>Statistics cards</strong> — colour-coded cards showing total records per service. Click any card to jump to that service\'s filtered Submissions list.',
+              '<strong>Recent submissions</strong> — the latest 5 entries across all services with direct navigation links.',
+              '<strong>Open chats queue</strong> — live conversations waiting for a reply with instant status badges.',
+              '<strong>Service email routing summary</strong> — quick reference of which Opulanz address handles which vertical.',
             ]} />
+            <Tip>Review the Overview tab at the beginning of each shift to identify backlogs in high-priority queues.</Tip>
           </>
         ) : (
           <>
             <p>Premier écran après la connexion. Affiche le nombre de soumissions par service et l'activité récente.</p>
             <Bullets items={[
-              '<strong>Cartes statistiques</strong> — neuf cartes colorées affichant le total de dossiers par service. Cliquez sur une carte pour accéder à la liste filtrée des Dossiers.',
-              '<strong>Dossiers récents</strong> — les 5 dernières entrées tous services confondus.',
-              '<strong>Chats ouverts</strong> — conversations en attente de réponse.',
-              '<strong>Routage e-mails</strong> — quelle adresse Opulanz est utilisée par service (voir Section 9).',
+              '<strong>Cartes statistiques</strong> — cartes colorées affichant le total de dossiers par service. Cliquez sur une carte pour accéder à la liste filtrée des Dossiers.',
+              '<strong>Dossiers récents</strong> — les 5 dernières entrées tous services confondus avec liens d\'accès direct.',
+              '<strong>File des chats ouverts</strong> — conversations en attente de réponse avec badges de statut.',
+              '<strong>Synthèse du routage e-mails</strong> — rappel des adresses Opulanz dédiées par vertical.',
             ]} />
+            <Tip>Consultez l'onglet Vue d'ensemble en début de journée pour repérer les dossiers prioritaires en attente.</Tip>
           </>
         )}
       </Section>
 
       {/* Section 3 — Submissions */}
-      <Section id="submissions" num="03" en="Submissions Tab" fr="Onglet Dossiers">
+      <Section id="submissions" num="03" en="Submissions Tab — Managing Client Files" fr="Onglet Dossiers — Gestion des Dossiers Clients" tags={["status", "reply", "email", "notes", "documents", "reject"]}>
         {T ? (
           <>
             <p>View, manage, and respond to individual client applications. Left panel = list, right panel = detail.</p>
             <Bullets items={[
-              '<strong>Search</strong> by client name, email, or reference number — press Enter or wait for results.',
+              '<strong>Search</strong> by client name, email, or reference number — press Enter or wait for real-time results.',
               '<strong>Service dropdown</strong> — filter to one service or leave on All Services.',
               '<strong>Select a record</strong> — click any list card to open full detail on the right.',
             ]} />
-            <p className="font-semibold text-gray-700 pt-1">{T ? "Inside a record you can:" : ""}</p>
+            <p className="font-semibold text-gray-700 pt-1">Inside a record you can:</p>
             <Bullets items={[
               '<strong>Update status</strong> — use the Status dropdown top-right of the detail panel. Changes save immediately. Selecting <em>Rejected</em> prompts for an optional reason.',
-              '<strong>Reply by email</strong> — click the gold Reply button, write your message, optionally attach files or existing docs, then Send. All replies are logged.',
+              '<strong>Reply by email</strong> — click the gold Reply button, write your message, optionally attach files or existing docs, then Send. All replies are logged in the history thread.',
               '<strong>Internal notes</strong> — private team annotations, never sent to the client. Save Note / Delete.',
-              '<strong>View / Download documents</strong> — files uploaded by the client. Click View for inline preview or Download to save.',
+              '<strong>View / Download documents</strong> — files uploaded by the client. Click View for inline preview or Download to save via secure streaming proxy.',
             ]} />
             <Note>The amber box inside each record shows which Opulanz address the reply will come from. Check it before sending.</Note>
           </>
@@ -3294,9 +3345,9 @@ function HelpTab() {
             <p className="font-semibold text-gray-700 pt-1">Dans un dossier vous pouvez :</p>
             <Bullets items={[
               '<strong>Modifier le statut</strong> — menu déroulant Status en haut à droite. Sauvegarde immédiate. <em>Rejected</em> demande un motif optionnel.',
-              '<strong>Répondre par e-mail</strong> — bouton doré Reply, rédigez, joignez des fichiers si besoin, puis Send. Toutes les réponses sont journalisées.',
+              '<strong>Répondre par e-mail</strong> — bouton doré Reply, rédigez, joignez des fichiers si besoin, puis Send. Toutes les réponses sont journalisées dans l\'historique.',
               '<strong>Notes internes</strong> — annotations privées, jamais envoyées au client. Save Note / Delete.',
-              '<strong>Consulter / Télécharger des documents</strong> — fichiers uploadés par le client. View pour prévisualisation ou Download pour sauvegarder.',
+              '<strong>Consulter / Télécharger des documents</strong> — fichiers uploadés par le client. View pour prévisualisation ou Download via le proxy sécurisé.',
             ]} />
             <Note>L'encadré amber dans chaque dossier indique l'adresse Opulanz expéditrice. Vérifiez avant d'envoyer.</Note>
           </>
@@ -3304,7 +3355,7 @@ function HelpTab() {
       </Section>
 
       {/* Section 4 — Pipeline */}
-      <Section id="pipeline" num="04" en="Pipeline Board" fr="Tableau Pipeline">
+      <Section id="pipeline" num="04" en="Pipeline Board (Kanban Workflow)" fr="Tableau Pipeline (Workflow Kanban)" tags={["kanban", "drag", "drop", "workflow", "columns"]}>
         {T ? (
           <>
             <p>Kanban view of submissions for one service at a time, organised by status columns.</p>
@@ -3333,7 +3384,7 @@ function HelpTab() {
       </Section>
 
       {/* Section 5 — Support Messages */}
-      <Section id="support-messages" num="05" en="Support Messages Tab" fr="Onglet Messages Support">
+      <Section id="support-messages" num="05" en="Support Messages Tab" fr="Onglet Messages Support" tags={["contact", "inquiry", "email", "form"]}>
         {T ? (
           <>
             <p>Displays messages submitted through the website contact form — asynchronous enquiries waiting for a reply.</p>
@@ -3360,7 +3411,7 @@ function HelpTab() {
       </Section>
 
       {/* Section 6 — Live Chats */}
-      <Section id="live-chats" num="06" en="Live Chats Tab" fr="Onglet Chats en Direct">
+      <Section id="live-chats" num="06" en="Live Chats Tab" fr="Onglet Chats en Direct" tags={["chat", "realtime", "visitor", "conversation"]}>
         {T ? (
           <>
             <p>Real-time conversations started by visitors on the Opulanz website. Chats waiting for a reply are top priority.</p>
@@ -3386,8 +3437,157 @@ function HelpTab() {
         )}
       </Section>
 
-      {/* Section 7 — Search */}
-      <Section id="search" num="07" en="Global Search" fr="Recherche Globale">
+      {/* Section 7 — Document Verification & Azure Storage (NEW) */}
+      <Section id="document-verification" num="07" en="Document Verification & Azure Blob Storage" fr="Vérification des Documents & Stockage Azure" tags={["azure", "blob", "sas", "download", "kyc", "passport", "id", "verification"]}>
+        {T ? (
+          <>
+            <p>Client documents (Passports, National IDs, Proof of Address, Company Statutes, Capital Certificates) are stored in secure Azure Blob Storage containers.</p>
+            <p className="font-semibold text-gray-700 pt-1">Verification Checklist:</p>
+            <Bullets items={[
+              '<strong>Identity Documents (IDs/Passports)</strong> — Check full legal name, date of birth, expiration date, and MRZ code clarity. Ensure all 4 corners are visible.',
+              '<strong>Proof of Address</strong> — Must be under 3 months old (utility bill, bank statement, or official tax notice). Must match the residential address in the application.',
+              '<strong>Company Documents</strong> — Verify RCS / registration certificate, Articles of Association, and UBO register for corporate applications.',
+              '<strong>Capital Deposit Certificate</strong> — Confirm matching capital amount, currency (EUR), bank stamp, and blocking certificate for company formation.',
+            ]} />
+            <p className="font-semibold text-gray-700 pt-1">Document Actions:</p>
+            <Bullets items={[
+              '<strong>Inline Preview (View)</strong> — Opens a secure temporary SAS token URL in a modal or new tab for inspection.',
+              '<strong>Force Download</strong> — Uses the backend streaming proxy (<code class="bg-gray-100 px-1 rounded">/api/admin/download-file</code>) to bypass cross-origin browser restrictions and download directly with original filenames.',
+              '<strong>Link Uploaded Documents</strong> — Connect uploaded Azure blobs to existing application IDs via the admin toolbar.',
+            ]} />
+            <Warning><strong>Invalid Documents:</strong> If a document is expired, blurred, or truncated, do not approve. Change status to <em>under_review</em> and use the Reply button to request a compliant re-upload.</Warning>
+          </>
+        ) : (
+          <>
+            <p>Les documents clients (Passeports, Cartes d'identité, Justificatifs de domicile, Statuts, Certificats de blocage de capital) sont stockés sur Azure Blob Storage sécurisé.</p>
+            <p className="font-semibold text-gray-700 pt-1">Liste de Contrôle Conformité :</p>
+            <Bullets items={[
+              '<strong>Pièces d\'identité (CNI/Passeport)</strong> — Vérifiez le nom complet, la date de naissance, la validité et la bande MRZ. Les 4 coins doivent être visibles.',
+              '<strong>Justificatif de domicile</strong> — Moins de 3 mois (facture d\'électricité/eau, relevé bancaire, avis d\'imposition) correspondant à l\'adresse déclarée.',
+              '<strong>Documents de société</strong> — Extrait RCS / Kbis, Statuts certifiés et Registre des Bénéficiaires Effectifs (RBE).',
+              '<strong>Certificat de dépôt de capital</strong> — Vérifiez le montant du capital libéré, la devise (EUR) et l\'attestation de blocage bancaire.',
+            ]} />
+            <p className="font-semibold text-gray-700 pt-1">Actions sur les Documents :</p>
+            <Bullets items={[
+              '<strong>Aperçu (View)</strong> — Ouvre une URL avec jeton SAS temporaire sécurisé pour examen.',
+              '<strong>Téléchargement Forcé</strong> — Utilise le proxy de streaming backend (<code class="bg-gray-100 px-1 rounded">/api/admin/download-file</code>) pour contourner les blocages cross-origin et enregistrer avec le nom d\'origine.',
+              '<strong>Lier un Document</strong> — Associez un fichier Azure au dossier client via la barre d\'actions.',
+            ]} />
+            <Warning><strong>Document Invalide :</strong> En cas de document illisible ou expiré, ne validez pas. Passez le dossier en <em>under_review</em> et envoyez un e-mail de demande de régularisation via le bouton Reply.</Warning>
+          </>
+        )}
+      </Section>
+
+      {/* Section 8 — Company Formation & Mortgage Processing (NEW) */}
+      <Section id="formation-mortgage" num="08" en="Company Formation & Mortgage Processing Guide" fr="Guide Création de Société & Dossiers Hypothèques" tags={["formation", "mortgage", "sarl", "sarl-s", "olky", "notary", "turnover"]}>
+        {T ? (
+          <>
+            <p>Standard operating procedures for managing complex Company Formation and Mortgage applications.</p>
+            <div className="space-y-3 pt-1">
+              <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                <p className="font-bold text-gray-800 text-xs uppercase tracking-wide mb-1">1. Company Formation (SARL / SARL-S):</p>
+                <Bullets items={[
+                  '<strong>Entity Type</strong> — SARL-S (simplified SARL, capital €1 to €12,000, natural persons only) vs SARL (standard, min capital €12,000).',
+                  '<strong>Shareholders & UBOs</strong> — Validate all ultimate beneficial owners owning &gt;25% equity or voting rights.',
+                  '<strong>NACE Code & Purpose</strong> — Verify business activity code and corporate purpose clause compliance with Luxembourg RCS requirements.',
+                  '<strong>Capital Account (Olky Integration)</strong> — Verify capital deposit status and blocking certificate issuance before scheduling notary deed.',
+                  '<strong>Registered Office & Domiciliation</strong> — Confirm registered address contract or lease agreement.',
+                ]} />
+              </div>
+              <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                <p className="font-bold text-gray-800 text-xs uppercase tracking-wide mb-1">2. Mortgage Applications:</p>
+                <Bullets items={[
+                  '<strong>Loan-to-Value (LTV)</strong> — Verify property purchase price, client deposit amount, and requested financing.',
+                  '<strong>Debt-to-Income Ratio</strong> — Review monthly income, employment status (CDI / Freelance / Corporate), and existing credit obligations.',
+                  '<strong>Property Details</strong> — Ensure property location (Luxembourg / France / Cross-border) and intended use (primary residence, buy-to-let, commercial).',
+                  '<strong>Broker Assignment</strong> — Assign qualified ORIAS / regulated banking intermediary to structure bank proposals.',
+                ]} />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <p>Procédures opérationnelles pour le traitement des dossiers de Création de Société et de Demandes de Prêt Hypothécaire.</p>
+            <div className="space-y-3 pt-1">
+              <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                <p className="font-bold text-gray-800 text-xs uppercase tracking-wide mb-1">1. Création de Société (SARL / SARL-S) :</p>
+                <Bullets items={[
+                  '<strong>Forme Juridique</strong> — SARL-S (capital de 1 € à 12 000 €, personnes physiques uniquement) vs SARL classique (min 12 000 €).',
+                  '<strong>Actionnaires & RBE</strong> — Contrôle d\'identité de tous les bénéficiaires effectifs détenant plus de 25% du capital.',
+                  '<strong>Code NACE & Objet Social</strong> — Vérification de la conformité de l\'activité avec les exigences du RCS Luxembourg.',
+                  '<strong>Compte Capital (Intégration Olky)</strong> — Suivi du dépôt de capital et émission de l\'attestation de blocage avant acte notarié.',
+                  '<strong>Domiciliation</strong> — Vérification du contrat de domiciliation ou du bail commercial.',
+                ]} />
+              </div>
+              <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                <p className="font-bold text-gray-800 text-xs uppercase tracking-wide mb-1">2. Demandes de Prêt Hypothécaire :</p>
+                <Bullets items={[
+                  '<strong>Ratio LTV (Financement)</strong> — Vérification du prix d\'acquisition, de l\'apport personnel et du montant sollicité.',
+                  '<strong>Taux d\'Endettement</strong> — Analyse des revenus mensuels, stabilité professionnelle (CDI, gérant, profession libérale) et charges en cours.',
+                  '<strong>Objet du Financement</strong> — Localisation du bien (Luxembourg / France / Frontalier) et nature (résidence principale, locatif, SPV).',
+                  '<strong>Attribution Courtier</strong> — Transmission au conseiller ORIAS agréé pour montage des offres bancaires.',
+                ]} />
+              </div>
+            </div>
+          </>
+        )}
+      </Section>
+
+      {/* Section 9 — Document Generation & DocuSign e-Signatures (NEW) */}
+      <Section id="docusign-generation" num="09" en="Document Generation & DocuSign e-Signatures" fr="Génération de Documents & Signature Électronique DocuSign" tags={["docusign", "esign", "signature", "der", "cif", "qcc", "rto", "webhook"]}>
+        {T ? (
+          <>
+            <p>The Opulanz onboarding engine automatically fills regulatory Word templates with client data, converts them to PDF, and sends them for electronic signature via DocuSign.</p>
+            <p className="font-semibold text-gray-700 pt-1">Generated Document Types (MiFID Compliance):</p>
+            <Table
+              head={["Code", "Document Name", "Purpose"]}
+              rows={[
+                ["<code>DER</code>", "Document d'Entrée en Relation", "Mandatory pre-contractual relationship disclosure (ORIAS / AMF)"],
+                ["<code>CIF</code>", "Lettre de Mission CIF", "Investment Advisory engagement letter defining advisory scope & fees"],
+                ["<code>QCC PP</code>", "Questionnaire Connaissance Client (PP)", "MiFID risk profiling questionnaire for Individuals"],
+                ["<code>QCC PM</code>", "Questionnaire Connaissance Client (PM)", "Corporate entity onboarding, governance, and financial assessment"],
+                ["<code>ADEQ</code>", "Déclaration d'Adéquation", "Formal suitability report matching investment goals with risk tolerance"],
+                ["<code>RTO</code>", "Convention RTO", "Reception & Transmission of Orders agreement for executing operations"],
+              ]}
+            />
+            <p className="font-semibold text-gray-700 pt-2">DocuSign Lifecycle & Statuses:</p>
+            <Bullets items={[
+              '<strong>sent</strong> — DocuSign envelope created and signing link emailed to the client.',
+              '<strong>delivered / viewing</strong> — Client has opened the DocuSign signing portal.',
+              '<strong>completed</strong> — All signers have signed. The backend automatically downloads and archives the signed PDF into the client record.',
+              '<strong>declined / voided</strong> — Signing was cancelled. Check notes for explanation and re-generate if necessary.',
+            ]} />
+            <Tip>Automated webhooks notify our system the moment a document is signed — no manual intervention is needed.</Tip>
+          </>
+        ) : (
+          <>
+            <p>Le moteur d'onboarding Opulanz remplit automatiquement les modèles réglementaires Word, les convertit en PDF et les soumet à signature électronique via DocuSign.</p>
+            <p className="font-semibold text-gray-700 pt-1">Documents Générés (Conformité MiFID) :</p>
+            <Table
+              head={["Code", "Document", "Finalité"]}
+              rows={[
+                ["<code>DER</code>", "Document d'Entrée en Relation", "Information précontractuelle obligatoire (ORIAS / AMF)"],
+                ["<code>CIF</code>", "Lettre de Mission CIF", "Convention de Conseil en Investissements Financiers (honoraires & périmètre)"],
+                ["<code>QCC PP</code>", "Questionnaire Connaissance Client (PP)", "Profilage de risque et connaissances financières Personne Physique"],
+                ["<code>QCC PM</code>", "Questionnaire Connaissance Client (PM)", "Dossier personne morale, gouvernance et bilan financier"],
+                ["<code>ADEQ</code>", "Déclaration d'Adéquation", "Rapport d'adéquation entre le profil de risque et la stratégie d'investissement"],
+                ["<code>RTO</code>", "Convention RTO", "Convention de Réception et Transmission d'Ordres"],
+              ]}
+            />
+            <p className="font-semibold text-gray-700 pt-2">Cycle de Vie DocuSign :</p>
+            <Bullets items={[
+              '<strong>sent</strong> — Enveloppe DocuSign créée et lien de signature envoyé au client.',
+              '<strong>delivered / viewing</strong> — Le client a ouvert l\'interface de signature.',
+              '<strong>completed</strong> — Tous les signataires ont paraphé. Le PDF signé est automatiquement téléchargé et rattaché au dossier.',
+              '<strong>declined / voided</strong> — Signature refusée ou annulée. Consultez les motifs et relancez le processus si nécessaire.',
+            ]} />
+            <Tip>Des webhooks automatisés mettent à jour le statut dès la signature — aucune action manuelle de téléchargement n'est requise.</Tip>
+          </>
+        )}
+      </Section>
+
+      {/* Section 10 — Search */}
+      <Section id="search" num="10" en="Global Search & Instant Jump" fr="Recherche Globale & Accès Direct" tags={["search", "lookup", "filter", "global"]}>
         {T ? (
           <>
             <p>The search bar in the top navigation searches submissions, support messages, and live chats simultaneously.</p>
@@ -3413,8 +3613,8 @@ function HelpTab() {
         )}
       </Section>
 
-      {/* Section 8 — Status Reference */}
-      <Section id="statuses" num="08" en="Status Reference" fr="Référence des Statuts">
+      {/* Section 11 — Status Reference */}
+      <Section id="statuses" num="11" en="Status & Lifecycle Reference Matrix" fr="Matrice des Statuts & Cycles de Vie" tags={["matrix", "states", "submitted", "approved", "confirmed", "scheduled"]}>
         <div className="space-y-4">
           <div>
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
@@ -3467,8 +3667,8 @@ function HelpTab() {
         </div>
       </Section>
 
-      {/* Section 9 — Email Routing */}
-      <Section id="email-routing" num="09" en="Email Routing Reference" fr="Référence Routage Email">
+      {/* Section 12 — Email Routing */}
+      <Section id="email-routing" num="12" en="Email Routing & Sender Compliance" fr="Routage E-mail & Conformité des Expéditeurs" tags={["routing", "smtp", "sender", "inbox", "mail"]}>
         {T ? (
           <>
             <p>When you reply to a client from the Submissions tab, the email comes from the address below for that service.</p>
@@ -3497,6 +3697,102 @@ function HelpTab() {
             : <><strong>Vérifiez toujours</strong> l'encadré amber dans le détail du dossier avant de répondre — si un dossier a changé de service, l'adresse expéditrice peut être différente.</>
           }
         </Note>
+      </Section>
+
+      {/* Section 13 — Compliance & GDPR (NEW) */}
+      <Section id="compliance-gdpr" num="13" en="Compliance, KYC/KYB & Data Privacy (GDPR)" fr="Conformité, KYC/KYB & Confidentialité (RGPD)" tags={["gdpr", "rgpd", "compliance", "privacy", "orias", "amf", "acpr"]}>
+        {T ? (
+          <>
+            <p>Opulanz operates under European financial and banking intermediation regulations (ACPR, AMF, CSSF, ORIAS n° 21003660).</p>
+            <p className="font-semibold text-gray-700 pt-1">Key Compliance Obligations:</p>
+            <Bullets items={[
+              '<strong>Anti-Money Laundering (AML / CFT)</strong> — Verify source of funds, purpose of company creation, and screen UBOs against PEP (Politically Exposed Persons) and sanctions watchlists.',
+              '<strong>GDPR / Data Minimization</strong> — Only collect and retain documents necessary for compliance. Never share client identity records outside authorized channels.',
+              '<strong>Right to Erasure (RTBF)</strong> — GDPR deletion requests must be escalated to the Data Protection Officer (DPO). Mandatory statutory financial records are retained as required by Luxembourg law.',
+              '<strong>Audit Trail</strong> — Every status update, document generation, and email dispatch is timestamped and recorded in the database audit log.',
+            ]} />
+            <Warning><strong>Confidentiality:</strong> Do not download client identification documents onto unencrypted personal devices.</Warning>
+          </>
+        ) : (
+          <>
+            <p>Opulanz opère conformément aux réglementations financières et d'intermédiation bancaire européennes (ACPR, AMF, CSSF, ORIAS n° 21003660).</p>
+            <p className="font-semibold text-gray-700 pt-1">Obligations Réglementaires Clés :</p>
+            <Bullets items={[
+              '<strong>Lutte Anti-Blanchiment (LCB-FT)</strong> — Vérification de l\'origine des fonds, de la cohérence de l\'activité et filtrage des PPE (Personnes Politiquement Exposées) et listes de sanctions.',
+              '<strong>RGPD & Confidentialité</strong> — Collecte strictement limitée aux besoins réglementaires. Interdiction formelle de diffuser des pièces d\'identité en dehors des canaux sécurisés.',
+              '<strong>Droit à l\'Effacement</strong> — Les demandes de suppression de données doivent être transmises au DPO. Les pièces comptables et d\'identification légale sont conservées selon les durées d\'archivage obligatoires.',
+              '<strong>Piste d\'Audit</strong> — Chaque changement de statut, génération de document et envoi d\'e-mail est horodaté dans les journaux d\'audit.',
+            ]} />
+            <Warning><strong>Confidentialité :</strong> Ne téléchargez pas de pièces d\'identité clients sur des postes personnels non chiffrés.</Warning>
+          </>
+        )}
+      </Section>
+
+      {/* Section 14 — Troubleshooting & FAQ (NEW) */}
+      <Section id="troubleshooting" num="14" en="Troubleshooting & Operations FAQ" fr="Dépannage & FAQ Opérations" tags={["faq", "error", "smtp", "troubleshoot", "failed", "bug", "support"]}>
+        {T ? (
+          <>
+            <p className="font-semibold text-gray-700">Frequently Asked Operational Questions & Solutions:</p>
+            <div className="space-y-3 pt-1">
+              <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50">
+                <p className="font-bold text-gray-900 text-xs">Q: Email reply failed to send with an SMTP error</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  <strong>Solution:</strong> Verify that <code className="bg-gray-100 px-1 rounded">EMAIL_USER</code> and <code className="bg-gray-100 px-1 rounded">EMAIL_PASS</code> are valid in the server configuration. If the client email is invalid, check their alternate email or contact them via Phone/Live Chat.
+                </p>
+              </div>
+              <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50">
+                <p className="font-bold text-gray-900 text-xs">Q: Document preview link fails with "Blob not found" or "Authentication failed"</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  <strong>Solution:</strong> Azure SAS URLs expire after a set time. Click the <em>Download</em> button to stream the file through the admin proxy with a freshly generated SAS token.
+                </p>
+              </div>
+              <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50">
+                <p className="font-bold text-gray-900 text-xs">Q: DocuSign envelope signed by client but status shows pending</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  <strong>Solution:</strong> Check if DocuSign webhooks are receiving events on <code className="bg-gray-100 px-1 rounded">/api/document-generation/webhook</code>. You can trigger a manual status refresh by clicking the document details in the client file.
+                </p>
+              </div>
+              <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50">
+                <p className="font-bold text-gray-900 text-xs">Q: A client wants to change their submitted application details</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  <strong>Solution:</strong> Leave an internal team note documenting the requested change and requested verification proofs. Update the status to <em>under_review</em> while processing the amendments.
+                </p>
+              </div>
+            </div>
+            <Note>For server-level technical support or database issues, contact the Opulanz engineering team at <code className="bg-gray-100 px-1 rounded">devops@opulanz.com</code>.</Note>
+          </>
+        ) : (
+          <>
+            <p className="font-semibold text-gray-700">Questions Fréquentes & Résolutions Opérationnelles :</p>
+            <div className="space-y-3 pt-1">
+              <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50">
+                <p className="font-bold text-gray-900 text-xs">Q : L'envoi de réponse e-mail échoue avec une erreur SMTP</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  <strong>Solution :</strong> Vérifiez les variables d'environnement <code className="bg-gray-100 px-1 rounded">EMAIL_USER</code> et <code className="bg-gray-100 px-1 rounded">EMAIL_PASS</code>. Si l'e-mail du client est erroné, contactez-le par téléphone ou via le chat.
+                </p>
+              </div>
+              <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50">
+                <p className="font-bold text-gray-900 text-xs">Q : L'aperçu du document échoue avec "Blob not found" ou URL expirée</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  <strong>Solution :</strong> Les jetons SAS Azure expirent après une durée définie. Utilisez le bouton <em>Download</em> qui génère un flux sécurisé actualisé via le proxy admin.
+                </p>
+              </div>
+              <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50">
+                <p className="font-bold text-gray-900 text-xs">Q : Document signé sous DocuSign mais statut toujours en attente</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  <strong>Solution :</strong> Vérifiez que le webhook DocuSign transmet bien à <code className="bg-gray-100 px-1 rounded">/api/document-generation/webhook</code>.
+                </p>
+              </div>
+              <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50">
+                <p className="font-bold text-gray-900 text-xs">Q : Un client demande la modification d'informations sur son dossier</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  <strong>Solution :</strong> Enregistrez une note interne avec le détail des modifications demandées et passez le statut en <em>under_review</em> pendant la vérification des pièces justificatives.
+                </p>
+              </div>
+            </div>
+            <Note>Pour toute assistance technique serveur ou base de données, contactez l'équipe DevOps à <code className="bg-gray-100 px-1 rounded">devops@opulanz.com</code>.</Note>
+          </>
+        )}
       </Section>
     </div>
   );

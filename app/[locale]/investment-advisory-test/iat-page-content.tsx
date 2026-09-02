@@ -372,7 +372,7 @@ export function IATPageContent({
 
   const [pdfPageCount, setPdfPageCount] = React.useState(1);
 
-  // Step 1: fill template PDF with form data BEFORE opening DocuSign
+  // Step 1: fill official QCC template PDF with form data BEFORE opening DocuSign
   const handleSign = async () => {
     setIsGeneratingPdf(true);
     try {
@@ -387,8 +387,12 @@ export function IATPageContent({
       setPdfPageCount(pageCount);
       setShowDocuSign(true);
     } catch (err) {
-      console.error("[handleSign] PDF fill failed:", err);
-      setStepError(`Erreur lors de la génération du PDF: ${err instanceof Error ? err.message : String(err)}`);
+      console.error("[handleSign] PDF generation failed:", err);
+      setStepError(
+        locale === "fr"
+          ? `Erreur lors de la génération du document QCC: ${err instanceof Error ? err.message : String(err)}`
+          : `Error generating QCC document: ${err instanceof Error ? err.message : String(err)}`
+      );
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -416,10 +420,10 @@ export function IATPageContent({
           : formData.companyIdentity.representative.email;
 
       const now = new Date();
-      const dateStr = now.toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
-      const signatureDate = now.toLocaleString("fr-FR", {
-        day: "2-digit", month: "long", year: "numeric",
-        hour: "2-digit", minute: "2-digit",
+      const dateStr = now.toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
       });
 
       const signedName = `Signé via DocuSign (${envelopeId})`;
@@ -437,7 +441,7 @@ export function IATPageContent({
         if (!dlData.success || !dlData.pdfBase64) throw new Error("No PDF returned");
         pdfBase64 = dlData.pdfBase64;
       } catch {
-        // Fallback: re-fill the filled template (DocuSign signature not embedded)
+        // Fallback: re-fill the official QCC template
         const { fillTemplatePdf } = await import(
           "@/components/investment-advisory-test/iat-pdf-filler"
         );
@@ -447,7 +451,7 @@ export function IATPageContent({
         );
         pdfBase64 = base64;
       }
-      const formSummary = buildFormSummary(formData);
+      const formSummary = buildFormSummary(formData, locale);
 
       const docPrefix = clientType === "company" ? "DCE" : "QCC";
       const safeName = (resolvedClientName || "Client").replace(/\s+/g, "-");
@@ -1018,6 +1022,7 @@ export function IATPageContent({
         }
         pdfBase64={pdfForSigning}
         pdfPageCount={pdfPageCount}
+        locale={locale}
         onClose={() => setShowDocuSign(false)}
         onSigned={handleSigned}
       />

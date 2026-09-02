@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   PieChart, BarChart3, Users, CheckCircle, ChevronDown,
   Target, FileText, ShieldCheck, TrendingUp, ClipboardList,
@@ -295,6 +296,35 @@ export function IATPageContent({
   const [signedPdfBase64, setSignedPdfBase64] = React.useState<string | undefined>(undefined);
   const [signedPdfFilename, setSignedPdfFilename] = React.useState<string | undefined>(undefined);
 
+  const searchParams = useSearchParams();
+
+  // Prefill details if redirected from consultation booking (schedule step 4)
+  React.useEffect(() => {
+    const qName = searchParams?.get("name");
+    const qEmail = searchParams?.get("email");
+    const qPhone = searchParams?.get("phone");
+
+    if (qName || qEmail || qPhone) {
+      setStarted(true);
+      setClientType((prev) => prev || "personal");
+
+      const nameParts = (qName || "").trim().split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      setFormData((prev) => ({
+        ...prev,
+        titulaire1: {
+          ...prev.titulaire1,
+          firstName: firstName || prev.titulaire1.firstName,
+          lastName: lastName || prev.titulaire1.lastName,
+          email: qEmail || prev.titulaire1.email,
+          phone: qPhone || prev.titulaire1.phone,
+        },
+      }));
+    }
+  }, [searchParams]);
+
   const prototypeRef = React.useRef<HTMLDivElement>(null);
 
   const updateFormData = (updates: Partial<IATFormData>) =>
@@ -427,6 +457,43 @@ export function IATPageContent({
 
       const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
+      // Upload signed PDF to Azure Blob Storage permanently via /api/upload
+      let uploadedDocUrl: string | null = null;
+      let uploadedBlobName: string | null = null;
+      let uploadedFileSize: number | null = null;
+
+      try {
+        const byteCharacters = atob(pdfBase64);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const pdfBlob = new Blob([byteArray], { type: "application/pdf" });
+        uploadedFileSize = pdfBlob.size;
+
+        const uploadForm = new FormData();
+        uploadForm.append("file", pdfBlob, filename);
+        uploadForm.append("type", "signed_mifid_qcc");
+
+        const uploadResp = await fetch(`${API}/api/upload`, {
+          method: "POST",
+          body: uploadForm,
+        });
+
+        if (uploadResp.ok) {
+          const uploadJson = await uploadResp.json();
+          if (uploadJson.success && uploadJson.data) {
+            uploadedDocUrl = uploadJson.data.fileUrl || uploadJson.data.url;
+            uploadedBlobName = uploadJson.data.blobName;
+            uploadedFileSize = uploadJson.data.fileSize || uploadedFileSize;
+            console.log("✅ Signed QCC document saved to Azure Blob Storage:", uploadedDocUrl);
+          }
+        }
+      } catch (uploadErr) {
+        console.warn("Could not upload signed PDF to Azure Blob (non-fatal):", uploadErr);
+      }
+
       fetch(`${API}/api/applications`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -440,6 +507,20 @@ export function IATPageContent({
             envelopeId,
             signedAt: now.toISOString(),
             submittedAt: now.toISOString(),
+            signedDocumentUrl: uploadedDocUrl,
+            signedDocumentFilename: filename,
+            signedDocumentBlobName: uploadedBlobName,
+            signedDocumentSize: uploadedFileSize,
+            documents: uploadedDocUrl ? [
+              {
+                name: filename,
+                filename: filename,
+                url: uploadedDocUrl,
+                blobName: uploadedBlobName,
+                size: uploadedFileSize,
+                type: "signed_contract",
+              }
+            ] : [],
             formData,
           },
         }),

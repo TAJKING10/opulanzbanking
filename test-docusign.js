@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './backend/.env' });
+try { require('dotenv').config({ path: './backend/.env' }); } catch { require('./backend/node_modules/dotenv').config({ path: './backend/.env' }); }
 const docusign = require('./backend/src/services/docusign');
 
 async function testDocuSignConnection() {

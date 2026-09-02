@@ -424,9 +424,39 @@ export default function InvestmentAdvisorySchedulePage({ params: { locale } }: {
                 </div>
               </div>
 
-              <Button onClick={() => router.push(`/${locale}/investment-advisory`)} className="bg-brand-gold text-white hover:bg-brand-goldDark">
-                Back to Investment Advisory
-              </Button>
+              {/* Next Step: MiFID II Questionnaire Action Card */}
+              <div className="mx-auto mb-8 max-w-xl rounded-2xl border-2 border-brand-gold/40 bg-gradient-to-br from-brand-goldLight/20 to-white p-6 md:p-8 text-left shadow-md">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-gold text-white font-bold text-xs">
+                    NEXT
+                  </span>
+                  <h3 className="text-xl font-bold text-brand-dark">
+                    Complete Your Investor Profile (MiFID II)
+                  </h3>
+                </div>
+                <p className="text-sm text-brand-grayMed mb-5 leading-relaxed">
+                  To allow our certified advisors to prepare your personalized investment strategy and fulfill European regulatory compliance before your consultation, please complete your investor profile and sign the engagement mandate electronically via DocuSign.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    onClick={() =>
+                      router.push(
+                        `/${locale}/investment-advisory/onboarding?name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(contact.email)}&phone=${encodeURIComponent(contact.phone)}`
+                      )
+                    }
+                    className="flex-1 bg-brand-gold text-white hover:bg-brand-goldDark h-12 text-base font-semibold shadow-md flex items-center justify-center gap-2"
+                  >
+                    Complete Profile & Sign <ArrowRight className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => router.push(`/${locale}/investment-advisory`)}
+                    className="h-12 border-gray-300 hover:bg-gray-50 text-brand-dark"
+                  >
+                    I'll Complete It Later
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
 

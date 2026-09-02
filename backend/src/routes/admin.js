@@ -412,13 +412,14 @@ router.get('/submissions', adminAuth, async (req, res) => {
       // company (business account) & accounting: payload.documents
       if (Array.isArray(p.documents)) {
         p.documents.forEach(f => {
-          if (f.filename || f.name || f.id || f.fileName) {
+          if (f.filename || f.name || f.id || f.fileName || f.url) {
             payloadFiles.push({
-              filename: f.fileName || f.filename || f.name || f.id,
+              filename: f.fileName || f.filename || f.name || 'Document',
               size: f.size,
               type: f.type || f.documentType || f.id,
-              id: f.id,
+              id: f.id || f.blobName,
               url: f.fileUrl || f.url || null,
+              blobName: f.blobName || null,
             });
           }
         });
@@ -427,9 +428,27 @@ router.get('/submissions', adminAuth, async (req, res) => {
       const rawFiles = p.uploadedFiles || p.files || p.attachments || [];
       if (Array.isArray(rawFiles)) {
         rawFiles.forEach(f => {
-          if (f && (f.filename || f.name || f.id)) {
-            payloadFiles.push({ filename: f.filename || f.name || f.id, size: f.size, type: f.type, id: f.id, url: f.url });
+          if (f && (f.filename || f.name || f.id || f.url)) {
+            payloadFiles.push({
+              filename: f.filename || f.name || f.id,
+              size: f.size,
+              type: f.type,
+              id: f.id,
+              url: f.url || f.fileUrl || null,
+              blobName: f.blobName || null,
+            });
           }
+        });
+      }
+      // Signed contract from investment advisory or other digital signature flows
+      if (p.signedDocumentUrl && !payloadFiles.some(f => f.url === p.signedDocumentUrl)) {
+        payloadFiles.push({
+          filename: p.signedDocumentFilename || 'Signed_QCC_Agreement.pdf',
+          size: p.signedDocumentSize || null,
+          type: 'signed_contract',
+          id: p.envelopeId || p.signedDocumentBlobName || null,
+          url: p.signedDocumentUrl,
+          blobName: p.signedDocumentBlobName || null,
         });
       }
 

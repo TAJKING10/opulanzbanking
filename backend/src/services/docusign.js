@@ -4,11 +4,11 @@ const path = require('path');
 
 class DocuSignService {
   constructor() {
-    this.integrationKey = process.env.DOCUSIGN_INTEGRATION_KEY;
+    this.integrationKey = process.env.DOCUSIGN_INTEGRATION_KEY || process.env.DOCUSIGN_CLIENT_ID;
     this.userId = process.env.DOCUSIGN_USER_ID;
     this.accountId = process.env.DOCUSIGN_ACCOUNT_ID;
     this.privateKeyPath = process.env.DOCUSIGN_PRIVATE_KEY_PATH;
-    this.basePath = process.env.DOCUSIGN_BASE_PATH || 'https://demo.docusign.net/restapi';
+    this.basePath = process.env.DOCUSIGN_BASE_PATH || process.env.DOCUSIGN_BASE_URI || 'https://demo.docusign.net/restapi';
     this.authServer = process.env.DOCUSIGN_AUTH_SERVER || 'account-d.docusign.com';
 
     if (!this.integrationKey || this.integrationKey.includes('YOUR_')) {
@@ -20,6 +20,7 @@ class DocuSignService {
     this.isConfigured = true;
     this.apiClient = new docusign.ApiClient();
     this.apiClient.setBasePath(this.basePath);
+    this.apiClient.setOAuthBasePath(this.authServer);
   }
 
   async getAccessToken() {
@@ -28,11 +29,15 @@ class DocuSignService {
     }
 
     try {
-      if (!fs.existsSync(this.privateKeyPath)) {
+      let privateKey;
+      if (process.env.DOCUSIGN_PRIVATE_KEY) {
+        privateKey = process.env.DOCUSIGN_PRIVATE_KEY.replace(/\\n/g, '\n');
+      } else if (this.privateKeyPath && fs.existsSync(this.privateKeyPath)) {
+        privateKey = fs.readFileSync(this.privateKeyPath, 'utf8');
+      } else {
         throw new Error(`DocuSign private key not found at: ${this.privateKeyPath}`);
       }
 
-      const privateKey = fs.readFileSync(this.privateKeyPath, 'utf8');
       const scopes = ['signature', 'impersonation'];
 
       const results = await this.apiClient.requestJWTUserToken(
@@ -166,6 +171,15 @@ class DocuSignService {
     const envelopesApi = new docusign.EnvelopesApi(this.apiClient);
     const results = await envelopesApi.getDocument(this.accountId, envelopeId, 'combined');
     return Buffer.from(results, 'binary');
+  }
+
+  // Compatibility aliases
+  async sendEnvelopeForSigning(...args) {
+    return this.sendEnvelopeForSignature(...args);
+  }
+
+  async downloadSignedDocuments(...args) {
+    return this.downloadEnvelopeDocuments(...args);
   }
 }
 

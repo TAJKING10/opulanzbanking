@@ -74,11 +74,12 @@ export async function POST(req: NextRequest) {
     } catch (err) {
       const msg = String(err);
       if (msg.includes("consent_required")) {
+        const appOrigin = req.nextUrl?.origin || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
         const consentUrl =
           `https://${AUTH_SERVER}/oauth/auth?response_type=code` +
           `&scope=signature%20impersonation` +
           `&client_id=${CLIENT_ID}` +
-          `&redirect_uri=http://localhost:3002/api/docusign/callback`;
+          `&redirect_uri=${encodeURIComponent(`${appOrigin}/api/docusign/callback`)}`;
         return NextResponse.json(
           { success: false, error: "consent_required", consentUrl },
           { status: 401 }

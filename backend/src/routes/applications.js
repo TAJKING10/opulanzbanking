@@ -60,10 +60,10 @@ router.post('/', async (req, res) => {
     const { type, status = 'draft', payload = {} } = req.body;
 
     // Validation
-    if (!type || !['individual', 'company', 'accounting', 'insurance', 'company_formation', 'mortgage'].includes(type)) {
+    if (!type || !['individual', 'company', 'accounting', 'insurance', 'company_formation', 'mortgage', 'investment_advisory'].includes(type)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid type. Must be "individual", "company", "accounting", "insurance", "company_formation", or "mortgage"'
+        error: 'Invalid type. Must be "individual", "company", "accounting", "insurance", "company_formation", "mortgage", or "investment_advisory"'
       });
     }
 

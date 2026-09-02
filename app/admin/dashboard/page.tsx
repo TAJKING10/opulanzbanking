@@ -725,7 +725,7 @@ const SERVICE_TO_SOURCE: Record<string, string> = {
   mortgage: "application",
   tax_advisory: "tax_booking",
   life_insurance: "life_booking",
-  investment_advisory: "investment_inquiry",
+  investment_advisory: "application",
 };
 
 const PIPELINE_SERVICES = SERVICES.filter(s => s.key !== "all");
@@ -953,18 +953,22 @@ function PipelineTab({
         <LoadingSpinner />
       ) : (
         <div className="flex gap-3 overflow-x-auto pb-4 min-h-[520px]">
-          {columns.map(status => {
+          {[...columns, ...(byStatus.__other?.length ? ["__other"] : [])].map(status => {
             const cards = byStatus[status] || [];
+            const isOther = status === "__other";
+            const label = isOther ? "inquiries / other" : status.replace(/_/g, " ");
             const isOver = dropTarget === status;
             return (
               <div
                 key={status}
                 onDragOver={e => {
+                  if (isOther) return;
                   e.preventDefault();
                   setDropTarget(status);
                 }}
                 onDragLeave={() => setDropTarget(prev => (prev === status ? null : prev))}
                 onDrop={e => {
+                  if (isOther) return;
                   e.preventDefault();
                   handleDrop(status);
                 }}
@@ -975,7 +979,7 @@ function PipelineTab({
                 <div className="px-3 py-3 flex items-center justify-between">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${STATUS_COLORS[status] || "bg-gray-100 text-gray-600"}`}>
-                      {status.replace(/_/g, " ")}
+                      {label}
                     </span>
                   </div>
                   <span className="text-xs font-bold text-gray-500 tabular-nums">{cards.length}</span>

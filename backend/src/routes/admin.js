@@ -222,6 +222,7 @@ router.get('/stats', adminAuth, async (req, res) => {
       else if (r.type === 'company_formation') summary.company_formation += r.count;
       else if (r.type === 'insurance')    summary.life_insurance    += r.count;
       else if (r.type === 'mortgage')     summary.mortgage          += r.count;
+      else if (r.type === 'investment_advisory') summary.investment_advisory += r.count;
     });
 
     const serviceMap = {
@@ -231,6 +232,7 @@ router.get('/stats', adminAuth, async (req, res) => {
       company_formation: 'company_formation',
       insurance: 'life_insurance',
       mortgage: 'mortgage',
+      investment_advisory: 'investment_advisory',
     };
 
     const recentSubmissions = [];
@@ -238,9 +240,9 @@ router.get('/stats', adminAuth, async (req, res) => {
     recentApps.rows.forEach(r => {
       const p = r.payload || {};
       const service = serviceMap[r.type] || r.type;
-      let clientName = p.firstName
+      let clientName = p.clientName || (p.firstName
         ? `${p.firstName} ${p.lastName || ''}`.trim()
-        : (p.companyName || p.company_name || 'N/A');
+        : (p.companyName || p.company_name || 'N/A'));
       let clientEmail = p.email || p.contactEmail || p.directorEmail || null;
       if (service === 'company_formation' || service === 'accounting') {
         const pc = p.primaryContact || p.contact || {};
@@ -350,14 +352,16 @@ router.get('/submissions', adminAuth, async (req, res) => {
         individual: 'individual', company: 'company',
         accounting: 'accounting', company_formation: 'company_formation',
         insurance: 'life_insurance',
+        mortgage: 'mortgage',
+        investment_advisory: 'investment_advisory',
       };
       const mappedService = serviceMap[r.type] || r.type;
 
       // Extract email/name based on service type
       let clientEmail = p.email || p.contactEmail || p.directorEmail || null;
-      let clientName = p.firstName
+      let clientName = p.clientName || (p.firstName
         ? `${p.firstName} ${p.lastName || ''}`.trim()
-        : (p.companyName || p.company_name || null);
+        : (p.companyName || p.company_name || null));
 
       if (mappedService === 'company_formation') {
         const shareholders = p.shareholders || p.Shareholders || [];

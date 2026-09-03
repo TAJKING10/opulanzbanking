@@ -86,7 +86,7 @@ export function IATStepESG({ formData, onChange, onNext, error, setError }: Prop
 
       {/* Main ESG question */}
       <div className="space-y-3">
-        <h3 className="font-bold text-red-600">
+        <h3 className="text-sm font-semibold text-brand-dark">
           {t("esg.mainQuestion")}
         </h3>
         <div className="flex gap-6">
@@ -138,7 +138,7 @@ export function IATStepESG({ formData, onChange, onNext, error, setError }: Prop
 
           {/* Impact on factors */}
           <div className="space-y-3">
-            <h3 className="font-bold text-red-600 text-sm">
+            <h3 className="text-sm font-semibold text-brand-dark">
               {t("esg.impactFactorsTitle")}
             </h3>
             <div className="flex gap-6">

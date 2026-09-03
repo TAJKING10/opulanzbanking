@@ -31,7 +31,7 @@ function SelectRow({
   return (
     <div>
       <Label>
-        {required ? <span className="font-bold text-red-600">{label}</span> : label}
+        {label}{required && <span className="text-red-500"> *</span>}
       </Label>
       <div className="flex flex-wrap gap-2 mt-2">
         {options.map(([val, lbl]) => (
@@ -167,7 +167,7 @@ export function IATppStep2({ formData, onChange, onNext, error, setError }: Prop
             />
           </div>
           <div>
-            <Label><span className="font-bold text-red-600">{t("ppStep2.t1SavingsCapacity")}</span></Label>
+            <Label>{t("ppStep2.t1SavingsCapacity")} <span className="text-red-500">*</span></Label>
             <Input
               value={fin.t1SavingsCapacity}
               onChange={(e) => up("t1SavingsCapacity", e.target.value)}
@@ -231,7 +231,7 @@ export function IATppStep2({ formData, onChange, onNext, error, setError }: Prop
           {t("ppStep2.fundsTitle")}
         </h3>
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep2.fundNature")}</span></Label>
+          <Label>{t("ppStep2.fundNature")} <span className="text-red-500">*</span></Label>
           <div className="flex gap-4 mt-2">
             {[
               ["liquidities", t("ppStep2.liquidities")],
@@ -252,7 +252,7 @@ export function IATppStep2({ formData, onChange, onNext, error, setError }: Prop
           </div>
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep2.amountToInvest")}</span></Label>
+          <Label>{t("ppStep2.amountToInvest")} <span className="text-red-500">*</span></Label>
           <Input
             value={fin.amountToInvest}
             onChange={(e) => up("amountToInvest", e.target.value)}
@@ -261,7 +261,7 @@ export function IATppStep2({ formData, onChange, onNext, error, setError }: Prop
           />
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep2.fundOrigins")}</span></Label>
+          <Label>{t("ppStep2.fundOrigins")} <span className="text-red-500">*</span></Label>
           <div className="grid grid-cols-2 gap-2 mt-2">
             {FUND_ORIGINS.map(([key, lbl]) => (
               <label key={key} className="flex items-center gap-2 cursor-pointer text-sm">
@@ -283,7 +283,7 @@ export function IATppStep2({ formData, onChange, onNext, error, setError }: Prop
           )}
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep2.bankOrigin")}</span></Label>
+          <Label>{t("ppStep2.bankOrigin")} <span className="text-red-500">*</span></Label>
           <Input
             value={fin.bankOrigin}
             onChange={(e) => up("bankOrigin", e.target.value)}

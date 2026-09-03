@@ -45,7 +45,7 @@ function TFNGroup({
 }) {
   return (
     <div className="space-y-1.5">
-      <p className="text-xs font-bold text-red-600 italic">{question} *</p>
+      <p className="text-xs font-semibold text-brand-dark italic">{question} <span className="text-red-500">*</span></p>
       <div className="flex gap-4">
         {(["vrai", "faux", "ne_sais_pas"] as TrueFalseNS[]).map((v) => (
           <label key={v} className="flex items-center gap-1.5 cursor-pointer text-xs">
@@ -88,7 +88,7 @@ function ProductCard({
       >
         <div className="flex items-center gap-3">
           <div className={`h-2.5 w-2.5 flex-shrink-0 rounded-full ${entry.held !== null ? "bg-brand-gold" : "bg-gray-300"}`} />
-          <span className="text-sm font-bold text-red-600">{config.label}</span>
+          <span className="text-sm font-semibold text-brand-dark">{config.label}</span>
         </div>
         <ChevronDown
           className={`h-4 w-4 flex-shrink-0 text-brand-gold transition-transform ${open ? "rotate-180" : ""}`}
@@ -99,7 +99,7 @@ function ProductCard({
         <div className="border-t border-brand-grayLight px-4 py-4 space-y-4 bg-gray-50/50">
           {/* Held */}
           <div>
-            <p className="text-xs font-bold text-red-600 mb-2">{t("knowledge.heldQuestion")}</p>
+            <p className="text-xs font-semibold text-brand-dark mb-2">{t("knowledge.heldQuestion")}</p>
             <div className="flex gap-4">
               {([true, false] as const).map((v) => (
                 <label key={String(v)} className="flex items-center gap-1.5 cursor-pointer text-sm">
@@ -120,7 +120,7 @@ function ProductCard({
             <>
               {/* Holding period */}
               <div>
-                <p className="text-xs font-bold text-red-600 mb-2">{t("knowledge.holdingPeriod")}</p>
+                <p className="text-xs font-semibold text-brand-dark mb-2">{t("knowledge.holdingPeriod")}</p>
                 <div className="flex gap-4">
                   {config.holdingOptions.map(([val, lbl]) => (
                     <label key={val} className="flex items-center gap-1.5 cursor-pointer text-sm">
@@ -139,7 +139,7 @@ function ProductCard({
 
               {/* Operations per year */}
               <div>
-                <p className="text-xs font-bold text-red-600 mb-2">{t("knowledge.opsPerYear")}</p>
+                <p className="text-xs font-semibold text-brand-dark mb-2">{t("knowledge.opsPerYear")}</p>
                 <div className="flex gap-4">
                   {([["<1", t("knowledge.ops1")], ["1-5", t("knowledge.ops1to5")], ["6+", t("knowledge.ops6plus")]] as [OpsPerYear, string][]).map(([val, lbl]) => (
                     <label key={val} className="flex items-center gap-1.5 cursor-pointer text-sm">
@@ -158,7 +158,7 @@ function ProductCard({
 
               {/* Volume */}
               <div>
-                <p className="text-xs font-bold text-red-600 mb-2">{t("knowledge.volume")}</p>
+                <p className="text-xs font-semibold text-brand-dark mb-2">{t("knowledge.volume")}</p>
                 <div className="flex flex-wrap gap-3">
                   {([["<5k", t("knowledge.volBelow5k")], ["5-10k", t("knowledge.vol5to10k")], ["10-50k", t("knowledge.vol10to50k")], [">50k", t("knowledge.volAbove50k")]] as [VolumeOps, string][]).map(([val, lbl]) => (
                     <label key={val} className="flex items-center gap-1.5 cursor-pointer text-sm">
@@ -221,7 +221,7 @@ function YNRow({
 }) {
   return (
     <div className="flex items-center justify-between py-2 border-b border-brand-grayLight last:border-0">
-      <span className="text-sm font-bold text-red-600">{label} *</span>
+      <span className="text-sm font-semibold text-brand-dark">{label} <span className="text-red-500">*</span></span>
       <div className="flex gap-4">
         {([true, false] as const).map((v) => (
           <label key={String(v)} className="flex items-center gap-1.5 cursor-pointer text-sm">

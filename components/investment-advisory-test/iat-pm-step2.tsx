@@ -142,7 +142,7 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
 
       {/* Patrimoine */}
       <div className="space-y-4">
-        <h3 className="font-bold text-red-600 text-sm border-b border-brand-grayLight pb-2">
+        <h3 className="font-semibold text-brand-dark text-sm border-b border-brand-grayLight pb-2">
           {t("pmStep2.patrimoineTitle")}
         </h3>
         <AmountPct
@@ -213,7 +213,7 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
           {t("pmStep2.fundsTitle")}
         </h3>
         <div>
-          <Label><span className="font-bold text-red-600">{t("pmStep2.fundNature")}</span></Label>
+          <Label>{t("pmStep2.fundNature")} <span className="text-red-500">*</span></Label>
           <div className="flex gap-4 mt-2">
             {[["liquidities", t("pmStep2.liquidities")], ["financial_instruments", t("pmStep2.financialInstruments")], ["both", t("pmStep2.both")]].map(([val, lbl]) => (
               <label key={val} className="flex items-center gap-2 cursor-pointer text-sm">
@@ -230,7 +230,7 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
           </div>
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("pmStep2.amountToInvest")}</span></Label>
+          <Label>{t("pmStep2.amountToInvest")} <span className="text-red-500">*</span></Label>
           <Input
             value={fin.amountToInvest}
             onChange={(e) => up("amountToInvest", e.target.value)}
@@ -239,7 +239,7 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
           />
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("pmStep2.fundOrigins")}</span></Label>
+          <Label>{t("pmStep2.fundOrigins")} <span className="text-red-500">*</span></Label>
           <div className="grid grid-cols-2 gap-2 mt-2">
             {FUND_ORIGINS.map(([key, lbl]) => (
               <label key={key} className="flex items-center gap-2 cursor-pointer text-sm">
@@ -261,7 +261,7 @@ export function IATpmStep2({ formData, onChange, onNext, error, setError }: Prop
           )}
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("pmStep2.bankOrigin")}</span></Label>
+          <Label>{t("pmStep2.bankOrigin")} <span className="text-red-500">*</span></Label>
           <Input value={fin.bankOrigin} onChange={(e) => up("bankOrigin", e.target.value)} className="mt-1" placeholder={t("pmStep2.bankOriginPlaceholder")} />
         </div>
         <div>

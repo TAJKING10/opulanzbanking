@@ -109,8 +109,8 @@ export function IATppStep3({ formData, onChange, onNext, error, setError }: Prop
                         className="mt-0.5"
                       />
                       <div className="flex-1 min-w-0">
-                        <span className={`text-sm ${required ? "font-bold text-red-600" : "text-brand-dark"}`}>
-                          {label}{required ? " *" : ""}
+                        <span className="text-sm text-brand-dark">
+                          {label}{required && <span className="text-red-500"> *</span>}
                         </span>
 
                         <div className="mt-2 flex items-center gap-2 flex-wrap">

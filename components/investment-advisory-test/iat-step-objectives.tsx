@@ -87,7 +87,7 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
       {/* Objectives */}
       <div className="space-y-3">
         <div>
-          <h3 className="font-bold text-red-600 text-sm">
+          <h3 className="text-sm font-semibold text-brand-dark">
             {t("objectives.objectivesTitle")}
           </h3>
           <p className="text-xs text-brand-grayMed mt-0.5">{t("objectives.objectivesSubtext")}</p>
@@ -125,7 +125,7 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
       {/* Risk profile */}
       <div className="space-y-3">
         <div>
-          <h3 className="font-bold text-red-600 text-sm">
+          <h3 className="text-sm font-semibold text-brand-dark">
             {t("objectives.riskTitle")}
           </h3>
           <p className="text-xs text-brand-grayMed mt-0.5">
@@ -151,7 +151,7 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* Past loss experience */}
       <div className="space-y-3">
-        <h3 className="font-bold text-red-600 text-sm">
+        <h3 className="text-sm font-semibold text-brand-dark">
           {t("objectives.pastLossTitle")}
         </h3>
         <RadioGrid
@@ -205,7 +205,7 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* Gain reaction */}
       <div className="space-y-3">
-        <h3 className="font-bold text-red-600 text-sm">
+        <h3 className="text-sm font-semibold text-brand-dark">
           {t("objectives.gainReactionTitle")}
         </h3>
         <RadioGrid
@@ -222,7 +222,7 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* Horizon */}
       <div className="space-y-3">
-        <h3 className="font-bold text-red-600 text-sm">
+        <h3 className="text-sm font-semibold text-brand-dark">
           {t("objectives.horizonTitle")}
         </h3>
         <RadioGrid
@@ -240,7 +240,7 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* Liquidity */}
       <div className="space-y-3">
-        <h3 className="font-bold text-red-600 text-sm">
+        <h3 className="text-sm font-semibold text-brand-dark">
           {t("objectives.liquidityTitle")}
         </h3>
         <RadioGrid
@@ -256,7 +256,7 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* Max loss */}
       <div className="space-y-3">
-        <h3 className="font-bold text-red-600 text-sm">
+        <h3 className="text-sm font-semibold text-brand-dark">
           {t("objectives.maxLossTitle")}
         </h3>
         <RadioGrid
@@ -275,7 +275,7 @@ export function IATStepObjectives({ formData, onChange, onNext, error, setError 
 
       {/* % of patrimony */}
       <div className="space-y-3">
-        <h3 className="font-bold text-red-600 text-sm">
+        <h3 className="text-sm font-semibold text-brand-dark">
           {t("objectives.patrimonyPctTitle")}
         </h3>
         <RadioGrid

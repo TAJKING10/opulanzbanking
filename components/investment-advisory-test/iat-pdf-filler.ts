@@ -60,7 +60,7 @@ export async function fillTemplatePdf(
    */
   function check(pg: ReturnType<typeof page>, x: number, y: number) {
     pg.drawText("X", {
-      x: px(x) + 0.5,
+      x: px(x) + 7.2,
       y: py(y) - 11.5,
       size: 7.5,
       font: fontBold,
@@ -344,29 +344,29 @@ export async function fillTemplatePdf(
     function fillProductRow(pg: ReturnType<typeof page>, key: keyof typeof pk, rows: ProdRow, isScpi = false) {
       const e = pk[key] as typeof pk["monetary"];
       if (!e) return;
-      if (e.held === true)  check(pg, 2.794, rows.heldY);
-      if (e.held === false) check(pg, 6.781, rows.heldY);
+      if (e.held === true)  check(pg, 2.344, rows.heldY);
+      if (e.held === false) check(pg, 6.331, rows.heldY);
 
-      if (e.opsPerYear === "<1")  check(pg, 11.010, rows.heldY);
-      if (e.opsPerYear === "1-5") check(pg, 18.680, rows.heldY);
-      if (e.opsPerYear === "6+")  check(pg, 28.270, rows.heldY);
+      if (e.opsPerYear === "<1")  check(pg, 10.560, rows.heldY);
+      if (e.opsPerYear === "1-5") check(pg, 18.230, rows.heldY);
+      if (e.opsPerYear === "6+")  check(pg, 27.820, rows.heldY);
 
       const shortDur = isScpi ? "-10 ans" : "-4 ans";
       if (e.holdingPeriod === shortDur || e.holdingPeriod === "<4") check(pg, 2.344, rows.durationY);
-      else if (e.holdingPeriod) check(pg, 6.540, rows.durationY);
+      else if (e.holdingPeriod) check(pg, 6.090, rows.durationY);
 
-      if (e.volume === "<5k")   check(pg, 11.060, rows.durationY);
-      if (e.volume === "5-10k") check(pg, 15.640, rows.durationY);
-      if (e.volume === "10-50k") check(pg, 23.050, rows.durationY);
-      if (e.volume === ">50k")  check(pg, 29.040, rows.durationY);
+      if (e.volume === "<5k")   check(pg, 10.610, rows.durationY);
+      if (e.volume === "5-10k") check(pg, 15.190, rows.durationY);
+      if (e.volume === "10-50k") check(pg, 22.600, rows.durationY);
+      if (e.volume === ">50k")  check(pg, 28.590, rows.durationY);
 
-      if (e.q1 === "vrai")        check(pg, 28.040, rows.q1Y);
-      if (e.q1 === "faux")        check(pg, 28.040, rows.q1Y + 0.606);
-      if (e.q1 === "ne_sais_pas") check(pg, 28.040, rows.q1Y + 1.218);
+      if (e.q1 === "vrai")        check(pg, 27.590, rows.q1Y);
+      if (e.q1 === "faux")        check(pg, 27.590, rows.q1Y + 0.606);
+      if (e.q1 === "ne_sais_pas") check(pg, 27.590, rows.q1Y + 1.218);
 
-      if (e.q2 === "vrai")        check(pg, 28.040, rows.q2Y);
-      if (e.q2 === "faux")        check(pg, 28.040, rows.q2Y + 0.612);
-      if (e.q2 === "ne_sais_pas") check(pg, 28.040, rows.q2Y + 1.219);
+      if (e.q2 === "vrai")        check(pg, 27.590, rows.q2Y);
+      if (e.q2 === "faux")        check(pg, 27.590, rows.q2Y + 0.612);
+      if (e.q2 === "ne_sais_pas") check(pg, 27.590, rows.q2Y + 1.219);
     }
 
     fillProductRow(p6, "monetary", p6Rows.monetary);

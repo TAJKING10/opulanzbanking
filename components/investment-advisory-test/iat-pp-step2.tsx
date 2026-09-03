@@ -64,6 +64,7 @@ function YesNoRow({
   value: boolean | null;
   onChange: (v: boolean) => void;
 }) {
+  const t = useTranslations("iat");
   return (
     <div className="flex items-center justify-between">
       <span className="text-sm">{label}</span>
@@ -77,7 +78,7 @@ function YesNoRow({
               onChange={() => onChange(v)}
               className="accent-brand-gold"
             />
-            {v ? "Oui" : "Non"}
+            {v ? t("ppStep2.yes") : t("ppStep2.no")}
           </label>
         ))}
       </div>

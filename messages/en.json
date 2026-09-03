@@ -3755,6 +3755,8 @@
       "addTitulaire2": "Add a 2nd account holder / authorised representative",
       "removeTitulaire2": "Remove 2nd account holder",
       "civility": "Title",
+      "mr": "Mr.",
+      "mrs": "Mrs.",
       "lastName": "Last Name",
       "firstName": "First Name(s)",
       "maidenName": "Maiden name",

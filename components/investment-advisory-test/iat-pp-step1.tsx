@@ -76,8 +76,8 @@ function TitulaireForm({
             className="mt-1 w-full rounded-xl border border-brand-grayLight px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold bg-white"
           >
             <option value="">—</option>
-            <option value="M">M.</option>
-            <option value="Mme">Mme</option>
+            <option value="M">{t("ppStep1.mr")}</option>
+            <option value="Mme">{t("ppStep1.mrs")}</option>
           </select>
         </div>
         <div>

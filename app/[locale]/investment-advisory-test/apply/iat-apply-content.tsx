@@ -358,37 +358,46 @@ export function IATApplyContent({
         console.warn("Could not upload signed PDF to Azure Blob (non-fatal):", uploadErr);
       }
 
-      fetch(`${API}/api/applications`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "investment_advisory",
-          status: "submitted",
-          payload: {
-            clientName: resolvedClientName,
-            email: resolvedClientEmail,
-            clientType: clientType === "personal" ? "PP" : "PM",
-            envelopeId,
-            signedAt: now.toISOString(),
-            submittedAt: now.toISOString(),
-            signedDocumentUrl: uploadedDocUrl,
-            signedDocumentFilename: filename,
-            signedDocumentBlobName: uploadedBlobName,
-            signedDocumentSize: uploadedFileSize,
-            documents: uploadedDocUrl ? [
-              {
-                name: filename,
-                filename: filename,
-                url: uploadedDocUrl,
-                blobName: uploadedBlobName,
-                size: uploadedFileSize,
-                type: "signed_contract",
-              }
-            ] : [],
-            formData,
-          },
-        }),
-      }).catch(() => {});
+      try {
+        const appResp = await fetch(`${API}/api/applications`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "investment_advisory",
+            status: "submitted",
+            payload: {
+              clientName: resolvedClientName,
+              firstName: clientType === "personal" ? formData.titulaire1.firstName : resolvedClientName,
+              lastName: clientType === "personal" ? formData.titulaire1.lastName : "",
+              companyName: clientType === "company" ? formData.companyIdentity.companyName : undefined,
+              email: resolvedClientEmail,
+              clientType: clientType === "personal" ? "PP" : "PM",
+              envelopeId,
+              signedAt: now.toISOString(),
+              submittedAt: now.toISOString(),
+              signedDocumentUrl: uploadedDocUrl,
+              signedDocumentFilename: filename,
+              signedDocumentBlobName: uploadedBlobName,
+              signedDocumentSize: uploadedFileSize,
+              documents: uploadedDocUrl ? [
+                {
+                  name: filename,
+                  filename: filename,
+                  url: uploadedDocUrl,
+                  blobName: uploadedBlobName,
+                  size: uploadedFileSize,
+                  type: "signed_contract",
+                }
+              ] : [],
+              formData,
+            },
+          }),
+        });
+        const appJson = await appResp.json();
+        console.log("✅ Application created in database:", appJson);
+      } catch (appErr) {
+        console.error("❌ Failed to create application in DB:", appErr);
+      }
 
       const res = await fetch("/api/send-questionnaire", {
         method: "POST",

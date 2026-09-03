@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import {
   PieChart, BarChart3, Users, CheckCircle, ChevronDown,
   Target, FileText, ShieldCheck, TrendingUp, ClipboardList,
-  BookOpen, ArrowRight, AlertCircle, Mail,
+  BookOpen, ArrowRight, AlertCircle, Mail, Calendar,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Hero } from "@/components/hero";
@@ -281,6 +281,7 @@ export function IATPageContent({
 }) {
   const { locale } = params;
   const t = useTranslations("iat");
+  const p = useTranslations("investmentAdvisory.page");
 
   // Wizard state
   const [started, setStarted] = React.useState(false);
@@ -582,10 +583,14 @@ export function IATPageContent({
         title="Investment Guidance Built Around Your Goals"
         subtitle="Meet with an AMF-certified advisor to review your objectives, financial situation, investment experience, time horizon, and risk profile. Receive personalised recommendations supported by a formal suitability report."
         primaryCta={{
+          label: p("hero.scheduleMeeting"),
+          href: `/${locale}/investment-advisory/schedule`,
+        }}
+        secondaryCta={{
           label: "Start Your Advisory Request",
           onClick: startPrototype,
         }}
-        secondaryCta={{
+        tertiaryCta={{
           label: "How It Works",
           href: "#process",
         }}
@@ -721,12 +726,15 @@ export function IATPageContent({
                 {t("wizard.startDesc")}
               </p>
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                <Button variant="primary" size="lg" onClick={startPrototype}>
+                <Button asChild variant="primary" size="lg">
+                  <Link href={`/${locale}/investment-advisory/schedule`}>
+                    <Calendar className="mr-2 h-4 w-4" />
+                    {p("hero.scheduleMeeting")}
+                  </Link>
+                </Button>
+                <Button variant="outline" size="lg" onClick={startPrototype}>
                   {t("wizard.startBtn")}
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <a href="#consultation-info">{t("wizard.bookConsultation")}</a>
                 </Button>
               </div>
             </div>

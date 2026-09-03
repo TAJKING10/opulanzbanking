@@ -16,7 +16,13 @@ interface HeroProps {
   };
   secondaryCta?: {
     label: string;
-    href: string;
+    href?: string;
+    onClick?: () => void;
+  };
+  tertiaryCta?: {
+    label: string;
+    href?: string;
+    onClick?: () => void;
   };
   className?: string;
 }
@@ -26,6 +32,7 @@ export function Hero({
   subtitle,
   primaryCta,
   secondaryCta,
+  tertiaryCta,
   className,
 }: HeroProps) {
   return (
@@ -57,12 +64,12 @@ export function Hero({
               ))}
             </motion.div>
           )}
-          {(primaryCta || secondaryCta) && (
+          {(primaryCta || secondaryCta || tertiaryCta) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+              className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row flex-wrap"
             >
               {primaryCta && (
                 primaryCta.onClick ? (
@@ -86,14 +93,46 @@ export function Hero({
                 )
               )}
               {secondaryCta && (
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="min-w-48 border-white text-white hover:bg-white/10"
-                >
-                  <Link href={secondaryCta.href}>{secondaryCta.label}</Link>
-                </Button>
+                secondaryCta.onClick ? (
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="min-w-48 border-white text-white hover:bg-white/10"
+                    onClick={secondaryCta.onClick}
+                  >
+                    {secondaryCta.label}
+                  </Button>
+                ) : (
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="min-w-48 border-white text-white hover:bg-white/10"
+                  >
+                    <Link href={secondaryCta.href!}>{secondaryCta.label}</Link>
+                  </Button>
+                )
+              )}
+              {tertiaryCta && (
+                tertiaryCta.onClick ? (
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="min-w-48 border-white text-white hover:bg-white/10"
+                    onClick={tertiaryCta.onClick}
+                  >
+                    {tertiaryCta.label}
+                  </Button>
+                ) : (
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="min-w-48 border-white text-white hover:bg-white/10"
+                  >
+                    <Link href={tertiaryCta.href!}>{tertiaryCta.label}</Link>
+                  </Button>
+                )
               )}
             </motion.div>
           )}

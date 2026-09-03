@@ -111,6 +111,12 @@ export function IATStepReview({ formData, onSign, isGeneratingPdf, error, setErr
     .map(([, lbl]) => lbl)
     .join(", ");
 
+  const getCivilityLabel = (civility?: string) => {
+    if (civility === "M") return t("ppStep1.mr");
+    if (civility === "Mme") return t("ppStep1.mrs");
+    return civility || "";
+  };
+
   return (
     <div className="space-y-4">
       <div className="rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 text-xs text-blue-900">
@@ -120,7 +126,7 @@ export function IATStepReview({ formData, onSign, isGeneratingPdf, error, setErr
       {/* Identity / Company */}
       {isPersonal ? (
         <Section title={t("review.sectionIdentityPP")}>
-          <Row label={t("review.fullName")} value={`${titulaire1.civility} ${titulaire1.firstName} ${titulaire1.lastName}`.trim()} />
+          <Row label={t("review.fullName")} value={`${getCivilityLabel(titulaire1.civility)} ${titulaire1.firstName} ${titulaire1.lastName}`.trim()} />
           <Row label={t("review.birthDate")} value={titulaire1.birthDate} />
           <Row label={t("review.nationality")} value={titulaire1.nationality} />
           <Row label={t("review.email")} value={titulaire1.email} />
@@ -136,7 +142,7 @@ export function IATStepReview({ formData, onSign, isGeneratingPdf, error, setErr
               <div className="pt-2 mt-2 border-t border-brand-grayLight">
                 <p className="text-xs font-bold text-brand-grayMed uppercase">{t("review.titulaire2Label")}</p>
               </div>
-              <Row label={t("review.fullName")} value={`${titulaire2.civility} ${titulaire2.firstName} ${titulaire2.lastName}`.trim()} />
+              <Row label={t("review.fullName")} value={`${getCivilityLabel(titulaire2.civility)} ${titulaire2.firstName} ${titulaire2.lastName}`.trim()} />
               <Row label={t("review.email")} value={titulaire2.email} />
               <Row label={t("review.profession")} value={titulaire2.profession} />
             </>

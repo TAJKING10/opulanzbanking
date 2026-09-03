@@ -3755,6 +3755,8 @@
       "addTitulaire2": "Ajouter un Titulaire 2 / mandataire",
       "removeTitulaire2": "Supprimer le Titulaire 2",
       "civility": "Civilité",
+      "mr": "M.",
+      "mrs": "Mme",
       "lastName": "Nom",
       "firstName": "Prénom(s)",
       "maidenName": "Nom de jeune fille",

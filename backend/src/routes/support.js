@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
+const rateLimit = require('express-rate-limit');
 const { pool } = require('../config/db');
 
 const emailTransporter = nodemailer.createTransport({
@@ -13,13 +14,107 @@ const emailTransporter = nodemailer.createTransport({
   },
 });
 
+// Rate Limiter: Max 4 contact requests per 15 minutes per IP
+const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 4,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many contact requests from this IP. Please try again after 15 minutes.' },
+});
+
+/**
+ * Heuristic Bot & Spam Detector (No CAPTCHA needed)
+ * Detects:
+ * - Honeypot field populating
+ * - Gibberish strings (e.g. "DoXEQglIQqPKojCStvrOZD", "Guppx Nguzpglbn")
+ * - Single-token messages without spaces/punctuation
+ * - Abnormal consonant-to-vowel ratios
+ * - Suspicious bot User-Agents (python-requests, curl, etc.)
+ */
+function isGibberishOrSpam(req) {
+  const { firstName, lastName, email, subject, message, website, b_hp_check, fax, address_line_2 } = req.body;
+
+  // 1. Honeypot check: Bots fill hidden form fields
+  if (website || b_hp_check || fax || address_line_2) {
+    return { isSpam: true, reason: 'Honeypot field filled' };
+  }
+
+  // 2. Suspicious automated script User-Agent check
+  const ua = (req.headers['user-agent'] || '').toLowerCase();
+  if (!ua || ua.includes('python-requests') || ua.includes('curl/') || ua.includes('go-http-client') || ua.includes('postmanruntime')) {
+    return { isSpam: true, reason: `Suspicious User-Agent: ${ua}` };
+  }
+
+  const cleanMsg = (message || '').trim();
+  const cleanName = `${firstName || ''} ${lastName || ''}`.trim();
+
+  // 3. Check for single-token random gibberish string in message (e.g. "DoXEQglIQqPKojCStvrOZD")
+  if (cleanMsg.length >= 10 && !cleanMsg.includes(' ')) {
+    // Single word of 10+ chars without spaces or sentence structure
+    return { isSpam: true, reason: 'Single-token random string in message' };
+  }
+
+  // 4. Entropy / Consonant Ratio Analysis
+  const vowels = (cleanMsg.match(/[aeiouyAEIOUY]/g) || []).length;
+  const letters = (cleanMsg.match(/[a-zA-Z]/g) || []).length;
+
+  if (letters >= 8 && vowels === 0) {
+    return { isSpam: true, reason: 'Zero vowels in message letters' };
+  }
+
+  if (letters >= 12) {
+    const vowelRatio = vowels / letters;
+    // Extremely low (< 10%) or high (> 80%) vowel ratio in string indicates random keyboard mash / hash
+    if (vowelRatio < 0.12 || vowelRatio > 0.85) {
+      return { isSpam: true, reason: `Abnormal vowel ratio (${(vowelRatio * 100).toFixed(1)}%)` };
+    }
+  }
+
+  // 5. Name Gibberish Check (e.g. "Guppx Nguzpglbn")
+  const nameVowels = (cleanName.match(/[aeiouyAEIOUY]/g) || []).length;
+  const nameLetters = (cleanName.match(/[a-zA-Z]/g) || []).length;
+  if (nameLetters >= 10) {
+    const nameVowelRatio = nameVowels / nameLetters;
+    if (nameVowelRatio < 0.15) {
+      return { isSpam: true, reason: `Gibberish name detected (${cleanName})` };
+    }
+  }
+
+  // 6. Suspicious Email Dot Bombing (e.g. v.argasn.oa1.39.9@gmail.com with 4+ dots in local part)
+  const localPart = (email || '').split('@')[0] || '';
+  const dotCount = (localPart.match(/\./g) || []).length;
+  if (dotCount >= 3) {
+    return { isSpam: true, reason: 'Excessive dots in email local-part signature' };
+  }
+
+  return { isSpam: false };
+}
+
 // POST /api/support/contact
-router.post('/contact', async (req, res) => {
+router.post('/contact', contactLimiter, async (req, res) => {
   try {
     const { firstName, lastName, email, phone, subject, message } = req.body;
 
     if (!firstName || !lastName || !email || !subject || !message) {
       return res.status(400).json({ error: 'All required fields must be filled.' });
+    }
+
+    // Run backend anti-bot spam filter
+    const spamCheck = isGibberishOrSpam(req);
+    if (spamCheck.isSpam) {
+      console.warn(`🛑 [Anti-Bot] Intercepted spam request from ${email} (IP: ${req.ip || req.headers['x-forwarded-for']}). Reason: ${spamCheck.reason}`);
+      
+      // Save silently to DB as 'flagged_spam' for security audit without dispatching emails
+      await pool.query(
+        `INSERT INTO support_contacts (first_name, last_name, email, phone, subject, message, status)
+         VALUES ($1, $2, $3, $4, $5, $6, 'flagged_spam')
+         ON CONFLICT DO NOTHING`,
+        [firstName, lastName, email, phone || null, subject, message]
+      ).catch(() => {});
+
+      // Return fake success to deceive the bot so it does not retry
+      return res.json({ success: true, message: 'Your message has been sent.' });
     }
 
     const subjectLabels = {
@@ -122,4 +217,7 @@ router.post('/contact', async (req, res) => {
   }
 });
 
+router.isGibberishOrSpam = isGibberishOrSpam;
 module.exports = router;
+
+

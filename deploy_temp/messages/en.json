@@ -3862,7 +3862,9 @@
       "errSavings": "Please indicate your estimated savings capacity.",
       "errAmount": "Please indicate the planned amount to invest.",
       "errFundNature": "Please indicate the nature of the assets to invest.",
-      "errFundOrigins": "Please select at least one economic origin of assets."
+      "errFundOrigins": "Please select at least one economic origin of assets.",
+      "yes": "Yes",
+      "no": "No"
     },
     "ppStep3": {
       "infoBox": "Required documents. Check available documents and/or upload your files (photos, PDF). Fields in red are mandatory before continuing.",

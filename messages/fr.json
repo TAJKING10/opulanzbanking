@@ -3863,7 +3863,9 @@
       "errSavings": "Veuillez indiquer votre capacité d'épargne estimée.",
       "errAmount": "Veuillez indiquer le montant prévu à investir.",
       "errFundNature": "Veuillez indiquer la nature des avoirs à investir.",
-      "errFundOrigins": "Veuillez sélectionner au moins une origine économique des avoirs."
+      "errFundOrigins": "Veuillez sélectionner au moins une origine économique des avoirs.",
+      "yes": "Oui",
+      "no": "Non"
     },
     "ppStep3": {
       "infoBox": "Documents requis. Cochez les documents disponibles et/ou déposez vos fichiers (photos, PDF). Les champs en rouge sont obligatoires avant de continuer.",

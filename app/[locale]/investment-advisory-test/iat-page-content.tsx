@@ -418,7 +418,7 @@ export function IATPageContent({
       {/* ------------------------------------------------------------------ */}
       {/* INTRODUCTION                                                         */}
       {/* ------------------------------------------------------------------ */}
-      <section className="relative bg-gradient-to-b from-white to-gray-50 py-12 md:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-white to-gray-50 py-8 md:py-12 overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl pointer-events-none" />
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
@@ -454,10 +454,10 @@ export function IATPageContent({
       {/* ------------------------------------------------------------------ */}
       {/* HOW IT WORKS                                                         */}
       {/* ------------------------------------------------------------------ */}
-      <section id="process" className="relative bg-white py-12 md:py-20 overflow-hidden">
+      <section id="process" className="relative bg-white py-8 md:py-12 overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-20 pointer-events-none" />
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
-          <SectionHeading overline={tp("processOverline")} title={tp("processTitle")} className="mb-12" />
+          <SectionHeading overline={tp("processOverline")} title={tp("processTitle")} className="mb-8" />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             {processSteps.map((s, idx) => (
               <div key={idx} className="group relative text-center">
@@ -483,7 +483,7 @@ export function IATPageContent({
       {/* ------------------------------------------------------------------ */}
       {/* INVESTOR PROFILE OVERVIEW                                           */}
       {/* ------------------------------------------------------------------ */}
-      <section className="bg-gray-50 py-12 md:py-20">
+      <section className="bg-gray-50 py-8 md:py-12">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
             <div>
@@ -511,9 +511,9 @@ export function IATPageContent({
       {/* ------------------------------------------------------------------ */}
       {/* DOCUMENTS OVERVIEW                                                   */}
       {/* ------------------------------------------------------------------ */}
-      <section className="bg-white py-12 md:py-20">
+      <section className="bg-white py-8 md:py-12">
         <div className="container mx-auto max-w-7xl px-6">
-          <SectionHeading overline={tp("docsOverline")} title={tp("docsTitle")} className="mb-10" />
+          <SectionHeading overline={tp("docsOverline")} title={tp("docsTitle")} className="mb-6" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
             {docItems.map((label, i) => {
               const Icon = DOC_ICONS[i] ?? FileText;
@@ -537,7 +537,7 @@ export function IATPageContent({
       {/* START CTA (if not yet started)                                       */}
       {/* ------------------------------------------------------------------ */}
       {!started && (
-        <section className="bg-gray-50 py-12 md:py-16">
+        <section className="bg-gray-50 py-8 md:py-10">
           <div className="container mx-auto max-w-3xl px-6 text-center">
             <div className="rounded-2xl border-2 border-brand-gold/30 bg-white p-8 shadow-sm">
               <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-gold/10">
@@ -570,7 +570,7 @@ export function IATPageContent({
       {/* MULTI-STEP QCC WIZARD                                                */}
       {/* ------------------------------------------------------------------ */}
       {started && (
-        <section className="bg-white py-10 md:py-16">
+        <section className="bg-white py-8 md:py-10">
           <div className="container mx-auto max-w-4xl px-6">
 
             {!completed ? (
@@ -676,9 +676,9 @@ export function IATPageContent({
       {/* ------------------------------------------------------------------ */}
       {/* REGULATORY NOTICE                                                    */}
       {/* ------------------------------------------------------------------ */}
-      <section className="bg-gray-50 py-12 md:py-16">
+      <section className="bg-gray-50 py-8 md:py-12">
         <div className="container mx-auto max-w-4xl px-6">
-          <SectionHeading overline={tp("regOverline")} title={tp("regTitle")} className="mb-8" />
+          <SectionHeading overline={tp("regOverline")} title={tp("regTitle")} className="mb-6" />
           <div className="rounded-2xl border border-brand-grayLight bg-white p-6 md:p-8 shadow-sm space-y-4">
             {regItems.map((text, i) => (
               <div key={i} className="flex items-start gap-3">
@@ -706,9 +706,9 @@ export function IATPageContent({
       {/* ------------------------------------------------------------------ */}
       {/* TECHNICAL & COMPLIANCE SECTION                                       */}
       {/* ------------------------------------------------------------------ */}
-      <section className="bg-white py-12 md:py-16">
+      <section className="bg-white py-8 md:py-12">
         <div className="container mx-auto max-w-4xl px-6">
-          <SectionHeading overline={tp("techOverline")} title={tp("techTitle")} description={tp("techDesc")} className="mb-8" />
+          <SectionHeading overline={tp("techOverline")} title={tp("techTitle")} description={tp("techDesc")} className="mb-6" />
           <IATTechSection />
         </div>
       </section>
@@ -716,9 +716,9 @@ export function IATPageContent({
       {/* ------------------------------------------------------------------ */}
       {/* FAQ                                                                  */}
       {/* ------------------------------------------------------------------ */}
-      <section className="bg-gray-50 py-12 md:py-20">
+      <section className="bg-gray-50 py-8 md:py-12">
         <div className="container mx-auto max-w-3xl px-6">
-          <SectionHeading overline={tp("faqOverline")} title={tp("faqTitle")} className="mb-10" />
+          <SectionHeading overline={tp("faqOverline")} title={tp("faqTitle")} className="mb-6" />
           <div className="rounded-2xl border border-brand-grayLight bg-white px-6 shadow-sm">
             {faqItems.map((item, i) => (
               <FaqItem key={i} index={i} question={item.q} answer={item.a} />
@@ -730,12 +730,12 @@ export function IATPageContent({
       {/* ------------------------------------------------------------------ */}
       {/* FINAL CTA                                                            */}
       {/* ------------------------------------------------------------------ */}
-      <section id="consultation-info" className="hero-gradient py-12 md:py-20">
+      <section id="consultation-info" className="hero-gradient py-10 md:py-14">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <h2 className="mb-4 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
             {tp("ctaTitle")}
           </h2>
-          <p className="mx-auto mb-10 max-w-2xl text-balance text-lg text-white/90">
+          <p className="mx-auto mb-6 max-w-2xl text-balance text-lg text-white/90">
             {tp("ctaSubtitle")}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">

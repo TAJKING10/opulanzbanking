@@ -4304,6 +4304,193 @@
       "professions_liberales": "Legal / Medical professions",
       "religion_associatif": "Religion, Non-profit activity",
       "autre": "Other"
+    },
+    "page": {
+      "testBadge": "Internal Review Prototype — not published, not linked from any live page",
+      "heroTitle": "Investment Guidance Built Around Your Goals",
+      "heroSubtitle": "Meet with an AMF-certified advisor to review your objectives, financial situation, investment experience, time horizon, and risk profile. Receive personalised recommendations supported by a formal suitability report.",
+      "heroPrimaryBtn": "Start Your Advisory Request",
+      "heroSecondaryBtn": "How It Works",
+      "heroAdvisoryNote": "Advisory services provided by Advensys Insurance Finance, France.",
+      "introOverline": "OUR APPROACH",
+      "introTitle": "Personalised Advice for Important Investment Decisions",
+      "introP1": "Investment decisions should reflect more than expected returns. Our advisory process considers your financial objectives, experience, investment horizon, liquidity needs, personal constraints, and ability to accept risk.",
+      "introP2": "Through a structured consultation and MiFID II assessment, your advisor can evaluate whether proposed investment solutions are appropriate for your circumstances.",
+      "benefits": [
+        {
+          "title": "Personalised Assessment",
+          "description": "Review your objectives, experience, income, assets, commitments, and investment preferences."
+        },
+        {
+          "title": "Professional Guidance",
+          "description": "Discuss your financial situation with an AMF-certified investment advisor."
+        },
+        {
+          "title": "Documented Recommendations",
+          "description": "Receive a formal suitability report explaining the recommendations made during the advisory process."
+        }
+      ],
+      "processOverline": "THE PROCESS",
+      "processTitle": "Your Investment Advisory Journey",
+      "process": [
+        {
+          "title": "Complete Your Investor Profile",
+          "description": "Answer questions about your knowledge, experience, financial situation, objectives, investment horizon, liquidity needs, and risk tolerance."
+        },
+        {
+          "title": "Provide Supporting Information",
+          "description": "Securely provide relevant information, including your current portfolio, income details, and any personal or financial constraints."
+        },
+        {
+          "title": "Meet Your Advisor",
+          "description": "Book a consultation with an AMF-certified advisor to review your circumstances and discuss suitable investment options."
+        },
+        {
+          "title": "Receive and Sign Your Report",
+          "description": "Receive your suitability report in PDF format and review and sign it electronically."
+        }
+      ],
+      "profileOverline": "MIFID II ASSESSMENT",
+      "profileTitle": "A Structured MiFID II Assessment",
+      "profileDesc": "Before recommendations can be provided, we need to understand your financial profile and investment needs.",
+      "profileItems": [
+        "Investment objectives",
+        "Investment time horizon",
+        "Knowledge and experience",
+        "Current portfolio",
+        "Income and financial commitments",
+        "Liquidity requirements",
+        "Capacity to bear losses",
+        "Risk tolerance",
+        "Investment restrictions",
+        "Sustainability preferences, where applicable"
+      ],
+      "profileNoteStrong": "Please note: ",
+      "profileNote": "Your responses help the advisor assess whether a recommendation is suitable for your circumstances. Completing the questionnaire does not guarantee that a particular investment product will be recommended.",
+      "docsOverline": "DOCUMENTATION",
+      "docsTitle": "Information You May Be Asked to Provide",
+      "docItems": [
+        "Current investment portfolio",
+        "Income information",
+        "Assets and financial commitments",
+        "Existing investment statements",
+        "Identification and compliance documents",
+        "Investment restriction information",
+        "Additional documents requested by the advisor"
+      ],
+      "docsNote": "The exact documentation required may depend on your profile, country of residence, and the nature of the advisory request.",
+      "regOverline": "IMPORTANT INFORMATION",
+      "regTitle": "Regulatory Notice",
+      "regItems": [
+        "Investment advisory services are provided by Advensys Insurance Finance in France.",
+        "Investment values can rise or fall. Past performance does not guarantee future results.",
+        "Any recommendation must be based on an assessment of the client's individual circumstances, objectives, knowledge, experience, financial situation, risk tolerance, and capacity to bear losses.",
+        "The information presented on this test page is general and does not constitute personal investment advice, an offer, or a recommendation to purchase or sell any financial instrument.",
+        "This page is a management-review prototype and does not confirm that the service is currently available."
+      ],
+      "legalNotice": "Legal Notice",
+      "termsConditions": "Terms & Conditions",
+      "privacyPolicy": "Privacy Policy",
+      "disclaimers": "Disclaimers",
+      "regulatoryInfo": "Regulatory Information",
+      "techOverline": "INTERNAL REVIEW",
+      "techTitle": "Technical & Compliance Requirements",
+      "techDesc": "This section is for management review only and describes the intended production requirements. It does not make unsupported legal guarantees.",
+      "techInternalNote": "Internal review only. The information below describes the intended production requirements. This section is for management review and does not constitute legal, regulatory, or commercial guarantees.",
+      "techSections": [
+        {
+          "title": "Calendly / Appointment Scheduling",
+          "items": [
+            "60-minute video consultation per session",
+            "Calendar synchronisation (Google Calendar, Outlook)",
+            "ICS confirmation email to client",
+            "Rescheduling rules to be defined at production stage",
+            "Time zone handling: CET/CEST (Europe/Paris)"
+          ]
+        },
+        {
+          "title": "Payment",
+          "items": [
+            "Payment-service provider: to be confirmed",
+            "Billing entity: Advensys Insurance Finance, France",
+            "Production invoice process: to be confirmed",
+            "VAT/tax treatment: subject to final legal validation",
+            "No card data is collected on this demonstration page"
+          ]
+        },
+        {
+          "title": "Document Storage",
+          "items": [
+            "Secure encrypted storage required for production",
+            "Role-based access controls required",
+            "File-retention rules: approximately 5-10 years (subject to final legal validation)",
+            "Malware scanning required for all uploads",
+            "Full audit logging of access and modifications"
+          ]
+        },
+        {
+          "title": "DocuSign — Electronic Signature",
+          "items": [
+            "Developer environment required during implementation",
+            "Production integration only after written approval",
+            "Signed suitability report stored as final record",
+            "Full signature audit trail (timestamps, IP, identity)",
+            "Secure archival in compliance with MiFID II requirements",
+            "No DocuSign API keys or integration keys are present in this prototype"
+          ]
+        },
+        {
+          "title": "Compliance and Regulatory",
+          "items": [
+            "MiFID II suitability assessment (Article 25)",
+            "Decision journaling: advisor rationale must be documented",
+            "Conflict-of-interest register maintained by Advensys Insurance Finance",
+            "Record retention: approximately 5-10 years (subject to final legal validation)",
+            "GDPR consent management and data-subject rights process required",
+            "Non-independent advisory model: disclosed to client before engagement"
+          ]
+        }
+      ],
+      "faqOverline": "FAQ",
+      "faqTitle": "Frequently Asked Questions",
+      "faq": [
+        {
+          "q": "Who provides the investment advisory service?",
+          "a": "Investment advisory services are provided by Advensys Insurance Finance, a regulated firm in France operating under AMF supervision. Opulanz facilitates access to this service on behalf of clients."
+        },
+        {
+          "q": "What information will I need to provide?",
+          "a": "You will be asked to complete a MiFID II investor profile questionnaire covering your objectives, experience, financial situation, time horizon, liquidity needs, and risk tolerance."
+        },
+        {
+          "q": "Why is a MiFID II questionnaire required?",
+          "a": "MiFID II regulations require investment advisors to gather sufficient information about a client's circumstances before providing a personal recommendation."
+        },
+        {
+          "q": "What is a suitability report?",
+          "a": "A formal document explaining the client profile considered, the recommendations discussed, the associated risks, and why a proposed approach may be suitable for your circumstances."
+        },
+        {
+          "q": "Does completing the questionnaire guarantee a recommendation?",
+          "a": "No. A recommendation will only be provided if the advisor determines that a suitable investment approach can be identified based on the information you provide."
+        },
+        {
+          "q": "Can I update my information before the consultation?",
+          "a": "Yes. You can update the information provided at any time before the consultation takes place."
+        },
+        {
+          "q": "How will my documents be protected?",
+          "a": "All documents and personal information are handled in accordance with applicable data protection regulations, including the GDPR."
+        },
+        {
+          "q": "Is the service available in every country?",
+          "a": "The investment advisory service is currently designed for clients resident in France and Luxembourg."
+        }
+      ],
+      "ctaTitle": "Ready to Discuss Your Investment Objectives?",
+      "ctaSubtitle": "Complete the initial request and our team will help guide you through the next steps.",
+      "ctaRequestBtn": "Request a Consultation",
+      "ctaContactBtn": "Contact Us"
     }
   },
   "mortgage": {

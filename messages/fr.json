@@ -4304,6 +4304,193 @@
       "professions_liberales": "Professions libérales juridiques/médicales",
       "religion_associatif": "Religion, Activité associative",
       "autre": "Autre"
+    },
+    "page": {
+      "testBadge": "Prototype de revue interne — non publié, non référencé sur aucune page en ligne",
+      "heroTitle": "Un conseil en investissement centré sur vos objectifs",
+      "heroSubtitle": "Rencontrez un conseiller certifié AMF pour examiner vos objectifs, votre situation financière, votre expérience d'investissement, votre horizon de placement et votre profil de risque. Recevez des recommandations personnalisées appuyées par un rapport de pertinence formel.",
+      "heroPrimaryBtn": "Démarrer votre demande de conseil",
+      "heroSecondaryBtn": "Comment cela fonctionne",
+      "heroAdvisoryNote": "Services de conseil fournis par Advensys Insurance Finance, France.",
+      "introOverline": "NOTRE APPROCHE",
+      "introTitle": "Un conseil personnalisé pour vos décisions d'investissement importantes",
+      "introP1": "Les décisions d'investissement doivent refléter bien plus que les rendements attendus. Notre processus de conseil prend en compte vos objectifs financiers, votre expérience, votre horizon de placement, vos besoins en liquidités, vos contraintes personnelles et votre capacité à accepter le risque.",
+      "introP2": "Au travers d'une consultation structurée et d'une évaluation MiFID II, votre conseiller peut apprécier si les solutions d'investissement proposées sont adaptées à votre situation.",
+      "benefits": [
+        {
+          "title": "Évaluation personnalisée",
+          "description": "Examen de vos objectifs, expériences, revenus, actifs, engagements et préférences d'investissement."
+        },
+        {
+          "title": "Accompagnement professionnel",
+          "description": "Discutez de votre situation financière avec un conseiller en investissement certifié AMF."
+        },
+        {
+          "title": "Recommandations documentées",
+          "description": "Recevez un rapport de pertinence formel expliquant les recommandations formulées durant le processus de conseil."
+        }
+      ],
+      "processOverline": "LE PROCESSUS",
+      "processTitle": "Votre parcours de conseil en investissement",
+      "process": [
+        {
+          "title": "Complétez votre profil investisseur",
+          "description": "Répondez aux questions sur vos connaissances, votre expérience, votre situation financière, vos objectifs, votre horizon de placement, vos besoins en liquidités et votre tolérance au risque."
+        },
+        {
+          "title": "Fournissez les informations complémentaires",
+          "description": "Transmettez en toute sécurité les informations pertinentes, notamment votre portefeuille actuel, vos revenus et vos contraintes personnelles ou financières."
+        },
+        {
+          "title": "Rencontrez votre conseiller",
+          "description": "Planifiez une consultation avec un conseiller certifié AMF pour examiner votre situation et discuter des options d'investissement adaptées."
+        },
+        {
+          "title": "Recevez et signez votre rapport",
+          "description": "Recevez votre rapport de pertinence au format PDF, puis relisez-le et signez-le électroniquement."
+        }
+      ],
+      "profileOverline": "ÉVALUATION MIFID II",
+      "profileTitle": "Une évaluation MiFID II structurée",
+      "profileDesc": "Avant de formuler toute recommandation, nous devons comprendre votre profil financier et vos besoins en matière d'investissement.",
+      "profileItems": [
+        "Objectifs d'investissement",
+        "Horizon de placement",
+        "Connaissances et expérience",
+        "Portefeuille actuel",
+        "Revenus et engagements financiers",
+        "Besoins en liquidités",
+        "Capacité à supporter des pertes",
+        "Tolérance au risque",
+        "Restrictions d'investissement",
+        "Préférences durables, le cas échéant"
+      ],
+      "profileNoteStrong": "À noter : ",
+      "profileNote": "Vos réponses aident le conseiller à évaluer si une recommandation est adaptée à votre situation. Le fait de compléter le questionnaire ne garantit pas qu'un produit d'investissement particulier sera recommandé.",
+      "docsOverline": "DOCUMENTATION",
+      "docsTitle": "Informations susceptibles de vous être demandées",
+      "docItems": [
+        "Portefeuille d'investissement actuel",
+        "Informations sur les revenus",
+        "Actifs et engagements financiers",
+        "Relevés d'investissements existants",
+        "Documents d'identification et de conformité",
+        "Informations relatives aux restrictions d'investissement",
+        "Documents complémentaires demandés par le conseiller"
+      ],
+      "docsNote": "La documentation exacte requise peut dépendre de votre profil, de votre pays de résidence et de la nature de la demande de conseil.",
+      "regOverline": "INFORMATIONS IMPORTANTES",
+      "regTitle": "Notice réglementaire",
+      "regItems": [
+        "Les services de conseil en investissement sont fournis par Advensys Insurance Finance en France.",
+        "La valeur des investissements peut fluctuer à la hausse comme à la baisse. Les performances passées ne garantissent pas les résultats futurs.",
+        "Toute recommandation doit être fondée sur une évaluation de la situation individuelle du client, de ses objectifs, de ses connaissances, de son expérience, de sa situation financière, de sa tolérance au risque et de sa capacité à supporter des pertes.",
+        "Les informations présentées sur cette page de test sont générales et ne constituent pas un conseil en investissement personnalisé, une offre ou une recommandation d'achat ou de vente d'un instrument financier.",
+        "Cette page est un prototype de revue interne et ne confirme pas la disponibilité actuelle du service."
+      ],
+      "legalNotice": "Mentions légales",
+      "termsConditions": "Conditions générales",
+      "privacyPolicy": "Politique de confidentialité",
+      "disclaimers": "Avertissements",
+      "regulatoryInfo": "Informations réglementaires",
+      "techOverline": "REVUE INTERNE",
+      "techTitle": "Exigences techniques et de conformité",
+      "techDesc": "Cette section est destinée à la revue interne uniquement et décrit les exigences de production envisagées. Elle ne constitue pas une garantie juridique ou commerciale.",
+      "techInternalNote": "Revue interne uniquement. Les informations ci-dessous décrivent les exigences de production envisagées. Cette section est destinée à la revue de gestion et ne constitue pas une garantie juridique, réglementaire ou commerciale.",
+      "techSections": [
+        {
+          "title": "Calendly / Prise de rendez-vous",
+          "items": [
+            "Consultation vidéo de 60 minutes par session",
+            "Synchronisation calendrier (Google Calendar, Outlook)",
+            "Email de confirmation ICS au client",
+            "Règles de reprogrammation à définir en production",
+            "Gestion des fuseaux horaires : CET/CEST (Europe/Paris)"
+          ]
+        },
+        {
+          "title": "Paiement",
+          "items": [
+            "Prestataire de services de paiement : à confirmer",
+            "Entité de facturation : Advensys Insurance Finance, France",
+            "Processus de facturation en production : à confirmer",
+            "Traitement TVA/fiscal : sous réserve de validation juridique finale",
+            "Aucune donnée de carte n'est collectée sur cette page de démonstration"
+          ]
+        },
+        {
+          "title": "Stockage des documents",
+          "items": [
+            "Stockage chiffré sécurisé requis en production",
+            "Contrôles d'accès basés sur les rôles requis",
+            "Règles de conservation : environ 5 à 10 ans (sous réserve de validation juridique finale)",
+            "Analyse anti-malware requise pour tous les téléchargements",
+            "Journalisation complète des accès et modifications"
+          ]
+        },
+        {
+          "title": "DocuSign — Signature électronique",
+          "items": [
+            "Environnement développeur requis lors de l'implémentation",
+            "Intégration en production uniquement après approbation écrite",
+            "Rapport de pertinence signé conservé comme document final",
+            "Piste d'audit de signature complète (horodatages, IP, identité)",
+            "Archivage sécurisé conforme aux exigences MiFID II",
+            "Aucune clé API ou clé d'intégration DocuSign n'est présente dans ce prototype"
+          ]
+        },
+        {
+          "title": "Conformité et réglementation",
+          "items": [
+            "Évaluation de l'adéquation MiFID II (Article 25)",
+            "Journalisation des décisions : la justification du conseiller doit être documentée",
+            "Registre des conflits d'intérêts tenu par Advensys Insurance Finance",
+            "Conservation des données : environ 5 à 10 ans (sous réserve de validation juridique finale)",
+            "Gestion du consentement RGPD et processus des droits des personnes concernées requis",
+            "Modèle de conseil non indépendant : divulgué au client avant tout engagement"
+          ]
+        }
+      ],
+      "faqOverline": "FAQ",
+      "faqTitle": "Questions fréquentes",
+      "faq": [
+        {
+          "q": "Qui fournit le service de conseil en investissement ?",
+          "a": "Les services de conseil en investissement sont fournis par Advensys Insurance Finance, une société réglementée en France sous la supervision de l'AMF. Opulanz facilite l'accès à ce service pour le compte de ses clients."
+        },
+        {
+          "q": "Quelles informations devrai-je fournir ?",
+          "a": "Il vous sera demandé de compléter un questionnaire de profil investisseur MiFID II portant sur vos objectifs, votre expérience, votre situation financière, votre horizon de placement, vos besoins en liquidités et votre tolérance au risque."
+        },
+        {
+          "q": "Pourquoi un questionnaire MiFID II est-il requis ?",
+          "a": "La réglementation MiFID II impose aux conseillers en investissement de recueillir suffisamment d'informations sur la situation d'un client avant de formuler une recommandation personnelle."
+        },
+        {
+          "q": "Qu'est-ce qu'un rapport de pertinence ?",
+          "a": "Un document formel expliquant le profil client considéré, les recommandations discutées, les risques associés et la raison pour laquelle l'approche proposée peut être adaptée à votre situation."
+        },
+        {
+          "q": "Le fait de compléter le questionnaire garantit-il une recommandation ?",
+          "a": "Non. Une recommandation ne sera formulée que si le conseiller détermine qu'une approche d'investissement appropriée peut être identifiée sur la base des informations que vous fournissez."
+        },
+        {
+          "q": "Puis-je mettre à jour mes informations avant la consultation ?",
+          "a": "Oui. Vous pouvez mettre à jour les informations fournies à tout moment avant la tenue de la consultation."
+        },
+        {
+          "q": "Comment mes documents seront-ils protégés ?",
+          "a": "Tous les documents et informations personnelles sont traités conformément aux réglementations applicables en matière de protection des données, dont le RGPD."
+        },
+        {
+          "q": "Le service est-il disponible dans tous les pays ?",
+          "a": "Le service de conseil en investissement est actuellement conçu pour les clients résidant en France et au Luxembourg."
+        }
+      ],
+      "ctaTitle": "Prêt à discuter de vos objectifs d'investissement ?",
+      "ctaSubtitle": "Complétez la demande initiale et notre équipe vous accompagnera dans les prochaines étapes.",
+      "ctaRequestBtn": "Demander une consultation",
+      "ctaContactBtn": "Nous contacter"
     }
   },
   "mortgage": {

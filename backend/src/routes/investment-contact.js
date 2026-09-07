@@ -19,6 +19,44 @@ const createTransporter = () => {
   });
 };
 
+function isGibberishOrSpam(req) {
+  const { fullName, email, message, website, b_hp_check, fax, address_line_2 } = req.body;
+
+  // 1. Honeypot check
+  if (website || b_hp_check || fax || address_line_2) {
+    return { isSpam: true, reason: 'Honeypot field filled' };
+  }
+
+  // 2. Suspicious User-Agent check
+  const ua = (req.headers['user-agent'] || '').toLowerCase();
+  if (!ua || ua.includes('python-requests') || ua.includes('curl/') || ua.includes('go-http-client') || ua.includes('postmanruntime')) {
+    return { isSpam: true, reason: `Suspicious User-Agent: ${ua}` };
+  }
+
+  const cleanMsg = (message || '').trim();
+  const cleanName = (fullName || '').trim();
+
+  // 3. Single-token message string check
+  if (cleanMsg.length >= 10 && !cleanMsg.includes(' ')) {
+    return { isSpam: true, reason: 'Single-token random string in message' };
+  }
+
+  // 4. Entropy check on name
+  const nameVowels = (cleanName.match(/[aeiouyAEIOUY]/g) || []).length;
+  const nameLetters = (cleanName.match(/[a-zA-Z]/g) || []).length;
+  if (nameLetters >= 10 && (nameVowels / nameLetters) < 0.15) {
+    return { isSpam: true, reason: 'Gibberish name detected' };
+  }
+
+  // 5. Excessive dots in email
+  const localPart = (email || '').split('@')[0] || '';
+  if ((localPart.match(/\./g) || []).length >= 3) {
+    return { isSpam: true, reason: 'Excessive dots in email' };
+  }
+
+  return { isSpam: false };
+}
+
 /**
  * POST /api/investment/contact
  * Submit SPV investment inquiry and send email to support
@@ -33,6 +71,13 @@ router.post('/', async (req, res) => {
         success: false,
         error: 'Full name, email, and investor type are required',
       });
+    }
+
+    // Run backend anti-bot spam filter
+    const spamCheck = isGibberishOrSpam(req);
+    if (spamCheck.isSpam) {
+      console.warn(`🛑 [Anti-Bot] Intercepted SPV investment spam from ${email}. Reason: ${spamCheck.reason}`);
+      return res.json({ success: true, message: 'Inquiry received' });
     }
 
     // Store inquiry in database
@@ -339,4 +384,6 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
+router.isGibberishOrSpam = isGibberishOrSpam;
 module.exports = router;
+

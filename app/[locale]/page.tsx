@@ -21,11 +21,11 @@ export async function generateMetadata({
     pathname: '',
     title:
       locale === 'fr'
-        ? 'Opulanz — Services de Paiement & Financiers | France & Luxembourg'
+        ? 'Opulanz — Plateforme Financière & Business Européenne | Luxembourg'
         : 'Opulanz — Luxembourg Financial & Business Platform | Europe',
     description:
       locale === 'fr'
-        ? 'Comptes de paiement réglementés, création d\'entreprise, conseil en investissement, fiscalité et assurance vie pour les entreprises en France et au Luxembourg.'
+        ? 'Plateforme financière et business européenne basée au Luxembourg pour les entreprises et entrepreneurs : services de paiement, comptabilité, création de société, conseil en investissement, assurance et solutions transfrontalières.'
         : 'Luxembourg-based European financial and business platform for companies and entrepreneurs: payment services, accounting, company formation assistance, investment advisory, insurance and cross-border business solutions.',
   });
 }

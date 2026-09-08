@@ -37,7 +37,7 @@
   "hero": {
     "home": {
       "title": "Tous vos services financiers, en un seul endroit",
-      "subtitle": "Service de paiements, comptabilité et facturation, assistance en constitution de sociétés, conseil en investissement et fiscal, et assurance.\n\nPour les entrepreneurs et les entreprises en France et au Luxembourg.",
+      "subtitle": "Plateforme financière et business européenne basée au Luxembourg — services de paiement, comptabilité, constitution de sociétés, conseil en investissement, assurance et solutions transfrontalières pour les entreprises et les entrepreneurs à travers l'Europe.",
       "primaryCta": "Ouvrir un compte",
       "secondaryCta": "En savoir plus"
     },
@@ -1190,11 +1190,15 @@
       }
     },
     "trust": {
-      "title": "STATUTS & CONTRÔLE",
-      "description": "Des activités encadrées",
-      "summary": "Nos activités réglementées sont exercées par des entités agréées du groupe, sous le contrôle des autorités françaises."
+      "title": "CADRE RÉGLEMENTAIRE EUROPÉEN",
+      "description": "Notre Structure Réglementaire",
+      "summary": "Un groupe constitué au Luxembourg, avec des entités d'intermédiation financière réglementées et autorisées à travers l'Europe."
     },
     "regulatory": {
+      "block1Title": "Groupe Luxembourg",
+      "block1Desc": "Groupe Advensys Luxembourg S.A. — RCS Luxembourg B197138. Société holding constituée au Luxembourg, présente en Europe depuis plus de 19 ans.",
+      "block2Title": "Intermédiation Financière Réglementée",
+      "block2Desc": "Services d'intermédiation fournis par Advensys Insurance-Finance SARL — ORIAS n° 21003660 : courtier (COBSP/COA) sous contrôle de l'ACPR, Conseiller en Investissements Financiers (CIF) sous contrôle de l'AMF.",
       "france": "France",
       "acpr": "Courtier en opérations de banque, services de paiement et assurance. Advensys Insurance-Finance — ORIAS n° 21003660, sous le contrôle de l'ACPR.",
       "amf": "Conseiller en Investissements Financiers (CIF). Advensys Insurance-Finance — ORIAS n° 21003660, sous le contrôle de l'AMF."

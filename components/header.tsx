@@ -66,6 +66,8 @@ export function Header({ locale }: HeaderProps) {
             alt="Opulanz"
             width={160}
             height={56}
+            fetchPriority="high"
+            decoding="async"
             className="h-14 w-auto object-contain"
           />
         </Link>

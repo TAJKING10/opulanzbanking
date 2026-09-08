@@ -9,6 +9,8 @@ import { LiveChat } from '@/components/live-chat';
 import { routing } from '@/i18n/routing';
 import { generateSEOMetadata } from './metadata';
 import { CapacitorInit } from '@/components/capacitor-init';
+import { JsonLd } from '@/components/seo/json-ld';
+import { organizationJsonLd, websiteJsonLd } from '@/lib/seo-schema';
 import '@/app/globals.css';
 
 const poppins = Poppins({
@@ -25,6 +27,13 @@ const poppins = Poppins({
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover' as const,
+  themeColor: '#b59354',
+};
 
 export async function generateMetadata({
   params,
@@ -47,7 +56,6 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
 
-  // Enable static rendering
   setRequestLocale(locale);
 
   const messages = await getMessages();
@@ -55,49 +63,9 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={poppins.className}>
       <head>
-        {/* Viewport: handles safe area insets for mobile notches/home bars */}
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-        />
-        {/* Organization + WebSite JSON-LD structured data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify([
-              {
-                '@context': 'https://schema.org',
-                '@type': 'FinancialService',
-                '@id': 'https://www.opulanz.com/#organization',
-                name: 'Opulanz',
-                url: 'https://www.opulanz.com',
-                logo: 'https://www.opulanz.com/images/opulanz-logo.png',
-                description:
-                  'Luxembourg-based European financial and business platform for companies and entrepreneurs: payment services, accounting, company formation, investment advisory, insurance and cross-border business solutions.',
-                areaServed: ['LU', 'FR', 'EU'],
-                contactPoint: {
-                  '@type': 'ContactPoint',
-                  contactType: 'customer service',
-                  availableLanguage: ['English', 'French'],
-                },
-              },
-              {
-                '@context': 'https://schema.org',
-                '@type': 'WebSite',
-                '@id': 'https://www.opulanz.com/#website',
-                url: 'https://www.opulanz.com',
-                name: 'Opulanz',
-                publisher: { '@id': 'https://www.opulanz.com/#organization' },
-              },
-            ]),
-          }}
-        />
-        {/* PWA manifest */}
+        <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         <link rel="manifest" href="/manifest.json" />
-        {/* Android PWA */}
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#b59354" />
-        {/* iOS PWA - makes it feel like a native app */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Opulanz" />

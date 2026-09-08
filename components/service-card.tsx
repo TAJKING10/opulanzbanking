@@ -94,6 +94,7 @@ export function ServiceCard({
               src={image}
               alt={title}
               fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-1"
             />
             <div className="absolute top-4 right-4 z-20 bg-brand-gold/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">

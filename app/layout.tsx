@@ -1,13 +1,17 @@
 import type { Metadata } from 'next';
+import { baseUrl } from '@/app/[locale]/metadata';
 
 export const metadata: Metadata = {
-  title: 'Opulanz',
-  description: 'Opulanz Financial Services Platform',
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: 'Opulanz — Luxembourg Financial & Business Platform | Europe',
+    template: '%s',
+  },
+  description:
+    'Luxembourg-based European financial and business platform for companies and entrepreneurs.',
+  robots: { index: true, follow: true },
 };
 
-// Minimal pass-through — every real route is handled by app/[locale]/layout.tsx
-// which sets <html lang={locale}> correctly.  Rendering <html lang="en"> here
-// would override that and produce a language-attribute mismatch for /fr routes.
 export default function RootLayout({
   children,
 }: {

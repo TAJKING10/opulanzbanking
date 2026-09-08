@@ -8,7 +8,9 @@ import { AppInstallBanner } from '@/components/app-install-banner';
 import { SectionHeading } from '@/components/section-heading';
 import { ServiceCard } from '@/components/service-card';
 import { PageGuidance } from '@/components/page-guidance';
+import { VideoPopup } from '@/components/video-popup';
 import { generateSEOMetadata } from './metadata';
+import { PageJsonLd } from '@/components/seo/page-json-ld';
 
 export async function generateMetadata({
   params,
@@ -103,6 +105,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   return (
     <>
+      <PageJsonLd
+        locale={locale}
+        pathname=""
+        name={locale === 'fr' ? 'Opulanz' : 'Opulanz'}
+        description={
+          locale === 'fr'
+            ? 'Plateforme financière et business européenne basée au Luxembourg pour les entreprises et entrepreneurs.'
+            : 'Luxembourg-based European financial and business platform for companies and entrepreneurs.'
+        }
+        breadcrumbs={[{ name: locale === 'fr' ? 'Accueil' : 'Home', path: '' }]}
+      />
       <PageGuidance
         pageKey="home"
         locale={locale}
@@ -262,6 +275,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         </div>
       </section>
+
+      {/* Floating Independent Video Widget */}
+      <VideoPopup locale={locale} />
     </>
   );
 }

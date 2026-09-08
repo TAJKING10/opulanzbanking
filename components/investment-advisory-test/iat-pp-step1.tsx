@@ -76,12 +76,12 @@ function TitulaireForm({
             className="mt-1 w-full rounded-xl border border-brand-grayLight px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold bg-white"
           >
             <option value="">—</option>
-            <option value="M">M.</option>
-            <option value="Mme">Mme</option>
+            <option value="M">{t("ppStep1.mr")}</option>
+            <option value="Mme">{t("ppStep1.mrs")}</option>
           </select>
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep1.lastName")}</span></Label>
+          <Label>{t("ppStep1.lastName")} <span className="text-red-500">*</span></Label>
           <Input
             value={data.lastName}
             onChange={(e) => up("lastName", e.target.value)}
@@ -90,7 +90,7 @@ function TitulaireForm({
           />
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep1.firstName")}</span></Label>
+          <Label>{t("ppStep1.firstName")} <span className="text-red-500">*</span></Label>
           <Input
             value={data.firstName}
             onChange={(e) => up("firstName", e.target.value)}
@@ -110,7 +110,7 @@ function TitulaireForm({
           />
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep1.nationality")}</span></Label>
+          <Label>{t("ppStep1.nationality")} <span className="text-red-500">*</span></Label>
           <Input
             value={data.nationality}
             onChange={(e) => up("nationality", e.target.value)}
@@ -122,7 +122,7 @@ function TitulaireForm({
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep1.birthDate")}</span></Label>
+          <Label>{t("ppStep1.birthDate")} <span className="text-red-500">*</span></Label>
           <Input
             type="date"
             value={data.birthDate}
@@ -141,7 +141,7 @@ function TitulaireForm({
       </div>
 
       <div>
-        <Label><span className="font-bold text-red-600">{t("ppStep1.address")}</span></Label>
+        <Label>{t("ppStep1.address")} <span className="text-red-500">*</span></Label>
         <Input
           value={data.address}
           onChange={(e) => up("address", e.target.value)}
@@ -152,7 +152,7 @@ function TitulaireForm({
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep1.email")}</span></Label>
+          <Label>{t("ppStep1.email")} <span className="text-red-500">*</span></Label>
           <Input
             type="email"
             value={data.email}
@@ -161,7 +161,7 @@ function TitulaireForm({
           />
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep1.phone")}</span></Label>
+          <Label>{t("ppStep1.phone")} <span className="text-red-500">*</span></Label>
           <Input
             type="tel"
             value={data.phone}
@@ -172,7 +172,7 @@ function TitulaireForm({
       </div>
 
       <div>
-        <Label><span className="font-bold text-red-600">{t("ppStep1.fiscalResidence")}</span></Label>
+        <Label>{t("ppStep1.fiscalResidence")} <span className="text-red-500">*</span></Label>
         <RadioGroup
           name={`fiscal-${id}`}
           options={[["France", t("ppStep1.fiscalFrance")], ["Other", t("ppStep1.fiscalOther")]]}
@@ -190,7 +190,7 @@ function TitulaireForm({
       </div>
 
       <div>
-        <Label><span className="font-bold text-red-600">{t("ppStep1.usPerson")}</span></Label>
+        <Label>{t("ppStep1.usPerson")} <span className="text-red-500">*</span></Label>
         <RadioGroup
           name={`fatca-${id}`}
           options={[["true", t("ppStep1.usYes")], ["false", t("ppStep1.usNo")]]}
@@ -201,7 +201,7 @@ function TitulaireForm({
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label><span className="font-bold text-red-600">{t("ppStep1.profession")}</span></Label>
+          <Label>{t("ppStep1.profession")} <span className="text-red-500">*</span></Label>
           <Input
             value={data.profession}
             onChange={(e) => up("profession", e.target.value)}

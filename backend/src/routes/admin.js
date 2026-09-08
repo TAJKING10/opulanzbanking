@@ -222,6 +222,7 @@ router.get('/stats', adminAuth, async (req, res) => {
       else if (r.type === 'company_formation') summary.company_formation += r.count;
       else if (r.type === 'insurance')    summary.life_insurance    += r.count;
       else if (r.type === 'mortgage')     summary.mortgage          += r.count;
+      else if (r.type === 'investment_advisory') summary.investment_advisory += r.count;
     });
 
     const serviceMap = {
@@ -231,6 +232,7 @@ router.get('/stats', adminAuth, async (req, res) => {
       company_formation: 'company_formation',
       insurance: 'life_insurance',
       mortgage: 'mortgage',
+      investment_advisory: 'investment_advisory',
     };
 
     const recentSubmissions = [];
@@ -238,9 +240,9 @@ router.get('/stats', adminAuth, async (req, res) => {
     recentApps.rows.forEach(r => {
       const p = r.payload || {};
       const service = serviceMap[r.type] || r.type;
-      let clientName = p.firstName
+      let clientName = p.clientName || (p.firstName
         ? `${p.firstName} ${p.lastName || ''}`.trim()
-        : (p.companyName || p.company_name || 'N/A');
+        : (p.companyName || p.company_name || 'N/A'));
       let clientEmail = p.email || p.contactEmail || p.directorEmail || null;
       if (service === 'company_formation' || service === 'accounting') {
         const pc = p.primaryContact || p.contact || {};
@@ -350,14 +352,16 @@ router.get('/submissions', adminAuth, async (req, res) => {
         individual: 'individual', company: 'company',
         accounting: 'accounting', company_formation: 'company_formation',
         insurance: 'life_insurance',
+        mortgage: 'mortgage',
+        investment_advisory: 'investment_advisory',
       };
       const mappedService = serviceMap[r.type] || r.type;
 
       // Extract email/name based on service type
       let clientEmail = p.email || p.contactEmail || p.directorEmail || null;
-      let clientName = p.firstName
+      let clientName = p.clientName || (p.firstName
         ? `${p.firstName} ${p.lastName || ''}`.trim()
-        : (p.companyName || p.company_name || null);
+        : (p.companyName || p.company_name || null));
 
       if (mappedService === 'company_formation') {
         const shareholders = p.shareholders || p.Shareholders || [];
@@ -412,13 +416,14 @@ router.get('/submissions', adminAuth, async (req, res) => {
       // company (business account) & accounting: payload.documents
       if (Array.isArray(p.documents)) {
         p.documents.forEach(f => {
-          if (f.filename || f.name || f.id || f.fileName) {
+          if (f.filename || f.name || f.id || f.fileName || f.url) {
             payloadFiles.push({
-              filename: f.fileName || f.filename || f.name || f.id,
+              filename: f.fileName || f.filename || f.name || 'Document',
               size: f.size,
               type: f.type || f.documentType || f.id,
-              id: f.id,
+              id: f.id || f.blobName,
               url: f.fileUrl || f.url || null,
+              blobName: f.blobName || null,
             });
           }
         });
@@ -427,9 +432,27 @@ router.get('/submissions', adminAuth, async (req, res) => {
       const rawFiles = p.uploadedFiles || p.files || p.attachments || [];
       if (Array.isArray(rawFiles)) {
         rawFiles.forEach(f => {
-          if (f && (f.filename || f.name || f.id)) {
-            payloadFiles.push({ filename: f.filename || f.name || f.id, size: f.size, type: f.type, id: f.id, url: f.url });
+          if (f && (f.filename || f.name || f.id || f.url)) {
+            payloadFiles.push({
+              filename: f.filename || f.name || f.id,
+              size: f.size,
+              type: f.type,
+              id: f.id,
+              url: f.url || f.fileUrl || null,
+              blobName: f.blobName || null,
+            });
           }
+        });
+      }
+      // Signed contract from investment advisory or other digital signature flows
+      if (p.signedDocumentUrl && !payloadFiles.some(f => f.url === p.signedDocumentUrl)) {
+        payloadFiles.push({
+          filename: p.signedDocumentFilename || 'Signed_QCC_Agreement.pdf',
+          size: p.signedDocumentSize || null,
+          type: 'signed_contract',
+          id: p.envelopeId || p.signedDocumentBlobName || null,
+          url: p.signedDocumentUrl,
+          blobName: p.signedDocumentBlobName || null,
         });
       }
 

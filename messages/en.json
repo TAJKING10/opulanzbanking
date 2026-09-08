@@ -28,6 +28,7 @@
     "investmentAdvisory": "Investment Advisory",
     "lifeInsurance": "Life Insurance",
     "accountingInvoicing": "Accounting & Invoicing",
+    "mortgage": "Mortgages",
     "investment": "Investment",
     "individualAccount": "Individual Account",
     "companyAccount": "Company Account",
@@ -36,7 +37,7 @@
   "hero": {
     "home": {
       "title": "Payment services for modern businesses",
-      "subtitle": "Trusted digital payment services, company formation assistance, investment fund, and consulting services for entrepreneurs and businesses in France and Luxembourg",
+      "subtitle": "Luxembourg-based European financial and business platform — payment services, company formation, investment advisory, insurance and cross-border solutions for companies and entrepreneurs across Europe.",
       "primaryCta": "Open Account",
       "secondaryCta": "Learn More"
     },
@@ -69,8 +70,8 @@
       "strength3Description": "AI for simpler and more efficient services.",
       "licensesOverline": "OUR REGULATORY STATUS",
       "licensesTitle": "Our Regulated Activities",
-      "licensesDescription": "Our regulated activities are carried out by licensed entities within the group:",
-      "cert1Title": "Intermediation (France)",
+      "licensesDescription": "Activities carried out by licensed entities of the Groupe Advensys Luxembourg, authorised across Europe.",
+      "cert1Title": "Regulated Intermediation",
       "cert1Description": "Advensys Insurance-Finance, ORIAS n° 21003660: broker (banking operations, payment services, insurance) under ACPR supervision, and Investment Adviser (CIF) under AMF supervision.",
       "cert2Title": "Accounting (Luxembourg)",
       "cert2Description": "Carried out under authorisation of the Ministry of Economy of the Grand Duchy of Luxembourg.",
@@ -1189,11 +1190,15 @@
       }
     },
     "trust": {
-      "title": "STATUS & OVERSIGHT",
-      "description": "Regulated activities",
-      "summary": "Our regulated activities are carried out by licensed group entities, under the oversight of the French authorities."
+      "title": "EUROPEAN REGULATORY FRAMEWORK",
+      "description": "Our Regulatory Structure",
+      "summary": "A Luxembourg-incorporated group with regulated financial intermediation entities authorised across Europe."
     },
     "regulatory": {
+      "block1Title": "Luxembourg Group",
+      "block1Desc": "Groupe Advensys Luxembourg S.A. — RCS Luxembourg B197138. Holding company incorporated in Luxembourg with over 19 years of experience in business solutions across Europe.",
+      "block2Title": "Regulated Financial Intermediation",
+      "block2Desc": "Intermediation services provided by Advensys Insurance-Finance SARL — ORIAS no. 21003660: broker (COBSP/COA) under ACPR oversight, Financial Investment Advisor (CIF) under AMF oversight.",
       "france": "France",
       "acpr": "Broker in banking operations, payment services and insurance. Advensys Insurance-Finance — ORIAS no. 21003660, under ACPR oversight.",
       "amf": "Financial Investment Advisor (CIF). Advensys Insurance-Finance — ORIAS no. 21003660, under AMF oversight."
@@ -3754,6 +3759,8 @@
       "addTitulaire2": "Add a 2nd account holder / authorised representative",
       "removeTitulaire2": "Remove 2nd account holder",
       "civility": "Title",
+      "mr": "Mr.",
+      "mrs": "Mrs.",
       "lastName": "Last Name",
       "firstName": "First Name(s)",
       "maidenName": "Maiden name",
@@ -3860,7 +3867,9 @@
       "errSavings": "Please indicate your estimated savings capacity.",
       "errAmount": "Please indicate the planned amount to invest.",
       "errFundNature": "Please indicate the nature of the assets to invest.",
-      "errFundOrigins": "Please select at least one economic origin of assets."
+      "errFundOrigins": "Please select at least one economic origin of assets.",
+      "yes": "Yes",
+      "no": "No"
     },
     "ppStep3": {
       "infoBox": "Required documents. Check available documents and/or upload your files (photos, PDF). Fields in red are mandatory before continuing.",
@@ -4299,20 +4308,207 @@
       "professions_liberales": "Legal / Medical professions",
       "religion_associatif": "Religion, Non-profit activity",
       "autre": "Other"
+    },
+    "page": {
+      "testBadge": "Internal Review Prototype — not published, not linked from any live page",
+      "heroTitle": "Investment Guidance Built Around Your Goals",
+      "heroSubtitle": "Meet with an AMF-certified advisor to review your objectives, financial situation, investment experience, time horizon, and risk profile. Receive personalised recommendations supported by a formal suitability report.",
+      "heroPrimaryBtn": "Start Your Advisory Request",
+      "heroSecondaryBtn": "How It Works",
+      "heroAdvisoryNote": "Advisory services provided by Advensys Insurance Finance, France.",
+      "introOverline": "OUR APPROACH",
+      "introTitle": "Personalised Advice for Important Investment Decisions",
+      "introP1": "Investment decisions should reflect more than expected returns. Our advisory process considers your financial objectives, experience, investment horizon, liquidity needs, personal constraints, and ability to accept risk.",
+      "introP2": "Through a structured consultation and MiFID II assessment, your advisor can evaluate whether proposed investment solutions are appropriate for your circumstances.",
+      "benefits": [
+        {
+          "title": "Personalised Assessment",
+          "description": "Review your objectives, experience, income, assets, commitments, and investment preferences."
+        },
+        {
+          "title": "Professional Guidance",
+          "description": "Discuss your financial situation with an AMF-certified investment advisor."
+        },
+        {
+          "title": "Documented Recommendations",
+          "description": "Receive a formal suitability report explaining the recommendations made during the advisory process."
+        }
+      ],
+      "processOverline": "THE PROCESS",
+      "processTitle": "Your Investment Advisory Journey",
+      "process": [
+        {
+          "title": "Complete Your Investor Profile",
+          "description": "Answer questions about your knowledge, experience, financial situation, objectives, investment horizon, liquidity needs, and risk tolerance."
+        },
+        {
+          "title": "Provide Supporting Information",
+          "description": "Securely provide relevant information, including your current portfolio, income details, and any personal or financial constraints."
+        },
+        {
+          "title": "Meet Your Advisor",
+          "description": "Book a consultation with an AMF-certified advisor to review your circumstances and discuss suitable investment options."
+        },
+        {
+          "title": "Receive and Sign Your Report",
+          "description": "Receive your suitability report in PDF format and review and sign it electronically."
+        }
+      ],
+      "profileOverline": "MIFID II ASSESSMENT",
+      "profileTitle": "A Structured MiFID II Assessment",
+      "profileDesc": "Before recommendations can be provided, we need to understand your financial profile and investment needs.",
+      "profileItems": [
+        "Investment objectives",
+        "Investment time horizon",
+        "Knowledge and experience",
+        "Current portfolio",
+        "Income and financial commitments",
+        "Liquidity requirements",
+        "Capacity to bear losses",
+        "Risk tolerance",
+        "Investment restrictions",
+        "Sustainability preferences, where applicable"
+      ],
+      "profileNoteStrong": "Please note: ",
+      "profileNote": "Your responses help the advisor assess whether a recommendation is suitable for your circumstances. Completing the questionnaire does not guarantee that a particular investment product will be recommended.",
+      "docsOverline": "DOCUMENTATION",
+      "docsTitle": "Information You May Be Asked to Provide",
+      "docItems": [
+        "Current investment portfolio",
+        "Income information",
+        "Assets and financial commitments",
+        "Existing investment statements",
+        "Identification and compliance documents",
+        "Investment restriction information",
+        "Additional documents requested by the advisor"
+      ],
+      "docsNote": "The exact documentation required may depend on your profile, country of residence, and the nature of the advisory request.",
+      "regOverline": "IMPORTANT INFORMATION",
+      "regTitle": "Regulatory Notice",
+      "regItems": [
+        "Investment advisory services are provided by Advensys Insurance Finance in France.",
+        "Investment values can rise or fall. Past performance does not guarantee future results.",
+        "Any recommendation must be based on an assessment of the client's individual circumstances, objectives, knowledge, experience, financial situation, risk tolerance, and capacity to bear losses.",
+        "The information presented on this test page is general and does not constitute personal investment advice, an offer, or a recommendation to purchase or sell any financial instrument.",
+        "This page is a management-review prototype and does not confirm that the service is currently available."
+      ],
+      "legalNotice": "Legal Notice",
+      "termsConditions": "Terms & Conditions",
+      "privacyPolicy": "Privacy Policy",
+      "disclaimers": "Disclaimers",
+      "regulatoryInfo": "Regulatory Information",
+      "techOverline": "INTERNAL REVIEW",
+      "techTitle": "Technical & Compliance Requirements",
+      "techDesc": "This section is for management review only and describes the intended production requirements. It does not make unsupported legal guarantees.",
+      "techInternalNote": "Internal review only. The information below describes the intended production requirements. This section is for management review and does not constitute legal, regulatory, or commercial guarantees.",
+      "techSections": [
+        {
+          "title": "Calendly / Appointment Scheduling",
+          "items": [
+            "60-minute video consultation per session",
+            "Calendar synchronisation (Google Calendar, Outlook)",
+            "ICS confirmation email to client",
+            "Rescheduling rules to be defined at production stage",
+            "Time zone handling: CET/CEST (Europe/Paris)"
+          ]
+        },
+        {
+          "title": "Payment",
+          "items": [
+            "Payment-service provider: to be confirmed",
+            "Billing entity: Advensys Insurance Finance, France",
+            "Production invoice process: to be confirmed",
+            "VAT/tax treatment: subject to final legal validation",
+            "No card data is collected on this demonstration page"
+          ]
+        },
+        {
+          "title": "Document Storage",
+          "items": [
+            "Secure encrypted storage required for production",
+            "Role-based access controls required",
+            "File-retention rules: approximately 5-10 years (subject to final legal validation)",
+            "Malware scanning required for all uploads",
+            "Full audit logging of access and modifications"
+          ]
+        },
+        {
+          "title": "DocuSign — Electronic Signature",
+          "items": [
+            "Developer environment required during implementation",
+            "Production integration only after written approval",
+            "Signed suitability report stored as final record",
+            "Full signature audit trail (timestamps, IP, identity)",
+            "Secure archival in compliance with MiFID II requirements",
+            "No DocuSign API keys or integration keys are present in this prototype"
+          ]
+        },
+        {
+          "title": "Compliance and Regulatory",
+          "items": [
+            "MiFID II suitability assessment (Article 25)",
+            "Decision journaling: advisor rationale must be documented",
+            "Conflict-of-interest register maintained by Advensys Insurance Finance",
+            "Record retention: approximately 5-10 years (subject to final legal validation)",
+            "GDPR consent management and data-subject rights process required",
+            "Non-independent advisory model: disclosed to client before engagement"
+          ]
+        }
+      ],
+      "faqOverline": "FAQ",
+      "faqTitle": "Frequently Asked Questions",
+      "faq": [
+        {
+          "q": "Who provides the investment advisory service?",
+          "a": "Investment advisory services are provided by Advensys Insurance Finance, a regulated firm in France operating under AMF supervision. Opulanz facilitates access to this service on behalf of clients."
+        },
+        {
+          "q": "What information will I need to provide?",
+          "a": "You will be asked to complete a MiFID II investor profile questionnaire covering your objectives, experience, financial situation, time horizon, liquidity needs, and risk tolerance."
+        },
+        {
+          "q": "Why is a MiFID II questionnaire required?",
+          "a": "MiFID II regulations require investment advisors to gather sufficient information about a client's circumstances before providing a personal recommendation."
+        },
+        {
+          "q": "What is a suitability report?",
+          "a": "A formal document explaining the client profile considered, the recommendations discussed, the associated risks, and why a proposed approach may be suitable for your circumstances."
+        },
+        {
+          "q": "Does completing the questionnaire guarantee a recommendation?",
+          "a": "No. A recommendation will only be provided if the advisor determines that a suitable investment approach can be identified based on the information you provide."
+        },
+        {
+          "q": "Can I update my information before the consultation?",
+          "a": "Yes. You can update the information provided at any time before the consultation takes place."
+        },
+        {
+          "q": "How will my documents be protected?",
+          "a": "All documents and personal information are handled in accordance with applicable data protection regulations, including the GDPR."
+        },
+        {
+          "q": "Is the service available in every country?",
+          "a": "The investment advisory service is currently designed for clients resident in France and Luxembourg."
+        }
+      ],
+      "ctaTitle": "Ready to Discuss Your Investment Objectives?",
+      "ctaSubtitle": "Complete the initial request and our team will help guide you through the next steps.",
+      "ctaRequestBtn": "Request a Consultation",
+      "ctaContactBtn": "Contact Us"
     }
   },
   "mortgage": {
     "hero": {
       "title": "Your mortgage, handled by experts.",
-      "subtitle": "Opulanz gathers your financial profile and supporting documents, then submits your case to our partner bank network in France and Luxembourg. so you receive the best offers without the paperwork burden.",
+      "subtitle": "Opulanz gathers your financial profile and supporting documents, then submits your case to our partner bank network in Luxembourg and France, so you receive the best offers without the paperwork burden.",
       "primaryCta": "Start My Application",
       "secondaryCta": "How It Works"
     },
     "overview": {
       "overline": "Mortgage Services",
       "title": "A trusted bridge to the best mortgage conditions",
-      "description": "As a regulated credit intermediary, we work on your behalf to submit your dossier to our network of partner banks in France and Luxembourg, securing competitive rates without the administrative burden.",
-      "badge1": "France & Luxembourg",
+      "description": "As a regulated credit intermediary, we work on your behalf to submit your dossier to our network of partner banks in Luxembourg and France, securing competitive rates without the administrative burden.",
+      "badge1": "Luxembourg & France",
       "badge2": "GDPR Secure",
       "badge3": "Multibank Access",
       "whyTitle": "Why Opulanz for your mortgage?",
@@ -4345,10 +4541,10 @@
     "features": {
       "overline": "Why Choose Us",
       "title": "Professional mortgage brokerage expertise",
-      "description": "As a regulated credit intermediary, we provide expert guidance and multi-bank access for your property financing in France and Luxembourg.",
+      "description": "As a regulated credit intermediary, we provide expert guidance and multi-bank access for your property financing in Luxembourg and France.",
       "expertise": {
         "title": "Local Expertise",
-        "description": "Deep knowledge of lending requirements in France and Luxembourg, including cross-border and non-resident profiles."
+        "description": "Deep knowledge of lending requirements in Luxembourg and France, including cross-border and non-resident profiles."
       },
       "secure": {
         "title": "Secure and GDPR",
@@ -4365,7 +4561,7 @@
     },
     "markets": {
       "overline": "Coverage",
-      "title": "France & Luxembourg",
+      "title": "Luxembourg & France",
       "description": "Specialised mortgage brokerage across both markets, with cross-border expertise for international and frontier-zone profiles.",
       "lu": {
         "title": "Luxembourg",
@@ -4437,7 +4633,7 @@
         "monthly": "Monthly payment",
         "perMonth": "per month",
         "dti": "Debt-to-income ratio",
-        "dtiNote": "Banks typically allow a maximum of 33% in France and Luxembourg",
+        "dtiNote": "Max 33% in France & Luxembourg — lenders also verify minimum disposable income",
         "jointApplication": "Joint application",
         "ctaText": "Ready to apply? Start your file — our advisors will handle the rest.",
         "ctaButton": "Start your application",
@@ -4452,7 +4648,7 @@
       "description": "A Lombard facility allows you to borrow against the value of your investment portfolio, giving you access to capital while your assets remain invested and your long-term strategy stays intact.",
       "howWeHelp": {
         "title": "Our Role",
-        "description": "Opulanz acts as a regulated credit intermediary. We structure your application, present your file to our network of partner banks across France and Luxembourg, and guide you through a comparison of available terms. The credit facility is extended by the selected lending institution — not by Opulanz."
+        "description": "Opulanz acts as a regulated credit intermediary. We structure your application, present your file to our network of partner banks across Luxembourg and France, and guide you through a comparison of available terms. The credit facility is extended by the selected lending institution — not by Opulanz."
       },
       "uses": {
         "title": "Common Applications",

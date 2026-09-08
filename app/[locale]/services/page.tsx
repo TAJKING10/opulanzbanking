@@ -50,9 +50,15 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
       href: `/${locale}/life-insurance`,
     },
     {
+      title: t('services.mortgage.title'),
+      description: t('services.mortgage.description'),
+      image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=500&fit=crop',
+      href: `/${locale}/mortgage`,
+    },
+    {
       title: t('services.spvInvestment.title'),
       description: t('services.spvInvestment.description'),
-      image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=500&fit=crop',
+      image: 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800&h=500&fit=crop',
       href: `/${locale}/spv-investment`,
     },
   ].filter(service => {

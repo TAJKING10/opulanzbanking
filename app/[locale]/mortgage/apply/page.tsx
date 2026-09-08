@@ -117,8 +117,59 @@ export default function MortgageApplyPage({
   }
 
   const [azureFiles, setAzureFiles] = React.useState<Record<string, AzureUploadedFile[]>>({});
-  const [isUploading, setIsUploading] = React.useState(false);
+  const [uploadingSlots, setUploadingSlots] = React.useState<Record<string, boolean>>({});
+  const isAnyUploading = Object.values(uploadingSlots).some(Boolean);
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const APPLY_KEY = "opulanz_apply";
+
+  // Preserve scroll position across locale switches
+  React.useEffect(() => {
+    const SCROLL_KEY = "opulanz_scroll";
+    const path = window.location.pathname.replace(/^\/(en|fr)/, "") || "/";
+
+    try {
+      const raw = sessionStorage.getItem(SCROLL_KEY);
+      if (raw) {
+        const { p, y, loc, ts } = JSON.parse(raw);
+        if (p === path && loc !== locale && y > 0 && Date.now() - ts < 5000) {
+          sessionStorage.removeItem(SCROLL_KEY);
+          setTimeout(() => window.scrollTo({ top: y, behavior: "instant" }), 80);
+        }
+      }
+    } catch {}
+
+    const save = () => {
+      try {
+        sessionStorage.setItem(SCROLL_KEY, JSON.stringify(
+          { p: path, y: window.scrollY, loc: locale, ts: Date.now() }
+        ));
+      } catch {}
+    };
+    window.addEventListener("scroll", save, { passive: true });
+    return () => window.removeEventListener("scroll", save);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Restore text fields and step after a locale navigation (File objects cannot be serialised)
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem(APPLY_KEY);
+      if (!saved) return;
+      const s = JSON.parse(saved);
+      if (s.form) setForm((prev) => ({ ...prev, ...s.form, docs: {} }));
+      if (s.azureFiles) setAzureFiles(s.azureFiles);
+      if (s.step && s.step >= 1 && s.step <= 3) setStep(s.step as Step);
+    } catch {}
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Persist form text + step on every change so locale switches don't wipe the data
+  React.useEffect(() => {
+    if (submitted) return;
+    try {
+      const { docs, ...formWithoutFiles } = form;
+      localStorage.setItem(APPLY_KEY, JSON.stringify({ form: formWithoutFiles, azureFiles, step }));
+    } catch {}
+  }, [form, azureFiles, step, submitted]);
 
   async function uploadDocToAzure(file: File, slotId: string): Promise<AzureUploadedFile | null> {
     try {
@@ -146,7 +197,7 @@ export default function MortgageApplyPage({
   };
 
   const addDoc = async (slotId: string, files: File[]) => {
-    setIsUploading(true);
+    setUploadingSlots((prev) => ({ ...prev, [slotId]: true }));
     const newFiles: File[] = [];
     const newAzureFiles: AzureUploadedFile[] = [];
 
@@ -168,7 +219,7 @@ export default function MortgageApplyPage({
         [slotId]: [...(prev[slotId] || []), ...newAzureFiles],
       }));
     }
-    setIsUploading(false);
+    setUploadingSlots((prev) => ({ ...prev, [slotId]: false }));
   };
 
   const removeDoc = (slotId: string, idx: number) => {
@@ -273,6 +324,7 @@ export default function MortgageApplyPage({
       });
 
       setSubmitted(true);
+      try { localStorage.removeItem(APPLY_KEY); } catch {}
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       console.error("Mortgage submission error:", err);
@@ -621,16 +673,16 @@ export default function MortgageApplyPage({
                       </div>
                     )}
 
-                    <label className={`flex items-center gap-3 ${isUploading ? "opacity-50 pointer-events-none" : "cursor-pointer"} group`}>
+                    <label className={`flex items-center gap-3 ${uploadingSlots[slot.id] ? "opacity-50 pointer-events-none" : "cursor-pointer"} group`}>
                       <div className="flex items-center gap-2 px-4 py-2 rounded-lg border border-brand-grayLight bg-gray-50 group-hover:border-brand-gold/40 group-hover:bg-brand-gold/5 transition-all text-sm text-brand-grayMed group-hover:text-brand-dark">
                         <Upload className="h-4 w-4" />
-                        {isUploading ? "Uploading..." : t("step2.upload")}
+                        {uploadingSlots[slot.id] ? "Uploading..." : t("step2.upload")}
                       </div>
                       <span className="text-xs text-brand-grayMed">{t("step2.fileHint")}</span>
                       <input
                         type="file"
                         multiple
-                        disabled={isUploading}
+                        disabled={!!uploadingSlots[slot.id]}
                         accept=".pdf,.jpg,.jpeg,.png"
                         className="sr-only"
                         onChange={(e) => {
@@ -789,8 +841,8 @@ export default function MortgageApplyPage({
           {step === 3 && (
             <button
               onClick={submit}
-              disabled={isLoading || isUploading}
-              className={`inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-brand-gold to-brand-goldDark text-white text-sm font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all ${(isLoading || isUploading) ? "opacity-50 pointer-events-none" : ""}`}
+              disabled={isLoading || isAnyUploading}
+              className={`inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-brand-gold to-brand-goldDark text-white text-sm font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all ${(isLoading || isAnyUploading) ? "opacity-50 pointer-events-none" : ""}`}
             >
               {isLoading ? "Submitting..." : t("nav.submit")}
               <Send className="h-4 w-4" />

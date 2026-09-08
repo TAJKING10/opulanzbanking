@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Calculator, Home, CreditCard, TrendingUp, AlertCircle, AlertTriangle, User, Users } from "lucide-react";
 
-const DEPENDENT_COST = 350; // monthly deduction per dependent (FR/LU standard)
+const DEPENDENT_COST = 350;
 const MIN_INCOME_SOLO = 900;
 const MIN_INCOME_JOINT = 1200;
 const MIN_LOAN = 20000;
@@ -23,10 +23,17 @@ function computeResult(
   contribPct: number,
 ) {
   const totalIncome = hasCoApplicant ? income + coIncome : income;
-  const effectiveIncome = Math.max(0, totalIncome - dependents * DEPENDENT_COST);
+  if (totalIncome <= 0) return { result: null, totalIncome, maxMonthly: 0 };
+
+  // Deduct dependent living costs first, then apply 33% DTI cap
+  // This ensures each additional dependent reduces the borrowing capacity
+  const effectiveIncome = totalIncome - dependents * DEPENDENT_COST;
+  if (effectiveIncome <= 0) return { result: null, totalIncome, maxMonthly: 0 };
+
+  // France (HCSF 2021-R-01) / Luxembourg (CSSF 23/837): DTI ≤ 33% of effective income
   const maxMonthly = effectiveIncome * 0.33 - existing;
 
-  if (maxMonthly <= 0 || totalIncome <= 0) {
+  if (maxMonthly <= 0) {
     return { result: null, totalIncome, maxMonthly };
   }
 
@@ -51,7 +58,7 @@ function computeResult(
       maxLoan,
       propertyBudget,
       monthlyPayment: maxMonthly,
-      debtRatio: Math.round(((maxMonthly + existing) / totalIncome) * 100),
+      debtRatio: Math.round(((maxMonthly + existing) / effectiveIncome) * 100),
       contribution,
     },
     totalIncome,
@@ -128,23 +135,44 @@ function NumberField({
   value: number;
   onChange: (v: number) => void;
 }) {
+  const [raw, setRaw] = React.useState(String(value));
+
+  // Keep raw in sync if the parent resets the value externally
+  React.useEffect(() => {
+    if (Number(raw) !== value) setRaw(String(value));
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div>
       <label className="text-sm font-semibold text-brand-dark block mb-1.5">{label}</label>
       <div className="relative">
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-grayMed text-sm font-semibold">€</span>
         <input
-          type="number"
-          min={0}
-          step={1000}
-          value={value}
-          onChange={(e) => onChange(Math.max(0, Number(e.target.value) || 0))}
+          type="text"
+          inputMode="numeric"
+          value={raw}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v === "" || /^\d+$/.test(v)) {
+              // Strip leading zeros so typing "7" into "0" gives "7", not "07"
+              const normalized = v === "" ? "" : v.replace(/^0+(\d)/, "$1");
+              setRaw(normalized);
+              onChange(Math.max(0, Number(normalized) || 0));
+            }
+          }}
+          onBlur={() => {
+            const n = Math.max(0, Number(raw) || 0);
+            setRaw(String(n));
+            onChange(n);
+          }}
           className="w-full pl-8 pr-3 py-2.5 border border-brand-grayLight rounded-xl text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-colors"
         />
       </div>
     </div>
   );
 }
+
+const SIM_STORAGE_KEY = "opulanz_sim";
 
 export function MortgageSimulator({ locale }: { locale: string }) {
   const t = useTranslations("mortgage.simulator");
@@ -160,8 +188,61 @@ export function MortgageSimulator({ locale }: { locale: string }) {
   const [contribAmount, setContribAmount] = React.useState(50000);
   const [existing, setExisting] = React.useState(0);
 
+  // Preserve scroll position across locale switches
+  React.useEffect(() => {
+    const SCROLL_KEY = "opulanz_scroll";
+    const path = window.location.pathname.replace(/^\/(en|fr)/, "") || "/";
+
+    // Restore only when: same page, different locale, happened within 5 s (= locale switch)
+    try {
+      const raw = sessionStorage.getItem(SCROLL_KEY);
+      if (raw) {
+        const { p, y, loc, ts } = JSON.parse(raw);
+        if (p === path && loc !== locale && y > 0 && Date.now() - ts < 5000) {
+          sessionStorage.removeItem(SCROLL_KEY);
+          setTimeout(() => window.scrollTo({ top: y, behavior: "instant" }), 80);
+        }
+      }
+    } catch {}
+
+    const save = () => {
+      try {
+        sessionStorage.setItem(SCROLL_KEY, JSON.stringify(
+          { p: path, y: window.scrollY, loc: locale, ts: Date.now() }
+        ));
+      } catch {}
+    };
+    window.addEventListener("scroll", save, { passive: true });
+    return () => window.removeEventListener("scroll", save);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Restore state after a locale navigation so values survive language switches
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem(SIM_STORAGE_KEY);
+      if (!saved) return;
+      const s = JSON.parse(saved);
+      if (typeof s.income === "number") setIncome(s.income);
+      if (typeof s.hasCoApplicant === "boolean") setHasCoApplicant(s.hasCoApplicant);
+      if (typeof s.dependents === "number") setDependents(s.dependents);
+      if (typeof s.duration === "number") setDuration(s.duration);
+      if (typeof s.rate === "number") setRate(s.rate);
+      if (typeof s.contribAmount === "number") setContribAmount(s.contribAmount);
+      if (typeof s.existing === "number") setExisting(s.existing);
+    } catch {}
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Persist on every change so locale switches don't wipe the user's inputs
+  React.useEffect(() => {
+    try {
+      localStorage.setItem(SIM_STORAGE_KEY, JSON.stringify(
+        { income, hasCoApplicant, dependents, duration, rate, contribAmount, existing }
+      ));
+    } catch {}
+  }, [income, hasCoApplicant, dependents, duration, rate, contribAmount, existing]);
+
   const { result, totalIncome, maxMonthly } = computeResult(
-    income, 0, false, dependents,
+    income, 0, hasCoApplicant, dependents,
     existing, duration, rate, contribAmount, "amount", 20,
   );
 
@@ -180,18 +261,18 @@ export function MortgageSimulator({ locale }: { locale: string }) {
     }
   }
 
-  // Build warnings
+  // Minimum income warning — shown as a full-width banner; suppresses results panel
+  const minRequired = hasCoApplicant ? MIN_INCOME_JOINT : MIN_INCOME_SOLO;
+  const incomeWarning = income > 0 && income < minRequired
+    ? (hasCoApplicant ? t("warnings.minIncomeJoint") : t("warnings.minIncomeSolo"))
+    : null;
+
+  // Other contextual warnings shown inside the results column
   const warnings: string[] = [];
-  if (income > 0) {
-    const minRequired = hasCoApplicant ? MIN_INCOME_JOINT : MIN_INCOME_SOLO;
-    if (income < minRequired) {
-      warnings.push(hasCoApplicant ? t("warnings.minIncomeJoint") : t("warnings.minIncomeSolo"));
-    }
-  }
-  if (result && result.maxLoan < MIN_LOAN) {
+  if (!incomeWarning && result && result.maxLoan < MIN_LOAN) {
     warnings.push(t("warnings.minLoan"));
   }
-  if (maxMonthly <= 0 && totalIncome > 0) {
+  if (!incomeWarning && maxMonthly <= 0 && totalIncome > 0) {
     warnings.push(t("warnings.negativeDTI"));
   }
 
@@ -222,6 +303,14 @@ export function MortgageSimulator({ locale }: { locale: string }) {
           <h2 className="text-3xl md:text-4xl font-bold text-brand-dark mb-3">{t("title")}</h2>
           <p className="text-brand-grayMed max-w-xl mx-auto text-base leading-relaxed">{t("description")}</p>
         </div>
+
+        {/* Full-width income warning — suppresses the results panel */}
+        {incomeWarning && (
+          <div className="mb-8 flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
+            <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-amber-800 leading-relaxed">{incomeWarning}</p>
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-2 gap-8 items-start">
           {/* ── Inputs ── */}
@@ -264,10 +353,10 @@ export function MortgageSimulator({ locale }: { locale: string }) {
                 label={hasCoApplicant ? t("inputs.incomeCombined") : t("inputs.income")}
                 value={income}
                 displayValue={`€${income.toLocaleString()}`}
-                min={1000}
+                min={0}
                 max={30000}
-                step={500}
-                minLabel="€1,000"
+                step={100}
+                minLabel="€0"
                 maxLabel="€30,000"
                 onChange={setIncome}
               />
@@ -343,7 +432,7 @@ export function MortgageSimulator({ locale }: { locale: string }) {
                       className="w-full pl-8 pr-3 py-2.5 border border-brand-grayLight rounded-xl text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-colors"
                     />
                   </div>
-                  {/* % amount — auto-calculated, also editable */}
+                  {/* % amount — auto-calculated, also editable; disabled when no valid loan result */}
                   <div className="relative">
                     <input
                       type="number"
@@ -352,10 +441,10 @@ export function MortgageSimulator({ locale }: { locale: string }) {
                       step={1}
                       value={derivedPct}
                       onChange={(e) => handlePctChange(Number(e.target.value) || 0)}
-                      disabled={maxLoan === 0}
-                      className="w-full pl-3 pr-8 py-2.5 border border-brand-grayLight rounded-xl text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-colors disabled:bg-gray-50 disabled:text-brand-grayMed"
+                      disabled={maxLoan < MIN_LOAN}
+                      className="w-full pl-3 pr-8 py-2.5 border border-brand-grayLight rounded-xl text-sm font-semibold text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-colors disabled:bg-gray-100 disabled:text-brand-grayMed disabled:cursor-not-allowed disabled:opacity-60"
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-grayMed text-sm font-semibold">%</span>
+                    <span className={`absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold transition-opacity ${maxLoan < MIN_LOAN ? "text-brand-grayMed opacity-40" : "text-brand-grayMed"}`}>%</span>
                   </div>
                 </div>
                 {/* Info notes */}
@@ -379,10 +468,10 @@ export function MortgageSimulator({ locale }: { locale: string }) {
             </div>
           </div>
 
-          {/* ── Results ── */}
+          {/* ── Results ── hidden when income is below minimum threshold */}
           <div className="space-y-4">
-            {/* Warnings */}
-            {warnings.length > 0 && (
+            {/* Contextual warnings (minLoan, negativeDTI) */}
+            {!incomeWarning && warnings.length > 0 && (
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-2">
                 {warnings.map((w, i) => (
                   <div key={i} className="flex items-start gap-2">
@@ -393,7 +482,7 @@ export function MortgageSimulator({ locale }: { locale: string }) {
               </div>
             )}
 
-            {result && result.maxLoan >= MIN_LOAN ? (
+            {!incomeWarning && result && result.maxLoan >= MIN_LOAN ? (
               <>
                 {/* Property budget — hero card */}
                 <div className="relative overflow-hidden bg-gradient-to-br from-brand-gold via-brand-gold to-brand-goldDark rounded-2xl shadow-xl p-8">

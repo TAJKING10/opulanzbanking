@@ -125,6 +125,17 @@ const nextConfig = {
     }
     return config;
   },
+  // Legacy URL redirects — permanent 301s so search engines update their index
+  async redirects() {
+    return [
+      { source: '/legal-mention',  destination: '/en/legal/mentions', permanent: true },
+      { source: '/legal-mention/', destination: '/en/legal/mentions', permanent: true },
+      { source: '/about',          destination: '/en/about',          permanent: true },
+      { source: '/about/',         destination: '/en/about',          permanent: true },
+      { source: '/fr/home-fr',     destination: '/fr',                permanent: true },
+      { source: '/fr/home-fr/',    destination: '/fr',                permanent: true },
+    ];
+  },
   // Attach security headers to every response
   async headers() {
     return [

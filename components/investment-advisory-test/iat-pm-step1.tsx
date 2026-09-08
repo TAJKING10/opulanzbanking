@@ -37,8 +37,12 @@ function RepForm({
   const up = (field: keyof LegalRepresentative, val: unknown) =>
     onChange({ [field]: val } as Partial<LegalRepresentative>);
 
-  const R = ({ children }: { children: React.ReactNode }) =>
-    required ? <span className="font-bold text-red-600">{children}</span> : <>{children}</>;
+  const R = ({ children }: { children: React.ReactNode }) => (
+    <>
+      {children}
+      {required && <span className="text-red-500"> *</span>}
+    </>
+  );
 
   return (
     <div className="space-y-3">
@@ -125,25 +129,25 @@ export function IATpmStep1({ formData, onChange, onNext, error, setError }: Prop
         </h3>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label><span className="font-bold text-red-600">{t("pmStep1.companyName")}</span></Label>
+            <Label>{t("pmStep1.companyName")} <span className="text-red-500">*</span></Label>
             <Input value={ci.companyName} onChange={(e) => up("companyName", e.target.value)} className="mt-1" />
           </div>
           <div>
-            <Label><span className="font-bold text-red-600">{t("pmStep1.legalForm")}</span></Label>
+            <Label>{t("pmStep1.legalForm")} <span className="text-red-500">*</span></Label>
             <Input value={ci.legalForm} onChange={(e) => up("legalForm", e.target.value)} className="mt-1" placeholder={t("pmStep1.legalFormPlaceholder")} />
           </div>
         </div>
         <div>
-          <Label><span className="font-bold text-red-600">{t("pmStep1.address")}</span></Label>
+          <Label>{t("pmStep1.address")} <span className="text-red-500">*</span></Label>
           <Input value={ci.address} onChange={(e) => up("address", e.target.value)} className="mt-1" />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label><span className="font-bold text-red-600">{t("pmStep1.country")}</span></Label>
+            <Label>{t("pmStep1.country")} <span className="text-red-500">*</span></Label>
             <Input value={ci.country} onChange={(e) => up("country", e.target.value)} className="mt-1" placeholder={t("pmStep1.countryPlaceholder")} />
           </div>
           <div>
-            <Label><span className="font-bold text-red-600">{t("pmStep1.rcs")}</span></Label>
+            <Label>{t("pmStep1.rcs")} <span className="text-red-500">*</span></Label>
             <Input value={ci.rcs} onChange={(e) => up("rcs", e.target.value)} className="mt-1" placeholder={t("pmStep1.rcsPlaceholder")} />
           </div>
         </div>

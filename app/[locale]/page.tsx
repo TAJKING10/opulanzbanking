@@ -21,12 +21,12 @@ export async function generateMetadata({
     pathname: '',
     title:
       locale === 'fr'
-        ? 'Opulanz — Services de Paiement & Financiers | France & Luxembourg'
-        : 'Opulanz — Payment & Financial Services | France & Luxembourg',
+        ? 'Opulanz — Plateforme Financière & Business Européenne | Luxembourg'
+        : 'Opulanz — Luxembourg Financial & Business Platform | Europe',
     description:
       locale === 'fr'
-        ? 'Comptes de paiement réglementés, création d\'entreprise, conseil en investissement, fiscalité et assurance vie pour les entreprises en France et au Luxembourg.'
-        : 'Regulated payment accounts, company formation, investment advisory, tax consulting, and life insurance for businesses in France and Luxembourg.',
+        ? 'Plateforme financière et business européenne basée au Luxembourg pour les entreprises et entrepreneurs : services de paiement, comptabilité, création de société, conseil en investissement, assurance et solutions transfrontalières.'
+        : 'Luxembourg-based European financial and business platform for companies and entrepreneurs: payment services, accounting, company formation assistance, investment advisory, insurance and cross-border business solutions.',
   });
 }
 
@@ -87,6 +87,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       description: t('services.lifeInsurance.description'),
       image: 'https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800&h=500&fit=crop',
       href: `/${locale}/life-insurance`,
+      ctaLabel: t('common.learnMore'),
+      exploreLabel: t('common.explore'),
+    },
+    {
+      id: 'svc-mortgage',
+      title: t('services.mortgage.title'),
+      description: t('services.mortgage.description'),
+      image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=500&fit=crop',
+      href: `/${locale}/mortgage`,
       ctaLabel: t('common.learnMore'),
       exploreLabel: t('common.explore'),
     },
@@ -199,17 +208,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <div className="mx-auto mt-8 flex w-full max-w-[720px] flex-col items-center justify-center gap-6 md:flex-row">
             <div className="w-full max-w-[330px]">
               <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white/80 backdrop-blur-sm p-10 text-center shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:rotate-1 transform-gpu">
-                <h3 className="mb-3 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('home.regulatory.france')}</h3>
+                <h3 className="mb-3 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('home.regulatory.block1Title')}</h3>
                 <p className="text-sm text-brand-grayMed leading-relaxed">
-                  {t('home.regulatory.acpr')}
+                  {t('home.regulatory.block1Desc')}
                 </p>
                 <div className="mt-6 h-1 w-16 mx-auto bg-gradient-to-r from-transparent via-brand-gold to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
             </div>
             <div className="w-full max-w-[330px]">
               <div className="card-hover group rounded-2xl border border-brand-grayLight/30 bg-white/80 backdrop-blur-sm p-10 text-center shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 transform-gpu">
+                <h3 className="mb-3 text-xl font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{t('home.regulatory.block2Title')}</h3>
                 <p className="text-sm text-brand-grayMed leading-relaxed">
-                  {t('home.regulatory.amf')}
+                  {t('home.regulatory.block2Desc')}
                 </p>
                 <div className="mt-6 h-1 w-16 mx-auto bg-gradient-to-r from-transparent via-brand-gold to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>

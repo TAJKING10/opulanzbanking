@@ -1,17 +1,20 @@
 /**
- * QCC PDF Filler — overlays form data onto the official template PDFs.
+ * QCC PDF Filler — overlays form data onto the official regulatory template PDFs.
  *
- * Coordinate system (from pdf2json extraction):
- *   x_pts = x_unit × 17.688
- *   y_pts = 841.89 − (y_unit × 16.477)   ← pdf-lib Y is from BOTTOM
+ * Calibrated Coordinate System:
+ *   pdf2json uses a standard 16.0 pt grid (A4: 595.304 × 841.890 pt, 37.206 × 52.618 units):
+ *   x_pts = x_unit × 16.0
+ *   y_pts = pageH − (y_unit × 16.0)
  *
- * All positions below are in pdf2json units (x, y).
+ * Empirical Calibration:
+ *   check(): baseline at py(y) - 11.5 (centers X inside checkbox square)
+ *   text():  baseline at py(y) - 12.0 (aligns text directly on underline/dotted baseline)
  */
 import type { IATFormData } from "./iat-types";
 
 type RGB = [number, number, number];
-const BLUE: RGB   = [0.05, 0.18, 0.48];
-const BLACK: RGB  = [0, 0, 0];
+const BLUE: RGB  = [0.05, 0.18, 0.48];
+const DARK: RGB  = [0.12, 0.12, 0.12];
 
 export async function fillTemplatePdf(
   clientType: "personal" | "company",
@@ -24,418 +27,535 @@ export async function fillTemplatePdf(
 
   const { PDFDocument, rgb, StandardFonts } = await import("pdf-lib");
   const pdfDoc = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
-  const font   = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   const pageCount = pdfDoc.getPageCount();
 
-  // ── Dynamic scale factors from actual page size ──────────────────────────
-  // (pdf2json calibration assumed standard A4: 595.28 × 841.89 pts)
   const { width: pageW, height: pageH } = pdfDoc.getPage(0).getSize();
-  const dxs = 17.688 * (pageW / 595.28);
-  const dys = 16.477 * (pageH / 841.89);
-  const dph = pageH;
+  const SCALE = 16.0;
 
-  // ── helpers ─────────────────────────────────────────────────────────────
   function page(idx: number) { return pdfDoc.getPage(idx); }
+  function px(x: number) { return x * SCALE; }
+  function py(y: number) { return pageH - y * SCALE; }
 
-  function px(x: number) { return x * dxs; }
-  function py(y: number) { return dph - y * dys; }
-
-  /** Strip chars unsupported by WinAnsi (Helvetica): decompose accents, drop combining marks */
   function sanitize(s: string): string {
     return s
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "") // remove combining diacritics (ē→e, ā→a, etc.)
-      .replace(/[^\x00-\xFF]/g, "?");  // fallback for anything else
+      .replace(/[\u0300-\u036f]/g, "") // decompose and remove accents for standard Helvetica
+      .replace(/[^\x00-\xFF]/g, "");
   }
 
-  /** Write text at pdf2json (x, y) coordinates.
-   *  maxW: optional explicit max width in PDF points; defaults to page-right-margin minus x.
+  function formatDateFr(isoOrStr?: string): string {
+    if (!isoOrStr) return "";
+    const clean = isoOrStr.trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(clean)) {
+      const [y, m, d] = clean.split("-");
+      return `${d} / ${m} / ${y}`;
+    }
+    return clean;
+  }
+
+  /**
+   * Mark a checkbox with an 'X' centered inside the box.
+   */
+  function check(pg: ReturnType<typeof page>, x: number, y: number) {
+    pg.drawText("X", {
+      x: px(x) + 7.2,
+      y: py(y) - 11.5,
+      size: 7.5,
+      font: fontBold,
+      color: rgb(BLUE[0], BLUE[1], BLUE[2]),
+    });
+  }
+
+  /**
+   * Write text overlaying an underline/dotted field line.
    */
   function text(
     pg: ReturnType<typeof page>,
-    value: string | null | undefined,
+    value: string | null | undefined | number,
     x: number,
     y: number,
     size = 8.5,
     color: RGB = BLUE,
-    maxW?: number
+    maxW?: number,
+    clearUnderline = true
   ) {
-    if (!value) return;
+    if (value === null || value === undefined || value === "") return;
     let str = sanitize(String(value));
-    // Blank lines are 0.16 units below the label y positions in pdf2json
-    const ty = y + 0.16;
-    // Max available width in PDF points.
-    // Left-column fields (x < 16.8 units ≈ page mid) are capped at the midpoint so they
-    // never bleed into the right (T2 / second-column) area.
-    const defaultMax = x < 16.8
-      ? px(16.8) - px(x) - 5   // left column → up to page centre
-      : pageW - 20 - px(x);    // right column → up to right margin
+    const defaultMax = x < 18.0
+      ? px(18.0) - px(x) - 4
+      : pageW - 20 - px(x);
     const maxPts = maxW ?? defaultMax;
-    // Truncate using real font metrics so text never overflows its field
+
     while (str.length > 1 && font.widthOfTextAtSize(str, size) > maxPts) {
       str = str.slice(0, -1);
     }
     const strW = font.widthOfTextAtSize(str, size);
-    // White background to cover underscores — sized to actual text width
-    pg.drawRectangle({
-      x: px(x) - 1,
-      y: py(ty) - 1,
-      width: strW + 4,
-      height: size + 2,
-      color: rgb(1, 1, 1),
-      opacity: 0.92,
-    });
+    const baselineY = py(y) - 12.0;
+
+    if (clearUnderline) {
+      pg.drawRectangle({
+        x: px(x) - 1,
+        y: baselineY - 1.5,
+        width: strW + 2,
+        height: size + 2,
+        color: rgb(1, 1, 1),
+      });
+    }
+
     pg.drawText(str, {
       x: px(x),
-      y: py(ty),
+      y: baselineY,
       size,
       font,
       color: rgb(color[0], color[1], color[2]),
     });
   }
 
-  /** Mark a checkbox (□) at pdf2json (x, y) */
-  function check(pg: ReturnType<typeof page>, x: number, y: number) {
-    pg.drawText("X", { x: px(x) + 0.5, y: py(y), size: 8, font, color: rgb(BLUE[0], BLUE[1], BLUE[2]) });
-  }
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const [nowD, nowM, nowY] = dateStr.split("/");
 
   // ════════════════════════════════════════════════════════════════════════
   // PP — Personne Physique
   // ════════════════════════════════════════════════════════════════════════
   if (clientType === "personal") {
-    const { titulaire1: t1, titulaire2: t2, hasTitulaire2, maritalStatus: ms, personalFinancial: fin, productKnowledge: pk, objectives: obj, esg } = formData;
+    const {
+      titulaire1: t1,
+      titulaire2: t2,
+      hasTitulaire2,
+      maritalStatus: ms,
+      personalFinancial: fin,
+      productKnowledge: pk,
+      objectives: obj,
+      esg,
+    } = formData;
 
-    // ── Page 2 (idx 1): Identity ──────────────────────────────────────────
+    const clientFullName = `${t1.firstName || ""} ${t1.lastName || ""}`.trim().toUpperCase() || "CLIENT";
+
+    // ── Page 1 (idx 0): Cover Page ──────────────────────────────────────
+    const p1 = page(0);
+    p1.drawRectangle({
+      x: px(2.344) - 2,
+      y: py(9.306) - 17,
+      width: 280,
+      height: 18,
+      color: rgb(1, 1, 1),
+    });
+    p1.drawText(clientFullName, {
+      x: px(2.344),
+      y: py(9.306) - 13,
+      size: 13,
+      font: fontBold,
+      color: rgb(BLUE[0], BLUE[1], BLUE[2]),
+    });
+    p1.drawText(`Date de saisie : ${dateStr}`, {
+      x: px(2.344),
+      y: py(9.306) - 26,
+      size: 8.5,
+      font,
+      color: rgb(0.35, 0.35, 0.35),
+    });
+
+    // ── Page 2 (idx 1): Identification ──────────────────────────────────
     const p2 = page(1);
 
-    // Civility T1
-    if (t1.civility === "M")   check(p2, 2.34, 11.21);
-    if (t1.civility === "Mme") check(p2, 10.50, 11.21);
+    // Titulaire 1
+    if (t1.civility === "M")   check(p2, 2.344, 11.206);
+    if (t1.civility === "Mme") check(p2, 10.500, 11.206);
 
-    text(p2, t1.lastName,    2.34, 12.30);
-    text(p2, t1.maidenName,  6.30, 12.90);
-    text(p2, t1.firstName,   2.34, 14.10);
-    text(p2, t1.birthDate,   4.09, 14.73, 8.5, BLUE, px(10.0) - px(4.09) - 4);
-    text(p2, t1.birthPlace,  10.50, 14.73, 8.5, BLUE, px(16.5) - px(10.50) - 4);
-    text(p2, t1.nationality, 4.78, 15.34);
-    text(p2, t1.address,     4.11, 15.95);
-    text(p2, t1.email,       2.34, 19.00);
-    text(p2, t1.phone,       2.34, 20.22);
+    text(p2, t1.lastName, 4.200, 11.844, 9);
+    text(p2, t1.maidenName, 6.400, 13.063, 8.5);
+    text(p2, t1.firstName, 4.800, 13.675, 9);
+    text(p2, formatDateFr(t1.birthDate), 4.300, 14.894, 8.5);
+    text(p2, t1.birthPlace, 11.500, 14.894, 8.5);
+    text(p2, t1.nationality, 5.000, 15.500, 8.5);
+    text(p2, t1.address, 4.300, 16.113, 8.5);
+    text(p2, t1.email, 3.800, 18.550, 8.5);
+    text(p2, t1.phone, 4.900, 19.769, 8.5);
 
-    // Fiscal residence T1
-    if (t1.fiscalResidence === "France") check(p2, 6.23,  22.81);
-    if (t1.fiscalResidence === "Other")  { check(p2, 9.03, 22.81); text(p2, t1.fiscalResidenceOther, 11.00, 22.65, 8.5, BLUE, px(16.5) - px(11.00) - 4); }
+    // Régime protection juridique
+    if (t1.legalProtection === true)  check(p2, 9.031, 20.988);
+    if (t1.legalProtection === false) check(p2, 11.206, 20.988);
 
-    text(p2, t1.profession,  2.34, 24.48);
-    if (t1.isRetired) check(p2, 2.34, 25.25);
-
-    // US Person T1
-    if (t1.isUSPerson === true)  check(p2, 2.34, 34.39);
-    if (t1.isUSPerson === false) check(p2, 4.56, 34.39);
-
-    // Titulaire 2
-    if (hasTitulaire2) {
-      if (t2.civility === "M")   check(p2, 18.94, 11.21);
-      if (t2.civility === "Mme") check(p2, 27.00, 11.21);
-      text(p2, t2.lastName,    18.94, 12.30);
-      text(p2, t2.maidenName,  22.89, 12.90);
-      text(p2, t2.firstName,   18.94, 14.10);
-      text(p2, t2.birthDate,   20.68, 14.73);
-      text(p2, t2.nationality, 21.38, 15.34);
-      text(p2, t2.address,     20.70, 17.17);
-      text(p2, t2.email,       18.94, 20.22);
-      text(p2, t2.phone,       18.94, 21.43);
-      if (t2.fiscalResidence === "France") check(p2, 22.82, 24.03);
-      if (t2.fiscalResidence === "Other")  { check(p2, 26.03, 24.03); text(p2, t2.fiscalResidenceOther, 27.59, 23.87, 8.5, BLUE, px(33.0) - px(27.59) - 4); }
-      text(p2, t2.profession,  18.94, 25.70);
-      if (t2.isUSPerson === true)  check(p2, 18.94, 34.39);
-      if (t2.isUSPerson === false) check(p2, 21.16, 34.39);
+    // Résidence fiscale
+    if (t1.fiscalResidence === "France") check(p2, 6.231, 22.813);
+    if (t1.fiscalResidence === "Other")  {
+      check(p2, 8.994, 22.813);
+      text(p2, t1.fiscalResidenceOther, 11.200, 22.813, 8.5);
     }
 
-    // Marital status
+    text(p2, t1.profession, 4.800, 24.031, 8.5);
+    if (t1.isRetired) check(p2, 2.344, 25.250);
+    if (t1.isBusinessOwner) check(p2, 2.344, 26.469);
+
+    // US Person FATCA
+    if (t1.isUSPerson === true)  check(p2, 2.344, 34.394);
+    if (t1.isUSPerson === false) check(p2, 4.563, 34.394);
+
+    // Titulaire 2 (if present)
+    if (hasTitulaire2) {
+      if (t2.civility === "M")   check(p2, 18.938, 11.206);
+      if (t2.civility === "Mme") check(p2, 27.000, 11.206);
+      text(p2, t2.lastName, 20.800, 11.844, 9);
+      text(p2, t2.maidenName, 23.000, 13.063, 8.5);
+      text(p2, t2.firstName, 21.400, 13.675, 9);
+      text(p2, formatDateFr(t2.birthDate), 20.800, 14.894, 8.5);
+      text(p2, t2.nationality, 21.800, 16.113, 8.5);
+      text(p2, t2.address, 20.800, 17.331, 8.5);
+      text(p2, t2.email, 20.400, 19.769, 8.5);
+      text(p2, t2.phone, 21.400, 20.988, 8.5);
+      text(p2, t2.profession, 21.400, 25.250, 8.5);
+      if (t2.fiscalResidence === "France") check(p2, 22.825, 24.031);
+      if (t2.fiscalResidence === "Other")  {
+        check(p2, 25.587, 24.031);
+        text(p2, t2.fiscalResidenceOther, 27.600, 24.031, 8.5);
+      }
+      if (t2.isUSPerson === true)  check(p2, 18.938, 34.394);
+      if (t2.isUSPerson === false) check(p2, 21.156, 34.394);
+    }
+
+    // Situation matrimoniale
     const maritalMap: Record<string, [number, number]> = {
-      married:   [2.34,  36.09],
-      pacs:      [6.78,  36.09],
-      single:    [11.21, 36.09],
-      widowed:   [15.64, 36.09],
-      divorced:  [20.07, 36.09],
-      freeUnion: [24.50, 36.09],
+      married:   [2.344, 36.094],
+      pacs:      [6.775, 36.094],
+      single:    [11.206, 36.094],
+      widowed:   [15.637, 36.094],
+      divorced:  [20.069, 36.094],
+      freeUnion: [24.500, 36.094],
     };
     if (ms.status && maritalMap[ms.status]) check(p2, ...maritalMap[ms.status]);
-    text(p2, ms.marriageDate,    5.83, 36.55);
-    text(p2, ms.pacsDate,        5.22, 37.15);
-    text(p2, ms.divorceDate,     5.67, 37.76);
-    text(p2, ms.numberOfChildren, 6.55, 42.27);
-    text(p2, ms.childrenAtCharge, 12.94, 42.27);
+    text(p2, formatDateFr(ms.marriageDate), 5.800, 36.706, 8);
+    text(p2, formatDateFr(ms.pacsDate), 5.200, 37.313, 8);
+    text(p2, formatDateFr(ms.divorceDate), 5.600, 37.925, 8);
+    text(p2, ms.numberOfChildren, 6.800, 42.431, 8.5);
+    text(p2, ms.childrenAtCharge, 13.200, 42.431, 8.5);
 
-    // ── Page 3 (idx 2): Financial ─────────────────────────────────────────
+    // ── Page 3 (idx 2): Financial ───────────────────────────────────────
     const p3 = page(2);
 
-    // Income ranges T1
+    // Revenus T1
     const incomeT1Map: Record<string, [number, number]> = {
-      "<50k":    [2.34,  14.01],
-      "50-100k": [10.31, 14.01],
-      "100-150k":[2.34,  15.08],
-      "150-500k":[2.34,  16.15],
-      ">500k":   [10.31, 16.15],
+      "<50k":    [2.344, 14.013],
+      "50-100k": [10.306, 14.013],
+      "100-150k":[2.344, 15.081],
+      "150-500k":[2.344, 16.150],
+      ">500k":   [10.306, 16.150],
     };
     if (fin.t1Income && incomeT1Map[fin.t1Income]) check(p3, ...incomeT1Map[fin.t1Income]);
 
-    // Income ranges T2
+    // Revenus T2
     const incomeT2Map: Record<string, [number, number]> = {
-      "<50k":    [17.84, 14.01],
-      "50-100k": [26.69, 14.01],
-      "100-150k":[17.84, 15.08],
-      "150-500k":[17.84, 16.15],
-      ">500k":   [26.69, 16.15],
+      "<50k":    [17.837, 14.013],
+      "50-100k": [26.694, 14.013],
+      "100-150k":[17.837, 15.081],
+      "150-500k":[17.837, 16.150],
+      ">500k":   [26.694, 16.150],
     };
     if (fin.t2Income && incomeT2Map[fin.t2Income]) check(p3, ...incomeT2Map[fin.t2Income]);
 
-    // Patrimony T1
+    // Patrimoine T1
     const patriT1Map: Record<string, [number, number]> = {
-      "<100k":   [2.34,  17.86],
-      "100-300k":[10.31, 17.55],
-      "300-500k":[2.34,  19.11],
-      "500k-1m": [10.31, 18.80],
-      "1-5m":    [2.34,  20.05],
-      ">5m":     [10.31, 20.36],
+      "<100k":   [2.344,  17.856],
+      "100-300k":[10.306, 17.550],
+      "300-500k":[2.344,  19.106],
+      "500k-1m": [10.306, 18.800],
+      "1-5m":    [2.344,  20.050],
+      ">5m":     [10.306, 20.356],
     };
     if (fin.t1Patrimony && patriT1Map[fin.t1Patrimony]) check(p3, ...patriT1Map[fin.t1Patrimony]);
 
-    // Patrimony T2
+    // Patrimoine T2
     const patriT2Map: Record<string, [number, number]> = {
-      "<100k":   [17.84, 17.86],
-      "100-300k":[26.69, 17.86],
-      "300-500k":[17.84, 19.11],
-      "500k-1m": [26.69, 19.11],
-      "1-5m":    [17.84, 20.36],
-      ">5m":     [26.69, 20.36],
+      "<100k":   [17.837, 17.856],
+      "100-300k":[26.694, 17.856],
+      "300-500k":[17.837, 19.106],
+      "500k-1m": [26.694, 19.106],
+      "1-5m":    [17.837, 20.356],
+      ">5m":     [26.694, 20.356],
     };
     if (fin.t2Patrimony && patriT2Map[fin.t2Patrimony]) check(p3, ...patriT2Map[fin.t2Patrimony]);
 
-    // Commitments
-    text(p3, fin.t1Commitments, 2.34,  22.91);
-    text(p3, fin.t2Commitments, 17.84, 22.91);
+    // Engagements financiers
+    text(p3, fin.t1Commitments ? `${fin.t1Commitments}` : "", 2.344, 22.188, 8.5);
+    text(p3, fin.t2Commitments ? `${fin.t2Commitments}` : "", 17.844, 22.188, 8.5);
 
-    // IR / IFI
-    if (fin.t1IR === true)  check(p3, 3.10,  27.61);
-    if (fin.t1IR === false) check(p3, 5.39,  27.61);
-    if (fin.t1IFI === true)  check(p3, 11.14, 27.61);
-    if (fin.t1IFI === false) check(p3, 13.43, 27.61);
-    if (fin.t2IR === true)  check(p3, 18.59, 27.61);
-    if (fin.t2IR === false) check(p3, 20.88, 27.61);
-    if (fin.t2IFI === true)  check(p3, 27.53, 27.61);
-    if (fin.t2IFI === false) check(p3, 29.82, 27.61);
+    // IR & IFI
+    if (fin.t1IR === true)  check(p3, 3.100, 27.613);
+    if (fin.t1IR === false) check(p3, 5.388, 27.613);
+    if (fin.t1IFI === true)  check(p3, 11.144, 27.613);
+    if (fin.t1IFI === false) check(p3, 13.431, 27.613);
 
-    // Savings capacity
-    text(p3, fin.t1SavingsCapacity, 2.34,  28.98);
-    text(p3, fin.t2SavingsCapacity, 17.84, 28.98);
+    // Capacité d'épargne
+    text(p3, fin.t1SavingsCapacity ? `${fin.t1SavingsCapacity} EUR` : "", 2.344, 29.138, 8.5);
+    text(p3, fin.t2SavingsCapacity ? `${fin.t2SavingsCapacity} EUR` : "", 17.844, 29.138, 8.5);
 
-    // Fund nature
-    if (fin.fundNature === "liquidities")         check(p3, 2.34,  32.19);
-    if (fin.fundNature === "financial_instruments") check(p3, 10.04, 32.19);
-    if (fin.fundNature === "both") { check(p3, 2.34, 32.19); check(p3, 10.04, 32.19); }
+    // Nature des avoirs
+    if (fin.fundNature === "liquidities" || fin.fundNature === "both") {
+      check(p3, 2.344, 32.194);
+    }
+    if (fin.fundNature === "financial_instruments" || fin.fundNature === "both") {
+      check(p3, 10.037, 32.194);
+    }
 
-    // Amount to invest
-    text(p3, fin.amountToInvest, 18.00, 32.03);
+    // Montant prévu
+    text(p3, fin.amountToInvest ? `${fin.amountToInvest} EUR` : "", 17.844, 32.194, 8.5);
 
-    // Fund origins
+    // Origine des fonds
     const originMap: Record<string, [number, number]> = {
-      salaries:          [2.34,  33.61],
-      professional_sale: [12.07, 33.61],
-      real_estate_sale:  [21.82, 33.61],
-      savings:           [2.34,  34.32],
-      gambling:          [12.07, 34.32],
-      securities_sale:   [21.82, 34.32],
-      inheritance:       [2.34,  35.03],
-      life_insurance:    [12.07, 35.03],
-      other:             [21.82, 35.03],
+      revenus_pro:        [2.344, 33.613],
+      salaries:           [2.344, 33.613],
+      cession_actifs_pro: [12.075, 33.613],
+      professional_sale:  [12.075, 33.613],
+      cession_immo:       [21.819, 33.613],
+      real_estate_sale:   [21.819, 33.613],
+      epargne:            [2.344, 34.319],
+      savings:            [2.344, 34.319],
+      jeux:               [12.075, 34.319],
+      gambling:           [12.075, 34.319],
+      cession_mob:        [21.819, 34.319],
+      securities_sale:    [21.819, 34.319],
+      heritage:           [2.344, 35.031],
+      inheritance:        [2.344, 35.031],
+      assurance_vie:      [12.075, 35.031],
+      life_insurance:     [12.075, 35.031],
+      autre:              [21.819, 35.031],
+      other:              [21.819, 35.031],
     };
-    fin.fundOrigins.forEach(o => {
+    (fin.fundOrigins || []).forEach((o) => {
       if (originMap[o]) check(p3, ...originMap[o]);
     });
-    text(p3, fin.fundOriginOther, 28.02, 34.87);
+    text(p3, fin.fundOriginOther, 28.019, 35.031, 8);
 
-    // Bank origin (field extends toward right margin, not capped at column mid)
-    text(p3, fin.bankOrigin, 11.20, 36.29, 8.5, BLUE, px(28.0) - px(11.20) - 5);
+    // Établissement bancaire d'origine
+    text(p3, fin.bankOrigin, 11.200, 36.450, 8.5);
 
-    // ── Page 6 (idx 5): Product knowledge — monetary, bonds, stocks, SCPI ─
+    // ── Page 6 (idx 5): Products Part 1 ─────────────────────────────────
     const p6 = page(5);
-
-    type ProductRow = { heldY: number; durationY: number; q1Y: number; q2Y: number };
-    const p6Products: Record<string, ProductRow> = {
-      monetary:     { heldY: 5.86,  durationY: 7.14,  q1Y: 7.79,  q2Y: 9.64  },
-      bonds:        { heldY: 13.21, durationY: 14.49, q1Y: 15.13, q2Y: 16.99 },
-      stocks:       { heldY: 20.55, durationY: 21.83, q1Y: 22.48, q2Y: 24.33 },
-      scpi:         { heldY: 27.89, durationY: 29.18, q1Y: 29.82, q2Y: 31.67 },
+    type ProdRow = { heldY: number; durationY: number; q1Y: number; q2Y: number };
+    const p6Rows: Record<string, ProdRow> = {
+      monetary: { heldY: 5.863,  durationY: 7.140,  q1Y: 7.788,  q2Y: 9.644  },
+      bonds:    { heldY: 13.206, durationY: 14.490, q1Y: 15.131, q2Y: 16.988 },
+      stocks:   { heldY: 20.550, durationY: 21.830, q1Y: 22.475, q2Y: 24.331 },
+      scpi:     { heldY: 27.894, durationY: 29.180, q1Y: 29.819, q2Y: 31.675 },
     };
 
-    function fillProduct(
-      pg: ReturnType<typeof page>,
-      key: keyof typeof pk,
-      rows: ProductRow,
-      isScpi = false
-    ) {
+    function fillProductRow(pg: ReturnType<typeof page>, key: keyof typeof pk, rows: ProdRow, isScpi = false) {
       const e = pk[key] as typeof pk["monetary"];
       if (!e) return;
-      // Held
-      if (e.held === true)  check(pg, 2.34, rows.heldY);
-      if (e.held === false) check(pg, 6.33, rows.heldY);
-      // Ops per year
-      if (e.opsPerYear === "<1")  check(pg, 11.01, rows.heldY);
-      if (e.opsPerYear === "1-5") check(pg, 18.68, rows.heldY);
-      if (e.opsPerYear === "6+")  check(pg, 28.27, rows.heldY);
-      // Duration
+      if (e.held === true)  check(pg, 2.344, rows.heldY);
+      if (e.held === false) check(pg, 6.331, rows.heldY);
+
+      if (e.opsPerYear === "<1")  check(pg, 10.560, rows.heldY);
+      if (e.opsPerYear === "1-5") check(pg, 18.230, rows.heldY);
+      if (e.opsPerYear === "6+")  check(pg, 27.820, rows.heldY);
+
       const shortDur = isScpi ? "-10 ans" : "-4 ans";
-      if (e.holdingPeriod === shortDur || e.holdingPeriod === "<4") check(pg, 2.34, rows.durationY);
-      else if (e.holdingPeriod)                                      check(pg, 6.54, rows.durationY);
-      // Volume
-      if (e.volume === "<5k")   check(pg, 11.06, rows.durationY);
-      if (e.volume === "5-10k") check(pg, 15.64, rows.durationY);
-      if (e.volume === "10-50k") check(pg, 23.05, rows.durationY);
-      if (e.volume === ">50k")  check(pg, 29.04, rows.durationY);
-      // Q1
-      if (e.q1 === "vrai")        check(pg, 28.04, rows.q1Y);
-      if (e.q1 === "faux")        check(pg, 28.04, rows.q1Y + 0.61);
-      if (e.q1 === "ne_sais_pas") check(pg, 28.04, rows.q1Y + 1.22);
-      // Q2
-      if (e.q2 === "vrai")        check(pg, 28.04, rows.q2Y);
-      if (e.q2 === "faux")        check(pg, 28.04, rows.q2Y + 0.61);
-      if (e.q2 === "ne_sais_pas") check(pg, 28.04, rows.q2Y + 1.22);
+      if (e.holdingPeriod === shortDur || e.holdingPeriod === "<4") check(pg, 2.344, rows.durationY);
+      else if (e.holdingPeriod) check(pg, 6.090, rows.durationY);
+
+      if (e.volume === "<5k")   check(pg, 10.610, rows.durationY);
+      if (e.volume === "5-10k") check(pg, 15.190, rows.durationY);
+      if (e.volume === "10-50k") check(pg, 22.600, rows.durationY);
+      if (e.volume === ">50k")  check(pg, 28.590, rows.durationY);
+
+      if (e.q1 === "vrai")        check(pg, 27.590, rows.q1Y);
+      if (e.q1 === "faux")        check(pg, 27.590, rows.q1Y + 0.606);
+      if (e.q1 === "ne_sais_pas") check(pg, 27.590, rows.q1Y + 1.218);
+
+      if (e.q2 === "vrai")        check(pg, 27.590, rows.q2Y);
+      if (e.q2 === "faux")        check(pg, 27.590, rows.q2Y + 0.612);
+      if (e.q2 === "ne_sais_pas") check(pg, 27.590, rows.q2Y + 1.219);
     }
 
-    fillProduct(p6, "monetary", p6Products.monetary);
-    fillProduct(p6, "bonds",    p6Products.bonds);
-    fillProduct(p6, "stocks",   p6Products.stocks);
-    fillProduct(p6, "scpi",     p6Products.scpi, true);
+    fillProductRow(p6, "monetary", p6Rows.monetary);
+    fillProductRow(p6, "bonds",    p6Rows.bonds);
+    fillProductRow(p6, "stocks",   p6Rows.stocks);
+    fillProductRow(p6, "scpi",     p6Rows.scpi, true);
 
-    // ── Page 7 (idx 6): privateEquity, ETF, derivatives, structured + mgmt ─
+    // ── Page 7 (idx 6): Products Part 2 & Management ────────────────────
     const p7 = page(6);
-
-    type ProductRow7 = { heldY: number; durationY: number; q1Y: number; q2Y: number; heldXOui?: number; heldXNon?: number };
-    const p7Products: Record<string, ProductRow7> = {
-      privateEquity: { heldY: 3.72,  durationY: 5.00,  q1Y: 5.64,  q2Y: 7.50  },
-      etf:           { heldY: 11.06, durationY: 12.34, q1Y: 12.99, q2Y: 14.84 },
-      derivatives:   { heldY: 18.41, durationY: 19.69, q1Y: 20.33, q2Y: 22.19 },
-      structured:    { heldY: 25.78, durationY: 27.07, q1Y: 27.71, q2Y: 29.57, heldXOui: 2.68, heldXNon: 6.11 },
+    const p7Rows: Record<string, ProdRow> = {
+      privateEquity: { heldY: 3.720,  durationY: 5.000,  q1Y: 5.640,  q2Y: 7.500  },
+      etf:           { heldY: 11.060, durationY: 12.340, q1Y: 12.990, q2Y: 14.840 },
+      derivatives:   { heldY: 18.410, durationY: 19.690, q1Y: 20.330, q2Y: 22.190 },
+      structured:    { heldY: 25.780, durationY: 27.070, q1Y: 27.710, q2Y: 29.570 },
     };
 
-    function fillProduct7(
-      pg: ReturnType<typeof page>,
-      key: keyof typeof pk,
-      rows: ProductRow7
-    ) {
-      const e = pk[key] as typeof pk["monetary"];
-      if (!e) return;
-      const xOui = rows.heldXOui ?? 2.34;
-      const xNon = rows.heldXNon ?? 6.33;
-      if (e.held === true)  check(pg, xOui, rows.heldY);
-      if (e.held === false) check(pg, xNon, rows.heldY);
-      if (e.opsPerYear === "<1")  check(pg, 10.83, rows.heldY);
-      if (e.opsPerYear === "1-5") check(pg, 18.56, rows.heldY);
-      if (e.opsPerYear === "6+")  check(pg, 28.22, rows.heldY);
-      if (e.holdingPeriod && e.holdingPeriod.includes("-")) check(pg, 2.34, rows.durationY);
-      else if (e.holdingPeriod)                              check(pg, 6.33, rows.durationY);
-      if (e.volume === "<5k")    check(pg, 10.89, rows.durationY);
-      if (e.volume === "5-10k")  check(pg, 15.50, rows.durationY);
-      if (e.volume === "10-50k") check(pg, 22.96, rows.durationY);
-      if (e.volume === ">50k")   check(pg, 29.01, rows.durationY);
-      const qX = key === "structured" ? 27.93 : 27.99;
-      if (e.q1 === "vrai")        check(pg, qX, rows.q1Y);
-      if (e.q1 === "faux")        check(pg, qX, rows.q1Y + 0.61);
-      if (e.q1 === "ne_sais_pas") check(pg, qX, rows.q1Y + 1.22);
-      if (e.q2 === "vrai")        check(pg, qX, rows.q2Y);
-      if (e.q2 === "faux")        check(pg, qX, rows.q2Y + 0.61);
-      if (e.q2 === "ne_sais_pas") check(pg, qX, rows.q2Y + 1.22);
-    }
+    fillProductRow(p7, "privateEquity", p7Rows.privateEquity);
+    fillProductRow(p7, "etf",           p7Rows.etf);
+    fillProductRow(p7, "derivatives",   p7Rows.derivatives);
+    fillProductRow(p7, "structured",    p7Rows.structured);
 
-    fillProduct7(p7, "privateEquity", p7Products.privateEquity);
-    fillProduct7(p7, "etf",           p7Products.etf);
-    fillProduct7(p7, "derivatives",   p7Products.derivatives);
-    fillProduct7(p7, "structured",    p7Products.structured);
+    // Gestion du portefeuille
+    if (pk.managedPortfolio === true)  check(p7, 24.475, 33.700);
+    if (pk.managedPortfolio === false) check(p7, 29.563, 33.700);
 
-    // Portfolio management & culture
-    const boolCheck = (pg: ReturnType<typeof page>, val: boolean | null, xOui: number, xNon: number, y: number) => {
-      if (val === true)  check(pg, xOui, y);
-      if (val === false) check(pg, xNon, y);
-    };
-    boolCheck(p7, pk.managedPortfolio,   24.48, 29.56, 33.70);
-    boolCheck(p7, pk.selfManaged,        24.48, 29.56, 35.02);
-    boolCheck(p7, pk.advisedPortfolio,   24.48, 29.56, 36.32);
-    boolCheck(p7, pk.financialSectorExp, 24.48, 29.56, 37.92);
-    boolCheck(p7, pk.readsPress,         24.48, 29.56, 41.44);
-    boolCheck(p7, pk.followsMarkets,     24.48, 29.56, 42.76);
-    boolCheck(p7, pk.checksMonthly,      24.48, 29.56, 44.06);
+    if (pk.selfManaged === true)  check(p7, 24.475, 35.025);
+    if (pk.selfManaged === false) check(p7, 29.563, 35.025);
 
-    // ── Page 8 (idx 7): Objectives & Risk ────────────────────────────────
+    if (pk.advisedPortfolio === true)  check(p7, 24.475, 36.319);
+    if (pk.advisedPortfolio === false) check(p7, 29.563, 36.319);
+
+    if (pk.financialSectorExp === true)  check(p7, 24.475, 37.925);
+    if (pk.financialSectorExp === false) check(p7, 29.563, 37.925);
+
+    // Culture financière
+    if (pk.readsPress === true)  check(p7, 24.475, 41.438);
+    if (pk.readsPress === false) check(p7, 29.563, 41.438);
+
+    if (pk.followsMarkets === true)  check(p7, 24.475, 42.763);
+    if (pk.followsMarkets === false) check(p7, 29.563, 42.763);
+
+    if (pk.checksMonthly === true)  check(p7, 24.475, 44.056);
+    if (pk.checksMonthly === false) check(p7, 29.563, 44.056);
+
+    // ── Page 8 (idx 7): Objectives & Risk Profile ───────────────────────
     const p8 = page(7);
 
-    // Risk profile
-    if (obj.riskProfile === "A") check(p8, 2.34, 12.89);
-    if (obj.riskProfile === "B") check(p8, 2.34, 14.11);
-    if (obj.riskProfile === "C") check(p8, 2.34, 15.32);
+    // Objectives checkboxes/rankings at top of Page 8
+    let rank = 1;
+    if (obj.capitalPreservation) { text(p8, String(rank++), 9.600, 2.200, 8.5); }
+    if (obj.capitalGrowth)       { text(p8, String(rank++), 20.000, 2.200, 8.5); }
+    if (obj.diversification)     { text(p8, String(rank++), 31.000, 2.200, 8.5); }
+    if (obj.incomeSearch)        { text(p8, String(rank++), 9.600, 3.075, 8.5); }
+    if (obj.transmission)        { text(p8, String(rank++), 20.000, 3.075, 8.5); }
+    if (obj.taxOptimization)     { text(p8, String(rank++), 31.000, 3.075, 8.5); }
+    if (obj.other)               { text(p8, obj.other, 7.500, 3.969, 8.5); }
 
-    // Past loss (rows: Non / <10% / 10-20% / >20%)
-    if (obj.pastLoss === "none") check(p8, 2.34, 18.32);
-    if (obj.pastLoss === "<10")  check(p8, 18.74, 17.68);
-    if (obj.pastLoss === "10-20") check(p8, 18.74, 18.32);
-    if (obj.pastLoss === ">20")  check(p8, 18.74, 18.96);
+    // Risk profile placement curve
+    if (obj.riskProfile === "A") check(p8, 2.344, 12.888);
+    if (obj.riskProfile === "B") check(p8, 2.344, 14.106);
+    if (obj.riskProfile === "C") check(p8, 2.344, 15.325);
 
-    // Reaction to gain
-    if (obj.reactionToGain === "hold")         check(p8, 2.34,  27.11);
-    if (obj.reactionToGain === "reinvest-less") check(p8, 9.85,  27.11);
-    if (obj.reactionToGain === "reinvest-more") check(p8, 22.27, 27.12);
+    // Baisse de valeur passée
+    if (obj.pastLoss === "none")  check(p8, 2.344, 18.325);
+    if (obj.pastLoss === "<10")   check(p8, 18.738, 17.681);
+    if (obj.pastLoss === "10-20") check(p8, 18.738, 18.325);
+    if (obj.pastLoss === ">20")   check(p8, 18.738, 18.963);
+
+    // Réaction face à une baisse
+    if (obj.pastLoss === "none") {
+      if (obj.reactionToDrop === "reinvest")    check(p8, 2.344, 20.650);
+      if (obj.reactionToDrop === "sell-all")    check(p8, 2.344, 22.244);
+      if (obj.reactionToDrop === "sell-part")   check(p8, 2.344, 23.838);
+      if (obj.reactionToDrop === "hold")        check(p8, 2.344, 25.294);
+    } else {
+      if (obj.reactionToDrop === "reinvest")    check(p8, 18.738, 20.650);
+      if (obj.reactionToDrop === "sell-all")    check(p8, 18.738, 22.244);
+      if (obj.reactionToDrop === "sell-part")   check(p8, 18.738, 23.838);
+      if (obj.reactionToDrop === "hold")        check(p8, 18.738, 25.294);
+    }
+
+    // Réaction face à une hausse (+20%)
+    if (obj.reactionToGain === "hold")           check(p8, 2.344, 27.106);
+    if (obj.reactionToGain === "reinvest-less")   check(p8, 9.850, 27.106);
+    if (obj.reactionToGain === "reinvest-more")   check(p8, 22.275, 27.119);
 
     // Horizon
     const horizonMap: Record<string, [number, number]> = {
-      "<1":  [2.34,  29.72],
-      "1-3": [9.85,  29.72],
-      "3-5": [16.96, 29.72],
-      ">5":  [26.01, 29.72],
+      "<1":  [2.344, 29.719],
+      "1-3": [9.850, 29.719],
+      "3-5": [16.962, 29.719],
+      ">5":  [26.006, 29.719],
     };
     if (obj.horizon && horizonMap[obj.horizon]) check(p8, ...horizonMap[obj.horizon]);
 
-    // Liquidity
-    if (obj.liquidityNeeded === true)  check(p8, 2.34,  31.93);
-    if (obj.liquidityNeeded === false) check(p8, 18.74, 31.93);
+    // Liquidité
+    if (obj.liquidityNeeded === true)  check(p8, 2.344, 31.931);
+    if (obj.liquidityNeeded === false) check(p8, 18.738, 31.931);
 
-    // Max loss (5 checkboxes: 10%, 25%, 50%, 100%, Aucune)
+    // Perte maximale acceptable
     const maxLossMap: Record<string, [number, number]> = {
-      "10":   [2.34,  34.14],
-      "25":   [8.89,  34.14],
-      "50":   [15.43, 34.14],
-      "100":  [21.97, 34.14],
-      "none": [28.51, 34.14],
+      "10":   [2.344, 34.144],
+      "25":   [8.887, 34.144],
+      "50":   [15.431, 34.144],
+      "100":  [21.969, 34.144],
+      "none": [28.512, 34.144],
     };
     if (obj.maxLoss && maxLossMap[obj.maxLoss]) check(p8, ...maxLossMap[obj.maxLoss]);
 
-    // % patrimony
+    // % patrimoine à investir
     const patPctMap: Record<string, [number, number]> = {
-      "<10":   [2.34,  36.42],
-      "10-25": [8.89,  36.13],
-      "25-50": [15.43, 36.13],
-      "50-75": [21.97, 36.42],
-      ">75":   [28.51, 36.42],
+      "<10":   [2.344, 36.425],
+      "10-25": [8.887, 36.125],
+      "25-50": [15.431, 36.125],
+      "50-75": [21.969, 36.425],
+      ">75":   [28.512, 36.425],
     };
     if (obj.percentOfPatrimony && patPctMap[obj.percentOfPatrimony]) check(p8, ...patPctMap[obj.percentOfPatrimony]);
 
-    // ── Page 9 (idx 8): ESG ───────────────────────────────────────────────
-    if (pageCount >= 9) {
-      const p9 = page(8);
-      if (esg.wantsESG === true)  check(p9, 2.34,  4.64);
-      if (esg.wantsESG === false) check(p9, 12.04, 4.64);
+    // ── Page 9 (idx 8): ESG & Déclarations ──────────────────────────────
+    const p9 = page(8);
 
-      if (esg.wantsESG) {
-        // Taxonomy %
-        const taxMap: Record<string, [number, number]> = {
-          "5":    [2.34,  9.59],
-          "25":   [6.30,  9.59],
-          "50":   [10.25, 9.59],
-          "none": [13.41, 9.59],
-        };
-        if (esg.taxonomyPct && taxMap[esg.taxonomyPct]) check(p9, ...taxMap[esg.taxonomyPct]);
-      }
+    if (esg.wantsESG === true)  check(p9, 2.344, 4.638);
+    if (esg.wantsESG === false) check(p9, 12.037, 4.638);
+
+    if (esg.wantsESG) {
+      // 1. Taxonomie
+      const taxMap: Record<string, [number, number]> = {
+        "5":    [2.344, 9.594],
+        "25":   [6.300, 9.594],
+        "50":   [10.250, 9.594],
+        "none": [13.412, 9.594],
+      };
+      if (esg.taxonomyPct && taxMap[esg.taxonomyPct]) check(p9, ...taxMap[esg.taxonomyPct]);
+
+      // 2. Investissements durables
+      const sustMap: Record<string, [number, number]> = {
+        "5":    [2.344, 16.875],
+        "25":   [6.537, 16.875],
+        "50":   [10.650, 16.875],
+        "none": [13.806, 16.875],
+      };
+      if (esg.sustainablePct && sustMap[esg.sustainablePct]) check(p9, ...sustMap[esg.sustainablePct]);
+
+      // 3. Impact factors
+      if (esg.impactFactors === true)  check(p9, 2.344, 19.506);
+      if (esg.impactFactors === false) check(p9, 12.037, 19.506);
+
+      // PAI negative impacts
+      const paiMap: Record<string, [number, number]> = {
+        ghg:                   [2.344, 22.806],
+        greenhouse_gas:        [2.344, 22.806],
+        biodiversity:          [2.344, 23.825],
+        water_pollution:       [2.344, 24.844],
+        hazardous_waste:       [2.344, 25.863],
+        real_estate_energy:    [2.344, 26.881],
+        intl_norms:            [2.344, 27.900],
+        intl_norms_process:    [2.344, 28.919],
+        pay_equality:          [2.344, 29.938],
+        board_diversity:       [2.344, 30.956],
+        controversial_weapons: [2.344, 31.975],
+      };
+      (esg.negativeImpacts || []).forEach((pai) => {
+        if (paiMap[pai]) check(p9, ...paiMap[pai]);
+      });
     }
+
+    // Conclusion conseiller (auto-aligned to client's risk profile)
+    if (obj.riskProfile === "A") check(p9, 3.131, 39.431); // Sécuritaire
+    if (obj.riskProfile === "B") check(p9, 3.131, 41.331); // Équilibré
+    if (obj.riskProfile === "C") check(p9, 3.131, 42.281); // Dynamique
+
+    // Déclaration client Page 9
+    check(p9, 3.469, 47.250);
+
+    // ── Page 10 (idx 9): Déclarations Finales & Lieu/Date ────────────────
+    const p10 = page(9);
+
+    // Checkboxes déclarations Page 10
+    // Checkbox 1 is on page 9 sur 10 / top of page 10 (informer de toute modification)
+    check(p10, 3.469, 2.200); // Informer de toute modification
+    check(p10, 3.469, 3.075); // Avoir reçu le document préalable
+    check(p10, 3.469, 3.950); // Pleinement informé LCB-FT
+
+    // Date & Lieu
+    const city = t1.birthPlace || (t1.address ? t1.address.split(",").pop()?.trim() : "") || "PARIS";
+    text(p10, city.toUpperCase(), 4.000, 11.544, 8.5);
+    text(p10, `${nowD} / ${nowM} / ${nowY}`, 15.000, 11.544, 8.5);
+    text(p10, "2", 21.800, 11.544, 8.5);
   }
 
   // ════════════════════════════════════════════════════════════════════════
@@ -445,182 +565,109 @@ export async function fillTemplatePdf(
     const { companyIdentity: ci, companyFinancial: fin, productKnowledge: pk, objectives: obj, esg } = formData;
     const rep = ci.representative;
 
-    // ── Page 2 (idx 1): Company identity ─────────────────────────────────
+    // ── Page 1 (idx 0): Cover Page ──────────────────────────────────────
+    const p1 = page(0);
+    p1.drawRectangle({
+      x: px(2.344) - 2,
+      y: py(9.306) - 17,
+      width: 280,
+      height: 18,
+      color: rgb(1, 1, 1),
+    });
+    p1.drawText((ci.companyName || "SOCIÉTÉ").toUpperCase(), {
+      x: px(2.344),
+      y: py(9.306) - 13,
+      size: 13,
+      font: fontBold,
+      color: rgb(BLUE[0], BLUE[1], BLUE[2]),
+    });
+    p1.drawText(`Date de saisie : ${dateStr}`, {
+      x: px(2.344),
+      y: py(9.306) - 26,
+      size: 8.5,
+      font,
+      color: rgb(0.35, 0.35, 0.35),
+    });
+
+    // ── Page 2 (idx 1): Company Identity ────────────────────────────────
     const p2 = page(1);
 
-    text(p2, ci.companyName, 5.36,  6.41);
-    text(p2, ci.legalForm,   22.40, 6.41);
-    text(p2, ci.address,     2.34,  8.40);
-    text(p2, ci.country,     20.07, 7.78);
-    text(p2, ci.rcs,         24.01, 9.00);
+    text(p2, ci.companyName, 5.360, 6.410);
+    text(p2, ci.legalForm, 22.400, 6.410);
+    text(p2, ci.address, 2.344, 8.400);
+    text(p2, ci.country, 20.070, 7.780);
+    text(p2, ci.rcs, 24.010, 9.000);
 
-    // Sectors
     const sectorMap: Record<string, [number, number]> = {
-      agriculture:   [3.81, 10.80],
-      industry:      [3.81, 11.41],
-      construction:  [3.81, 12.02],
-      retail:        [3.81, 12.63],
-      art_luxury:    [3.81, 13.24],
-      finance:       [3.81, 13.85],
-      energy:        [3.81, 14.46],
-      public_admin:  [20.38, 10.80],
-      trading:       [20.38, 11.41],
-      import_export: [20.38, 12.02],
-      hospitality:   [20.38, 12.63],
-      liberal_prof:  [20.38, 13.24],
-      religious:     [20.38, 13.85],
-      other:         [20.38, 14.46],
+      agriculture:   [3.810, 10.800],
+      industry:      [3.810, 11.410],
+      construction:  [3.810, 12.020],
+      retail:        [3.810, 12.630],
+      art_luxury:    [3.810, 13.240],
+      finance:       [3.810, 13.850],
+      energy:        [3.810, 14.460],
+      public_admin:  [20.380, 10.800],
+      trading:       [20.380, 11.410],
+      import_export: [20.380, 12.020],
+      hospitality:   [20.380, 12.630],
+      liberal_prof:  [20.380, 13.240],
+      religious:     [20.380, 13.850],
+      other:         [20.380, 14.460],
     };
-    ci.sectors.forEach(s => { if (sectorMap[s]) check(p2, ...sectorMap[s]); });
+    (ci.sectors || []).forEach((s) => {
+      if (sectorMap[s]) check(p2, ...sectorMap[s]);
+    });
 
-    // Geo zone
-    if (ci.geoZone === "EU")  check(p2, 9.22, 16.43);
+    if (ci.geoZone === "EU")  check(p2, 9.220, 16.430);
     if (ci.geoZone !== "EU" && ci.geoZone) {
-      check(p2, 14.28, 16.43);
-      text(p2, ci.geoZoneOther || ci.geoZone, 21.57, 16.27);
+      check(p2, 14.280, 16.430);
+      text(p2, ci.geoZoneOther || ci.geoZone, 21.570, 16.270);
     }
 
-    // Regulated
-    if (ci.isRegulated === true)  check(p2, 9.17,  17.97);
-    if (ci.isRegulated === false) check(p2, 11.01, 17.97);
-    if (ci.isRegulated && ci.regulator) text(p2, ci.regulator, 10.16, 18.41);
+    if (ci.isRegulated === true)  check(p2, 9.170, 17.970);
+    if (ci.isRegulated === false) check(p2, 11.010, 17.970);
+    if (ci.isRegulated && ci.regulator) text(p2, ci.regulator, 10.160, 18.410);
 
-    // Listed
-    if (ci.isListed === true)  check(p2, 7.90, 20.09);
-    if (ci.isListed === false) check(p2, 9.74, 20.09);
-    if (ci.isListed && ci.markets) text(p2, ci.markets, 8.26, 20.54);
+    if (ci.isListed === true)  check(p2, 7.900, 20.090);
+    if (ci.isListed === false) check(p2, 9.740, 20.090);
 
-    // Representative row (table: Nom | Prénom | Fonction | Tel | Mail | PPE)
-    // Headers at y=24.39; data row is below the header (~y=25.50)
-    text(p2, rep.lastName,  2.34,  25.50, 8, BLACK);
-    text(p2, rep.firstName, 7.91,  25.50, 8, BLACK);
-    text(p2, rep.function,  13.47, 25.50, 8, BLACK);
-    text(p2, rep.phone,     19.04, 25.50, 8, BLACK);
-    text(p2, rep.email,     24.60, 25.50, 8, BLACK);
-    text(p2, rep.isPEP === true ? "Oui" : rep.isPEP === false ? "Non" : "", 30.68, 25.50, 8, BLACK);
+    // Legal representative
+    text(p2, rep.lastName, 2.344, 25.100);
+    text(p2, rep.firstName, 18.938, 25.100);
+    text(p2, rep.function, 2.344, 26.320);
+    text(p2, rep.email, 2.344, 28.770);
+    text(p2, rep.phone, 18.938, 28.770);
 
-    // FATCA
-    if (ci.hasUSPerson === true)  check(p2, 16.38, 33.64);
-    if (ci.hasUSPerson === false) check(p2, 18.28, 33.64);
+    if (rep.isPEP === true)  check(p2, 2.344, 31.850);
+    if (rep.isPEP === false) check(p2, 4.560, 31.850);
 
-    // Financial data (blanks at y≈38.18, 39.24, 40.31, 41.37)
-    text(p2, fin.fiscalYearEnd, 2.34,  38.02, 8, BLACK);
-    text(p2, fin.totalBalance ? fin.totalBalance + " €" : "", 18.91, 39.08, 8, BLACK);
-    text(p2, fin.revenue ? fin.revenue + " €" : "",      18.91, 40.15, 8, BLACK);
-    text(p2, fin.equity ? fin.equity + " €" : "",        18.91, 41.21, 8, BLACK);
+    if (ci.hasUSPerson === true)  check(p2, 2.344, 34.394);
+    if (ci.hasUSPerson === false) check(p2, 4.563, 34.394);
 
-    // ── Page 3 (idx 2): Tax + Fund origins ───────────────────────────────
+    // ── Page 3 (idx 2): Company Financial ───────────────────────────────
     const p3 = page(2);
+    text(p3, fin.totalBalance, 2.344, 7.640);
+    text(p3, fin.revenue, 18.938, 7.640);
+    text(p3, fin.equity, 2.344, 8.870);
+    text(p3, fin.financialCommitments ? `${fin.financialCommitments} %` : "", 18.938, 8.870);
 
-    if (fin.taxType === "IS") check(p3, 13.39, 3.29);
-    if (fin.taxType === "IR") check(p3, 24.44, 3.29);
+    if (fin.taxType === "IS") check(p3, 2.344, 10.100);
+    if (fin.taxType === "IR") check(p3, 5.500, 10.100);
 
-    // Fund nature
-    if (fin.fundNature === "liquidities")           check(p3, 3.47,  16.01);
-    if (fin.fundNature === "financial_instruments") check(p3, 11.75, 16.01);
-    if (fin.fundNature === "both") { check(p3, 3.47, 16.01); check(p3, 11.75, 16.01); }
-    text(p3, fin.amountToInvest, 18.91, 15.85);
+    text(p3, fin.amountToInvest ? `${fin.amountToInvest} EUR` : "", 17.844, 32.194, 8.5);
+    text(p3, fin.bankOrigin, 11.200, 36.450, 8.5);
 
-    // Fund origins PM
-    const originPM: Record<string, [number, number]> = {
-      professional_income: [3.47,  18.14],
-      professional_sale:   [14.51, 18.14],
-      real_estate_sale:    [25.56, 18.14],
-      savings:             [3.47,  19.20],
-      securities_sale:     [14.51, 19.20],
-      life_insurance:      [25.56, 19.20],
-      inheritance:         [3.47,  20.26],
-      other:               [14.51, 20.26],
-    };
-    fin.fundOrigins.forEach(o => { if (originPM[o]) check(p3, ...originPM[o]); });
-    text(p3, fin.fundOriginOther, 19.49, 20.10);
-    text(p3, fin.bankOrigin, 11.07, 22.23, 8.5, BLUE, px(28.0) - px(11.07) - 5);
-
-    // Funding modality
-    if (fin.fundingModality === "portfolio_transfer") check(p3, 3.47,  24.51);
-    if (fin.fundingModality === "check")              check(p3, 14.51, 24.51);
-    if (fin.fundingModality === "wire")               check(p3, 25.56, 24.51);
-
-    // ── Page 4 (idx 3): Risk profiles (info only) + Product knowledge start
-    const p4 = page(3);
-    // Monetary on page 4
-    const monPM = { heldY: 44.85, durationY: 46.13, q1Y: 46.77, q2Y: 48.63 };
-    const ePM_mon = pk.monetary;
-    if (ePM_mon.held === true)  check(p4, 2.34, monPM.heldY);
-    if (ePM_mon.held === false) check(p4, 6.33, monPM.heldY);
-    if (ePM_mon.opsPerYear === "<1")  check(p4, 13.27, monPM.heldY);
-    if (ePM_mon.opsPerYear === "1-5") check(p4, 21.34, monPM.heldY);
-    if (ePM_mon.opsPerYear === "6+")  check(p4, 29.43, monPM.heldY);
-    if (ePM_mon.volume === "<5k")    check(p4, 11.86, monPM.durationY);
-    if (ePM_mon.volume === "5-10k")  check(p4, 16.23, monPM.durationY);
-    if (ePM_mon.volume === "10-50k") check(p4, 24.49, monPM.durationY);
-    if (ePM_mon.volume === ">50k")   check(p4, 30.49, monPM.durationY);
-    if (ePM_mon.q1 === "vrai")        check(p4, 28.04, monPM.q1Y);
-    if (ePM_mon.q1 === "faux")        check(p4, 28.04, monPM.q1Y + 0.61);
-    if (ePM_mon.q1 === "ne_sais_pas") check(p4, 28.04, monPM.q1Y + 1.22);
-
-    // ── Page 5 (idx 4): bonds, stocks, SCPI ─────────────────────────────
-    const p5 = page(4);
-    type PMProductRow = { heldY: number; durationY: number; q1Y: number; q2Y: number };
-    const pmProducts: Record<string, PMProductRow> = {
-      bonds:  { heldY: 4.97,  durationY: 6.25,  q1Y: 6.89,  q2Y: 8.75  },
-      stocks: { heldY: 12.31, durationY: 13.59, q1Y: 14.24, q2Y: 16.09 },
-      scpi:   { heldY: 19.66, durationY: 20.94, q1Y: 21.59, q2Y: 23.44 },
-    };
-    function fillPMProduct(pg: ReturnType<typeof page>, key: keyof typeof pk, rows: PMProductRow) {
-      const e = pk[key] as typeof pk["monetary"];
-      if (!e) return;
-      if (e.held === true)  check(pg, 2.34, rows.heldY);
-      if (e.held === false) check(pg, 6.33, rows.heldY);
-      if (e.opsPerYear === "<1")  check(pg, 13.27, rows.heldY);
-      if (e.opsPerYear === "1-5") check(pg, 21.34, rows.heldY);
-      if (e.opsPerYear === "6+")  check(pg, 29.43, rows.heldY);
-      if (e.volume === "<5k")    check(pg, 11.86, rows.durationY);
-      if (e.volume === "5-10k")  check(pg, 16.23, rows.durationY);
-      if (e.volume === "10-50k") check(pg, 24.49, rows.durationY);
-      if (e.volume === ">50k")   check(pg, 30.49, rows.durationY);
-      if (e.q1 === "vrai")        check(pg, 28.04, rows.q1Y);
-      if (e.q1 === "faux")        check(pg, 28.04, rows.q1Y + 0.61);
-      if (e.q1 === "ne_sais_pas") check(pg, 28.04, rows.q1Y + 1.22);
-      if (e.q2 === "vrai")        check(pg, 28.04, rows.q2Y);
-      if (e.q2 === "faux")        check(pg, 28.04, rows.q2Y + 0.61);
-      if (e.q2 === "ne_sais_pas") check(pg, 28.04, rows.q2Y + 1.22);
-    }
-    fillPMProduct(p5, "bonds",  pmProducts.bonds);
-    fillPMProduct(p5, "stocks", pmProducts.stocks);
-    fillPMProduct(p5, "scpi",   pmProducts.scpi);
-
-    // ── Pages 6-7 for PM: privateEquity, ETF, derivatives, structured + objectives ─
-    // (PM pages 6-8 mirror PP structure with similar but shifted coordinates)
-    // Objectives & ESG shared below
-    if (pageCount >= 7) {
-      const pObj = page(6); // Page 7
-      if (obj.riskProfile === "A") check(pObj, 2.34, 12.89);
-      if (obj.riskProfile === "B") check(pObj, 2.34, 14.11);
-      if (obj.riskProfile === "C") check(pObj, 2.34, 15.32);
-
-      const horizonMap: Record<string, [number, number]> = {
-        "<1":  [2.34,  29.72],
-        "1-3": [9.85,  29.72],
-        "3-5": [16.96, 29.72],
-        ">5":  [26.01, 29.72],
-      };
-      if (obj.horizon && horizonMap[obj.horizon]) check(pObj, ...horizonMap[obj.horizon]);
-
-      const maxLossMap: Record<string, [number, number]> = {
-        "10":   [2.34,  34.14],
-        "25":   [8.89,  34.14],
-        "50":   [15.43, 34.14],
-        "100":  [21.97, 34.14],
-        "none": [28.51, 34.14],
-      };
-      if (obj.maxLoss && maxLossMap[obj.maxLoss]) check(pObj, ...maxLossMap[obj.maxLoss]);
-    }
-
+    // ── Page 8 (idx 7): PM Declarations & Signatures ────────────────────
     if (pageCount >= 8) {
-      const pEsg = page(7); // Page 8
-      if (esg.wantsESG === true)  check(pEsg, 2.34,  4.64);
-      if (esg.wantsESG === false) check(pEsg, 12.04, 4.64);
+      const p8pm = page(pageCount - 1);
+      check(p8pm, 3.469, 2.200);
+      check(p8pm, 3.469, 3.075);
+      check(p8pm, 3.469, 3.950);
+
+      const city = ci.address ? ci.address.split(",").pop()?.trim() : "Luxembourg";
+      text(p8pm, (city || "LUXEMBOURG").toUpperCase(), 4.000, 11.544, 8.5);
+      text(p8pm, `${nowD} / ${nowM} / ${nowY}`, 15.000, 11.544, 8.5);
+      text(p8pm, "2", 21.800, 11.544, 8.5);
     }
   }
 

@@ -55,14 +55,17 @@ export async function POST(req: NextRequest) {
       clientEmail,
       returnUrl,
       pdfPageCount = 1,
+      locale = "en",
     } = (await req.json()) as {
       pdfBase64: string;
       clientName: string;
       clientEmail: string;
       returnUrl: string;
       pdfPageCount?: number;
+      locale?: string;
     };
 
+    const isFr = locale === "fr";
     const lastPage = String(pdfPageCount);
 
     const { CLIENT_ID, ACCOUNT_ID, BASE_URI, AUTH_SERVER } = getEnv();
@@ -74,11 +77,12 @@ export async function POST(req: NextRequest) {
     } catch (err) {
       const msg = String(err);
       if (msg.includes("consent_required")) {
+        const appOrigin = req.nextUrl?.origin || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
         const consentUrl =
           `https://${AUTH_SERVER}/oauth/auth?response_type=code` +
           `&scope=signature%20impersonation` +
           `&client_id=${CLIENT_ID}` +
-          `&redirect_uri=http://localhost:3002/api/docusign/callback`;
+          `&redirect_uri=${encodeURIComponent(`${appOrigin}/api/docusign/callback`)}`;
         return NextResponse.json(
           { success: false, error: "consent_required", consentUrl },
           { status: 401 }
@@ -93,14 +97,16 @@ export async function POST(req: NextRequest) {
       "Content-Type": "application/json",
     };
 
-    // ── 2. Create envelope ───────────────────────────────────────────────
+    const emailSubject = `Questionnaire QCC — ${clientName} — Opulanz Banking`;
+    const docName = `QCC-${clientName}.pdf`;
+
     const envelopeBody = {
-      emailSubject: `Questionnaire QCC — ${clientName} — Advensys Insurance Finance`,
+      emailSubject,
       status: "sent",
       documents: [
         {
           documentBase64: pdfBase64,
-          name: `QCC-${clientName}.pdf`,
+          name: docName,
           fileExtension: "pdf",
           documentId: "1",
         },
@@ -116,12 +122,26 @@ export async function POST(req: NextRequest) {
             tabs: {
               signHereTabs: [
                 {
-                  // Anchor to "Lu et approuve" text in the SIGNATURES section
                   anchorString: "Lu et approuv",
                   anchorUnits: "pixels",
                   anchorXOffset: "10",
                   anchorYOffset: "20",
-                  anchorIgnoreIfNotPresent: "false",
+                  anchorIgnoreIfNotPresent: "true",
+                  scaleValue: "0.8",
+                },
+                {
+                  anchorString: "Read and approved",
+                  anchorUnits: "pixels",
+                  anchorXOffset: "10",
+                  anchorYOffset: "20",
+                  anchorIgnoreIfNotPresent: "true",
+                  scaleValue: "0.8",
+                },
+                {
+                  documentId: "1",
+                  pageNumber: lastPage,
+                  xPosition: "60",
+                  yPosition: "680",
                   scaleValue: "0.8",
                 },
               ],
@@ -131,7 +151,14 @@ export async function POST(req: NextRequest) {
                   anchorUnits: "pixels",
                   anchorXOffset: "300",
                   anchorYOffset: "30",
-                  anchorIgnoreIfNotPresent: "false",
+                  anchorIgnoreIfNotPresent: "true",
+                },
+                {
+                  anchorString: "Read and approved",
+                  anchorUnits: "pixels",
+                  anchorXOffset: "280",
+                  anchorYOffset: "25",
+                  anchorIgnoreIfNotPresent: "true",
                 },
               ],
             },

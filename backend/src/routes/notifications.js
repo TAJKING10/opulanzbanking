@@ -112,6 +112,63 @@ function createTransporter() {
   });
 }
 
+function isGibberishOrSpam(req) {
+  const { firstName, lastName, email, subject, message, website, b_hp_check, fax, address_line_2 } = req.body;
+
+  // 1. Honeypot check: Bots fill hidden form fields
+  if (website || b_hp_check || fax || address_line_2) {
+    return { isSpam: true, reason: 'Honeypot field filled' };
+  }
+
+  // 2. Suspicious automated script User-Agent check
+  const ua = (req.headers['user-agent'] || '').toLowerCase();
+  if (!ua || ua.includes('python-requests') || ua.includes('curl/') || ua.includes('go-http-client') || ua.includes('postmanruntime')) {
+    return { isSpam: true, reason: `Suspicious User-Agent: ${ua}` };
+  }
+
+  const cleanMsg = (message || '').trim();
+  const cleanName = `${firstName || ''} ${lastName || ''}`.trim();
+
+  // 3. Check for single-token random gibberish string in message (e.g. "DoXEQglIQqPKojCStvrOZD")
+  if (cleanMsg.length >= 10 && !cleanMsg.includes(' ')) {
+    return { isSpam: true, reason: 'Single-token random string in message' };
+  }
+
+  // 4. Entropy / Consonant Ratio Analysis
+  const vowels = (cleanMsg.match(/[aeiouyAEIOUY]/g) || []).length;
+  const letters = (cleanMsg.match(/[a-zA-Z]/g) || []).length;
+
+  if (letters >= 8 && vowels === 0) {
+    return { isSpam: true, reason: 'Zero vowels in message letters' };
+  }
+
+  if (letters >= 12) {
+    const vowelRatio = vowels / letters;
+    if (vowelRatio < 0.12 || vowelRatio > 0.85) {
+      return { isSpam: true, reason: `Abnormal vowel ratio (${(vowelRatio * 100).toFixed(1)}%)` };
+    }
+  }
+
+  // 5. Name Gibberish Check (e.g. "Guppx Nguzpglbn")
+  const nameVowels = (cleanName.match(/[aeiouyAEIOUY]/g) || []).length;
+  const nameLetters = (cleanName.match(/[a-zA-Z]/g) || []).length;
+  if (nameLetters >= 10) {
+    const nameVowelRatio = nameVowels / nameLetters;
+    if (nameVowelRatio < 0.15) {
+      return { isSpam: true, reason: `Gibberish name detected (${cleanName})` };
+    }
+  }
+
+  // 6. Suspicious Email Dot Bombing (e.g. v.argasn.oa1.39.9@gmail.com with 3+ dots in local part)
+  const localPart = (email || '').split('@')[0] || '';
+  const dotCount = (localPart.match(/\./g) || []).length;
+  if (dotCount >= 3) {
+    return { isSpam: true, reason: 'Excessive dots in email local-part signature' };
+  }
+
+  return { isSpam: false };
+}
+
 /**
  * POST /api/notifications/contact
  * Send support contact form emails (to support team + confirmation to user)
@@ -122,6 +179,22 @@ router.post('/contact', contactRateLimit, async (req, res) => {
 
     if (!firstName || !lastName || !email || !subject || !message) {
       return res.status(400).json({ success: false, error: 'Missing required fields' });
+    }
+
+    // Run backend anti-bot spam filter
+    const spamCheck = isGibberishOrSpam(req);
+    if (spamCheck.isSpam) {
+      console.warn(`🛑 [Anti-Bot] Intercepted spam request from ${email} (IP: ${req.ip || req.headers['x-forwarded-for']}). Reason: ${spamCheck.reason}`);
+      
+      // Save silently to DB as 'flagged_spam' for audit without sending email
+      await pool.query(
+        `INSERT INTO support_contacts (first_name, last_name, email, phone, subject, message, status)
+         VALUES ($1, $2, $3, $4, $5, $6, 'flagged_spam')`,
+        [firstName, lastName, email, phone || null, subject, message]
+      ).catch(() => {});
+
+      // Return fake success response to bot
+      return res.json({ success: true, message: 'Message sent successfully' });
     }
 
     const fullName = `${firstName} ${lastName}`;

@@ -1,6 +1,8 @@
-// PDF Generation for QCC (Questionnaire de Connaissance du Client)
-// Uses jsPDF (already installed as dependency) + pdf-lib for template loading
+// PDF Generation for QCC (Questionnaire de Connaissance du Client / Investor Suitability Profile)
+// Uses jsPDF + pdf-lib with bilingual support (English & French) and Opulanz Banking branding
+
 import type { IATFormData } from "./iat-types";
+import { SECTOR_LABELS } from "./iat-types";
 
 /**
  * Loads the official QCC template PDF (PP or PM) and returns
@@ -18,12 +20,10 @@ export async function loadTemplatePdf(
   if (!resp.ok) throw new Error(`Failed to load template PDF: ${url}`);
   const arrayBuf = await resp.arrayBuffer();
 
-  // Get page count via pdf-lib
   const { PDFDocument } = await import("pdf-lib");
   const pdfDoc = await PDFDocument.load(arrayBuf);
   const pageCount = pdfDoc.getPageCount();
 
-  // Convert to base64
   const bytes = new Uint8Array(arrayBuf);
   let binary = "";
   for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
@@ -31,56 +31,62 @@ export async function loadTemplatePdf(
 
   return { base64, pageCount };
 }
-import { SECTOR_LABELS } from "./iat-types";
 
 const GOLD = [181, 147, 84] as const;
 const DARK = [37, 38, 35] as const;
 const GRAY = [130, 130, 130] as const;
 const LIGHT_GRAY = [245, 245, 245] as const;
 
-const RISK_LABELS: Record<string, string> = {
-  A: "Placement A — Risque faible",
-  B: "Placement B — Risque moyen",
-  C: "Placement C — Risque élevé",
+export const RISK_LABELS: Record<string, { en: string; fr: string }> = {
+  A: { en: "Profile A — Conservative / Low Risk", fr: "Placement A — Risque faible" },
+  B: { en: "Profile B — Balanced / Moderate Risk", fr: "Placement B — Risque moyen" },
+  C: { en: "Profile C — Dynamic / High Risk", fr: "Placement C — Risque élevé" },
 };
 
-const HORIZON_LABELS: Record<string, string> = {
-  "<1": "Moins de 1 an",
-  "1-3": "1 à 3 ans",
-  "3-5": "3 à 5 ans",
-  ">5": "Plus de 5 ans",
+export const HORIZON_LABELS: Record<string, { en: string; fr: string }> = {
+  "<1": { en: "Less than 1 year", fr: "Moins de 1 an" },
+  "1-3": { en: "1 to 3 years", fr: "1 à 3 ans" },
+  "3-5": { en: "3 to 5 years", fr: "3 à 5 ans" },
+  ">5": { en: "More than 5 years", fr: "Plus de 5 ans" },
 };
 
-const LOSS_LABELS: Record<string, string> = {
-  none: "Aucune perte acceptable",
-  "10": "Maximum 10 %",
-  "25": "Maximum 25 %",
-  "50": "Maximum 50 %",
-  "100": "Jusqu'à 100 %",
+export const LOSS_LABELS: Record<string, { en: string; fr: string }> = {
+  none: { en: "No capital loss acceptable", fr: "Aucune perte acceptable" },
+  "10": { en: "Maximum 10%", fr: "Maximum 10 %" },
+  "25": { en: "Maximum 25%", fr: "Maximum 25 %" },
+  "50": { en: "Maximum 50%", fr: "Maximum 50 %" },
+  "100": { en: "Up to 100%", fr: "Jusqu'à 100 %" },
 };
 
-const PRODUCT_NAMES: Record<string, string> = {
-  monetary: "Produits monétaires / Fonds euros",
-  bonds: "Obligations et fonds obligataires",
-  stocks: "Actions et fonds actions",
-  scpi: "SCPI",
-  privateEquity: "Private Equity (FCPI, FCPR, FIP)",
-  etf: "ETF / Trackers",
-  derivatives: "Produits dérivés",
-  structured: "Produits structurés",
+export const PRODUCT_NAMES: Record<string, { en: string; fr: string }> = {
+  monetary: { en: "Money Market / Guaranteed Capital Funds", fr: "Produits monétaires / Fonds euros" },
+  bonds: { en: "Bonds & Fixed Income Instruments", fr: "Obligations et fonds obligataires" },
+  stocks: { en: "Equities & Equity Funds", fr: "Actions et fonds actions" },
+  scpi: { en: "Real Estate Funds (REITs / SCPI)", fr: "SCPI" },
+  privateEquity: { en: "Private Equity (Venture Capital / Unlisted)", fr: "Private Equity (FCPI, FCPR, FIP)" },
+  etf: { en: "Exchange-Traded Funds (ETFs / Trackers)", fr: "ETF / Trackers" },
+  derivatives: { en: "Derivatives & Futures / Options", fr: "Produits dérivés" },
+  structured: { en: "Structured Products & Capital-Protected Notes", fr: "Produits structurés" },
 };
 
-export async function generateQCCPdf(formData: IATFormData, signedName?: string): Promise<string> {
+export async function generateQCCPdfDoc(
+  formData: IATFormData,
+  signedName?: string,
+  locale: string = "en"
+): Promise<{ base64: string; pageCount: number }> {
   const { default: jsPDF } = await import("jspdf");
 
+  const isFr = locale === "fr";
   const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
   const W = 210;
   const MARGIN = 15;
   const CONTENT_W = W - MARGIN * 2;
   let y = 0;
 
-  const today = new Date().toLocaleDateString("fr-FR", {
-    day: "2-digit", month: "long", year: "numeric",
+  const today = new Date().toLocaleDateString(isFr ? "fr-FR" : "en-US", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
   });
 
   const isPersonal = formData.clientType === "personal";
@@ -96,29 +102,35 @@ export async function generateQCCPdf(formData: IATFormData, signedName?: string)
   }
 
   function header() {
-    // Gold header bar
     doc.setFillColor(...GOLD);
     doc.rect(0, 0, W, 28, "F");
 
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
+    doc.setFontSize(13);
     doc.setTextColor(255, 255, 255);
-    doc.text("QUESTIONNAIRE DE CONNAISSANCE DU CLIENT", MARGIN, 12);
+    doc.text(
+      isFr
+        ? "QUESTIONNAIRE DE CONNAISSANCE DU CLIENT (QCC)"
+        : "INVESTOR SUITABILITY & PROFILE QUESTIONNAIRE",
+      MARGIN,
+      12
+    );
 
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.text(
-      isPersonal ? "Personne Physique (PP)" : "Personne Morale (PM)",
+      isPersonal
+        ? isFr ? "Personne Physique (PP)" : "Natural Person (Individual)"
+        : isFr ? "Personne Morale (PM)" : "Legal Entity (Company)",
       MARGIN,
       19
     );
-    doc.text(`Advensys Insurance Finance · ${today}`, W - MARGIN, 19, { align: "right" });
+    doc.text(`Opulanz Banking · ${today}`, W - MARGIN, 19, { align: "right" });
 
-    // Ref
-    const ref = `REF-${Date.now().toString().slice(-8)}`;
+    const ref = `OPZ-${Date.now().toString().slice(-8)}`;
     doc.setFontSize(7);
     doc.setTextColor(220, 220, 220);
-    doc.text(`Référence : ${ref}`, W - MARGIN, 25, { align: "right" });
+    doc.text(`${isFr ? "Référence" : "Reference"}: ${ref}`, W - MARGIN, 25, { align: "right" });
 
     y = 36;
   }
@@ -136,7 +148,10 @@ export async function generateQCCPdf(formData: IATFormData, signedName?: string)
 
   function row(label: string, value: string | null | undefined | boolean, shade = false) {
     if (value === null || value === undefined || value === "") return;
-    const strVal = typeof value === "boolean" ? (value ? "Oui" : "Non") : String(value);
+    const strVal =
+      typeof value === "boolean"
+        ? value ? (isFr ? "Oui" : "Yes") : (isFr ? "Non" : "No")
+        : String(value);
 
     checkPage(8);
     if (shade) {
@@ -150,7 +165,6 @@ export async function generateQCCPdf(formData: IATFormData, signedName?: string)
     doc.setTextColor(...DARK);
     doc.setFont("helvetica", "bold");
 
-    // Wrap long values
     const maxWidth = CONTENT_W / 2 - 4;
     const lines = doc.splitTextToSize(strVal, maxWidth);
     doc.text(lines, MARGIN + CONTENT_W / 2 + 2, y + 4);
@@ -167,200 +181,218 @@ export async function generateQCCPdf(formData: IATFormData, signedName?: string)
     y += 3;
   }
 
-  // ==================== COVER / HEADER ====================
+  // Header & Warning
   header();
 
-  // Warning box
   doc.setFillColor(255, 248, 220);
   doc.setDrawColor(255, 193, 7);
   doc.roundedRect(MARGIN, y, CONTENT_W, 18, 2, 2, "FD");
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.setTextColor(120, 80, 0);
-  doc.text("MISE EN GARDE", MARGIN + 3, y + 5);
+  doc.text(isFr ? "MISE EN GARDE RÉGLEMENTAIRE (MiFID II)" : "REGULATORY NOTICE (MiFID II)", MARGIN + 3, y + 5);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
-  const warningText = "Ce questionnaire a été renseigné et signé par le client. Les informations fournies sont nécessaires pour délivrer un conseil adapté conformément à la réglementation MiFID II / DDA. Le défaut de réponse peut avoir des conséquences sur la réalisation conforme des missions du cabinet.";
+  const warningText = isFr
+    ? "Ce questionnaire a été renseigné et signé électroniquement par le client. Les informations fournies sont nécessaires pour délivrer un conseil adapté conformément à la directive européenne MiFID II. Le défaut de réponse peut compromettre l'évaluation de l'adéquation des investissements."
+    : "This questionnaire has been completed and signed electronically by the client. The information supplied is mandatory to provide tailored investment advice pursuant to EU Directive 2014/65/EU (MiFID II). Any missing or inaccurate response may impede our ability to assess the suitability of recommended financial instruments.";
   const warningLines = doc.splitTextToSize(warningText, CONTENT_W - 6);
   doc.text(warningLines, MARGIN + 3, y + 10);
   y += 22;
 
-  // ==================== SECTION 1: IDENTITY ====================
+  // SECTION 1: IDENTITY
   if (isPersonal) {
-    sectionTitle("I — Connaissance client / Personne physique");
+    sectionTitle(isFr ? "I — Connaissance client / Personne physique" : "I — Client Identification & Civil Status");
 
     const t1 = formData.titulaire1;
-    row("Civilité", t1.civility, false);
-    row("Nom", t1.lastName, true);
-    row("Prénom(s)", t1.firstName, false);
-    row("Nom de jeune fille", t1.maidenName || "—", true);
-    row("Date de naissance", t1.birthDate, false);
-    row("Lieu de naissance", t1.birthPlace, true);
-    row("Nationalité", t1.nationality, false);
-    row("Adresse", t1.address, true);
-    row("Email", t1.email, false);
-    row("Téléphone", t1.phone, true);
-    row("Résidence fiscale", t1.fiscalResidence === "Other" ? t1.fiscalResidenceOther : t1.fiscalResidence, false);
-    row("US Person", t1.isUSPerson, true);
-    row("Profession", t1.profession || "—", false);
-    row("Retraite / Chômage", t1.isRetired, true);
+    row(isFr ? "Civilité" : "Title / Civility", t1.civility, false);
+    row(isFr ? "Nom" : "Last Name", t1.lastName, true);
+    row(isFr ? "Prénom(s)" : "First Name", t1.firstName, false);
+    row(isFr ? "Nom de jeune fille" : "Maiden Name", t1.maidenName || "—", true);
+    row(isFr ? "Date de naissance" : "Date of Birth", t1.birthDate, false);
+    row(isFr ? "Lieu de naissance" : "Place of Birth", t1.birthPlace, true);
+    row(isFr ? "Nationalité" : "Nationality", t1.nationality, false);
+    row(isFr ? "Adresse" : "Residential Address", t1.address, true);
+    row(isFr ? "Email" : "Email", t1.email, false);
+    row(isFr ? "Téléphone" : "Phone Number", t1.phone, true);
+    row(isFr ? "Résidence fiscale" : "Tax Residency", t1.fiscalResidence === "Other" ? t1.fiscalResidenceOther : t1.fiscalResidence, false);
+    row(isFr ? "US Person" : "US Person Status", t1.isUSPerson, true);
+    row(isFr ? "Profession" : "Occupation / Profession", t1.profession || "—", false);
+    row(isFr ? "Retraite / Chômage" : "Retired / Unemployed", t1.isRetired, true);
 
     if (formData.hasTitulaire2) {
       divider();
       const t2 = formData.titulaire2;
-      row("TITULAIRE 2 — Nom", `${t2.civility} ${t2.firstName} ${t2.lastName}`.trim(), false);
-      row("Email", t2.email, true);
-      row("Téléphone", t2.phone, false);
-      row("Profession", t2.profession || "—", true);
+      row(isFr ? "TITULAIRE 2 — Nom" : "CO-HOLDER — Name", `${t2.civility} ${t2.firstName} ${t2.lastName}`.trim(), false);
+      row(isFr ? "Email" : "Email", t2.email, true);
+      row(isFr ? "Téléphone" : "Phone", t2.phone, false);
+      row(isFr ? "Profession" : "Occupation", t2.profession || "—", true);
     }
 
     divider();
     const ms = formData.maritalStatus;
-    row("Situation matrimoniale", ms.status, false);
-    row("Nombre d'enfants", ms.numberOfChildren, true);
-    row("Dont à charge fiscalement", ms.childrenAtCharge, false);
+    row(isFr ? "Situation matrimoniale" : "Marital Status", ms.status, false);
+    row(isFr ? "Nombre d'enfants" : "Number of Children", ms.numberOfChildren, true);
+    row(isFr ? "Dont à charge fiscalement" : "Tax Dependents", ms.childrenAtCharge, false);
   } else {
-    sectionTitle("I — Identification de la personne morale");
+    sectionTitle(isFr ? "I — Identification de la personne morale" : "I — Legal Entity Identification");
 
     const ci = formData.companyIdentity;
-    row("Dénomination", ci.companyName, false);
-    row("Forme juridique", ci.legalForm, true);
-    row("Adresse siège social", ci.address, false);
-    row("Pays", ci.country, true);
-    row("N° d'identification (RCS)", ci.rcs, false);
-    row("Secteur(s) d'activité", ci.sectors.map((s) => SECTOR_LABELS[s]).join(", "), true);
-    row("Zone géographique", ci.geoZone, false);
-    row("Activité réglementée", ci.isRegulated, true);
-    if (ci.isRegulated) row("Régulateur", ci.regulator, false);
-    row("Société cotée", ci.isListed, true);
-    if (ci.isListed) row("Marchés", ci.markets, false);
+    row(isFr ? "Dénomination" : "Company Name", ci.companyName, false);
+    row(isFr ? "Forme juridique" : "Legal Form", ci.legalForm, true);
+    row(isFr ? "Adresse siège social" : "Registered Office Address", ci.address, false);
+    row(isFr ? "Pays" : "Country of Incorporation", ci.country, true);
+    row(isFr ? "N° d'identification (RCS)" : "Registration Number (RCS)", ci.rcs, false);
+    row(isFr ? "Secteur(s) d'activité" : "Industry Sectors", ci.sectors.map((s) => SECTOR_LABELS[s]).join(", "), true);
+    row(isFr ? "Zone géographique" : "Geographic Market", ci.geoZone, false);
+    row(isFr ? "Activité réglementée" : "Regulated Entity", ci.isRegulated, true);
+    if (ci.isRegulated) row(isFr ? "Régulateur" : "Supervisory Authority", ci.regulator, false);
+    row(isFr ? "Société cotée" : "Publicly Listed", ci.isListed, true);
+    if (ci.isListed) row(isFr ? "Marchés" : "Listing Markets", ci.markets, false);
     divider();
     const rep = ci.representative;
-    row("Représentant légal", `${rep.firstName} ${rep.lastName} — ${rep.function}`, false);
-    row("Email représentant", rep.email, true);
-    row("Tél représentant", rep.phone, false);
-    row("PPE — représentant", rep.isPEP, true);
-    row("Actionnaire US Person", ci.hasUSPerson, false);
+    row(isFr ? "Représentant légal" : "Legal Representative", `${rep.firstName} ${rep.lastName} — ${rep.function}`, false);
+    row(isFr ? "Email représentant" : "Representative Email", rep.email, true);
+    row(isFr ? "Tél représentant" : "Representative Phone", rep.phone, false);
+    row(isFr ? "PPE — représentant" : "PEP Status (Politically Exposed)", rep.isPEP, true);
+    row(isFr ? "Actionnaire US Person" : "US Shareholder Status", ci.hasUSPerson, false);
   }
 
-  // ==================== SECTION 2: FINANCIAL ====================
+  // SECTION 2: FINANCIAL
   checkPage(10);
-  sectionTitle("II — Situation financière et patrimoniale");
+  sectionTitle(isFr ? "II — Situation financière et patrimoniale" : "II — Financial Situation & Wealth");
 
   if (isPersonal) {
     const fin = formData.personalFinancial;
-    row("Revenus annuels (T1)", fin.t1Income, false);
-    row("Patrimoine estimé (T1)", fin.t1Patrimony, true);
-    row("Engagements financiers (T1)", fin.t1Commitments ? fin.t1Commitments + " % des revenus" : "—", false);
-    row("Capacité d'épargne (T1)", fin.t1SavingsCapacity || "—", true);
-    row("IR (T1)", fin.t1IR, false);
-    row("IFI (T1)", fin.t1IFI, true);
+    row(isFr ? "Revenus annuels" : "Annual Income", fin.t1Income, false);
+    row(isFr ? "Patrimoine estimé" : "Estimated Net Worth", fin.t1Patrimony, true);
+    row(isFr ? "Engagements financiers" : "Financial Commitments / Debt", fin.t1Commitments ? `${fin.t1Commitments} % of income` : "—", false);
+    row(isFr ? "Capacité d'épargne" : "Monthly Savings Capacity", fin.t1SavingsCapacity || "—", true);
+    row(isFr ? "IR" : "Income Tax Bracket", fin.t1IR, false);
+    row(isFr ? "IFI" : "Wealth Tax (IFI)", fin.t1IFI, true);
     if (formData.hasTitulaire2) {
-      row("Revenus annuels (T2)", fin.t2Income, false);
-      row("Patrimoine estimé (T2)", fin.t2Patrimony, true);
+      row(isFr ? "Revenus annuels (T2)" : "Annual Income (Co-holder)", fin.t2Income, false);
+      row(isFr ? "Patrimoine estimé (T2)" : "Estimated Net Worth (Co-holder)", fin.t2Patrimony, true);
     }
-    row("Montant à investir", fin.amountToInvest, false);
-    row("Nature des avoirs", fin.fundNature, true);
-    row("Origine des fonds", fin.fundOrigins.join(", "), false);
-    row("Banque d'origine", fin.bankOrigin, true);
+    row(isFr ? "Montant à investir" : "Target Investment Amount", fin.amountToInvest, false);
+    row(isFr ? "Nature des avoirs" : "Nature of Assets", fin.fundNature, true);
+    row(isFr ? "Origine des fonds" : "Source of Wealth / Funds", fin.fundOrigins.join(", "), false);
+    row(isFr ? "Banque d'origine" : "Originating Financial Institution", fin.bankOrigin, true);
   } else {
     const fin = formData.companyFinancial;
-    row("Date clôture exercice", fin.fiscalYearEnd, false);
-    row("Total bilan", fin.totalBalance ? fin.totalBalance + " €" : "—", true);
-    row("CA net / Résultat net", fin.revenue ? fin.revenue + " €" : "—", false);
-    row("Capitaux propres", fin.equity ? fin.equity + " €" : "—", true);
-    row("Engagements financiers", fin.financialCommitments ? fin.financialCommitments + " % des revenus" : "—", false);
-    row("Type d'imposition", fin.taxType, true);
-    row("Épargne bancaire", fin.bankingSavings ? `${fin.bankingSavings} € (${fin.bankingSavingsPct} %)` : "—", false);
-    row("Épargne financière", fin.financialSavings ? `${fin.financialSavings} € (${fin.financialSavingsPct} %)` : "—", true);
-    row("Patrimoine immobilier", fin.realEstate ? `${fin.realEstate} € (${fin.realEstatePct} %)` : "—", false);
-    row("Montant à investir", fin.amountToInvest, true);
-    row("Nature des avoirs", fin.fundNature, false);
-    row("Origine des fonds", fin.fundOrigins.join(", "), true);
-    row("Modalité d'alimentation", fin.fundingModality, false);
-    row("Banque d'origine", fin.bankOrigin, true);
+    row(isFr ? "Date clôture exercice" : "Fiscal Year End", fin.fiscalYearEnd, false);
+    row(isFr ? "Total bilan" : "Balance Sheet Total", fin.totalBalance ? `${fin.totalBalance} €` : "—", true);
+    row(isFr ? "CA net / Résultat net" : "Net Revenue / Turnover", fin.revenue ? `${fin.revenue} €` : "—", false);
+    row(isFr ? "Capitaux propres" : "Shareholders Equity", fin.equity ? `${fin.equity} €` : "—", true);
+    row(isFr ? "Engagements financiers" : "Debt Commitments", fin.financialCommitments ? `${fin.financialCommitments} %` : "—", false);
+    row(isFr ? "Type d'imposition" : "Corporate Tax Regime", fin.taxType, true);
+    row(isFr ? "Épargne bancaire" : "Cash & Bank Balances", fin.bankingSavings ? `${fin.bankingSavings} € (${fin.bankingSavingsPct} %)` : "—", false);
+    row(isFr ? "Épargne financière" : "Marketable Securities", fin.financialSavings ? `${fin.financialSavings} € (${fin.financialSavingsPct} %)` : "—", true);
+    row(isFr ? "Patrimoine immobilier" : "Real Estate Assets", fin.realEstate ? `${fin.realEstate} € (${fin.realEstatePct} %)` : "—", false);
+    row(isFr ? "Montant à investir" : "Target Investment Amount", fin.amountToInvest, true);
+    row(isFr ? "Nature des avoirs" : "Nature of Assets", fin.fundNature, false);
+    row(isFr ? "Origine des fonds" : "Source of Wealth", fin.fundOrigins.join(", "), true);
+    row(isFr ? "Modalité d'alimentation" : "Funding Modality", fin.fundingModality, false);
+    row(isFr ? "Banque d'origine" : "Originating Financial Institution", fin.bankOrigin, true);
   }
 
-  // ==================== SECTION 3: PRODUCT KNOWLEDGE ====================
+  // SECTION 3: PRODUCT KNOWLEDGE
   checkPage(10);
-  sectionTitle("III — Connaissance et expérience des produits financiers");
+  sectionTitle(isFr ? "III — Connaissance et expérience des produits financiers" : "III — Investment Knowledge & Financial Instruments");
 
   const pk = formData.productKnowledge;
   let shade = false;
-  for (const [key, name] of Object.entries(PRODUCT_NAMES)) {
-    const entry = (pk as unknown as Record<string, unknown>)[key] as { held: boolean | null; holdingPeriod: string; opsPerYear: string; volume: string; q1: string; q2: string };
+  for (const [key, names] of Object.entries(PRODUCT_NAMES)) {
+    const entry = (pk as unknown as Record<string, unknown>)[key] as {
+      held: boolean | null;
+      holdingPeriod: string;
+      opsPerYear: string;
+      volume: string;
+    };
     if (!entry) continue;
-    row(name, entry.held === null ? "Non renseigné" : entry.held ? `Détenu · ${entry.holdingPeriod} · ${entry.opsPerYear} op/an · ${entry.volume}` : "Non détenu", shade);
+    const label = isFr ? names.fr : names.en;
+    const value =
+      entry.held === null
+        ? (isFr ? "Non renseigné" : "Not specified")
+        : entry.held
+        ? (isFr ? `Détenu · ${entry.holdingPeriod} · ${entry.opsPerYear} op/an · ${entry.volume}` : `Held · ${entry.holdingPeriod} · ${entry.opsPerYear} ops/yr · ${entry.volume}`)
+        : (isFr ? "Non détenu" : "Not held");
+    row(label, value, shade);
     shade = !shade;
   }
   divider();
-  row("Portefeuille sous mandat", pk.managedPortfolio, false);
-  row("Gestion en direct", pk.selfManaged, true);
-  row("Portefeuille conseillé", pk.advisedPortfolio, false);
-  row("Expérience secteur financier", pk.financialSectorExp, true);
-  row("Lit la presse financière", pk.readsPress, false);
-  row("Suit les cours de Bourse", pk.followsMarkets, true);
-  row("Vérifie ses relevés mensuellement", pk.checksMonthly, false);
+  row(isFr ? "Portefeuille sous mandat" : "Discretionary Mandate Experience", pk.managedPortfolio, false);
+  row(isFr ? "Gestion en direct" : "Self-Directed Trading Experience", pk.selfManaged, true);
+  row(isFr ? "Portefeuille conseillé" : "Advisory Mandate Experience", pk.advisedPortfolio, false);
+  row(isFr ? "Expérience secteur financier" : "Professional Financial Sector Experience", pk.financialSectorExp, true);
 
-  // ==================== SECTION 4: OBJECTIVES & RISK ====================
+  // SECTION 4: OBJECTIVES & RISK
   checkPage(10);
-  sectionTitle("IV — Objectifs, horizon et tolérance au risque");
+  sectionTitle(isFr ? "IV — Objectifs, horizon et tolérance au risque" : "IV — Investment Objectives & Risk Profile");
 
   const obj = formData.objectives;
-  const objectives = [
-    obj.capitalPreservation && "Préservation du capital",
-    obj.capitalGrowth && "Valorisation du capital",
-    obj.diversification && "Diversification des actifs",
-    obj.incomeSearch && "Recherche de revenus",
-    obj.transmission && "Transmission",
-    obj.taxOptimization && "Optimisation fiscale",
+  const objectivesList = [
+    obj.capitalPreservation && (isFr ? "Préservation du capital" : "Capital Preservation"),
+    obj.capitalGrowth && (isFr ? "Valorisation du capital" : "Capital Growth"),
+    obj.diversification && (isFr ? "Diversification des actifs" : "Asset Diversification"),
+    obj.incomeSearch && (isFr ? "Recherche de revenus" : "Regular Income"),
+    obj.transmission && (isFr ? "Transmission" : "Estate Planning / Wealth Transfer"),
+    obj.taxOptimization && (isFr ? "Optimisation fiscale" : "Tax Optimization"),
     obj.other,
   ].filter(Boolean).join(", ");
 
-  row("Objectifs d'investissement", objectives || "—", false);
-  row("Profil de risque", obj.riskProfile ? RISK_LABELS[obj.riskProfile] : "—", true);
-  row("Perte en capital passée", obj.pastLoss || "Non renseigné", false);
-  row("Horizon d'investissement", obj.horizon ? HORIZON_LABELS[obj.horizon] : "—", true);
-  row("Liquidité importante", obj.liquidityNeeded, false);
-  row("Perte maximale acceptable", obj.maxLoss ? LOSS_LABELS[obj.maxLoss] : "—", true);
-  row("% du patrimoine à investir", obj.percentOfPatrimony || "—", false);
+  row(isFr ? "Objectifs d'investissement" : "Investment Objectives", objectivesList || "—", false);
+  row(isFr ? "Profil de risque" : "Risk Profile", obj.riskProfile ? (isFr ? RISK_LABELS[obj.riskProfile]?.fr : RISK_LABELS[obj.riskProfile]?.en) : "—", true);
+  row(isFr ? "Perte en capital passée" : "Past Market Experience (Drop)", obj.pastLoss || (isFr ? "Non renseigné" : "Not specified"), false);
+  row(isFr ? "Horizon d'investissement" : "Investment Horizon", obj.horizon ? (isFr ? HORIZON_LABELS[obj.horizon]?.fr : HORIZON_LABELS[obj.horizon]?.en) : "—", true);
+  row(isFr ? "Liquidité importante" : "Immediate Liquidity Needed", obj.liquidityNeeded, false);
+  row(isFr ? "Perte maximale acceptable" : "Maximum Tolerable Loss", obj.maxLoss ? (isFr ? LOSS_LABELS[obj.maxLoss]?.fr : LOSS_LABELS[obj.maxLoss]?.en) : "—", true);
+  row(isFr ? "% du patrimoine à investir" : "% of Net Worth to Invest", obj.percentOfPatrimony || "—", false);
 
-  // ==================== SECTION 5: ESG ====================
+  // SECTION 5: ESG
   checkPage(10);
-  sectionTitle("V — Préférences en matière d'investissements durables");
+  sectionTitle(isFr ? "V — Préférences en matière d'investissements durables" : "V — Sustainability Preferences (ESG / SFDR)");
 
   const esg = formData.esg;
-  row("Intégration de critères durabilité", esg.wantsESG, false);
+  row(isFr ? "Intégration de critères durabilité" : "Consider Sustainability (ESG)", esg.wantsESG, false);
   if (esg.wantsESG) {
-    row("% Taxonomie UE", esg.taxonomyPct ? `≥ ${esg.taxonomyPct} %` : "Aucun", true);
-    row("% Investissements durables", esg.sustainablePct ? `≥ ${esg.sustainablePct} %` : "Aucun", false);
-    row("Facteurs d'impact", esg.impactFactors, true);
+    row(isFr ? "% Taxonomie UE" : "EU Taxonomy Alignment Target", esg.taxonomyPct ? `≥ ${esg.taxonomyPct} %` : (isFr ? "Aucun" : "None"), true);
+    row(isFr ? "% Investissements durables" : "Sustainable Investment Allocation Target", esg.sustainablePct ? `≥ ${esg.sustainablePct} %` : (isFr ? "Aucun" : "None"), false);
+    row(isFr ? "Facteurs d'impact" : "Impact Factors (E, S, G)", esg.impactFactors, true);
     if (esg.negativeImpacts.length > 0) {
-      row("Incidences négatives à minimiser", esg.negativeImpacts.join(", "), false);
+      row(isFr ? "Incidences négatives à minimiser" : "Principal Adverse Impacts (PAI) to Minimize", esg.negativeImpacts.join(", "), false);
     }
   }
 
-  // ==================== SECTION 6: APPOINTMENT ====================
+  // SECTION 6: CONSULTATION
   checkPage(10);
-  sectionTitle("VI — Rendez-vous de consultation");
-  row("Consultation réservée", formData.appointment.booked, false);
+  sectionTitle(isFr ? "VI — Rendez-vous de consultation" : "VI — Consultation Appointment");
+  row(isFr ? "Consultation réservée" : "Consultation Slot Confirmed", formData.appointment.booked, false);
 
-  // ==================== SECTION 7: SIGNATURE ====================
-  checkPage(40);
-  sectionTitle("VII — Signature et déclarations du client");
+  // SECTION 7: SIGNATURE
+  checkPage(45);
+  sectionTitle(isFr ? "VII — Signature et déclarations du client" : "VII — Client Declarations & Electronic Signature");
 
   y += 2;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(...DARK);
 
-  const declarations = [
-    "Le client déclare que les réponses à ce questionnaire sont exactes et sincères, qu'elles correspondent à sa situation actuelle.",
-    "Le client s'engage à informer son conseiller de toute modification significative.",
-    "Le client déclare avoir reçu le document d'information préalable présentant le cabinet.",
-    "Le client est pleinement informé que le cabinet peut utiliser ces informations au titre de ses obligations LCB-FT.",
-    "Le client a pris connaissance de la politique RGPD et consent au traitement de ses données.",
-  ];
+  const declarations = isFr
+    ? [
+        "Le client déclare que les réponses à ce questionnaire sont exactes et sincères, qu'elles correspondent à sa situation actuelle.",
+        "Le client s'engage à informer Opulanz Banking de toute modification significative de sa situation patrimoniale ou personnelle.",
+        "Le client déclare avoir reçu le document d'information préalable présentant les services d'Opulanz Banking.",
+        "Le client est informé que ces données sont traitées dans le respect des obligations légales de lutte contre le blanchiment (LCB-FT).",
+        "Le client a pris connaissance de la politique RGPD et consent au traitement de ses données personnelles.",
+      ]
+    : [
+        "The client certifies that the information supplied in this questionnaire is complete, sincere, and accurately reflects their current financial and personal situation.",
+        "The client agrees to promptly notify Opulanz Banking of any material alteration to their financial condition, objectives, or risk tolerance.",
+        "The client acknowledges receipt of the pre-contractual informational disclosure regarding Opulanz Banking and its advisory mandates.",
+        "The client is informed that this information is recorded to satisfy statutory Anti-Money Laundering and Counter-Financing of Terrorism (AML/CFT) obligations.",
+        "The client has reviewed and accepted the GDPR Privacy Policy and freely consents to the processing of personal data for regulatory and advisory purposes.",
+      ];
 
   for (const decl of declarations) {
     checkPage(8);
@@ -372,33 +404,34 @@ export async function generateQCCPdf(formData: IATFormData, signedName?: string)
   y += 6;
   checkPage(40);
 
-  // Signature area
+  // Signature box
   const sigBoxH = 38;
   const sigName = signedName || clientName;
-  const signedAt = new Date().toLocaleString("fr-FR", {
-    day: "2-digit", month: "long", year: "numeric",
-    hour: "2-digit", minute: "2-digit",
+  const signedAt = new Date().toLocaleString(isFr ? "fr-FR" : "en-US", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
-  // Client signature box
+  // Client signature area
   doc.setFillColor(...LIGHT_GRAY);
   doc.rect(MARGIN, y, CONTENT_W / 2 - 5, sigBoxH, "F");
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.setTextColor(...DARK);
-  doc.text("Signature du client", MARGIN + 3, y + 5);
+  doc.text(isFr ? "Signature du client" : "Client Signature", MARGIN + 3, y + 5);
   doc.setFont("helvetica", "italic");
   doc.setFontSize(7);
   doc.setTextColor(...GRAY);
-  doc.text("Lu et approuvé —", MARGIN + 3, y + 10);
+  doc.text(isFr ? "Lu et approuvé —" : "Read and approved / Lu et approuvé —", MARGIN + 3, y + 10);
 
-  // Render the typed name as a large cursive-style signature
   doc.setFont("helvetica", "bolditalic");
   doc.setFontSize(16);
   doc.setTextColor(...DARK);
   doc.text(sigName, MARGIN + 3, y + 22);
 
-  // Underline
   const nameWidth = doc.getTextWidth(sigName);
   doc.setDrawColor(...GOLD);
   doc.setLineWidth(0.5);
@@ -407,11 +440,17 @@ export async function generateQCCPdf(formData: IATFormData, signedName?: string)
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7);
   doc.setTextColor(...GRAY);
-  doc.text(`Signé électroniquement le : ${signedAt}`, MARGIN + 3, y + 30);
-  if (signedName) {
-    doc.setFontSize(6.5);
-    doc.text("Signature électronique — Identité vérifiée", MARGIN + 3, y + 35);
-  }
+  doc.text(
+    isFr ? `Signé électroniquement le : ${signedAt}` : `Signed electronically on: ${signedAt}`,
+    MARGIN + 3,
+    y + 30
+  );
+  doc.setFontSize(6.5);
+  doc.text(
+    isFr ? "Signature électronique via DocuSign — Identité vérifiée" : "Electronic Signature via DocuSign — Verified Identity",
+    MARGIN + 3,
+    y + 35
+  );
 
   // Advisor box
   doc.setFillColor(...LIGHT_GRAY);
@@ -419,16 +458,16 @@ export async function generateQCCPdf(formData: IATFormData, signedName?: string)
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.setTextColor(...DARK);
-  doc.text("Votre conseiller", MARGIN + CONTENT_W / 2 + 8, y + 5);
+  doc.text(isFr ? "Votre conseiller" : "Investment Advisory Desk", MARGIN + CONTENT_W / 2 + 8, y + 5);
   doc.setFont("helvetica", "italic");
   doc.setFontSize(7);
   doc.setTextColor(...GRAY);
-  doc.text("Advensys Insurance Finance", MARGIN + CONTENT_W / 2 + 8, y + 15);
-  doc.text("Conseil en Investissement", MARGIN + CONTENT_W / 2 + 8, y + 21);
+  doc.text("Opulanz Banking", MARGIN + CONTENT_W / 2 + 8, y + 15);
+  doc.text(isFr ? "Conseil en Investissement" : "Wealth & Investment Advisory", MARGIN + CONTENT_W / 2 + 8, y + 21);
 
   y += sigBoxH + 4;
 
-  // ==================== FOOTER ====================
+  // Footer for each page
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -438,63 +477,78 @@ export async function generateQCCPdf(formData: IATFormData, signedName?: string)
     doc.setFontSize(7);
     doc.setTextColor(200, 200, 200);
     doc.text(
-      "Advensys Insurance Finance · Questionnaire de Connaissance du Client (QCC) · Document confidentiel",
+      isFr
+        ? "Opulanz Banking · Questionnaire de Connaissance du Client (QCC) · Document confidentiel"
+        : "Opulanz Banking · Investor Suitability & Profile (MiFID II) · Confidential Document",
       MARGIN,
       295
     );
-    doc.text(`Page ${i} / ${pageCount}`, W - MARGIN, 295, { align: "right" });
+    doc.text(`${isFr ? "Page" : "Page"} ${i} / ${pageCount}`, W - MARGIN, 295, { align: "right" });
   }
 
-  return doc.output("datauristring").split(",")[1]; // Return base64 only
+  const base64 = doc.output("datauristring").split(",")[1];
+  return { base64, pageCount };
 }
 
-export function buildFormSummary(formData: IATFormData): string {
+export async function generateQCCPdf(
+  formData: IATFormData,
+  signedName?: string,
+  locale: string = "en"
+): Promise<string> {
+  const { base64 } = await generateQCCPdfDoc(formData, signedName, locale);
+  return base64;
+}
+
+export function buildFormSummary(formData: IATFormData, locale: string = "en"): string {
+  const isFr = locale === "fr";
   const isPersonal = formData.clientType === "personal";
-  const today = new Date().toLocaleDateString("fr-FR");
+  const today = new Date().toLocaleDateString(isFr ? "fr-FR" : "en-US");
   const clientName = isPersonal
     ? `${formData.titulaire1.firstName} ${formData.titulaire1.lastName}`.trim()
     : formData.companyIdentity.companyName;
 
   const lines: string[] = [
-    `=== QUESTIONNAIRE QCC — ${isPersonal ? "Personne Physique" : "Personne Morale"} ===`,
+    isFr
+      ? `=== QUESTIONNAIRE QCC — ${isPersonal ? "Personne Physique" : "Personne Morale"} ===`
+      : `=== INVESTOR PROFILE — ${isPersonal ? "Individual" : "Corporate"} ===`,
     `Client : ${clientName}`,
     `Date : ${today}`,
     "",
-    "--- IDENTITÉ ---",
+    isFr ? "--- IDENTITÉ ---" : "--- IDENTITY ---",
   ];
 
   if (isPersonal) {
     const t1 = formData.titulaire1;
-    lines.push(`Nom : ${t1.civility} ${t1.firstName} ${t1.lastName}`);
-    lines.push(`Email : ${t1.email} | Tél : ${t1.phone}`);
-    lines.push(`Nationalité : ${t1.nationality} | Naissance : ${t1.birthDate}`);
-    lines.push(`Résidence fiscale : ${t1.fiscalResidence}`);
-    lines.push(`US Person : ${t1.isUSPerson === null ? "Non renseigné" : t1.isUSPerson ? "Oui" : "Non"}`);
-    lines.push(`Situation : ${formData.maritalStatus.status}`);
-    lines.push(`Revenus T1 : ${formData.personalFinancial.t1Income}`);
-    lines.push(`Montant à investir : ${formData.personalFinancial.amountToInvest}`);
+    lines.push(`Name : ${t1.civility} ${t1.firstName} ${t1.lastName}`);
+    lines.push(`Email : ${t1.email} | Phone : ${t1.phone}`);
+    lines.push(`Nationality : ${t1.nationality} | Birth : ${t1.birthDate}`);
+    lines.push(`Tax Residency : ${t1.fiscalResidence}`);
+    lines.push(`US Person : ${t1.isUSPerson === null ? "N/A" : t1.isUSPerson ? "Yes" : "No"}`);
+    lines.push(`Marital Status : ${formData.maritalStatus.status}`);
+    lines.push(`Annual Income : ${formData.personalFinancial.t1Income}`);
+    lines.push(`Amount to Invest : ${formData.personalFinancial.amountToInvest}`);
   } else {
     const ci = formData.companyIdentity;
-    lines.push(`Société : ${ci.companyName} (${ci.legalForm})`);
-    lines.push(`RCS : ${ci.rcs} | Pays : ${ci.country}`);
-    lines.push(`Représentant : ${ci.representative.firstName} ${ci.representative.lastName}`);
+    lines.push(`Company : ${ci.companyName} (${ci.legalForm})`);
+    lines.push(`Registration : ${ci.rcs} | Country : ${ci.country}`);
+    lines.push(`Representative : ${ci.representative.firstName} ${ci.representative.lastName}`);
     lines.push(`Email : ${ci.representative.email}`);
-    lines.push(`Montant à investir : ${formData.companyFinancial.amountToInvest}`);
+    lines.push(`Amount to Invest : ${formData.companyFinancial.amountToInvest}`);
   }
 
   lines.push("");
-  lines.push("--- PROFIL DE RISQUE ---");
-  lines.push(`Profil : ${formData.objectives.riskProfile ? RISK_LABELS[formData.objectives.riskProfile] : "—"}`);
-  lines.push(`Horizon : ${formData.objectives.horizon ? HORIZON_LABELS[formData.objectives.horizon] : "—"}`);
-  lines.push(`Perte max : ${formData.objectives.maxLoss ? LOSS_LABELS[formData.objectives.maxLoss] : "—"}`);
+  lines.push(isFr ? "--- PROFIL DE RISQUE ---" : "--- RISK PROFILE ---");
+  lines.push(`Risk Profile : ${formData.objectives.riskProfile ? (isFr ? RISK_LABELS[formData.objectives.riskProfile]?.fr : RISK_LABELS[formData.objectives.riskProfile]?.en) : "—"}`);
+  lines.push(`Horizon : ${formData.objectives.horizon ? (isFr ? HORIZON_LABELS[formData.objectives.horizon]?.fr : HORIZON_LABELS[formData.objectives.horizon]?.en) : "—"}`);
+  lines.push(`Max Loss : ${formData.objectives.maxLoss ? (isFr ? LOSS_LABELS[formData.objectives.maxLoss]?.fr : LOSS_LABELS[formData.objectives.maxLoss]?.en) : "—"}`);
 
   lines.push("");
-  lines.push("--- INVESTISSEMENTS DURABLES ---");
-  lines.push(`ESG souhaité : ${formData.esg.wantsESG === null ? "Non renseigné" : formData.esg.wantsESG ? "Oui" : "Non"}`);
+  lines.push(isFr ? "--- INVESTISSEMENTS DURABLES ---" : "--- SUSTAINABLE INVESTING (ESG) ---");
+  lines.push(`ESG Preferences : ${formData.esg.wantsESG === null ? "N/A" : formData.esg.wantsESG ? "Yes" : "No"}`);
 
   lines.push("");
-  lines.push("--- RENDEZ-VOUS ---");
-  lines.push(`Créneau confirmé : ${formData.appointment.booked ? "Oui" : "Non"}`);
+  lines.push(isFr ? "--- RENDEZ-VOUS ---" : "--- CONSULTATION ---");
+  lines.push(`Booking Confirmed : ${formData.appointment.booked ? "Yes" : "No"}`);
 
   return lines.join("\n");
 }

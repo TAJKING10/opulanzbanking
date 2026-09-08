@@ -12,6 +12,7 @@ interface Props {
   clientEmail: string;
   pdfBase64: string;
   pdfPageCount?: number;
+  locale?: string;
 }
 
 type Phase = "loading" | "signing" | "done" | "error";
@@ -24,12 +25,34 @@ export function IATDocuSignModal({
   clientEmail,
   pdfBase64,
   pdfPageCount = 1,
+  locale = "en",
 }: Props) {
   const [phase, setPhase] = React.useState<Phase>("loading");
   const [signingUrl, setSigningUrl] = React.useState("");
   const [envelopeId, setEnvelopeId] = React.useState("");
   const [errorMsg, setErrorMsg] = React.useState("");
   const popupRef = React.useRef<Window | null>(null);
+
+  const isFr = locale === "fr";
+
+  const t = {
+    title: isFr ? "Signature Électronique — Opulanz Banking" : "Electronic Signature — Opulanz Banking",
+    close: isFr ? "Fermer" : "Close",
+    loadingTitle: isFr ? "Préparation du document DocuSign…" : "Preparing DocuSign document…",
+    loadingSub: isFr ? "Génération de la session de signature en cours" : "Initializing secure signature session",
+    windowOpenTitle: isFr ? "Fenêtre DocuSign ouverte" : "DocuSign Window Opened",
+    windowOpenSub: isFr
+      ? "Une fenêtre DocuSign s'est ouverte pour signer votre document. Veuillez compléter la signature dans cette fenêtre."
+      : "A DocuSign window has opened for you to sign your document. Please complete your signature in that window.",
+    waiting: isFr ? "En attente de la signature…" : "Waiting for signature…",
+    reopen: isFr ? "Rouvrir la fenêtre DocuSign" : "Reopen DocuSign Window",
+    doneTitle: isFr ? "Document signé avec succès !" : "Document Signed Successfully!",
+    doneSub: isFr
+      ? "Votre questionnaire a été signé électroniquement via DocuSign. Finalisation en cours…"
+      : "Your investor profile has been signed electronically via DocuSign. Finalizing document…",
+    doneBadge: isFr ? "Signé · Horodaté · Archivé par DocuSign" : "Signed · Timestamped · Archived by DocuSign",
+    errorTitle: isFr ? "Erreur DocuSign" : "DocuSign Error",
+  };
 
   // When the modal opens and we have a PDF, create the DocuSign envelope
   React.useEffect(() => {
@@ -45,7 +68,7 @@ export function IATDocuSignModal({
     fetch("/api/docusign/sign", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pdfBase64, clientName, clientEmail, returnUrl, pdfPageCount }),
+      body: JSON.stringify({ pdfBase64, clientName, clientEmail, returnUrl, pdfPageCount, locale }),
     })
       .then((r) => r.json())
       .then((data) => {
@@ -68,7 +91,7 @@ export function IATDocuSignModal({
         setErrorMsg(String(err));
         setPhase("error");
       });
-  }, [isOpen, pdfBase64, clientName, clientEmail]);
+  }, [isOpen, pdfBase64, clientName, clientEmail, pdfPageCount, locale]);
 
   // Open popup when signing URL is ready
   React.useEffect(() => {
@@ -115,7 +138,7 @@ export function IATDocuSignModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex flex-col bg-black/80"
+      className="fixed inset-0 z-50 flex flex-col bg-black/60 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-labelledby="ds-modal-title"
@@ -128,7 +151,7 @@ export function IATDocuSignModal({
           </div>
           <div>
             <p id="ds-modal-title" className="text-sm font-bold text-gray-900">
-              Signature Électronique — Advensys Insurance Finance
+              {t.title}
             </p>
             <div className="flex items-center gap-1 mt-0.5">
               <Lock className="h-3 w-3 text-green-600" />
@@ -142,7 +165,7 @@ export function IATDocuSignModal({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Fermer"
+            aria-label={t.close}
             className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
           >
             <X className="h-5 w-5" />
@@ -159,10 +182,10 @@ export function IATDocuSignModal({
             <div className="text-center space-y-4">
               <Loader2 className="h-12 w-12 animate-spin text-brand-gold mx-auto" />
               <p className="text-sm font-semibold text-gray-700">
-                Préparation du document DocuSign…
+                {t.loadingTitle}
               </p>
               <p className="text-xs text-gray-400">
-                Génération de la session de signature en cours
+                {t.loadingSub}
               </p>
             </div>
           </div>
@@ -177,16 +200,15 @@ export function IATDocuSignModal({
               </div>
               <div className="space-y-2">
                 <h2 className="text-xl font-bold text-gray-900">
-                  Fenêtre DocuSign ouverte
+                  {t.windowOpenTitle}
                 </h2>
                 <p className="text-sm text-gray-500">
-                  Une fenêtre DocuSign s'est ouverte pour signer votre document.
-                  Veuillez compléter la signature dans cette fenêtre.
+                  {t.windowOpenSub}
                 </p>
               </div>
               <div className="flex items-center justify-center gap-2">
                 <Loader2 className="h-4 w-4 animate-spin text-brand-gold" />
-                <span className="text-xs text-gray-400">En attente de la signature…</span>
+                <span className="text-xs text-gray-400">{t.waiting}</span>
               </div>
               <Button
                 variant="outline"
@@ -206,7 +228,7 @@ export function IATDocuSignModal({
                 }}
                 className="text-xs"
               >
-                Rouvrir la fenêtre DocuSign
+                {t.reopen}
               </Button>
             </div>
           </div>
@@ -220,15 +242,14 @@ export function IATDocuSignModal({
                 <CheckCircle className="h-10 w-10 text-green-600" />
               </div>
               <h2 className="text-xl font-bold text-gray-900">
-                Document signé avec succès
+                {t.doneTitle}
               </h2>
               <p className="text-sm text-gray-500 max-w-sm mx-auto">
-                Votre questionnaire QCC a été signé électroniquement via DocuSign.
-                Génération du PDF et envoi par email en cours…
+                {t.doneSub}
               </p>
               <div className="inline-flex items-center gap-2 rounded-full bg-green-50 border border-green-200 px-4 py-2 text-xs text-green-800 font-medium">
                 <Lock className="h-3.5 w-3.5" />
-                Signé · Horodaté · Archivé par DocuSign
+                {t.doneBadge}
               </div>
             </div>
           </div>
@@ -241,7 +262,7 @@ export function IATDocuSignModal({
               <div className="flex items-center gap-3">
                 <AlertCircle className="h-8 w-8 text-red-500 flex-shrink-0" />
                 <h2 className="text-lg font-bold text-gray-900">
-                  Erreur DocuSign
+                  {t.errorTitle}
                 </h2>
               </div>
               <div className="rounded-xl border border-red-200 bg-red-50 p-4">
@@ -250,7 +271,7 @@ export function IATDocuSignModal({
                 </pre>
               </div>
               <Button variant="outline" onClick={onClose} className="w-full">
-                Fermer
+                {t.close}
               </Button>
             </div>
           </div>

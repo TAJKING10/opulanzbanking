@@ -35,6 +35,7 @@ const publicRoutes: Route[] = [
   ...(isProduction
     ? []
     : [{ path: '/spv-investment', priority: 0.7, changeFrequency: 'monthly' as const }]),
+  { path: '/mortgage', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/legal/privacy', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/legal/terms', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/legal/mentions', priority: 0.3, changeFrequency: 'yearly' },
@@ -53,9 +54,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
         changeFrequency: route.changeFrequency,
         priority: route.priority,
         alternates: {
-          languages: Object.fromEntries(
-            LOCALES.map((l) => [l, `${BASE_URL}/${l}${route.path}`])
-          ),
+          languages: {
+            'x-default': `${BASE_URL}/en${route.path}`,
+            ...Object.fromEntries(
+              LOCALES.map((l) => [l, `${BASE_URL}/${l}${route.path}`])
+            ),
+          },
         },
       });
     }

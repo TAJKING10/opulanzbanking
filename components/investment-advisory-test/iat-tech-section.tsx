@@ -2,68 +2,11 @@
 
 import * as React from "react";
 import { Calendar, CreditCard, FileText, Pen, ShieldCheck, ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-const SECTIONS = [
-  {
-    icon: Calendar,
-    title: "Calendly / Appointment Scheduling",
-    items: [
-      "60-minute video consultation per session",
-      "Calendar synchronisation (Google Calendar, Outlook)",
-      "ICS confirmation email to client",
-      "Rescheduling rules to be defined at production stage",
-      "Time zone handling: CET/CEST (Europe/Paris)",
-    ],
-  },
-  {
-    icon: CreditCard,
-    title: "Payment",
-    items: [
-      "Payment-service provider: to be confirmed",
-      "Billing entity: Advensys Insurance Finance, France",
-      "Production invoice process: to be confirmed",
-      "VAT/tax treatment: subject to final legal validation",
-      "No card data is collected on this demonstration page",
-    ],
-  },
-  {
-    icon: FileText,
-    title: "Document Storage",
-    items: [
-      "Secure encrypted storage required for production",
-      "Role-based access controls required",
-      "File-retention rules: approximately 5–10 years (subject to final legal validation)",
-      "Malware scanning required for all uploads",
-      "Full audit logging of access and modifications",
-    ],
-  },
-  {
-    icon: Pen,
-    title: "DocuSign — Electronic Signature",
-    items: [
-      "Developer environment required during implementation",
-      "Production integration only after written approval",
-      "Signed suitability report stored as final record",
-      "Full signature audit trail (timestamps, IP, identity)",
-      "Secure archival in compliance with MiFID II requirements",
-      "No DocuSign API keys or integration keys are present in this prototype",
-    ],
-  },
-  {
-    icon: ShieldCheck,
-    title: "Compliance and Regulatory",
-    items: [
-      "MiFID II suitability assessment (Article 25)",
-      "Decision journaling: advisor rationale must be documented",
-      "Conflict-of-interest register maintained by Advensys Insurance Finance",
-      "Record retention: approximately 5–10 years (subject to final legal validation)",
-      "GDPR consent management and data-subject rights process required",
-      "Non-independent advisory model: disclosed to client before engagement",
-    ],
-  },
-];
+const SECTION_ICONS = [Calendar, CreditCard, FileText, Pen, ShieldCheck];
 
-function TechCard({ icon: Icon, title, items }: (typeof SECTIONS)[0]) {
+function TechCard({ icon: Icon, title, items }: { icon: React.ElementType; title: string; items: string[] }) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -100,15 +43,17 @@ function TechCard({ icon: Icon, title, items }: (typeof SECTIONS)[0]) {
 }
 
 export function IATTechSection() {
+  const tp = useTranslations("iat.page");
+  const sections = tp.raw("techSections") as { title: string; items: string[] }[];
+
   return (
     <div className="space-y-3">
       <div className="rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 text-xs text-blue-900">
-        <strong>Internal review only.</strong> The information below describes the intended production requirements.
-        This section is for management review and does not constitute legal, regulatory, or commercial guarantees.
+        <strong>{tp("techOverline")}. </strong>{tp("techInternalNote")}
       </div>
 
-      {SECTIONS.map((s) => (
-        <TechCard key={s.title} {...s} />
+      {sections.map((s, i) => (
+        <TechCard key={s.title} icon={SECTION_ICONS[i] ?? ShieldCheck} title={s.title} items={s.items} />
       ))}
     </div>
   );

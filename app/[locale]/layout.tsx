@@ -73,8 +73,8 @@ export default async function LocaleLayout({
                 url: 'https://www.opulanz.com',
                 logo: 'https://www.opulanz.com/images/opulanz-logo.png',
                 description:
-                  'Regulated payment accounts, company formation, investment advisory, tax consulting, and life insurance for businesses in France and Luxembourg.',
-                areaServed: ['FR', 'LU'],
+                  'Luxembourg-based European financial and business platform for companies and entrepreneurs: payment services, accounting, company formation, investment advisory, insurance and cross-border business solutions.',
+                areaServed: ['LU', 'FR', 'EU'],
                 contactPoint: {
                   '@type': 'ContactPoint',
                   contactType: 'customer service',

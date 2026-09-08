@@ -8,6 +8,7 @@ import { AppInstallBanner } from '@/components/app-install-banner';
 import { SectionHeading } from '@/components/section-heading';
 import { ServiceCard } from '@/components/service-card';
 import { PageGuidance } from '@/components/page-guidance';
+import { VideoPopup } from '@/components/video-popup';
 import { generateSEOMetadata } from './metadata';
 
 export async function generateMetadata({
@@ -262,6 +263,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         </div>
       </section>
+
+      {/* Floating Independent Video Widget */}
+      <VideoPopup locale={locale} />
     </>
   );
 }

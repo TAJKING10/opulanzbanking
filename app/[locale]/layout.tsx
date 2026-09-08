@@ -6,6 +6,7 @@ import { Footer } from '@/shared/components/footer';
 import { GoogleProvider } from '@/components/google-provider';
 import { TawkChat } from '@/components/tawk-chat';
 import { LiveChat } from '@/components/live-chat';
+import { VideoPopup } from '@/components/video-popup';
 import { routing } from '@/i18n/routing';
 import { generateSEOMetadata } from './metadata';
 import { CapacitorInit } from '@/components/capacitor-init';
@@ -80,6 +81,7 @@ export default async function LocaleLayout({
             <Header locale={locale} />
             <main className="flex-1 pt-16 md:pt-20">{children}</main>
             <Footer locale={locale} />
+            <VideoPopup locale={locale} />
             <TawkChat />
             <LiveChat />
           </NextIntlClientProvider>

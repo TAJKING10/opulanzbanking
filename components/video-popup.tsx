@@ -26,8 +26,10 @@ export function VideoPopup({
   const modalVideoRef = React.useRef<HTMLVideoElement>(null);
   const previewVideoRef = React.useRef<HTMLVideoElement>(null);
 
-  const initialVideoSrc = locale === "fr" ? frVideoUrl : enVideoUrl;
-  const fallbackVideoSrc = locale === "fr" ? "/videos/FR.mp4" : "/videos/EN.mp4";
+  const isFr = (locale || "").toLowerCase().startsWith("fr");
+
+  const initialVideoSrc = isFr ? frVideoUrl : enVideoUrl;
+  const fallbackVideoSrc = isFr ? "/videos/FR.mp4" : "/videos/EN.mp4";
 
   // Hydration safety & check sessionStorage & start autoplay on load
   React.useEffect(() => {
@@ -117,7 +119,7 @@ export function VideoPopup({
           <button
             type="button"
             onClick={handleDismiss}
-            aria-label="Dismiss video widget"
+            aria-label={isFr ? "Fermer la vidéo" : "Dismiss video widget"}
             className="absolute top-2 right-2 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-black/75 text-white/90 backdrop-blur-md transition-all hover:bg-black hover:text-brand-gold focus:outline-none focus:ring-2 focus:ring-brand-gold cursor-pointer"
           >
             <X className="h-4 w-4" />
@@ -132,7 +134,7 @@ export function VideoPopup({
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") handleOpen();
             }}
-            aria-label="Click to expand video presentation"
+            aria-label={isFr ? "Cliquez pour ouvrir la présentation vidéo" : "Click to expand video presentation"}
             className="relative h-full w-full cursor-pointer"
           >
             <video
@@ -148,6 +150,11 @@ export function VideoPopup({
                   e.currentTarget.currentTime = startTime;
                 }
               }}
+              onError={() => {
+                if (activeVideoSrc !== fallbackVideoSrc) {
+                  setActiveVideoSrc(fallbackVideoSrc);
+                }
+              }}
               className="h-full w-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
             />
 
@@ -157,7 +164,7 @@ export function VideoPopup({
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-gold px-2.5 py-0.5 text-[11px] font-bold text-brand-dark shadow-md backdrop-blur-sm">
                   <Volume2 className="h-3 w-3" />
-                  {locale === "fr" ? "Vidéo Présentation" : "Video Overview"}
+                  {isFr ? "Présentation Vidéo" : "Video Overview"}
                 </span>
               </div>
 
@@ -173,10 +180,10 @@ export function VideoPopup({
               <div className="flex items-center justify-between text-white pt-1">
                 <div>
                   <h4 className="text-xs font-bold text-white group-hover:text-brand-gold transition-colors">
-                    {locale === "fr" ? "Opulanz Banking Overview" : "Opulanz Banking Overview"}
+                    {isFr ? "Présentation Opulanz" : "Opulanz Overview"}
                   </h4>
                   <p className="text-[10px] text-white/80 line-clamp-1">
-                    {locale === "fr" ? "Cliquez pour agrandir la vidéo" : "Click to expand & play full video"}
+                    {isFr ? "Cliquez pour regarder la vidéo" : "Click to expand & play full video"}
                   </p>
                 </div>
                 <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/20 backdrop-blur-md text-white group-hover:bg-brand-gold group-hover:text-brand-dark transition-all">
@@ -194,7 +201,7 @@ export function VideoPopup({
           tabIndex={-1}
           role="dialog"
           aria-modal="true"
-          aria-label={locale === "fr" ? "Lecteur Vidéo Opulanz" : "Opulanz Video Presentation"}
+          aria-label={isFr ? "Lecteur Vidéo Opulanz" : "Opulanz Video Presentation"}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 sm:p-6 md:p-10 animate-in fade-in duration-200"
           onClick={handleClose}
         >
@@ -208,13 +215,13 @@ export function VideoPopup({
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-brand-gold animate-pulse" />
                 <span className="text-sm font-bold text-white">
-                  {locale === "fr" ? "Présentation Opulanz Banking" : "Opulanz Banking Presentation"}
+                  {isFr ? "Présentation Opulanz Banking" : "Opulanz Banking Presentation"}
                 </span>
               </div>
               <button
                 type="button"
                 onClick={handleClose}
-                aria-label="Close video player"
+                aria-label={isFr ? "Fermer le lecteur vidéo" : "Close video player"}
                 className="group flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/80 transition-all hover:bg-brand-gold hover:text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-gold cursor-pointer"
               >
                 <X className="h-5 w-5 transition-transform group-hover:scale-110" />

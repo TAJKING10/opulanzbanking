@@ -34,14 +34,14 @@ export default function AboutPage() {
 
   const certifications = [
     {
-      icon: BadgeCheck,
-      title: t('hero.about.cert1Title'),
-      description: t('hero.about.cert1Description'),
-    },
-    {
       icon: Award,
       title: t('hero.about.cert2Title'),
       description: t('hero.about.cert2Description'),
+    },
+    {
+      icon: FileCheck,
+      title: t('hero.about.cert4Title'),
+      description: t('hero.about.cert4Description'),
     },
     {
       icon: Shield,
@@ -49,9 +49,9 @@ export default function AboutPage() {
       description: t('hero.about.cert3Description'),
     },
     {
-      icon: FileCheck,
-      title: t('hero.about.cert4Title'),
-      description: t('hero.about.cert4Description'),
+      icon: BadgeCheck,
+      title: t('hero.about.cert1Title'),
+      description: t('hero.about.cert1Description'),
     },
   ];
 

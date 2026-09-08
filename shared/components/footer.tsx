@@ -56,10 +56,34 @@ export function Footer({ locale }: FooterProps) {
               </li>
               <li>
                 <Link
+                  href={`/${locale}/investment-advisory`}
+                  className="text-sm leading-6 text-brand-grayMed transition-colors hover:text-brand-gold"
+                >
+                  {t("footer.links.services.investment")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={`/${locale}/life-insurance`}
+                  className="text-sm leading-6 text-brand-grayMed transition-colors hover:text-brand-gold"
+                >
+                  {t("footer.links.products.lifeInsurance")}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href={`/${locale}/mortgage`}
                   className="text-sm leading-6 text-brand-grayMed transition-colors hover:text-brand-gold"
                 >
                   {t("nav.mortgage")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={`/${locale}/services`}
+                  className="text-sm leading-6 text-brand-grayMed transition-colors hover:text-brand-gold"
+                >
+                  {t("nav.ourServices")}
                 </Link>
               </li>
               {process.env.NODE_ENV !== "production" && process.env.NEXT_PUBLIC_ENVIRONMENT !== "production" && (

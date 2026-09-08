@@ -362,6 +362,41 @@ export default function SupportPage() {
       </section>
 
 
+      {/* FAQ — visible answers for users and FAQPage schema */}
+      <section className="bg-brand-off py-12 md:py-16" id="faq">
+        <div className="container mx-auto max-w-3xl px-6">
+          <SectionHeading
+            title={t("faq.title")}
+            description={t("faq.description")}
+            align="center"
+            className="mb-10"
+          />
+          <div className="space-y-3">
+            {(
+              [
+                "openAccount",
+                "documents",
+                "fees",
+                "currencies",
+                "contact",
+              ] as const
+            ).map((key) => (
+              <details
+                key={key}
+                className="group rounded-xl border border-brand-grayLight bg-white px-5 py-4"
+              >
+                <summary className="cursor-pointer list-none text-left text-base font-semibold text-brand-dark marker:content-none">
+                  {t(`faq.questions.${key}.question`)}
+                </summary>
+                <p className="mt-3 text-sm leading-relaxed text-brand-grayMed">
+                  {t(`faq.questions.${key}.answer`)}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Additional Resources */}
       <section className="bg-white py-12">
         <div className="container mx-auto max-w-7xl px-6">
@@ -383,8 +418,8 @@ export default function SupportPage() {
                 <p className="mb-6 text-sm text-brand-grayMed">
                   {t("resources.helpCenter.description")}
                 </p>
-                <Button variant="outline" onClick={handleStartChat}>
-                  {t("resources.helpCenter.button")}
+                <Button variant="outline" asChild>
+                  <a href="#faq">{t("resources.helpCenter.button")}</a>
                 </Button>
               </CardContent>
             </Card>

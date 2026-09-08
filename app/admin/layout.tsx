@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
-import "../globals.css";
+import type { Metadata } from 'next';
+import { noIndexMetadata } from '@/lib/noindex';
 
 export const metadata: Metadata = {
-  title: "Opulanz Admin",
-  description: "Opulanz Banking Admin Panel",
+  title: 'Opulanz Admin',
+  description: 'Opulanz Banking Admin Panel',
+  ...noIndexMetadata,
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

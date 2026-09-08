@@ -15,6 +15,9 @@ const isProduction =
   process.env.NODE_ENV === 'production' ||
   process.env.NEXT_PUBLIC_ENVIRONMENT === 'production';
 
+/** Stable timestamp — avoid signalling daily rewrites of unchanged pages. */
+const LAST_MODIFIED = new Date('2026-09-01T00:00:00.000Z');
+
 const publicRoutes: Route[] = [
   { path: '', priority: 1.0, changeFrequency: 'weekly' },
   { path: '/about', priority: 0.8, changeFrequency: 'monthly' },
@@ -35,7 +38,6 @@ const publicRoutes: Route[] = [
   ...(isProduction
     ? []
     : [{ path: '/spv-investment', priority: 0.7, changeFrequency: 'monthly' as const }]),
-  { path: '/mortgage', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/legal/privacy', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/legal/terms', priority: 0.4, changeFrequency: 'yearly' },
   { path: '/legal/mentions', priority: 0.3, changeFrequency: 'yearly' },
@@ -50,7 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const locale of LOCALES) {
       entries.push({
         url: `${BASE_URL}/${locale}${route.path}`,
-        lastModified: new Date(),
+        lastModified: LAST_MODIFIED,
         changeFrequency: route.changeFrequency,
         priority: route.priority,
         alternates: {

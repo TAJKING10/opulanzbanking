@@ -10,6 +10,7 @@ export async function generateMetadata({
   return generateSEOMetadata({
     locale,
     pathname: '/mortgage/apply',
+    noIndex: true,
     title:
       locale === 'fr'
         ? 'Demande de Crédit Immobilier | Opulanz'

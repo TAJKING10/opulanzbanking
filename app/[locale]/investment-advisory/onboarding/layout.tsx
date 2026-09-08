@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Investor Profile & Onboarding (MiFID II) | Opulanz Banking",
-  description: "Complete your investor profile, risk assessment, and electronic signature for Opulanz Investment Advisory.",
+  title: 'Investor Profile & Onboarding (MiFID II) | Opulanz',
+  description:
+    'Complete your investor profile, risk assessment, and electronic signature for Opulanz Investment Advisory.',
+  robots: { index: false, follow: false },
 };
 
 export default function InvestmentAdvisoryOnboardingLayout({

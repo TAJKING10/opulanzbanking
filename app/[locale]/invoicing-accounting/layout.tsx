@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { generateSEOMetadata } from '@/app/[locale]/metadata';
+import { PageJsonLd } from '@/components/seo/page-json-ld';
 
 export async function generateMetadata({
   params,
@@ -21,6 +22,35 @@ export async function generateMetadata({
   });
 }
 
-export default function InvoicingAccountingLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export default async function InvoicingAccountingLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const isFr = locale === 'fr';
+  const name = isFr ? 'Comptabilité et facturation' : 'Accounting & invoicing';
+  return (
+    <>
+      <PageJsonLd
+        locale={locale}
+        pathname="/invoicing-accounting"
+        name={name}
+        description={
+          isFr
+            ? 'Comptabilité, facturation et tableaux de bord pour entreprises au Luxembourg.'
+            : 'Accounting, invoicing and financial dashboards for businesses in Luxembourg.'
+        }
+        service
+        breadcrumbs={[
+          { name: isFr ? 'Accueil' : 'Home', path: '' },
+          { name: isFr ? 'Services' : 'Services', path: '/services' },
+          { name, path: '/invoicing-accounting' },
+        ]}
+      />
+      {children}
+    </>
+  );
 }

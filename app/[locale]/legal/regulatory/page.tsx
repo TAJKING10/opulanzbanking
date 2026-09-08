@@ -48,11 +48,11 @@ function EnContent() {
       </p>
       <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
         <li>
-          <strong>Advensys Insurance-Finance SARL (France):</strong> ORIAS regulated — CIF, COBSP, COA, CJA
-        </li>
-        <li>
           <strong>Groupe Advensys Luxembourg S.A. (Luxembourg):</strong> RCS licensed — Accounting,
           tax advisory, company formation with accounting mandate
+        </li>
+        <li>
+          <strong>Advensys Insurance-Finance SARL (France):</strong> ORIAS regulated — CIF, COBSP, COA, CJA
         </li>
         <li>
           <strong>Opulanz SIA (Latvia):</strong> Commercial entity — Software licences, IT services,
@@ -61,7 +61,42 @@ function EnContent() {
       </ul>
 
       <h2 className="text-2xl font-bold text-brand-dark mb-4">
-        2. Advensys Insurance-Finance SARL — Full Regulatory Profile
+        2. Groupe Advensys Luxembourg S.A. — Full Regulatory Profile
+      </h2>
+      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
+        <p><strong>Company name:</strong> Groupe Advensys Luxembourg S.A.</p>
+        <p><strong>Trade names:</strong> Advensys Conseil · Location Rolls Royce · Opulanz Group</p>
+        <p><strong>Legal form:</strong> Société anonyme (SA)</p>
+        <p><strong>RCS Luxembourg:</strong> B197138</p>
+        <p><strong>Share capital:</strong> EUR 31,000 — Fixed — Fully paid up</p>
+        <p><strong>NACE code:</strong> 69.200 — Accounting activities</p>
+        <p><strong>Registered office:</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg</p>
+        <p><strong>Incorporation date:</strong> 12/05/2015</p>
+        <p><strong>Sole director:</strong> DULBERG Irvin Regnard — sole signatory authority</p>
+        <p><strong>Director mandate:</strong> Appointed 23/11/2020 — Expires 23/11/2026</p>
+        <p><strong>Statutory auditor:</strong> Advensys Conseil LTD (Companies House UK n°07464304)</p>
+        <p><strong>Email:</strong> contact@advensys-conseil.lu</p>
+        <p><strong>Phone:</strong> +352 28 79 76 26</p>
+      </div>
+
+      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
+        Services authorised for Groupe Advensys Luxembourg S.A. on the Opulanz platform:
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-3 space-y-1 text-sm">
+        <li>Professional accounting and payroll services</li>
+        <li>Tax advisory for individuals and legal entities (persons physiques et morales)</li>
+        <li>Company formation in Luxembourg — only when coupled with an accounting mandate</li>
+        <li>Business creation consulting and operational support</li>
+      </ul>
+      <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-brand-grayMed">
+        <strong>Important:</strong> Groupe Advensys Luxembourg S.A. may NOT provide company
+        formation services as a standalone service (without an accounting mandate). Standalone
+        company formation must be processed through Advensys Insurance-Finance SARL under its CJA
+        qualification.
+      </div>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">
+        3. Advensys Insurance-Finance SARL — Full Regulatory Profile
       </h2>
       <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
         <p><strong>Company name:</strong> Advensys Insurance-Finance SARL</p>
@@ -131,41 +166,6 @@ function EnContent() {
         <li>Company formation — standalone (CJA qualification)</li>
         <li>Legal and administrative advisory (CJA qualification)</li>
       </ul>
-
-      <h2 className="text-2xl font-bold text-brand-dark mb-4">
-        3. Groupe Advensys Luxembourg S.A. — Full Regulatory Profile
-      </h2>
-      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
-        <p><strong>Company name:</strong> Groupe Advensys Luxembourg S.A.</p>
-        <p><strong>Trade names:</strong> Advensys Conseil · Location Rolls Royce · Opulanz Group</p>
-        <p><strong>Legal form:</strong> Société anonyme (SA)</p>
-        <p><strong>RCS Luxembourg:</strong> B197138</p>
-        <p><strong>Share capital:</strong> EUR 31,000 — Fixed — Fully paid up</p>
-        <p><strong>NACE code:</strong> 69.200 — Accounting activities</p>
-        <p><strong>Registered office:</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg</p>
-        <p><strong>Incorporation date:</strong> 12/05/2015</p>
-        <p><strong>Sole director:</strong> DULBERG Irvin Regnard — sole signatory authority</p>
-        <p><strong>Director mandate:</strong> Appointed 23/11/2020 — Expires 23/11/2026</p>
-        <p><strong>Statutory auditor:</strong> Advensys Conseil LTD (Companies House UK n°07464304)</p>
-        <p><strong>Email:</strong> contact@advensys-conseil.lu</p>
-        <p><strong>Phone:</strong> +352 28 79 76 26</p>
-      </div>
-
-      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
-        Services authorised for Groupe Advensys Luxembourg S.A. on the Opulanz platform:
-      </p>
-      <ul className="list-disc pl-6 text-brand-grayMed mb-3 space-y-1 text-sm">
-        <li>Professional accounting and payroll services</li>
-        <li>Tax advisory for individuals and legal entities (persons physiques et morales)</li>
-        <li>Company formation in Luxembourg — only when coupled with an accounting mandate</li>
-        <li>Business creation consulting and operational support</li>
-      </ul>
-      <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-brand-grayMed">
-        <strong>Important:</strong> Groupe Advensys Luxembourg S.A. may NOT provide company
-        formation services as a standalone service (without an accounting mandate). Standalone
-        company formation must be processed through Advensys Insurance-Finance SARL under its CJA
-        qualification.
-      </div>
 
       <h2 className="text-2xl font-bold text-brand-dark mb-4">
         4. Opulanz SIA — Full Regulatory Profile
@@ -282,11 +282,11 @@ function FrContent() {
       </p>
       <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
         <li>
-          <strong>Advensys Insurance-Finance SARL (France) :</strong> Réglementée par l&apos;ORIAS — CIF, COBSP, COA, CJA
-        </li>
-        <li>
           <strong>Groupe Advensys Luxembourg S.A. (Luxembourg) :</strong> Enregistrée au RCS —
           Comptabilité, conseil fiscal, création de société avec mandat comptable
+        </li>
+        <li>
+          <strong>Advensys Insurance-Finance SARL (France) :</strong> Réglementée par l&apos;ORIAS — CIF, COBSP, COA, CJA
         </li>
         <li>
           <strong>Opulanz SIA (Lettonie) :</strong> Entité commerciale — Licences logicielles,
@@ -295,7 +295,42 @@ function FrContent() {
       </ul>
 
       <h2 className="text-2xl font-bold text-brand-dark mb-4">
-        2. Advensys Insurance-Finance SARL — Profil Réglementaire Complet
+        2. Groupe Advensys Luxembourg S.A. — Profil Réglementaire Complet
+      </h2>
+      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
+        <p><strong>Dénomination sociale :</strong> Groupe Advensys Luxembourg S.A.</p>
+        <p><strong>Enseignes commerciales :</strong> Advensys Conseil · Location Rolls Royce · Opulanz Group</p>
+        <p><strong>Forme juridique :</strong> Société anonyme (SA)</p>
+        <p><strong>RCS Luxembourg :</strong> B197138</p>
+        <p><strong>Capital social :</strong> 31 000 EUR — Fixe — Entièrement libéré</p>
+        <p><strong>Code NACE :</strong> 69.200 — Activités comptables</p>
+        <p><strong>Siège social :</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand-Duché de Luxembourg</p>
+        <p><strong>Date de constitution :</strong> 12/05/2015</p>
+        <p><strong>Administrateur unique :</strong> DULBERG Irvin Regnard — pouvoir de signature unique</p>
+        <p><strong>Mandat administrateur :</strong> Nommé le 23/11/2020 — Expire le 23/11/2026</p>
+        <p><strong>Commissaire aux comptes :</strong> Advensys Conseil LTD (Companies House UK n°07464304)</p>
+        <p><strong>Email :</strong> contact@advensys-conseil.lu</p>
+        <p><strong>Téléphone :</strong> +352 28 79 76 26</p>
+      </div>
+
+      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
+        Services autorisés pour Groupe Advensys Luxembourg S.A. sur la plateforme Opulanz :
+      </p>
+      <ul className="list-disc pl-6 text-brand-grayMed mb-3 space-y-1 text-sm">
+        <li>Services de comptabilité professionnelle et de gestion de la paie</li>
+        <li>Conseil fiscal pour les personnes physiques et morales</li>
+        <li>Création de société au Luxembourg — uniquement couplée à un mandat comptable</li>
+        <li>Conseil à la création d&apos;entreprise et accompagnement opérationnel</li>
+      </ul>
+      <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-brand-grayMed">
+        <strong>Important :</strong> Groupe Advensys Luxembourg S.A. ne peut PAS fournir de
+        services de création de société en prestation autonome (sans mandat comptable). La création
+        de société en autonome doit impérativement être traitée par Advensys Insurance-Finance SARL
+        au titre de sa qualification CJA.
+      </div>
+
+      <h2 className="text-2xl font-bold text-brand-dark mb-4">
+        3. Advensys Insurance-Finance SARL — Profil Réglementaire Complet
       </h2>
       <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
         <p><strong>Dénomination sociale :</strong> Advensys Insurance-Finance SARL</p>
@@ -365,41 +400,6 @@ function FrContent() {
         <li>Création de société — en autonome (qualification CJA)</li>
         <li>Conseil juridique et administratif (qualification CJA)</li>
       </ul>
-
-      <h2 className="text-2xl font-bold text-brand-dark mb-4">
-        3. Groupe Advensys Luxembourg S.A. — Profil Réglementaire Complet
-      </h2>
-      <div className="mb-4 pl-4 border-l-2 border-brand-gold/40 space-y-1 text-brand-grayMed text-sm">
-        <p><strong>Dénomination sociale :</strong> Groupe Advensys Luxembourg S.A.</p>
-        <p><strong>Enseignes commerciales :</strong> Advensys Conseil · Location Rolls Royce · Opulanz Group</p>
-        <p><strong>Forme juridique :</strong> Société anonyme (SA)</p>
-        <p><strong>RCS Luxembourg :</strong> B197138</p>
-        <p><strong>Capital social :</strong> 31 000 EUR — Fixe — Entièrement libéré</p>
-        <p><strong>Code NACE :</strong> 69.200 — Activités comptables</p>
-        <p><strong>Siège social :</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand-Duché de Luxembourg</p>
-        <p><strong>Date de constitution :</strong> 12/05/2015</p>
-        <p><strong>Administrateur unique :</strong> DULBERG Irvin Regnard — pouvoir de signature unique</p>
-        <p><strong>Mandat administrateur :</strong> Nommé le 23/11/2020 — Expire le 23/11/2026</p>
-        <p><strong>Commissaire aux comptes :</strong> Advensys Conseil LTD (Companies House UK n°07464304)</p>
-        <p><strong>Email :</strong> contact@advensys-conseil.lu</p>
-        <p><strong>Téléphone :</strong> +352 28 79 76 26</p>
-      </div>
-
-      <p className="text-brand-grayMed mb-3 text-sm font-semibold">
-        Services autorisés pour Groupe Advensys Luxembourg S.A. sur la plateforme Opulanz :
-      </p>
-      <ul className="list-disc pl-6 text-brand-grayMed mb-3 space-y-1 text-sm">
-        <li>Services de comptabilité professionnelle et de gestion de la paie</li>
-        <li>Conseil fiscal pour les personnes physiques et morales</li>
-        <li>Création de société au Luxembourg — uniquement couplée à un mandat comptable</li>
-        <li>Conseil à la création d&apos;entreprise et accompagnement opérationnel</li>
-      </ul>
-      <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-brand-grayMed">
-        <strong>Important :</strong> Groupe Advensys Luxembourg S.A. ne peut PAS fournir de
-        services de création de société en prestation autonome (sans mandat comptable). La création
-        de société en autonome doit impérativement être traitée par Advensys Insurance-Finance SARL
-        au titre de sa qualification CJA.
-      </div>
 
       <h2 className="text-2xl font-bold text-brand-dark mb-4">
         4. Opulanz SIA — Profil Réglementaire Complet

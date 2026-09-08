@@ -37,7 +37,7 @@
   "hero": {
     "home": {
       "title": "Payment services for modern businesses",
-      "subtitle": "Trusted digital payment services, company formation assistance, investment fund, and consulting services for entrepreneurs and businesses in France and Luxembourg",
+      "subtitle": "Luxembourg-based European financial and business platform — payment services, company formation, investment advisory, insurance and cross-border solutions for companies and entrepreneurs across Europe.",
       "primaryCta": "Open Account",
       "secondaryCta": "Learn More"
     },
@@ -1190,11 +1190,15 @@
       }
     },
     "trust": {
-      "title": "STATUS & OVERSIGHT",
-      "description": "Regulated activities",
-      "summary": "Our regulated activities are carried out by licensed group entities, under the oversight of the French authorities."
+      "title": "EUROPEAN REGULATORY FRAMEWORK",
+      "description": "Our Regulatory Structure",
+      "summary": "A Luxembourg-incorporated group with regulated financial intermediation entities authorised across Europe."
     },
     "regulatory": {
+      "block1Title": "Luxembourg Group",
+      "block1Desc": "Groupe Advensys Luxembourg S.A. — RCS Luxembourg B197138. Holding company incorporated in Luxembourg with over 19 years of experience in business solutions across Europe.",
+      "block2Title": "Regulated Financial Intermediation",
+      "block2Desc": "Intermediation services provided by Advensys Insurance-Finance SARL — ORIAS no. 21003660: broker (COBSP/COA) under ACPR oversight, Financial Investment Advisor (CIF) under AMF oversight.",
       "france": "France",
       "acpr": "Broker in banking operations, payment services and insurance. Advensys Insurance-Finance — ORIAS no. 21003660, under ACPR oversight.",
       "amf": "Financial Investment Advisor (CIF). Advensys Insurance-Finance — ORIAS no. 21003660, under AMF oversight."

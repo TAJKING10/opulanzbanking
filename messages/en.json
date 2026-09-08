@@ -4500,15 +4500,15 @@
   "mortgage": {
     "hero": {
       "title": "Your mortgage, handled by experts.",
-      "subtitle": "Opulanz gathers your financial profile and supporting documents, then submits your case to our partner bank network in France and Luxembourg. so you receive the best offers without the paperwork burden.",
+      "subtitle": "Opulanz gathers your financial profile and supporting documents, then submits your case to our partner bank network in Luxembourg and France, so you receive the best offers without the paperwork burden.",
       "primaryCta": "Start My Application",
       "secondaryCta": "How It Works"
     },
     "overview": {
       "overline": "Mortgage Services",
       "title": "A trusted bridge to the best mortgage conditions",
-      "description": "As a regulated credit intermediary, we work on your behalf to submit your dossier to our network of partner banks in France and Luxembourg, securing competitive rates without the administrative burden.",
-      "badge1": "France & Luxembourg",
+      "description": "As a regulated credit intermediary, we work on your behalf to submit your dossier to our network of partner banks in Luxembourg and France, securing competitive rates without the administrative burden.",
+      "badge1": "Luxembourg & France",
       "badge2": "GDPR Secure",
       "badge3": "Multibank Access",
       "whyTitle": "Why Opulanz for your mortgage?",
@@ -4541,10 +4541,10 @@
     "features": {
       "overline": "Why Choose Us",
       "title": "Professional mortgage brokerage expertise",
-      "description": "As a regulated credit intermediary, we provide expert guidance and multi-bank access for your property financing in France and Luxembourg.",
+      "description": "As a regulated credit intermediary, we provide expert guidance and multi-bank access for your property financing in Luxembourg and France.",
       "expertise": {
         "title": "Local Expertise",
-        "description": "Deep knowledge of lending requirements in France and Luxembourg, including cross-border and non-resident profiles."
+        "description": "Deep knowledge of lending requirements in Luxembourg and France, including cross-border and non-resident profiles."
       },
       "secure": {
         "title": "Secure and GDPR",
@@ -4561,7 +4561,7 @@
     },
     "markets": {
       "overline": "Coverage",
-      "title": "France & Luxembourg",
+      "title": "Luxembourg & France",
       "description": "Specialised mortgage brokerage across both markets, with cross-border expertise for international and frontier-zone profiles.",
       "lu": {
         "title": "Luxembourg",
@@ -4648,7 +4648,7 @@
       "description": "A Lombard facility allows you to borrow against the value of your investment portfolio, giving you access to capital while your assets remain invested and your long-term strategy stays intact.",
       "howWeHelp": {
         "title": "Our Role",
-        "description": "Opulanz acts as a regulated credit intermediary. We structure your application, present your file to our network of partner banks across France and Luxembourg, and guide you through a comparison of available terms. The credit facility is extended by the selected lending institution — not by Opulanz."
+        "description": "Opulanz acts as a regulated credit intermediary. We structure your application, present your file to our network of partner banks across Luxembourg and France, and guide you through a comparison of available terms. The credit facility is extended by the selected lending institution — not by Opulanz."
       },
       "uses": {
         "title": "Common Applications",

@@ -7,6 +7,7 @@ interface VideoPopupProps {
   locale?: string;
   enVideoUrl?: string;
   frVideoUrl?: string;
+  startTime?: number; // Start timestamp in seconds (default: 212 = 3:32)
   className?: string;
 }
 
@@ -14,6 +15,7 @@ export function VideoPopup({
   locale = "en",
   enVideoUrl = "https://opulanzrgstorage.blob.core.windows.net/opulanz-documents/1788860571210-EN.mp4?sv=2026-06-06&se=2031-09-07T09%3A46%3A16Z&sr=b&sp=r&sig=4D5NPUcSlWyzIRFBqJn2TVz9eeMF12H%2F%2BQU37hi8Fyw%3D",
   frVideoUrl = "https://opulanzrgstorage.blob.core.windows.net/opulanz-documents/1788860584974-FR.mp4?sv=2026-06-06&se=2031-09-07T09%3A46%3A16Z&sr=b&sp=r&sig=KSp0aiLVbERgBIoPJYSl6rHKLioY0t6%2BPRWy9U5FlK8%3D",
+  startTime = 212, // 3:32 in seconds
   className = "",
 }: VideoPopupProps) {
   const [isMounted, setIsMounted] = React.useState(false);
@@ -27,27 +29,37 @@ export function VideoPopup({
   const initialVideoSrc = locale === "fr" ? frVideoUrl : enVideoUrl;
   const fallbackVideoSrc = locale === "fr" ? "/videos/FR.mp4" : "/videos/EN.mp4";
 
-  // Hydration safety & check localStorage & start autoplay on load
+  // Hydration safety & check sessionStorage & start autoplay on load
   React.useEffect(() => {
     setIsMounted(true);
     setActiveVideoSrc(initialVideoSrc);
-    const dismissed = localStorage.getItem("support_video_dismissed") === "true";
+    try {
+      localStorage.removeItem("support_video_dismissed");
+    } catch (_) {}
+
+    const dismissed = sessionStorage.getItem("support_video_dismissed") === "true";
     setIsDismissed(dismissed);
 
     if (!dismissed && previewVideoRef.current) {
+      if (startTime > 0) {
+        previewVideoRef.current.currentTime = startTime;
+      }
       previewVideoRef.current.play().catch(() => {});
     }
-  }, [initialVideoSrc]);
+  }, [initialVideoSrc, startTime]);
 
-  // Lock body scroll when modal is open & add ESC key listener
+  // Lock body scroll when modal is open & set start timestamp
   React.useEffect(() => {
     if (!isOpen) return;
 
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    // Auto-play modal video when opened
+    // Auto-play modal video when opened from 3:32
     if (modalVideoRef.current) {
+      if (startTime > 0) {
+        modalVideoRef.current.currentTime = startTime;
+      }
       modalVideoRef.current.play().catch(() => {});
     }
 
@@ -69,7 +81,9 @@ export function VideoPopup({
     if (e) e.stopPropagation();
     setIsDismissed(true);
     setIsOpen(false);
-    localStorage.setItem("support_video_dismissed", "true");
+    try {
+      sessionStorage.setItem("support_video_dismissed", "true");
+    } catch (_) {}
     if (triggerRef.current) {
       triggerRef.current.focus();
     }
@@ -129,6 +143,11 @@ export function VideoPopup({
               loop
               playsInline
               preload="auto"
+              onLoadedMetadata={(e) => {
+                if (startTime > 0) {
+                  e.currentTarget.currentTime = startTime;
+                }
+              }}
               className="h-full w-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
             />
 
@@ -210,6 +229,11 @@ export function VideoPopup({
                 controls
                 autoPlay
                 className="h-full w-full object-contain"
+                onLoadedMetadata={(e) => {
+                  if (startTime > 0) {
+                    e.currentTarget.currentTime = startTime;
+                  }
+                }}
                 onEnded={handleClose}
               >
                 <track kind="captions" />

@@ -27,12 +27,16 @@ export function VideoPopup({
   const initialVideoSrc = locale === "fr" ? frVideoUrl : enVideoUrl;
   const fallbackVideoSrc = locale === "fr" ? "/videos/FR.mp4" : "/videos/EN.mp4";
 
-  // Hydration safety & check localStorage
+  // Hydration safety & check localStorage & start autoplay on load
   React.useEffect(() => {
     setIsMounted(true);
     setActiveVideoSrc(initialVideoSrc);
     const dismissed = localStorage.getItem("support_video_dismissed") === "true";
     setIsDismissed(dismissed);
+
+    if (!dismissed && previewVideoRef.current) {
+      previewVideoRef.current.play().catch(() => {});
+    }
   }, [initialVideoSrc]);
 
   // Lock body scroll when modal is open & add ESC key listener
@@ -41,6 +45,11 @@ export function VideoPopup({
 
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
+    // Auto-play modal video when opened
+    if (modalVideoRef.current) {
+      modalVideoRef.current.play().catch(() => {});
+    }
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -119,6 +128,7 @@ export function VideoPopup({
               autoPlay
               loop
               playsInline
+              preload="auto"
               className="h-full w-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
             />
 

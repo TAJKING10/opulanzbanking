@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { PayPalButtons } from "@/components/paypal-buttons";
 import {
   CompanyFormationDossier,
   UploadedFile,
@@ -476,10 +477,18 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
     });
   }, [termsAccepted, privacyAccepted, accuracyConfirmed]);
 
-  const handlePayment = async () => {
+  const handlePaypalSuccess = (orderId: string, details: any) => {
+    setIsPaymentComplete(true);
+    updateDossier({
+      paymentStatus: "PAID",
+      paypalOrderId: orderId,
+      paypalPaymentDetails: details,
+    });
+  };
+
+  const handleMockPayment = async () => {
     setIsProcessing(true);
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsProcessing(false);
     setIsPaymentComplete(true);
     updateDossier({ paymentStatus: "PAID" });
@@ -687,47 +696,40 @@ export function Step8ReviewSubmit({ dossier, updateDossier }: StepProps) {
 
       {/* Payment */}
       {!isPaymentComplete && (
-        <div className="rounded-xl border-2 border-brand-gold p-6">
-          <h3 className="mb-4 text-lg font-bold text-brand-dark">{t("setupFeePayment")}</h3>
-          <div className="mb-4 flex items-center justify-between rounded-xl bg-brand-goldLight/20 p-4">
+        <div className="rounded-xl border-2 border-brand-gold p-6 space-y-4">
+          <h3 className="text-lg font-bold text-brand-dark">{t("setupFeePayment")}</h3>
+          <div className="flex items-center justify-between rounded-xl bg-brand-goldLight/20 p-4">
             <span className="font-semibold text-brand-dark">{t("opulanzSetupFee")}</span>
-            <span className="text-2xl font-bold text-brand-gold">{"\u20AC"}{setupFee}</span>
+            <span className="text-2xl font-bold text-brand-gold">€{setupFee}</span>
           </div>
-          <p className="mb-4 text-sm text-brand-grayMed">
+          <p className="text-sm text-brand-grayMed">
             {t("feeDescription")}
           </p>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Button
-              onClick={handlePayment}
-              disabled={isProcessing}
-              className="w-full"
-              size="lg"
-            >
-              {isProcessing ? (
-                <>{t("processing")}</>
-              ) : (
-                <>
-                  <CreditCard className="mr-2 h-5 w-5" />
-                  {t("paySetupFee")}
-                </>
-              )}
-            </Button>
-            <Button
-              onClick={handlePayment}
-              disabled={isProcessing}
-              variant="outline"
-              className="w-full border-[#003087] text-[#003087] hover:bg-[#003087]/5"
-              size="lg"
-            >
-              {isProcessing ? (
-                <>{t("processing")}</>
-              ) : (
-                <span className="text-base font-bold tracking-tight">
-                  Pay<span className="text-[#009cde]">Pal</span>
-                </span>
-              )}
-            </Button>
+
+          {/* Real PayPal Gateway SDK Buttons */}
+          <div className="mt-4">
+            <PayPalButtons
+              amount={String(setupFee)}
+              currency="EUR"
+              description={`Company Formation Setup Fee (${dossier.formType || "Company"})`}
+              onSuccess={handlePaypalSuccess}
+            />
           </div>
+
+          {/* Dev Mode Mock Payment Bypass for testing without real cards */}
+          {process.env.NODE_ENV === "development" && (
+            <div className="mt-4 pt-4 border-t border-brand-grayLight text-center">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleMockPayment}
+                disabled={isProcessing}
+                className="w-full text-xs border-dashed border-gray-400 text-gray-600 hover:bg-gray-100 py-2"
+              >
+                {isProcessing ? "Processing Mock Payment..." : "⚡ Dev Mode: Simulate Instant Mock Payment"}
+              </Button>
+            </div>
+          )}
         </div>
       )}
 

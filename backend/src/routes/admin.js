@@ -240,21 +240,33 @@ router.get('/stats', adminAuth, async (req, res) => {
     recentApps.rows.forEach(r => {
       const p = r.payload || {};
       const service = serviceMap[r.type] || r.type;
+      let clientEmail = p.email || p.clientEmail || p.contactEmail || p.directorEmail || null;
       let clientName = p.clientName || (p.firstName
         ? `${p.firstName} ${p.lastName || ''}`.trim()
-        : (p.companyName || p.company_name || 'N/A'));
-      let clientEmail = p.email || p.contactEmail || p.directorEmail || null;
+        : (p.legalName || p.companyName || p.company_name || 'N/A'));
+
       if (service === 'company_formation' || service === 'accounting') {
         const pc = p.primaryContact || p.contact || {};
         const people = [...(p.shareholders || []), ...(p.managers || []), ...(p.directors || [])];
         const first = people[0] || pc;
         if (!clientEmail) clientEmail = first.email || pc.email || null;
         if (!clientName || clientName === 'N/A') {
-          clientName = first.firstName
-            ? `${first.firstName} ${first.lastName || ''}`.trim()
-            : (p.companyName || p.company_name || 'N/A');
+          const personName = first.firstName ? `${first.firstName} ${first.lastName || ''}`.trim() : null;
+          const compName = p.legalName || p.tradeName || p.companyName || p.company_name || null;
+          clientName = personName && compName ? `${personName} (${compName})` : (personName || compName || 'N/A');
+        }
+      } else if (service === 'investment_advisory') {
+        const fd = p.formData || {};
+        const t1 = fd.titulaire1 || {};
+        const ci = fd.companyIdentity || {};
+        if (!clientEmail) clientEmail = t1.email || ci.email || fd.email || null;
+        if (!clientName || clientName === 'N/A') {
+          const personName = t1.firstName ? `${t1.firstName} ${t1.lastName || ''}`.trim() : null;
+          const compName = ci.companyName || p.companyName || null;
+          clientName = personName || compName || 'N/A';
         }
       }
+
       recentSubmissions.push({
         id: r.id,
         service,
@@ -358,10 +370,10 @@ router.get('/submissions', adminAuth, async (req, res) => {
       const mappedService = serviceMap[r.type] || r.type;
 
       // Extract email/name based on service type
-      let clientEmail = p.email || p.contactEmail || p.directorEmail || null;
+      let clientEmail = p.email || p.clientEmail || p.contactEmail || p.directorEmail || null;
       let clientName = p.clientName || (p.firstName
         ? `${p.firstName} ${p.lastName || ''}`.trim()
-        : (p.companyName || p.company_name || null));
+        : (p.legalName || p.companyName || p.company_name || null));
 
       if (mappedService === 'company_formation') {
         const shareholders = p.shareholders || p.Shareholders || [];
@@ -379,12 +391,26 @@ router.get('/submissions', adminAuth, async (req, res) => {
       } else if (mappedService === 'accounting') {
         const pc = p.primaryContact || p.contact || {};
         if (!clientEmail) {
-          clientEmail = pc.email || null;
+          clientEmail = pc.email || p.email || null;
+        }
+        const personName = pc.firstName ? `${pc.firstName} ${pc.lastName || ''}`.trim() : (p.contactName || null);
+        const compName = p.legalName || p.tradeName || p.companyName || p.company_name || null;
+        if (personName && compName) {
+          clientName = `${personName} (${compName})`;
+        } else {
+          clientName = personName || compName || clientName || 'N/A';
+        }
+      } else if (mappedService === 'investment_advisory') {
+        const fd = p.formData || {};
+        const t1 = fd.titulaire1 || {};
+        const ci = fd.companyIdentity || {};
+        if (!clientEmail) {
+          clientEmail = p.email || t1.email || ci.email || fd.email || null;
         }
         if (!clientName || clientName === 'N/A') {
-          clientName = pc.firstName
-            ? `${pc.firstName} ${pc.lastName || ''}`.trim()
-            : (p.companyName || p.company_name || null);
+          const personName = t1.firstName ? `${t1.firstName} ${t1.lastName || ''}`.trim() : null;
+          const compName = ci.companyName || p.companyName || null;
+          clientName = p.clientName || personName || compName || 'N/A';
         }
       }
 
@@ -541,7 +567,8 @@ router.get('/submissions', adminAuth, async (req, res) => {
     apptRows.rows.forEach(r => {
       const mt = (r.meeting_type || '').toLowerCase();
       let svc = 'investment_advisory';
-      if (mt.includes('tax')) svc = 'tax_advisory';
+      if (mt.includes('investment')) svc = 'investment_advisory';
+      else if (mt.includes('tax')) svc = 'tax_advisory';
       else if (mt.includes('account') || mt.includes('opening')) svc = 'individual';
       else if (mt.includes('insurance')) svc = 'life_insurance';
       results.push({
@@ -1192,6 +1219,8 @@ router.get('/search', adminAuth, async (req, res) => {
       accounting: 'accounting',
       company_formation: 'company_formation',
       insurance: 'life_insurance',
+      mortgage: 'mortgage',
+      investment_advisory: 'investment_advisory',
     };
 
     const submissions = [];
@@ -1199,10 +1228,31 @@ router.get('/search', adminAuth, async (req, res) => {
     apps.rows.forEach((r) => {
       const p = r.payload || {};
       const service = serviceMap[r.type] || r.type;
-      let clientName = p.firstName
+      let clientEmail = p.email || p.clientEmail || p.contactEmail || p.directorEmail || null;
+      let clientName = p.clientName || (p.firstName
         ? `${p.firstName} ${p.lastName || ''}`.trim()
-        : (p.companyName || p.company_name || 'N/A');
-      let clientEmail = p.email || p.contactEmail || p.directorEmail || null;
+        : (p.legalName || p.companyName || p.company_name || null));
+
+      if (service === 'accounting') {
+        const pc = p.primaryContact || p.contact || {};
+        if (!clientEmail) clientEmail = pc.email || null;
+        const personName = pc.firstName ? `${pc.firstName} ${pc.lastName || ''}`.trim() : null;
+        const compName = p.legalName || p.tradeName || p.companyName || null;
+        clientName = personName && compName ? `${personName} (${compName})` : (personName || compName || clientName || 'N/A');
+      } else if (service === 'investment_advisory') {
+        const fd = p.formData || {};
+        const t1 = fd.titulaire1 || {};
+        const ci = fd.companyIdentity || {};
+        if (!clientEmail) clientEmail = t1.email || ci.email || fd.email || null;
+        if (!clientName || clientName === 'N/A') {
+          const personName = t1.firstName ? `${t1.firstName} ${t1.lastName || ''}`.trim() : null;
+          const compName = ci.companyName || p.companyName || null;
+          clientName = p.clientName || personName || compName || 'N/A';
+        }
+      }
+
+      clientName = clientName || 'N/A';
+
       submissions.push({
         type: 'submission',
         id: r.id,

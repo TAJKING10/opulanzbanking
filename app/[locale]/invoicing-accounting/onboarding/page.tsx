@@ -213,7 +213,13 @@ function AccountingOnboardingInner() {
           // Consent
           consent: formData.consent,
 
-          // Top-level email so emailService can find the client
+          // Top-level email & name for admin panel & notifications
+          clientName: formData.legalName 
+            ? `${formData.primaryContact?.firstName || ''} ${formData.primaryContact?.lastName || ''}`.trim() 
+              ? `${formData.primaryContact?.firstName || ''} ${formData.primaryContact?.lastName || ''}`.trim() + ` (${formData.legalName})`
+              : formData.legalName
+            : `${formData.primaryContact?.firstName || ''} ${formData.primaryContact?.lastName || ''}`.trim() || "N/A",
+          clientEmail: formData.primaryContact?.email,
           email: formData.primaryContact?.email,
 
           // Metadata

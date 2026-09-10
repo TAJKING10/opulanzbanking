@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { noIndexMetadata } from '@/lib/noindex';
+import '@/app/globals.css';
 
 export const metadata: Metadata = {
   title: 'Opulanz Admin',

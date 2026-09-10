@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { CheckCircle, Building2, Mail, User, FileText, Download, ArrowRight, Upload } from "lucide-react";
+import { CheckCircle, Building2, Mail, User, FileText, Download, Upload } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -406,21 +406,13 @@ export default function AccountingConfirmationClient({ params: { locale } }: { p
           )}
 
           {/* Action Buttons */}
-          <div className="grid gap-4 md:grid-cols-2 mb-8">
+          <div className="mb-8">
             <Button
               onClick={handleDownloadSummary}
-              className="h-14 bg-brand-gold text-white hover:bg-brand-goldDark"
+              className="w-full h-14 bg-brand-gold text-white hover:bg-brand-goldDark"
             >
               <Download className="mr-2 h-5 w-5" />
               {t("downloadPdf")}
-            </Button>
-            <Button
-              onClick={() => router.push(`/${locale}/dashboard`)}
-              variant="outline"
-              className="h-14 border-2 border-brand-gold text-brand-gold hover:bg-brand-goldLight/10"
-            >
-              {t("goToDashboard")}
-              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
 

@@ -42,6 +42,7 @@ export function ReviewSubmitStep({ data, onUpdate, locale }: ReviewSubmitStepPro
   const [applicationId, setApplicationId] = React.useState<string | null>(null);
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
     setIsSubmitting(true);
     setSubmitError(null);
 

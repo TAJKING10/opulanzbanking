@@ -2837,7 +2837,8 @@
         "title": "Avis RGPD",
         "text": "Vos données sont traitées conformément au RGPD de l'UE. Vous pouvez demander l'accès, la rectification ou la suppression à tout moment en contactant privacy@opulanz.com."
       },
-      "submit": "Soumettre la demande"
+      "submit": "Soumettre la demande",
+      "submitting": "Envoi en cours..."
     },
     "page": {
       "hero": {

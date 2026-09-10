@@ -2837,7 +2837,8 @@
         "title": "GDPR Notice",
         "text": "Your data is processed in accordance with EU GDPR. You may request access, rectification, or deletion at any time by contacting privacy@opulanz.com."
       },
-      "submit": "Submit Application"
+      "submit": "Submit Application",
+      "submitting": "Submitting..."
     },
     "page": {
       "hero": {

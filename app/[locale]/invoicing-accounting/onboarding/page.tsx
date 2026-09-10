@@ -148,7 +148,11 @@ function AccountingOnboardingInner() {
     setFormData((prev) => ({ ...prev, ...data }));
   };
 
+  const isSubmittingRef = React.useRef(false);
+
   const handleSubmit = async () => {
+    if (isSubmittingRef.current || isLoading) return;
+    isSubmittingRef.current = true;
     setIsLoading(true);
 
     try {
@@ -355,6 +359,7 @@ function AccountingOnboardingInner() {
             data={formData}
             onUpdate={updateFormData}
             onSubmit={handleSubmit}
+            isLoading={isLoading}
           />
         );
       default:

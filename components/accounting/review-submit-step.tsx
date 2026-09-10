@@ -10,12 +10,14 @@ interface ReviewSubmitStepProps {
   data: any;
   onUpdate: (data: any) => void;
   onSubmit: () => void;
+  isLoading?: boolean;
 }
 
 export function ReviewSubmitStep({
   data,
   onUpdate,
   onSubmit,
+  isLoading = false,
 }: ReviewSubmitStepProps) {
   const t = useTranslations();
   const [consent, setConsent] = React.useState(data.consent || false);
@@ -26,7 +28,7 @@ export function ReviewSubmitStep({
   };
 
   const handleSubmit = () => {
-    if (consent) {
+    if (consent && !isLoading) {
       onSubmit();
     }
   };
@@ -240,14 +242,23 @@ export function ReviewSubmitStep({
       <div className="flex justify-end">
         <button
           onClick={handleSubmit}
-          disabled={!consent}
-          className={`rounded-lg px-6 py-3 font-semibold text-white transition-all ${
-            consent
-              ? "bg-brand-gold hover:bg-brand-goldDark"
-              : "cursor-not-allowed bg-gray-300"
+          disabled={!consent || isLoading}
+          className={`inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-semibold text-white transition-all ${
+            consent && !isLoading
+              ? "bg-brand-gold hover:bg-brand-goldDark cursor-pointer"
+              : "cursor-not-allowed bg-gray-300 opacity-75"
           }`}
         >
-          {consent ? t('accounting.review.submit') : t('accounting.review.acceptConsent')}
+          {isLoading ? (
+            <>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              <span>{t('accounting.review.submitting') || 'Submitting...'}</span>
+            </>
+          ) : consent ? (
+            t('accounting.review.submit')
+          ) : (
+            t('accounting.review.acceptConsent')
+          )}
         </button>
       </div>
     </div>

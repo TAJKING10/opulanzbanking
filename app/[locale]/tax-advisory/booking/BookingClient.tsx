@@ -77,16 +77,29 @@ export default function BookingClient() {
 
   // ── Load Calendly script when calendar step is active ─────────────────────
   useEffect(() => {
-    if (step === "calendar" && !calendlyLoaded) {
-      const existing = document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]');
-      if (existing) { setCalendlyLoaded(true); return; }
-      const script = document.createElement('script');
-      script.src = 'https://assets.calendly.com/assets/external/widget.js';
-      script.async = true;
-      script.onload = () => setCalendlyLoaded(true);
-      document.head.appendChild(script);
-    }
-  }, [step, calendlyLoaded]);
+    if (step !== "calendar") return;
+    const existing = document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]');
+    if (existing) { setCalendlyLoaded(true); return; }
+    const script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    script.onload = () => setCalendlyLoaded(true);
+    document.head.appendChild(script);
+  }, [step]);
+
+  // ── Programmatically init / re-init widget whenever step becomes calendar ──
+  useEffect(() => {
+    if (step !== "calendar" || !calendlyLoaded) return;
+    const win = window as any;
+    if (!win.Calendly) return;
+    const el = document.querySelector('.calendly-inline-widget') as HTMLElement | null;
+    if (!el) return;
+    el.innerHTML = '';
+    win.Calendly.initInlineWidget({
+      url: `${calendlyUrl}?hide_event_type_details=1&primary_color=b59354&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(contact.email)}`,
+      parentElement: el,
+    });
+  }, [step, calendlyLoaded, calendlyUrl, fullName, contact.email]);
 
   // ── Calendly event listener ────────────────────────────────────────────────
   useEffect(() => {
@@ -460,11 +473,14 @@ export default function BookingClient() {
               />
               <Card className="mt-8 border-none shadow-lg">
                 <CardContent className="p-4 md:p-8">
+                  {!calendlyLoaded && (
+                    <div className="flex h-64 items-center justify-center">
+                      <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-gold border-r-transparent" />
+                    </div>
+                  )}
                   <div
-                    key={locale}
                     className="calendly-inline-widget"
-                    data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=b59354&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(contact.email)}`}
-                    style={{ minWidth: "320px", height: "700px" }}
+                    style={{ minWidth: "320px", height: "700px", display: calendlyLoaded ? "block" : "none" }}
                   />
                 </CardContent>
               </Card>

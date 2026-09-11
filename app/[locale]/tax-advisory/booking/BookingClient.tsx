@@ -78,28 +78,42 @@ export default function BookingClient() {
   // ── Load Calendly script when calendar step is active ─────────────────────
   useEffect(() => {
     if (step !== "calendar") return;
+    const win = window as any;
+    if (win.Calendly) {
+      win.Calendly.initInlineWidgets?.();
+      setCalendlyLoaded(true);
+      return;
+    }
     const existing = document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]');
-    if (existing) { setCalendlyLoaded(true); return; }
+    if (existing) {
+      const poll = setInterval(() => {
+        if ((window as any).Calendly) {
+          clearInterval(poll);
+          (window as any).Calendly.initInlineWidgets?.();
+          setCalendlyLoaded(true);
+        }
+      }, 100);
+      return () => clearInterval(poll);
+    }
     const script = document.createElement('script');
     script.src = 'https://assets.calendly.com/assets/external/widget.js';
     script.async = true;
-    script.onload = () => setCalendlyLoaded(true);
+    script.onload = () => {
+      (window as any).Calendly?.initInlineWidgets?.();
+      setCalendlyLoaded(true);
+    };
     document.head.appendChild(script);
   }, [step]);
 
-  // ── Programmatically init / re-init widget whenever step becomes calendar ──
+  // Re-init widget when step or contact details change
   useEffect(() => {
-    if (step !== "calendar" || !calendlyLoaded) return;
-    const win = window as any;
-    if (!win.Calendly) return;
-    const el = document.querySelector('.calendly-inline-widget') as HTMLElement | null;
-    if (!el) return;
-    el.innerHTML = '';
-    win.Calendly.initInlineWidget({
-      url: `${calendlyUrl}?hide_event_type_details=1&primary_color=b59354&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(contact.email)}`,
-      parentElement: el,
-    });
-  }, [step, calendlyLoaded, calendlyUrl, fullName, contact.email]);
+    if (step === "calendar" && (window as any).Calendly?.initInlineWidgets) {
+      const timer = setTimeout(() => {
+        (window as any).Calendly.initInlineWidgets();
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [step, fullName, contact.email]);
 
   // ── Calendly event listener ────────────────────────────────────────────────
   useEffect(() => {
@@ -479,8 +493,10 @@ export default function BookingClient() {
                     </div>
                   )}
                   <div
+                    key={locale}
                     className="calendly-inline-widget"
-                    style={{ minWidth: "320px", height: "700px", display: calendlyLoaded ? "block" : "none" }}
+                    data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=b59354&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(contact.email)}`}
+                    style={{ minWidth: "320px", height: "700px" }}
                   />
                 </CardContent>
               </Card>
@@ -564,11 +580,11 @@ export default function BookingClient() {
                     </div>
                   </div>
 
-                  <div className="mt-8 flex items-center justify-between">
-                    <Button variant="outline" onClick={() => setStep("calendar")} className="flex items-center gap-2">
+                  <div className="mt-8 flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
+                    <Button variant="outline" onClick={() => setStep("calendar")} className="w-full sm:w-auto flex items-center justify-center gap-2">
                       <ArrowLeft className="h-4 w-4" /> {t("step3.backToCalendar")}
                     </Button>
-                    <Button onClick={() => setStep("payment")} className="flex items-center gap-2 bg-brand-gold text-white hover:bg-brand-goldDark">
+                    <Button onClick={() => setStep("payment")} className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-gold text-white hover:bg-brand-goldDark">
                       <CreditCard className="h-4 w-4" /> {t("step3.proceedToPayment")}
                     </Button>
                   </div>

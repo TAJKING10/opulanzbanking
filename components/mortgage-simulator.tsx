@@ -528,26 +528,6 @@ export function MortgageSimulator({ locale }: { locale: string }) {
                   </div>
                 </div>
 
-                {/* DTI bar */}
-                <div className="bg-white rounded-2xl shadow-lg p-5 border border-brand-grayLight/50">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-semibold text-brand-dark">{t("results.dti")}</span>
-                    <span className={`text-sm font-bold ${result.debtRatio <= 33 ? "text-emerald-600" : "text-amber-600"}`}>
-                      {result.debtRatio}%
-                    </span>
-                  </div>
-                  <div className="h-2 bg-brand-grayLight rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${result.debtRatio <= 33 ? "bg-emerald-500" : "bg-amber-500"}`}
-                      style={{ width: `${Math.min(result.debtRatio, 100)}%` }}
-                    />
-                  </div>
-                  <div className="flex justify-between mt-1.5">
-                    <p className="text-xs text-brand-grayMed">{t("results.dtiNote")}</p>
-                    <span className="text-xs font-bold text-brand-grayMed">33%</span>
-                  </div>
-                </div>
-
                 {/* CTA */}
                 <div className="bg-brand-dark rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <p className="text-white/80 text-sm leading-snug">{t("results.ctaText")}</p>

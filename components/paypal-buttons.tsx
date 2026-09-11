@@ -21,7 +21,12 @@ const PAYPAL_CLIENT_ID =
 
 // Use backend API directly — required for Capacitor mobile apps (no same-origin proxy)
 const PAYPAL_API = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/paypal`;
-const SDK_URL = "https://www.sandbox.paypal.com/web-sdk/v6/core";
+
+// Dynamic PayPal JS SDK URL (Live vs Sandbox)
+const PAYPAL_ENV = process.env.NEXT_PUBLIC_PAYPAL_ENV || (typeof window !== "undefined" && window.location.hostname.includes("opulanz.com") ? "live" : "sandbox");
+const SDK_URL = PAYPAL_ENV === "live"
+  ? "https://www.paypal.com/web-sdk/v6/core"
+  : "https://www.sandbox.paypal.com/web-sdk/v6/core";
 
 interface PayPalButtonsProps {
   amount: string;

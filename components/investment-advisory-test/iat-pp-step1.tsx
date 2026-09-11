@@ -86,7 +86,7 @@ function TitulaireForm({
             value={data.lastName}
             onChange={(e) => up("lastName", e.target.value)}
             className="mt-1"
-            placeholder="NOM"
+            placeholder={t("ppStep1.lastNamePlaceholder")}
           />
         </div>
         <div>
@@ -95,7 +95,7 @@ function TitulaireForm({
             value={data.firstName}
             onChange={(e) => up("firstName", e.target.value)}
             className="mt-1"
-            placeholder={t("ppStep1.firstName")}
+            placeholder={t("ppStep1.firstNamePlaceholder")}
           />
         </div>
       </div>

@@ -3586,22 +3586,22 @@
       }
     },
     "licenses": {
-      "title": "Licenses and Authorizations",
-      "description": "Opulanz holds the necessary licenses and authorizations to provide financial services:",
+      "title": "Regulatory statuses & registrations",
+      "description": "Regulatory statuses and registrations applicable to the financial services provided through Opulanz:",
       "banking": {
-        "title": "Banking Services - France",
-        "authority": "Licensed and supervised by ACPR (Autorité de Contrôle Prudentiel et de Résolution)",
-        "note": "Our French banking operations are fully compliant with French banking law and European banking directives."
+        "title": "Regulated Financial Intermediation",
+        "authority": "Advensys Insurance-Finance SARL, registered with ORIAS under no. 21003660 as COBSP and COA, subject to ACPR oversight.",
+        "note": "Regulated intermediation activities are provided by Advensys Insurance-Finance SARL, a member of La Compagnie IOBSP and CNCEF Assurance. Opulanz is not a credit institution and does not hold client funds."
       },
       "investment": {
-        "title": "Investment Services - France",
-        "authority": "Regulated by AMF (Autorité des Marchés Financiers)",
-        "note": "Our investment advisory services comply with MiFID II regulations and AMF requirements."
+        "title": "Financial Investment Advisory (CIF)",
+        "authority": "Advensys Insurance-Finance SARL, registered with ORIAS under no. 21003660, member of La Compagnie CIF, an AMF-approved professional association, subject to AMF oversight for its CIF activity.",
+        "note": "Personalised investment advisory services provided by Advensys Insurance-Finance SARL. ORIAS registration is distinct from direct AMF authorisation."
       },
       "payment": {
         "title": "Payment Services",
-        "authority": "Authorized under PSD2 (Payment Services Directive 2)",
-        "note": "We provide secure payment services across the European Economic Area in compliance with PSD2 requirements."
+        "authority": "Payment accounts and payment services are provided by a licensed partner under applicable payment services regulations.",
+        "note": "Opulanz is neither a credit institution nor an electronic money institution and does not hold client funds. The identity of the licensed payment partner is disclosed in the onboarding journey."
       }
     },
     "contact": {

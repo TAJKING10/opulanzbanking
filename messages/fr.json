@@ -3586,22 +3586,22 @@
       }
     },
     "licenses": {
-      "title": "Licences et Autorisations",
-      "description": "Opulanz détient les licences et autorisations nécessaires pour fournir des services financiers :",
+      "title": "Statuts réglementaires & immatriculations",
+      "description": "Statuts réglementaires et immatriculations applicables aux services financiers fournis via Opulanz :",
       "banking": {
-        "title": "Services Bancaires - France",
-        "authority": "Agréé et supervisé par l'ACPR (Autorité de Contrôle Prudentiel et de Résolution)",
-        "note": "Nos opérations bancaires françaises sont entièrement conformes au droit bancaire français et aux directives bancaires européennes."
+        "title": "Intermédiation financière réglementée",
+        "authority": "Advensys Insurance-Finance SARL, immatriculée à l'ORIAS sous le n°21003660 en qualité de COBSP et COA, soumise au contrôle de l'ACPR.",
+        "note": "Les activités d'intermédiation réglementées sont fournies par Advensys Insurance-Finance SARL, membre de La Compagnie IOBSP et de CNCEF Assurance. Opulanz n'est pas un établissement de crédit et ne détient pas les fonds des clients."
       },
       "investment": {
-        "title": "Services d'Investissement - France",
-        "authority": "Régulé par l'AMF (Autorité des Marchés Financiers)",
-        "note": "Nos services de conseil en investissement sont conformes aux réglementations MiFID II et aux exigences de l'AMF."
+        "title": "Conseil en Investissements Financiers (CIF)",
+        "authority": "Advensys Insurance-Finance SARL, immatriculée à l'ORIAS sous le n°21003660, membre de La Compagnie CIF, association professionnelle agréée par l'AMF, soumise au contrôle de l'AMF pour son activité CIF.",
+        "note": "Services de conseil en investissement personnalisé fournis par Advensys Insurance-Finance SARL. L'immatriculation à l'ORIAS est distincte d'un agrément direct de l'AMF."
       },
       "payment": {
         "title": "Services de Paiement",
-        "authority": "Autorisé en vertu de la DSP2 (Directive sur les services de paiement 2)",
-        "note": "Nous fournissons des services de paiement sécurisés dans l'Espace économique européen conformément aux exigences de la DSP2."
+        "authority": "Les comptes et services de paiement sont fournis par un partenaire agréé au titre de la réglementation applicable aux services de paiement.",
+        "note": "Opulanz n'est ni un établissement de crédit ni un établissement de monnaie électronique et ne détient pas les fonds des clients. L'identité du partenaire de paiement agréé est communiquée lors du parcours d'entrée en relation."
       }
     },
     "contact": {

@@ -588,8 +588,8 @@ export function IATPageContent({
                     </div>
 
                     <Card className="border-none shadow-lg">
-                      <CardHeader className="border-b border-brand-grayLight pb-4">
-                        <CardTitle className="text-lg text-brand-grayMed font-normal">
+                      <CardHeader className="border-b border-brand-grayLight pb-3">
+                        <CardTitle className="text-sm font-semibold text-brand-grayMed tracking-wide uppercase">
                           {stepTitle}
                         </CardTitle>
                       </CardHeader>
@@ -644,14 +644,16 @@ export function IATPageContent({
                         )}
 
                         {step > 1 && step < 8 && (
-                          <div className="mt-6 pt-4 border-t border-brand-grayLight">
-                            <button
+                          <div className="mt-4 pt-4 border-t border-brand-grayLight">
+                            <Button
                               type="button"
+                              variant="outline"
+                              size="lg"
+                              className="w-full"
                               onClick={() => goToStep(step - 1)}
-                              className="text-sm text-brand-grayMed hover:text-brand-dark underline underline-offset-2"
                             >
                               {t("wizard.previousStep")}
-                            </button>
+                            </Button>
                           </div>
                         )}
                       </CardContent>

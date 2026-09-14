@@ -23,7 +23,7 @@ steps:
   env:
     NODE_ENV: production
     NEXT_OUTPUT: standalone
-    NEXT_PUBLIC_API_URL: https://rg-opulanz-backend.azurewebsites.net
+    NEXT_PUBLIC_API_URL: https://rg-opulanz-backend-ffa3bgfze4a4g6gf.canadacentral-01.azurewebsites.net
 
 # 4️⃣ Copy public + static assets into standalone output
 - script: |

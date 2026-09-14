@@ -519,36 +519,48 @@ export function buildFormSummary(formData: IATFormData, locale: string = "en"): 
 
   if (isPersonal) {
     const t1 = formData.titulaire1;
-    lines.push(`Name : ${t1.civility} ${t1.firstName} ${t1.lastName}`);
-    lines.push(`Email : ${t1.email} | Phone : ${t1.phone}`);
-    lines.push(`Nationality : ${t1.nationality} | Birth : ${t1.birthDate}`);
-    lines.push(`Tax Residency : ${t1.fiscalResidence}`);
-    lines.push(`US Person : ${t1.isUSPerson === null ? "N/A" : t1.isUSPerson ? "Yes" : "No"}`);
-    lines.push(`Marital Status : ${formData.maritalStatus.status}`);
-    lines.push(`Annual Income : ${formData.personalFinancial.t1Income}`);
-    lines.push(`Amount to Invest : ${formData.personalFinancial.amountToInvest}`);
+    lines.push(`Name            : ${t1.civility} ${t1.firstName} ${t1.lastName}`);
+    lines.push(`Email           : ${t1.email} | Phone: ${t1.phone || 'N/A'}`);
+    lines.push(`Nationality     : ${t1.nationality} | Birth: ${t1.birthDate} (${t1.birthPlace || ''})`);
+    lines.push(`Address         : ${t1.address || 'N/A'}`);
+    lines.push(`Profession      : ${t1.profession || 'N/A'}`);
+    lines.push(`Fiscal Residence: ${t1.fiscalResidence}`);
+    lines.push(`US Person       : ${t1.isUSPerson === null ? "N/A" : t1.isUSPerson ? "Yes" : "No"}`);
+    lines.push(`Marital Status  : ${formData.maritalStatus.status}`);
+    lines.push(`Annual Income   : ${formData.personalFinancial.t1Income}`);
+    lines.push(`Patrimony       : ${formData.personalFinancial.t1Patrimony || 'N/A'}`);
+    lines.push(`Amount to Invest: €${formData.personalFinancial.amountToInvest}`);
+    if (formData.personalDocuments) {
+      const docs = Object.entries(formData.personalDocuments).filter(([, v]) => v).map(([k]) => k).join(', ');
+      lines.push(`Documents       : ${docs || 'None'}`);
+    }
   } else {
     const ci = formData.companyIdentity;
-    lines.push(`Company : ${ci.companyName} (${ci.legalForm})`);
-    lines.push(`Registration : ${ci.rcs} | Country : ${ci.country}`);
-    lines.push(`Representative : ${ci.representative.firstName} ${ci.representative.lastName}`);
-    lines.push(`Email : ${ci.representative.email}`);
-    lines.push(`Amount to Invest : ${formData.companyFinancial.amountToInvest}`);
+    lines.push(`Company         : ${ci.companyName} (${ci.legalForm})`);
+    lines.push(`Registration    : ${ci.rcs} | Country: ${ci.country}`);
+    lines.push(`Address         : ${ci.address || 'N/A'}`);
+    lines.push(`Representative  : ${ci.representative.firstName} ${ci.representative.lastName}`);
+    lines.push(`Email           : ${ci.representative.email}`);
+    lines.push(`Amount to Invest: €${formData.companyFinancial.amountToInvest}`);
   }
 
   lines.push("");
-  lines.push(isFr ? "--- PROFIL DE RISQUE ---" : "--- RISK PROFILE ---");
-  lines.push(`Risk Profile : ${formData.objectives.riskProfile ? (isFr ? RISK_LABELS[formData.objectives.riskProfile]?.fr : RISK_LABELS[formData.objectives.riskProfile]?.en) : "—"}`);
-  lines.push(`Horizon : ${formData.objectives.horizon ? (isFr ? HORIZON_LABELS[formData.objectives.horizon]?.fr : HORIZON_LABELS[formData.objectives.horizon]?.en) : "—"}`);
-  lines.push(`Max Loss : ${formData.objectives.maxLoss ? (isFr ? LOSS_LABELS[formData.objectives.maxLoss]?.fr : LOSS_LABELS[formData.objectives.maxLoss]?.en) : "—"}`);
+  lines.push(isFr ? "--- PROFIL DE RISQUE ET OBJECTIFS ---" : "--- RISK PROFILE & OBJECTIVES ---");
+  lines.push(`Risk Profile    : ${formData.objectives.riskProfile ? (isFr ? RISK_LABELS[formData.objectives.riskProfile]?.fr : RISK_LABELS[formData.objectives.riskProfile]?.en) : "—"}`);
+  lines.push(`Horizon         : ${formData.objectives.horizon ? (isFr ? HORIZON_LABELS[formData.objectives.horizon]?.fr : HORIZON_LABELS[formData.objectives.horizon]?.en) : "—"}`);
+  lines.push(`Max Loss        : ${formData.objectives.maxLoss ? (isFr ? LOSS_LABELS[formData.objectives.maxLoss]?.fr : LOSS_LABELS[formData.objectives.maxLoss]?.en) : "—"}`);
 
   lines.push("");
-  lines.push(isFr ? "--- INVESTISSEMENTS DURABLES ---" : "--- SUSTAINABLE INVESTING (ESG) ---");
+  lines.push(isFr ? "--- INVESTISSEMENTS DURABLES (ESG) ---" : "--- SUSTAINABLE INVESTING (ESG) ---");
   lines.push(`ESG Preferences : ${formData.esg.wantsESG === null ? "N/A" : formData.esg.wantsESG ? "Yes" : "No"}`);
+  if (formData.esg.wantsESG) {
+    lines.push(`Taxonomy Pct    : ${formData.esg.taxonomyPct || 0}%`);
+    lines.push(`Sustainable Pct : ${formData.esg.sustainablePct || 0}%`);
+  }
 
   lines.push("");
-  lines.push(isFr ? "--- RENDEZ-VOUS ---" : "--- CONSULTATION ---");
-  lines.push(`Booking Confirmed : ${formData.appointment.booked ? "Yes" : "No"}`);
+  lines.push(isFr ? "--- RENDEZ-VOUS ET STATUT ---" : "--- APPOINTMENT & STATUS ---");
+  lines.push(`Booking Status  : ${formData.appointment.booked ? "Confirmed via Calendly" : "Pending"}`);
 
   return lines.join("\n");
 }

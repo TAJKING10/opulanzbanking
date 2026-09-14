@@ -161,6 +161,7 @@ router.post('/', async (req, res) => {
       const appType = type === 'company_formation' ? 'company_formation'
         : type === 'accounting' ? 'accounting'
         : type === 'mortgage' ? 'mortgage'
+        : type === 'investment_advisory' ? 'investment_advisory'
         : 'open_account';
       emailService.sendApplicationEmails(appType, {
         applicationId: application.id,

@@ -16,7 +16,7 @@ function makeTransporter() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { clientName, clientType, clientEmail, pdfBase64, formSummary, date, signatureDate, signedName } = body as {
+    const { clientName, clientType, clientEmail, pdfBase64, formSummary, date, signatureDate, signedName, envelopeId } = body as {
       clientName: string;
       clientType: string;
       clientEmail: string;
@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
       date: string;
       signatureDate: string;
       signedName?: string;
+      envelopeId?: string;
     };
 
     const transporter = makeTransporter();
@@ -80,20 +81,28 @@ export async function POST(req: NextRequest) {
                 <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px;color:#252623;">${signatureDate || date}</td>
               </tr>
               <tr>
-                <td style="padding:8px 0;font-size:13px;font-weight:600;color:#888;">Signé sous le nom</td>
-                <td style="padding:8px 0;font-size:14px;font-style:italic;font-weight:700;color:#252623;">${signedName || clientName}</td>
+                <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px;font-weight:600;color:#888;">Signé sous le nom</td>
+                <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px;font-style:italic;font-weight:700;color:#252623;">${signedName || clientName}</td>
+              </tr>
+              ${envelopeId ? `<tr>
+                <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px;font-weight:600;color:#888;">DocuSign Envelope ID</td>
+                <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:12px;font-family:monospace;color:#252623;">${envelopeId}</td>
+              </tr>` : ''}
+              <tr>
+                <td style="padding:8px 0;font-size:13px;font-weight:600;color:#888;">Document signé (PDF)</td>
+                <td style="padding:8px 0;font-size:13px;color:#166534;font-weight:600;">📎 Joint en pièce jointe (${pdfFilename})</td>
               </tr>
             </table>
 
-            <div style="background:#f9f9f9;border-radius:8px;padding:16px;margin-bottom:20px;">
+            <div style="background:#f9f9f9;border-left:4px solid #b59354;border-radius:0 8px 8px 0;padding:16px;margin-bottom:20px;">
               <p style="margin:0 0 10px;font-size:13px;font-weight:700;color:#252623;">
                 📋 Résumé du questionnaire
               </p>
-              <pre style="font-size:11px;color:#555;white-space:pre-wrap;margin:0;font-family:monospace;line-height:1.5;">${formSummary}</pre>
+              <pre style="font-size:12px;color:#374151;white-space:pre-wrap;margin:0;font-family:Consolas, Monaco, monospace;line-height:1.6;">${formSummary}</pre>
             </div>
 
             <p style="font-size:13px;color:#555;margin:0 0 6px;">
-              Le questionnaire QCC complet est joint en pièce jointe au format PDF (<strong>${pdfFilename}</strong>).
+              Le questionnaire QCC complété et signé électroniquement est joint en pièce jointe au format PDF (<strong>${pdfFilename}</strong>).
             </p>
             <p style="font-size:13px;color:#555;margin:0;">
               Le client a également réservé un créneau de consultation via Calendly (Conseil en Investissement — 60 min).

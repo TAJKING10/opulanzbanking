@@ -3,7 +3,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar, ExternalLink } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import type { IATFormData } from "./iat-types";
 
 interface Props {
@@ -14,23 +14,43 @@ interface Props {
   setError: (e: string) => void;
 }
 
-const CALENDLY_URL = "https://calendly.com/opulanz-banking/conseil-en-investissement";
+const CALENDLY_URLS: Record<string, string> = {
+  en: "https://calendly.com/opulanz-banking/tax-advisory-clone",
+  fr: "https://calendly.com/opulanz-banking/conseil-en-investissement",
+};
 
 export function IATCalendly({ formData, onChange, onNext, error, setError }: Props) {
   const t = useTranslations("iat");
+  const locale = useLocale();
   const containerRef = React.useRef<HTMLDivElement>(null);
 
+  const calendlyUrl = CALENDLY_URLS[locale] || CALENDLY_URLS.en;
+
   React.useEffect(() => {
+    const initWidget = () => {
+      if ((window as any).Calendly && containerRef.current) {
+        containerRef.current.innerHTML = "";
+        (window as any).Calendly.initInlineWidget({
+          url: calendlyUrl,
+          parentElement: containerRef.current,
+        });
+      }
+    };
+
     const existing = document.querySelector(
       'script[src="https://assets.calendly.com/assets/external/widget.js"]'
-    );
+    ) as HTMLScriptElement | null;
+
     if (!existing) {
       const script = document.createElement("script");
       script.src = "https://assets.calendly.com/assets/external/widget.js";
       script.async = true;
+      script.onload = initWidget;
       document.head.appendChild(script);
+    } else {
+      initWidget();
     }
-  }, []);
+  }, [calendlyUrl]);
 
   const handleNext = () => {
     if (!formData.appointment.booked) {
@@ -61,14 +81,16 @@ export function IATCalendly({ formData, onChange, onNext, error, setError }: Pro
 
       {/* Calendly inline widget */}
       <div
+        ref={containerRef}
+        key={locale}
         className="calendly-inline-widget rounded-xl overflow-hidden border border-brand-grayLight"
-        data-url={CALENDLY_URL}
+        data-url={calendlyUrl}
         style={{ minWidth: "320px", height: "680px" }}
       />
 
       {/* Fallback link */}
       <a
-        href={CALENDLY_URL}
+        href={calendlyUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-2 text-sm text-brand-gold font-semibold hover:underline"

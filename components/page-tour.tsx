@@ -53,8 +53,8 @@ export function PageTour({ pageKey, steps: stepsProp, locale }: PageTourProps) {
         popover: {
           title: `<span style="color:#b59354">◆</span> ${step.title}`,
           description: step.description,
-          side: step.side ?? "bottom",
-          align: step.align ?? "start",
+          side: (step.side ?? "bottom") as any,
+          align: (step.align ?? "start") as any,
         },
       };
     });

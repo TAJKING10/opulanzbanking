@@ -69,12 +69,12 @@ export default function InvestmentAdvisorySchedulePage({ params: { locale } }: {
     }
   }, [step, calendlyScriptLoaded]);
 
-  // Initialise the inline widget once the script is ready
+  // Initialise the inline widget once the script is ready or locale changes
   useEffect(() => {
     if (step === "calendar" && calendlyScriptLoaded) {
       (window as any).Calendly?.initInlineWidgets?.();
     }
-  }, [step, calendlyScriptLoaded]);
+  }, [step, calendlyScriptLoaded, locale]);
 
   // Listen for Calendly booking event → move to payment
   useEffect(() => {
@@ -297,7 +297,7 @@ export default function InvestmentAdvisorySchedulePage({ params: { locale } }: {
                   <div
                     key={locale}
                     className="calendly-inline-widget"
-                    data-url={`${CALENDLY_URL}?hide_event_type_details=1&primary_color=b59354&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(contact.email)}`}
+                    data-url={`${CALENDLY_URL}?hide_event_type_details=1&primary_color=b59354&locale=${locale === "fr" ? "fr" : "en"}&name=${encodeURIComponent(fullName)}&email=${encodeURIComponent(contact.email)}`}
                     style={{ minWidth: "320px", height: "700px" }}
                   />
                 </CardContent>

@@ -3406,12 +3406,12 @@
     "overview": {
       "overline": "Overview",
       "title": "Your Trusted Life Insurance Broker",
-      "description": "As an independent insurance broker, we work on your behalf to find and connect you with the best life insurance solutions from leading providers, ensuring your loved ones are financially protected.",
-      "badge1": "Unbiased Advice",
+      "description": "As an insurance broker, we propose a personalised analysis of your requirements and needs and connect you with suitable life insurance solutions available through our panel of partner providers, ensuring your loved ones are financially protected.",
+      "badge1": "Personalised Recommendations",
       "badge2": "Multiple Providers",
       "badge3": "Family Protection",
       "whyBrokerTitle": "Why Choose a Broker?",
-      "benefit1": "Independent broker representing your interests",
+      "benefit1": "Insurance broker providing personalised analysis of your requirements and needs",
       "benefit2": "Access to policies from multiple leading insurance providers",
       "benefit3": "Personalized needs analysis and coverage recommendations",
       "benefit4": "Expert guidance on advanced features and estate planning",
@@ -3465,7 +3465,7 @@
     "features": {
       "overline": "Why We Are Different",
       "title": "Professional Insurance Brokerage Expertise",
-      "description": "As independent brokers, we provide unbiased advice and access to the best insurance solutions for your needs.",
+      "description": "As insurance brokers, we provide personalised recommendations and access to suitable solutions available through our partner panel.",
       "brokers": {
         "title": "Expert Brokers",
         "description": "Specialized knowledge to connect you with the right insurance products"

@@ -3406,12 +3406,12 @@
     "overview": {
       "overline": "Presentation",
       "title": "Votre Courtier en Assurance Vie de Confiance",
-      "description": "En tant que courtier independant, nous travaillons en votre nom pour trouver et vous connecter avec les meilleures solutions d'assurance vie des principaux fournisseurs, en veillant a la protection financiere de vos proches.",
-      "badge1": "Conseils impartiaux",
+      "description": "Courtier en assurance proposant une analyse personnalisée de vos exigences et besoins, nous vous mettons en relation avec des solutions d'assurance vie adaptées disponibles auprès de notre panel de partenaires assureurs, en veillant à la protection financière de vos proches.",
+      "badge1": "Recommandations personnalisées",
       "badge2": "Plusieurs fournisseurs",
       "badge3": "Protection familiale",
       "whyBrokerTitle": "Pourquoi choisir un courtier ?",
-      "benefit1": "Courtier independant representant vos interets",
+      "benefit1": "Courtier en assurance proposant une analyse personnalisée de vos exigences et besoins",
       "benefit2": "Acces aux polices de plusieurs grands assureurs",
       "benefit3": "Analyse personnalisee de vos besoins et recommandations de couverture",
       "benefit4": "Conseils experts sur les fonctionnalites avancees et la planification successorale",
@@ -3465,7 +3465,7 @@
     "features": {
       "overline": "Ce qui nous differencie",
       "title": "Expertise Professionnelle en Courtage d'Assurance",
-      "description": "En tant que courtiers independants, nous fournissons des conseils impartiaux et l'acces aux meilleures solutions d'assurance pour vos besoins.",
+      "description": "En tant que courtiers en assurance, nous fournissons des recommandations personnalisées et l'accès aux solutions adaptées disponibles auprès de notre panel de partenaires assureurs.",
       "brokers": {
         "title": "Courtiers experts",
         "description": "Expertise specialisee pour vous connecter avec les bons produits d'assurance"

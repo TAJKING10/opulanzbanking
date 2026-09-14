@@ -4,7 +4,7 @@ import { baseUrl } from '@/app/[locale]/metadata';
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Opulanz — Luxembourg Financial & Business Platform | Europe',
+    default: 'Opulanz — Financial & Business Platform | Luxembourg & Europe',
     template: '%s',
   },
   description:

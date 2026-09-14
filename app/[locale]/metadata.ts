@@ -36,8 +36,8 @@ export function generateSEOMetadata({
 }: GenerateMetadataProps): Metadata {
   const defaultTitle =
     locale === 'fr'
-      ? 'Opulanz — Plateforme Financière & Business Européenne | Luxembourg'
-      : 'Opulanz — Luxembourg Financial & Business Platform | Europe';
+      ? 'Opulanz — Plateforme financière & business | Luxembourg & Europe'
+      : 'Opulanz — Financial & Business Platform | Luxembourg & Europe';
   const defaultDescription =
     locale === 'fr'
       ? 'Plateforme financière et business européenne basée au Luxembourg : services de paiement, comptabilité, création de société, conseil en investissement, assurance et solutions transfrontalières.'

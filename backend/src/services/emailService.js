@@ -415,12 +415,31 @@ async function sendApplicationEmails(applicationType, data, attachments = []) {
   }
 
   // ── 3b. Email to ADMIN ─────────────────────────────────────────────────────
+  // Helper to format values cleanly for email tables
+  function formatTableValue(val) {
+    if (val === null || val === undefined || val === '') return '';
+    if (typeof val === 'boolean') return val ? 'Yes' : 'No';
+    if (typeof val === 'object') {
+      const rows = Object.entries(val)
+        .filter(([, v]) => v !== null && v !== undefined && v !== '')
+        .map(([k, v]) => {
+          const subLabel = k.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
+          return `<tr>
+            <td style="padding:4px 0;color:#6b7280;font-size:12px;width:150px;vertical-align:top;"><strong>${subLabel}:</strong></td>
+            <td style="padding:4px 0;color:#252623;font-size:12px;">${formatTableValue(v)}</td>
+          </tr>`;
+        }).join('');
+      return rows ? `<table style="width:100%;border-collapse:collapse;margin:4px 0;background:#ffffff;border:1px solid #e5e7eb;border-radius:6px;padding:8px;">${rows}</table>` : '';
+    }
+    return String(val);
+  }
+
   // Build a table of all payload fields dynamically
   const payloadRows = Object.entries(payload)
     .filter(([, v]) => v !== null && v !== undefined && v !== '')
     .map(([k, v]) => {
       const label = k.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
-      const val = typeof v === 'object' ? JSON.stringify(v) : String(v);
+      const val = formatTableValue(v);
       return row(label, val);
     }).join('');
 

@@ -436,16 +436,17 @@ export async function fillTemplatePdf(
     if (obj.pastLoss === ">20")   check(p8, 18.738, 18.963);
 
     // Réaction face à une baisse
+    const rDrop = (obj as any).reactionToDrop;
     if (obj.pastLoss === "none") {
-      if (obj.reactionToDrop === "reinvest")    check(p8, 2.344, 20.650);
-      if (obj.reactionToDrop === "sell-all")    check(p8, 2.344, 22.244);
-      if (obj.reactionToDrop === "sell-part")   check(p8, 2.344, 23.838);
-      if (obj.reactionToDrop === "hold")        check(p8, 2.344, 25.294);
+      if (rDrop === "reinvest")    check(p8, 2.344, 20.650);
+      if (rDrop === "sell-all")    check(p8, 2.344, 22.244);
+      if (rDrop === "sell-part")   check(p8, 2.344, 23.838);
+      if (rDrop === "hold")        check(p8, 2.344, 25.294);
     } else {
-      if (obj.reactionToDrop === "reinvest")    check(p8, 18.738, 20.650);
-      if (obj.reactionToDrop === "sell-all")    check(p8, 18.738, 22.244);
-      if (obj.reactionToDrop === "sell-part")   check(p8, 18.738, 23.838);
-      if (obj.reactionToDrop === "hold")        check(p8, 18.738, 25.294);
+      if (rDrop === "reinvest")    check(p8, 18.738, 20.650);
+      if (rDrop === "sell-all")    check(p8, 18.738, 22.244);
+      if (rDrop === "sell-part")   check(p8, 18.738, 23.838);
+      if (rDrop === "hold")        check(p8, 18.738, 25.294);
     }
 
     // Réaction face à une hausse (+20%)

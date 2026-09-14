@@ -3049,7 +3049,7 @@
     },
     "individual": {
       "title": "Individual Account Application",
-      "description": "Complete the form below to apply for your personal banking account.",
+      "description": "Complete the form below to apply for your personal payment account.",
       "approved": {
         "message": "Congratulations! Your individual account application has been approved. Your IBAN is ready.",
         "nextSteps": {

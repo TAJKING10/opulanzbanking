@@ -3049,7 +3049,7 @@
     },
     "individual": {
       "title": "Demande de compte particulier",
-      "description": "Remplissez le formulaire ci-dessous pour ouvrir votre compte bancaire personnel.",
+      "description": "Remplissez le formulaire ci-dessous pour ouvrir votre compte de paiement personnel.",
       "approved": {
         "message": "Félicitations ! Votre demande de compte particulier a été approuvée. Votre IBAN est prêt.",
         "nextSteps": {

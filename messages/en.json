@@ -4641,9 +4641,9 @@
         "ctaText": "Ready to apply? Start your file — our advisors will handle the rest.",
         "ctaButton": "Start your application",
         "emptyIncome": "Enter your monthly income above to see your estimated borrowing capacity.",
-        "emptyDTI": "Your existing loan payments exceed 33% of income. Reducing them will unlock borrowing capacity."
+        "emptyDTI": "Your existing loan payments exceed the 33% indicative threshold used in this simulator. Actual lending criteria vary by lender, jurisdiction and borrower profile."
       },
-      "disclaimer": "This simulator provides an indicative estimate only, based on a 33% debt-to-income ratio. Actual offers depend on your complete profile and bank assessments. Opulanz acts as a regulated credit intermediary (ORIAS n°21003660)."
+      "disclaimer": "The 33% debt-service ratio used in this simulator is an internal indicative assumption and not a regulatory ceiling. Actual lending criteria vary according to the lender, jurisdiction, borrower profile and type of financing. Opulanz acts as a regulated credit intermediary (ORIAS n°21003660)."
     },
     "lombard": {
       "overline": "Lombard Credit",

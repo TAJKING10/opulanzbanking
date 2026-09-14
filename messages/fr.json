@@ -4641,9 +4641,9 @@
         "ctaText": "Prêt à déposer votre dossier ? Nos conseillers s'occupent du reste.",
         "ctaButton": "Démarrer votre demande",
         "emptyIncome": "Saisissez votre revenu mensuel pour estimer votre capacité d'emprunt.",
-        "emptyDTI": "Vos mensualités existantes dépassent 33 % de vos revenus. Réduisez-les pour débloquer votre capacité d'emprunt."
+        "emptyDTI": "Vos mensualités existantes dépassent le seuil indicatif de 33 % utilisé dans ce simulateur. Les critères réels varient selon l'établissement prêteur, la juridiction et le profil de l'emprunteur."
       },
-      "disclaimer": "Ce simulateur fournit une estimation indicative uniquement, basée sur un taux d'endettement de 33 %. Les offres réelles dépendent de votre profil complet et des évaluations bancaires. Opulanz agit en tant qu'intermédiaire en crédit réglementé (ORIAS n°21003660)."
+      "disclaimer": "Le taux d'endettement de 33 % utilisé dans ce simulateur constitue une hypothèse indicative interne et non un plafond réglementaire. Les critères réels varient selon l'établissement prêteur, la juridiction, le profil de l'emprunteur et la nature du financement. Opulanz agit en tant qu'intermédiaire en crédit réglementé (ORIAS n°21003660)."
     },
     "lombard": {
       "overline": "Crédit Lombard",

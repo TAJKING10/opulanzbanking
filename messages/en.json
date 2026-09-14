@@ -4503,13 +4503,13 @@
   "mortgage": {
     "hero": {
       "title": "Your mortgage, handled by experts.",
-      "subtitle": "Opulanz gathers your financial profile and supporting documents, then submits your case to our partner bank network in Luxembourg and France, so you receive the best offers without the paperwork burden.",
+      "subtitle": "Opulanz gathers your financial profile and supporting documents, then submits your case to our partner bank network in Luxembourg and France, so you receive suitable offers available from the institutions consulted, without the paperwork burden.",
       "primaryCta": "Start My Application",
       "secondaryCta": "How It Works"
     },
     "overview": {
       "overline": "Mortgage Services",
-      "title": "A trusted bridge to the best mortgage conditions",
+      "title": "A trusted bridge to conditions suited to your profile and project",
       "description": "As a regulated credit intermediary, we work on your behalf to submit your dossier to our network of partner banks in Luxembourg and France, securing competitive rates without the administrative burden.",
       "badge1": "Luxembourg & France",
       "badge2": "GDPR Secure",
@@ -4555,7 +4555,7 @@
       },
       "multibank": {
         "title": "Multi-Bank Access",
-        "description": "Simultaneous submission to multiple partner banks to maximise your chances and find the most competitive rate."
+        "description": "Simultaneous submission to multiple partner banks to maximise your chances and compare competitive terms among the institutions consulted."
       },
       "tracking": {
         "title": "Live Case Tracking",
@@ -4743,7 +4743,7 @@
         "title": "Offer and Signature",
         "what1": "Once your file is submitted, Opulanz advisors will review and prepare your complete dossier for bank submission within 24 hours.",
         "what2": "Your file is simultaneously submitted to our partner bank network. You will receive a consolidated view of all offers directly in your Opulanz dashboard.",
-        "what3": "Choose the best offer and your Opulanz advisor will accompany you through to signature and final completion.",
+        "what3": "Compare the offers received and your Opulanz advisor will accompany you through to signature and final completion.",
         "note": "Average time from file submission to first offer: 5–8 business days, depending on the bank and market."
       },
       "nav": {

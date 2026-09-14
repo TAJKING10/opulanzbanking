@@ -519,7 +519,7 @@
     },
     "investment": {
       "title": "Investment Advisory",
-      "description": "Independent investment advice provided as a registered Financial Investment Advisor (CIF), under AMF oversight."
+      "description": "Personalised investment advice provided as a registered Financial Investment Advisor (CIF), under AMF oversight."
     },
     "lifeInsurance": {
       "title": "Life Insurance",
@@ -885,7 +885,7 @@
         }
       },
       "cta": {
-        "title": "Advance with independent advice",
+        "title": "Advance with personalised advice",
         "description": "Our team brings market experience to personalised recommendations. Whether you are planning for retirement or looking to structure your wealth, we provide clear and tailored advice.",
         "scheduleMeeting": "Schedule Meeting",
         "contactSupport": "Contact Support"

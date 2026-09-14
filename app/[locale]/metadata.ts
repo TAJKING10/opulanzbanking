@@ -1,21 +1,23 @@
 import { Metadata } from 'next';
-import { routing } from '@/i18n/routing';
+import { hreflangLanguages } from '@/lib/hreflang';
+import { baseUrl } from '@/lib/site-url';
 
-const rawBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-// Strip internal hostnames from canonical/OG URLs so search engines never
-// index staging addresses. Fall back to the branded domain only when the
-// env var is explicitly set to a real public host.
-export const baseUrl =
-  rawBaseUrl && !rawBaseUrl.includes('localhost') && !rawBaseUrl.includes('azurewebsites.net')
-    ? rawBaseUrl.replace(/\/$/, '')
-    : 'https://www.opulanz.com';
+export { baseUrl };
 
-export const OG_IMAGE = {
-  url: `${baseUrl}/images/opulanz-og-image.png`,
-  width: 1200,
-  height: 630,
-  alt: 'Opulanz — European financial and business platform',
-};
+export function ogImageForLocale(locale: string) {
+  return {
+    url: `${baseUrl}/${locale}/opengraph-image`,
+    width: 1200,
+    height: 630,
+    alt:
+      locale === 'fr'
+        ? 'Opulanz — Plateforme financière et business européenne'
+        : 'Opulanz — European financial and business platform',
+  };
+}
+
+/** Fallback for older imports; prefer ogImageForLocale(locale). */
+export const OG_IMAGE = ogImageForLocale('en');
 
 interface GenerateMetadataProps {
   locale: string;
@@ -47,14 +49,7 @@ export function generateSEOMetadata({
   const pageDescription = description || defaultDescription;
   const path = pathname.startsWith('/') || pathname === '' ? pathname : `/${pathname}`;
   const url = `${baseUrl}/${locale}${path}`;
-
-  const languages: Record<string, string> = {
-    'x-default': `${baseUrl}/en${path}`,
-  };
-  routing.locales.forEach((loc) => {
-    languages[loc] = `${baseUrl}/${loc}${path}`;
-  });
-
+  const ogImage = ogImageForLocale(locale);
   const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
 
   return {
@@ -66,9 +61,11 @@ export function generateSEOMetadata({
     creator: 'Opulanz',
     publisher: 'Groupe Advensys Luxembourg S.A.',
     category: 'finance',
+    referrer: 'origin-when-cross-origin',
+    formatDetection: { telephone: false, email: false, address: false },
     alternates: {
       canonical: url,
-      languages,
+      languages: hreflangLanguages(path),
     },
     openGraph: {
       title: pageTitle,
@@ -78,13 +75,13 @@ export function generateSEOMetadata({
       locale: locale === 'fr' ? 'fr_FR' : 'en_US',
       alternateLocale: locale === 'fr' ? ['en_US'] : ['fr_FR'],
       type: ogType,
-      images: [OG_IMAGE],
+      images: [ogImage],
     },
     twitter: {
       card: 'summary_large_image',
       title: pageTitle,
       description: pageDescription,
-      images: [OG_IMAGE.url],
+      images: [ogImage.url],
     },
     robots: noIndex
       ? {

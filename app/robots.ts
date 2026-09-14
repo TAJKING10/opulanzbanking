@@ -8,8 +8,10 @@ const isStaging =
 
 const PRIVATE_PATHS = [
   '/admin',
+  '/admin/',
   '/api/',
   '/*/dashboard',
+  '/*/dashboard/',
   '/*/auth/',
   '/*/login',
   '/*/signup',
@@ -35,6 +37,16 @@ const PRIVATE_PATHS = [
   '/*/life-insurance/confirmation',
 ];
 
+const AI_CRAWLERS = [
+  'GPTBot',
+  'ChatGPT-User',
+  'Google-Extended',
+  'PerplexityBot',
+  'ClaudeBot',
+  'anthropic-ai',
+  'Applebot-Extended',
+];
+
 export default function robots(): MetadataRoute.Robots {
   if (isStaging) {
     return {
@@ -46,11 +58,18 @@ export default function robots(): MetadataRoute.Robots {
   }
 
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: PRIVATE_PATHS,
-    },
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: PRIVATE_PATHS,
+      },
+      ...AI_CRAWLERS.map((userAgent) => ({
+        userAgent,
+        allow: '/',
+        disallow: PRIVATE_PATHS,
+      })),
+    ],
     sitemap: `${BASE_URL}/sitemap.xml`,
     host: BASE_URL,
   };

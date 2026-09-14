@@ -134,6 +134,12 @@ const nextConfig = {
       { source: '/about/',         destination: '/en/about',          permanent: true },
       { source: '/fr/home-fr',     destination: '/fr',                permanent: true },
       { source: '/fr/home-fr/',    destination: '/fr',                permanent: true },
+      { source: '/insurance',      destination: '/en/life-insurance', permanent: true },
+      { source: '/insurance/',     destination: '/en/life-insurance', permanent: true },
+      { source: '/:locale(en|fr)/insurance', destination: '/:locale/life-insurance', permanent: true },
+      { source: '/services',       destination: '/en/services',       permanent: true },
+      { source: '/support',        destination: '/en/support',        permanent: true },
+      { source: '/open-account',   destination: '/en/open-account',   permanent: true },
     ];
   },
   // Attach security headers to every response

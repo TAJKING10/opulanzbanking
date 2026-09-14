@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { baseUrl } from '@/app/[locale]/metadata';
+import { baseUrl } from '@/lib/site-url';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   },
   description:
     'Luxembourg-based European financial and business platform for companies and entrepreneurs.',
-  robots: { index: true, follow: true },
+  // Root `/` is a locale redirect shell — do not index it.
+  robots: { index: false, follow: true },
 };
 
 export default function RootLayout({

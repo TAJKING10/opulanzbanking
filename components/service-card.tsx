@@ -19,6 +19,7 @@ interface ServiceCardProps {
   className?: string;
   style?: React.CSSProperties;
   id?: string;
+  priority?: boolean;
 }
 
 export function ServiceCard({
@@ -30,6 +31,7 @@ export function ServiceCard({
   className,
   style,
   id,
+  priority = false,
 }: ServiceCardProps) {
   const t = useTranslations();
   const resolvedCtaLabel = ctaLabel || t("common.learnMore");
@@ -94,6 +96,7 @@ export function ServiceCard({
               src={image}
               alt={title}
               fill
+              priority={priority}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-1"
             />

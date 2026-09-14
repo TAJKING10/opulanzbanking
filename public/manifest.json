@@ -1,7 +1,7 @@
 {
-  "name": "Opulanz Banking",
+  "name": "Opulanz",
   "short_name": "Opulanz",
-  "description": "Opulanz - Your Digital Banking Platform",
+  "description": "Luxembourg-based European financial and business platform for companies and entrepreneurs.",
   "start_url": "/en",
   "scope": "/",
   "display": "standalone",
@@ -14,15 +14,15 @@
       "src": "/images/opulanz-logo.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/images/opulanz-logo.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
-  "categories": ["finance", "banking"],
+  "categories": ["finance", "business"],
   "screenshots": []
 }

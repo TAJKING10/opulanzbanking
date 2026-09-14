@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { KYCWizardProvider } from '@/contexts/KYCWizardContext';
+import { KYCWizard } from '@/components/kyc/KYCWizard';
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
-import { unstable_setRequestLocale } from 'next-intl/server';
-import { KYCWizardProvider } from '@/contexts/KYCWizardContext';
-import { KYCWizard } from '@/components/kyc/KYCWizard';
 
 export default async function KYCPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

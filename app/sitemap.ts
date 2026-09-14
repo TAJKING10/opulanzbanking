@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { hreflangLanguages } from '@/lib/hreflang';
 
 const BASE_URL = 'https://www.opulanz.com';
 const LOCALES = ['en', 'fr'] as const;
@@ -16,7 +17,7 @@ const isProduction =
   process.env.NEXT_PUBLIC_ENVIRONMENT === 'production';
 
 /** Stable timestamp — avoid signalling daily rewrites of unchanged pages. */
-const LAST_MODIFIED = new Date('2026-09-01T00:00:00.000Z');
+const LAST_MODIFIED = new Date('2026-09-14T00:00:00.000Z');
 
 const publicRoutes: Route[] = [
   { path: '', priority: 1.0, changeFrequency: 'weekly' },
@@ -56,12 +57,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         changeFrequency: route.changeFrequency,
         priority: route.priority,
         alternates: {
-          languages: {
-            'x-default': `${BASE_URL}/en${route.path}`,
-            ...Object.fromEntries(
-              LOCALES.map((l) => [l, `${BASE_URL}/${l}${route.path}`])
-            ),
-          },
+          languages: hreflangLanguages(route.path),
         },
       });
     }

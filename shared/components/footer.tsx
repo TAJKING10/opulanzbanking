@@ -195,6 +195,9 @@ export function Footer({ locale }: FooterProps) {
             <p className="mt-4 text-sm text-brand-grayMed leading-relaxed max-w-md">
               {t("footer.description")}
             </p>
+            <address className="mt-3 text-xs not-italic text-brand-grayMed leading-relaxed">
+              Groupe Advensys Luxembourg S.A. · 2 Rue Edward Steichen, L-2540 Luxembourg
+            </address>
           </div>
         </div>
 

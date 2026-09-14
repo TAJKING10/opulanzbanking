@@ -62,7 +62,7 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={poppins.className}>
+    <html lang={locale === 'fr' ? 'fr-FR' : 'en'} className={poppins.className}>
       <head>
         <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         <link rel="manifest" href="/manifest.json" />
@@ -76,7 +76,7 @@ export default async function LocaleLayout({
       </head>
       <body className="flex min-h-screen flex-col">
         <GoogleProvider>
-          <NextIntlClientProvider messages={messages}>
+          <NextIntlClientProvider locale={locale} messages={messages}>
             <CapacitorInit />
             <Header locale={locale} />
             <main className="flex-1 pt-16 md:pt-20">{children}</main>

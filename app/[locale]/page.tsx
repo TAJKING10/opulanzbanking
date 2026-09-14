@@ -199,6 +199,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 key={service.title}
                 {...service}
                 id={service.id}
+                priority={index === 0}
                 style={{ animationDelay: `${index * 100}ms` }}
               />
             ))}

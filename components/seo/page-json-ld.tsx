@@ -5,6 +5,7 @@ import {
   webPageJsonLd,
 } from '@/lib/seo-schema';
 import { JsonLd } from './json-ld';
+import { Breadcrumbs } from './breadcrumbs';
 
 type WebPageType = 'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage';
 
@@ -43,5 +44,10 @@ export function PageJsonLd({
     graph.push(faqJsonLd(faq));
   }
 
-  return <JsonLd data={graph} />;
+  return (
+    <>
+      <JsonLd data={graph} />
+      <Breadcrumbs locale={locale} items={breadcrumbs ?? []} />
+    </>
+  );
 }

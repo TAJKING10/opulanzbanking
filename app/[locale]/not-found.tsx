@@ -1,4 +1,10 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Page not found | Opulanz',
+  robots: { index: false, follow: true },
+};
 
 export default function LocaleNotFound() {
   return (

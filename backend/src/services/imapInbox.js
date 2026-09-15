@@ -27,8 +27,8 @@ function getConfig() {
     port:   parseInt(process.env.IMAP_PORT || '993'),
     secure: true,
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
+      user: process.env.INBOX_USER,
+      pass: process.env.INBOX_PASS,
     },
     logger: false,
     tls: { rejectUnauthorized: false },

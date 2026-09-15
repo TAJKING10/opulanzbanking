@@ -48,6 +48,8 @@ steps:
           { "name": "NARVI_API_KEY_ID", "value": "$(NARVI_API_KEY_ID)" },
           { "name": "EMAIL_USER", "value": "$(EMAIL_USER)" },
           { "name": "EMAIL_PASS", "value": "$(EMAIL_PASS)" },
+          { "name": "INBOX_USER", "value": "$(INBOX_USER)" },
+          { "name": "INBOX_PASS", "value": "$(INBOX_PASS)" },
           { "name": "ADMIN_PASSWORD", "value": "Opulanz2025" },
           { "name": "AZURE_STORAGE_CONTAINER_NAME", "value": "opulanz-documents" }
         ]

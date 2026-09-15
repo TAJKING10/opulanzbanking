@@ -1463,6 +1463,58 @@ router.patch('/contacts/:id', adminAuth, async (req, res) => {
   }
 });
 
+// ─── GET /api/admin/inbox/test ───────────────────────────────────────────────
+// Diagnose IMAP connectivity — returns raw server response on failure
+router.get('/inbox/test', adminAuth, async (req, res) => {
+  const { ImapFlow } = require('imapflow');
+  const user = process.env.INBOX_USER;
+  const pass = process.env.INBOX_PASS;
+
+  if (!user || !pass) {
+    return res.status(500).json({
+      success: false,
+      error: 'INBOX_USER or INBOX_PASS env var is missing on this server',
+      user: user || '(not set)',
+    });
+  }
+
+  const client = new ImapFlow({
+    host: process.env.IMAP_HOST || 'imap.gmail.com',
+    port: parseInt(process.env.IMAP_PORT || '993'),
+    secure: true,
+    auth: { user, pass },
+    logger: false,
+    tls: { rejectUnauthorized: false },
+  });
+
+  try {
+    await client.connect();
+    const status = await (async () => {
+      const lock = await client.getMailboxLock('INBOX');
+      try { return await client.status('INBOX', { messages: true, unseen: true }); }
+      finally { lock.release(); }
+    })();
+    await client.logout();
+    return res.json({
+      success: true,
+      user,
+      host: process.env.IMAP_HOST || 'imap.gmail.com',
+      messages: status.messages,
+      unseen: status.unseen,
+    });
+  } catch (err) {
+    try { await client.logout(); } catch {}
+    return res.status(500).json({
+      success: false,
+      user,
+      host: process.env.IMAP_HOST || 'imap.gmail.com',
+      error: err.message,
+      serverResponse: err.responseText || err.serverResponse || null,
+      code: err.code || err.responseCode || null,
+    });
+  }
+});
+
 // ─── GET /api/admin/inbox ────────────────────────────────────────────────────
 // List client emails from contact@opulanz.com (automated / Azure mail filtered out)
 router.get('/inbox', adminAuth, async (req, res) => {

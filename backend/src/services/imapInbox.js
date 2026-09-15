@@ -1,11 +1,21 @@
 /**
- * IMAP inbox reader for contact@opulanz.com
+ * IMAP inbox reader for contact@opulanz.com  (INBOX_USER / INBOX_PASS)
  * Fetches client-facing emails (support requests, application inquiries).
  * Automated/Azure emails are filtered out.
  */
 
 const { ImapFlow } = require('imapflow');
 const { simpleParser } = require('mailparser');
+
+/** Wrap imapflow errors so the IMAP server's own message reaches the caller */
+function wrapImapError(err) {
+  const serverText = err.responseText || err.serverResponse || '';
+  const detail     = serverText ? ` — ${serverText}` : '';
+  const msg        = `${err.message || 'IMAP error'}${detail}`;
+  const out        = new Error(msg);
+  out.code         = err.code || err.responseCode || 'IMAP_ERROR';
+  return out;
+}
 
 // Senders / subject patterns that belong to automated pipeline traffic
 const SKIP_DOMAINS   = ['azure.com', 'microsoft.com', 'azuredevops.com', 'visualstudio.com', 'amazonaws.com'];
@@ -41,8 +51,12 @@ function getConfig() {
  * @param {number} opts.limit  max messages to scan (default 100)
  */
 async function listInbox({ limit = 100 } = {}) {
-  const client = new ImapFlow(getConfig());
-  await client.connect();
+  const cfg = getConfig();
+  if (!cfg.auth.user || !cfg.auth.pass) {
+    throw new Error('INBOX_USER or INBOX_PASS is not set in environment variables');
+  }
+  const client = new ImapFlow(cfg);
+  try { await client.connect(); } catch (err) { throw wrapImapError(err); }
 
   try {
     const lock = await client.getMailboxLock('INBOX');
@@ -98,8 +112,12 @@ async function listInbox({ limit = 100 } = {}) {
  * Also marks it as \Seen.
  */
 async function getEmail(uid) {
-  const client = new ImapFlow(getConfig());
-  await client.connect();
+  const cfg = getConfig();
+  if (!cfg.auth.user || !cfg.auth.pass) {
+    throw new Error('INBOX_USER or INBOX_PASS is not set in environment variables');
+  }
+  const client = new ImapFlow(cfg);
+  try { await client.connect(); } catch (err) { throw wrapImapError(err); }
 
   try {
     const lock = await client.getMailboxLock('INBOX');

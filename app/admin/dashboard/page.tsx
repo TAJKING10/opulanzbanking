@@ -4056,6 +4056,8 @@ function InboxTab() {
   const [emails, setEmails]           = React.useState<InboxEmail[]>([]);
   const [loading, setLoading]         = React.useState(true);
   const [error, setError]             = React.useState("");
+  const [testResult, setTestResult]   = React.useState<Record<string, unknown> | null>(null);
+  const [testing, setTesting]         = React.useState(false);
   const [selected, setSelected]       = React.useState<InboxEmailDetail | null>(null);
   const [loadingEmail, setLoadingEmail] = React.useState(false);
   const [replyText, setReplyText]     = React.useState("");
@@ -4066,6 +4068,7 @@ function InboxTab() {
   const fetchEmails = React.useCallback(() => {
     setLoading(true);
     setError("");
+    setTestResult(null);
     fetch(`${API}/api/admin/inbox?limit=100`, { headers: { "x-admin-token": getToken() } })
       .then(r => r.json())
       .then(d => {
@@ -4075,6 +4078,16 @@ function InboxTab() {
       .catch(() => setError("Cannot reach backend"))
       .finally(() => setLoading(false));
   }, []);
+
+  const testConnection = () => {
+    setTesting(true);
+    setTestResult(null);
+    fetch(`${API}/api/admin/inbox/test`, { headers: { "x-admin-token": getToken() } })
+      .then(r => r.json())
+      .then(d => setTestResult(d))
+      .catch(() => setTestResult({ success: false, error: "Cannot reach backend" }))
+      .finally(() => setTesting(false));
+  };
 
   React.useEffect(() => { fetchEmails(); }, [fetchEmails]);
 
@@ -4159,7 +4172,35 @@ function InboxTab() {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">{error}</div>
+        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-4 space-y-3">
+          <p className="text-sm font-semibold text-red-700">IMAP connection error</p>
+          <p className="text-sm text-red-600 font-mono break-all">{error}</p>
+          <div className="pt-1 border-t border-red-100 space-y-2 text-xs text-red-500">
+            <p className="font-medium">Common causes:</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li>Gmail IMAP not enabled — go to Gmail Settings → See all settings → Forwarding and POP/IMAP → Enable IMAP</li>
+              <li>Wrong password — if 2-step verification is on, generate an <strong>App Password</strong> from Google Account → Security → App Passwords and use that instead</li>
+              <li><code className="bg-red-100 px-1 rounded">INBOX_USER</code> or <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> env var not saved in Azure variable group</li>
+            </ul>
+          </div>
+          <div className="flex items-center gap-3 pt-1">
+            <button
+              type="button"
+              onClick={testConnection}
+              disabled={testing}
+              className="px-3 py-1.5 rounded-lg bg-red-100 border border-red-200 text-xs font-medium text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
+            >
+              {testing ? "Testing…" : "Test IMAP connection"}
+            </button>
+            {testResult && (
+              <span className={`text-xs font-medium ${testResult.success ? "text-green-600" : "text-red-600"}`}>
+                {testResult.success
+                  ? `Connected — ${testResult.messages} messages, ${testResult.unseen} unread`
+                  : String(testResult.serverResponse || testResult.error || "Failed")}
+              </span>
+            )}
+          </div>
+        </div>
       )}
 
       <div className="flex gap-4 items-start">

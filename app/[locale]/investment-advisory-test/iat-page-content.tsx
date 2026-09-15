@@ -396,7 +396,7 @@ export function IATPageContent({
         subtitle={tp("heroSubtitle")}
         primaryCta={{
           label: tp("heroPrimaryBtn"),
-          href: `/${locale}/investment-advisory/onboarding`,
+          href: `/${locale}/investment-advisory/apply`,
         }}
         secondaryCta={{
           label: tp("heroSecondaryBtn"),
@@ -540,7 +540,7 @@ export function IATPageContent({
             </p>
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Button asChild variant="primary" size="lg">
-                <Link href={`/${locale}/investment-advisory/onboarding`}>
+                <Link href={`/${locale}/investment-advisory/apply`}>
                   {t("wizard.startBtn")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -622,7 +622,7 @@ export function IATPageContent({
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href={`/${locale}/investment-advisory/onboarding`}
+              href={`/${locale}/investment-advisory/apply`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               {tp("ctaRequestBtn")}

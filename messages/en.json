@@ -4314,7 +4314,7 @@
     },
     "page": {
       "testBadge": "Internal Review Prototype — not published, not linked from any live page",
-      "heroTitle": "Investment Guidance Built Around Your Goals",
+      "heroTitle": "Investment Advice Built Around Your Goals",
       "heroSubtitle": "Meet with an AMF-certified advisor to review your objectives, financial situation, investment experience, time horizon, and risk profile. Receive personalised recommendations supported by a formal suitability report.",
       "heroPrimaryBtn": "Start Your Advisory Request",
       "heroSecondaryBtn": "How It Works",
@@ -4488,10 +4488,6 @@
         {
           "q": "How will my documents be protected?",
           "a": "All documents and personal information are handled in accordance with applicable data protection regulations, including the GDPR."
-        },
-        {
-          "q": "Is the service available in every country?",
-          "a": "The investment advisory service is currently designed for clients resident in France and Luxembourg."
         }
       ],
       "ctaTitle": "Ready to Discuss Your Investment Objectives?",

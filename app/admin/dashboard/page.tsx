@@ -4175,13 +4175,29 @@ function InboxTab() {
         <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-4 space-y-3">
           <p className="text-sm font-semibold text-red-700">IMAP connection error</p>
           <p className="text-sm text-red-600 font-mono break-all">{error}</p>
-          <div className="pt-1 border-t border-red-100 space-y-2 text-xs text-red-500">
-            <p className="font-medium">Common causes:</p>
-            <ul className="list-disc list-inside space-y-1">
-              <li>Gmail IMAP not enabled — go to Gmail Settings → See all settings → Forwarding and POP/IMAP → Enable IMAP</li>
-              <li>Wrong password — if 2-step verification is on, generate an <strong>App Password</strong> from Google Account → Security → App Passwords and use that instead</li>
-              <li><code className="bg-red-100 px-1 rounded">INBOX_USER</code> or <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> env var not saved in Azure variable group</li>
-            </ul>
+          <div className="pt-1 border-t border-red-100 space-y-2 text-xs text-red-600">
+            {/invalid credentials/i.test(error) ? (
+              <>
+                <p className="font-semibold">Google is rejecting the password. Regular Gmail passwords do not work for IMAP — an App Password is required.</p>
+                <p className="font-medium mt-1">To fix this:</p>
+                <ol className="list-decimal list-inside space-y-1 text-red-500">
+                  <li>Sign in to <strong>contact@opulanz.com</strong> at myaccount.google.com</li>
+                  <li>Go to <strong>Security → 2-Step Verification</strong> (enable it if off)</li>
+                  <li>Scroll down to <strong>App Passwords</strong> → create one for "Mail"</li>
+                  <li>Copy the 16-character code Google gives you</li>
+                  <li>Go to Azure DevOps → Pipelines → Library → <code className="bg-red-100 px-1 rounded">backend-env-vars</code></li>
+                  <li>Update <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> to the 16-char App Password (no spaces)</li>
+                  <li>Save and re-run the backend pipeline, then refresh this page</li>
+                </ol>
+                <p className="mt-1 text-red-400">Also confirm Gmail IMAP is enabled: Gmail → Settings → See all settings → Forwarding and POP/IMAP → Enable IMAP</p>
+              </>
+            ) : (
+              <ul className="list-disc list-inside space-y-1">
+                <li>Gmail IMAP not enabled — Gmail Settings → Forwarding and POP/IMAP → Enable IMAP</li>
+                <li>App Password required — Google Account → Security → App Passwords</li>
+                <li><code className="bg-red-100 px-1 rounded">INBOX_USER</code> / <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> not set in Azure variable group</li>
+              </ul>
+            )}
           </div>
           <div className="flex items-center gap-3 pt-1">
             <button

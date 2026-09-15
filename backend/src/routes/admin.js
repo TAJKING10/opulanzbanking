@@ -28,6 +28,72 @@ const http = require('http');
 const { adminAuth } = require('../middleware/adminAuth');
 const azureStorage = require('../services/azureStorage');
 
+function isFileLike(f) {
+  if (!f || typeof f !== 'object' || Array.isArray(f)) return false;
+  const url = f.url || f.fileUrl || f.file_url;
+  const blob = f.blobName || f.blob_name;
+  const name = f.filename || f.fileName || f.name;
+  const hasUrl = typeof url === 'string' && /^https?:\/\//i.test(url);
+  const hasBlob = typeof blob === 'string' && blob.length > 0;
+  return (hasUrl || hasBlob) && !!(name || hasUrl || hasBlob);
+}
+
+function toAdminFile(f, fallbackType) {
+  return {
+    filename: f.filename || f.fileName || f.name || 'Document',
+    size: f.size || f.fileSize || f.file_size || null,
+    type: f.type || f.documentType || fallbackType || 'uploaded_file',
+    id: f.id || f.blobName || f.blob_name || null,
+    url: f.url || f.fileUrl || f.file_url || null,
+    blobName: f.blobName || f.blob_name || null,
+  };
+}
+
+function collectFilesFromPayload(payload) {
+  const out = [];
+  const seen = new Set();
+  const push = (file) => {
+    if (!file || (!file.url && !file.blobName)) return;
+    const key = `${file.blobName || ''}|${file.url || ''}|${file.filename}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push(file);
+  };
+  const walk = (node, hint) => {
+    if (node == null) return;
+    if (Array.isArray(node)) {
+      node.forEach((item) => {
+        if (isFileLike(item)) push(toAdminFile(item, hint));
+        else walk(item, hint);
+      });
+      return;
+    }
+    if (typeof node !== 'object') return;
+    if (isFileLike(node)) {
+      push(toAdminFile(node, hint));
+      return;
+    }
+    if (typeof node.signedDocumentUrl === 'string' && node.signedDocumentUrl) {
+      push({
+        filename: node.signedDocumentFilename || 'Signed_QCC_Agreement.pdf',
+        size: node.signedDocumentSize || null,
+        type: 'signed_contract',
+        id: node.envelopeId || node.signedDocumentBlobName || null,
+        url: node.signedDocumentUrl,
+        blobName: node.signedDocumentBlobName || null,
+      });
+    }
+    for (const [k, v] of Object.entries(node)) {
+      if (['signedDocumentUrl', 'signedDocumentFilename', 'signedDocumentBlobName', 'signedDocumentSize'].includes(k)) {
+        continue;
+      }
+      walk(v, k);
+    }
+  };
+  walk(payload);
+  return out;
+}
+
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
 
 /** Parse multipart when present; leave JSON body alone otherwise */
@@ -481,6 +547,15 @@ router.get('/submissions', adminAuth, async (req, res) => {
           blobName: p.signedDocumentBlobName || null,
         });
       }
+
+      collectFilesFromPayload(p).forEach((f) => {
+        if (!payloadFiles.some((existing) =>
+          (existing.url && existing.url === f.url) ||
+          (existing.blobName && existing.blobName === f.blobName)
+        )) {
+          payloadFiles.push(f);
+        }
+      });
 
       results.push({
         id: r.id,

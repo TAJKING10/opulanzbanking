@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { FileText, Info, Upload, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { IATFormData, CompanyDocuments } from "./iat-types";
+import { uploadIatDocument } from "./iat-upload";
 
 interface Props {
   formData: IATFormData;
@@ -32,20 +33,45 @@ export function IATpmStep3({ formData, onChange, onNext, error, setError }: Prop
   ];
 
   const [uploadedFiles, setUploadedFiles] = React.useState<Record<string, File[]>>({});
+  const [uploadingKey, setUploadingKey] = React.useState<string | null>(null);
   const fileInputRefs = React.useRef<Record<string, HTMLInputElement | null>>({});
 
-  const handleFileChange = (key: string, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (key: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []);
     if (newFiles.length === 0) return;
     setUploadedFiles((prev) => ({ ...prev, [key]: [...(prev[key] || []), ...newFiles] }));
     up(key as keyof CompanyDocuments, true);
-    e.target.value = "";
+    setUploadingKey(key);
+    try {
+      const saved = [];
+      for (const file of newFiles) {
+        saved.push(await uploadIatDocument(file, `iat_${key}`));
+      }
+      onChange({
+        uploadedDocuments: {
+          ...(formData.uploadedDocuments || {}),
+          [key]: [...((formData.uploadedDocuments || {})[key] || []), ...saved],
+        },
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Document upload failed");
+    } finally {
+      setUploadingKey(null);
+      e.target.value = "";
+    }
   };
 
   const removeFile = (key: string, idx: number) => {
     setUploadedFiles((prev) => {
       const updated = (prev[key] || []).filter((_, i) => i !== idx);
       return { ...prev, [key]: updated };
+    });
+    const remaining = ((formData.uploadedDocuments || {})[key] || []).filter((_, i) => i !== idx);
+    onChange({
+      uploadedDocuments: {
+        ...(formData.uploadedDocuments || {}),
+        [key]: remaining,
+      },
     });
   };
 
@@ -104,12 +130,13 @@ export function IATpmStep3({ formData, onChange, onNext, error, setError }: Prop
                         className="inline-flex items-center gap-1.5 rounded-lg border border-brand-grayLight bg-white px-2.5 py-1 text-xs font-medium text-brand-dark hover:border-brand-gold hover:text-brand-gold transition-colors"
                       >
                         <Upload className="h-3 w-3" />
-                        {t("pmStep3.uploadBtn")}
+                            {t("pmStep3.uploadBtn")}
+                            {uploadingKey === key ? "…" : ""}
                       </button>
                       <input
                         ref={(el) => { fileInputRefs.current[key] = el; }}
                         type="file"
-                        accept="image/*,.pdf"
+                            accept="image/jpeg,image/png,image/webp,application/pdf"
                         multiple
                         className="hidden"
                         onChange={(e) => handleFileChange(key, e)}

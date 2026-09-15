@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { FileText, Info, Upload, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { IATFormData, PersonalDocuments } from "./iat-types";
+import { uploadIatDocument } from "./iat-upload";
 
 interface Props {
   formData: IATFormData;
@@ -46,20 +47,45 @@ export function IATppStep3({ formData, onChange, onNext, error, setError }: Prop
   ];
 
   const [uploadedFiles, setUploadedFiles] = React.useState<Record<string, File[]>>({});
+  const [uploadingKey, setUploadingKey] = React.useState<string | null>(null);
   const fileInputRefs = React.useRef<Record<string, HTMLInputElement | null>>({});
 
-  const handleFileChange = (key: string, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (key: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []);
     if (newFiles.length === 0) return;
     setUploadedFiles((prev) => ({ ...prev, [key]: [...(prev[key] || []), ...newFiles] }));
     up(key as keyof PersonalDocuments, true);
-    e.target.value = "";
+    setUploadingKey(key);
+    try {
+      const saved = [];
+      for (const file of newFiles) {
+        saved.push(await uploadIatDocument(file, `iat_${key}`));
+      }
+      onChange({
+        uploadedDocuments: {
+          ...(formData.uploadedDocuments || {}),
+          [key]: [...((formData.uploadedDocuments || {})[key] || []), ...saved],
+        },
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Document upload failed");
+    } finally {
+      setUploadingKey(null);
+      e.target.value = "";
+    }
   };
 
   const removeFile = (key: string, idx: number) => {
     setUploadedFiles((prev) => {
       const updated = (prev[key] || []).filter((_, i) => i !== idx);
       return { ...prev, [key]: updated };
+    });
+    const remaining = ((formData.uploadedDocuments || {})[key] || []).filter((_, i) => i !== idx);
+    onChange({
+      uploadedDocuments: {
+        ...(formData.uploadedDocuments || {}),
+        [key]: remaining,
+      },
     });
   };
 
@@ -100,6 +126,7 @@ export function IATppStep3({ formData, onChange, onNext, error, setError }: Prop
             <div className="divide-y divide-brand-grayLight">
               {group.docs.map(({ key, label, required }) => {
                 const docFiles = uploadedFiles[key] || [];
+                const storedFiles = (formData.uploadedDocuments || {})[key] || [];
                 return (
                   <div key={key} className="px-4 py-3 hover:bg-gray-50 transition-colors">
                     <div className="flex items-start gap-3">
@@ -121,23 +148,24 @@ export function IATppStep3({ formData, onChange, onNext, error, setError }: Prop
                           >
                             <Upload className="h-3 w-3" />
                             {t("ppStep3.uploadBtn")}
+                            {uploadingKey === key ? "…" : ""}
                           </button>
                           <input
                             ref={(el) => { fileInputRefs.current[key] = el; }}
                             type="file"
-                            accept="image/*,.pdf"
+                            accept="image/jpeg,image/png,image/webp,application/pdf"
                             multiple
                             className="hidden"
                             onChange={(e) => handleFileChange(key, e)}
                           />
                         </div>
 
-                        {docFiles.length > 0 && (
+                        {(docFiles.length > 0 || storedFiles.length > 0) && (
                           <ul className="mt-2 space-y-1">
-                            {docFiles.map((file, idx) => (
+                            {(docFiles.length > 0 ? docFiles.map((file) => file.name) : storedFiles.map((file) => file.filename)).map((name, idx) => (
                               <li key={idx} className="flex items-center gap-2 text-xs text-brand-dark bg-brand-gold/10 rounded-lg px-2.5 py-1">
                                 <FileText className="h-3 w-3 text-brand-gold flex-shrink-0" />
-                                <span className="truncate max-w-[200px]">{file.name}</span>
+                                <span className="truncate max-w-[200px]">{name}</span>
                                 <button
                                   type="button"
                                   onClick={() => removeFile(key, idx)}

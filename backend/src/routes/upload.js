@@ -98,13 +98,14 @@ router.post('/', upload.single('file'), async (req, res) => {
 
         const result = await pool.query(
           `INSERT INTO documents
-             (application_id, file_name, file_url, type, file_size, mime_type, status)
-           VALUES ($1, $2, $3, $4, $5, $6, 'pending')
+             (application_id, file_name, file_url, blob_name, type, file_size, mime_type, status)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending')
            RETURNING id`,
           [
             applicationId,
             req.file.originalname,
             uploadResult.url,
+            uploadResult.blobName || null,
             dbType,
             req.file.size,
             req.file.mimetype,

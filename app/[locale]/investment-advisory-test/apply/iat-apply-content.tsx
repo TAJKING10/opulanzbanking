@@ -30,6 +30,7 @@ import {
   type IATFormData,
   type ClientType,
 } from "@/components/investment-advisory-test/iat-types";
+import { linkIatDocumentToApplication } from "@/components/investment-advisory-test/iat-upload";
 
 // ---------------------------------------------------------------------------
 // Completion screen
@@ -359,6 +360,31 @@ export function IATApplyContent({
       }
 
       try {
+        const supportingDocs = Object.entries(formData.uploadedDocuments || {}).flatMap(
+          ([docType, files]) =>
+            (files || []).map((f) => ({
+              name: f.filename,
+              filename: f.filename,
+              url: f.url,
+              blobName: f.blobName,
+              size: f.size,
+              type: f.type || docType,
+            }))
+        );
+
+        const signedDocs = uploadedDocUrl
+          ? [
+              {
+                name: filename,
+                filename,
+                url: uploadedDocUrl,
+                blobName: uploadedBlobName,
+                size: uploadedFileSize,
+                type: "signed_contract",
+              },
+            ]
+          : [];
+
         const appResp = await fetch(`${API}/api/applications`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -379,22 +405,25 @@ export function IATApplyContent({
               signedDocumentFilename: filename,
               signedDocumentBlobName: uploadedBlobName,
               signedDocumentSize: uploadedFileSize,
-              documents: uploadedDocUrl ? [
-                {
-                  name: filename,
-                  filename: filename,
-                  url: uploadedDocUrl,
-                  blobName: uploadedBlobName,
-                  size: uploadedFileSize,
-                  type: "signed_contract",
-                }
-              ] : [],
+              documents: [...signedDocs, ...supportingDocs],
               formData,
             },
           }),
         });
         const appJson = await appResp.json();
         console.log("✅ Application created in database:", appJson);
+        const applicationId = appJson?.data?.id as number | undefined;
+        if (applicationId) {
+          for (const file of [...signedDocs, ...supportingDocs]) {
+            await linkIatDocumentToApplication(applicationId, {
+              filename: file.filename,
+              url: file.url,
+              blobName: file.blobName || undefined,
+              size: file.size || undefined,
+              type: file.type,
+            });
+          }
+        }
       } catch (appErr) {
         console.error("❌ Failed to create application in DB:", appErr);
       }

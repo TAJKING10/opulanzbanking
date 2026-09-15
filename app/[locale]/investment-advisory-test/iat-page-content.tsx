@@ -404,7 +404,7 @@ export function IATPageContent({
         subtitle={tp("heroSubtitle")}
         primaryCta={{
           label: tp("heroPrimaryBtn"),
-          onClick: startPrototype,
+          href: `/${locale}/investment-advisory-test/apply`,
         }}
         secondaryCta={{
           label: tp("heroSecondaryBtn"),
@@ -534,146 +534,32 @@ export function IATPageContent({
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* START CTA (if not yet started)                                       */}
+      {/* START CTA                                                            */}
       {/* ------------------------------------------------------------------ */}
-      {!started && (
-        <section className="bg-gray-50 py-8 md:py-10">
-          <div className="container mx-auto max-w-3xl px-6 text-center">
-            <div className="rounded-2xl border-2 border-brand-gold/30 bg-white p-8 shadow-sm">
-              <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-gold/10">
-                <Target className="h-7 w-7 text-brand-gold" />
-              </div>
-              <h2 className="mb-3 text-2xl font-bold text-brand-dark">{t("wizard.startCTA")}</h2>
-              <p className="mb-6 text-brand-grayMed text-sm max-w-lg mx-auto">
-                {t("wizard.startDesc")}
-              </p>
-              <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                <Button variant="primary" size="lg" onClick={startPrototype}>
+      <section className="bg-gray-50 py-8 md:py-10">
+        <div className="container mx-auto max-w-3xl px-6 text-center">
+          <div className="rounded-2xl border-2 border-brand-gold/30 bg-white p-8 shadow-sm">
+            <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-gold/10">
+              <Target className="h-7 w-7 text-brand-gold" />
+            </div>
+            <h2 className="mb-3 text-2xl font-bold text-brand-dark">{t("wizard.startCTA")}</h2>
+            <p className="mb-6 text-brand-grayMed text-sm max-w-lg mx-auto">
+              {t("wizard.startDesc")}
+            </p>
+            <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <Button asChild variant="primary" size="lg">
+                <Link href={`/${locale}/investment-advisory-test/apply`}>
                   {t("wizard.startBtn")}
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <a href="#consultation-info">{t("wizard.bookConsultation")}</a>
-                </Button>
-              </div>
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <a href="#consultation-info">{t("wizard.bookConsultation")}</a>
+              </Button>
             </div>
           </div>
-        </section>
-      )}
-
-      {/* ------------------------------------------------------------------ */}
-      {/* WIZARD anchor                                                        */}
-      {/* ------------------------------------------------------------------ */}
-      <div ref={prototypeRef} />
-
-      {/* ------------------------------------------------------------------ */}
-      {/* MULTI-STEP QCC WIZARD                                                */}
-      {/* ------------------------------------------------------------------ */}
-      {started && (
-        <section className="bg-white py-8 md:py-10">
-          <div className="container mx-auto max-w-4xl px-6">
-
-            {!completed ? (
-              <>
-                {!clientType ? (
-                  <Card className="border-none shadow-lg">
-                    <CardContent className="p-6 md:p-8">
-                      <IATTypeSelector onSelect={handleSelectType} />
-                    </CardContent>
-                  </Card>
-                ) : (
-                  <>
-                    <div className="mb-8 rounded-2xl border border-brand-grayLight bg-gray-50 p-4 md:p-6">
-                      <IATProgress step={step} totalSteps={8} labels={stepLabels} />
-                    </div>
-
-                    <Card className="border-none shadow-lg">
-                      <CardHeader className="border-b border-brand-grayLight pb-3">
-                        <CardTitle className="text-sm font-semibold text-brand-grayMed tracking-wide uppercase">
-                          {stepTitle}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-6 md:p-8">
-
-                        {step === 1 && (
-                          <div className="mb-4">
-                            <button
-                              type="button"
-                              onClick={() => { setClientType(null); setStepError(""); }}
-                              className="text-xs text-brand-grayMed hover:text-brand-gold underline underline-offset-2"
-                            >
-                              {t("wizard.changeClientType")}
-                            </button>
-                          </div>
-                        )}
-
-                        {clientType === "personal" && step === 1 && (
-                          <IATppStep1 formData={formData} onChange={updateFormData} onNext={() => goToStep(2)} error={stepError} setError={setStepError} />
-                        )}
-                        {clientType === "personal" && step === 2 && (
-                          <IATppStep2 formData={formData} onChange={updateFormData} onNext={() => goToStep(3)} error={stepError} setError={setStepError} />
-                        )}
-                        {clientType === "personal" && step === 3 && (
-                          <IATppStep3 formData={formData} onChange={updateFormData} onNext={() => goToStep(4)} error={stepError} setError={setStepError} />
-                        )}
-
-                        {clientType === "company" && step === 1 && (
-                          <IATpmStep1 formData={formData} onChange={updateFormData} onNext={() => goToStep(2)} error={stepError} setError={setStepError} />
-                        )}
-                        {clientType === "company" && step === 2 && (
-                          <IATpmStep2 formData={formData} onChange={updateFormData} onNext={() => goToStep(3)} error={stepError} setError={setStepError} />
-                        )}
-                        {clientType === "company" && step === 3 && (
-                          <IATpmStep3 formData={formData} onChange={updateFormData} onNext={() => goToStep(4)} error={stepError} setError={setStepError} />
-                        )}
-
-                        {step === 4 && (
-                          <IATStepKnowledge formData={formData} onChange={updateFormData} onNext={() => goToStep(5)} error={stepError} setError={setStepError} />
-                        )}
-                        {step === 5 && (
-                          <IATStepObjectives formData={formData} onChange={updateFormData} onNext={() => goToStep(6)} error={stepError} setError={setStepError} />
-                        )}
-                        {step === 6 && (
-                          <IATStepESG formData={formData} onChange={updateFormData} onNext={() => goToStep(7)} error={stepError} setError={setStepError} />
-                        )}
-                        {step === 7 && (
-                          <IATCalendly formData={formData} onChange={updateFormData} onNext={() => goToStep(8)} error={stepError} setError={setStepError} />
-                        )}
-                        {step === 8 && (
-                          <IATStepReview formData={formData} onChange={updateFormData} onSign={handleSign} isGeneratingPdf={isGeneratingPdf} error={stepError} setError={setStepError} />
-                        )}
-
-                        {step > 1 && step < 8 && (
-                          <div className="mt-4 pt-4 border-t border-brand-grayLight">
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="lg"
-                              className="w-full"
-                              onClick={() => goToStep(step - 1)}
-                            >
-                              {t("wizard.previousStep")}
-                            </Button>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </>
-                )}
-              </>
-            ) : (
-              <CompletionScreen
-                onRestart={restart}
-                locale={locale}
-                clientName={clientName}
-                emailStatus={emailStatus}
-                pdfBase64={signedPdfBase64}
-                pdfFilename={signedPdfFilename}
-              />
-            )}
-          </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* ------------------------------------------------------------------ */}
       {/* REGULATORY NOTICE                                                    */}
@@ -741,12 +627,12 @@ export function IATPageContent({
             {tp("ctaSubtitle")}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <button
-              onClick={startPrototype}
+            <Link
+              href={`/${locale}/investment-advisory-test/apply`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               {tp("ctaRequestBtn")}
-            </button>
+            </Link>
             <Link
               href={`/${locale}/support`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl border-2 border-white bg-transparent px-8 text-base font-semibold text-white transition-all hover:bg-white/10"

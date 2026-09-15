@@ -223,6 +223,81 @@ function fmt(date: string) {
   });
 }
 
+function isFileLikeRecord(v: unknown): boolean {
+  if (!v || typeof v !== "object" || Array.isArray(v)) return false;
+  const o = v as Record<string, unknown>;
+  const url = o.url || o.fileUrl || o.file_url;
+  const blob = o.blobName || o.blob_name;
+  const name = o.filename || o.fileName || o.name;
+  const hasUrl = typeof url === "string" && /^https?:\/\//i.test(url);
+  const hasBlob = typeof blob === "string" && blob.length > 0;
+  return (hasUrl || hasBlob) && !!(name || hasUrl || hasBlob);
+}
+
+function toPayloadFile(f: Record<string, unknown>, fallbackType?: string): PayloadFile {
+  return {
+    filename: String(f.filename || f.fileName || f.name || "Document"),
+    size: typeof f.size === "number" ? f.size : typeof f.fileSize === "number" ? f.fileSize : typeof f.file_size === "number" ? f.file_size : undefined,
+    type: String(f.type || f.documentType || fallbackType || "uploaded_file"),
+    id: f.id != null ? String(f.id) : undefined,
+    url: (f.url || f.fileUrl || f.file_url) as string | undefined,
+    blobName: (f.blobName || f.blob_name) as string | undefined,
+  };
+}
+
+/** Walk nested investment-advisory payloads for Azure files + signed QCC. */
+function collectSubmissionFiles(payload: Record<string, unknown> | null | undefined): PayloadFile[] {
+  const out: PayloadFile[] = [];
+  const seen = new Set<string>();
+  const push = (f: PayloadFile) => {
+    if (!f.url && !f.blobName) return;
+    const key = `${f.blobName || ""}|${f.url || ""}|${f.filename}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push(f);
+  };
+
+  const walk = (node: unknown, hint?: string) => {
+    if (node == null) return;
+    if (Array.isArray(node)) {
+      node.forEach((item) => {
+        if (isFileLikeRecord(item)) push(toPayloadFile(item as Record<string, unknown>, hint));
+        else walk(item, hint);
+      });
+      return;
+    }
+    if (typeof node !== "object") return;
+    const obj = node as Record<string, unknown>;
+    if (isFileLikeRecord(obj)) {
+      push(toPayloadFile(obj, hint));
+      return;
+    }
+    if (typeof obj.signedDocumentUrl === "string" && obj.signedDocumentUrl) {
+      push({
+        filename: String(obj.signedDocumentFilename || "Signed_QCC_Agreement.pdf"),
+        size: typeof obj.signedDocumentSize === "number" ? obj.signedDocumentSize : undefined,
+        type: "signed_contract",
+        url: obj.signedDocumentUrl,
+        blobName: typeof obj.signedDocumentBlobName === "string" ? obj.signedDocumentBlobName : undefined,
+      });
+    }
+    for (const [k, v] of Object.entries(obj)) {
+      if (
+        k === "signedDocumentUrl" ||
+        k === "signedDocumentFilename" ||
+        k === "signedDocumentBlobName" ||
+        k === "signedDocumentSize"
+      ) {
+        continue;
+      }
+      walk(v, k);
+    }
+  };
+
+  walk(payload);
+  return out;
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function AdminDashboard() {
   const router = useRouter();
@@ -1298,8 +1373,17 @@ function SubmissionsTab({
   };
 
   const loadDocs = (sub: Submission) => {
-    // Payload files (company formation, accounting, etc.)
-    const payloadDocs = (sub.payloadFiles || []).map((f, i) => ({
+    const walked = collectSubmissionFiles(sub.payload);
+    const combined = [...(sub.payloadFiles || []), ...walked];
+    const seen = new Set<string>();
+    const payloadDocs = combined
+      .filter((f) => {
+        const key = `${f.blobName || ""}::${f.url || ""}::${f.filename}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return !!(f.url || f.blobName);
+      })
+      .map((f, i) => ({
       id: -(i + 1),
       file_name: f.filename,
       file_url: f.url || "",
@@ -1575,9 +1659,16 @@ function SubmissionsTab({
               </div>
 
               {/* Attached Documents */}
-              {docs.length > 0 && (
+              {(docs.length > 0 || selected.service === "investment_advisory") && (
                 <div className="mb-6">
-                  <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Attached Files ({docs.length})</h3>
+                  <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">
+                    Attached Files {docs.length > 0 ? `(${docs.length})` : ""}
+                  </h3>
+                  {docs.length === 0 && (
+                    <p className="text-sm text-gray-500 bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 mb-2">
+                      No files were stored with this submission. Supporting uploads stayed in the browser, and the signed QCC was not saved to Azure. New submissions upload both.
+                    </p>
+                  )}
                   <div className="space-y-2">
                     {(docs as Array<{id:number;file_name:string;file_url:string;mime_type:string|null;type:string;size?:number;file_size?:number;blob_name?:string|null;fromPayload?:boolean}>).map(doc => {
                       const isPdf = doc.mime_type === "application/pdf" || doc.file_name?.endsWith(".pdf");
@@ -2500,8 +2591,27 @@ const HIDDEN_KEYS = new Set([
   "id", "ids", "created_at", "createdAt", "updated_at", "updatedAt",
   "user_ref", "userRef", "confirmation_number", "confirmationNumber",
   "uploadedFiles", "files", "attachments", "documents",  // shown in Attached Files section
+  "uploadedDocuments",
+  "signedDocumentUrl", "signedDocumentFilename", "signedDocumentBlobName", "signedDocumentSize",
   "status", "service", "service_type", "serviceType",
 ]);
+
+const LABEL_OVERRIDES: Record<string, string> = {
+  titulaire1: "Account holder 1",
+  titulaire2: "Account holder 2",
+  hasTitulaire2: "Second account holder",
+  personalFinancial: "Personal financial situation",
+  personalDocuments: "Personal documents provided",
+  companyIdentity: "Company identity",
+  companyFinancial: "Company financial situation",
+  companyDocuments: "Company documents provided",
+  productKnowledge: "Product knowledge",
+  maritalStatus: "Marital status",
+  clientType: "Client type",
+  esg: "ESG preferences",
+  envelopeId: "Envelope ID",
+  signedAt: "Signed at",
+};
 
 /** Keys that contain person arrays (directors, shareholders, managers, beneficiaries) */
 const PERSON_ARRAY_KEYS = new Set([
@@ -2513,15 +2623,17 @@ const PERSON_ARRAY_KEYS = new Set([
 /** Keys that contain consent/boolean maps */
 const CONSENT_KEYS = new Set([
   "consents", "Consents", "consent", "agreements", "termsAccepted",
+  "personalDocuments", "companyDocuments",
 ]);
 
 /** Keys that contain upload-related data */
 const UPLOAD_KEYS = new Set([
-  "uploads", "Uploads", "upload",
+  "uploads", "Uploads", "upload", "uploadedDocuments",
 ]);
 
 /** Convert camelCase / snake_case key into a readable label */
 function prettyLabel(key: string): string {
+  if (LABEL_OVERRIDES[key]) return LABEL_OVERRIDES[key];
   return key
     .replace(/([a-z])([A-Z])/g, "$1 $2")  // camelCase → camel Case
     .replace(/_/g, " ")                     // snake_case → snake case
@@ -2599,7 +2711,7 @@ function formatValue(key: string, value: unknown): React.ReactNode {
     return value;
   }
 
-  return String(value);
+  return null;
 }
 
 /** Renders a single person (director/shareholder/manager) as a mini card */
@@ -2758,26 +2870,72 @@ function UploadSection({ uploads, onPreview }: { uploads: Record<string, unknown
 }
 
 /** Main payload renderer — replaces raw JSON.stringify display */
+function isPlainObject(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null && !Array.isArray(v);
+}
+
+function isEmptyDeep(v: unknown): boolean {
+  if (v === null || v === undefined || v === "") return true;
+  if (typeof v === "boolean" || typeof v === "number") return false;
+  if (Array.isArray(v)) return v.length === 0 || v.every(isEmptyDeep);
+  if (isFileLikeRecord(v)) return false;
+  if (isPlainObject(v)) return Object.values(v).every(isEmptyDeep);
+  return false;
+}
+
+function isBooleanMap(obj: Record<string, unknown>): boolean {
+  const vals = Object.values(obj);
+  if (vals.length === 0) return false;
+  return vals.every((v) => typeof v === "boolean" || v === null);
+}
+
+function flattenAdvisoryPayload(payload: Record<string, unknown>): Record<string, unknown> {
+  const nested = payload.formData;
+  if (isPlainObject(nested)) {
+    const { formData: _omit, ...rest } = payload;
+    return { ...nested, ...rest };
+  }
+  return payload;
+}
+
 function PayloadRenderer({ payload, onPreview }: { payload: Record<string, unknown>; onPreview?: (url: string, name: string, blobName?: string) => void }) {
-  // Separate entries into categories
+  return <NestedFields data={flattenAdvisoryPayload(payload)} onPreview={onPreview} />;
+}
+
+function NestedFields({
+  data,
+  onPreview,
+}: {
+  data: Record<string, unknown>;
+  onPreview?: (url: string, name: string, blobName?: string) => void;
+}) {
   const personSections: Array<{ key: string; label: string; items: Record<string, unknown>[] }> = [];
   const consentSections: Array<{ key: string; label: string; data: Record<string, unknown> }> = [];
   const uploadSections: Array<{ key: string; label: string; data: Record<string, unknown> }> = [];
+  const nestedSections: Array<{ key: string; label: string; data: Record<string, unknown> }> = [];
   const regularEntries: Array<[string, unknown]> = [];
 
-  for (const [key, value] of Object.entries(payload)) {
+  for (const [key, value] of Object.entries(data)) {
     if (HIDDEN_KEYS.has(key)) continue;
-    if (value === null || value === undefined || value === "") continue;
-
-    // Empty arrays
-    if (Array.isArray(value) && value.length === 0) continue;
+    if (isEmptyDeep(value) && typeof value !== "boolean") continue;
 
     if (PERSON_ARRAY_KEYS.has(key) && Array.isArray(value)) {
       personSections.push({ key, label: prettyLabel(key), items: value as Record<string, unknown>[] });
-    } else if (CONSENT_KEYS.has(key) && typeof value === "object" && !Array.isArray(value)) {
-      consentSections.push({ key, label: prettyLabel(key), data: value as Record<string, unknown> });
-    } else if (UPLOAD_KEYS.has(key) && typeof value === "object") {
+    } else if (
+      (CONSENT_KEYS.has(key) || (isPlainObject(value) && isBooleanMap(value))) &&
+      isPlainObject(value)
+    ) {
+      consentSections.push({ key, label: prettyLabel(key), data: value });
+    } else if (UPLOAD_KEYS.has(key) && typeof value === "object" && value !== null) {
       uploadSections.push({ key, label: prettyLabel(key), data: value as Record<string, unknown> });
+    } else if (isFileLikeRecord(value)) {
+      uploadSections.push({
+        key,
+        label: prettyLabel(key),
+        data: { [key]: value },
+      });
+    } else if (isPlainObject(value)) {
+      nestedSections.push({ key, label: prettyLabel(key), data: value });
     } else {
       regularEntries.push([key, value]);
     }
@@ -2785,47 +2943,38 @@ function PayloadRenderer({ payload, onPreview }: { payload: Record<string, unkno
 
   return (
     <div className="space-y-5">
-      {/* Regular key-value pairs */}
       {regularEntries.length > 0 && (
         <table className="w-full text-sm">
           <tbody>
             {regularEntries.map(([key, value]) => {
-              // If it's an object/array that isn't handled above, render it nicely
-              if (typeof value === "object" && value !== null) {
-                // Nested object — render sub-fields
-                if (!Array.isArray(value)) {
-                  const obj = value as Record<string, unknown>;
-                  const subEntries = Object.entries(obj).filter(([, v]) => v !== null && v !== undefined && v !== "");
-                  if (subEntries.length === 0) return null;
+              if (Array.isArray(value)) {
+                const items = value as unknown[];
+                const allObjects = items.length > 0 && items.every((item) => isPlainObject(item) && !isFileLikeRecord(item));
+                if (allObjects) {
                   return (
                     <tr key={key} className="border-b border-gray-100 last:border-0">
                       <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{prettyLabel(key)}</td>
                       <td className="py-2">
-                        <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                          {subEntries.map(([sk, sv]) => {
-                            const formatted = formatValue(sk, sv);
-                            if (formatted === null) return null;
-                            return (
-                              <div key={sk}>
-                                <span className="text-[10px] text-gray-400 uppercase tracking-wider">{prettyLabel(sk)}</span>
-                                <p className="text-sm text-gray-800">{formatted}</p>
-                              </div>
-                            );
-                          })}
+                        <div className="space-y-3">
+                          {items.map((item, i) => (
+                            <div key={i} className="rounded-lg border border-gray-200 bg-white p-3">
+                              <NestedFields data={item as Record<string, unknown>} onPreview={onPreview} />
+                            </div>
+                          ))}
                         </div>
                       </td>
                     </tr>
                   );
                 }
-                // Array of primitives
-                if (Array.isArray(value)) {
-                  return (
-                    <tr key={key} className="border-b border-gray-100 last:border-0">
-                      <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{prettyLabel(key)}</td>
-                      <td className="py-2 text-gray-900">{(value as unknown[]).map(String).join(", ")}</td>
-                    </tr>
-                  );
-                }
+                const label = items
+                  .map((item) => (typeof item === "object" ? JSON.stringify(item) : String(item)))
+                  .join(", ");
+                return (
+                  <tr key={key} className="border-b border-gray-100 last:border-0">
+                    <td className="py-2 pr-4 text-gray-500 font-medium w-48 align-top">{prettyLabel(key)}</td>
+                    <td className="py-2 text-gray-900">{label}</td>
+                  </tr>
+                );
               }
 
               const formatted = formatValue(key, value);
@@ -2841,8 +2990,18 @@ function PayloadRenderer({ payload, onPreview }: { payload: Record<string, unkno
         </table>
       )}
 
-      {/* Person sections (directors, shareholders, managers) */}
-      {personSections.map(section => (
+      {nestedSections.map((section) => (
+        <div key={section.key}>
+          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
+            {section.label}
+          </h4>
+          <div className="rounded-xl border border-gray-200 bg-white p-4">
+            <NestedFields data={section.data} onPreview={onPreview} />
+          </div>
+        </div>
+      ))}
+
+      {personSections.map((section) => (
         <div key={section.key}>
           <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
             <span>👥</span> {section.label} ({section.items.length})
@@ -2855,8 +3014,7 @@ function PayloadRenderer({ payload, onPreview }: { payload: Record<string, unkno
         </div>
       ))}
 
-      {/* Consent sections */}
-      {consentSections.map(section => (
+      {consentSections.map((section) => (
         <div key={section.key}>
           <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
             <span>📋</span> {section.label}
@@ -2867,8 +3025,7 @@ function PayloadRenderer({ payload, onPreview }: { payload: Record<string, unkno
         </div>
       ))}
 
-      {/* Upload sections */}
-      {uploadSections.map(section => (
+      {uploadSections.map((section) => (
         <div key={section.key}>
           <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
             <span>📂</span> {section.label}

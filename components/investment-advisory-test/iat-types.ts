@@ -333,6 +333,14 @@ export interface IATFormData {
   esg: ESGData;
   appointment: AppointmentData;
   consents: Consents;
+  uploadedDocuments: Record<string, Array<{
+    filename: string;
+    url: string;
+    blobName?: string;
+    size?: number;
+    mimeType?: string;
+    type?: string;
+  }>>;
 }
 
 // ============================================================
@@ -441,6 +449,7 @@ export const defaultFormData: IATFormData = {
     answersAccurate: false, receivedInfo: false,
     amlConsent: false, gdprConsent: false,
   },
+  uploadedDocuments: {},
 };
 
 export const PP_STEP_LABELS = [

@@ -1378,21 +1378,21 @@ function SubmissionsTab({
     const seen = new Set<string>();
     const payloadDocs = combined
       .filter((f) => {
-        const key = `${f.blobName || ""}::${f.url || ""}::${f.filename}`;
+        const key = f.blobName ? f.blobName : `${f.filename}::${f.size || 0}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return !!(f.url || f.blobName);
       })
       .map((f, i) => ({
-      id: -(i + 1),
-      file_name: f.filename,
-      file_url: f.url || "",
-      mime_type: f.type || null,
-      type: f.type || "uploaded_file",
-      size: f.size,
-      blob_name: f.blobName || null,
-      fromPayload: true,
-    }));
+        id: -(i + 1),
+        file_name: f.filename,
+        file_url: f.url || "",
+        mime_type: f.type || null,
+        type: f.type || "uploaded_file",
+        size: f.size,
+        blob_name: f.blobName || null,
+        fromPayload: true,
+      }));
 
     if (sub.source !== "application") { setDocs(payloadDocs as never[]); return; }
     fetch(`${API}/api/admin/documents/${sub.rawId}`, {
@@ -1400,9 +1400,14 @@ function SubmissionsTab({
     })
       .then(r => r.json())
       .then(d => {
-        const dbDocs = d.success ? d.data : [];
-        // Merge: DB docs first (have URLs), then payload-only files not already covered
-        setDocs([...dbDocs, ...payloadDocs] as never[]);
+        const dbDocs: Array<{id:number;file_name:string;file_url:string;mime_type:string|null;type:string;size?:number;blob_name?:string|null}> = d.success ? d.data : [];
+        // Track seen keys from DB docs
+        const dbKeys = new Set(dbDocs.map(doc => doc.blob_name ? doc.blob_name : `${doc.file_name}::${doc.size || 0}`));
+        const filteredPayload = payloadDocs.filter(doc => {
+          const key = doc.blob_name ? doc.blob_name : `${doc.file_name}::${doc.size || 0}`;
+          return !dbKeys.has(key);
+        });
+        setDocs([...dbDocs, ...filteredPayload] as never[]);
       })
       .catch(() => setDocs(payloadDocs as never[]));
   };
@@ -1701,8 +1706,8 @@ function SubmissionsTab({
                             <div className="min-w-0">
                               <p className="text-sm font-medium text-gray-800 truncate">{doc.file_name}</p>
                               <p className="text-xs text-gray-500 capitalize">
-                                {doc.type?.replace(/_/g, " ")}
-                                {sizeStr ? ` · ${sizeStr}` : ""}
+                                {doc.type && doc.type.toLowerCase() !== "other" ? doc.type.replace(/_/g, " ") : ""}
+                                {sizeStr ? `${doc.type && doc.type.toLowerCase() !== "other" ? " · " : ""}${sizeStr}` : ""}
                                 {hasUrl ? " · Azure" : ""}
                               </p>
                             </div>

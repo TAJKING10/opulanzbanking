@@ -1,0 +1,161 @@
+/**
+ * IMAP inbox reader for contact@opulanz.com
+ * Fetches client-facing emails (support requests, application inquiries).
+ * Automated/Azure emails are filtered out.
+ */
+
+const { ImapFlow } = require('imapflow');
+const { simpleParser } = require('mailparser');
+
+// Senders / subject patterns that belong to automated pipeline traffic
+const SKIP_DOMAINS   = ['azure.com', 'microsoft.com', 'azuredevops.com', 'visualstudio.com', 'amazonaws.com'];
+const SKIP_FROM_PFXS = ['noreply@', 'no-reply@', 'do-not-reply@', 'mailer-daemon@', 'bounce@', 'postmaster@', 'devops@', 'notifications@'];
+const SKIP_SUBJECTS  = ['build succeeded', 'build failed', 'release completed', 'pipeline ', 'deployment ', 'azure devops'];
+
+function isAutomated(fromEmail, subject) {
+  const f = (fromEmail || '').toLowerCase();
+  const s = (subject  || '').toLowerCase();
+  if (SKIP_DOMAINS.some(d => f.endsWith('@' + d) || f.includes('.' + d))) return true;
+  if (SKIP_FROM_PFXS.some(p => f.startsWith(p) || f.includes('<' + p))) return true;
+  if (SKIP_SUBJECTS.some(k => s.includes(k))) return true;
+  return false;
+}
+
+function getConfig() {
+  return {
+    host:   process.env.IMAP_HOST || 'imap.gmail.com',
+    port:   parseInt(process.env.IMAP_PORT || '993'),
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+    logger: false,
+    tls: { rejectUnauthorized: false },
+  };
+}
+
+/**
+ * List inbox messages newest-first, filtered to client emails only.
+ * @param {object} opts
+ * @param {number} opts.limit  max messages to scan (default 100)
+ */
+async function listInbox({ limit = 100 } = {}) {
+  const client = new ImapFlow(getConfig());
+  await client.connect();
+
+  try {
+    const lock = await client.getMailboxLock('INBOX');
+    try {
+      const status = await client.status('INBOX', { messages: true, unseen: true });
+      const total = status.messages || 0;
+      if (total === 0) return [];
+
+      // Scan the latest `limit` messages by sequence number
+      const from = Math.max(1, total - limit + 1);
+      const seq  = `${from}:*`;
+
+      const messages = [];
+
+      for await (const msg of client.fetch(seq, {
+        envelope: true,
+        flags:    true,
+        bodyStructure: false,
+      })) {
+        const envFrom  = msg.envelope.from?.[0];
+        const fromAddr = envFrom
+          ? `${envFrom.mailbox}@${envFrom.host}`
+          : '';
+        const fromName = envFrom?.name || '';
+
+        if (isAutomated(fromAddr, msg.envelope.subject)) continue;
+
+        messages.push({
+          uid:       msg.uid,
+          seq:       msg.seq,
+          subject:   msg.envelope.subject  || '(no subject)',
+          fromName,
+          fromEmail: fromAddr,
+          from:      fromName ? `${fromName} <${fromAddr}>` : fromAddr,
+          date:      msg.envelope.date,
+          seen:      msg.flags.has('\\Seen'),
+        });
+      }
+
+      // Return newest-first
+      messages.sort((a, b) => new Date(b.date) - new Date(a.date));
+      return messages;
+    } finally {
+      lock.release();
+    }
+  } finally {
+    await client.logout();
+  }
+}
+
+/**
+ * Fetch and parse a single email by UID.
+ * Also marks it as \Seen.
+ */
+async function getEmail(uid) {
+  const client = new ImapFlow(getConfig());
+  await client.connect();
+
+  try {
+    const lock = await client.getMailboxLock('INBOX');
+    try {
+      const msg = await client.fetchOne(
+        String(uid),
+        { source: true, envelope: true, flags: true },
+        { uid: true }
+      );
+      if (!msg) return null;
+
+      const parsed = await simpleParser(msg.source);
+
+      // Mark as read
+      await client.messageFlagsAdd(String(uid), ['\\Seen'], { uid: true });
+
+      const fromVal  = parsed.from?.value?.[0] || {};
+      const replyTo  = parsed.replyTo?.value?.[0]?.address
+                    || parsed.from?.value?.[0]?.address
+                    || '';
+
+      return {
+        uid,
+        subject:     msg.envelope.subject || '(no subject)',
+        from:        parsed.from?.text     || '',
+        fromEmail:   fromVal.address       || '',
+        fromName:    fromVal.name          || '',
+        replyTo,
+        to:          parsed.to?.text       || '',
+        date:        msg.envelope.date     || parsed.date,
+        text:        parsed.text           || '',
+        html:        parsed.html           || parsed.textAsHtml || '',
+        attachments: (parsed.attachments || []).map(a => ({
+          filename:    a.filename    || 'attachment',
+          contentType: a.contentType || 'application/octet-stream',
+          size:        a.size        || 0,
+        })),
+      };
+    } finally {
+      lock.release();
+    }
+  } finally {
+    await client.logout();
+  }
+}
+
+/**
+ * Count unread non-automated messages (used for the Overview badge).
+ */
+async function countUnread() {
+  try {
+    const messages = await listInbox({ limit: 100 });
+    return messages.filter(m => !m.seen).length;
+  } catch {
+    return 0;
+  }
+}
+
+module.exports = { listInbox, getEmail, countUnread };

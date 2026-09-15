@@ -1463,4 +1463,34 @@ router.patch('/contacts/:id', adminAuth, async (req, res) => {
   }
 });
 
+// ─── GET /api/admin/inbox ────────────────────────────────────────────────────
+// List client emails from contact@opulanz.com (automated / Azure mail filtered out)
+router.get('/inbox', adminAuth, async (req, res) => {
+  try {
+    const limit = Math.min(parseInt(req.query.limit) || 100, 200);
+    const { listInbox } = require('../services/imapInbox');
+    const messages = await listInbox({ limit });
+    res.json({ success: true, data: messages, total: messages.length });
+  } catch (err) {
+    console.error('Admin inbox list error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ─── GET /api/admin/inbox/:uid ───────────────────────────────────────────────
+// Fetch + parse a single email by UID (also marks it as read)
+router.get('/inbox/:uid', adminAuth, async (req, res) => {
+  try {
+    const uid = parseInt(req.params.uid, 10);
+    if (!uid || isNaN(uid)) return res.status(400).json({ success: false, error: 'Invalid UID' });
+    const { getEmail } = require('../services/imapInbox');
+    const email = await getEmail(uid);
+    if (!email) return res.status(404).json({ success: false, error: 'Email not found' });
+    res.json({ success: true, data: email });
+  } catch (err) {
+    console.error('Admin inbox read error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 module.exports = router;

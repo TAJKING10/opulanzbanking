@@ -301,7 +301,7 @@ function collectSubmissionFiles(payload: Record<string, unknown> | null | undefi
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function AdminDashboard() {
   const router = useRouter();
-  const [tab, setTab] = React.useState<"overview" | "submissions" | "pipeline" | "support" | "contacts" | "help">("overview");
+  const [tab, setTab] = React.useState<"overview" | "submissions" | "pipeline" | "support" | "contacts" | "help" | "inbox">("overview");
   const [submissionService, setSubmissionService] = React.useState("all");
   const [submissionSearch, setSubmissionSearch] = React.useState("");
   const [pipelineService, setPipelineService] = React.useState("company_formation");
@@ -365,6 +365,7 @@ export default function AdminDashboard() {
             <nav className="flex gap-1">
               {([
                 { key: "overview",     label: "Overview" },
+                { key: "inbox",        label: "Inbox" },
                 { key: "contacts",     label: "Support Messages" },
                 { key: "support",      label: "Live Chats" },
                 { key: "submissions",  label: "Submissions" },
@@ -405,7 +406,7 @@ export default function AdminDashboard() {
       {/* Content */}
       <main className="flex-1 max-w-screen-xl mx-auto w-full px-6 py-6">
         {tab === "overview"     && (
-          <OverviewTab onOpenSubmissions={openSubmissions} onOpenSupport={() => openSupport()} />
+          <OverviewTab onOpenSubmissions={openSubmissions} onOpenSupport={() => openSupport()} onOpenInbox={() => setTab("inbox")} />
         )}
         {tab === "contacts"     && (
           <ContactsTab initialSearch={contactSearch} />
@@ -431,6 +432,7 @@ export default function AdminDashboard() {
         {tab === "support"      && (
           <SupportTab initialChatId={selectedChatId} />
         )}
+        {tab === "inbox"        && <InboxTab />}
         {tab === "help"         && <HelpTab />}
       </main>
     </div>
@@ -606,12 +608,16 @@ function GlobalSearchBar({
 function OverviewTab({
   onOpenSubmissions,
   onOpenSupport,
+  onOpenInbox,
 }: {
   onOpenSubmissions: (serviceKey: string) => void;
   onOpenSupport: () => void;
+  onOpenInbox: () => void;
 }) {
   const [stats, setStats] = React.useState<Stats | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const [inboxPreview, setInboxPreview] = React.useState<Array<{uid:number;subject:string;from:string;fromEmail:string;date:string;seen:boolean}>>([]);
+  const [inboxLoading, setInboxLoading] = React.useState(true);
 
   React.useEffect(() => {
     fetch(`${API}/api/admin/stats`, { headers: { "x-admin-token": getToken() } })
@@ -622,6 +628,14 @@ function OverviewTab({
       .then(d => { if (d && d.success) setStats(d.data); })
       .catch(err => console.error("Stats fetch error:", err))
       .finally(() => setLoading(false));
+  }, []);
+
+  React.useEffect(() => {
+    fetch(`${API}/api/admin/inbox?limit=5`, { headers: { "x-admin-token": getToken() } })
+      .then(r => r.json())
+      .then(d => { if (d?.success) setInboxPreview(d.data.slice(0, 5)); })
+      .catch(() => {})
+      .finally(() => setInboxLoading(false));
   }, []);
 
   if (loading) return <LoadingSpinner />;
@@ -773,6 +787,61 @@ function OverviewTab({
               ))
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Inbox preview — shown before Service Email Routing */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <div>
+            <h3 className="font-semibold text-gray-900">Inbox — contact@opulanz.com</h3>
+            <p className="text-xs text-gray-400 mt-0.5">Latest client emails (support &amp; applications)</p>
+          </div>
+          <div className="flex items-center gap-3">
+            {inboxPreview.filter(m => !m.seen).length > 0 && (
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-700">
+                {inboxPreview.filter(m => !m.seen).length} unread
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={onOpenInbox}
+              className="text-xs font-medium text-[#b59354] hover:underline"
+            >
+              Open Inbox
+            </button>
+          </div>
+        </div>
+        <div className="divide-y divide-gray-50">
+          {inboxLoading ? (
+            <div className="px-6 py-5 text-sm text-gray-400">Loading…</div>
+          ) : inboxPreview.length === 0 ? (
+            <div className="px-6 py-5 text-sm text-gray-400 text-center">No client emails found</div>
+          ) : (
+            inboxPreview.map(msg => (
+              <button
+                key={msg.uid}
+                type="button"
+                onClick={onOpenInbox}
+                className="w-full px-6 py-3 text-left hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex items-start gap-2">
+                    {!msg.seen && (
+                      <span className="mt-1.5 w-2 h-2 rounded-full bg-[#b59354] flex-shrink-0" />
+                    )}
+                    <div className="min-w-0">
+                      <p className={`text-sm truncate ${!msg.seen ? "font-semibold text-gray-900" : "font-medium text-gray-700"}`}>
+                        {msg.subject}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">{msg.from}</p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-gray-400 flex-shrink-0 pt-0.5">{fmt(msg.date)}</span>
+                </div>
+              </button>
+            ))
+          )}
         </div>
       </div>
 
@@ -3960,6 +4029,274 @@ function HelpTab() {
           </>
         )}
       </Section>
+    </div>
+  );
+}
+
+// ─── Inbox Tab ────────────────────────────────────────────────────────────────
+interface InboxEmail {
+  uid: number;
+  subject: string;
+  from: string;
+  fromEmail: string;
+  fromName: string;
+  date: string;
+  seen: boolean;
+}
+
+interface InboxEmailDetail extends InboxEmail {
+  replyTo: string;
+  to: string;
+  text: string;
+  html: string;
+  attachments: Array<{ filename: string; contentType: string; size: number }>;
+}
+
+function InboxTab() {
+  const [emails, setEmails]           = React.useState<InboxEmail[]>([]);
+  const [loading, setLoading]         = React.useState(true);
+  const [error, setError]             = React.useState("");
+  const [selected, setSelected]       = React.useState<InboxEmailDetail | null>(null);
+  const [loadingEmail, setLoadingEmail] = React.useState(false);
+  const [replyText, setReplyText]     = React.useState("");
+  const [sending, setSending]         = React.useState(false);
+  const [sentMsg, setSentMsg]         = React.useState("");
+  const [replyError, setReplyError]   = React.useState("");
+
+  const fetchEmails = React.useCallback(() => {
+    setLoading(true);
+    setError("");
+    fetch(`${API}/api/admin/inbox?limit=100`, { headers: { "x-admin-token": getToken() } })
+      .then(r => r.json())
+      .then(d => {
+        if (d?.success) setEmails(d.data);
+        else setError(d?.error || "Failed to load inbox");
+      })
+      .catch(() => setError("Cannot reach backend"))
+      .finally(() => setLoading(false));
+  }, []);
+
+  React.useEffect(() => { fetchEmails(); }, [fetchEmails]);
+
+  const openEmail = (uid: number) => {
+    setLoadingEmail(true);
+    setSelected(null);
+    setReplyText("");
+    setSentMsg("");
+    setReplyError("");
+    fetch(`${API}/api/admin/inbox/${uid}`, { headers: { "x-admin-token": getToken() } })
+      .then(r => r.json())
+      .then(d => {
+        if (d?.success) {
+          setSelected(d.data);
+          // Mark as seen in local list
+          setEmails(prev => prev.map(e => e.uid === uid ? { ...e, seen: true } : e));
+        } else {
+          setError(d?.error || "Failed to load email");
+        }
+      })
+      .catch(() => setError("Cannot load email"))
+      .finally(() => setLoadingEmail(false));
+  };
+
+  const sendReply = async () => {
+    if (!selected || !replyText.trim()) return;
+    setSending(true);
+    setSentMsg("");
+    setReplyError("");
+    try {
+      const res = await fetch(`${API}/api/admin/reply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-token": getToken() },
+        body: JSON.stringify({
+          toEmail:      selected.replyTo || selected.fromEmail,
+          toName:       selected.fromName || "",
+          serviceType:  "general",
+          subject:      selected.subject.startsWith("Re:") ? selected.subject : `Re: ${selected.subject}`,
+          message:      replyText.trim(),
+          submissionRef: `inbox-${selected.uid}`,
+          adminName:    "Opulanz Support Team",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) {
+        setSentMsg("Reply sent successfully.");
+        setReplyText("");
+      } else {
+        setReplyError(data?.error || "Failed to send reply.");
+      }
+    } catch {
+      setReplyError("Cannot reach server.");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const unreadCount = emails.filter(e => !e.seen).length;
+
+  return (
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">Inbox</h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            contact@opulanz.com &mdash; client support &amp; application emails
+            {unreadCount > 0 && (
+              <span className="ml-2 text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium">
+                {unreadCount} unread
+              </span>
+            )}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={fetchEmails}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors shadow-sm"
+        >
+          <span>↻</span> Refresh
+        </button>
+      </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">{error}</div>
+      )}
+
+      <div className="flex gap-4 items-start">
+        {/* Email list */}
+        <div className="w-full lg:w-2/5 xl:w-1/3 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex-shrink-0">
+          <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+            <span className="text-sm font-semibold text-gray-700">
+              {loading ? "Loading…" : `${emails.length} message${emails.length !== 1 ? "s" : ""}`}
+            </span>
+          </div>
+          <div className="divide-y divide-gray-50 max-h-[calc(100vh-260px)] overflow-y-auto">
+            {loading ? (
+              <div className="py-10 flex justify-center"><div className="w-6 h-6 border-4 border-[#b59354] border-t-transparent rounded-full animate-spin" /></div>
+            ) : emails.length === 0 ? (
+              <div className="px-5 py-10 text-sm text-gray-400 text-center">No client emails found</div>
+            ) : (
+              emails.map(msg => (
+                <button
+                  key={msg.uid}
+                  type="button"
+                  onClick={() => openEmail(msg.uid)}
+                  className={`w-full px-4 py-3 text-left transition-colors ${
+                    selected?.uid === msg.uid
+                      ? "bg-[#b59354]/10 border-l-2 border-[#b59354]"
+                      : "hover:bg-gray-50"
+                  }`}
+                >
+                  <div className="flex items-start gap-2">
+                    {!msg.seen && (
+                      <span className="mt-1.5 w-2 h-2 rounded-full bg-[#b59354] flex-shrink-0" />
+                    )}
+                    {msg.seen && <span className="w-2 flex-shrink-0" />}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-baseline justify-between gap-1">
+                        <p className={`text-sm truncate ${!msg.seen ? "font-semibold text-gray-900" : "text-gray-700"}`}>
+                          {msg.fromName || msg.fromEmail}
+                        </p>
+                        <span className="text-[10px] text-gray-400 flex-shrink-0">{fmt(msg.date)}</span>
+                      </div>
+                      <p className={`text-xs truncate mt-0.5 ${!msg.seen ? "text-gray-600 font-medium" : "text-gray-500"}`}>
+                        {msg.subject}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Email detail + reply */}
+        <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          {loadingEmail ? (
+            <div className="py-16 flex justify-center"><div className="w-7 h-7 border-4 border-[#b59354] border-t-transparent rounded-full animate-spin" /></div>
+          ) : !selected ? (
+            <div className="py-16 flex flex-col items-center gap-2 text-gray-400">
+              <span className="text-4xl">✉️</span>
+              <p className="text-sm">Select an email to read</p>
+            </div>
+          ) : (
+            <div className="flex flex-col h-full max-h-[calc(100vh-260px)]">
+              {/* Email header */}
+              <div className="px-6 py-4 border-b border-gray-100">
+                <h3 className="font-semibold text-gray-900 text-base leading-snug mb-3">{selected.subject}</h3>
+                <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
+                  <span className="text-gray-400 font-medium">From</span>
+                  <span className="text-gray-700">{selected.from}</span>
+                  <span className="text-gray-400 font-medium">To</span>
+                  <span className="text-gray-700">{selected.to}</span>
+                  <span className="text-gray-400 font-medium">Date</span>
+                  <span className="text-gray-700">{fmt(selected.date)}</span>
+                </div>
+              </div>
+
+              {/* Email body */}
+              <div className="flex-1 overflow-y-auto px-6 py-5">
+                {selected.html ? (
+                  <iframe
+                    srcDoc={`<!doctype html><html><head><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.6;color:#333;margin:0;padding:0}a{color:#b59354}</style></head><body>${selected.html}</body></html>`}
+                    className="w-full min-h-[200px] border-0"
+                    sandbox="allow-same-origin"
+                    style={{ height: "auto", minHeight: "200px" }}
+                    onLoad={(e) => {
+                      const iframe = e.currentTarget;
+                      if (iframe.contentDocument) {
+                        iframe.style.height = iframe.contentDocument.body.scrollHeight + "px";
+                      }
+                    }}
+                  />
+                ) : (
+                  <pre className="whitespace-pre-wrap text-sm text-gray-700 font-sans">{selected.text}</pre>
+                )}
+                {selected.attachments.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-gray-100">
+                    <p className="text-xs font-medium text-gray-500 mb-2">Attachments</p>
+                    <div className="flex flex-wrap gap-2">
+                      {selected.attachments.map((att, i) => (
+                        <div key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-600">
+                          <span>📎</span>
+                          <span className="truncate max-w-[160px]">{att.filename}</span>
+                          <span className="text-gray-400">({Math.round(att.size / 1024)} KB)</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Reply box */}
+              <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+                <p className="text-xs font-semibold text-gray-500 mb-2">
+                  Reply to <span className="text-gray-700">{selected.replyTo || selected.fromEmail}</span>
+                </p>
+                <textarea
+                  value={replyText}
+                  onChange={e => setReplyText(e.target.value)}
+                  placeholder="Write your reply…"
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#b59354]/40 bg-white"
+                />
+                {replyError && <p className="text-xs text-red-500 mt-1">{replyError}</p>}
+                {sentMsg   && <p className="text-xs text-green-600 mt-1">{sentMsg}</p>}
+                <div className="flex justify-end mt-2">
+                  <button
+                    type="button"
+                    onClick={sendReply}
+                    disabled={sending || !replyText.trim()}
+                    className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#b59354] to-[#886844] text-white text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
+                  >
+                    {sending ? "Sending…" : "Send Reply"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

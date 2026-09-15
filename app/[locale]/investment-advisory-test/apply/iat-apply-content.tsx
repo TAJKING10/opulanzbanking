@@ -131,7 +131,7 @@ function CompletionScreen({
 
       <div className="flex flex-col gap-3 sm:flex-row justify-center">
         <Button asChild variant="outline" size="lg">
-          <Link href={`/${locale}/investment-advisory-test`}>
+          <Link href={`/${locale}/investment-advisory`}>
             {t("completion.backBtn")}
           </Link>
         </Button>
@@ -464,19 +464,11 @@ export function IATApplyContent({
 
   return (
     <>
-      {/* Test badge */}
-      <div className="bg-amber-50 border-b border-amber-200 py-2 text-center">
-        <span className="inline-flex items-center gap-2 text-xs font-semibold text-amber-800">
-          <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
-          Internal Review Prototype — not published, not linked from any live page
-        </span>
-      </div>
-
       {/* Back to overview */}
       <div className="bg-white border-b border-brand-grayLight">
         <div className="container mx-auto max-w-4xl px-6 py-3">
           <Link
-            href={`/${locale}/investment-advisory-test`}
+            href={`/${locale}/investment-advisory`}
             className="inline-flex items-center gap-1.5 text-sm text-brand-grayMed hover:text-brand-gold transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />

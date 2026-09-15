@@ -388,14 +388,6 @@ export function IATPageContent({
 
   return (
     <>
-      {/* Test badge */}
-      <div className="bg-amber-50 border-b border-amber-200 py-2 text-center">
-        <span className="inline-flex items-center gap-2 text-xs font-semibold text-amber-800">
-          <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
-          {tp("testBadge")}
-        </span>
-      </div>
-
       {/* ------------------------------------------------------------------ */}
       {/* HERO                                                                 */}
       {/* ------------------------------------------------------------------ */}
@@ -404,7 +396,7 @@ export function IATPageContent({
         subtitle={tp("heroSubtitle")}
         primaryCta={{
           label: tp("heroPrimaryBtn"),
-          href: `/${locale}/investment-advisory-test/apply`,
+          href: `/${locale}/investment-advisory/onboarding`,
         }}
         secondaryCta={{
           label: tp("heroSecondaryBtn"),
@@ -548,13 +540,15 @@ export function IATPageContent({
             </p>
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Button asChild variant="primary" size="lg">
-                <Link href={`/${locale}/investment-advisory-test/apply`}>
+                <Link href={`/${locale}/investment-advisory/onboarding`}>
                   {t("wizard.startBtn")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <a href="#consultation-info">{t("wizard.bookConsultation")}</a>
+                <Link href={`/${locale}/investment-advisory/schedule`}>
+                  {t("wizard.bookConsultation")}
+                </Link>
               </Button>
             </div>
           </div>
@@ -628,7 +622,7 @@ export function IATPageContent({
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href={`/${locale}/investment-advisory-test/apply`}
+              href={`/${locale}/investment-advisory/onboarding`}
               className="inline-flex h-14 min-w-48 items-center justify-center rounded-2xl bg-white px-8 text-base font-semibold text-brand-dark shadow-sm transition-all hover:bg-gray-50"
             >
               {tp("ctaRequestBtn")}

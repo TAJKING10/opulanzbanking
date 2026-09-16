@@ -27,15 +27,20 @@ function wrapImapError(err) {
   return out;
 }
 
-// Only filter Azure/Microsoft DevOps automated pipeline emails.
-// All other emails — including noreply@ from other services — are shown.
+// Filter Azure/Microsoft and automated no-reply emails.
+// Legitimate client emails (real names, support inquiries) pass through.
 const SKIP_DOMAINS  = ['azure.com', 'microsoft.com', 'azuredevops.com', 'visualstudio.com'];
+const SKIP_FROM_PFXS = [
+  'noreply@', 'no-reply@', 'no-reply-', 'donotreply@', 'do-not-reply@',
+  'mailer-daemon@', 'postmaster@', 'bounce@',
+];
 const SKIP_SUBJECTS = ['build succeeded', 'build failed', 'release completed', 'pipeline notification', 'deployment notification', 'azure devops notification'];
 
 function isAutomated(fromEmail, subject) {
   const f = (fromEmail || '').toLowerCase();
   const s = (subject  || '').toLowerCase();
   if (SKIP_DOMAINS.some(d => f.endsWith('@' + d) || f.includes('.' + d))) return true;
+  if (SKIP_FROM_PFXS.some(p => f.startsWith(p))) return true;
   if (SKIP_SUBJECTS.some(k => s.includes(k))) return true;
   return false;
 }
@@ -121,7 +126,9 @@ async function _fetchListFromImap(limit) {
         bodyStructure: false,
       })) {
         const envFrom  = msg.envelope.from?.[0];
-        const fromAddr = envFrom ? `${envFrom.mailbox}@${envFrom.host}` : '';
+        const fromAddr = (envFrom?.mailbox && envFrom?.host)
+          ? `${envFrom.mailbox}@${envFrom.host}`
+          : '';
         const fromName = envFrom?.name || '';
 
         if (isAutomated(fromAddr, msg.envelope.subject)) continue;

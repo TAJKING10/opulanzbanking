@@ -4198,21 +4198,27 @@ function InboxTab() {
               </ul>
             )}
           </div>
-          <div className="flex items-center gap-3 pt-1">
+          <div className="flex flex-col gap-2 pt-1">
             <button
               type="button"
               onClick={testConnection}
               disabled={testing}
-              className="px-3 py-1.5 rounded-lg bg-red-100 border border-red-200 text-xs font-medium text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
+              className="self-start px-3 py-1.5 rounded-lg bg-red-100 border border-red-200 text-xs font-medium text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
             >
               {testing ? "Testing…" : "Test IMAP connection"}
             </button>
             {testResult && (
-              <span className={`text-xs font-medium ${testResult.success ? "text-green-600" : "text-red-600"}`}>
+              <div className={`text-xs space-y-0.5 ${testResult.success ? "text-green-700" : "text-red-700"}`}>
                 {testResult.success
-                  ? `Connected — ${testResult.messages} messages, ${testResult.unseen} unread`
-                  : String(testResult.serverResponse || testResult.error || "Failed")}
-              </span>
+                  ? <span className="font-semibold">Connected — {testResult.messages} messages, {testResult.unseen} unread</span>
+                  : <span className="font-semibold">{String(testResult.serverResponse || testResult.error || "Failed")}</span>
+                }
+                <div className="text-red-400 font-mono text-[11px] space-y-0.5">
+                  <div>User on server: <strong className="text-red-600">{testResult.user}</strong></div>
+                  <div>Host: <strong className="text-red-600">{testResult.host}:{testResult.port}</strong></div>
+                  <div>Password loaded: <strong className="text-red-600">{testResult.passSet ? `yes (${testResult.passLength} chars)` : "NO — INBOX_PASS is empty"}</strong></div>
+                </div>
+              </div>
             )}
           </div>
         </div>

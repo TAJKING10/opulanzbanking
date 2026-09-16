@@ -1464,23 +1464,33 @@ router.patch('/contacts/:id', adminAuth, async (req, res) => {
 });
 
 // ─── GET /api/admin/inbox/test ───────────────────────────────────────────────
-// Diagnose IMAP connectivity — returns raw server response on failure
+// Diagnose IMAP connectivity — returns credentials info + raw server response
 router.get('/inbox/test', adminAuth, async (req, res) => {
   const { ImapFlow } = require('imapflow');
   const user = process.env.INBOX_USER;
   const pass = process.env.INBOX_PASS;
+  const host = process.env.IMAP_HOST || 'ssl0.ovh.net';
+  const port = parseInt(process.env.IMAP_PORT || '993');
+
+  // Always return credential diagnostics so the caller can confirm what the server loaded
+  const diag = {
+    user:       user  || '(not set)',
+    host,
+    port,
+    passLength: pass  ? pass.length : 0,
+    passSet:    !!pass,
+  };
 
   if (!user || !pass) {
     return res.status(500).json({
       success: false,
       error: 'INBOX_USER or INBOX_PASS env var is missing on this server',
-      user: user || '(not set)',
+      ...diag,
     });
   }
 
   const client = new ImapFlow({
-    host: process.env.IMAP_HOST || 'ssl0.ovh.net',
-    port: parseInt(process.env.IMAP_PORT || '993'),
+    host, port,
     secure: true,
     auth: { user, pass },
     logger: false,
@@ -1497,20 +1507,18 @@ router.get('/inbox/test', adminAuth, async (req, res) => {
     await client.logout();
     return res.json({
       success: true,
-      user,
-      host: process.env.IMAP_HOST || 'ssl0.ovh.net',
       messages: status.messages,
       unseen: status.unseen,
+      ...diag,
     });
   } catch (err) {
     try { await client.logout(); } catch {}
     return res.status(500).json({
       success: false,
-      user,
-      host: process.env.IMAP_HOST || 'ssl0.ovh.net',
       error: err.message,
       serverResponse: err.responseText || err.serverResponse || null,
       code: err.code || err.responseCode || null,
+      ...diag,
     });
   }
 });

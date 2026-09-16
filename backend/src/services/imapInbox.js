@@ -6,7 +6,7 @@
  *
  * Uses an in-memory cache (60 s TTL) and a connection lock so that
  * concurrent requests (Overview preview + InboxTab) never open two
- * simultaneous IMAP connections — OVH rejects the second one.
+ * simultaneous IMAP connections. OVH rejects the second one.
  */
 
 const { ImapFlow } = require('imapflow');

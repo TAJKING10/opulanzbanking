@@ -4065,11 +4065,12 @@ function InboxTab() {
   const [sentMsg, setSentMsg]         = React.useState("");
   const [replyError, setReplyError]   = React.useState("");
 
-  const fetchEmails = React.useCallback(() => {
+  const fetchEmails = React.useCallback((bust = false) => {
     setLoading(true);
     setError("");
     setTestResult(null);
-    fetch(`${API}/api/admin/inbox?limit=100`, { headers: { "x-admin-token": getToken() } })
+    const url = `${API}/api/admin/inbox?limit=100${bust ? "&bust=1" : ""}`;
+    fetch(url, { headers: { "x-admin-token": getToken() } })
       .then(r => r.json())
       .then(d => {
         if (d?.success) setEmails(d.data);
@@ -4164,7 +4165,7 @@ function InboxTab() {
         </div>
         <button
           type="button"
-          onClick={fetchEmails}
+          onClick={() => fetchEmails(true)}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors shadow-sm"
         >
           <span>↻</span> Refresh

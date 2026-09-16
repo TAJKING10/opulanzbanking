@@ -1,12 +1,21 @@
 /**
  * IMAP inbox reader for contact@opulanz.com (INBOX_USER / INBOX_PASS)
- * Host: ssl0.ovh.net:993 (OVH legacy MX Plan)
+ * Host: imap.mail.ovh.net:993 (OVH MX Plan)
  * Fetches client-facing emails (support requests, application inquiries).
  * Automated/Azure emails are filtered out.
+ *
+ * Uses an in-memory cache (60 s TTL) and a connection lock so that
+ * concurrent requests (Overview preview + InboxTab) never open two
+ * simultaneous IMAP connections — OVH rejects the second one.
  */
 
 const { ImapFlow } = require('imapflow');
 const { simpleParser } = require('mailparser');
+
+// ─── Simple in-memory cache ──────────────────────────────────────────────────
+const CACHE_TTL_MS = 60 * 1000; // 60 seconds
+let _listCache      = null;  // { data: [...], at: Date }
+let _listLockPromise = null; // prevents concurrent IMAP fetches
 
 /** Wrap imapflow errors so the IMAP server's own message reaches the caller */
 function wrapImapError(err) {
@@ -51,10 +60,38 @@ function getConfig() {
 
 /**
  * List inbox messages newest-first, filtered to client emails only.
+ * Results are cached for 60 s and concurrent calls share one IMAP connection.
  * @param {object} opts
  * @param {number} opts.limit  max messages to scan (default 100)
+ * @param {boolean} opts.bust  force a cache refresh
  */
-async function listInbox({ limit = 100 } = {}) {
+async function listInbox({ limit = 100, bust = false } = {}) {
+  // Return cached result if still fresh
+  if (!bust && _listCache && (Date.now() - _listCache.at) < CACHE_TTL_MS) {
+    return _listCache.data.slice(0, limit);
+  }
+
+  // If another request is already fetching, wait for it and return its result
+  if (_listLockPromise) {
+    await _listLockPromise;
+    return _listCache ? _listCache.data.slice(0, limit) : [];
+  }
+
+  // This request owns the IMAP fetch
+  let resolve;
+  _listLockPromise = new Promise(r => { resolve = r; });
+
+  try {
+    const messages = await _fetchListFromImap(limit);
+    _listCache = { data: messages, at: Date.now() };
+    return messages;
+  } finally {
+    _listLockPromise = null;
+    resolve();
+  }
+}
+
+async function _fetchListFromImap(limit) {
   const cfg = getConfig();
   if (!cfg.auth.user || !cfg.auth.pass) {
     throw new Error('INBOX_USER or INBOX_PASS is not set in environment variables');
@@ -69,7 +106,6 @@ async function listInbox({ limit = 100 } = {}) {
       const total = status.messages || 0;
       if (total === 0) return [];
 
-      // Scan the latest `limit` messages by sequence number
       const from = Math.max(1, total - limit + 1);
       const seq  = `${from}:*`;
 
@@ -81,9 +117,7 @@ async function listInbox({ limit = 100 } = {}) {
         bodyStructure: false,
       })) {
         const envFrom  = msg.envelope.from?.[0];
-        const fromAddr = envFrom
-          ? `${envFrom.mailbox}@${envFrom.host}`
-          : '';
+        const fromAddr = envFrom ? `${envFrom.mailbox}@${envFrom.host}` : '';
         const fromName = envFrom?.name || '';
 
         if (isAutomated(fromAddr, msg.envelope.subject)) continue;
@@ -91,7 +125,7 @@ async function listInbox({ limit = 100 } = {}) {
         messages.push({
           uid:       msg.uid,
           seq:       msg.seq,
-          subject:   msg.envelope.subject  || '(no subject)',
+          subject:   msg.envelope.subject || '(no subject)',
           fromName,
           fromEmail: fromAddr,
           from:      fromName ? `${fromName} <${fromAddr}>` : fromAddr,
@@ -100,7 +134,6 @@ async function listInbox({ limit = 100 } = {}) {
         });
       }
 
-      // Return newest-first
       messages.sort((a, b) => new Date(b.date) - new Date(a.date));
       return messages;
     } finally {

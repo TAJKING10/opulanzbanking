@@ -27,16 +27,15 @@ function wrapImapError(err) {
   return out;
 }
 
-// Senders / subject patterns that belong to automated pipeline traffic
-const SKIP_DOMAINS   = ['azure.com', 'microsoft.com', 'azuredevops.com', 'visualstudio.com', 'amazonaws.com'];
-const SKIP_FROM_PFXS = ['noreply@', 'no-reply@', 'do-not-reply@', 'mailer-daemon@', 'bounce@', 'postmaster@', 'devops@', 'notifications@'];
-const SKIP_SUBJECTS  = ['build succeeded', 'build failed', 'release completed', 'pipeline ', 'deployment ', 'azure devops'];
+// Only filter Azure/Microsoft DevOps automated pipeline emails.
+// All other emails — including noreply@ from other services — are shown.
+const SKIP_DOMAINS  = ['azure.com', 'microsoft.com', 'azuredevops.com', 'visualstudio.com'];
+const SKIP_SUBJECTS = ['build succeeded', 'build failed', 'release completed', 'pipeline notification', 'deployment notification', 'azure devops notification'];
 
 function isAutomated(fromEmail, subject) {
   const f = (fromEmail || '').toLowerCase();
   const s = (subject  || '').toLowerCase();
   if (SKIP_DOMAINS.some(d => f.endsWith('@' + d) || f.includes('.' + d))) return true;
-  if (SKIP_FROM_PFXS.some(p => f.startsWith(p) || f.includes('<' + p))) return true;
   if (SKIP_SUBJECTS.some(k => s.includes(k))) return true;
   return false;
 }
@@ -82,9 +81,11 @@ async function listInbox({ limit = 100, bust = false } = {}) {
   _listLockPromise = new Promise(r => { resolve = r; });
 
   try {
-    const messages = await _fetchListFromImap(limit);
+    // Always fetch the full set (200) so the cache is useful for any limit,
+    // including the limit=5 overview call that fires first.
+    const messages = await _fetchListFromImap(200);
     _listCache = { data: messages, at: Date.now() };
-    return messages;
+    return messages.slice(0, limit);
   } finally {
     _listLockPromise = null;
     resolve();

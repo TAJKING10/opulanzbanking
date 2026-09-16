@@ -4189,12 +4189,12 @@ function InboxTab() {
                   <li>Go to Azure DevOps → Pipelines → Library → <code className="bg-red-100 px-1 rounded">backend-env-vars</code> and update <code className="bg-red-100 px-1 rounded">INBOX_PASS</code></li>
                   <li>Re-run the backend pipeline, then refresh this page</li>
                 </ol>
-                <p className="mt-1 text-red-400">Also check: if your OVH plan is <strong>Email Pro</strong>, set <code className="bg-red-100 px-1 rounded">IMAP_HOST</code> = <strong>pro1.mail.ovh.net</strong> in the variable group. Legacy MX Plan uses <strong>ssl0.ovh.net</strong> (current setting).</p>
+                <p className="mt-1 text-red-400">Current IMAP host: <strong>imap.mail.ovh.net:993</strong> (OVH MX Plan). For Email Pro plans, set <code className="bg-red-100 px-1 rounded">IMAP_HOST</code> = <strong>pro1.mail.ovh.net</strong> in the variable group.</p>
               </>
             ) : (
               <ul className="list-disc list-inside space-y-1">
                 <li><code className="bg-red-100 px-1 rounded">INBOX_USER</code> / <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> not set in Azure variable group</li>
-                <li>IMAP host defaults to <strong>ssl0.ovh.net:993</strong> — set <code className="bg-red-100 px-1 rounded">IMAP_HOST</code> to override (e.g. <strong>pro1.mail.ovh.net</strong> for Email Pro plan)</li>
+                <li>IMAP host defaults to <strong>imap.mail.ovh.net:993</strong> — set <code className="bg-red-100 px-1 rounded">IMAP_HOST</code> to override if needed</li>
               </ul>
             )}
           </div>

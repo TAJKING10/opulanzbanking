@@ -34,15 +34,18 @@ function isAutomated(fromEmail, subject) {
 
 function getConfig() {
   return {
-    host:   process.env.IMAP_HOST || 'ssl0.ovh.net',
-    port:   parseInt(process.env.IMAP_PORT || '993'),
-    secure: true,
+    host:              process.env.IMAP_HOST || 'imap.mail.ovh.net',
+    port:              parseInt(process.env.IMAP_PORT || '993'),
+    secure:            true,
     auth: {
       user: process.env.INBOX_USER,
       pass: process.env.INBOX_PASS,
     },
-    logger: false,
-    tls: { rejectUnauthorized: false },
+    logger:            false,
+    tls:               { rejectUnauthorized: false },
+    connectionTimeout: 15000,
+    greetingTimeout:   10000,
+    socketTimeout:     30000,
   };
 }
 

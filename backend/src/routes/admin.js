@@ -1469,7 +1469,7 @@ router.get('/inbox/test', adminAuth, async (req, res) => {
   const { ImapFlow } = require('imapflow');
   const user = process.env.INBOX_USER;
   const pass = process.env.INBOX_PASS;
-  const host = process.env.IMAP_HOST || 'ssl0.ovh.net';
+  const host = process.env.IMAP_HOST || 'imap.mail.ovh.net';
   const port = parseInt(process.env.IMAP_PORT || '993');
 
   // Always return credential diagnostics so the caller can confirm what the server loaded

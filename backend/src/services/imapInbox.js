@@ -86,11 +86,10 @@ async function listInbox({ limit = 100, bust = false } = {}) {
   _listLockPromise = new Promise(r => { resolve = r; });
 
   try {
-    // Always fetch the full set (200) so the cache is useful for any limit,
-    // including the limit=5 overview call that fires first.
-    const messages = await _fetchListFromImap(200);
+    // Fetch ALL messages so the cache is complete for any caller.
+    const messages = await _fetchListFromImap();
     _listCache = { data: messages, at: Date.now() };
-    return messages.slice(0, limit);
+    return limit ? messages.slice(0, limit) : messages;
   } finally {
     _listLockPromise = null;
     resolve();
@@ -115,8 +114,8 @@ async function _fetchListFromImap(limit) {
       const total = status.messages || 0;
       if (total === 0) return [];
 
-      const from = Math.max(1, total - limit + 1);
-      const seq  = `${from}:*`;
+      // Fetch all messages; caller slices to its own limit.
+      const seq = '1:*';
 
       const messages = [];
 

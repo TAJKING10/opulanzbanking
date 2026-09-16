@@ -4178,24 +4178,22 @@ function InboxTab() {
           <div className="pt-1 border-t border-red-100 space-y-2 text-xs text-red-600">
             {/invalid credentials/i.test(error) ? (
               <>
-                <p className="font-semibold">Google is rejecting the password. Regular Gmail passwords do not work for IMAP — an App Password is required.</p>
+                <p className="font-semibold">The OVH mail server rejected the credentials. Check that <code className="bg-red-100 px-1 rounded">INBOX_USER</code> and <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> are correct in the Azure variable group.</p>
                 <p className="font-medium mt-1">To fix this:</p>
                 <ol className="list-decimal list-inside space-y-1 text-red-500">
-                  <li>Sign in to <strong>contact@opulanz.com</strong> at myaccount.google.com</li>
-                  <li>Go to <strong>Security → 2-Step Verification</strong> (enable it if off)</li>
-                  <li>Scroll down to <strong>App Passwords</strong> → create one for "Mail"</li>
-                  <li>Copy the 16-character code Google gives you</li>
+                  <li>Log in to the OVH webmail at <strong>mail.ovh.net</strong> with <strong>contact@opulanz.com</strong> to confirm the password works</li>
                   <li>Go to Azure DevOps → Pipelines → Library → <code className="bg-red-100 px-1 rounded">backend-env-vars</code></li>
-                  <li>Update <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> to the 16-char App Password (no spaces)</li>
-                  <li>Save and re-run the backend pipeline, then refresh this page</li>
+                  <li>Verify <code className="bg-red-100 px-1 rounded">INBOX_USER</code> = <strong>contact@opulanz.com</strong></li>
+                  <li>Verify <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> = the exact OVH webmail password (copy-paste, no extra spaces)</li>
+                  <li>Save the variable group and re-run the backend pipeline</li>
+                  <li>Refresh this page once the pipeline finishes</li>
                 </ol>
-                <p className="mt-1 text-red-400">Also confirm Gmail IMAP is enabled: Gmail → Settings → See all settings → Forwarding and POP/IMAP → Enable IMAP</p>
+                <p className="mt-1 text-red-400">IMAP host is set to <strong>ssl0.ovh.net:993</strong>. If OVH uses a different server, set <code className="bg-red-100 px-1 rounded">IMAP_HOST</code> in the variable group.</p>
               </>
             ) : (
               <ul className="list-disc list-inside space-y-1">
-                <li>Gmail IMAP not enabled — Gmail Settings → Forwarding and POP/IMAP → Enable IMAP</li>
-                <li>App Password required — Google Account → Security → App Passwords</li>
-                <li><code className="bg-red-100 px-1 rounded">INBOX_USER</code> / <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> not set in Azure variable group</li>
+                <li><code className="bg-red-100 px-1 rounded">INBOX_USER</code> / <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> not set correctly in Azure variable group</li>
+                <li>IMAP host: <strong>ssl0.ovh.net:993</strong> — set <code className="bg-red-100 px-1 rounded">IMAP_HOST</code> in env vars to override</li>
               </ul>
             )}
           </div>

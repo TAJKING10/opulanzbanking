@@ -50,6 +50,7 @@ steps:
           { "name": "EMAIL_PASS", "value": "$(EMAIL_PASS)" },
           { "name": "INBOX_USER", "value": "$(INBOX_USER)" },
           { "name": "INBOX_PASS", "value": "$(INBOX_PASS)" },
+          { "name": "IMAP_HOST", "value": "ssl0.ovh.net" },
           { "name": "ADMIN_PASSWORD", "value": "Opulanz2025" },
           { "name": "AZURE_STORAGE_CONTAINER_NAME", "value": "opulanz-documents" }
         ]

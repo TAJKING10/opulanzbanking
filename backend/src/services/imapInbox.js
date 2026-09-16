@@ -33,7 +33,7 @@ function isAutomated(fromEmail, subject) {
 
 function getConfig() {
   return {
-    host:   process.env.IMAP_HOST || 'imap.gmail.com',
+    host:   process.env.IMAP_HOST || 'ssl0.ovh.net',
     port:   parseInt(process.env.IMAP_PORT || '993'),
     secure: true,
     auth: {

@@ -1479,7 +1479,7 @@ router.get('/inbox/test', adminAuth, async (req, res) => {
   }
 
   const client = new ImapFlow({
-    host: process.env.IMAP_HOST || 'imap.gmail.com',
+    host: process.env.IMAP_HOST || 'ssl0.ovh.net',
     port: parseInt(process.env.IMAP_PORT || '993'),
     secure: true,
     auth: { user, pass },
@@ -1498,7 +1498,7 @@ router.get('/inbox/test', adminAuth, async (req, res) => {
     return res.json({
       success: true,
       user,
-      host: process.env.IMAP_HOST || 'imap.gmail.com',
+      host: process.env.IMAP_HOST || 'ssl0.ovh.net',
       messages: status.messages,
       unseen: status.unseen,
     });
@@ -1507,7 +1507,7 @@ router.get('/inbox/test', adminAuth, async (req, res) => {
     return res.status(500).json({
       success: false,
       user,
-      host: process.env.IMAP_HOST || 'imap.gmail.com',
+      host: process.env.IMAP_HOST || 'ssl0.ovh.net',
       error: err.message,
       serverResponse: err.responseText || err.serverResponse || null,
       code: err.code || err.responseCode || null,

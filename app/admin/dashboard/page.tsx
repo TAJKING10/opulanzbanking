@@ -4176,24 +4176,25 @@ function InboxTab() {
           <p className="text-sm font-semibold text-red-700">IMAP connection error</p>
           <p className="text-sm text-red-600 font-mono break-all">{error}</p>
           <div className="pt-1 border-t border-red-100 space-y-2 text-xs text-red-600">
-            {/invalid credentials/i.test(error) ? (
+            {/invalid credentials|authentication failed/i.test(error) ? (
               <>
-                <p className="font-semibold">The OVH mail server rejected the credentials. Check that <code className="bg-red-100 px-1 rounded">INBOX_USER</code> and <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> are correct in the Azure variable group.</p>
-                <p className="font-medium mt-1">To fix this:</p>
+                <p className="font-semibold">OVH rejected the login. Most likely cause: OVH blocks IMAP from external apps unless you enable it or create an app password.</p>
+                <p className="font-medium mt-1">Step-by-step fix:</p>
                 <ol className="list-decimal list-inside space-y-1 text-red-500">
-                  <li>Log in to the OVH webmail at <strong>mail.ovh.net</strong> with <strong>contact@opulanz.com</strong> to confirm the password works</li>
-                  <li>Go to Azure DevOps → Pipelines → Library → <code className="bg-red-100 px-1 rounded">backend-env-vars</code></li>
-                  <li>Verify <code className="bg-red-100 px-1 rounded">INBOX_USER</code> = <strong>contact@opulanz.com</strong></li>
-                  <li>Verify <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> = the exact OVH webmail password (copy-paste, no extra spaces)</li>
-                  <li>Save the variable group and re-run the backend pipeline</li>
-                  <li>Refresh this page once the pipeline finishes</li>
+                  <li>Log in to the <strong>OVH Control Panel</strong> at <a href="https://www.ovh.com/manager" target="_blank" rel="noreferrer" className="underline">ovh.com/manager</a> (not webmail)</li>
+                  <li>Go to <strong>Email &amp; Collaborative Tools → MX Plan</strong> (or Email Pro) for <strong>opulanz.com</strong></li>
+                  <li>Find the <strong>contact@opulanz.com</strong> account and click it</li>
+                  <li>Look for <strong>"External access"</strong>, <strong>"App password"</strong>, or <strong>"IMAP/POP access"</strong> and enable it</li>
+                  <li>If it creates a separate app password, use that as <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> (not the webmail password)</li>
+                  <li>Go to Azure DevOps → Pipelines → Library → <code className="bg-red-100 px-1 rounded">backend-env-vars</code> and update <code className="bg-red-100 px-1 rounded">INBOX_PASS</code></li>
+                  <li>Re-run the backend pipeline, then refresh this page</li>
                 </ol>
-                <p className="mt-1 text-red-400">IMAP host is set to <strong>ssl0.ovh.net:993</strong>. If OVH uses a different server, set <code className="bg-red-100 px-1 rounded">IMAP_HOST</code> in the variable group.</p>
+                <p className="mt-1 text-red-400">Also check: if your OVH plan is <strong>Email Pro</strong>, set <code className="bg-red-100 px-1 rounded">IMAP_HOST</code> = <strong>pro1.mail.ovh.net</strong> in the variable group. Legacy MX Plan uses <strong>ssl0.ovh.net</strong> (current setting).</p>
               </>
             ) : (
               <ul className="list-disc list-inside space-y-1">
-                <li><code className="bg-red-100 px-1 rounded">INBOX_USER</code> / <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> not set correctly in Azure variable group</li>
-                <li>IMAP host: <strong>ssl0.ovh.net:993</strong> — set <code className="bg-red-100 px-1 rounded">IMAP_HOST</code> in env vars to override</li>
+                <li><code className="bg-red-100 px-1 rounded">INBOX_USER</code> / <code className="bg-red-100 px-1 rounded">INBOX_PASS</code> not set in Azure variable group</li>
+                <li>IMAP host defaults to <strong>ssl0.ovh.net:993</strong> — set <code className="bg-red-100 px-1 rounded">IMAP_HOST</code> to override (e.g. <strong>pro1.mail.ovh.net</strong> for Email Pro plan)</li>
               </ul>
             )}
           </div>

@@ -97,6 +97,9 @@ async function _fetchListFromImap(limit) {
     throw new Error('INBOX_USER or INBOX_PASS is not set in environment variables');
   }
   const client = new ImapFlow(cfg);
+  // Prevent unhandled 'error' event from crashing the Node.js process when
+  // OVH closes the connection unexpectedly after a successful fetch.
+  client.on('error', (err) => console.error('ImapFlow error event:', err.message));
   try { await client.connect(); } catch (err) { throw wrapImapError(err); }
 
   try {
@@ -154,6 +157,7 @@ async function getEmail(uid) {
     throw new Error('INBOX_USER or INBOX_PASS is not set in environment variables');
   }
   const client = new ImapFlow(cfg);
+  client.on('error', (err) => console.error('ImapFlow error event:', err.message));
   try { await client.connect(); } catch (err) { throw wrapImapError(err); }
 
   try {

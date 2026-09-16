@@ -1496,6 +1496,7 @@ router.get('/inbox/test', adminAuth, async (req, res) => {
     logger: false,
     tls: { rejectUnauthorized: false },
   });
+  client.on('error', (err) => console.error('ImapFlow test error event:', err.message));
 
   try {
     await client.connect();

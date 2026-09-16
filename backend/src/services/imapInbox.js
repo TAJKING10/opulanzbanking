@@ -1,5 +1,6 @@
 /**
- * IMAP inbox reader for contact@opulanz.com  (INBOX_USER / INBOX_PASS)
+ * IMAP inbox reader for contact@opulanz.com (INBOX_USER / INBOX_PASS)
+ * Host: ssl0.ovh.net:993 (OVH legacy MX Plan)
  * Fetches client-facing emails (support requests, application inquiries).
  * Automated/Azure emails are filtered out.
  */

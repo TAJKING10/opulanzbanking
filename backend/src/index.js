@@ -57,7 +57,7 @@ app.use(helmet({
   },
 })); // Security headers with CSP configured
 
-// CORS — allow frontend on any local port (3000-3010) and Capacitor mobile app origins
+// CORS — web frontends and Capacitor WebView origins (Android uses https://localhost)
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
   'http://localhost:3001',
@@ -66,18 +66,31 @@ const allowedOrigins = [
   'https://frontend.opulanz.com',
   'https://www.opulanz.com',
   'https://opulanz.com',
-  'https://frontend.opulanz.com',
   'https://rg-opulanz-frontend-hdd4ddcvd4gsc6cx.canadacentral-01.azurewebsites.net',
-  // Capacitor mobile app origins
   'capacitor://localhost',
   'ionic://localhost',
   'http://localhost',
+  'https://localhost',
 ];
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin)) return true;
+  try {
+    const url = new URL(origin);
+    if (['localhost', '127.0.0.1', '10.0.2.2'].includes(url.hostname)) return true;
+    if (url.hostname.endsWith('.opulanz.com')) return true;
+    if (url.hostname.endsWith('.azurewebsites.net')) return true;
+  } catch {
+    return false;
+  }
+  return false;
+}
+
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g., curl, Postman) and whitelisted origins
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-    callback(new Error(`CORS: origin ${origin} not allowed`));
+    if (isAllowedOrigin(origin)) return callback(null, true);
+    callback(null, false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -101,8 +114,9 @@ const contactLimiter = rateLimit({
   legacyHeaders: false,
 });
 app.use(morgan('dev')); // HTTP request logger
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+// QCC / DocuSign payloads include PDF base64 (often several MB). Default 100kb causes 413 on APK.
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 // Serve static files from public directory
 app.use(express.static('public'));
@@ -121,6 +135,7 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/tax-advisory-bookings', contactLimiter, taxAdvisoryBookingsRoutes); // Tax advisory service bookings
 app.use('/api/life-insurance-bookings', contactLimiter, lifeInsuranceBookingsRoutes); // Life insurance service bookings
 app.use('/api/upload', uploadRoutes); // Azure Blob Storage file uploads
+app.use('/api/docusign', require('./routes/docusign-embedded')); // Embedded signing (APK + web)
 app.use('/api/paypal', paypalRoutes); // PayPal order create + capture
 app.use('/api/narvi', narviRoutes); // Narvi banking API
 
@@ -203,7 +218,7 @@ app.use((req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Server error:', err);
-  res.status(err.status || 500).json({
+  res.status(err.status || err.statusCode || 500).json({
     success: false,
     error: err.message || 'Internal server error',
   });

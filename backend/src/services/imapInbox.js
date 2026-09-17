@@ -27,19 +27,52 @@ function wrapImapError(err) {
   return out;
 }
 
-// Filter Azure/Microsoft and automated no-reply emails.
-// Legitimate client emails (real names, support inquiries) pass through.
-const SKIP_DOMAINS  = ['azure.com', 'microsoft.com', 'azuredevops.com', 'visualstudio.com', 'google.com'];
+// Keep only genuine client emails. Filter out all automated, system,
+// and marketing emails from Microsoft, Google, and other platforms.
+
+const SKIP_DOMAINS = [
+  // Microsoft / Azure — all known sending domains
+  'microsoft.com', 'microsoftonline.com', 'microsoftemail.com',
+  'azure.com', 'azuredevops.com', 'azurecomm.net',
+  'visualstudio.com', 'office.com', 'office365.com',
+  // Google automated senders (@google.com, not @gmail.com)
+  'google.com', 'googlemail.com',
+  // Amazon / AWS
+  'amazonaws.com', 'amazonses.com', 'amazon.com',
+];
+
+// Sender display names that are never real clients
+const SKIP_FROM_NAMES = [
+  'microsoft', 'microsoft azure', 'microsoft security', 'azure devops',
+  'azure', 'google play', 'google', 'amazon web services', 'aws',
+  'mailer-daemon', 'postmaster',
+];
+
 const SKIP_FROM_PFXS = [
   'noreply@', 'no-reply@', 'no-reply-', 'donotreply@', 'do-not-reply@',
-  'mailer-daemon@', 'postmaster@', 'bounce@',
+  'mailer-daemon@', 'postmaster@', 'bounce@', 'notifications@',
+  'azure-', 'msonline', 'ms-noreply',
 ];
-const SKIP_SUBJECTS = ['build succeeded', 'build failed', 'release completed', 'pipeline notification', 'deployment notification', 'azure devops notification'];
 
-function isAutomated(fromEmail, subject) {
+const SKIP_SUBJECTS = [
+  // Azure / Microsoft
+  'build succeeded', 'build failed', 'release completed',
+  'pipeline notification', 'deployment notification',
+  'upgrade', 'reactivate', 'keep going with azure', 'your azure',
+  'microsoft entra', 'microsoft 365', 'free account',
+  'new recommendation available', 'security recommendation',
+  'azure devops', 'azure active directory',
+  // Generic automated
+  'unsubscribe', 'email verification', 'confirm your email',
+  'invoice #', 'your receipt', 'order confirmation',
+];
+
+function isAutomated(fromEmail, fromName, subject) {
   const f = (fromEmail || '').toLowerCase();
-  const s = (subject  || '').toLowerCase();
+  const n = (fromName  || '').toLowerCase();
+  const s = (subject   || '').toLowerCase();
   if (SKIP_DOMAINS.some(d => f.endsWith('@' + d) || f.includes('.' + d))) return true;
+  if (SKIP_FROM_NAMES.some(name => n === name || n.startsWith(name + ' '))) return true;
   if (SKIP_FROM_PFXS.some(p => f.startsWith(p))) return true;
   if (SKIP_SUBJECTS.some(k => s.includes(k))) return true;
   return false;
@@ -130,7 +163,7 @@ async function _fetchListFromImap(limit) {
           : '';
         const fromName = envFrom?.name || '';
 
-        if (isAutomated(fromAddr, msg.envelope.subject)) continue;
+        if (isAutomated(fromAddr, fromName, msg.envelope.subject)) continue;
 
         messages.push({
           uid:       msg.uid,

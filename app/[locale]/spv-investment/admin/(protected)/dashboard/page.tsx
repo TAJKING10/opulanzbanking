@@ -41,28 +41,28 @@ export default function AdminDashboardPage() {
       label: t("spvInvestment.admin.dashboard.totalCustomers"),
       value: stats.totalInvestors,
       icon: Users,
-      color: "bg-blue-500",
+      color: "bg-brand-gold",
       href: `/${locale}/spv-investment/admin/customers`,
     },
     {
       label: t("spvInvestment.admin.dashboard.activeCustomers"),
       value: stats.activeInvestors,
       icon: UserPlus,
-      color: "bg-green-500",
+      color: "bg-emerald-600",
       href: `/${locale}/spv-investment/admin/customers`,
     },
     {
       label: t("spvInvestment.admin.dashboard.totalProperties"),
       value: stats.totalProperties,
       icon: Building2,
-      color: "bg-purple-500",
+      color: "bg-brand-dark",
       href: `/${locale}/spv-investment/admin/properties`,
     },
     {
       label: t("spvInvestment.admin.dashboard.openProperties"),
       value: stats.openProperties,
       icon: TrendingUp,
-      color: "bg-amber-500",
+      color: "bg-amber-600",
       href: `/${locale}/spv-investment/admin/properties`,
     },
   ];
@@ -70,10 +70,10 @@ export default function AdminDashboardPage() {
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "customer_login":
-        return <Clock className="h-4 w-4 text-blue-500" />;
+        return <Clock className="h-4 w-4 text-brand-gold" />;
       case "customer_created":
       case "offering_created":
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
+        return <CheckCircle className="h-4 w-4 text-emerald-600" />;
       case "customer_updated":
       case "offering_updated":
         return <AlertCircle className="h-4 w-4 text-amber-500" />;
@@ -81,7 +81,7 @@ export default function AdminDashboardPage() {
       case "offering_deleted":
         return <AlertCircle className="h-4 w-4 text-red-500" />;
       default:
-        return <Clock className="h-4 w-4 text-slate-400" />;
+        return <Clock className="h-4 w-4 text-brand-grayMed" />;
     }
   };
 
@@ -97,21 +97,21 @@ export default function AdminDashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600/30 border-t-indigo-600" />
+      <div className="min-h-[calc(100vh-4rem)] bg-brand-off flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-gold/30 border-t-brand-gold" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-100">
+    <div className="min-h-[calc(100vh-4rem)] bg-brand-off">
       {/* Page Header */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-white border-b border-brand-grayLight/40">
         <div className="container mx-auto max-w-7xl px-6 py-8">
-          <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
+          <h1 className="text-2xl font-bold text-brand-dark md:text-3xl tracking-tight">
             {t("spvInvestment.admin.dashboard.title")}
           </h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-brand-grayMed">
             {t("spvInvestment.admin.dashboard.subtitle")}
           </p>
         </div>
@@ -124,14 +124,14 @@ export default function AdminDashboardPage() {
             const Icon = stat.icon;
             return (
               <Link key={stat.label} href={stat.href}>
-                <Card className="border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                <Card className="border border-brand-grayLight/30 bg-white shadow-sm hover:shadow-md transition-all cursor-pointer">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between">
                       <div>
-                        <p className="text-sm text-slate-500">{stat.label}</p>
-                        <p className="mt-1 text-3xl font-bold text-slate-900">{stat.value}</p>
+                        <p className="text-sm font-medium text-brand-grayMed">{stat.label}</p>
+                        <p className="mt-1 text-3xl font-bold text-brand-dark">{stat.value}</p>
                       </div>
-                      <div className={`flex h-12 w-12 items-center justify-center rounded-lg ${stat.color}`}>
+                      <div className={`flex h-12 w-12 items-center justify-center rounded-xl shadow-sm ${stat.color}`}>
                         <Icon className="h-6 w-6 text-white" />
                       </div>
                     </div>
@@ -146,15 +146,15 @@ export default function AdminDashboardPage() {
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Recent Activity */}
           <div className="lg:col-span-2">
-            <Card className="border-none shadow-sm">
+            <Card className="border border-brand-grayLight/30 bg-white shadow-sm">
               <CardHeader>
-                <CardTitle className="text-lg">
+                <CardTitle className="text-lg font-bold text-brand-dark">
                   {t("spvInvestment.admin.dashboard.recentActivity")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {stats.recentActivity.length === 0 ? (
-                  <p className="text-sm text-slate-500 py-4">
+                  <p className="text-sm text-brand-grayMed py-4">
                     {t("spvInvestment.admin.dashboard.noActivity")}
                   </p>
                 ) : (
@@ -162,12 +162,12 @@ export default function AdminDashboardPage() {
                     {stats.recentActivity.map((activity: ActivityLog) => (
                       <div
                         key={activity.id}
-                        className="flex items-start gap-3 pb-4 border-b border-slate-100 last:border-0 last:pb-0"
+                        className="flex items-start gap-3 pb-4 border-b border-brand-grayLight/30 last:border-0 last:pb-0"
                       >
                         <div className="mt-0.5">{getActivityIcon(activity.log_type)}</div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-slate-700">{activity.description}</p>
-                          <p className="mt-0.5 text-xs text-slate-400">
+                          <p className="text-sm font-medium text-brand-dark">{activity.description}</p>
+                          <p className="mt-0.5 text-xs text-brand-grayMed">
                             {formatTimestamp(activity.created_at)}
                             {activity.admin_name && ` • ${activity.admin_name}`}
                           </p>
@@ -182,32 +182,32 @@ export default function AdminDashboardPage() {
 
           {/* Quick Actions */}
           <div>
-            <Card className="border-none shadow-sm">
+            <Card className="border border-brand-grayLight/30 bg-white shadow-sm">
               <CardHeader>
-                <CardTitle className="text-lg">
+                <CardTitle className="text-lg font-bold text-brand-dark">
                   {t("spvInvestment.admin.dashboard.quickActions")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button asChild className="w-full justify-start bg-indigo-600 hover:bg-indigo-700">
+                <Button asChild className="w-full justify-start bg-brand-gold hover:bg-brand-goldDark text-white font-medium shadow-sm">
                   <Link href={`/${locale}/spv-investment/admin/customers?action=new`}>
                     <UserPlus className="mr-2 h-4 w-4" />
                     {t("spvInvestment.admin.dashboard.addCustomer")}
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="w-full justify-start">
+                <Button asChild variant="outline" className="w-full justify-start border-brand-grayLight/50 text-brand-dark hover:bg-brand-off">
                   <Link href={`/${locale}/spv-investment/admin/properties?action=new`}>
                     <Plus className="mr-2 h-4 w-4" />
                     {t("spvInvestment.admin.dashboard.addProperty")}
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="w-full justify-start">
+                <Button asChild variant="outline" className="w-full justify-start border-brand-grayLight/50 text-brand-dark hover:bg-brand-off">
                   <Link href={`/${locale}/spv-investment/admin/customers`}>
                     <Users className="mr-2 h-4 w-4" />
                     {t("spvInvestment.admin.dashboard.viewCustomers")}
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="w-full justify-start">
+                <Button asChild variant="outline" className="w-full justify-start border-brand-grayLight/50 text-brand-dark hover:bg-brand-off">
                   <Link href={`/${locale}/spv-investment/admin/properties`}>
                     <Building2 className="mr-2 h-4 w-4" />
                     {t("spvInvestment.admin.dashboard.viewProperties")}

@@ -199,30 +199,30 @@ export default function AdminSettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-brand-off flex items-center justify-center">
         <div className="text-center">
-          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-indigo-500/30 border-t-indigo-500" />
-          <p className="mt-4 text-sm text-slate-600">{t("common.loading")}</p>
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-brand-gold/30 border-t-brand-gold" />
+          <p className="mt-4 text-sm text-brand-grayMed">{t("common.loading")}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 py-8">
+    <div className="min-h-screen bg-brand-off py-8">
       <div className="container mx-auto max-w-6xl px-6">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
+          <h1 className="text-2xl font-bold text-brand-dark md:text-3xl tracking-tight">
             {t("spvInvestment.admin.settings.title")}
           </h1>
-          <p className="mt-1 text-slate-600">
+          <p className="mt-1 text-brand-grayMed">
             {t("spvInvestment.admin.profile.settingsSubtitle")}
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="mb-6 flex flex-wrap gap-2 border-b border-slate-200">
+        <div className="mb-6 flex flex-wrap gap-2 border-b border-brand-grayLight/40">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -235,8 +235,8 @@ export default function AdminSettingsPage() {
                 className={cn(
                   "flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors",
                   isActive
-                    ? "border-indigo-600 text-indigo-600"
-                    : "border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300"
+                    ? "border-brand-gold text-brand-gold font-semibold"
+                    : "border-transparent text-brand-grayMed hover:text-brand-dark hover:border-brand-grayLight/60"
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -249,48 +249,48 @@ export default function AdminSettingsPage() {
         {/* Profile Tab */}
         {activeTab === "profile" && currentAdmin && (
           <div className="grid gap-6 md:grid-cols-2">
-            <Card>
+            <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5 text-indigo-600" />
+                <CardTitle className="flex items-center gap-2 text-brand-dark">
+                  <User className="h-5 w-5 text-brand-gold" />
                   {t("spvInvestment.admin.settings.profile.title")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100">
-                    <User className="h-8 w-8 text-indigo-600" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold/15 text-brand-gold">
+                    <User className="h-8 w-8" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-900">{currentAdmin.name}</h3>
-                    <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-brand-dark">{currentAdmin.name}</h3>
+                    <div className="flex items-center gap-2 mt-1">
                       {currentAdmin.role === "primary" && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-brand-gold/10 px-2 py-0.5 text-xs font-medium text-brand-gold border border-brand-gold/20">
                           <Key className="h-3 w-3" />
                           {t("spvInvestment.admin.profile.primaryAdmin")}
                         </span>
                       )}
-                      <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 border border-emerald-200">
                         {currentAdmin.status === "active" ? "Active" : "Inactive"}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-3 pt-4">
+                <div className="space-y-3 pt-4 border-t border-brand-grayLight/30">
                   <div className="flex items-center gap-3 text-sm">
-                    <Mail className="h-4 w-4 text-slate-400" />
-                    <span className="text-slate-600">{currentAdmin.email}</span>
+                    <Mail className="h-4 w-4 text-brand-grayMed" />
+                    <span className="text-brand-dark">{currentAdmin.email}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <Clock className="h-4 w-4 text-slate-400" />
-                    <span className="text-slate-600">
+                    <Clock className="h-4 w-4 text-brand-grayMed" />
+                    <span className="text-brand-grayMed">
                       {t("spvInvestment.admin.settings.profile.lastLogin")}: {formatDate(currentAdmin.last_login)}
                     </span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
-                    <Calendar className="h-4 w-4 text-slate-400" />
-                    <span className="text-slate-600">
+                    <Calendar className="h-4 w-4 text-brand-grayMed" />
+                    <span className="text-brand-grayMed">
                       {t("spvInvestment.admin.settings.profile.memberSince")}: {formatDate(currentAdmin.created_at)}
                     </span>
                   </div>
@@ -298,20 +298,20 @@ export default function AdminSettingsPage() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl">
               <CardHeader>
-                <CardTitle>{t("spvInvestment.admin.settings.profile.updateProfile")}</CardTitle>
+                <CardTitle className="text-brand-dark">{t("spvInvestment.admin.settings.profile.updateProfile")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label>{t("spvInvestment.admin.settings.profile.name")}</Label>
-                  <Input defaultValue={currentAdmin.name} />
+                  <Label className="text-brand-dark font-medium">{t("spvInvestment.admin.settings.profile.name")}</Label>
+                  <Input defaultValue={currentAdmin.name} className="border-brand-grayLight/60 focus:border-brand-gold" />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("spvInvestment.admin.settings.profile.email")}</Label>
-                  <Input defaultValue={currentAdmin.email} type="email" />
+                  <Label className="text-brand-dark font-medium">{t("spvInvestment.admin.settings.profile.email")}</Label>
+                  <Input defaultValue={currentAdmin.email} type="email" className="border-brand-grayLight/60 focus:border-brand-gold" />
                 </div>
-                <Button className="w-full bg-indigo-600 hover:bg-indigo-700">
+                <Button className="w-full bg-brand-gold hover:bg-brand-goldDark text-white font-medium shadow-sm">
                   {t("spvInvestment.admin.settings.profile.updateProfile")}
                 </Button>
               </CardContent>
@@ -323,70 +323,70 @@ export default function AdminSettingsPage() {
         {activeTab === "admins" && currentAdmin?.role === "primary" && (
           <div>
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-slate-900">
+              <h2 className="text-lg font-bold text-brand-dark">
                 {t("spvInvestment.admin.settings.admins.title")}
               </h2>
-              <Button onClick={() => handleOpenAdminModal()} className="bg-indigo-600 hover:bg-indigo-700">
+              <Button onClick={() => handleOpenAdminModal()} className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium shadow-sm">
                 <Plus className="mr-2 h-4 w-4" />
                 {t("spvInvestment.admin.settings.admins.addAdmin")}
               </Button>
             </div>
 
-            <Card>
+            <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl overflow-hidden">
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="border-b bg-slate-50">
+                    <thead className="border-b border-brand-grayLight/40 bg-brand-off/60">
                       <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">
+                        <th className="px-4 py-3.5 text-left text-xs font-semibold text-brand-grayMed uppercase tracking-wide">
                           {t("spvInvestment.admin.settings.admins.columns.name")}
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">
+                        <th className="px-4 py-3.5 text-left text-xs font-semibold text-brand-grayMed uppercase tracking-wide">
                           {t("spvInvestment.admin.settings.admins.columns.email")}
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">
+                        <th className="px-4 py-3.5 text-left text-xs font-semibold text-brand-grayMed uppercase tracking-wide">
                           {t("spvInvestment.admin.settings.admins.columns.role")}
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">
+                        <th className="px-4 py-3.5 text-left text-xs font-semibold text-brand-grayMed uppercase tracking-wide">
                           {t("spvInvestment.admin.settings.admins.columns.status")}
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">
+                        <th className="px-4 py-3.5 text-left text-xs font-semibold text-brand-grayMed uppercase tracking-wide">
                           {t("spvInvestment.admin.settings.admins.columns.lastLogin")}
                         </th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase">
+                        <th className="px-4 py-3.5 text-right text-xs font-semibold text-brand-grayMed uppercase tracking-wide">
                           {t("spvInvestment.admin.settings.admins.columns.actions")}
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y">
+                    <tbody className="divide-y divide-brand-grayLight/30">
                       {admins.map((admin) => (
-                        <tr key={admin.id} className="hover:bg-slate-50">
+                        <tr key={admin.id} className="hover:bg-brand-off/40 transition-colors">
                           <td className="px-4 py-4">
                             <div className="flex items-center gap-3">
-                              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100">
+                              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-gold/15 text-brand-gold">
                                 {admin.role === "primary" ? (
-                                  <Shield className="h-5 w-5 text-indigo-600" />
+                                  <Shield className="h-5 w-5" />
                                 ) : (
-                                  <User className="h-5 w-5 text-indigo-600" />
+                                  <User className="h-5 w-5" />
                                 )}
                               </div>
                               <div>
-                                <p className="font-medium text-slate-900">{admin.name}</p>
+                                <p className="font-medium text-brand-dark">{admin.name}</p>
                                 {admin.id === currentAdmin?.id && (
-                                  <span className="text-xs text-slate-500">(You)</span>
+                                  <span className="text-xs text-brand-grayMed">(You)</span>
                                 )}
                               </div>
                             </div>
                           </td>
-                          <td className="px-4 py-4 text-sm text-slate-600">{admin.email}</td>
+                          <td className="px-4 py-4 text-sm text-brand-grayMed">{admin.email}</td>
                           <td className="px-4 py-4">
                             {admin.role === "primary" ? (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-700">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-brand-gold/10 px-2.5 py-0.5 text-xs font-medium text-brand-gold border border-brand-gold/20">
                                 <Key className="h-3 w-3" />
                                 {t("spvInvestment.admin.settings.admins.form.roles.primary")}
                               </span>
                             ) : (
-                              <span className="inline-flex items-center rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">
+                              <span className="inline-flex items-center rounded-full bg-brand-off px-2.5 py-0.5 text-xs font-medium text-brand-grayMed border border-brand-grayLight/40">
                                 {t("spvInvestment.admin.settings.admins.form.roles.admin")}
                               </span>
                             )}
@@ -394,10 +394,10 @@ export default function AdminSettingsPage() {
                           <td className="px-4 py-4">
                             <span
                               className={cn(
-                                "inline-flex items-center rounded-full px-2 py-1 text-xs font-medium",
+                                "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
                                 admin.status === "active"
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-red-100 text-red-700"
+                                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                  : "bg-red-50 text-red-700 border border-red-200"
                               )}
                             >
                               {admin.status === "active"
@@ -405,7 +405,7 @@ export default function AdminSettingsPage() {
                                 : t("spvInvestment.admin.settings.admins.form.statuses.inactive")}
                             </span>
                           </td>
-                          <td className="px-4 py-4 text-sm text-slate-600">
+                          <td className="px-4 py-4 text-sm text-brand-grayMed">
                             {formatDate(admin.last_login)}
                           </td>
                           <td className="px-4 py-4 text-right">
@@ -413,20 +413,20 @@ export default function AdminSettingsPage() {
                               <div className="flex items-center justify-end gap-2">
                                 <button
                                   onClick={() => setShowResetPassword(admin.id)}
-                                  className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-indigo-600"
+                                  className="rounded-lg p-2 text-brand-grayMed hover:bg-brand-off hover:text-brand-gold transition-colors"
                                   title={t("spvInvestment.admin.settings.admins.resetPassword.title")}
                                 >
                                   <RefreshCw className="h-4 w-4" />
                                 </button>
                                 <button
                                   onClick={() => handleOpenAdminModal(admin)}
-                                  className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-indigo-600"
+                                  className="rounded-lg p-2 text-brand-grayMed hover:bg-brand-off hover:text-brand-gold transition-colors"
                                 >
                                   <Pencil className="h-4 w-4" />
                                 </button>
                                 <button
                                   onClick={() => setShowDeleteConfirm(admin.id)}
-                                  className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-red-600"
+                                  className="rounded-lg p-2 text-brand-grayMed hover:bg-red-50 hover:text-red-600 transition-colors"
                                 >
                                   <Trash2 className="h-4 w-4" />
                                 </button>
@@ -447,14 +447,14 @@ export default function AdminSettingsPage() {
         {activeTab === "activity" && (
           <div>
             <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-              <h2 className="text-lg font-semibold text-slate-900">
+              <h2 className="text-lg font-bold text-brand-dark">
                 {t("spvInvestment.admin.settings.activity.title")}
               </h2>
               {currentAdmin?.role === "primary" && (
                 <select
                   value={activityFilter}
                   onChange={(e) => setActivityFilter(e.target.value)}
-                  className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+                  className="rounded-lg border border-brand-grayLight/60 bg-white px-3 py-2 text-sm text-brand-dark focus:border-brand-gold"
                 >
                   <option value="all">{t("spvInvestment.admin.settings.activity.allAdmins")}</option>
                   {admins.map((admin) => (
@@ -466,22 +466,22 @@ export default function AdminSettingsPage() {
               )}
             </div>
 
-            <Card>
+            <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl overflow-hidden">
               <CardContent className="p-0">
                 {filteredLogs.length === 0 ? (
-                  <div className="p-8 text-center text-slate-500">
+                  <div className="p-8 text-center text-brand-grayMed">
                     {t("spvInvestment.admin.settings.activity.noActivity")}
                   </div>
                 ) : (
-                  <div className="divide-y">
+                  <div className="divide-y divide-brand-grayLight/30">
                     {filteredLogs.map((log) => (
-                      <div key={log.id} className="flex items-start gap-4 p-4">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100">
-                          <Activity className="h-5 w-5 text-slate-600" />
+                      <div key={log.id} className="flex items-start gap-4 p-4 hover:bg-brand-off/30 transition-colors">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-gold/15 text-brand-gold">
+                          <Activity className="h-5 w-5" />
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-slate-900">{log.description}</p>
-                          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                          <p className="text-sm font-medium text-brand-dark">{log.description}</p>
+                          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-brand-grayMed">
                             <span>{formatDate(log.created_at)}</span>
                             {log.admin_name && (
                               <>
@@ -493,14 +493,14 @@ export default function AdminSettingsPage() {
                         </div>
                         <span
                           className={cn(
-                            "rounded-full px-2 py-1 text-xs font-medium",
+                            "rounded-full px-2.5 py-0.5 text-xs font-medium",
                             log.log_type.includes("delete")
-                              ? "bg-red-100 text-red-700"
+                              ? "bg-red-50 text-red-700 border border-red-200"
                               : log.log_type.includes("create")
-                              ? "bg-green-100 text-green-700"
+                              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                               : log.log_type.includes("login")
-                              ? "bg-blue-100 text-blue-700"
-                              : "bg-slate-100 text-slate-700"
+                              ? "bg-brand-gold/10 text-brand-gold border border-brand-gold/20"
+                              : "bg-brand-off text-brand-grayMed border border-brand-grayLight/40"
                           )}
                         >
                           {log.log_type}
@@ -517,46 +517,49 @@ export default function AdminSettingsPage() {
         {/* Admin Modal */}
         {showAdminModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900">
+            <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl border border-brand-grayLight/40">
+              <h2 className="mb-4 text-lg font-bold text-brand-dark">
                 {editingAdmin
                   ? t("spvInvestment.admin.settings.admins.editAdmin")
                   : t("spvInvestment.admin.settings.admins.addAdmin")}
               </h2>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label>{t("spvInvestment.admin.settings.admins.form.name")}</Label>
+                  <Label className="text-brand-dark font-medium">{t("spvInvestment.admin.settings.admins.form.name")}</Label>
                   <Input
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder={t("spvInvestment.admin.settings.admins.form.namePlaceholder")}
+                    className="border-brand-grayLight/60 focus:border-brand-gold"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("spvInvestment.admin.settings.admins.form.email")}</Label>
+                  <Label className="text-brand-dark font-medium">{t("spvInvestment.admin.settings.admins.form.email")}</Label>
                   <Input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder={t("spvInvestment.admin.settings.admins.form.emailPlaceholder")}
+                    className="border-brand-grayLight/60 focus:border-brand-gold"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Phone</Label>
+                  <Label className="text-brand-dark font-medium">Phone</Label>
                   <Input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="+352 123 456 789"
+                    className="border-brand-grayLight/60 focus:border-brand-gold"
                   />
                 </div>
                 {editingAdmin && (
                   <div className="space-y-2">
-                    <Label>{t("spvInvestment.admin.settings.admins.form.status")}</Label>
+                    <Label className="text-brand-dark font-medium">{t("spvInvestment.admin.settings.admins.form.status")}</Label>
                     <select
                       value={formData.status}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value as "active" | "inactive" })}
-                      className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+                      className="w-full rounded-lg border border-brand-grayLight/60 bg-white px-3 py-2 text-sm text-brand-dark focus:border-brand-gold"
                     >
                       <option value="active">{t("spvInvestment.admin.settings.admins.form.statuses.active")}</option>
                       <option value="inactive">{t("spvInvestment.admin.settings.admins.form.statuses.inactive")}</option>
@@ -564,19 +567,19 @@ export default function AdminSettingsPage() {
                   </div>
                 )}
                 {!editingAdmin && (
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-brand-grayMed">
                     An access code will be automatically generated for the new admin.
                   </p>
                 )}
               </div>
               <div className="mt-6 flex justify-end gap-3">
-                <Button variant="outline" onClick={() => setShowAdminModal(false)}>
+                <Button variant="outline" onClick={() => setShowAdminModal(false)} className="border-brand-grayLight/50 text-brand-dark hover:bg-brand-off">
                   {t("spvInvestment.admin.common.cancel")}
                 </Button>
                 <Button
                   onClick={handleSaveAdmin}
                   disabled={isSaving || !formData.name || !formData.email}
-                  className="bg-indigo-600 hover:bg-indigo-700"
+                  className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium"
                 >
                   {isSaving ? (
                     <div className="flex items-center gap-2">
@@ -595,20 +598,20 @@ export default function AdminSettingsPage() {
         {/* Delete Confirmation Modal */}
         {showDeleteConfirm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
-              <h2 className="mb-2 text-lg font-semibold text-slate-900">
+            <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl border border-brand-grayLight/40">
+              <h2 className="mb-2 text-lg font-bold text-brand-dark">
                 {t("spvInvestment.admin.settings.admins.deleteConfirm.title")}
               </h2>
-              <p className="mb-6 text-sm text-slate-600">
+              <p className="mb-6 text-sm text-brand-grayMed">
                 {t("spvInvestment.admin.settings.admins.deleteConfirm.message")}
               </p>
               <div className="flex justify-end gap-3">
-                <Button variant="outline" onClick={() => setShowDeleteConfirm(null)}>
+                <Button variant="outline" onClick={() => setShowDeleteConfirm(null)} className="border-brand-grayLight/50 text-brand-dark hover:bg-brand-off">
                   {t("spvInvestment.admin.common.cancel")}
                 </Button>
                 <Button
                   onClick={() => handleDeleteAdmin(showDeleteConfirm)}
-                  className="bg-red-600 hover:bg-red-700"
+                  className="bg-red-600 hover:bg-red-700 text-white font-medium"
                 >
                   {t("spvInvestment.admin.common.delete")}
                 </Button>
@@ -620,20 +623,20 @@ export default function AdminSettingsPage() {
         {/* Reset Password Confirmation Modal */}
         {showResetPassword && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
-              <h2 className="mb-2 text-lg font-semibold text-slate-900">
+            <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl border border-brand-grayLight/40">
+              <h2 className="mb-2 text-lg font-bold text-brand-dark">
                 {t("spvInvestment.admin.settings.admins.resetPassword.title")}
               </h2>
-              <p className="mb-6 text-sm text-slate-600">
+              <p className="mb-6 text-sm text-brand-grayMed">
                 {t("spvInvestment.admin.settings.admins.resetPassword.message")}
               </p>
               <div className="flex justify-end gap-3">
-                <Button variant="outline" onClick={() => setShowResetPassword(null)}>
+                <Button variant="outline" onClick={() => setShowResetPassword(null)} className="border-brand-grayLight/50 text-brand-dark hover:bg-brand-off">
                   {t("spvInvestment.admin.common.cancel")}
                 </Button>
                 <Button
                   onClick={() => handleResetPassword(showResetPassword)}
-                  className="bg-indigo-600 hover:bg-indigo-700"
+                  className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium"
                 >
                   {t("spvInvestment.admin.common.confirm")}
                 </Button>
@@ -645,32 +648,33 @@ export default function AdminSettingsPage() {
         {/* New Access Code Modal */}
         {newAccessCode && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
-              <h2 className="mb-2 text-lg font-semibold text-slate-900">
+            <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl border border-brand-grayLight/40">
+              <h2 className="mb-2 text-lg font-bold text-brand-dark">
                 Access Code Generated
               </h2>
-              <p className="mb-4 text-sm text-slate-600">
+              <p className="mb-4 text-sm text-brand-grayMed">
                 Please save this access code - it will only be shown once.
               </p>
-              <div className="mb-4 flex items-center gap-2 rounded-lg bg-slate-100 p-3">
-                <code className="flex-1 font-mono text-lg font-semibold text-slate-900">
+              <div className="mb-4 flex items-center gap-2 rounded-lg bg-brand-off p-3 border border-brand-grayLight/40">
+                <code className="flex-1 font-mono text-lg font-semibold text-brand-dark">
                   {newAccessCode}
                 </code>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => copyAccessCode(newAccessCode)}
+                  className="border-brand-grayLight/50"
                 >
-                  {codeCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  {codeCopied ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
                 </Button>
               </div>
               {codeCopied && (
-                <p className="mb-4 text-sm text-green-600">
+                <p className="mb-4 text-sm text-emerald-600 font-medium">
                   Copied to clipboard!
                 </p>
               )}
               <div className="flex justify-end">
-                <Button onClick={() => setNewAccessCode(null)} className="bg-indigo-600 hover:bg-indigo-700">
+                <Button onClick={() => setNewAccessCode(null)} className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium">
                   {t("spvInvestment.admin.common.close")}
                 </Button>
               </div>

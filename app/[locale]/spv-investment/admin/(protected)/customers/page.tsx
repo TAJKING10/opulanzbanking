@@ -73,27 +73,27 @@ export default function CustomersPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600/30 border-t-indigo-600" />
+      <div className="min-h-[calc(100vh-4rem)] bg-brand-off flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-gold/30 border-t-brand-gold" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-100">
+    <div className="min-h-[calc(100vh-4rem)] bg-brand-off">
       {/* Page Header */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-white border-b border-brand-grayLight/40">
         <div className="container mx-auto max-w-7xl px-6 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
+              <h1 className="text-2xl font-bold text-brand-dark md:text-3xl tracking-tight">
                 {t("spvInvestment.admin.customers.title")}
               </h1>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-brand-grayMed">
                 {t("spvInvestment.admin.customers.subtitle")}
               </p>
             </div>
-            <Button asChild className="bg-indigo-600 hover:bg-indigo-700">
+            <Button asChild className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium shadow-sm">
               <Link href={`/${locale}/spv-investment/admin/customers/new`}>
                 <Plus className="mr-2 h-4 w-4" />
                 {t("spvInvestment.admin.customers.addCustomer")}
@@ -107,13 +107,13 @@ export default function CustomersPage() {
         {/* Filters */}
         <div className="mb-6 flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
             <Input
               type="text"
               placeholder={t("spvInvestment.admin.customers.searchPlaceholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-brand-grayLight/60 focus:border-brand-gold bg-white"
             />
           </div>
           <div className="flex gap-2">
@@ -124,8 +124,8 @@ export default function CustomersPage() {
                 className={cn(
                   "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
                   statusFilter === status
-                    ? "bg-indigo-600 text-white"
-                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+                    ? "bg-brand-gold text-white shadow-sm"
+                    : "bg-white text-brand-grayMed border border-brand-grayLight/50 hover:bg-brand-off"
                 )}
               >
                 {t(`spvInvestment.admin.customers.filter.${status}`)}
@@ -135,9 +135,9 @@ export default function CustomersPage() {
         </div>
 
         {/* Customers Table */}
-        <Card className="border-none shadow-sm overflow-hidden">
+        <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl overflow-hidden">
           {/* Desktop Header */}
-          <div className="hidden lg:grid lg:grid-cols-12 gap-4 px-6 py-3 bg-slate-50 text-xs font-semibold text-slate-500 uppercase tracking-wide border-b border-slate-200">
+          <div className="hidden lg:grid lg:grid-cols-12 gap-4 px-6 py-3.5 bg-brand-off/60 text-xs font-semibold text-brand-grayMed uppercase tracking-wide border-b border-brand-grayLight/40">
             <div className="col-span-3">{t("spvInvestment.admin.customers.columns.name")}</div>
             <div className="col-span-2">{t("spvInvestment.admin.customers.columns.accessCode")}</div>
             <div className="col-span-2">{t("spvInvestment.admin.customers.columns.type")}</div>
@@ -149,33 +149,33 @@ export default function CustomersPage() {
           <CardContent className="p-0">
             {investors.length === 0 ? (
               <div className="py-12 text-center">
-                <User className="mx-auto h-12 w-12 text-slate-300" />
-                <p className="mt-4 text-slate-500">{t("spvInvestment.admin.customers.noCustomers")}</p>
+                <User className="mx-auto h-12 w-12 text-brand-grayMed/40" />
+                <p className="mt-4 text-sm text-brand-grayMed">{t("spvInvestment.admin.customers.noCustomers")}</p>
               </div>
             ) : (
               investors.map((investor) => (
                 <div
                   key={investor.id}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-2 lg:gap-4 items-center px-6 py-4 border-b border-slate-100 last:border-0 hover:bg-slate-50/50 transition-colors"
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-2 lg:gap-4 items-center px-6 py-4 border-b border-brand-grayLight/30 last:border-0 hover:bg-brand-off/40 transition-colors"
                 >
                   {/* Name + Email */}
                   <div className="lg:col-span-3">
-                    <p className="font-medium text-slate-900">{investor.name}</p>
-                    <p className="text-sm text-slate-500">{investor.email}</p>
+                    <p className="font-medium text-brand-dark">{investor.name}</p>
+                    <p className="text-sm text-brand-grayMed">{investor.email}</p>
                   </div>
 
                   {/* Access Code */}
                   <div className="lg:col-span-2">
                     <div className="flex items-center gap-2">
-                      <code className="text-xs font-mono bg-slate-100 px-2 py-1 rounded">
+                      <code className="text-xs font-mono bg-brand-off px-2 py-1 rounded border border-brand-grayLight/30 text-brand-dark">
                         {investor.access_code}
                       </code>
                       <button
                         onClick={() => handleCopyCode(investor.access_code)}
-                        className="text-slate-400 hover:text-indigo-600 transition-colors"
+                        className="text-brand-grayMed hover:text-brand-gold transition-colors"
                       >
                         {copiedCode === investor.access_code ? (
-                          <Check className="h-4 w-4 text-green-500" />
+                          <Check className="h-4 w-4 text-emerald-600" />
                         ) : (
                           <Copy className="h-4 w-4" />
                         )}
@@ -185,14 +185,14 @@ export default function CustomersPage() {
 
                   {/* Type */}
                   <div className="lg:col-span-2">
-                    <span className="text-sm text-slate-600 capitalize">{investor.investor_type}</span>
-                    <span className="text-slate-300 mx-2">•</span>
-                    <span className="text-sm text-slate-500 capitalize">{investor.profile_type}</span>
+                    <span className="text-sm text-brand-dark capitalize">{investor.investor_type}</span>
+                    <span className="text-brand-grayLight mx-2">•</span>
+                    <span className="text-sm text-brand-grayMed capitalize">{investor.profile_type}</span>
                   </div>
 
                   {/* Last Access */}
                   <div className="lg:col-span-2">
-                    <p className="text-sm text-slate-500">{formatDate(investor.last_access)}</p>
+                    <p className="text-sm text-brand-grayMed">{formatDate(investor.last_access)}</p>
                   </div>
 
                   {/* Status */}
@@ -201,8 +201,8 @@ export default function CustomersPage() {
                       className={cn(
                         "inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium",
                         investor.status === "active"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-slate-100 text-slate-600"
+                          ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                          : "bg-brand-off text-brand-grayMed border border-brand-grayLight/40"
                       )}
                     >
                       {investor.status}
@@ -215,7 +215,7 @@ export default function CustomersPage() {
                       variant="ghost"
                       size="sm"
                       asChild
-                      className="text-slate-500 hover:text-indigo-600"
+                      className="text-brand-grayMed hover:text-brand-gold hover:bg-brand-gold/10"
                     >
                       <Link href={`/${locale}/spv-investment/admin/customers/${investor.id}`}>
                         <Edit2 className="h-4 w-4" />
@@ -235,7 +235,7 @@ export default function CustomersPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => setDeleteConfirm(null)}
-                          className="text-slate-500"
+                          className="text-brand-grayMed"
                         >
                           <X className="h-4 w-4" />
                         </Button>
@@ -245,7 +245,7 @@ export default function CustomersPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => setDeleteConfirm(investor.id)}
-                        className="text-slate-500 hover:text-red-600"
+                        className="text-brand-grayMed hover:text-red-600 hover:bg-red-50"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

@@ -13,10 +13,10 @@ import { cn } from "@/lib/utils";
 import { getProperties, deleteProperty, getCurrentAdmin, type Property } from "@/lib/investment-api";
 
 const statusConfig: Record<string, { color: string; label: string }> = {
-  open: { color: "bg-green-100 text-green-800", label: "Open" },
-  closing: { color: "bg-amber-100 text-amber-800", label: "Closing Soon" },
-  closed: { color: "bg-slate-100 text-slate-600", label: "Closed" },
-  coming: { color: "bg-blue-100 text-blue-800", label: "Coming Soon" },
+  open: { color: "bg-emerald-50 text-emerald-700 border border-emerald-200", label: "Open" },
+  closing: { color: "bg-amber-50 text-amber-700 border border-amber-200", label: "Closing Soon" },
+  closed: { color: "bg-brand-off text-brand-grayMed border border-brand-grayLight/40", label: "Closed" },
+  coming: { color: "bg-brand-gold/10 text-brand-goldDark border border-brand-gold/30", label: "Coming Soon" },
 };
 
 export default function PropertiesPage() {
@@ -75,27 +75,27 @@ export default function PropertiesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600/30 border-t-indigo-600" />
+      <div className="min-h-[calc(100vh-4rem)] bg-brand-off flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-gold/30 border-t-brand-gold" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-100">
+    <div className="min-h-[calc(100vh-4rem)] bg-brand-off">
       {/* Page Header */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-white border-b border-brand-grayLight/40">
         <div className="container mx-auto max-w-7xl px-6 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
+              <h1 className="text-2xl font-bold text-brand-dark md:text-3xl tracking-tight">
                 {t("spvInvestment.admin.properties.title")}
               </h1>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-brand-grayMed">
                 {t("spvInvestment.admin.properties.subtitle")}
               </p>
             </div>
-            <Button asChild className="bg-indigo-600 hover:bg-indigo-700">
+            <Button asChild className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium shadow-sm">
               <Link href={`/${locale}/spv-investment/admin/properties/new`}>
                 <Plus className="mr-2 h-4 w-4" />
                 {t("spvInvestment.admin.properties.addProperty")}
@@ -109,13 +109,13 @@ export default function PropertiesPage() {
         {/* Filters */}
         <div className="mb-6 flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
             <Input
               type="text"
               placeholder={t("spvInvestment.admin.properties.searchPlaceholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-brand-grayLight/60 focus:border-brand-gold bg-white"
             />
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -126,8 +126,8 @@ export default function PropertiesPage() {
                 className={cn(
                   "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
                   statusFilter === status
-                    ? "bg-indigo-600 text-white"
-                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+                    ? "bg-brand-gold text-white shadow-sm"
+                    : "bg-white text-brand-grayMed border border-brand-grayLight/50 hover:bg-brand-off"
                 )}
               >
                 {status === "all" ? t("spvInvestment.admin.properties.filter.all") : statusConfig[status]?.label}
@@ -138,10 +138,10 @@ export default function PropertiesPage() {
 
         {/* Properties Grid */}
         {properties.length === 0 ? (
-          <Card className="border-none shadow-sm">
+          <Card className="border border-brand-grayLight/30 bg-white shadow-sm">
             <CardContent className="py-12 text-center">
-              <Building2 className="mx-auto h-12 w-12 text-slate-300" />
-              <p className="mt-4 text-slate-500">{t("spvInvestment.admin.properties.noProperties")}</p>
+              <Building2 className="mx-auto h-12 w-12 text-brand-grayMed/40" />
+              <p className="mt-4 text-sm text-brand-grayMed">{t("spvInvestment.admin.properties.noProperties")}</p>
             </CardContent>
           </Card>
         ) : (
@@ -150,17 +150,17 @@ export default function PropertiesPage() {
               const config = statusConfig[property.status] || statusConfig.open;
               const images = property.images || [];
               return (
-                <Card key={property.id} className="border-none shadow-sm overflow-hidden group">
+                <Card key={property.id} className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl overflow-hidden group hover:shadow-md transition-all">
                   {/* Image */}
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <Image
                       src={images[0] || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=500&fit=crop"}
                       alt={property.title}
                       fill
-                      className="object-cover transition-transform group-hover:scale-105"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="absolute top-3 left-3">
-                      <span className={cn("rounded-full px-3 py-1 text-xs font-semibold", config.color)}>
+                      <span className={cn("rounded-full px-3 py-1 text-xs font-semibold shadow-sm", config.color)}>
                         {config.label}
                       </span>
                     </div>
@@ -168,34 +168,34 @@ export default function PropertiesPage() {
 
                   <CardContent className="p-5">
                     {/* Title */}
-                    <h3 className="font-bold text-slate-900 line-clamp-1">{property.title}</h3>
+                    <h3 className="font-bold text-brand-dark line-clamp-1">{property.title}</h3>
 
                     {/* Location */}
-                    <div className="mt-2 flex items-center gap-1.5 text-sm text-slate-500">
-                      <MapPin className="h-4 w-4" />
+                    <div className="mt-2 flex items-center gap-1.5 text-sm text-brand-grayMed">
+                      <MapPin className="h-4 w-4 text-brand-gold" />
                       {property.location}
                     </div>
 
                     {/* Property Type */}
-                    <div className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
-                      <Building2 className="h-4 w-4" />
+                    <div className="mt-1 flex items-center gap-1.5 text-sm text-brand-grayMed">
+                      <Building2 className="h-4 w-4 text-brand-gold" />
                       {property.property_type}
                     </div>
 
                     {/* Financials */}
-                    <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                    <div className="mt-4 grid grid-cols-2 gap-3 text-sm p-3 bg-brand-off/60 rounded-lg border border-brand-grayLight/30">
                       <div>
-                        <p className="text-slate-400">Min. Investment</p>
-                        <p className="font-semibold text-slate-900">{formatCurrency(property.min_investment)}</p>
+                        <p className="text-xs text-brand-grayMed">Min. Investment</p>
+                        <p className="font-semibold text-brand-dark mt-0.5">{formatCurrency(property.min_investment)}</p>
                       </div>
                       <div>
-                        <p className="text-slate-400">Target Return</p>
-                        <p className="font-semibold text-slate-900">{property.target_return || "—"}</p>
+                        <p className="text-xs text-brand-grayMed">Target Return</p>
+                        <p className="font-semibold text-brand-gold mt-0.5">{property.target_return || "—"}</p>
                       </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="mt-4 pt-4 border-t border-slate-100 flex justify-end gap-2">
+                    <div className="mt-4 pt-4 border-t border-brand-grayLight/30 flex justify-end gap-2">
                       {deleteConfirm === property.id ? (
                         <>
                           <Button
@@ -211,7 +211,7 @@ export default function PropertiesPage() {
                             variant="ghost"
                             size="sm"
                             onClick={() => setDeleteConfirm(null)}
-                            className="text-slate-500"
+                            className="text-brand-grayMed"
                           >
                             <X className="h-4 w-4 mr-1" />
                             Cancel
@@ -223,11 +223,11 @@ export default function PropertiesPage() {
                             variant="ghost"
                             size="sm"
                             onClick={() => setDeleteConfirm(property.id)}
-                            className="text-slate-500 hover:text-red-600"
+                            className="text-brand-grayMed hover:text-red-600 hover:bg-red-50"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
-                          <Button asChild variant="outline" size="sm">
+                          <Button asChild variant="outline" size="sm" className="border-brand-grayLight/50 text-brand-dark hover:bg-brand-off">
                             <Link href={`/${locale}/spv-investment/admin/properties/${property.id}`}>
                               <Edit2 className="h-4 w-4 mr-1" />
                               Edit

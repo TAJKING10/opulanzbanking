@@ -195,20 +195,20 @@ export default function AdminSupportPage() {
   const closedChats = chats.filter((c) => c.status === "closed");
 
   return (
-    <div className="flex bg-slate-100" style={{ height: "calc(100vh - 144px)" }}>
+    <div className="flex bg-brand-off" style={{ height: "calc(100vh - 144px)" }}>
       {/* LEFT: Chat list */}
-      <div className="flex w-80 flex-shrink-0 flex-col border-r border-slate-200 bg-white">
+      <div className="flex w-80 flex-shrink-0 flex-col border-r border-brand-grayLight/40 bg-white">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-200 px-4 py-4">
+        <div className="flex items-center justify-between border-b border-brand-grayLight/40 px-4 py-4">
           <div>
-            <h2 className="text-base font-semibold text-slate-900">Live Support</h2>
-            <p className="text-xs text-slate-500">
+            <h2 className="text-base font-bold text-brand-dark">Live Support</h2>
+            <p className="text-xs text-brand-grayMed">
               {openChats.length} open · {chats.filter((c) => c.status === "waiting").length} waiting
             </p>
           </div>
           <button
             onClick={fetchChats}
-            className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+            className="rounded-lg p-2 text-brand-grayMed transition-colors hover:bg-brand-off hover:text-brand-dark"
             title="Refresh"
           >
             <RefreshCw className="h-4 w-4" />
@@ -219,39 +219,39 @@ export default function AdminSupportPage() {
         <div className="flex-1 overflow-y-auto">
           {loadingChats ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+              <Loader2 className="h-6 w-6 animate-spin text-brand-gold" />
             </div>
           ) : chats.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
-              <MessageSquare className="mb-3 h-10 w-10 text-slate-300" />
-              <p className="text-sm font-medium text-slate-500">No chats yet</p>
-              <p className="mt-1 text-xs text-slate-400">
+              <MessageSquare className="mb-3 h-10 w-10 text-brand-grayMed/40" />
+              <p className="text-sm font-medium text-brand-dark">No chats yet</p>
+              <p className="mt-1 text-xs text-brand-grayMed">
                 When visitors start a live chat, they'll appear here.
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-brand-grayLight/30">
               {/* Open chats first */}
               {openChats.map((chat) => (
                 <button
                   key={chat.id}
                   onClick={() => setSelectedId(chat.id)}
-                  className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-slate-50 ${
-                    selectedId === chat.id ? "bg-indigo-50 hover:bg-indigo-50" : ""
+                  className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-brand-off/60 ${
+                    selectedId === chat.id ? "bg-brand-gold/10 hover:bg-brand-gold/10" : ""
                   }`}
                 >
-                  <div className="relative mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-slate-200">
-                    <User className="h-4 w-4 text-slate-500" />
+                  <div className="relative mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-brand-gold/15 text-brand-gold">
+                    <User className="h-4 w-4" />
                     <span className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white ${STATUS_DOTS[chat.status]}`} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
-                      <p className="truncate text-sm font-medium text-slate-900">{chat.visitor_name}</p>
-                      <span className="text-[10px] text-slate-400 flex-shrink-0">{timeAgo(chat.last_message_at)}</span>
+                      <p className="truncate text-sm font-medium text-brand-dark">{chat.visitor_name}</p>
+                      <span className="text-[10px] text-brand-grayMed flex-shrink-0">{timeAgo(chat.last_message_at)}</span>
                     </div>
-                    <p className="truncate text-xs text-slate-500">{chat.visitor_email}</p>
+                    <p className="truncate text-xs text-brand-grayMed">{chat.visitor_email}</p>
                     {chat.last_message && (
-                      <p className="mt-0.5 truncate text-xs text-slate-400">{chat.last_message}</p>
+                      <p className="mt-0.5 truncate text-xs text-brand-grayMed">{chat.last_message}</p>
                     )}
                     <span className={`mt-1 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${STATUS_COLORS[chat.status]}`}>
                       {chat.status === "waiting" ? "Waiting" : "Active"}
@@ -263,26 +263,26 @@ export default function AdminSupportPage() {
               {/* Closed chats section */}
               {closedChats.length > 0 && (
                 <>
-                  <div className="px-4 py-2">
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Closed</p>
+                  <div className="px-4 py-2 bg-brand-off/40">
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-brand-grayMed">Closed</p>
                   </div>
                   {closedChats.map((chat) => (
                     <button
                       key={chat.id}
                       onClick={() => setSelectedId(chat.id)}
-                      className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-slate-50 opacity-60 ${
-                        selectedId === chat.id ? "bg-indigo-50 opacity-100 hover:bg-indigo-50" : ""
+                      className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-brand-off/60 opacity-60 ${
+                        selectedId === chat.id ? "bg-brand-gold/10 opacity-100 hover:bg-brand-gold/10" : ""
                       }`}
                     >
-                      <div className="relative mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-slate-100">
-                        <User className="h-4 w-4 text-slate-400" />
+                      <div className="relative mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-brand-off text-brand-grayMed">
+                        <User className="h-4 w-4" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between gap-2">
-                          <p className="truncate text-sm font-medium text-slate-700">{chat.visitor_name}</p>
-                          <span className="text-[10px] text-slate-400 flex-shrink-0">{timeAgo(chat.last_message_at)}</span>
+                          <p className="truncate text-sm font-medium text-brand-dark">{chat.visitor_name}</p>
+                          <span className="text-[10px] text-brand-grayMed flex-shrink-0">{timeAgo(chat.last_message_at)}</span>
                         </div>
-                        <p className="truncate text-xs text-slate-400">{chat.visitor_email}</p>
+                        <p className="truncate text-xs text-brand-grayMed">{chat.visitor_email}</p>
                       </div>
                     </button>
                   ))}
@@ -294,31 +294,31 @@ export default function AdminSupportPage() {
       </div>
 
       {/* RIGHT: Conversation */}
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col bg-brand-off/30">
         {!selectedId ? (
           <div className="flex flex-1 flex-col items-center justify-center text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-200">
-              <MessageSquare className="h-8 w-8 text-slate-400" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-gold/10 text-brand-gold">
+              <MessageSquare className="h-8 w-8" />
             </div>
-            <h3 className="mt-4 text-base font-semibold text-slate-700">Select a conversation</h3>
-            <p className="mt-1 text-sm text-slate-500">
+            <h3 className="mt-4 text-base font-bold text-brand-dark">Select a conversation</h3>
+            <p className="mt-1 text-sm text-brand-grayMed">
               Choose a chat from the left to view and reply.
             </p>
           </div>
         ) : (
           <>
             {/* Chat header */}
-            <div className="flex flex-shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6 py-4">
+            <div className="flex flex-shrink-0 items-center justify-between border-b border-brand-grayLight/40 bg-white px-6 py-4">
               <div className="flex items-center gap-3">
-                <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-slate-200">
-                  <User className="h-5 w-5 text-slate-500" />
+                <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-brand-gold/15 text-brand-gold">
+                  <User className="h-5 w-5" />
                   {selectedChat && (
                     <span className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white ${STATUS_DOTS[selectedChat.status]}`} />
                   )}
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900">{selectedChat?.visitor_name}</p>
-                  <p className="text-xs text-slate-500">{selectedChat?.visitor_email}</p>
+                  <p className="font-bold text-brand-dark">{selectedChat?.visitor_name}</p>
+                  <p className="text-xs text-brand-grayMed">{selectedChat?.visitor_email}</p>
                 </div>
                 {selectedChat && (
                   <span className={`ml-2 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_COLORS[selectedChat.status]}`}>
@@ -344,7 +344,7 @@ export default function AdminSupportPage() {
                 ) : (
                   <button
                     onClick={() => reopenChat(selectedId)}
-                    className="flex items-center gap-1.5 rounded-lg border border-green-200 bg-green-50 px-3 py-1.5 text-xs font-medium text-green-600 transition-colors hover:bg-green-100"
+                    className="flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-600 transition-colors hover:bg-emerald-100"
                   >
                     <CheckCircle className="h-3.5 w-3.5" />
                     Reopen
@@ -357,14 +357,14 @@ export default function AdminSupportPage() {
             <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-6 space-y-4">
               {/* System message */}
               <div className="flex justify-center">
-                <span className="rounded-full bg-slate-200 px-3 py-1 text-xs text-slate-500">
+                <span className="rounded-full bg-brand-off border border-brand-grayLight/40 px-3 py-1 text-xs text-brand-grayMed">
                   Chat started {selectedChat ? timeAgo(selectedChat.created_at) : ""}
                 </span>
               </div>
 
               {messages.length === 0 && (
                 <div className="flex justify-center py-4">
-                  <p className="text-sm text-slate-400">No messages yet. The visitor is waiting for your reply.</p>
+                  <p className="text-sm text-brand-grayMed">No messages yet. The visitor is waiting for your reply.</p>
                 </div>
               )}
 
@@ -374,30 +374,30 @@ export default function AdminSupportPage() {
                   className={`flex gap-3 ${msg.sender_type === "admin" ? "justify-end" : "justify-start"}`}
                 >
                   {msg.sender_type === "visitor" && (
-                    <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-slate-200">
-                      <User className="h-4 w-4 text-slate-500" />
+                    <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-off text-brand-grayMed border border-brand-grayLight/40">
+                      <User className="h-4 w-4" />
                     </div>
                   )}
                   <div className="max-w-[70%]">
                     {msg.sender_type === "visitor" && (
-                      <p className="mb-1 text-xs font-medium text-slate-500">{msg.sender_name}</p>
+                      <p className="mb-1 text-xs font-medium text-brand-grayMed">{msg.sender_name}</p>
                     )}
                     <div
                       className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                         msg.sender_type === "admin"
-                          ? "rounded-tr-sm bg-indigo-600 text-white"
-                          : "rounded-tl-sm bg-white text-slate-800 shadow-sm ring-1 ring-slate-200"
+                          ? "rounded-tr-sm bg-brand-gold text-white shadow-sm"
+                          : "rounded-tl-sm bg-white text-brand-dark shadow-sm ring-1 ring-brand-grayLight/40"
                       }`}
                     >
                       {msg.content}
                     </div>
-                    <p className={`mt-1 text-[10px] text-slate-400 ${msg.sender_type === "admin" ? "text-right" : ""}`}>
+                    <p className={`mt-1 text-[10px] text-brand-grayMed ${msg.sender_type === "admin" ? "text-right" : ""}`}>
                       {msg.sender_type === "admin" ? `You · ` : ""}{formatTime(msg.created_at)}
                     </p>
                   </div>
                   {msg.sender_type === "admin" && (
-                    <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100">
-                      <Users className="h-4 w-4 text-indigo-600" />
+                    <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-gold/15 text-brand-gold">
+                      <Users className="h-4 w-4" />
                     </div>
                   )}
                 </div>
@@ -407,8 +407,8 @@ export default function AdminSupportPage() {
 
             {/* Reply box */}
             {selectedChat?.status !== "closed" ? (
-              <div className="flex-shrink-0 border-t border-slate-200 bg-white p-4">
-                <div className="flex items-end gap-3 rounded-xl border border-slate-200 px-4 py-3 transition-colors focus-within:border-indigo-400">
+              <div className="flex-shrink-0 border-t border-brand-grayLight/40 bg-white p-4">
+                <div className="flex items-end gap-3 rounded-xl border border-brand-grayLight/50 px-4 py-3 transition-colors focus-within:border-brand-gold">
                   <textarea
                     ref={replyInputRef}
                     value={replyText}
@@ -418,13 +418,13 @@ export default function AdminSupportPage() {
                     }}
                     placeholder="Type your reply... (Enter to send, Shift+Enter for new line)"
                     rows={2}
-                    className="flex-1 resize-none bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
+                    className="flex-1 resize-none bg-transparent text-sm text-brand-dark outline-none placeholder:text-brand-grayMed"
                     disabled={sending}
                   />
                   <button
                     onClick={sendReply}
                     disabled={!replyText.trim() || sending}
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-600 transition-colors hover:bg-indigo-700 disabled:opacity-40"
+                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-brand-gold text-white transition-colors hover:bg-brand-goldDark disabled:opacity-40"
                   >
                     {sending ? (
                       <Loader2 className="h-4 w-4 animate-spin text-white" />
@@ -433,13 +433,13 @@ export default function AdminSupportPage() {
                     )}
                   </button>
                 </div>
-                <p className="mt-2 text-xs text-slate-400">
+                <p className="mt-2 text-xs text-brand-grayMed">
                   Replying as <strong>{adminName}</strong>
                 </p>
               </div>
             ) : (
-              <div className="flex-shrink-0 border-t border-slate-200 bg-slate-50 px-6 py-4">
-                <p className="text-center text-sm text-slate-500">This chat is closed. Reopen it to reply.</p>
+              <div className="flex-shrink-0 border-t border-brand-grayLight/40 bg-brand-off px-6 py-4">
+                <p className="text-center text-sm text-brand-grayMed">This chat is closed. Reopen it to reply.</p>
               </div>
             )}
           </>

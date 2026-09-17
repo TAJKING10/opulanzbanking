@@ -318,26 +318,26 @@ export default function PropertyEditPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600/30 border-t-indigo-600" />
+      <div className="min-h-[calc(100vh-4rem)] bg-brand-off flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-gold/30 border-t-brand-gold" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-100">
+    <div className="min-h-[calc(100vh-4rem)] bg-brand-off">
       {/* Page Header */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-white border-b border-brand-grayLight/40">
         <div className="container mx-auto max-w-5xl px-6 py-6">
           <Link
             href={`/${locale}/spv-investment/admin/properties`}
-            className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-700 mb-4"
+            className="inline-flex items-center text-sm font-medium text-brand-grayMed hover:text-brand-dark mb-4 transition-colors"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             {t("spvInvestment.admin.properties.backToList")}
           </Link>
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-2xl font-bold text-brand-dark">
               {isNew
                 ? t("spvInvestment.admin.properties.createProperty")
                 : t("spvInvestment.admin.properties.editProperty")}
@@ -345,7 +345,7 @@ export default function PropertyEditPage() {
             {!isNew && (
               deleteConfirm ? (
                 <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => setDeleteConfirm(false)}>
+                  <Button variant="outline" onClick={() => setDeleteConfirm(false)} className="border-brand-grayLight/60 text-brand-dark hover:bg-brand-off">
                     Cancel
                   </Button>
                   <Button onClick={handleDelete} className="bg-red-600 hover:bg-red-700 text-white">
@@ -378,10 +378,10 @@ export default function PropertyEditPage() {
           )}
 
           {/* Basic Information */}
-          <Card className="border-none shadow-sm">
+          <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Building2 className="h-5 w-5 text-indigo-600" />
+              <CardTitle className="flex items-center gap-2 text-brand-dark">
+                <Building2 className="h-5 w-5 text-brand-gold" />
                 {t("spvInvestment.admin.properties.form.basicInfo")}
               </CardTitle>
             </CardHeader>
@@ -400,7 +400,7 @@ export default function PropertyEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="location">{t("spvInvestment.admin.properties.form.location")} *</Label>
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
                     <Input
                       id="location"
                       value={formData.location}
@@ -433,7 +433,7 @@ export default function PropertyEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="year_built">{t("spvInvestment.admin.properties.form.yearBuilt")}</Label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
                     <Input
                       id="year_built"
                       value={formData.year_built}
@@ -473,9 +473,12 @@ export default function PropertyEditPage() {
           </Card>
 
           {/* Features */}
-          <Card className="border-none shadow-sm">
+          <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl">
             <CardHeader>
-              <CardTitle>{t("spvInvestment.admin.properties.form.features")}</CardTitle>
+              <CardTitle className="flex items-center gap-2 text-brand-dark">
+                <Sparkles className="h-5 w-5 text-brand-gold" />
+                {t("spvInvestment.admin.properties.form.features")}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex gap-2">
@@ -485,7 +488,7 @@ export default function PropertyEditPage() {
                   placeholder="Add a feature..."
                   onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addFeature())}
                 />
-                <Button type="button" onClick={addFeature} variant="outline">
+                <Button type="button" onClick={addFeature} variant="outline" className="border-brand-grayLight/60 hover:bg-brand-off">
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
@@ -494,13 +497,13 @@ export default function PropertyEditPage() {
                   {formData.features.map((feature, index) => (
                     <span
                       key={index}
-                      className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-sm"
+                      className="inline-flex items-center gap-1 rounded-full bg-brand-off border border-brand-grayLight/40 px-3 py-1 text-sm text-brand-dark"
                     >
                       {feature}
                       <button
                         type="button"
                         onClick={() => removeFeature(index)}
-                        className="text-slate-400 hover:text-red-500"
+                        className="text-brand-grayMed hover:text-red-500 transition-colors"
                       >
                         <X className="h-3 w-3" />
                       </button>
@@ -512,10 +515,10 @@ export default function PropertyEditPage() {
           </Card>
 
           {/* Images */}
-          <Card className="border-none shadow-sm">
+          <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <ImageIcon className="h-5 w-5 text-indigo-600" />
+              <CardTitle className="flex items-center gap-2 text-brand-dark">
+                <ImageIcon className="h-5 w-5 text-brand-gold" />
                 {t("spvInvestment.admin.properties.form.images")}
               </CardTitle>
             </CardHeader>
@@ -527,19 +530,19 @@ export default function PropertyEditPage() {
                   placeholder="Add image URL..."
                   onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addImage())}
                 />
-                <Button type="button" onClick={addImage} variant="outline">
+                <Button type="button" onClick={addImage} variant="outline" className="border-brand-grayLight/60 hover:bg-brand-off">
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
               {formData.images.length > 0 && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {formData.images.map((url, index) => (
-                    <div key={index} className="relative aspect-[4/3] rounded-lg overflow-hidden bg-slate-100">
+                    <div key={index} className="relative aspect-[4/3] rounded-lg overflow-hidden bg-brand-off border border-brand-grayLight/30">
                       <img src={url} alt="" className="w-full h-full object-cover" />
                       <button
                         type="button"
                         onClick={() => removeImage(index)}
-                        className="absolute top-2 right-2 p-1 rounded-full bg-red-500 text-white hover:bg-red-600"
+                        className="absolute top-2 right-2 p-1 rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors"
                       >
                         <X className="h-3 w-3" />
                       </button>
@@ -551,10 +554,10 @@ export default function PropertyEditPage() {
           </Card>
 
           {/* Financials */}
-          <Card className="border-none shadow-sm">
+          <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <DollarSign className="h-5 w-5 text-indigo-600" />
+              <CardTitle className="flex items-center gap-2 text-brand-dark">
+                <DollarSign className="h-5 w-5 text-brand-gold" />
                 {t("spvInvestment.admin.properties.form.financials")}
               </CardTitle>
             </CardHeader>
@@ -613,10 +616,10 @@ export default function PropertyEditPage() {
           </Card>
 
           {/* Bank Transfer */}
-          <Card className="border-none shadow-sm">
+          <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Landmark className="h-5 w-5 text-indigo-600" />
+              <CardTitle className="flex items-center gap-2 text-brand-dark">
+                <Landmark className="h-5 w-5 text-brand-gold" />
                 {t("spvInvestment.admin.properties.form.bankTransfer")}
               </CardTitle>
             </CardHeader>
@@ -660,29 +663,29 @@ export default function PropertyEditPage() {
 
           {/* Ownership Assignment - Only show for existing properties */}
           {!isNew && (
-            <Card className="border-none shadow-sm border-l-4 border-l-indigo-600">
+            <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl border-l-4 border-l-brand-gold">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <UserPlus className="h-5 w-5 text-indigo-600" />
+                <CardTitle className="flex items-center gap-2 text-brand-dark">
+                  <UserPlus className="h-5 w-5 text-brand-gold" />
                   Ownership Assignment
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Current Owner Display */}
                 {currentOwner && (
-                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold">
+                      <div className="h-10 w-10 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold">
                         {currentOwner.investor.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="font-semibold text-green-900">{currentOwner.investor.name}</p>
-                        <p className="text-sm text-green-700">
+                        <p className="font-semibold text-emerald-900">{currentOwner.investor.name}</p>
+                        <p className="text-sm text-emerald-700">
                           Current Owner • {currentOwner.ownership}% Ownership
                         </p>
                       </div>
                       <div className="ml-auto">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-600 text-white text-sm font-medium">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-600 text-white text-sm font-medium">
                           <Check className="h-4 w-4 mr-1" />
                           Assigned
                         </span>
@@ -693,7 +696,7 @@ export default function PropertyEditPage() {
 
                 {/* Assignment Success Message */}
                 {assignmentSuccess && (
-                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
+                  <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700">
                     <div className="flex items-center gap-2">
                       <Check className="h-5 w-5" />
                       {assignmentSuccess}
@@ -739,7 +742,7 @@ export default function PropertyEditPage() {
                       type="button"
                       onClick={handleAssignInvestor}
                       disabled={isAssigning || !selectedInvestorId}
-                      className="bg-indigo-600 hover:bg-indigo-700"
+                      className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium"
                     >
                       {isAssigning ? (
                         <div className="flex items-center gap-2">
@@ -759,7 +762,7 @@ export default function PropertyEditPage() {
                         type="button"
                         onClick={handleCloseProperty}
                         variant="outline"
-                        className="text-orange-600 border-orange-200 hover:bg-orange-50"
+                        className="text-amber-700 border-amber-300 hover:bg-amber-50"
                       >
                         <Lock className="mr-2 h-4 w-4" />
                         Close Property
@@ -767,7 +770,7 @@ export default function PropertyEditPage() {
                     )}
                   </div>
 
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-brand-grayMed">
                     <Users className="inline h-3 w-3 mr-1" />
                     Assigning 100% ownership will automatically close the property, hiding it from other investors.
                   </p>
@@ -778,12 +781,12 @@ export default function PropertyEditPage() {
 
           {/* Actions */}
           <div className="flex justify-end gap-3 pb-8">
-            <Button type="button" variant="outline" asChild>
+            <Button type="button" variant="outline" className="border-brand-grayLight/60 text-brand-dark hover:bg-brand-off" asChild>
               <Link href={`/${locale}/spv-investment/admin/properties`}>
                 {t("spvInvestment.admin.common.cancel")}
               </Link>
             </Button>
-            <Button type="submit" disabled={isSaving} className="bg-indigo-600 hover:bg-indigo-700">
+            <Button type="submit" disabled={isSaving} className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium">
               {isSaving ? (
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />

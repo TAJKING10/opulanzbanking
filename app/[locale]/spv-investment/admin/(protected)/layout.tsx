@@ -94,10 +94,10 @@ export default function AdminProtectedLayout({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-off flex items-center justify-center">
         <div className="text-center">
-          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-indigo-500/30 border-t-indigo-500" />
-          <p className="mt-4 text-sm text-slate-400">{t("common.loading")}</p>
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-brand-gold/30 border-t-brand-gold" />
+          <p className="mt-4 text-sm text-brand-grayMed">{t("common.loading")}</p>
         </div>
       </div>
     );
@@ -108,9 +108,9 @@ export default function AdminProtectedLayout({
   }
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-brand-off">
       {/* Admin Navigation Bar */}
-      <nav className="sticky top-0 z-50 bg-slate-900 border-b border-slate-700 shadow-lg">
+      <nav className="sticky top-0 z-50 bg-white border-b border-brand-grayLight/40 shadow-sm">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="flex h-16 items-center justify-between">
             {/* Left: Logo + Nav */}
@@ -120,10 +120,10 @@ export default function AdminProtectedLayout({
                 href={`/${locale}/spv-investment/admin/dashboard`}
                 className="flex items-center gap-2"
               >
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-gold">
                   <Shield className="h-4 w-4 text-white" />
                 </div>
-                <span className="text-lg font-bold text-white">
+                <span className="text-lg font-bold text-brand-dark">
                   {t("spvInvestment.admin.title")}
                 </span>
               </Link>
@@ -140,8 +140,8 @@ export default function AdminProtectedLayout({
                       className={cn(
                         "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors",
                         isActive
-                          ? "bg-indigo-600 text-white"
-                          : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                          ? "bg-brand-gold/10 text-brand-gold font-semibold"
+                          : "text-brand-dark/70 hover:bg-brand-off hover:text-brand-dark"
                       )}
                     >
                       <Icon className="h-4 w-4" />
@@ -156,33 +156,33 @@ export default function AdminProtectedLayout({
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-brand-dark hover:bg-brand-off transition-colors"
               >
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600">
-                  <User className="h-4 w-4 text-white" />
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-gold/15 text-brand-gold">
+                  <User className="h-4 w-4" />
                 </div>
                 <div className="hidden sm:block text-left">
-                  <p className="text-sm font-medium text-white">
+                  <p className="text-sm font-medium text-brand-dark">
                     {currentAdmin?.name || "Admin"}
                   </p>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-brand-grayMed">
                     {currentAdmin?.role === "primary" ? t("spvInvestment.admin.profile.primaryAdmin") : t("spvInvestment.admin.profile.admin")}
                   </p>
                 </div>
                 <ChevronDown className={cn(
-                  "h-4 w-4 text-slate-400 transition-transform",
+                  "h-4 w-4 text-brand-grayMed transition-transform",
                   isDropdownOpen && "rotate-180"
                 )} />
               </button>
 
               {/* Dropdown Menu */}
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-lg bg-slate-800 border border-slate-700 shadow-xl z-50">
-                  <div className="p-3 border-b border-slate-700">
-                    <p className="text-sm font-medium text-white">{currentAdmin?.name}</p>
-                    <p className="text-xs text-slate-400">{currentAdmin?.email}</p>
+                <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white border border-brand-grayLight/50 shadow-xl z-50">
+                  <div className="p-3 border-b border-brand-grayLight/30">
+                    <p className="text-sm font-medium text-brand-dark">{currentAdmin?.name}</p>
+                    <p className="text-xs text-brand-grayMed">{currentAdmin?.email}</p>
                     {currentAdmin?.role === "primary" && (
-                      <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-amber-600/20 px-2 py-0.5 text-xs font-medium text-amber-300 ring-1 ring-amber-500/30">
+                      <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-brand-gold/10 px-2 py-0.5 text-xs font-medium text-brand-gold ring-1 ring-brand-gold/30">
                         <Key className="h-3 w-3" />
                         {t("spvInvestment.admin.profile.primaryAdmin")}
                       </span>
@@ -192,7 +192,7 @@ export default function AdminProtectedLayout({
                     <Link
                       href={`/${locale}/spv-investment/admin/settings`}
                       onClick={() => setIsDropdownOpen(false)}
-                      className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+                      className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-brand-dark/80 hover:bg-brand-off hover:text-brand-dark transition-colors"
                     >
                       <User className="h-4 w-4" />
                       {t("spvInvestment.admin.profile.viewProfile")}
@@ -201,20 +201,20 @@ export default function AdminProtectedLayout({
                       <Link
                         href={`/${locale}/spv-investment/admin/settings?tab=admins`}
                         onClick={() => setIsDropdownOpen(false)}
-                        className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+                        className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-brand-dark/80 hover:bg-brand-off hover:text-brand-dark transition-colors"
                       >
                         <Settings className="h-4 w-4" />
                         {t("spvInvestment.admin.profile.manageAdmins")}
                       </Link>
                     )}
                   </div>
-                  <div className="border-t border-slate-700 p-1">
+                  <div className="border-t border-brand-grayLight/30 p-1">
                     <button
                       onClick={() => {
                         setIsDropdownOpen(false);
                         handleLogout();
                       }}
-                      className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-400 hover:bg-slate-700 hover:text-red-300 transition-colors"
+                      className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                     >
                       <LogOut className="h-4 w-4" />
                       {t("spvInvestment.admin.nav.logout")}
@@ -227,7 +227,7 @@ export default function AdminProtectedLayout({
         </div>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden border-t border-slate-700">
+        <div className="md:hidden border-t border-brand-grayLight/30">
           <div className="container mx-auto max-w-7xl px-6 py-2">
             <div className="flex items-center gap-1 overflow-x-auto">
               {navItems.map((item) => {
@@ -240,8 +240,8 @@ export default function AdminProtectedLayout({
                     className={cn(
                       "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors",
                       isActive
-                        ? "bg-indigo-600 text-white"
-                        : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                        ? "bg-brand-gold/10 text-brand-gold font-semibold"
+                        : "text-brand-dark/70 hover:bg-brand-off hover:text-brand-dark"
                     )}
                   >
                     <Icon className="h-4 w-4" />

@@ -283,26 +283,26 @@ export default function CustomerEditPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600/30 border-t-indigo-600" />
+      <div className="min-h-[calc(100vh-4rem)] bg-brand-off flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-gold/30 border-t-brand-gold" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-100">
+    <div className="min-h-[calc(100vh-4rem)] bg-brand-off">
       {/* Page Header */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-white border-b border-brand-grayLight/40">
         <div className="container mx-auto max-w-5xl px-6 py-6">
           <Link
             href={`/${locale}/spv-investment/admin/customers`}
-            className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-700 mb-4"
+            className="inline-flex items-center text-sm font-medium text-brand-grayMed hover:text-brand-dark mb-4 transition-colors"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             {t("spvInvestment.admin.common.backToList")}
           </Link>
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-2xl font-bold text-brand-dark">
               {isNew
                 ? t("spvInvestment.admin.customers.form.createTitle")
                 : t("spvInvestment.admin.customers.form.editTitle")}
@@ -313,6 +313,7 @@ export default function CustomerEditPage() {
                   <Button
                     variant="outline"
                     onClick={() => setDeleteConfirm(false)}
+                    className="border-brand-grayLight/60 text-brand-dark hover:bg-brand-off"
                   >
                     {t("spvInvestment.admin.common.cancel")}
                   </Button>
@@ -349,10 +350,10 @@ export default function CustomerEditPage() {
           )}
 
           {/* Customer Information */}
-          <Card className="border-none shadow-sm">
+          <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="h-5 w-5 text-indigo-600" />
+              <CardTitle className="flex items-center gap-2 text-brand-dark">
+                <User className="h-5 w-5 text-brand-gold" />
                 {t("spvInvestment.admin.customers.form.title")}
               </CardTitle>
             </CardHeader>
@@ -362,7 +363,7 @@ export default function CustomerEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="name">{t("spvInvestment.admin.customers.form.name")} *</Label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
                     <Input
                       id="name"
                       value={formData.name}
@@ -378,7 +379,7 @@ export default function CustomerEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="email">{t("spvInvestment.admin.customers.form.email")} *</Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
                     <Input
                       id="email"
                       type="email"
@@ -395,7 +396,7 @@ export default function CustomerEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="phone">{t("spvInvestment.admin.customers.form.phone")}</Label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
                     <Input
                       id="phone"
                       type="tel"
@@ -411,7 +412,7 @@ export default function CustomerEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="company_name">Company Name</Label>
                   <div className="relative">
-                    <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
                     <Input
                       id="company_name"
                       value={formData.company_name}
@@ -485,19 +486,19 @@ export default function CustomerEditPage() {
                     <Label>{t("spvInvestment.admin.customers.form.accessCode")}</Label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
-                        <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
                         <Input
                           value={accessCode}
                           className="pl-10 font-mono"
                           readOnly
                         />
                       </div>
-                      <Button type="button" variant="outline" onClick={handleResetCode}>
+                      <Button type="button" variant="outline" onClick={handleResetCode} className="border-brand-grayLight/60 hover:bg-brand-off">
                         <RefreshCw className="h-4 w-4 mr-2" />
                         Reset Code
                       </Button>
                     </div>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-brand-grayMed">
                       Resetting the code will generate a new access code and invalidate the old one.
                     </p>
                   </div>
@@ -508,12 +509,12 @@ export default function CustomerEditPage() {
 
           {/* Actions */}
           <div className="flex justify-end gap-3 pb-8">
-            <Button type="button" variant="outline" asChild>
+            <Button type="button" variant="outline" className="border-brand-grayLight/60 text-brand-dark hover:bg-brand-off" asChild>
               <Link href={`/${locale}/spv-investment/admin/customers`}>
                 {t("spvInvestment.admin.common.cancel")}
               </Link>
             </Button>
-            <Button type="submit" disabled={isSaving} className="bg-indigo-600 hover:bg-indigo-700">
+            <Button type="submit" disabled={isSaving} className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium">
               {isSaving ? (
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
@@ -533,15 +534,15 @@ export default function CustomerEditPage() {
       {/* Investments Section - Only for existing investors */}
       {!isNew && (
         <div className="container mx-auto max-w-5xl px-6 pb-8">
-          <Card className="border-none shadow-sm">
+          <Card className="border border-brand-grayLight/40 bg-white shadow-sm rounded-xl">
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-indigo-600" />
+              <CardTitle className="flex items-center gap-2 text-brand-dark">
+                <TrendingUp className="h-5 w-5 text-brand-gold" />
                 Investments
               </CardTitle>
               <Button
                 onClick={() => setShowInvestmentForm(!showInvestmentForm)}
-                className="bg-indigo-600 hover:bg-indigo-700"
+                className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium"
                 size="sm"
               >
                 <Plus className="mr-2 h-4 w-4" />
@@ -551,8 +552,8 @@ export default function CustomerEditPage() {
             <CardContent>
               {/* Investment Creation Form */}
               {showInvestmentForm && (
-                <form onSubmit={handleCreateInvestment} className="mb-6 p-4 bg-slate-50 rounded-lg space-y-4">
-                  <h4 className="font-semibold text-slate-900">Create New Investment</h4>
+                <form onSubmit={handleCreateInvestment} className="mb-6 p-4 bg-brand-off border border-brand-grayLight/30 rounded-lg space-y-4">
+                  <h4 className="font-semibold text-brand-dark">Create New Investment</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="md:col-span-2 space-y-2">
                       <Label>Property *</Label>
@@ -573,7 +574,7 @@ export default function CustomerEditPage() {
                     <div className="space-y-2">
                       <Label>Amount Invested (EUR) *</Label>
                       <div className="relative">
-                        <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
                         <Input
                           value={investmentForm.amount_invested}
                           onChange={(e) => setInvestmentForm({ ...investmentForm, amount_invested: e.target.value })}
@@ -603,7 +604,7 @@ export default function CustomerEditPage() {
                     <div className="space-y-2">
                       <Label>Investment Date</Label>
                       <div className="relative">
-                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
                         <Input
                           type="date"
                           value={investmentForm.investment_date}
@@ -615,7 +616,7 @@ export default function CustomerEditPage() {
                     <div className="space-y-2">
                       <Label>Maturity Date</Label>
                       <div className="relative">
-                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-grayMed" />
                         <Input
                           type="date"
                           value={investmentForm.maturity_date}
@@ -630,10 +631,11 @@ export default function CustomerEditPage() {
                       type="button"
                       variant="outline"
                       onClick={() => setShowInvestmentForm(false)}
+                      className="border-brand-grayLight/60 hover:bg-white"
                     >
                       Cancel
                     </Button>
-                    <Button type="submit" disabled={isCreatingInvestment} className="bg-indigo-600 hover:bg-indigo-700">
+                    <Button type="submit" disabled={isCreatingInvestment} className="bg-brand-gold hover:bg-brand-goldDark text-white font-medium">
                       {isCreatingInvestment ? (
                         <div className="flex items-center gap-2">
                           <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
@@ -649,8 +651,8 @@ export default function CustomerEditPage() {
 
               {/* Investments List */}
               {investments.length === 0 ? (
-                <div className="text-center py-8 text-slate-500">
-                  <TrendingUp className="mx-auto h-12 w-12 text-slate-300 mb-2" />
+                <div className="text-center py-8 text-brand-grayMed">
+                  <TrendingUp className="mx-auto h-12 w-12 text-brand-grayLight mb-2" />
                   <p>No investments assigned yet</p>
                   <p className="text-sm">Click "Assign to Property" to create an investment</p>
                 </div>
@@ -659,23 +661,23 @@ export default function CustomerEditPage() {
                   {investments.map((investment) => (
                     <div
                       key={investment.id}
-                      className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-lg"
+                      className="flex items-center justify-between p-4 bg-white border border-brand-grayLight/40 rounded-lg shadow-sm"
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <Building className="h-4 w-4 text-indigo-600" />
-                          <span className="font-medium text-slate-900">
+                          <Building className="h-4 w-4 text-brand-gold" />
+                          <span className="font-medium text-brand-dark">
                             {investment.property_title || `Property #${investment.property_id}`}
                           </span>
                           <span className={`text-xs px-2 py-0.5 rounded-full ${
-                            investment.status === 'active' ? 'bg-green-100 text-green-700' :
+                            investment.status === 'active' ? 'bg-emerald-100 text-emerald-700' :
                             investment.status === 'pending' ? 'bg-amber-100 text-amber-700' :
-                            'bg-slate-100 text-slate-600'
+                            'bg-brand-off text-brand-grayMed border border-brand-grayLight/30'
                           }`}>
                             {investment.status}
                           </span>
                         </div>
-                        <div className="mt-1 text-sm text-slate-500 grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <div className="mt-1 text-sm text-brand-grayMed grid grid-cols-2 md:grid-cols-4 gap-2">
                           <span>Amount: {formatCurrency(investment.amount_invested)}</span>
                           <span>Ownership: {investment.ownership_percentage}%</span>
                           <span>Return: {investment.expected_annual_return || "—"}%</span>
@@ -706,7 +708,7 @@ export default function CustomerEditPage() {
                             variant="ghost"
                             size="sm"
                             onClick={() => setDeleteInvestmentId(investment.id)}
-                            className="text-slate-400 hover:text-red-600"
+                            className="text-brand-grayMed hover:text-red-600"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

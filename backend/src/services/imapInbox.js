@@ -29,7 +29,7 @@ function wrapImapError(err) {
 
 // Filter Azure/Microsoft and automated no-reply emails.
 // Legitimate client emails (real names, support inquiries) pass through.
-const SKIP_DOMAINS  = ['azure.com', 'microsoft.com', 'azuredevops.com', 'visualstudio.com'];
+const SKIP_DOMAINS  = ['azure.com', 'microsoft.com', 'azuredevops.com', 'visualstudio.com', 'google.com'];
 const SKIP_FROM_PFXS = [
   'noreply@', 'no-reply@', 'no-reply-', 'donotreply@', 'do-not-reply@',
   'mailer-daemon@', 'postmaster@', 'bounce@',

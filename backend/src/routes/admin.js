@@ -1529,10 +1529,9 @@ router.get('/inbox/test', adminAuth, async (req, res) => {
 // Pass ?bust=1 to force a cache refresh (used by the Refresh button)
 router.get('/inbox', adminAuth, async (req, res) => {
   try {
-    const limit = Math.min(parseInt(req.query.limit) || 100, 200);
     const bust  = req.query.bust === '1';
     const { listInbox } = require('../services/imapInbox');
-    const messages = await listInbox({ limit, bust });
+    const messages = await listInbox({ limit: 0, bust });
     res.json({ success: true, data: messages, total: messages.length });
   } catch (err) {
     console.error('Admin inbox list error:', err.message);

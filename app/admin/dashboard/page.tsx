@@ -4069,7 +4069,7 @@ function InboxTab() {
     setLoading(true);
     setError("");
     setTestResult(null);
-    const url = `${API}/api/admin/inbox?limit=100${bust ? "&bust=1" : ""}`;
+    const url = `${API}/api/admin/inbox${bust ? "?bust=1" : ""}`;
     fetch(url, { headers: { "x-admin-token": getToken() } })
       .then(r => r.json())
       .then(d => {
@@ -4286,7 +4286,17 @@ function InboxTab() {
             <div className="flex flex-col h-full max-h-[calc(100vh-260px)]">
               {/* Email header */}
               <div className="px-6 py-4 border-b border-gray-100">
-                <h3 className="font-semibold text-gray-900 text-base leading-snug mb-3">{selected.subject}</h3>
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <h3 className="font-semibold text-gray-900 text-base leading-snug">{selected.subject}</h3>
+                  <a
+                    href={`https://mail.ovh.net/roundcube/?_task=mail&_mbox=INBOX&_uid=${selected.uid}&_action=show`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#b59354] text-[#b59354] text-xs font-semibold hover:bg-[#b59354]/10 transition-colors"
+                  >
+                    <span>↗</span> Open in Webmail
+                  </a>
+                </div>
                 <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
                   <span className="text-gray-400 font-medium">From</span>
                   <span className="text-gray-700">{selected.from}</span>

@@ -14,7 +14,7 @@ steps:
   displayName: 'Use Node.js 20'
 
 # 2️⃣ Install dependencies
-- script: npm ci
+- script: npm install --no-audit --no-fund
   displayName: 'Install dependencies'
 
 # 3️⃣ Build Next.js in standalone mode (required for App Service node server.js deployment)

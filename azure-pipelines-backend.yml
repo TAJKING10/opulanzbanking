@@ -48,8 +48,7 @@ steps:
           { "name": "NARVI_API_KEY_ID", "value": "$(NARVI_API_KEY_ID)" },
           { "name": "EMAIL_USER", "value": "$(EMAIL_USER)" },
           { "name": "EMAIL_PASS", "value": "$(EMAIL_PASS)" },
-          { "name": "INBOX_USER", "value": "$(INBOX_USER)" },
-          { "name": "INBOX_PASS", "value": "$(INBOX_PASS)" },
+          { "name": "INBOX_USER", "value": "contact@opulanz.com" },
           { "name": "IMAP_HOST", "value": "imap.mail.ovh.net" },
           { "name": "ADMIN_PASSWORD", "value": "Opulanz2025" },
           { "name": "AZURE_STORAGE_CONTAINER_NAME", "value": "opulanz-documents" }
@@ -61,3 +60,4 @@ steps:
       azureSubscription: 'Azure-Service-Connection'
       appName: 'rg-opulanz-backend'
       package: '$(Build.ArtifactStagingDirectory)/backend-$(Build.BuildId).zip'
+      appSettings: '-INBOX_PASS "$(INBOX_PASS)"'

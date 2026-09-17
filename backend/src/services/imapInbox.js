@@ -39,6 +39,8 @@ const SKIP_DOMAINS = [
   'google.com', 'googlemail.com',
   // Amazon / AWS
   'amazonaws.com', 'amazonses.com', 'amazon.com',
+  // OVH (hosting provider system emails)
+  'ovh.com', 'ovhcloud.com', 'ovh.net',
 ];
 
 // Sender display names that are never real clients
@@ -46,6 +48,7 @@ const SKIP_FROM_NAMES = [
   'microsoft', 'microsoft azure', 'microsoft security', 'azure devops',
   'azure', 'google play', 'google', 'amazon web services', 'aws',
   'mailer-daemon', 'postmaster',
+  'ovh', 'ovhcloud', 'vid',
 ];
 
 const SKIP_FROM_PFXS = [

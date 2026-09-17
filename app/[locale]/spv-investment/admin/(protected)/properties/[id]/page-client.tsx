@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowLeft, Save, Trash2, Plus, X, ImageIcon, MapPin,
-  Building2, Calendar, DollarSign, Landmark, Check, UserPlus, Lock, Users
+  Building2, Calendar, DollarSign, Landmark, Check, UserPlus, Lock, Users, Sparkles
 } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

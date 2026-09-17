@@ -1,13 +1,14 @@
-// Admin-only page — returns 404 for all IDs except the placeholder in mobile static builds.
-// dynamicParams=false ensures only pre-rendered paths are accessible.
-export const dynamicParams = false;
+import CustomerEditPage from "./page-client";
+
+const isStaticExport = process.env.NEXT_OUTPUT === "export";
+
+/** Website must accept any customer id. Static APK export only pre-renders `new`. */
+export const dynamicParams = !isStaticExport;
 
 export function generateStaticParams() {
-  // Must return at least one entry for Next.js output:export to recognize this function.
-  // Only this placeholder is pre-rendered; all other IDs return 404.
-  return [{ id: '_' }];
+  return [{ id: "new" }];
 }
 
 export default function Page() {
-  return null;
+  return <CustomerEditPage />;
 }

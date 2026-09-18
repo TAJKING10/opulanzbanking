@@ -279,13 +279,14 @@ async function _fetchListFromImap(limit) {
         flags:    true,
         bodyStructure: false,
       })) {
-        // STRICT: only show emails explicitly addressed To: contact@opulanz.com.
-        // Any email not in the To field (misdirected, BCC-only, or spam) is skipped.
+        // Skip emails whose To: field is explicitly set to a different address.
+        // When OVH does not populate the envelope To field (common), toAddrs is empty
+        // and we let the email through to be checked by the name/domain/subject filters.
         const inboxUser = (process.env.INBOX_USER || 'contact@opulanz.com').toLowerCase();
         const toAddrs = (msg.envelope.to || [])
           .map(a => (a?.mailbox && a?.host) ? `${a.mailbox}@${a.host}`.toLowerCase() : '')
           .filter(Boolean);
-        if (!toAddrs.some(addr => addr === inboxUser)) continue;
+        if (toAddrs.length > 0 && !toAddrs.some(addr => addr === inboxUser)) continue;
 
         const envFrom  = msg.envelope.from?.[0];
         const fromAddr = (envFrom?.mailbox && envFrom?.host)

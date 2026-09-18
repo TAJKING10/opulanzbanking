@@ -156,25 +156,13 @@ export default function CompanyFormationPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="flex flex-1 flex-col gap-4">
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="shrink-0 text-brand-grayMed">{t("minCapitalLabel")}</span>
-                      <span className="text-right font-semibold text-brand-dark">
-                        {form.minCapital}
-                      </span>
-                    </div>
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="shrink-0 text-brand-grayMed">{t("shareholdersLabel")}</span>
-                      <span className="text-right font-semibold text-brand-dark">
-                        {t("minPrefix")} {form.minShareholders}
-                      </span>
-                    </div>
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="shrink-0 text-brand-grayMed">{t("liabilityLabel")}</span>
-                      <span className="text-right font-semibold text-brand-dark">
-                        {form.liability}
-                      </span>
-                    </div>
+                  <div className="grid grid-cols-[auto_1fr] items-start gap-x-3 gap-y-1.5 text-sm">
+                    <span className="whitespace-nowrap text-brand-grayMed">{t("minCapitalLabel")}</span>
+                    <span className="text-right font-semibold leading-snug text-brand-dark">{form.minCapital}</span>
+                    <span className="whitespace-nowrap text-brand-grayMed">{t("shareholdersLabel")}</span>
+                    <span className="text-right font-semibold leading-snug text-brand-dark">{t("minPrefix")} {form.minShareholders}</span>
+                    <span className="whitespace-nowrap text-brand-grayMed">{t("liabilityLabel")}</span>
+                    <span className="text-right font-semibold leading-snug text-brand-dark">{form.liability}</span>
                   </div>
                   <ul className="space-y-2 border-t border-brand-grayLight pt-4">
                     {form.features.map((feature) => (

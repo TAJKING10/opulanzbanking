@@ -156,13 +156,19 @@ export default function CompanyFormationPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="flex flex-1 flex-col gap-4">
-                  <div className="grid grid-cols-[auto_1fr] items-start gap-x-3 gap-y-1.5 text-sm">
-                    <span className="whitespace-nowrap text-brand-grayMed">{t("minCapitalLabel")}</span>
-                    <span className="text-right font-semibold leading-snug text-brand-dark">{form.minCapital}</span>
-                    <span className="whitespace-nowrap text-brand-grayMed">{t("shareholdersLabel")}</span>
-                    <span className="text-right font-semibold leading-snug text-brand-dark">{t("minPrefix")} {form.minShareholders}</span>
-                    <span className="whitespace-nowrap text-brand-grayMed">{t("liabilityLabel")}</span>
-                    <span className="text-right font-semibold leading-snug text-brand-dark">{form.liability}</span>
+                  <div className="space-y-2 text-sm">
+                    <div>
+                      <p className="text-xs text-brand-grayMed">{t("minCapitalLabel")}</p>
+                      <p className="font-bold text-brand-dark">{form.minCapital}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-brand-grayMed">{t("shareholdersLabel")}</p>
+                      <p className="font-bold text-brand-dark">{t("minPrefix")} {form.minShareholders}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-brand-grayMed">{t("liabilityLabel")}</p>
+                      <p className="font-bold text-brand-dark">{form.liability}</p>
+                    </div>
                   </div>
                   <ul className="space-y-2 border-t border-brand-grayLight pt-4">
                     {form.features.map((feature) => (

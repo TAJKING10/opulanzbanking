@@ -4287,15 +4287,15 @@ function InboxTab() {
         </div>
       )}
 
-      <div className="flex gap-4 items-start">
+      <div className="flex gap-4 items-stretch h-[calc(100vh-200px)]">
         {/* Email list */}
-        <div className="w-full lg:w-2/5 xl:w-1/3 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex-shrink-0">
-          <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+        <div className="w-full lg:w-2/5 xl:w-1/3 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex-shrink-0 flex flex-col h-full">
+          <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
             <span className="text-sm font-semibold text-gray-700">
               {loading ? "Loading…" : `${emails.length} message${emails.length !== 1 ? "s" : ""}`}
             </span>
           </div>
-          <div className="divide-y divide-gray-50 max-h-[calc(100vh-260px)] overflow-y-auto">
+          <div className="divide-y divide-gray-50 flex-1 overflow-y-auto">
             {loading ? (
               <div className="py-10 flex justify-center"><div className="w-6 h-6 border-4 border-[#b59354] border-t-transparent rounded-full animate-spin" /></div>
             ) : emails.length === 0 ? (
@@ -4336,7 +4336,7 @@ function InboxTab() {
         </div>
 
         {/* Email detail + reply */}
-        <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
           {loadingEmail ? (
             <div className="py-16 flex justify-center"><div className="w-7 h-7 border-4 border-[#b59354] border-t-transparent rounded-full animate-spin" /></div>
           ) : !selected ? (
@@ -4345,9 +4345,9 @@ function InboxTab() {
               <p className="text-sm">Select an email to read</p>
             </div>
           ) : (
-            <div className="flex flex-col h-full max-h-[calc(100vh-260px)]">
+            <div className="flex flex-col flex-1 min-h-0">
               {/* Email header */}
-              <div className="px-6 py-4 border-b border-gray-100">
+              <div className="px-6 py-4 border-b border-gray-100 flex-shrink-0">
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <h3 className="font-semibold text-gray-900 text-base leading-snug">{selected.subject}</h3>
                   <a
@@ -4374,9 +4374,9 @@ function InboxTab() {
                 {selected.html ? (
                   <iframe
                     srcDoc={`<!doctype html><html><head><style>body{font-family:Arial,sans-serif;font-size:13px;line-height:1.6;color:#333;margin:0;padding:0}a{color:#b59354}</style></head><body>${selected.html}</body></html>`}
-                    className="w-full min-h-[200px] border-0"
+                    className="w-full min-h-[400px] border-0"
                     sandbox="allow-same-origin"
-                    style={{ height: "auto", minHeight: "200px" }}
+                    style={{ height: "auto", minHeight: "400px" }}
                     onLoad={(e) => {
                       const iframe = e.currentTarget;
                       if (iframe.contentDocument) {
@@ -4404,7 +4404,7 @@ function InboxTab() {
               </div>
 
               {/* Reply box */}
-              <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+              <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50 flex-shrink-0">
                 <p className="text-xs font-semibold text-gray-500 mb-2">
                   Reply to <span className="text-gray-700">{selected.replyTo || selected.fromEmail}</span>
                 </p>

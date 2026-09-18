@@ -31,51 +31,96 @@ function wrapImapError(err) {
 // and marketing emails from Microsoft, Google, and other platforms.
 
 const SKIP_DOMAINS = [
-  // Microsoft / Azure — all known sending domains
+  // Microsoft / Azure
   'microsoft.com', 'microsoftonline.com', 'microsoftemail.com',
   'azure.com', 'azuredevops.com', 'azurecomm.net',
   'visualstudio.com', 'office.com', 'office365.com',
-  // Google automated senders (@google.com, not @gmail.com)
+  // Google automated senders
   'google.com', 'googlemail.com',
   // Amazon / AWS
   'amazonaws.com', 'amazonses.com', 'amazon.com',
-  // OVH (hosting provider system emails)
-  'ovh.com', 'ovhcloud.com', 'ovh.net',
+  'amazon.co.uk', 'amazon.fr', 'amazon.de',
+  // OVH / OVHcloud (all variants)
+  'ovh.com', 'ovhcloud.com', 'ovh.net', 'ovh.ca',
+  // Other hosting / infrastructure providers
+  'godaddy.com', 'namecheap.com', 'ionos.com', '1and1.com',
+  'cloudflare.com', 'digitalocean.com', 'linode.com',
+  // Marketing / transactional email services
+  'mailchimp.com', 'mandrill.com', 'sendgrid.net', 'sendgrid.com',
+  'mailgun.org', 'mailgun.net', 'sparkpostmail.com',
+  'constantcontact.com', 'hubspot.com', 'klaviyo.com',
+  'brevo.com', 'sendinblue.com', 'sib-api.com',
 ];
 
 // Sender display names that are never real clients
 const SKIP_FROM_NAMES = [
-  'microsoft', 'microsoft azure', 'microsoft security', 'azure devops',
-  'azure', 'google play', 'google', 'amazon web services', 'aws',
+  'microsoft', 'microsoft azure', 'microsoft security', 'azure devops', 'azure',
+  'google play', 'google', 'youtube',
+  'amazon', 'amazon web services', 'aws', 'amazon prime', 'amazon music',
   'mailer-daemon', 'postmaster',
   'ovh', 'ovhcloud', 'vid',
+  'mailchimp', 'mailgun', 'sendgrid', 'constantcontact', 'hubspot',
 ];
 
 const SKIP_FROM_PFXS = [
   'noreply@', 'no-reply@', 'no-reply-', 'donotreply@', 'do-not-reply@',
-  'mailer-daemon@', 'postmaster@', 'bounce@', 'notifications@',
+  'mailer-daemon@', 'postmaster@', 'bounce@', 'bounces@',
+  'notifications@', 'notification@', 'alert@', 'alerts@',
+  'newsletter@', 'news@', 'promo@', 'promotions@', 'marketing@',
+  'info@amazon', 'shipment-tracking@', 'order-update@',
   'azure-', 'msonline', 'ms-noreply',
 ];
 
 const SKIP_SUBJECTS = [
+  // Spam-tagged (OVH and other hosts prefix spam subjects with [SPAM])
+  '[spam]',
   // Azure / Microsoft
   'build succeeded', 'build failed', 'release completed',
   'pipeline notification', 'deployment notification',
-  'upgrade', 'reactivate', 'keep going with azure', 'your azure',
+  'keep going with azure', 'your azure',
   'microsoft entra', 'microsoft 365', 'free account',
   'new recommendation available', 'security recommendation',
   'azure devops', 'azure active directory',
-  // Generic automated
+  // OVH / hosting system emails (French + English)
+  'renouvellement de domaine', 'domain renewal',
+  'rappel de paiement', 'payment reminder',
+  'rappel de renouvellement',
+  'réactivez vos services', 'reactivate your services',
+  'certificat ssl', 'ssl certificate',
+  'facture en attente', 'invoice pending',
+  'votre domaine', 'your domain',
+  'votre hébergement', 'your hosting',
+  'expiration', 'expire',
+  // Amazon promotional
+  'amazon prime', 'prime day', 'lightning deal', 'deal of the day',
+  'your amazon order', 'your order has shipped', 'delivery update',
+  // Advertising / promotional (English)
   'unsubscribe', 'email verification', 'confirm your email',
   'invoice #', 'your receipt', 'order confirmation',
+  'special offer', 'limited time', 'exclusive deal', 'discount',
+  'flash sale', 'newsletter', 'weekly digest', 'monthly digest',
+  'promotional', 'advertisement', 'advertise', 'sponsore',
+  'you have been selected', 'congratulations', 'you won',
+  'click here', 'act now', 'don\'t miss',
+  // Advertising / promotional (French)
+  'offre spéciale', 'offre exclusive', 'promotion',
+  'publicité', 'publipostage',
+  'vous avez été sélectionné', 'félicitations',
+  // Upgrade / upsell (all providers)
+  'upgrade', 'reactivate', 'upgrade your plan', 'renew now',
 ];
 
 function isAutomated(fromEmail, fromName, subject) {
   const f = (fromEmail || '').toLowerCase();
   const n = (fromName  || '').toLowerCase();
   const s = (subject   || '').toLowerCase();
+
+  // Block any sender whose email domain contains 'ovh' (catches all OVH variants)
+  const emailDomain = f.split('@')[1] || '';
+  if (emailDomain.includes('ovh')) return true;
+
   if (SKIP_DOMAINS.some(d => f.endsWith('@' + d) || f.includes('.' + d))) return true;
-  if (SKIP_FROM_NAMES.some(name => n === name || n.startsWith(name + ' '))) return true;
+  if (SKIP_FROM_NAMES.some(name => n === name || n.startsWith(name + ' ') || n.includes(' ' + name))) return true;
   if (SKIP_FROM_PFXS.some(p => f.startsWith(p))) return true;
   if (SKIP_SUBJECTS.some(k => s.includes(k))) return true;
   return false;

@@ -37,9 +37,10 @@ const SKIP_DOMAINS = [
   'visualstudio.com', 'office.com', 'office365.com',
   // Google automated senders
   'google.com', 'googlemail.com',
-  // Amazon / AWS
+  // Amazon / AWS (all regional domains)
   'amazonaws.com', 'amazonses.com', 'amazon.com',
-  'amazon.co.uk', 'amazon.fr', 'amazon.de',
+  'amazon.co.uk', 'amazon.fr', 'amazon.de', 'amazon.es', 'amazon.it',
+  'marketplace.amazon.fr', 'email.amazon.fr',
   // Apple
   'apple.com', 'icloud.com',
   // OVH / OVHcloud (all variants)
@@ -47,6 +48,8 @@ const SKIP_DOMAINS = [
   // Courier / logistics
   'dhl.com', 'dhl.de', 'dhl.fr', 'dhlparcel.com',
   'fedex.com', 'ups.com', 'colissimo.fr', 'laposte.fr',
+  // French toll / e-payment (Ulys = Sanef toll service)
+  'ulys.com', 'sanef.com', 'viapass.be', 'telepeage.fr',
   // French retail / loyalty
   'carrefour.fr', 'carrefour.com', 'leclerc.fr', 'auchan.fr',
   // Other hosting / infrastructure providers
@@ -74,13 +77,18 @@ const SKIP_FROM_NAMES = [
   // French supermarkets / loyalty programs
   'carrefour', 'cartes cadeaux carrefour', 'carrefour récompenses', 'carrefour market',
   'leclerc', 'intermarché', 'auchan', 'lidl', 'aldi',
+  // French toll / e-payment services
+  'ulys', 'télépéage ulys', 'telepeage ulys', 'télépéage',
+  'sanef', 'cofiroute', 'aprr', 'asf autoroutes',
   // French toll/infrastructure/utility companies
   'vinci', 'vinci autoroutes', 'vinci autoroute', 'vinci highways',
-  'cofiroute', 'sanef', 'aprr', 'asf autoroutes',
   'totalenergies', 'total energies', 'total direct energie',
   'edf', 'engie', 'gaz de france',
   'sncf', 'sncf connect', 'ratp',
   'orange', 'sfr', 'bouygues telecom', 'free', 'free mobile',
+  // Generic spam display names
+  'service client', 'kit d\'urgence', 'kit urgence',
+  'amazon.fr',
   // Marketing platforms
   'mailchimp', 'mailgun', 'sendgrid', 'constantcontact', 'hubspot',
 ];
@@ -131,17 +139,25 @@ const SKIP_SUBJECTS = [
   'programme de fidélité', 'loyalty program',
   'votre kit', 'kit d\'urgence', 'kit gratuit',
   'récompenses', 'bon de réduction',
+  'tranquillité d\'esprit', 'tranquillite d\'esprit',
+  'seulement 2,99', 'pour votre tranquillité',
+  // Toll / e-payment (Ulys, Vinci, etc.)
+  'échéance de paiement', 'echeance de paiement',
+  'paiement en retard', 'paiement dépassé',
+  'veuillez régulariser', 'veuillez regulariser',
+  'avis officiel', 'péage', 'peage',
+  'votre télépéage', 'votre telepeage',
   // OVH urgent payment
   'paiement immédiat requis', 'service suspendu',
   '[suspendu]', 'suspendu', 'état de votre service',
   'suspension de votre', 'suspension of your',
-  // Subscription / account management (generic)
-  'votre abonnement', 'your subscription',
-  'votre compte', 'your invoice',
-  'votre facture',
-  // Amazon promotional
+  // Amazon order confirmations (French)
+  'confirmation de votre commande', 'votre commande',
   'amazon prime', 'prime day', 'lightning deal', 'deal of the day',
   'your amazon order', 'your order has shipped', 'delivery update',
+  // Generic spam subjects
+  'répondez maintenant', 'repondez maintenant',
+  'client :', 'gratuit vous attend', 'vous attend',
   // Advertising / promotional (English)
   'unsubscribe', 'email verification', 'confirm your email',
   'invoice #', 'your receipt', 'order confirmation',
@@ -167,12 +183,14 @@ function isAutomated(fromEmail, fromName, subject) {
   const emailDomain = f.split('@')[1] || '';
   if (emailDomain.includes('ovh')) return true;
 
-  // Block any display name containing these company names anywhere
+  // Block any display name containing these company/service names anywhere
   if (
     n.includes('ovh') || n.includes('vinci') ||
     n.includes('totalenergies') || n.includes('total energie') ||
     n.includes('icloud') || n.includes('carrefour') ||
-    n.includes('dhl') || n.includes('fedex')
+    n.includes('dhl') || n.includes('fedex') ||
+    n.includes('ulys') || n.includes('télépéage') || n.includes('telepeage') ||
+    n.includes('amazon.fr') || n.includes('kit d\'urgence') || n.includes('kit urgence')
   ) return true;
 
   if (SKIP_DOMAINS.some(d => f.endsWith('@' + d) || f.includes('.' + d))) return true;

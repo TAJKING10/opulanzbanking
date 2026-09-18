@@ -40,8 +40,15 @@ const SKIP_DOMAINS = [
   // Amazon / AWS
   'amazonaws.com', 'amazonses.com', 'amazon.com',
   'amazon.co.uk', 'amazon.fr', 'amazon.de',
+  // Apple
+  'apple.com', 'icloud.com',
   // OVH / OVHcloud (all variants)
-  'ovh.com', 'ovhcloud.com', 'ovh.net', 'ovh.ca',
+  'ovh.com', 'ovhcloud.com', 'ovh.net', 'ovh.ca', 'ovhapis.com',
+  // Courier / logistics
+  'dhl.com', 'dhl.de', 'dhl.fr', 'dhlparcel.com',
+  'fedex.com', 'ups.com', 'colissimo.fr', 'laposte.fr',
+  // French retail / loyalty
+  'carrefour.fr', 'carrefour.com', 'leclerc.fr', 'auchan.fr',
   // Other hosting / infrastructure providers
   'godaddy.com', 'namecheap.com', 'ionos.com', '1and1.com',
   'cloudflare.com', 'digitalocean.com', 'linode.com',
@@ -58,7 +65,15 @@ const SKIP_FROM_NAMES = [
   'google play', 'google', 'youtube',
   'amazon', 'amazon web services', 'aws', 'amazon prime', 'amazon music',
   'mailer-daemon', 'postmaster',
-  'ovh', 'ovhcloud', 'service client ovhcloud', 'vid',
+  'ovh', 'ovhcloud', 'service client ovhcloud', 'web hosting - service clientèle', 'vid',
+  // Apple
+  'icloud', 'apple', 'apple support',
+  // Courier / logistics
+  'dhl', 'dhl express', 'fedex', 'ups', 'chronopost', 'colissimo', 'la poste',
+  'mondial relay', 'dpd', 'gls',
+  // French supermarkets / loyalty programs
+  'carrefour', 'cartes cadeaux carrefour', 'carrefour récompenses', 'carrefour market',
+  'leclerc', 'intermarché', 'auchan', 'lidl', 'aldi',
   // French toll/infrastructure/utility companies
   'vinci', 'vinci autoroutes', 'vinci autoroute', 'vinci highways',
   'cofiroute', 'sanef', 'aprr', 'asf autoroutes',
@@ -66,7 +81,6 @@ const SKIP_FROM_NAMES = [
   'edf', 'engie', 'gaz de france',
   'sncf', 'sncf connect', 'ratp',
   'orange', 'sfr', 'bouygues telecom', 'free', 'free mobile',
-  'la poste', 'colissimo', 'chronopost',
   // Marketing platforms
   'mailchimp', 'mailgun', 'sendgrid', 'constantcontact', 'hubspot',
 ];
@@ -108,10 +122,23 @@ const SKIP_SUBJECTS = [
   // TotalEnergies / utility company emails
   'mise à niveau effectuée', 'mise à niveau',
   'carte cadeau', 'gift card', 'choisissez votre',
+  // iCloud / Apple
+  'stockage icloud', 'icloud est plein', 'icloud storage',
+  // DHL / couriers
+  'votre livraison', 'your delivery', 'your parcel', 'your shipment',
+  'colis en attente', 'package awaiting',
+  // French retail / loyalty
+  'programme de fidélité', 'loyalty program',
+  'votre kit', 'kit d\'urgence', 'kit gratuit',
+  'récompenses', 'bon de réduction',
+  // OVH urgent payment
+  'paiement immédiat requis', 'service suspendu',
+  '[suspendu]', 'suspendu', 'état de votre service',
+  'suspension de votre', 'suspension of your',
   // Subscription / account management (generic)
   'votre abonnement', 'your subscription',
-  'votre compte', 'your account has',
-  'votre facture', 'your invoice',
+  'votre compte', 'your invoice',
+  'votre facture',
   // Amazon promotional
   'amazon prime', 'prime day', 'lightning deal', 'deal of the day',
   'your amazon order', 'your order has shipped', 'delivery update',
@@ -140,8 +167,13 @@ function isAutomated(fromEmail, fromName, subject) {
   const emailDomain = f.split('@')[1] || '';
   if (emailDomain.includes('ovh')) return true;
 
-  // Block any display name containing 'ovh' or 'vinci' anywhere (catches OVHcloud, Service Client OVHcloud, etc.)
-  if (n.includes('ovh') || n.includes('vinci') || n.includes('totalenergies') || n.includes('total energie')) return true;
+  // Block any display name containing these company names anywhere
+  if (
+    n.includes('ovh') || n.includes('vinci') ||
+    n.includes('totalenergies') || n.includes('total energie') ||
+    n.includes('icloud') || n.includes('carrefour') ||
+    n.includes('dhl') || n.includes('fedex')
+  ) return true;
 
   if (SKIP_DOMAINS.some(d => f.endsWith('@' + d) || f.includes('.' + d))) return true;
   if (SKIP_FROM_NAMES.some(name => n === name || n.startsWith(name + ' ') || n.includes(' ' + name))) return true;
@@ -229,6 +261,13 @@ async function _fetchListFromImap(limit) {
         flags:    true,
         bodyStructure: false,
       })) {
+        // Reject emails not addressed to our inbox (catches misdirected spam)
+        const inboxUser = (process.env.INBOX_USER || 'contact@opulanz.com').toLowerCase();
+        const toAddrs = (msg.envelope.to || [])
+          .map(a => (a?.mailbox && a?.host) ? `${a.mailbox}@${a.host}`.toLowerCase() : '')
+          .filter(Boolean);
+        if (toAddrs.length > 0 && !toAddrs.some(addr => addr === inboxUser)) continue;
+
         const envFrom  = msg.envelope.from?.[0];
         const fromAddr = (envFrom?.mailbox && envFrom?.host)
           ? `${envFrom.mailbox}@${envFrom.host}`

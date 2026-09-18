@@ -279,12 +279,13 @@ async function _fetchListFromImap(limit) {
         flags:    true,
         bodyStructure: false,
       })) {
-        // Reject emails not addressed to our inbox (catches misdirected spam)
+        // STRICT: only show emails explicitly addressed To: contact@opulanz.com.
+        // Any email not in the To field (misdirected, BCC-only, or spam) is skipped.
         const inboxUser = (process.env.INBOX_USER || 'contact@opulanz.com').toLowerCase();
         const toAddrs = (msg.envelope.to || [])
           .map(a => (a?.mailbox && a?.host) ? `${a.mailbox}@${a.host}`.toLowerCase() : '')
           .filter(Boolean);
-        if (toAddrs.length > 0 && !toAddrs.some(addr => addr === inboxUser)) continue;
+        if (!toAddrs.some(addr => addr === inboxUser)) continue;
 
         const envFrom  = msg.envelope.from?.[0];
         const fromAddr = (envFrom?.mailbox && envFrom?.host)

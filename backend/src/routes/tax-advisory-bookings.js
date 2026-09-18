@@ -353,26 +353,39 @@ router.get('/confirmation/:confirmationNumber', async (req, res) => {
 
 /**
  * PATCH /api/tax-advisory-bookings/:id
- * Update a booking (status, etc.)
+ * Update a booking (status, appointment details from Calendly, payment, etc.)
+ *
+ * Supports lookup by numeric ID or confirmation_number
  *
  * Body:
  * {
- *   "status": "completed"
+ *   "status": "confirmed",
+ *   "appointment": { "date": "...", "time": "...", "calendlyEventUrl": "...", "meetingLink": "..." }
  * }
  */
 router.patch('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, appointment, payment, customer_info } = req.body;
 
-    // Check if booking exists
-    const checkResult = await pool.query('SELECT * FROM tax_advisory_bookings WHERE id = $1', [id]);
+    // Check if booking exists by numeric id or confirmation_number
+    let checkResult;
+    const isNumeric = /^\d+$/.test(id);
+    if (isNumeric) {
+      checkResult = await pool.query('SELECT * FROM tax_advisory_bookings WHERE id = $1', [parseInt(id, 10)]);
+    } else {
+      checkResult = await pool.query('SELECT * FROM tax_advisory_bookings WHERE confirmation_number = $1', [id]);
+    }
+
     if (checkResult.rows.length === 0) {
       return res.status(404).json({
         success: false,
         error: 'Booking not found'
       });
     }
+
+    const existingBooking = checkResult.rows[0];
+    const bookingId = existingBooking.id;
 
     // Build dynamic update query
     const updates = [];
@@ -399,6 +412,34 @@ router.patch('/:id', async (req, res) => {
       }
     }
 
+    if (appointment !== undefined) {
+      // Merge with existing appointment if present
+      const mergedAppointment = typeof appointment === 'object' && appointment !== null
+        ? { ...(typeof existingBooking.appointment === 'object' ? existingBooking.appointment : {}), ...appointment }
+        : appointment;
+      updates.push(`appointment = $${paramIndex}`);
+      params.push(JSON.stringify(mergedAppointment));
+      paramIndex++;
+    }
+
+    if (payment !== undefined) {
+      const mergedPayment = typeof payment === 'object' && payment !== null
+        ? { ...(typeof existingBooking.payment === 'object' ? existingBooking.payment : {}), ...payment }
+        : payment;
+      updates.push(`payment = $${paramIndex}`);
+      params.push(JSON.stringify(mergedPayment));
+      paramIndex++;
+    }
+
+    if (customer_info !== undefined) {
+      const mergedCustomerInfo = typeof customer_info === 'object' && customer_info !== null
+        ? { ...(typeof existingBooking.customer_info === 'object' ? existingBooking.customer_info : {}), ...customer_info }
+        : customer_info;
+      updates.push(`customer_info = $${paramIndex}`);
+      params.push(JSON.stringify(mergedCustomerInfo));
+      paramIndex++;
+    }
+
     if (updates.length === 0) {
       return res.status(400).json({
         success: false,
@@ -406,14 +447,26 @@ router.patch('/:id', async (req, res) => {
       });
     }
 
-    params.push(id);
+    params.push(bookingId);
     const query = `UPDATE tax_advisory_bookings SET ${updates.join(', ')} WHERE id = $${paramIndex} RETURNING *`;
 
     const result = await pool.query(query, params);
+    const updatedBooking = result.rows[0];
+
+    // If appointment details were updated with scheduled info, send/update email notification
+    if (appointment && (appointment.date || appointment.calendlyEventUrl)) {
+      emailService.sendBookingEmails('tax_advisory', {
+        confirmationNumber: updatedBooking.confirmation_number,
+        customerInfo: updatedBooking.customer_info,
+        service: updatedBooking.service,
+        appointment: updatedBooking.appointment,
+        payment: updatedBooking.payment,
+      }).catch(err => console.error('[Tax Advisory Update] Email failed:', err.message));
+    }
 
     res.json({
       success: true,
-      data: result.rows[0]
+      data: updatedBooking
     });
   } catch (error) {
     console.error('Error updating booking:', error);

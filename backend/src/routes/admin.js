@@ -249,7 +249,10 @@ router.get('/stats', adminAuth, async (req, res) => {
       ).catch(() => ({ rows: [] })),
       pool.query(
         `SELECT id, full_name, email, status, meeting_type, created_at
-         FROM appointments ORDER BY created_at DESC LIMIT 5`
+         FROM appointments
+         WHERE LOWER(COALESCE(meeting_type, '')) NOT LIKE '%tax%'
+           AND LOWER(COALESCE(meeting_type, '')) NOT LIKE '%insurance%'
+         ORDER BY created_at DESC LIMIT 5`
       ).catch(() => ({ rows: [] })),
       pool.query(
         `SELECT id, full_name, email, status, created_at
@@ -582,6 +585,14 @@ router.get('/submissions', adminAuth, async (req, res) => {
       const svc = r.service || {};
       const appt = r.appointment || {};
       const pay = r.payment || {};
+      
+      let formattedDate = appt.date || '';
+      if (formattedDate && !isNaN(new Date(formattedDate).getTime())) {
+        formattedDate = new Date(formattedDate).toLocaleDateString('en-US', {
+          weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+        });
+      }
+
       results.push({
         id: `tax-${r.id}`,
         rawId: r.id,
@@ -593,10 +604,15 @@ router.get('/submissions', adminAuth, async (req, res) => {
         confirmationNumber: r.confirmation_number,
         payload: {
           ...ci,
-          serviceName: svc.title || svc.name || '',
+          serviceName: svc.title || svc.name || 'Tax Advisory Consultation',
           servicePrice: svc.price ? `€${svc.price}` : '',
+          meetingDate: formattedDate,
+          meetingTime: appt.time || (appt.date && !isNaN(new Date(appt.date).getTime()) ? new Date(appt.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : ''),
           appointmentDate: appt.date || '',
           appointmentTime: appt.time || '',
+          meetingLink: appt.meetingLink || appt.calendlyEventUrl || '',
+          calendlyEventUrl: appt.calendlyEventUrl || '',
+          calendlyInviteeUrl: appt.calendlyInviteeUrl || '',
           paymentStatus: pay.status || '',
           paypalOrderId: pay.orderId || '',
           confirmationNumber: r.confirmation_number,
@@ -634,18 +650,24 @@ router.get('/submissions', adminAuth, async (req, res) => {
       });
     });
 
-    // 4. All appointments (investment advisory, tax advisory via Calendly, account opening consultations)
+    // 4. Standalone appointments (investment advisory, account opening consultations, etc.)
+    // Note: Tax Advisory and Life Insurance are already loaded from their dedicated tables above.
     const apptRows = await pool.query(
       `SELECT id, full_name, email, phone, status, meeting_type, start_time, end_time, timezone, location, notes, created_at
        FROM appointments ORDER BY created_at DESC LIMIT 500`
     ).catch(() => ({ rows: [] }));
     apptRows.rows.forEach(r => {
       const mt = (r.meeting_type || '').toLowerCase();
+      // Skip appointments that are already represented in tax_advisory_bookings or life_insurance_bookings
+      if (mt.includes('tax') || mt.includes('insurance')) {
+        return;
+      }
+
       let svc = 'investment_advisory';
       if (mt.includes('investment')) svc = 'investment_advisory';
-      else if (mt.includes('tax')) svc = 'tax_advisory';
       else if (mt.includes('account') || mt.includes('opening')) svc = 'individual';
-      else if (mt.includes('insurance')) svc = 'life_insurance';
+      else if (mt.includes('company')) svc = 'company';
+
       results.push({
         id: `appt-${r.id}`,
         rawId: r.id,

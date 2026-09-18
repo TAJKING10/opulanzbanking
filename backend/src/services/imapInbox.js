@@ -59,6 +59,10 @@ const SKIP_FROM_NAMES = [
   'amazon', 'amazon web services', 'aws', 'amazon prime', 'amazon music',
   'mailer-daemon', 'postmaster',
   'ovh', 'ovhcloud', 'vid',
+  // French toll/infrastructure companies
+  'vinci', 'vinci autoroutes', 'vinci autoroute', 'vinci highways',
+  'cofiroute', 'sanef', 'aprr', 'asf autoroutes',
+  // Marketing platforms
   'mailchimp', 'mailgun', 'sendgrid', 'constantcontact', 'hubspot',
 ];
 
@@ -115,9 +119,12 @@ function isAutomated(fromEmail, fromName, subject) {
   const n = (fromName  || '').toLowerCase();
   const s = (subject   || '').toLowerCase();
 
-  // Block any sender whose email domain contains 'ovh' (catches all OVH variants)
+  // Block any sender whose email domain contains 'ovh' (catches all OVH subdomains)
   const emailDomain = f.split('@')[1] || '';
   if (emailDomain.includes('ovh')) return true;
+
+  // Block any display name that contains 'ovh' or 'vinci' as a word
+  if (/\bovh\b/.test(n) || /\bvinci\b/.test(n)) return true;
 
   if (SKIP_DOMAINS.some(d => f.endsWith('@' + d) || f.includes('.' + d))) return true;
   if (SKIP_FROM_NAMES.some(name => n === name || n.startsWith(name + ' ') || n.includes(' ' + name))) return true;

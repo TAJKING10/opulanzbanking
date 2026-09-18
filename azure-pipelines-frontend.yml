@@ -17,6 +17,13 @@ steps:
 - script: npm install --no-audit --no-fund
   displayName: 'Install dependencies'
 
+# 2b️⃣ Ensure the SWC compiler binary for Linux x64 (GNU libc) is present.
+#     npm install sometimes skips optional platform binaries in CI — this guarantees it.
+- script: |
+    node -e "require('@next/swc-linux-x64-gnu')" 2>/dev/null || \
+    npm install @next/swc-linux-x64-gnu --no-save --no-audit --no-fund
+  displayName: 'Ensure SWC binary (linux-x64-gnu)'
+
 # 3️⃣ Build Next.js in standalone mode (required for App Service node server.js deployment)
 - script: npm run build
   displayName: 'Build Next.js app'

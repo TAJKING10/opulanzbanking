@@ -58,10 +58,15 @@ const SKIP_FROM_NAMES = [
   'google play', 'google', 'youtube',
   'amazon', 'amazon web services', 'aws', 'amazon prime', 'amazon music',
   'mailer-daemon', 'postmaster',
-  'ovh', 'ovhcloud', 'vid',
-  // French toll/infrastructure companies
+  'ovh', 'ovhcloud', 'service client ovhcloud', 'vid',
+  // French toll/infrastructure/utility companies
   'vinci', 'vinci autoroutes', 'vinci autoroute', 'vinci highways',
   'cofiroute', 'sanef', 'aprr', 'asf autoroutes',
+  'totalenergies', 'total energies', 'total direct energie',
+  'edf', 'engie', 'gaz de france',
+  'sncf', 'sncf connect', 'ratp',
+  'orange', 'sfr', 'bouygues telecom', 'free', 'free mobile',
+  'la poste', 'colissimo', 'chronopost',
   // Marketing platforms
   'mailchimp', 'mailgun', 'sendgrid', 'constantcontact', 'hubspot',
 ];
@@ -85,16 +90,28 @@ const SKIP_SUBJECTS = [
   'microsoft entra', 'microsoft 365', 'free account',
   'new recommendation available', 'security recommendation',
   'azure devops', 'azure active directory',
-  // OVH / hosting system emails (French + English)
+  // OVH / OVHcloud system emails (French + English)
   'renouvellement de domaine', 'domain renewal',
   'rappel de paiement', 'payment reminder',
   'rappel de renouvellement',
   'réactivez vos services', 'reactivate your services',
+  'renouvelez votre abonnement', 'renew your subscription',
+  'service temporairement suspendu', 'service temporarily suspended',
+  'action requise', 'action required',
+  'facture impayée', 'unpaid invoice',
   'certificat ssl', 'ssl certificate',
   'facture en attente', 'invoice pending',
   'votre domaine', 'your domain',
   'votre hébergement', 'your hosting',
   'expiration', 'expire',
+  'ovhcloud',
+  // TotalEnergies / utility company emails
+  'mise à niveau effectuée', 'mise à niveau',
+  'carte cadeau', 'gift card', 'choisissez votre',
+  // Subscription / account management (generic)
+  'votre abonnement', 'your subscription',
+  'votre compte', 'your account has',
+  'votre facture', 'your invoice',
   // Amazon promotional
   'amazon prime', 'prime day', 'lightning deal', 'deal of the day',
   'your amazon order', 'your order has shipped', 'delivery update',
@@ -123,8 +140,8 @@ function isAutomated(fromEmail, fromName, subject) {
   const emailDomain = f.split('@')[1] || '';
   if (emailDomain.includes('ovh')) return true;
 
-  // Block any display name that contains 'ovh' or 'vinci' as a word
-  if (/\bovh\b/.test(n) || /\bvinci\b/.test(n)) return true;
+  // Block any display name containing 'ovh' or 'vinci' anywhere (catches OVHcloud, Service Client OVHcloud, etc.)
+  if (n.includes('ovh') || n.includes('vinci') || n.includes('totalenergies') || n.includes('total energie')) return true;
 
   if (SKIP_DOMAINS.some(d => f.endsWith('@' + d) || f.includes('.' + d))) return true;
   if (SKIP_FROM_NAMES.some(name => n === name || n.startsWith(name + ' ') || n.includes(' ' + name))) return true;
@@ -232,7 +249,11 @@ async function _fetchListFromImap(limit) {
         });
       }
 
-      messages.sort((a, b) => new Date(b.date) - new Date(a.date));
+      messages.sort((a, b) => {
+        const da = a.date ? new Date(a.date).getTime() : 0;
+        const db = b.date ? new Date(b.date).getTime() : 0;
+        return db - da;  // newest first; missing dates go to bottom
+      });
       return messages;
     } finally {
       lock.release();

@@ -254,7 +254,12 @@ export default function BookingClient() {
         const inviteeUri = p.invitee?.uri || "";
         const startTime = p.event?.start_time || lastSelectedSlot || new Date().toISOString();
         const endTime = p.event?.end_time || (startTime ? new Date(new Date(startTime).getTime() + 3600000).toISOString() : "");
-        const meetingLink = p.event?.location || eventUri || "Calendar invite & Google Meet link sent to your email";
+
+        const eventUuidMatch = typeof eventUri === "string" ? eventUri.match(/scheduled_events\/([a-f0-9\-]+)/i) : null;
+        const googleMeetUrl = eventUuidMatch && eventUuidMatch[1]
+          ? `https://calendly.com/events/${eventUuidMatch[1]}/google_meet`
+          : "";
+        const meetingLink = googleMeetUrl || p.event?.location || eventUri || "Calendar invite & Google Meet link sent to your email";
 
         const calendlyData: CalendlyData = {
           eventUri,

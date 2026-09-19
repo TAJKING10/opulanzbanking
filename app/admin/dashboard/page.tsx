@@ -1758,15 +1758,19 @@ function SubmissionsTab({
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                      {Boolean(selected.payload.calendlyEventUrl || selected.payload.meetingLink) && (
+                    <div className="flex flex-col items-start sm:items-end justify-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-semibold">
+                        <span>✓</span>
+                        <span>Invite & Meet Link Sent via Email</span>
+                      </span>
+                      {Boolean(selected.payload.googleMeetUrl || selected.payload.meetingLink) && (
                         <a
-                          href={String(selected.payload.calendlyEventUrl || selected.payload.meetingLink)}
+                          href={String(selected.payload.googleMeetUrl || selected.payload.meetingLink)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#b59354] hover:bg-[#886844] text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
                         >
-                          <span>Open Calendly / Meeting Link</span>
+                          <span>🎥 Join Google Meet</span>
                           <span>↗</span>
                         </a>
                       )}
@@ -2730,6 +2734,7 @@ const HIDDEN_KEYS = new Set([
   "uploadedDocuments",
   "signedDocumentUrl", "signedDocumentFilename", "signedDocumentBlobName", "signedDocumentSize",
   "status", "service", "service_type", "serviceType",
+  "calendlyEventUrl", "calendlyInviteeUrl", "meetingLink", "appointmentDate", "appointmentTime", "servicePrice", "paymentStatus", "paypalOrderId",
 ]);
 
 const LABEL_OVERRIDES: Record<string, string> = {

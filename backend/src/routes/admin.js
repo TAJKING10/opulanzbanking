@@ -593,6 +593,17 @@ router.get('/submissions', adminAuth, async (req, res) => {
         });
       }
 
+      const apptUri = appt.calendlyEventUrl || appt.meetingLink || '';
+      let googleMeetUrl = '';
+      if (typeof apptUri === 'string' && apptUri.includes('scheduled_events/')) {
+        const match = apptUri.match(/scheduled_events\/([a-f0-9\-]+)/i);
+        if (match && match[1]) {
+          googleMeetUrl = `https://calendly.com/events/${match[1]}/google_meet`;
+        }
+      } else if (typeof appt.meetingLink === 'string' && appt.meetingLink.includes('calendly.com/events/')) {
+        googleMeetUrl = appt.meetingLink;
+      }
+
       results.push({
         id: `tax-${r.id}`,
         rawId: r.id,
@@ -610,7 +621,8 @@ router.get('/submissions', adminAuth, async (req, res) => {
           meetingTime: appt.time || (appt.date && !isNaN(new Date(appt.date).getTime()) ? new Date(appt.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : ''),
           appointmentDate: appt.date || '',
           appointmentTime: appt.time || '',
-          meetingLink: appt.meetingLink || appt.calendlyEventUrl || '',
+          googleMeetUrl,
+          meetingLink: googleMeetUrl || appt.meetingLink || '',
           calendlyEventUrl: appt.calendlyEventUrl || '',
           calendlyInviteeUrl: appt.calendlyInviteeUrl || '',
           paymentStatus: pay.status || '',

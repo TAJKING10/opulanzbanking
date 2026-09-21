@@ -1759,20 +1759,45 @@ function SubmissionsTab({
                     </div>
 
                     <div className="flex flex-col items-start sm:items-end justify-center gap-2">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-semibold">
-                        <span>✓</span>
-                        <span>Invite & Meet Link Sent via Email</span>
-                      </span>
-                      {Boolean(selected.payload.googleMeetUrl || selected.payload.meetingLink) && (
-                        <a
-                          href={String(selected.payload.googleMeetUrl || selected.payload.meetingLink)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
-                        >
-                          <span>🎥 Join Google Meet</span>
-                          <span>↗</span>
-                        </a>
+                      {Boolean(
+                        selected.payload.isPhoneCall ||
+                        ['outbound_call', 'inbound_call', 'phone_call'].includes(String(selected.payload.locationType).toLowerCase()) ||
+                        (typeof selected.payload.meetingLink === 'string' && selected.payload.meetingLink.toLowerCase().includes('phone')) ||
+                        (!selected.payload.googleMeetUrl && !String(selected.payload.meetingLink || '').startsWith('http'))
+                      ) ? (
+                        <>
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs font-semibold">
+                            <span>📞</span>
+                            <span>Phone Consultation</span>
+                          </span>
+                          {Boolean(selected.payload.phoneNumber || selected.payload.phone) && (
+                            <a
+                              href={`tel:${String(selected.payload.phoneNumber || selected.payload.phone)}`}
+                              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
+                            >
+                              <span>📞 Call Client: {String(selected.payload.phoneNumber || selected.payload.phone)}</span>
+                              <span>↗</span>
+                            </a>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-semibold">
+                            <span>✓</span>
+                            <span>Invite & Meet Link Sent via Email</span>
+                          </span>
+                          {Boolean(selected.payload.googleMeetUrl || (selected.payload.meetingLink && String(selected.payload.meetingLink).startsWith('http'))) && (
+                            <a
+                              href={String(selected.payload.googleMeetUrl || selected.payload.meetingLink)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
+                            >
+                              <span>🎥 Join Google Meet</span>
+                              <span>↗</span>
+                            </a>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
@@ -4278,13 +4303,13 @@ function InboxTab() {
             {testResult && (
               <div className={`text-xs space-y-0.5 ${testResult.success ? "text-green-700" : "text-red-700"}`}>
                 {testResult.success
-                  ? <span className="font-semibold">Connected — {testResult.messages} messages, {testResult.unseen} unread</span>
+                  ? <span className="font-semibold">Connected — {String(testResult.messages || 0)} messages, {String(testResult.unseen || 0)} unread</span>
                   : <span className="font-semibold">{String(testResult.serverResponse || testResult.error || "Failed")}</span>
                 }
                 <div className="text-red-400 font-mono text-[11px] space-y-0.5">
-                  <div>User on server: <strong className="text-red-600">{testResult.user}</strong></div>
-                  <div>Host: <strong className="text-red-600">{testResult.host}:{testResult.port}</strong></div>
-                  <div>Password loaded: <strong className="text-red-600">{testResult.passSet ? `yes (${testResult.passLength} chars)` : "NO — INBOX_PASS is empty"}</strong></div>
+                  <div>User on server: <strong className="text-red-600">{String(testResult.user || "")}</strong></div>
+                  <div>Host: <strong className="text-red-600">{String(testResult.host || "")}:{String(testResult.port || "")}</strong></div>
+                  <div>Password loaded: <strong className="text-red-600">{testResult.passSet ? `yes (${String(testResult.passLength)} chars)` : "NO — INBOX_PASS is empty"}</strong></div>
                 </div>
               </div>
             )}

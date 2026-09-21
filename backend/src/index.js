@@ -41,6 +41,7 @@ const supportChatsRoutes = require('./routes/support-chats');
 const adminRoutes = require('./routes/admin');
 const paypalRoutes = require('./routes/paypal');
 const chatRoutes = require('./routes/chat');
+const calendlyRoutes = require('./routes/calendly');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -150,6 +151,7 @@ app.use('/api/support', contactLimiter, supportRoutes);
 app.use('/api/support-chats', supportChatsRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/chat', chatRoutes); // AI chat — moved from Next.js API route for Capacitor compatibility
+app.use('/api/calendly', calendlyRoutes); // Calendly event time lookup
 
 // Health check endpoint
 app.get('/health', (req, res) => {

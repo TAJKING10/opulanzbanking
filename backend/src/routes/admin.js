@@ -586,23 +586,53 @@ router.get('/submissions', adminAuth, async (req, res) => {
       const appt = r.appointment || {};
       const pay = r.payment || {};
       
-      let formattedDate = appt.date || '';
-      if (formattedDate && !isNaN(new Date(formattedDate).getTime())) {
-        formattedDate = new Date(formattedDate).toLocaleDateString('en-US', {
-          weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
-        });
+      let formattedDate = '';
+      let formattedTime = appt.time || '';
+
+      if (appt.date) {
+        const d = new Date(appt.date);
+        if (!isNaN(d.getTime())) {
+          formattedDate = d.toLocaleDateString('en-US', {
+            weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+          });
+          if (!formattedTime && (appt.date.includes('T') || appt.date.includes(':'))) {
+            formattedTime = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+          }
+        } else {
+          formattedDate = String(appt.date);
+        }
       }
 
       const apptUri = appt.calendlyEventUrl || appt.meetingLink || '';
+
+      // Check if this consultation was scheduled via phone call
+      const isPhoneCall = Boolean(
+        appt.isPhoneCall ||
+        ['outbound_call', 'inbound_call', 'phone_call'].includes(String(appt.locationType).toLowerCase()) ||
+        (typeof appt.location === 'object' && ['outbound_call', 'inbound_call', 'phone_call'].includes(String(appt.location?.type).toLowerCase())) ||
+        (typeof appt.locationType === 'string' && (appt.locationType.toLowerCase().includes('call') || appt.locationType.toLowerCase().includes('phone'))) ||
+        (typeof appt.meetingLink === 'string' && (appt.meetingLink.toLowerCase().includes('phone') || /^[+\d\s().-]{7,}$/.test(appt.meetingLink.trim())))
+      );
+
+      const phoneNumber = appt.phoneNumber || appt.phone || ci.phone || '';
+
       let googleMeetUrl = '';
-      if (typeof apptUri === 'string' && apptUri.includes('scheduled_events/')) {
-        const match = apptUri.match(/scheduled_events\/([a-f0-9\-]+)/i);
-        if (match && match[1]) {
-          googleMeetUrl = `https://calendly.com/events/${match[1]}/google_meet`;
+      if (!isPhoneCall) {
+        if (appt.googleMeetUrl) {
+          googleMeetUrl = appt.googleMeetUrl;
+        } else if (typeof apptUri === 'string' && apptUri.includes('scheduled_events/')) {
+          const match = apptUri.match(/scheduled_events\/([a-f0-9\-]+)/i);
+          if (match && match[1]) {
+            googleMeetUrl = `https://calendly.com/events/${match[1]}/google_meet`;
+          }
+        } else if (typeof appt.meetingLink === 'string' && appt.meetingLink.includes('calendly.com/events/')) {
+          googleMeetUrl = appt.meetingLink;
         }
-      } else if (typeof appt.meetingLink === 'string' && appt.meetingLink.includes('calendly.com/events/')) {
-        googleMeetUrl = appt.meetingLink;
       }
+
+      const meetingLink = isPhoneCall
+        ? (phoneNumber ? `Phone: ${phoneNumber}` : 'Phone Consultation')
+        : (googleMeetUrl || appt.meetingLink || '');
 
       results.push({
         id: `tax-${r.id}`,
@@ -618,11 +648,13 @@ router.get('/submissions', adminAuth, async (req, res) => {
           serviceName: svc.title || svc.name || 'Tax Advisory Consultation',
           servicePrice: svc.price ? `€${svc.price}` : '',
           meetingDate: formattedDate,
-          meetingTime: appt.time || (appt.date && !isNaN(new Date(appt.date).getTime()) ? new Date(appt.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : ''),
+          meetingTime: formattedTime,
           appointmentDate: appt.date || '',
-          appointmentTime: appt.time || '',
-          googleMeetUrl,
-          meetingLink: googleMeetUrl || appt.meetingLink || '',
+          appointmentTime: formattedTime,
+          isPhoneCall,
+          phoneNumber,
+          googleMeetUrl: isPhoneCall ? '' : googleMeetUrl,
+          meetingLink,
           calendlyEventUrl: appt.calendlyEventUrl || '',
           calendlyInviteeUrl: appt.calendlyInviteeUrl || '',
           paymentStatus: pay.status || '',

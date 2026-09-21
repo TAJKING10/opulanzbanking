@@ -36,6 +36,9 @@ interface CalendlyData {
   startTime?: string;
   endTime?: string;
   meetingLink?: string;
+  isPhoneCall?: boolean;
+  phoneNumber?: string;
+  googleMeetUrl?: string;
 }
 interface PaypalData { orderId?: string; status?: string; payer?: any; amount?: number; }
 
@@ -239,27 +242,107 @@ export default function BookingClient() {
   }, [step, fullName, contact.email]);
 
   // ── Calendly event listener (Capture date, time, and scheduled event) ─────
+  const slotRef = useRef<string | null>(null);
+
   useEffect(() => {
     const handleMessage = async (e: MessageEvent) => {
-      // 1. Capture date/time selection if emitted
-      if (e.data?.event === "calendly.date_and_time_selected") {
-        const slot = e.data?.payload?.date_and_time;
-        if (slot) setLastSelectedSlot(slot);
+      if (!e.data) return;
+
+      const evtName = typeof e.data === "object" ? e.data.event : null;
+      const payload = typeof e.data === "object" ? e.data.payload : null;
+
+      // 1. Capture date/time selection
+      if (evtName === "calendly.date_and_time_selected") {
+        const slot =
+          payload?.date_and_time ||
+          payload?.start_time ||
+          payload?.event?.start_time ||
+          (typeof payload === "string" ? payload : null);
+        if (slot) {
+          slotRef.current = slot;
+          setLastSelectedSlot(slot);
+        }
       }
 
       // 2. Capture final event_scheduled
-      if (e.data?.event === "calendly.event_scheduled") {
-        const p = e.data.payload || {};
-        const eventUri = p.event?.uri || "";
-        const inviteeUri = p.invitee?.uri || "";
-        const startTime = p.event?.start_time || lastSelectedSlot || new Date().toISOString();
-        const endTime = p.event?.end_time || (startTime ? new Date(new Date(startTime).getTime() + 3600000).toISOString() : "");
+      if (evtName === "calendly.event_scheduled") {
+        const p = payload || {};
+        const eventUri = p.event?.uri || p.event_uri || p.uri || "";
+        const inviteeUri = p.invitee?.uri || p.invitee_uri || "";
+
+        setIsSavingAppointment(true);
+
+        // ── Fetch real start/end time from Calendly API via our backend proxy ──
+        let startTime = "";
+        let endTime = "";
+        let locationInfo: { type?: string; join_url?: string; location?: string } | null = null;
+        let calData: any = null;
+
+        if (eventUri) {
+          try {
+            const calRes = await fetchWithTimeout(
+              `${API}/api/calendly/event-details?event_uri=${encodeURIComponent(eventUri)}${inviteeUri ? `&invitee_uri=${encodeURIComponent(inviteeUri)}` : ""}`,
+              { method: "GET", headers: { "Content-Type": "application/json" } },
+              10000
+            );
+            if (calRes.ok) {
+              const calJson = await calRes.json();
+              if (calJson.success && calJson.data) {
+                startTime = calJson.data.start_time || "";
+                endTime = calJson.data.end_time || "";
+                locationInfo = calJson.data.location || null;
+                calData = calJson.data;
+              }
+            }
+          } catch (err) {
+            console.warn("Calendly API event-details fetch failed:", err);
+          }
+        }
+
+        // Fallback: use slotRef or lastSelectedSlot if API didn't return a time
+        if (!startTime) {
+          startTime =
+            p.event?.start_time ||
+            p.start_time ||
+            slotRef.current ||
+            lastSelectedSlot ||
+            "";
+        }
+        if (!endTime) {
+          endTime =
+            p.event?.end_time ||
+            p.end_time ||
+            (startTime ? new Date(new Date(startTime).getTime() + 3600000).toISOString() : "");
+        }
+
+        const locationType = String(locationInfo?.type || calData?.location_type || "").toLowerCase();
+        const isPhoneCall = Boolean(
+          calData?.is_phone_call ||
+          ["outbound_call", "inbound_call", "phone_call"].includes(locationType) ||
+          locationType.includes("call") ||
+          locationType.includes("phone") ||
+          (Boolean(locationInfo?.location) && !locationInfo?.join_url && /^[+\d\s().-]{7,}$/.test(String(locationInfo?.location || "").trim()))
+        );
+
+        const phone = calData?.phone_number || locationInfo?.location || contact.phone || "";
+
+        const isGoogleMeet = !isPhoneCall && (
+          calData?.is_google_meet ||
+          locationType === "google_conference" ||
+          Boolean(locationInfo?.join_url && locationInfo.join_url.includes("meet.google.com"))
+        );
 
         const eventUuidMatch = typeof eventUri === "string" ? eventUri.match(/scheduled_events\/([a-f0-9\-]+)/i) : null;
-        const googleMeetUrl = eventUuidMatch && eventUuidMatch[1]
-          ? `https://calendly.com/events/${eventUuidMatch[1]}/google_meet`
+
+        // DO NOT generate Google Meet link if scheduled by phone number
+        const googleMeetUrl = !isPhoneCall && (isGoogleMeet || (!locationType && !locationInfo)) && eventUuidMatch && eventUuidMatch[1]
+          ? (calData?.google_meet_url || locationInfo?.join_url || `https://calendly.com/events/${eventUuidMatch[1]}/google_meet`)
           : "";
-        const meetingLink = googleMeetUrl || p.event?.location || eventUri || "Calendar invite & Google Meet link sent to your email";
+
+        const joinUrl = !isPhoneCall ? (locationInfo?.join_url || googleMeetUrl) : "";
+        const meetingLink = isPhoneCall
+          ? (phone ? `Phone: ${phone}` : "Phone Consultation")
+          : (joinUrl || googleMeetUrl || p.event?.location || eventUri || "Calendar invite & Google Meet link sent to your email");
 
         const calendlyData: CalendlyData = {
           eventUri,
@@ -267,9 +350,11 @@ export default function BookingClient() {
           startTime,
           endTime,
           meetingLink,
+          isPhoneCall,
+          phoneNumber: phone,
+          googleMeetUrl,
         };
         setCalendly(calendlyData);
-        setIsSavingAppointment(true);
 
         const currentConf = confirmationNumber || `TAX-${Date.now().toString(36).toUpperCase()}`;
         const targetId = bookingId || currentConf;
@@ -288,6 +373,10 @@ export default function BookingClient() {
                 calendlyEventUrl: eventUri,
                 calendlyInviteeUrl: inviteeUri,
                 meetingLink,
+                isPhoneCall,
+                phoneNumber: isPhoneCall ? phone : undefined,
+                locationType: locationType || (isPhoneCall ? "phone_call" : "google_conference"),
+                googleMeetUrl: isPhoneCall ? "" : googleMeetUrl,
                 status: "scheduled",
               },
             }),
@@ -312,6 +401,9 @@ export default function BookingClient() {
             calendlyEventUrl: eventUri,
             calendlyInviteeUrl: inviteeUri,
             meetingLink,
+            isPhoneCall,
+            phoneNumber: isPhoneCall ? phone : undefined,
+            googleMeetUrl: isPhoneCall ? "" : googleMeetUrl,
             confirmationNumber: currentConf,
             paypalOrderId: paypal.orderId,
             paypalStatus: paypal.status,
@@ -854,10 +946,21 @@ export default function BookingClient() {
                           </div>
                         ) : null}
                         <div className="flex items-center gap-2.5">
-                          <Video className="h-4 w-4 text-brand-gold flex-shrink-0" />
-                          <span className="text-xs text-brand-grayMed">
-                            Meeting link sent to {contact.email}
-                          </span>
+                          {calendly.isPhoneCall ? (
+                            <>
+                              <Phone className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                              <span className="text-xs text-brand-grayMed">
+                                Phone consultation: our advisor will call {calendly.phoneNumber || contact.phone || "your phone"}
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <Video className="h-4 w-4 text-brand-gold flex-shrink-0" />
+                              <span className="text-xs text-brand-grayMed">
+                                Meeting link sent to {contact.email}
+                              </span>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>

@@ -217,14 +217,14 @@ export default function SupportPage() {
                       <Label htmlFor="firstName">
                         {t("contactForm.firstName")} <span className="text-red-600">*</span>
                       </Label>
-                      <Input id="firstName" placeholder="John" required value={formData.firstName} onChange={(e) => setField("firstName", e.target.value)} />
+                      <Input id="firstName" placeholder="Enter your first name" required value={formData.firstName} onChange={(e) => setField("firstName", e.target.value)} />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="lastName">
                         {t("contactForm.lastName")} <span className="text-red-600">*</span>
                       </Label>
-                      <Input id="lastName" placeholder="Doe" required value={formData.lastName} onChange={(e) => setField("lastName", e.target.value)} />
+                      <Input id="lastName" placeholder="Enter your last name" required value={formData.lastName} onChange={(e) => setField("lastName", e.target.value)} />
                     </div>
                   </div>
 
@@ -235,7 +235,7 @@ export default function SupportPage() {
                     <Input
                       id="email"
                       type="email"
-                      placeholder="john.doe@example.com"
+                      placeholder="Enter your email address"
                       required
                       value={formData.email}
                       onChange={(e) => setField("email", e.target.value)}
@@ -285,7 +285,7 @@ export default function SupportPage() {
                       <Input
                         id="phone"
                         type="tel"
-                        placeholder="123456789"
+                        placeholder="Enter your phone number"
                         className="pl-32"
                         value={formData.phone}
                         onChange={(e) => setField("phone", e.target.value)}

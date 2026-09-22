@@ -9,9 +9,9 @@ export function pageUrl(locale: string, pathname = ''): string {
 
 const REGISTERED_ADDRESS = {
   '@type': 'PostalAddress',
-  streetAddress: '2 Rue Edward Steichen',
-  postalCode: 'L-2540',
-  addressLocality: 'Luxembourg',
+  streetAddress: '49 Duarrefstrooss',
+  postalCode: 'L-9964',
+  addressLocality: 'Huldange',
   addressCountry: 'LU',
 };
 

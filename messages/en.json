@@ -526,8 +526,8 @@
       "description": "Expert insurance brokerage services connecting you with leading providers"
     },
     "mortgage": {
-      "title": "Mortgage solutions",
-      "description": "Property financing"
+      "title": "Mortgages",
+      "description": "Residential and commercial property financing solutions for individuals and businesses"
     },
     "spvInvestment": {
       "title": "Investment",
@@ -577,12 +577,12 @@
     },
     "whyChooseUs": {
       "title": "Why Choose Opulanz?",
-      "paragraph1": "Opulanz brings together the best of traditional financial expertise and modern fintech innovation. As a fully regulated financial institution with presence in Luxembourg and France, we offer the security and reliability you need, combined with the flexibility and innovation you want.",
+      "paragraph1": "Opulanz brings together the best of traditional financial expertise and modern fintech innovation. As a group of regulated European entities with presence in Luxembourg and France, we offer the security and reliability you need, combined with the flexibility and innovation you want.",
       "paragraph2": "Whether you're an individual looking for payment and investment services, or a business seeking comprehensive financial solutions, we have the expertise and services to support your success.",
       "cta": "Get Started Today",
       "reasons": {
         "regulated": "Regulated by ACPR and AMF for your peace of mind",
-        "expertise": "Over 25 years of combined expertise in financial services",
+        "expertise": "19+ years of combined expertise in financial services",
         "personalized": "Personalized service from dedicated account managers",
         "competitive": "Competitive rates and transparent fee structure",
         "multilingual": "Multi-lingual support in English and French",
@@ -597,7 +597,7 @@
     },
     "cta": {
       "title": "Ready to Experience Financial Excellence?",
-      "subtitle": "Join thousands of satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
+      "subtitle": "Join 500+ satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
       "openAccount": "Open an Account",
       "contactUs": "Contact Us"
     }
@@ -985,7 +985,7 @@
         "capital": "Share Capital",
         "capitalValue": "â‚¬31,000",
         "address": "Registered Address",
-        "addressValue": "2 Rue Edward Steichen, L-2540 Luxembourg",
+        "addressValue": "49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg",
         "phone": "Phone",
         "phoneValue": "+352 20 33 10 70",
         "email": "Email",
@@ -2887,7 +2887,7 @@
       },
       "cta": {
         "title": "Ready to Streamline Your Finances?",
-        "description": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
+        "description": "Join hundreds of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
         "getStarted": "Get Started",
         "contactSales": "Contact Us"
       },
@@ -3035,8 +3035,8 @@
       },
       "latvia": {
         "title": "Latvia",
-        "address": "Vilandes Iela 5-36",
-        "city": "1010 Riga",
+        "address": "Vīlandes iela 5-36",
+        "city": "Rīga, LV-1010",
         "country": "Latvia",
         "phone": "Phone",
         "email": "Email"

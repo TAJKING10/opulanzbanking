@@ -78,7 +78,7 @@
       "cert3Title": "Comptes et paiements",
       "cert3Description": "Fournis via notre partenaire agréé, établissement de monnaie électronique (EME) agréé au sein de l'Union européenne.",
       "cert4Title": "Assurance Vie",
-      "cert4Description": "Contrat d'assurance vie dédié Luxembourgeois pour particuliers et entreprises",
+      "cert4Description": "Contrat d'assurance vie dédié luxembourgeois pour particuliers et entreprises",
       "whyTitle": "Pourquoi Opulanz ?",
       "whyDescription": "Ce qui fait de nous votre partenaire de confiance",
       "benefit1Title": "Plateforme tout-en-un",
@@ -985,7 +985,7 @@
         "capital": "Capital social",
         "capitalValue": "31 000 €",
         "address": "Adresse du siège social",
-        "addressValue": "2 Rue Edward Steichen, L-2540 Luxembourg",
+        "addressValue": "49 Duarrefstrooss, L-9964 Huldange, Grand-Duché de Luxembourg",
         "phone": "Téléphone",
         "phoneValue": "+352 20 33 10 70",
         "email": "E-mail",
@@ -1205,7 +1205,7 @@
     },
     "cta": {
       "title": "Prêt à commencer ?",
-      "description": "Ouvrez votre compte en quelques minutes et accédez à des services payements professionnels adaptés à votre entreprise.",
+      "description": "Ouvrez votre compte en quelques minutes et accédez à des services de paiement professionnels adaptés à votre entreprise.",
       "contact": "Contactez-nous"
     }
   },
@@ -1230,7 +1230,7 @@
       }
     },
     "formation": {
-      "cta": "Nous pouvons vous aider à assister pour établir votre société au Luxembourg avant d'ouvrir votre compte professionnel."
+      "cta": "Nous pouvons vous aider à établir votre société au Luxembourg avant d'ouvrir votre compte professionnel."
     },
     "referral": {
       "title": "Vous ne savez pas quel partenaire de paiement vous convient ?",
@@ -3035,8 +3035,8 @@
       },
       "latvia": {
         "title": "Lettonie",
-        "address": "Vilandes Iela 5-36",
-        "city": "1010 Riga",
+        "address": "Vīlandes iela 5-36",
+        "city": "Rīga, LV-1010",
         "country": "Lettonie",
         "phone": "Téléphone",
         "email": "Email"

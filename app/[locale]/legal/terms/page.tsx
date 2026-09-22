@@ -172,7 +172,7 @@ const enContent = (
       <p>
         <strong>Address:</strong> 66 avenue des Champs-Élysées, 75008 Paris (AIF) /
         49 Duarrefstrooss, L-9964 Huldange (GAL SA) /
-        Vilandes Iela 5-36, LV-1010 Riga, Latvia
+        Vīlandes iela 5-36, Rīga, LV-1010, Latvia
       </p>
       <p><strong>Response time:</strong> 15 business days maximum (France, per ACPR requirements)</p>
     </div>
@@ -336,7 +336,7 @@ const frContent = (
       <p>
         <strong>Adresse :</strong> 66 avenue des Champs-Élysées, 75008 Paris (AIF) /
         49 Duarrefstrooss, L-9964 Huldange (GAL SA) /
-        Vilandes Iela 5-36, LV-1010 Riga, Lettonie
+        Vīlandes iela 5-36, Rīga, LV-1010, Lettonie
       </p>
       <p><strong>Délai de réponse :</strong> 15 jours ouvrés maximum (France, conformément aux exigences de l'ACPR)</p>
     </div>

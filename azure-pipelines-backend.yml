@@ -5,7 +5,7 @@ trigger:
       - backend
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: Default
 
 variables:
 - group: backend-env-vars

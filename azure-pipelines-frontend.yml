@@ -4,7 +4,8 @@ trigger:
       - main
 
 pool:
-  name: 'ubuntu-latest'
+  name: Azure Pipelines
+  vmImage: ubuntu-latest
 
 steps:
 # 1️⃣ Use Node.js 20

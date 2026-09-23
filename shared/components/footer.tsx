@@ -292,7 +292,7 @@ export function Footer({ locale }: FooterProps) {
               {t("footer.description")}
             </p>
             <address className="mt-3 text-xs not-italic text-brand-grayMed leading-relaxed px-2">
-              Groupe Advensys Luxembourg S.A. · 49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg
+              Groupe Advensys Luxembourg S.A. · 49 Duarrefstrooss, L-9964 Huldange, {locale === 'fr' ? 'Grand-Duché de Luxembourg' : 'Grand Duchy of Luxembourg'}
             </address>
           </div>
         </div>

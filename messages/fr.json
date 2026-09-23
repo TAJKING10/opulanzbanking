@@ -527,7 +527,7 @@
     },
     "mortgage": {
       "title": "Prêt immobilier",
-      "description": "Solution de financement immobilier"
+      "description": "Solutions de financement immobilier résidentiel et commercial pour les particuliers et les entreprises"
     },
     "spvInvestment": {
       "title": "Investissement",
@@ -577,12 +577,12 @@
     },
     "whyChooseUs": {
       "title": "Pourquoi Choisir Opulanz ?",
-      "paragraph1": "Opulanz réunit le meilleur de l'expertise financière traditionnelle et de l'innovation fintech moderne. En tant qu'institution financière entièrement réglementée avec une présence au Luxembourg et en France, nous offrons la sécurité et la fiabilité dont vous avez besoin, combinées à la flexibilité et l'innovation que vous souhaitez.",
+      "paragraph1": "Opulanz réunit le meilleur de l'expertise financière traditionnelle et de l'innovation fintech moderne. En tant que groupe d'entités européennes réglementées avec une présence au Luxembourg et en France, nous offrons la sécurité et la fiabilité dont vous avez besoin, combinées à la flexibilité et l'innovation que vous souhaitez.",
       "paragraph2": "Que vous soyez un particulier à la recherche de services de paiement et d'investissement, ou une entreprise à la recherche de solutions financières complètes, nous avons l'expertise et les services pour soutenir votre réussite.",
       "cta": "Commencer Aujourd'hui",
       "reasons": {
         "regulated": "Réglementé par l'ACPR et l'AMF pour votre tranquillité d'esprit",
-        "expertise": "Plus de 25 ans d'expertise combinée en services financiers",
+        "expertise": "19+ ans d'expertise combinée en services financiers",
         "personalized": "Service personnalisé avec des gestionnaires de compte dédiés",
         "competitive": "Tarifs compétitifs et structure de frais transparente",
         "multilingual": "Support multilingue en anglais et en français",
@@ -597,7 +597,7 @@
     },
     "cta": {
       "title": "Prêt à Découvrir l'Excellence Financière ?",
-      "subtitle": "Rejoignez des milliers de clients satisfaits qui font confiance à Opulanz pour leurs besoins financiers. Ouvrez votre compte aujourd'hui et découvrez la différence.",
+      "subtitle": "Rejoignez plus de 500 clients satisfaits qui font confiance à Opulanz pour leurs besoins financiers. Ouvrez votre compte aujourd'hui et découvrez la différence.",
       "openAccount": "Ouvrir un Compte",
       "contactUs": "Nous Contacter"
     }

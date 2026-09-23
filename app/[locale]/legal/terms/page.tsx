@@ -171,7 +171,7 @@ const enContent = (
       <p><strong>Email:</strong> contact@opulanz.com</p>
       <p>
         <strong>Address:</strong> 66 avenue des Champs-Élysées, 75008 Paris (AIF) /
-        49 Duarrefstrooss, L-9964 Huldange (GAL SA) /
+        34, Grand-rue, L-9710 Clervaux (GAL SA) /
         Vīlandes iela 5-36, Rīga, LV-1010, Latvia
       </p>
       <p><strong>Response time:</strong> 15 business days maximum (France, per ACPR requirements)</p>
@@ -335,7 +335,7 @@ const frContent = (
       <p><strong>Email :</strong> contact@opulanz.com</p>
       <p>
         <strong>Adresse :</strong> 66 avenue des Champs-Élysées, 75008 Paris (AIF) /
-        49 Duarrefstrooss, L-9964 Huldange (GAL SA) /
+        34, Grand-rue, L-9710 Clervaux (GAL SA) /
         Vīlandes iela 5-36, Rīga, LV-1010, Lettonie
       </p>
       <p><strong>Délai de réponse :</strong> 15 jours ouvrés maximum (France, conformément aux exigences de l'ACPR)</p>

@@ -288,12 +288,6 @@ export function Footer({ locale }: FooterProps) {
                 className="h-10 sm:h-12 w-auto object-contain"
               />
             </Link>
-            <p className="mt-4 text-sm text-brand-grayMed leading-relaxed max-w-md px-2">
-              {t("footer.description")}
-            </p>
-            <address className="mt-3 text-xs not-italic text-brand-grayMed leading-relaxed px-2">
-              Groupe Advensys Luxembourg S.A. · 34, Grand-rue, L-9710 Clervaux, {locale === 'fr' ? 'Grand-Duché de Luxembourg' : 'Grand Duchy of Luxembourg'}
-            </address>
           </div>
         </div>
 

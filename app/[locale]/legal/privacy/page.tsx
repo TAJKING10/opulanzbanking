@@ -58,7 +58,7 @@ function EnContent() {
         <div className="pl-4 border-l-2 border-brand-gold/40">
           <p className="font-semibold text-brand-dark">Groupe Advensys Luxembourg S.A.</p>
           <p className="text-brand-grayMed text-sm">
-            For accounting, tax advisory, and company formation with accounting mandate — 34, Grand-rue, L-9710 Clervaux, Luxembourg — info@advensys.lu
+            For accounting, tax advisory, and company formation with accounting mandate — 49 Duarrefstrooss, L-9964 Huldange, Luxembourg — info@advensys.lu
           </p>
         </div>
         <div className="pl-4 border-l-2 border-brand-gold/40">
@@ -200,7 +200,7 @@ function FrContent() {
         <div className="pl-4 border-l-2 border-brand-gold/40">
           <p className="font-semibold text-brand-dark">Groupe Advensys Luxembourg S.A.</p>
           <p className="text-brand-grayMed text-sm">
-            Pour la comptabilité, le conseil fiscal et la création de société avec mandat comptable — 34, Grand-rue, L-9710 Clervaux, Luxembourg — info@advensys.lu
+            Pour la comptabilité, le conseil fiscal et la création de société avec mandat comptable — 49 Duarrefstrooss, L-9964 Huldange, Luxembourg — info@advensys.lu
           </p>
         </div>
         <div className="pl-4 border-l-2 border-brand-gold/40">

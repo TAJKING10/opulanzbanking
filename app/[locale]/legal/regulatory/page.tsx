@@ -70,7 +70,7 @@ function EnContent() {
         <p><strong>RCS Luxembourg:</strong> B197138</p>
         <p><strong>Share capital:</strong> EUR 31,000 — Fixed — Fully paid up</p>
         <p><strong>NACE code:</strong> 69.200 — Accounting activities</p>
-        <p><strong>Registered office:</strong> 34, Grand-rue, L-9710 Clervaux, Grand Duchy of Luxembourg</p>
+        <p><strong>Registered office:</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg</p>
         <p><strong>Incorporation date:</strong> 12/05/2015</p>
         <p><strong>Sole director:</strong> DULBERG Irvin Regnard — sole signatory authority</p>
         <p><strong>Director mandate:</strong> Appointed 23/11/2020 — Expires 23/11/2026</p>
@@ -304,7 +304,7 @@ function FrContent() {
         <p><strong>RCS Luxembourg :</strong> B197138</p>
         <p><strong>Capital social :</strong> 31 000 EUR — Fixe — Entièrement libéré</p>
         <p><strong>Code NACE :</strong> 69.200 — Activités comptables</p>
-        <p><strong>Siège social :</strong> 34, Grand-rue, L-9710 Clervaux, Grand-Duché de Luxembourg</p>
+        <p><strong>Siège social :</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand-Duché de Luxembourg</p>
         <p><strong>Date de constitution :</strong> 12/05/2015</p>
         <p><strong>Administrateur unique :</strong> DULBERG Irvin Regnard — pouvoir de signature unique</p>
         <p><strong>Mandat administrateur :</strong> Nommé le 23/11/2020 — Expire le 23/11/2026</p>

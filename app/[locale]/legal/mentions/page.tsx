@@ -76,7 +76,7 @@ const enContent = (
       <p><strong>Trade Names:</strong> Advensys Conseil · Location Rolls Royce · Opulanz Group</p>
       <p><strong>Legal Form:</strong> Société anonyme (SA)</p>
       <p><strong>Share Capital:</strong> EUR 31,000</p>
-      <p><strong>Registered Office:</strong> 34, Grand-rue, L-9710 Clervaux, Grand Duchy of Luxembourg</p>
+      <p><strong>Registered Office:</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg</p>
       <p><strong>RCS Luxembourg:</strong> B197138</p>
       <p><strong>NACE Code:</strong> 69.200 — Accounting activities</p>
       <p><strong>Incorporation Date:</strong> 12/05/2015</p>
@@ -174,7 +174,7 @@ const frContent = (
       <p><strong>Enseignes commerciales :</strong> Advensys Conseil · Location Rolls Royce · Opulanz Group</p>
       <p><strong>Forme juridique :</strong> Société anonyme (SA)</p>
       <p><strong>Capital social :</strong> 31 000 EUR</p>
-      <p><strong>Siège social :</strong> 34, Grand-rue, L-9710 Clervaux, Grand-Duché de Luxembourg</p>
+      <p><strong>Siège social :</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand-Duché de Luxembourg</p>
       <p><strong>RCS Luxembourg :</strong> B197138</p>
       <p><strong>Code NACE :</strong> 69.200 — Activités comptables</p>
       <p><strong>Date de constitution :</strong> 12/05/2015</p>

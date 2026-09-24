@@ -1,7 +1,41 @@
 // Investment API Service
 // Connects to the Azure PostgreSQL backend for investment portal data
 
+import {
+  getSpvAdminToken,
+  getSpvInvestorToken,
+  setSpvAdminSession,
+  setSpvInvestorSession,
+  clearSpvAdminSession,
+  clearSpvInvestorSession,
+  getSpvAdmin,
+  getSpvInvestor,
+} from "./spv-auth";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
+// Central fetch wrapper that attaches Authorization token & credentials
+async function spvFetch(
+  endpoint: string,
+  options: RequestInit = {},
+  preferredRole?: "admin" | "investor"
+): Promise<Response> {
+  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
+  const token = preferredRole === 'investor'
+    ? (getSpvInvestorToken() || getSpvAdminToken())
+    : (getSpvAdminToken() || getSpvInvestorToken());
+
+  const headers = new Headers(options.headers || {});
+  if (token && !headers.has('Authorization')) {
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+
+  return fetch(url, {
+    ...options,
+    headers,
+    credentials: 'include',
+  });
+}
 
 // ============ TYPES ============
 
@@ -89,19 +123,23 @@ export interface DashboardStats {
 
 export async function loginAdmin(accessCode: string): Promise<AdminProfile | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/admins/login`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/admins/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ accessCode: accessCode.trim() }),
+      credentials: 'include',
     });
 
     const data = await response.json();
 
     if (data.success && data.data) {
-      // Store admin data in sessionStorage
-      sessionStorage.setItem('spv-admin-data', JSON.stringify(data.data));
-      sessionStorage.setItem('spv-admin-access', 'granted');
-      sessionStorage.setItem('spv-admin-timestamp', Date.now().toString());
+      if (data.token) {
+        setSpvAdminSession(data.token, data.data);
+      } else {
+        sessionStorage.setItem('spv-admin-data', JSON.stringify(data.data));
+        sessionStorage.setItem('spv-admin-access', 'granted');
+        sessionStorage.setItem('spv-admin-timestamp', Date.now().toString());
+      }
       return data.data;
     }
     return null;
@@ -112,36 +150,18 @@ export async function loginAdmin(accessCode: string): Promise<AdminProfile | nul
 }
 
 export function getCurrentAdmin(): AdminProfile | null {
-  if (typeof window === 'undefined') return null;
-  const adminData = sessionStorage.getItem('spv-admin-data');
-  if (!adminData) return null;
-
-  // Check session expiry (24 hours)
-  const timestamp = sessionStorage.getItem('spv-admin-timestamp');
-  if (timestamp && Date.now() - parseInt(timestamp) > 24 * 60 * 60 * 1000) {
-    logoutAdmin();
-    return null;
-  }
-
-  try {
-    return JSON.parse(adminData);
-  } catch {
-    return null;
-  }
+  return getSpvAdmin();
 }
 
 export function logoutAdmin(): void {
-  if (typeof window === 'undefined') return;
-  sessionStorage.removeItem('spv-admin-data');
-  sessionStorage.removeItem('spv-admin-access');
-  sessionStorage.removeItem('spv-admin-timestamp');
+  clearSpvAdminSession();
 }
 
 // ============ ADMINS API ============
 
 export async function getAdmins(): Promise<AdminProfile[]> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/admins`);
+    const response = await spvFetch(`${API_BASE}/api/investment/admins`);
     const data = await response.json();
     return data.success ? data.data : [];
   } catch (error) {
@@ -152,7 +172,7 @@ export async function getAdmins(): Promise<AdminProfile[]> {
 
 export async function getAdminById(id: number): Promise<AdminProfile | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/admins/${id}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/admins/${id}`);
     const data = await response.json();
     return data.success ? data.data : null;
   } catch (error) {
@@ -170,7 +190,7 @@ export async function createAdmin(admin: {
   createdBy?: number;
 }): Promise<{ success: boolean; data?: AdminProfile; accessCode?: string; error?: string }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/admins`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/admins`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(admin),
@@ -190,7 +210,7 @@ export async function createAdmin(admin: {
 
 export async function updateAdmin(id: number, updates: Partial<AdminProfile & { updatedBy?: number }>): Promise<AdminProfile | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/admins/${id}`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/admins/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
@@ -205,7 +225,7 @@ export async function updateAdmin(id: number, updates: Partial<AdminProfile & { 
 
 export async function deleteAdmin(id: number, deletedBy?: number): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/admins/${id}`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/admins/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ deletedBy }),
@@ -220,7 +240,7 @@ export async function deleteAdmin(id: number, deletedBy?: number): Promise<boole
 
 export async function resetAdminPassword(id: number, resetBy?: number): Promise<{ success: boolean; accessCode?: string }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/admins/${id}/reset`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/admins/${id}/reset`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ resetBy }),
@@ -253,7 +273,7 @@ export async function getInvestors(params?: {
     if (params?.limit) searchParams.append('limit', params.limit.toString());
     if (params?.offset) searchParams.append('offset', params.offset.toString());
 
-    const response = await fetch(`${API_BASE}/api/investment/investors?${searchParams}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/investors?${searchParams}`);
     const data = await response.json();
     return {
       data: data.success ? data.data : [],
@@ -267,7 +287,7 @@ export async function getInvestors(params?: {
 
 export async function getInvestorById(id: number): Promise<Investor | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investors/${id}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/investors/${id}`);
     const data = await response.json();
     return data.success ? data.data : null;
   } catch (error) {
@@ -288,7 +308,7 @@ export async function createInvestor(investor: {
   createdBy?: number;
 }): Promise<{ success: boolean; data?: Investor; accessCode?: string; error?: string }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investors`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investors`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(investor),
@@ -308,7 +328,7 @@ export async function createInvestor(investor: {
 
 export async function updateInvestor(id: number, updates: Partial<Investor & { updatedBy?: number }>): Promise<Investor | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investors/${id}`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investors/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
@@ -323,7 +343,7 @@ export async function updateInvestor(id: number, updates: Partial<Investor & { u
 
 export async function deleteInvestor(id: number, deletedBy?: number): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investors/${id}`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investors/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ deletedBy }),
@@ -338,7 +358,7 @@ export async function deleteInvestor(id: number, deletedBy?: number): Promise<bo
 
 export async function resetInvestorAccessCode(id: number, resetBy?: number): Promise<{ success: boolean; accessCode?: string }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investors/${id}/reset`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investors/${id}/reset`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ resetBy }),
@@ -371,7 +391,7 @@ export async function getProperties(params?: {
     if (params?.limit) searchParams.append('limit', params.limit.toString());
     if (params?.offset) searchParams.append('offset', params.offset.toString());
 
-    const response = await fetch(`${API_BASE}/api/investment/properties?${searchParams}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/properties?${searchParams}`);
     const data = await response.json();
     return {
       data: data.success ? data.data : [],
@@ -385,7 +405,7 @@ export async function getProperties(params?: {
 
 export async function getPropertyById(id: number): Promise<Property | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/properties/${id}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/properties/${id}`);
     const data = await response.json();
     return data.success ? data.data : null;
   } catch (error) {
@@ -417,7 +437,7 @@ export async function createProperty(property: {
   createdBy?: number;
 }): Promise<{ success: boolean; data?: Property; error?: string }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/properties`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/properties`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(property),
@@ -436,7 +456,7 @@ export async function createProperty(property: {
 
 export async function updateProperty(id: number, updates: Partial<Property & { updatedBy?: number }>): Promise<Property | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/properties/${id}`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/properties/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
@@ -451,7 +471,7 @@ export async function updateProperty(id: number, updates: Partial<Property & { u
 
 export async function deleteProperty(id: number, deletedBy?: number): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/properties/${id}`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/properties/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ deletedBy }),
@@ -479,7 +499,7 @@ export async function getActivityLog(params?: {
     if (params?.limit) searchParams.append('limit', params.limit.toString());
     if (params?.offset) searchParams.append('offset', params.offset.toString());
 
-    const response = await fetch(`${API_BASE}/api/investment/activity?${searchParams}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/activity?${searchParams}`);
     const data = await response.json();
     return {
       data: data.success ? data.data : [],
@@ -493,7 +513,7 @@ export async function getActivityLog(params?: {
 
 export async function getDashboardStats(): Promise<DashboardStats> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/activity/stats`);
+    const response = await spvFetch(`${API_BASE}/api/investment/activity/stats`);
     const data = await response.json();
     return data.success ? data.data : {
       totalInvestors: 0,
@@ -518,52 +538,50 @@ export async function getDashboardStats(): Promise<DashboardStats> {
 
 // ============ INVESTOR LOGIN API ============
 
-export async function loginInvestor(accessCode: string): Promise<Investor | null> {
+export async function loginInvestorDetails(accessCode: string): Promise<{
+  success: boolean;
+  data?: Investor;
+  error?: string;
+  isAdminCode?: boolean;
+}> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investors/login`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investors/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ accessCode: accessCode.trim() }),
+      credentials: 'include',
     });
 
-    const data = await response.json();
+    const res = await response.json();
 
-    if (data.success && data.data) {
-      sessionStorage.setItem('spv-investor-data', JSON.stringify(data.data));
-      sessionStorage.setItem('spv-access', 'granted');
-      sessionStorage.setItem('spv-timestamp', Date.now().toString());
-      return data.data;
+    if (res.success && res.data) {
+      if (res.token) {
+        setSpvInvestorSession(res.token, res.data);
+      } else {
+        sessionStorage.setItem('spv-investor-data', JSON.stringify(res.data));
+        sessionStorage.setItem('spv-access', 'granted');
+        sessionStorage.setItem('spv-timestamp', Date.now().toString());
+      }
+      return { success: true, data: res.data };
     }
-    return null;
+    return { success: false, error: res.error, isAdminCode: Boolean(res.isAdminCode) };
   } catch (error) {
     console.error('Investor login error:', error);
-    return null;
+    return { success: false, error: 'Connection error' };
   }
+}
+
+export async function loginInvestor(accessCode: string): Promise<Investor | null> {
+  const result = await loginInvestorDetails(accessCode);
+  return result.success && result.data ? result.data : null;
 }
 
 export function getCurrentInvestor(): Investor | null {
-  if (typeof window === 'undefined') return null;
-  const investorData = sessionStorage.getItem('spv-investor-data');
-  if (!investorData) return null;
-
-  const timestamp = sessionStorage.getItem('spv-timestamp');
-  if (timestamp && Date.now() - parseInt(timestamp) > 24 * 60 * 60 * 1000) {
-    logoutInvestor();
-    return null;
-  }
-
-  try {
-    return JSON.parse(investorData);
-  } catch {
-    return null;
-  }
+  return getSpvInvestor();
 }
 
 export function logoutInvestor(): void {
-  if (typeof window === 'undefined') return;
-  sessionStorage.removeItem('spv-investor-data');
-  sessionStorage.removeItem('spv-access');
-  sessionStorage.removeItem('spv-timestamp');
+  clearSpvInvestorSession();
 }
 
 // ============ INVESTMENTS API ============
@@ -644,7 +662,7 @@ export async function getInvestments(params?: {
     if (params?.limit) searchParams.append('limit', params.limit.toString());
     if (params?.offset) searchParams.append('offset', params.offset.toString());
 
-    const response = await fetch(`${API_BASE}/api/investment/investments?${searchParams}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/investments?${searchParams}`);
     const data = await response.json();
     return {
       data: data.success ? data.data : [],
@@ -658,7 +676,7 @@ export async function getInvestments(params?: {
 
 export async function getInvestmentById(id: number): Promise<Investment | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investments/${id}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/investments/${id}`);
     const data = await response.json();
     return data.success ? data.data : null;
   } catch (error) {
@@ -672,7 +690,7 @@ export async function getInvestorInvestments(investorId: number): Promise<{
   summary: InvestorPortfolioSummary;
 }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investments/investor/${investorId}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/investments/investor/${investorId}`);
     const data = await response.json();
     return {
       data: data.success ? data.data : [],
@@ -708,7 +726,7 @@ export async function getPropertyInvestments(propertyId: number): Promise<{
   summary: PropertyInvestmentSummary;
 }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investments/property/${propertyId}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/investments/property/${propertyId}`);
     const data = await response.json();
     return {
       data: data.success ? data.data : [],
@@ -748,7 +766,7 @@ export async function createInvestment(investment: {
   createdBy?: number;
 }): Promise<{ success: boolean; data?: Investment; error?: string }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investments`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(investment),
@@ -772,7 +790,7 @@ export async function getPendingInvestments(): Promise<{
   count: number;
 }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investments/status/pending`);
+    const response = await spvFetch(`${API_BASE}/api/investment/investments/status/pending`);
     const data = await response.json();
     return {
       success: data.success,
@@ -792,7 +810,7 @@ export async function approveInvestment(investmentId: number, adminId?: number):
   error?: string;
 }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investments/${investmentId}/approve`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investments/${investmentId}/approve`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ adminId }),
@@ -816,7 +834,7 @@ export async function rejectInvestment(investmentId: number, adminId?: number, r
   error?: string;
 }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investments/${investmentId}/reject`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investments/${investmentId}/reject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ adminId, reason }),
@@ -838,7 +856,7 @@ export async function updateInvestment(
   updates: Partial<Investment & { updatedBy?: number }>
 ): Promise<Investment | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investments/${id}`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investments/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
@@ -853,7 +871,7 @@ export async function updateInvestment(
 
 export async function deleteInvestment(id: number, deletedBy?: number): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investments/${id}`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investments/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ deletedBy }),
@@ -872,7 +890,7 @@ export async function recordDistribution(
   recordedBy?: number
 ): Promise<{ success: boolean; data?: Investment; error?: string }> {
   try {
-    const response = await fetch(`${API_BASE}/api/investment/investments/${investmentId}/distribution`, {
+    const response = await spvFetch(`${API_BASE}/api/investment/investments/${investmentId}/distribution`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ amount, recordedBy }),
@@ -919,7 +937,7 @@ export async function calculateInvestmentReturns(
 } | null> {
   try {
     const params = projectionYears ? `?projection_years=${projectionYears}` : '';
-    const response = await fetch(`${API_BASE}/api/investment/investments/${investmentId}/calculate${params}`);
+    const response = await spvFetch(`${API_BASE}/api/investment/investments/${investmentId}/calculate${params}`);
     const data = await response.json();
     return data.success ? data.data : null;
   } catch (error) {

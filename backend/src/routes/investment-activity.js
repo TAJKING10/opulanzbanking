@@ -11,6 +11,7 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/db');
+const { requireSpvAdmin } = require('../middleware/auth');
 
 /**
  * GET /api/investment/activity
@@ -22,7 +23,7 @@ const { pool } = require('../config/db');
  * - limit: number (default 100)
  * - offset: number (default 0)
  */
-router.get('/', async (req, res) => {
+router.get('/', requireSpvAdmin, async (req, res) => {
   try {
     const { admin_id, log_type, limit = 100, offset = 0 } = req.query;
 
@@ -87,7 +88,7 @@ router.get('/', async (req, res) => {
  * GET /api/investment/activity/stats
  * Get dashboard statistics
  */
-router.get('/stats', async (req, res) => {
+router.get('/stats', requireSpvAdmin, async (req, res) => {
   try {
     // Get counts for dashboard
     const [

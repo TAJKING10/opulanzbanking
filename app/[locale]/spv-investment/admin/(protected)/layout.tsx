@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { LayoutDashboard, Users, Building2, LogOut, Shield, ChevronDown, User, Settings, Key, Clock, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getCurrentAdmin, logoutAdmin, type AdminProfile } from "@/lib/investment-api";
+import { isSpvAdminAuthenticated, getSpvAdmin, clearSpvAdminSession } from "@/lib/spv-auth";
 
 const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 
@@ -27,6 +28,13 @@ export default function AdminProtectedLayout({
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
+    if (isSpvAdminAuthenticated()) {
+      setIsAuthorized(true);
+      setCurrentAdmin(getSpvAdmin());
+      setIsLoading(false);
+      return;
+    }
+
     const access = sessionStorage.getItem("spv-admin-access");
     const timestamp = sessionStorage.getItem("spv-admin-timestamp");
 
@@ -41,6 +49,7 @@ export default function AdminProtectedLayout({
     }
 
     // Invalid or expired session
+    clearSpvAdminSession();
     sessionStorage.removeItem("spv-admin-access");
     sessionStorage.removeItem("spv-admin-timestamp");
     router.replace(`/${locale}/spv-investment/admin`);
@@ -59,6 +68,7 @@ export default function AdminProtectedLayout({
 
   const handleLogout = () => {
     logoutAdmin();
+    clearSpvAdminSession();
     sessionStorage.removeItem("spv-admin-access");
     sessionStorage.removeItem("spv-admin-timestamp");
     router.replace(`/${locale}/spv-investment/admin`);

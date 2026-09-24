@@ -15,7 +15,9 @@
 
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const { pool } = require('../config/db');
+const { JWT_SECRET, requireSpvAdmin } = require('../middleware/auth');
 const crypto = require('crypto');
 
 // Generate unique access code
@@ -79,11 +81,35 @@ router.post('/login', async (req, res) => {
     // Log activity
     await logActivity('admin_login', `${admin.name} logged in`, admin.id, admin.name);
 
-    // Return admin data (without access code)
+    // Sign JWT token for admin (7-day validity)
+    const token = jwt.sign(
+      {
+        id: admin.id,
+        email: admin.email,
+        name: admin.name,
+        role: 'spv_admin',
+        admin_role: admin.role,
+        permissions: admin.permissions
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    // Set secure cookie
+    res.cookie('spv_admin_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/'
+    });
+
+    // Return admin data (without access code) and token
     const { access_code, ...adminData } = admin;
 
     res.json({
       success: true,
+      token,
       data: {
         ...adminData,
         last_login: new Date().toISOString()
@@ -100,9 +126,9 @@ router.post('/login', async (req, res) => {
 
 /**
  * GET /api/investment/admins
- * List all admins (requires primary admin role)
+ * List all admins (requires admin role)
  */
-router.get('/', async (req, res) => {
+router.get('/', requireSpvAdmin, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, name, email, phone, role, status, permissions, last_login, created_at, updated_at
@@ -127,7 +153,7 @@ router.get('/', async (req, res) => {
  * GET /api/investment/admins/:id
  * Get single admin by ID
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -161,7 +187,7 @@ router.get('/:id', async (req, res) => {
  * POST /api/investment/admins
  * Create new admin (requires primary admin role)
  */
-router.post('/', async (req, res) => {
+router.post('/', requireSpvAdmin, async (req, res) => {
   try {
     const { name, email, phone, role = 'admin', permissions = {}, createdBy } = req.body;
 
@@ -233,7 +259,7 @@ router.post('/', async (req, res) => {
  * PATCH /api/investment/admins/:id
  * Update admin
  */
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, email, phone, status, permissions, updatedBy } = req.body;
@@ -305,7 +331,7 @@ router.patch('/:id', async (req, res) => {
     if (updates.length === 0) {
       return res.status(400).json({
         success: false,
-        error: 'No valid fields to update'
+        error: 'No practical fields to update'
       });
     }
 
@@ -341,7 +367,7 @@ router.patch('/:id', async (req, res) => {
  * DELETE /api/investment/admins/:id
  * Delete admin (requires primary admin role)
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { deletedBy } = req.body;
@@ -392,7 +418,7 @@ router.delete('/:id', async (req, res) => {
  * POST /api/investment/admins/:id/reset
  * Reset admin access code (requires primary admin role)
  */
-router.post('/:id/reset', async (req, res) => {
+router.post('/:id/reset', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { resetBy } = req.body;

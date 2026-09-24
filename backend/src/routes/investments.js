@@ -19,6 +19,7 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/db');
 const nodemailer = require('nodemailer');
+const { requireSpvAdmin, requireSpvAuth } = require('../middleware/auth');
 
 // Create email transporter
 const createTransporter = () => {
@@ -262,9 +263,17 @@ const logActivity = async (type, description, adminId, adminName, investorId = n
  * Get all investments for a specific investor
  * NOTE: This must be defined BEFORE /:id to prevent route conflicts
  */
-router.get('/investor/:id', async (req, res) => {
+router.get('/investor/:id', requireSpvAuth, async (req, res) => {
   try {
     const { id } = req.params;
+
+    // IDOR protection: if user is investor, can only access their own investments
+    if (req.spvUser.role === 'spv_investor' && req.spvUser.id !== parseInt(id, 10)) {
+      return res.status(403).json({
+        success: false,
+        error: 'Forbidden: Cannot access another investor\'s investments'
+      });
+    }
 
     const result = await pool.query(`
       SELECT
@@ -340,7 +349,7 @@ router.get('/investor/:id', async (req, res) => {
  * Get all investments for a specific property
  * NOTE: This must be defined BEFORE /:id to prevent route conflicts
  */
-router.get('/property/:id', async (req, res) => {
+router.get('/property/:id', requireSpvAuth, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -387,9 +396,14 @@ router.get('/property/:id', async (req, res) => {
  * GET /api/investment/investments
  * List all investments with optional filters
  */
-router.get('/', async (req, res) => {
+router.get('/', requireSpvAuth, async (req, res) => {
   try {
-    const { investor_id, property_id, status, limit = 100, offset = 0 } = req.query;
+    let { investor_id, property_id, status, limit = 100, offset = 0 } = req.query;
+
+    // IDOR protection: if user is investor, enforce that they only query their own investments
+    if (req.spvUser.role === 'spv_investor') {
+      investor_id = req.spvUser.id;
+    }
 
     let query = `
       SELECT
@@ -479,10 +493,44 @@ router.get('/', async (req, res) => {
 });
 
 /**
+ * GET /api/investment/investments/status/pending
+ * Get all pending investment requests
+ * NOTE: Defined before /:id to prevent route conflicts
+ */
+router.get('/status/pending', requireSpvAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        i.*,
+        inv.name as investor_name,
+        inv.email as investor_email,
+        inv.investor_type,
+        p.title as property_title,
+        p.location as property_location,
+        p.images
+      FROM investments i
+      JOIN investment_investors inv ON i.investor_id = inv.id
+      JOIN investment_properties p ON i.property_id = p.id
+      WHERE i.status = 'pending'
+      ORDER BY i.created_at DESC
+    `);
+
+    res.json({
+      success: true,
+      data: result.rows,
+      count: result.rows.length
+    });
+  } catch (error) {
+    console.error('Error fetching pending investments:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
  * GET /api/investment/investments/:id
  * Get single investment with full details
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', requireSpvAuth, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -520,6 +568,14 @@ router.get('/:id', async (req, res) => {
     }
 
     const investment = result.rows[0];
+
+    // IDOR protection: if user is investor, ensure they own this investment
+    if (req.spvUser.role === 'spv_investor' && investment.investor_id !== req.spvUser.id) {
+      return res.status(403).json({
+        success: false,
+        error: 'Forbidden: Cannot access another investor\'s investment'
+      });
+    }
 
     // Calculate returns
     const yearsInvested = parseFloat(investment.years_invested) || 0;
@@ -575,46 +631,12 @@ router.get('/:id', async (req, res) => {
 });
 
 /**
- * GET /api/investment/investments/status/pending
- * Get all pending investment requests
- * NOTE: This must be defined BEFORE /:id to prevent route conflicts
- */
-router.get('/status/pending', async (req, res) => {
-  try {
-    const result = await pool.query(`
-      SELECT
-        i.*,
-        inv.name as investor_name,
-        inv.email as investor_email,
-        inv.investor_type,
-        p.title as property_title,
-        p.location as property_location,
-        p.images
-      FROM investments i
-      JOIN investment_investors inv ON i.investor_id = inv.id
-      JOIN investment_properties p ON i.property_id = p.id
-      WHERE i.status = 'pending'
-      ORDER BY i.created_at DESC
-    `);
-
-    res.json({
-      success: true,
-      data: result.rows,
-      count: result.rows.length
-    });
-  } catch (error) {
-    console.error('Error fetching pending investments:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-/**
  * POST /api/investment/investments
  * Create new investment
  */
-router.post('/', async (req, res) => {
+router.post('/', requireSpvAuth, async (req, res) => {
   try {
-    const {
+    let {
       investor_id,
       property_id,
       amount_invested,
@@ -626,6 +648,15 @@ router.post('/', async (req, res) => {
       notes,
       createdBy
     } = req.body;
+
+    // Authorization & IDOR enforcement:
+    // If caller is an investor, force investor_id to match authenticated token and clear createdBy (pending status)
+    if (req.spvUser.role === 'spv_investor') {
+      investor_id = req.spvUser.id;
+      createdBy = null;
+    } else if (req.spvUser.role === 'spv_admin') {
+      createdBy = createdBy || req.spvUser.id;
+    }
 
     // Validation
     if (!investor_id || !property_id || !amount_invested || !ownership_percentage) {
@@ -762,7 +793,7 @@ router.post('/', async (req, res) => {
  * PATCH /api/investment/investments/:id
  * Update investment
  */
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const {
@@ -925,7 +956,7 @@ router.patch('/:id', async (req, res) => {
  * DELETE /api/investment/investments/:id
  * Delete investment
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { deletedBy } = req.body;
@@ -982,7 +1013,7 @@ router.delete('/:id', async (req, res) => {
  * POST /api/investment/investments/:id/distribution
  * Record a distribution payment
  */
-router.post('/:id/distribution', async (req, res) => {
+router.post('/:id/distribution', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { amount, recordedBy } = req.body;
@@ -1044,7 +1075,7 @@ router.post('/:id/distribution', async (req, res) => {
  * GET /api/investment/investments/:id/calculate
  * Calculate detailed returns for an investment
  */
-router.get('/:id/calculate', async (req, res) => {
+router.get('/:id/calculate', requireSpvAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const { projection_years } = req.query;
@@ -1070,6 +1101,15 @@ router.get('/:id/calculate', async (req, res) => {
     }
 
     const inv = result.rows[0];
+
+    // IDOR protection: if user is investor, ensure they own this investment
+    if (req.spvUser.role === 'spv_investor' && inv.investor_id !== req.spvUser.id) {
+      return res.status(403).json({
+        success: false,
+        error: 'Forbidden: Cannot access another investor\'s investment'
+      });
+    }
+
     const amountInvested = parseFloat(inv.amount_invested);
     const expectedReturn = parseFloat(inv.expected_annual_return) || 0;
     const actualReturn = parseFloat(inv.actual_return_to_date) || 0;
@@ -1143,10 +1183,10 @@ router.get('/:id/calculate', async (req, res) => {
  * POST /api/investment/investments/:id/approve
  * Approve a pending investment request
  */
-router.post('/:id/approve', async (req, res) => {
+router.post('/:id/approve', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const { adminId } = req.body;
+    const adminId = req.body.adminId || req.spvUser.id;
 
     // Get investment details
     const investmentResult = await pool.query('SELECT * FROM investments WHERE id = $1', [id]);
@@ -1188,7 +1228,7 @@ router.post('/:id/approve', async (req, res) => {
     // Log activity
     if (adminId) {
       const adminResult = await pool.query('SELECT name FROM investment_admins WHERE id = $1', [adminId]);
-      const adminName = adminResult.rows[0]?.name || 'Admin';
+      const adminName = adminResult.rows[0]?.name || req.spvUser.name || 'Admin';
       await logActivity(
         'investment_approved',
         `Approved investment: ${investor.name} → ${property.title} (${investment.ownership_percentage}%, €${investment.amount_invested})`,
@@ -1213,10 +1253,11 @@ router.post('/:id/approve', async (req, res) => {
  * POST /api/investment/investments/:id/reject
  * Reject a pending investment request
  */
-router.post('/:id/reject', async (req, res) => {
+router.post('/:id/reject', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const { adminId, reason } = req.body;
+    const adminId = req.body.adminId || req.spvUser.id;
+    const { reason } = req.body;
 
     // Get investment details
     const investmentResult = await pool.query('SELECT * FROM investments WHERE id = $1', [id]);
@@ -1250,7 +1291,7 @@ router.post('/:id/reject', async (req, res) => {
     // Log activity
     if (adminId) {
       const adminResult = await pool.query('SELECT name FROM investment_admins WHERE id = $1', [adminId]);
-      const adminName = adminResult.rows[0]?.name || 'Admin';
+      const adminName = adminResult.rows[0]?.name || req.spvUser.name || 'Admin';
       await logActivity(
         'investment_rejected',
         `Rejected investment: ${investor.name} → ${property.title} (Reason: ${reason || 'Not specified'})`,

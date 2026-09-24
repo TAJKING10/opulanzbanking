@@ -50,6 +50,24 @@ export default function middleware(req: NextRequest) {
     }
   }
 
+  // Protect SPV Investor Portal routes — require spv_investor_token cookie
+  if (pathname.match(/\/[a-z]{2}\/spv-investment\/portal\/.+/)) {
+    const token = req.cookies.get('spv_investor_token')?.value;
+    if (!token) {
+      const locale = pathname.split('/')[1] || 'en';
+      return NextResponse.redirect(new URL(`/${locale}/spv-investment/portal`, req.url));
+    }
+  }
+
+  // Protect SPV Admin routes — require spv_admin_token cookie
+  if (pathname.match(/\/[a-z]{2}\/spv-investment\/admin\/.+/)) {
+    const token = req.cookies.get('spv_admin_token')?.value;
+    if (!token) {
+      const locale = pathname.split('/')[1] || 'en';
+      return NextResponse.redirect(new URL(`/${locale}/spv-investment/admin`, req.url));
+    }
+  }
+
   return intlMiddleware(req);
 }
 

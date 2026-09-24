@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginInvestor } from "@/lib/investment-api";
+import { isSpvInvestorAuthenticated } from "@/lib/spv-auth";
 
 export default function SpvPortalLoginPage() {
   const locale = useLocale();
@@ -21,6 +22,10 @@ export default function SpvPortalLoginPage() {
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
+    if (isSpvInvestorAuthenticated()) {
+      router.replace(`/${locale}/spv-investment/portal/dashboard`);
+      return;
+    }
     const access = sessionStorage.getItem("spv-portal-access");
     if (access === "granted") {
       router.replace(`/${locale}/spv-investment/portal/dashboard`);

@@ -7,6 +7,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { LayoutDashboard, Building2, FileText, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+import { isSpvInvestorAuthenticated, clearSpvInvestorSession } from "@/lib/spv-auth";
+
 const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 export default function SpvPortalProtectedLayout({
@@ -22,6 +24,13 @@ export default function SpvPortalProtectedLayout({
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
+    if (isSpvInvestorAuthenticated()) {
+      setIsAuthorized(true);
+      setIsLoading(false);
+      return;
+    }
+
+    // Fallback check for session
     const access = sessionStorage.getItem("spv-portal-access");
     const timestamp = sessionStorage.getItem("spv-portal-timestamp");
 
@@ -34,12 +43,14 @@ export default function SpvPortalProtectedLayout({
       }
     }
 
+    clearSpvInvestorSession();
     sessionStorage.removeItem("spv-portal-access");
     sessionStorage.removeItem("spv-portal-timestamp");
     router.replace(`/${locale}/spv-investment/portal`);
   }, [locale, router]);
 
   const handleLogout = () => {
+    clearSpvInvestorSession();
     sessionStorage.removeItem("spv-portal-access");
     sessionStorage.removeItem("spv-portal-timestamp");
     sessionStorage.removeItem("spv-portal-profile");

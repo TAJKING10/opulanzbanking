@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginAdmin } from "@/lib/investment-api";
+import { isSpvAdminAuthenticated } from "@/lib/spv-auth";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -20,6 +21,17 @@ export default function AdminLoginPage() {
   const [showCode, setShowCode] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isSpvAdminAuthenticated()) {
+      router.replace(`/${locale}/spv-investment/admin/dashboard`);
+      return;
+    }
+    const access = sessionStorage.getItem("spv-admin-access");
+    if (access === "granted") {
+      router.replace(`/${locale}/spv-investment/admin/dashboard`);
+    }
+  }, [locale, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -14,6 +14,7 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/db');
+const { requireSpvAdmin, requireSpvAuth } = require('../middleware/auth');
 
 // Log activity
 const logActivity = async (type, description, adminId, adminName, propertyId = null, metadata = {}) => {
@@ -39,7 +40,7 @@ const logActivity = async (type, description, adminId, adminName, propertyId = n
  * - limit: number (default 50)
  * - offset: number (default 0)
  */
-router.get('/', async (req, res) => {
+router.get('/', requireSpvAuth, async (req, res) => {
   try {
     const { status, property_type, search, limit = 50, offset = 0 } = req.query;
 
@@ -116,7 +117,7 @@ router.get('/', async (req, res) => {
  * GET /api/investment/properties/:id
  * Get single property by ID
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', requireSpvAuth, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -149,7 +150,7 @@ router.get('/:id', async (req, res) => {
  * POST /api/investment/properties
  * Create new property
  */
-router.post('/', async (req, res) => {
+router.post('/', requireSpvAdmin, async (req, res) => {
   try {
     const {
       title,
@@ -228,7 +229,7 @@ router.post('/', async (req, res) => {
  * PATCH /api/investment/properties/:id
  * Update property
  */
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const {
@@ -340,7 +341,7 @@ router.patch('/:id', async (req, res) => {
  * DELETE /api/investment/properties/:id
  * Delete property
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { deletedBy } = req.body;

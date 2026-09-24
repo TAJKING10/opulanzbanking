@@ -14,7 +14,9 @@
 
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const { pool } = require('../config/db');
+const { JWT_SECRET, requireSpvAdmin, requireSpvAuth } = require('../middleware/auth');
 
 // Generate unique access code for investors
 const generateAccessCode = () => {
@@ -60,6 +62,19 @@ router.post('/login', async (req, res) => {
     );
 
     if (result.rows.length === 0) {
+      // Check if code belongs to an admin account to provide helpful feedback
+      const adminCheck = await pool.query(
+        `SELECT id, name FROM investment_admins WHERE access_code = $1 AND status = 'active'`,
+        [accessCode]
+      );
+      if (adminCheck.rows.length > 0) {
+        return res.status(401).json({
+          success: false,
+          isAdminCode: true,
+          error: 'This is an Admin access code. Please use the Admin Portal.'
+        });
+      }
+
       return res.status(401).json({
         success: false,
         error: 'Invalid access code'
@@ -77,11 +92,35 @@ router.post('/login', async (req, res) => {
     // Log activity (no admin for investor login)
     await logActivity('customer_login', `${investor.name} logged in to portal`, null, null, investor.id);
 
-    // Return investor data (without access code)
+    // Sign JWT token for the investor (7-day validity)
+    const token = jwt.sign(
+      {
+        id: investor.id,
+        email: investor.email,
+        name: investor.name,
+        role: 'spv_investor',
+        investor_type: investor.investor_type,
+        profile_type: investor.profile_type,
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    // Set secure cookie
+    res.cookie('spv_investor_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/',
+    });
+
+    // Return investor data (without access code) and bearer token
     const { access_code, ...investorData } = investor;
 
     res.json({
       success: true,
+      token,
       data: {
         ...investorData,
         last_access: new Date().toISOString()
@@ -107,7 +146,7 @@ router.post('/login', async (req, res) => {
  * - limit: number (default 50)
  * - offset: number (default 0)
  */
-router.get('/', async (req, res) => {
+router.get('/', requireSpvAdmin, async (req, res) => {
   try {
     const { status, investor_type, search, limit = 50, offset = 0 } = req.query;
 
@@ -186,9 +225,17 @@ router.get('/', async (req, res) => {
  * GET /api/investment/investors/:id
  * Get single investor by ID
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', requireSpvAuth, async (req, res) => {
   try {
     const { id } = req.params;
+
+    // IDOR Protection: only admin or the investor themselves can fetch their profile
+    if (!req.admin && req.investor?.id !== parseInt(id, 10)) {
+      return res.status(403).json({
+        success: false,
+        error: 'Forbidden: Access to this profile is not allowed'
+      });
+    }
 
     const result = await pool.query(
       `SELECT id, access_code, name, email, phone, investor_type, profile_type, status,
@@ -221,7 +268,7 @@ router.get('/:id', async (req, res) => {
  * POST /api/investment/investors
  * Create new investor
  */
-router.post('/', async (req, res) => {
+router.post('/', requireSpvAdmin, async (req, res) => {
   try {
     const {
       name,
@@ -291,7 +338,7 @@ router.post('/', async (req, res) => {
  * PATCH /api/investment/investors/:id
  * Update investor
  */
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const {
@@ -420,7 +467,7 @@ router.patch('/:id', async (req, res) => {
  * DELETE /api/investment/investors/:id
  * Delete investor
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { deletedBy } = req.body;
@@ -463,7 +510,7 @@ router.delete('/:id', async (req, res) => {
  * POST /api/investment/investors/:id/reset
  * Reset investor access code
  */
-router.post('/:id/reset', async (req, res) => {
+router.post('/:id/reset', requireSpvAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { resetBy } = req.body;

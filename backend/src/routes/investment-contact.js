@@ -297,7 +297,7 @@ router.get('/', async (req, res) => {
 
     query += ' ORDER BY created_at DESC';
     query += ` LIMIT $${params.length + 1} OFFSET $${params.length + 2}`;
-    params.push(limit, offset);
+    params.push(parseInt(limit, 10) || 50, parseInt(offset, 10) || 0);
 
     const result = await pool.query(query, params);
 

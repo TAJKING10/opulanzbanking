@@ -10,6 +10,9 @@
     "dev:all": "node mock-narvi-server.js & nodemon src/index.js",
     "migrate": "node src/migrations/run-migration.js",
     "migrate:all": "node src/migrations/run-all-migrations.js",
+    "lint": "eslint src/ --rulesdir eslint-rules",
+    "security:sql": "node scripts/check-sql-security.js",
+    "security:test": "node scripts/test-sql-security-rule.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

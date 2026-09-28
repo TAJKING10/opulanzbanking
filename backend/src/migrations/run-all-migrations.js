@@ -130,7 +130,11 @@ const runAllMigrations = async () => {
     console.log('\n📈 Record counts:');
     const counts = [];
     for (const table of tables.rows) {
-      const result = await client.query(`SELECT COUNT(*) FROM ${table.table_name}`);
+      if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(table.table_name)) {
+        continue;
+      }
+      // eslint-disable-next-line no-unsafe-sql -- safe internal schema inspection with regex-validated identifier
+      const result = await client.query(`SELECT COUNT(*) FROM "${table.table_name}"`);
       counts.push({
         table: table.table_name,
         count: parseInt(result.rows[0].count)

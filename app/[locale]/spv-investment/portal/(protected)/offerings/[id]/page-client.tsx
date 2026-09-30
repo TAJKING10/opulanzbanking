@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  ArrowLeft, MapPin, Building2, Calendar, CheckCircle, Download, Copy, Check,
+  ArrowLeft, ArrowRight, MapPin, Building2, Calendar, CheckCircle, Download, Copy, Check,
   DollarSign, TrendingUp, Clock, Send, Loader2, AlertCircle
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -315,101 +315,116 @@ export default function SpvOfferingDetailPage() {
 
             {/* Investment Form */}
             {(property.status === "open" || property.status === "closing") && !submitSuccess && (
-              <Card className="border-none shadow-sm border-l-4 border-l-green-500">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <DollarSign className="h-5 w-5 text-green-600" />
+              <Card className="border border-brand-gold/30 bg-gradient-to-br from-white via-white to-brand-off/60 shadow-md hover:shadow-lg transition-all duration-300 rounded-2xl overflow-hidden relative">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-gold/40 via-brand-gold to-brand-gold/40" />
+                <CardHeader className="pb-3 pt-6">
+                  <CardTitle className="flex items-center gap-2.5 text-lg font-bold text-brand-dark">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-gold/15 text-brand-gold">
+                      <DollarSign className="h-5 w-5" />
+                    </div>
                     Invest in This Property
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pb-6">
                   {!showInvestForm ? (
-                    <div className="text-center py-4">
-                      <p className="text-sm text-brand-grayMed mb-4">
-                        Ready to invest? Click below to submit your investment request.
+                    <div className="text-center py-6 px-4 bg-brand-off/30 rounded-xl border border-brand-grayLight/30">
+                      <p className="text-sm text-brand-grayMed max-w-md mx-auto mb-5 leading-relaxed">
+                        Secure your allocation in this SPV offering. Click below to specify your investment amount and submit your request.
                       </p>
-                      <div className="flex items-center justify-center gap-4 text-sm text-brand-grayMed mb-6">
-                        <span className="flex items-center gap-1">
+                      <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-brand-grayMed mb-6">
+                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-brand-grayLight/40 shadow-xs font-medium text-brand-dark">
                           <TrendingUp className="h-4 w-4 text-brand-gold" />
-                          Min: €{property.min_investment?.toLocaleString() || "Contact us"}
+                          Min: <strong className="text-brand-gold">€{property.min_investment?.toLocaleString() || "Contact us"}</strong>
                         </span>
-                        <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-brand-grayLight/40 shadow-xs font-medium text-brand-dark">
                           <Clock className="h-4 w-4 text-brand-gold" />
-                          {availableOwnership.toFixed(1)}% Available
+                          <strong className="text-emerald-600">{availableOwnership.toFixed(1)}%</strong> Available
                         </span>
                       </div>
                       <Button
                         onClick={() => setShowInvestForm(true)}
-                        className="bg-green-600 hover:bg-green-700"
+                        className="group relative inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-brand-gold via-brand-goldDark to-brand-gold hover:from-brand-goldDark hover:to-brand-gold shadow-md hover:shadow-xl hover:shadow-brand-gold/20 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 cursor-pointer h-12"
                       >
-                        <DollarSign className="mr-2 h-4 w-4" />
-                        Request to Invest
+                        <DollarSign className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                        <span className="tracking-wide">Request to Invest</span>
+                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                       </Button>
                     </div>
                   ) : (
-                    <form onSubmit={handleSubmitInvestment} className="space-y-4">
+                    <form onSubmit={handleSubmitInvestment} className="space-y-5 pt-2">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="amount">Investment Amount (€)</Label>
-                          <Input
-                            id="amount"
-                            type="text"
-                            value={investmentAmount}
-                            onChange={(e) => handleAmountChange(e.target.value)}
-                            placeholder={`Min €${property.min_investment?.toLocaleString() || "0"}`}
-                            required
-                          />
+                          <Label htmlFor="amount" className="text-xs font-semibold uppercase tracking-wider text-brand-grayMed">
+                            Investment Amount (€)
+                          </Label>
+                          <div className="relative">
+                            <Input
+                              id="amount"
+                              type="text"
+                              value={investmentAmount}
+                              onChange={(e) => handleAmountChange(e.target.value)}
+                              placeholder={`Min €${property.min_investment?.toLocaleString() || "0"}`}
+                              className="h-11 rounded-xl border-brand-grayLight/60 focus:border-brand-gold focus:ring-brand-gold/20 text-brand-dark font-medium"
+                              required
+                            />
+                          </div>
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="ownership">Ownership Percentage</Label>
+                          <Label htmlFor="ownership" className="text-xs font-semibold uppercase tracking-wider text-brand-grayMed">
+                            Ownership Percentage
+                          </Label>
                           <Input
                             id="ownership"
                             type="text"
                             value={ownershipRequested ? `${ownershipRequested}%` : ""}
                             readOnly
-                            className="bg-gray-50"
+                            className="h-11 rounded-xl bg-brand-off/60 border-brand-grayLight/40 text-brand-dark font-semibold"
                           />
                         </div>
                       </div>
 
-                      <div className="p-4 bg-amber-50 rounded-lg">
-                        <div className="flex items-start gap-2">
-                          <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
-                          <div className="text-sm text-amber-800">
-                            <p className="font-semibold">Investment Terms</p>
-                            <ul className="mt-1 space-y-1 text-xs">
-                              <li>• Minimum investment: €{property.min_investment?.toLocaleString()}</li>
-                              <li>• Target return: {property.target_return || "N/A"}</li>
-                              <li>• Investment term: {property.investment_term || "N/A"}</li>
-                              <li>• Distribution: {property.distribution_frequency || "As per agreement"}</li>
-                            </ul>
+                      <div className="p-4 bg-brand-gold/5 border border-brand-gold/20 rounded-xl">
+                        <div className="flex items-start gap-3">
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-gold/15 text-brand-gold shrink-0 mt-0.5">
+                            <AlertCircle className="h-4 w-4" />
+                          </div>
+                          <div className="text-xs text-brand-grayMed space-y-1">
+                            <p className="font-semibold text-brand-dark">Offering Terms</p>
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-1 pt-1">
+                              <div>• Min Investment: <span className="font-medium text-brand-dark">€{property.min_investment?.toLocaleString()}</span></div>
+                              <div>• Target Return: <span className="font-medium text-brand-gold">{property.target_return || "N/A"}</span></div>
+                              <div>• Term: <span className="font-medium text-brand-dark">{property.investment_term || "N/A"}</span></div>
+                              <div>• Distribution: <span className="font-medium text-brand-dark">{property.distribution_frequency || "Quarterly"}</span></div>
+                            </div>
                           </div>
                         </div>
                       </div>
 
                       {submitError && (
-                        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-                          {submitError}
+                        <div className="p-3.5 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs flex items-center gap-2">
+                          <AlertCircle className="h-4 w-4 shrink-0" />
+                          <span>{submitError}</span>
                         </div>
                       )}
 
-                      <div className="flex gap-3">
+                      <div className="flex items-center gap-3 pt-2">
                         <Button
                           type="button"
                           variant="outline"
                           onClick={() => setShowInvestForm(false)}
+                          className="rounded-xl h-11 px-5 border-brand-grayLight/60 hover:bg-brand-off text-brand-grayMed"
                         >
                           Cancel
                         </Button>
                         <Button
                           type="submit"
                           disabled={isSubmitting || !investmentAmount}
-                          className="bg-green-600 hover:bg-green-700"
+                          className="flex-1 rounded-xl h-11 font-semibold text-white bg-gradient-to-r from-brand-gold to-brand-goldDark hover:from-brand-goldDark hover:to-brand-gold shadow-md hover:shadow-lg transition-all"
                         >
                           {isSubmitting ? (
                             <>
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Submitting...
+                              Processing Request...
                             </>
                           ) : (
                             <>

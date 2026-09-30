@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import {
   TrendingUp, Building2, FileText, DollarSign, ArrowRight, Clock, CheckCircle,
-  AlertCircle, Wallet, PieChart, Calendar, ExternalLink
+  AlertCircle, Wallet, PieChart, Calendar, ExternalLink, ChevronDown
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,39 @@ export default function SpvDashboardPage() {
   const [investments, setInvestments] = React.useState<Investment[]>([]);
   const [summary, setSummary] = React.useState<InvestorPortfolioSummary | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [expandedPropertyIds, setExpandedPropertyIds] = React.useState<Set<number>>(new Set());
+
+  const togglePropertyExpand = (propertyId: number) => {
+    setExpandedPropertyIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(propertyId)) {
+        next.delete(propertyId);
+      } else {
+        next.add(propertyId);
+      }
+      return next;
+    });
+  };
+
+  const formatInvestmentDate = (inv: any) => {
+    const rawDate = inv.created_at || inv.investment_date;
+    if (!rawDate) return "N/A";
+    const dateObj = new Date(rawDate);
+    const dateStr = dateObj.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
+    // Check if created_at contains time
+    if (inv.created_at) {
+      const timeStr = dateObj.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+      return `${dateStr} at ${timeStr}`;
+    }
+    return dateStr;
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -174,70 +207,180 @@ export default function SpvDashboardPage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {investments.map((investment: any) => (
-                      <div
-                        key={investment.id}
-                        className="flex items-center gap-4 p-4 rounded-xl border border-brand-grayLight/30 hover:border-brand-gold/30 hover:bg-brand-off/50 transition-all"
-                      >
-                        {/* Property Image */}
-                        <div className="relative h-16 w-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
-                          <Image
-                            src={investment.images?.[0] || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&h=150&fit=crop"}
-                            alt={investment.property_title || "Property"}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
+                    {(() => {
+                      // Group investments by property_id
+                      const grouped = investments.reduce((acc: Record<number, any>, inv: any) => {
+                        const pid = inv.property_id;
+                        if (!acc[pid]) {
+                          acc[pid] = {
+                            property_id: pid,
+                            property_title: inv.property_title || "Investment Property",
+                            property_location: inv.property_location || "Location",
+                            images: inv.images,
+                            total_amount: 0,
+                            total_ownership: 0,
+                            total_returns: 0,
+                            status: inv.status,
+                            items: []
+                          };
+                        }
+                        acc[pid].items.push(inv);
+                        acc[pid].total_amount += parseFloat(inv.amount_invested) || 0;
+                        acc[pid].total_ownership += parseFloat(inv.ownership_percentage) || 0;
+                        acc[pid].total_returns += parseFloat(inv.calculations?.profit_loss || 0);
+                        // If any investment is active, show active, otherwise latest status
+                        if (inv.status === 'active') {
+                          acc[pid].status = 'active';
+                        }
+                        return acc;
+                      }, {});
 
-                        {/* Investment Details */}
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-brand-dark truncate">
-                            {investment.property_title || "Investment Property"}
-                          </h4>
-                          <p className="text-xs text-brand-grayMed">
-                            {investment.property_location || "Location"} • {investment.ownership_percentage}% ownership
-                          </p>
-                          <div className="mt-1 flex items-center gap-3 text-xs">
-                            <span className={cn(
-                              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full",
-                              investment.status === 'active' ? "bg-green-100 text-green-700" :
-                              investment.status === 'pending' ? "bg-amber-100 text-amber-700" :
-                              "bg-gray-100 text-gray-600"
-                            )}>
-                              <span className={cn(
-                                "h-1.5 w-1.5 rounded-full",
-                                investment.status === 'active' ? "bg-green-500" :
-                                investment.status === 'pending' ? "bg-amber-500" :
-                                "bg-gray-400"
-                              )} />
-                              {investment.status?.charAt(0).toUpperCase() + investment.status?.slice(1) || "Active"}
-                            </span>
-                            <span className="text-brand-grayMed">
-                              Invested: {new Date(investment.investment_date).toLocaleDateString('en-GB')}
-                            </span>
+                      return Object.values(grouped).map((group: any) => {
+                        const isMulti = group.items.length > 1;
+                        const isExpanded = expandedPropertyIds.has(group.property_id);
+
+                        return (
+                          <div
+                            key={group.property_id}
+                            className="rounded-xl border border-brand-grayLight/30 hover:border-brand-gold/30 bg-white overflow-hidden transition-all shadow-sm"
+                          >
+                            {/* Main Summary Header */}
+                            <div
+                              onClick={() => {
+                                if (isMulti) {
+                                  togglePropertyExpand(group.property_id);
+                                }
+                              }}
+                              className={cn(
+                                "flex items-center gap-4 p-4 transition-all",
+                                isMulti ? "cursor-pointer hover:bg-brand-off/40" : ""
+                              )}
+                            >
+                              {/* Property Image */}
+                              <div className="relative h-16 w-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
+                                <Image
+                                  src={group.images?.[0] || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&h=150&fit=crop"}
+                                  alt={group.property_title}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+
+                              {/* Details */}
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                  <h4 className="font-semibold text-brand-dark truncate">
+                                    {group.property_title}
+                                  </h4>
+                                  {isMulti && (
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-brand-gold/15 text-brand-gold">
+                                      {group.items.length} investments
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-xs text-brand-grayMed mt-0.5">
+                                  {group.property_location} • {group.total_ownership.toFixed(2)}% total ownership
+                                </p>
+                                <div className="mt-1 flex items-center gap-3 text-xs">
+                                  <span className={cn(
+                                    "inline-flex items-center gap-1 px-2 py-0.5 rounded-full",
+                                    group.status === 'active' ? "bg-green-100 text-green-700" :
+                                    group.status === 'pending' ? "bg-amber-100 text-amber-700" :
+                                    "bg-gray-100 text-gray-600"
+                                  )}>
+                                    <span className={cn(
+                                      "h-1.5 w-1.5 rounded-full",
+                                      group.status === 'active' ? "bg-green-500" :
+                                      group.status === 'pending' ? "bg-amber-500" :
+                                      "bg-gray-400"
+                                    )} />
+                                    {group.status?.charAt(0).toUpperCase() + group.status?.slice(1) || "Active"}
+                                  </span>
+                                  {!isMulti && group.items[0] && (
+                                    <span className="text-brand-grayMed">
+                                      Invested: {formatInvestmentDate(group.items[0])}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Amount & Returns */}
+                              <div className="text-right shrink-0">
+                                <p className="font-bold text-brand-dark text-base">
+                                  €{group.total_amount.toLocaleString()}
+                                </p>
+                                <p className="text-xs text-brand-grayMed">
+                                  {group.total_returns >= 0 ? '+' : ''}€{group.total_returns.toLocaleString()} returns
+                                </p>
+                              </div>
+
+                              {/* Expand/Collapse Chevron or Offering Link */}
+                              <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
+                                <Link
+                                  href={`/${locale}/spv-investment/portal/offerings/${group.property_id}`}
+                                  className="p-2 rounded-lg hover:bg-brand-gold/10 text-brand-grayMed hover:text-brand-gold transition-colors"
+                                  title="View Offering"
+                                >
+                                  <ExternalLink className="h-4 w-4" />
+                                </Link>
+                                {isMulti && (
+                                  <button
+                                    type="button"
+                                    onClick={() => togglePropertyExpand(group.property_id)}
+                                    className="p-2 rounded-lg hover:bg-brand-off text-brand-grayMed hover:text-brand-dark transition-colors"
+                                    title={isExpanded ? "Collapse" : "Expand investment breakdown"}
+                                  >
+                                    <ChevronDown className={cn("h-4 w-4 transition-transform duration-200", isExpanded ? "rotate-180" : "")} />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Dropdown Breakdown for Multiple Investments */}
+                            {isMulti && isExpanded && (
+                              <div className="border-t border-brand-grayLight/30 bg-brand-off/30 px-4 py-3 divide-y divide-brand-grayLight/20">
+                                <div className="text-xs font-semibold text-brand-grayMed uppercase tracking-wider mb-2 px-2">
+                                  Investment History ({group.items.length})
+                                </div>
+                                {group.items.map((inv: any, idx: number) => (
+                                  <div
+                                    key={inv.id || idx}
+                                    className="flex items-center justify-between py-2.5 px-2 hover:bg-white/80 rounded-lg transition-colors"
+                                  >
+                                    <div className="flex items-center gap-2.5">
+                                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-gold/10 text-brand-gold text-xs font-bold shrink-0">
+                                        #{idx + 1}
+                                      </div>
+                                      <div>
+                                        <p className="text-xs font-semibold text-brand-dark">
+                                          €{parseFloat(inv.amount_invested).toLocaleString()}
+                                          <span className="ml-2 font-normal text-brand-grayMed">
+                                            ({inv.ownership_percentage}% ownership)
+                                          </span>
+                                        </p>
+                                        <p className="text-[11px] text-brand-grayMed">
+                                          {formatInvestmentDate(inv)}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="text-right">
+                                      <span className={cn(
+                                        "inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium",
+                                        inv.status === 'active' ? "bg-green-100 text-green-700" :
+                                        inv.status === 'pending' ? "bg-amber-100 text-amber-700" :
+                                        "bg-gray-100 text-gray-600"
+                                      )}>
+                                        {inv.status?.charAt(0).toUpperCase() + inv.status?.slice(1) || "Active"}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
-                        </div>
-
-                        {/* Investment Amount */}
-                        <div className="text-right shrink-0">
-                          <p className="font-bold text-brand-dark">
-                            €{parseFloat(investment.amount_invested).toLocaleString()}
-                          </p>
-                          <p className="text-xs text-brand-grayMed">
-                            {investment.calculations?.profit_loss_status === 'profit' ? '+' : ''}
-                            €{investment.calculations?.profit_loss?.toLocaleString() || '0'} returns
-                          </p>
-                        </div>
-
-                        {/* View Button */}
-                        <Link
-                          href={`/${locale}/spv-investment/portal/offerings/${investment.property_id}`}
-                          className="p-2 rounded-lg hover:bg-brand-gold/10 text-brand-grayMed hover:text-brand-gold transition-colors"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </Link>
-                      </div>
-                    ))}
+                        );
+                      });
+                    })()}
                   </div>
                 )}
               </CardContent>

@@ -684,17 +684,7 @@ router.post('/', requireSpvAuth, async (req, res) => {
       });
     }
 
-    // Check if investment already exists
-    const existingCheck = await pool.query(
-      'SELECT * FROM investments WHERE investor_id = $1 AND property_id = $2',
-      [investor_id, property_id]
-    );
-    if (existingCheck.rows.length > 0) {
-      return res.status(400).json({
-        success: false,
-        error: 'Investment already exists for this investor and property'
-      });
-    }
+
 
     // Check total ownership doesn't exceed 100%
     const ownershipCheck = await pool.query(

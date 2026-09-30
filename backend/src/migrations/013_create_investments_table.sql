@@ -41,8 +41,6 @@ CREATE TABLE IF NOT EXISTS investments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    -- Constraints
-    CONSTRAINT unique_investor_property UNIQUE (investor_id, property_id),
     CONSTRAINT valid_percentage CHECK (ownership_percentage > 0 AND ownership_percentage <= 100),
     CONSTRAINT valid_amount CHECK (amount_invested > 0)
 );

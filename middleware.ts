@@ -28,13 +28,7 @@ export default function middleware(req: NextRequest) {
     return NextResponse.redirect(url, 308);
   }
 
-  // Hide/Redirect spv-investment in production
-  if (isProduction && pathname.includes('/spv-investment')) {
-    const segments = pathname.split('/');
-    const locale = segments[1] || 'en';
-    const redirectLocale = ['en', 'fr'].includes(locale) ? locale : 'en';
-    return NextResponse.redirect(new URL(`/${redirectLocale}`, req.url), 308);
-  }
+
 
   // Admin panel bypasses i18n entirely
   if (pathname.startsWith('/admin')) {

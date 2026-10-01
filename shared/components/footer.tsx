@@ -128,16 +128,6 @@ export function Footer({ locale }: FooterProps) {
                   {t("nav.ourServices")}
                 </Link>
               </li>
-              {process.env.NODE_ENV !== "production" && process.env.NEXT_PUBLIC_ENVIRONMENT !== "production" && (
-                <li>
-                  <Link
-                    href={`/${locale}/spv-investment`}
-                    className="block py-1.5 text-sm leading-6 text-brand-grayMed transition-colors hover:text-brand-gold md:py-0"
-                  >
-                    {t("footer.links.services.spvInvestment")}
-                  </Link>
-                </li>
-              )}
             </ul>
           </div>
 

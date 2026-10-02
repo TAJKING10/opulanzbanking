@@ -23,7 +23,7 @@ ABOUT OPULANZ
 Opulanz est la plateforme financière tout-en-un d'Advensys Luxembourg S.A., avec plus de 19 ans d'expérience dans les services financiers aux entreprises en Europe.
 
 Legal entity: Advensys Luxembourg S.A.
-Registered address: 2 Rue Edward Steichen, L-2540 Luxembourg
+Registered address: 49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg
 RCS Luxembourg: B 252 345 | VAT: LU30956782
 Capital: €31,000
 
@@ -303,7 +303,7 @@ CONTACT & BUREAUX
 ═══════════════════════════════════════════
 Bureau Luxembourg:
 • Téléphone: +352 28 79 76 26
-• Adresse: 2 Rue Edward Steichen, L-2540 Luxembourg
+• Adresse: 34, Grand-rue, L-9710 Clervaux, Luxembourg
 
 Bureau France:
 • Téléphone: +33 6 98 21 44 46

@@ -1437,7 +1437,7 @@
         "need4": "Proof of business address",
         "need5": "Company formation details (if starting a new company)",
         "processingTime": "Processing Time",
-        "processingTimeDesc": "Business account applications typically take 5-10 business days to review. We may contact you for additional information during the review process.",
+        "processingTimeDesc": "Business account applications typically take 3-5 business days to review. We may contact you for additional information during the review process.",
         "startApplication": "Start Application"
       },
       "companyStatus": {

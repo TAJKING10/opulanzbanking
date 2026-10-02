@@ -1437,7 +1437,7 @@
         "need4": "Justificatif d'adresse professionnelle",
         "need5": "Détails de création de société (si nouvelle société)",
         "processingTime": "Délai de traitement",
-        "processingTimeDesc": "Les demandes de compte professionnel prennent généralement 5 à 10 jours ouvrables. Nous pourrions vous contacter pour des informations supplémentaires pendant le processus d'examen.",
+        "processingTimeDesc": "Les demandes de compte professionnel prennent généralement 3 à 5 jours ouvrables. Nous pourrions vous contacter pour des informations supplémentaires pendant le processus d'examen.",
         "startApplication": "Commencer la demande"
       },
       "companyStatus": {

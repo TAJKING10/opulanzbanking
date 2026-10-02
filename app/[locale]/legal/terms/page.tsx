@@ -84,7 +84,7 @@ const enContent = (
 
     <h2 className="text-2xl font-bold text-brand-dark mb-4">3. KYC / AML Obligations</h2>
     <p className="text-brand-grayMed mb-4">
-      In compliance with EU Directive 2015/849 (5th AML Directive) and applicable national
+      In compliance with Directive (EU) 2015/849, as amended by Directive (EU) 2018/843, and applicable national
       transpositions, all users are required to provide identity documentation and proof of address prior to
       accessing any regulated financial service. The Platform reserves the right to refuse access or suspend
       an account in the event of incomplete or fraudulent documentation.
@@ -246,7 +246,7 @@ const frContent = (
 
     <h2 className="text-2xl font-bold text-brand-dark mb-4">3. Obligations KYC / LCB-FT</h2>
     <p className="text-brand-grayMed mb-4">
-      Conformément à la Directive européenne 2015/849 (5e Directive anti-blanchiment) et à ses
+      Conformément à la Directive (UE) 2015/849, telle que modifiée par la Directive (UE) 2018/843, et à ses
       transpositions nationales applicables, tous les utilisateurs sont tenus de fournir des pièces
       d'identité et un justificatif de domicile avant d'accéder à tout service financier réglementé. La
       Plateforme se réserve le droit de refuser l'accès ou de suspendre un compte en cas de documentation

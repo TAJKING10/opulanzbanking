@@ -55,7 +55,7 @@ export default function MortgagePage({
         pageKey="mortgage"
         locale={locale}
         title="Mortgage"
-        description="Expert mortgage brokerage for France and Luxembourg — we submit your file to partner banks so you get the best offers."
+        description="Expert mortgage brokerage for France and Luxembourg — we submit your file to partner banks so you receive suitable offers from the institutions consulted."
         steps={[
           { content: "Welcome to Mortgage Services. Opulanz acts as your regulated credit intermediary, handling your dossier from document collection through to bank offer." },
           { title: "How It Works", content: "This section explains our 4-step process — pre-qualification, document upload, bank submission, and offer acceptance.", target: "#how-it-works", position: "bottom" },

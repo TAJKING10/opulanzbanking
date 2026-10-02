@@ -51,7 +51,7 @@ const enContent = (
     </p>
     <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-3">
       <li>
-        <strong>Banking account opening &amp; payment intermediation:</strong> Opulanz SIA (Latvia, reg.
+        <strong>Payment account opening &amp; payment intermediation:</strong> Opulanz SIA (Latvia, reg.
         40203750214) acting as introducer, in partnership with licensed EMI partners within the European Union.
       </li>
       <li>
@@ -105,7 +105,7 @@ const enContent = (
       entered into at the time of subscription:
     </p>
     <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-      <li>Business and personal bank account opening (via licensed EMI partners)</li>
+      <li>Business and personal payment account opening (via licensed EMI partners)</li>
       <li>Company formation in Luxembourg (with or without accounting mandate — see eligibility per entity)</li>
       <li>Professional accounting and payroll services</li>
       <li>Accounting software licensing and invoice management</li>
@@ -206,7 +206,7 @@ const frContent = (
     </p>
     <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-3">
       <li>
-        <strong>Ouverture de compte bancaire &amp; intermédiation en paiement :</strong> Opulanz SIA
+        <strong>Ouverture de compte de paiement &amp; intermédiation en paiement :</strong> Opulanz SIA
         (Lettonie, n° 40203750214), agissant en qualité d'apporteur d'affaires, en partenariat avec des
         établissements de monnaie électronique (EME) agréés au sein de l'Union européenne.
       </li>
@@ -269,7 +269,7 @@ const frContent = (
       spécifiques conclues au moment de la souscription :
     </p>
     <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
-      <li>Ouverture de compte bancaire professionnel et personnel (via des partenaires EME agréés)</li>
+      <li>Ouverture de compte de paiement professionnel et personnel (via des partenaires EME agréés)</li>
       <li>Création de société au Luxembourg (avec ou sans mandat comptable — voir éligibilité par entité)</li>
       <li>Services de comptabilité professionnelle et de gestion de la paie</li>
       <li>Licence de logiciel comptable et gestion des factures</li>

@@ -179,8 +179,9 @@ const enContent = (
     <p className="text-brand-grayMed mb-6">
       In the event of an unresolved dispute regarding investment advisory services, clients may refer the
       matter to the <strong>Médiateur de l'AMF</strong> (Autorité des Marchés Financiers). For banking
-      intermediation disputes, the <strong>Médiateur de l'ACPR</strong> is competent if the service is
-      provided by Advensys Insurance-Finance SARL.
+      intermediation disputes, clients may contact <strong>CNPM Médiation Consommation</strong> — 27 avenue
+      de la Libération, 42400 Saint-Chamond — website: www.cnpm-mediation-consommation.eu — email:
+      contact-admin@cnpm-mediation-consommation.eu.
     </p>
 
     <p className="text-sm text-brand-grayMed mt-8 pt-6 border-t border-brand-grayLight">
@@ -343,8 +344,9 @@ const frContent = (
     <p className="text-brand-grayMed mb-6">
       En cas de litige non résolu relatif aux services de conseil en investissement, les clients peuvent
       saisir le <strong>Médiateur de l'AMF</strong> (Autorité des Marchés Financiers). Pour les litiges
-      relatifs à l'intermédiation bancaire, le <strong>Médiateur de l'ACPR</strong> est compétent si le
-      service est fourni par Advensys Insurance-Finance SARL.
+      relatifs à l'intermédiation bancaire, les clients peuvent contacter <strong>CNPM Médiation
+      Consommation</strong> — 27 avenue de la Libération, 42400 Saint-Chamond — site :
+      www.cnpm-mediation-consommation.eu — courriel : contact-admin@cnpm-mediation-consommation.eu.
     </p>
 
     <p className="text-sm text-brand-grayMed mt-8 pt-6 border-t border-brand-grayLight">

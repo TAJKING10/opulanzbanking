@@ -1347,8 +1347,8 @@
         "accountTypeQuestion": "What type of account are you opening?",
         "currentTitle": "Current / Everyday Account",
         "currentDesc": "Standard personal payment account for daily transactions, payments, and savings. Suitable for residents and non-residents.",
-        "privateTitle": "Private Banking",
-        "privateDesc": "Wealth management and private banking services for high-net-worth individuals. Minimum deposit typically required.",
+        "privateTitle": "Private Banking Introduction",
+        "privateDesc": "Opulanz acts as an introducer to regulated private banking partners. Investment advisory services are provided by Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF, AMF registered). Minimum assets of €250,000+ typically required by the partner institution.",
         "whatNext": "What happens next?",
         "nextStep1": "We'll collect your personal information",
         "nextStep2": "Verify your identity and contact details",
@@ -1387,8 +1387,8 @@
         "pepWarning": "If you are a PEP or subject to sanctions, additional verification will be required",
         "whyNeeded": "Why we need this information",
         "whyNeededDesc": "Based on your residence status and location, we'll match you with Opulanz Partner that can best serve your needs and comply with local payment regulations.",
-        "privateBankingNotice": "Private bank selected",
-        "privateBankingNoticeDesc": "Private banking typically requires a minimum deposit (€250,000+) and provides dedicated relationship management, wealth advisory, and investment services.",
+        "privateBankingNotice": "Private banking referral selected",
+        "privateBankingNoticeDesc": "Opulanz acts as an introducer to regulated private banking partners. Investment advisory services are provided by Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF, AMF registered). A minimum of €250,000 in assets is typically required by the partner institution.",
         "otherEuCountry": "Other EU Country"
       },
       "documents": {
@@ -3296,7 +3296,7 @@
           "backToHomepage": "Back to Homepage",
           "privateBanking": {
             "title": "Submit Your Application",
-            "description": "Your private banking application will be sent to our team at contact@opulanz.com. A relationship manager will reach out to you directly.",
+            "description": "Your private banking referral request will be forwarded to our team at contact@opulanz.com. An adviser from Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF) will contact you to discuss available private banking partners and next steps.",
             "summary": "Application Summary",
             "name": "Name",
             "email": "Email",

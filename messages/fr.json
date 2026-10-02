@@ -1347,8 +1347,8 @@
         "accountTypeQuestion": "Quel type de compte souhaitez-vous ouvrir ?",
         "currentTitle": "Compte courant",
         "currentDesc": "Compte de paiement standard pour les transactions quotidiennes, les paiements et l'épargne. Adapté aux résidents et non-résidents.",
-        "privateTitle": "Banque privée",
-        "privateDesc": "Services de gestion de patrimoine et de banque privée pour les particuliers fortunés. Dépôt minimum généralement requis.",
+        "privateTitle": "Mise en relation banque privée",
+        "privateDesc": "Opulanz agit en qualité d'apporteur d'affaires auprès de partenaires de banque privée réglementés. Les conseils en investissements financiers sont assurés par Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF, enregistrée auprès de l'AMF). Un minimum de 250 000 € d'actifs est généralement exigé par l'établissement partenaire.",
         "whatNext": "Que se passe-t-il ensuite ?",
         "nextStep1": "Nous collecterons vos informations personnelles",
         "nextStep2": "Vérifierons votre identité et vos coordonnées",
@@ -1387,8 +1387,8 @@
         "pepWarning": "Si vous êtes une PPE ou soumis à des sanctions, une vérification supplémentaire sera requise",
         "whyNeeded": "Pourquoi nous avons besoin de ces informations",
         "whyNeededDesc": "En fonction de votre statut de résidence et de votre localisation, nous vous mettrons en relation avec le Partenaire Opulanz le mieux adapté à vos besoins et conforme aux réglementations de paiement locales.",
-        "privateBankingNotice": "Banque privée sélectionnée",
-        "privateBankingNoticeDesc": "La banque privée nécessite généralement un dépôt minimum (250 000 € et plus) et offre une gestion de relation dédiée, des conseils en patrimoine et des services d'investissement.",
+        "privateBankingNotice": "Mise en relation banque privée sélectionnée",
+        "privateBankingNoticeDesc": "Opulanz agit en qualité d'apporteur d'affaires auprès de partenaires de banque privée réglementés. Les conseils en investissements financiers sont assurés par Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF, enregistrée auprès de l'AMF). Un minimum de 250 000 € d'actifs est généralement exigé par l'établissement partenaire.",
         "otherEuCountry": "Autre pays de l'UE"
       },
       "documents": {
@@ -3296,7 +3296,7 @@
           "backToHomepage": "Retour à l'accueil",
           "privateBanking": {
             "title": "Soumettre votre demande",
-            "description": "Votre demande de banque privée sera transmise à notre équipe à contact@opulanz.com. Un gestionnaire de relation vous contactera directement.",
+            "description": "Votre demande de mise en relation avec une banque privée sera transmise à notre équipe à contact@opulanz.com. Un conseiller d'Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF) vous contactera pour vous présenter les partenaires disponibles et les prochaines étapes.",
             "summary": "Résumé de la demande",
             "name": "Nom",
             "email": "E-mail",

@@ -1346,7 +1346,7 @@
         "description": "Let's get started with opening your personal payment account. This should take about 10 minutes.",
         "accountTypeQuestion": "What type of account are you opening?",
         "currentTitle": "Current / Everyday Account",
-        "currentDesc": "Standard personal payment account for daily transactions, payments, and savings. Suitable for residents and non-residents.",
+        "currentDesc": "Standard personal payment account for daily transactions and payments. Suitable for residents and non-residents.",
         "privateTitle": "Private Banking Introduction",
         "privateDesc": "Opulanz acts as an introducer to regulated private banking partners. Investment advisory services are provided by Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF, AMF registered). Minimum assets of €250,000+ typically required by the partner institution.",
         "whatNext": "What happens next?",

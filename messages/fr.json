@@ -1346,7 +1346,7 @@
         "description": "Commençons l'ouverture de votre compte de paiement personnel. Cela devrait prendre environ 10 minutes.",
         "accountTypeQuestion": "Quel type de compte souhaitez-vous ouvrir ?",
         "currentTitle": "Compte courant",
-        "currentDesc": "Compte de paiement standard pour les transactions quotidiennes, les paiements et l'épargne. Adapté aux résidents et non-résidents.",
+        "currentDesc": "Compte de paiement standard pour les transactions quotidiennes et les paiements. Adapté aux résidents et non-résidents.",
         "privateTitle": "Mise en relation banque privée",
         "privateDesc": "Opulanz agit en qualité d'apporteur d'affaires auprès de partenaires de banque privée réglementés. Les conseils en investissements financiers sont assurés par Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF, enregistrée auprès de l'AMF). Un minimum de 250 000 € d'actifs est généralement exigé par l'établissement partenaire.",
         "whatNext": "Que se passe-t-il ensuite ?",

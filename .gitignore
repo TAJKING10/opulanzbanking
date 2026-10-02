@@ -1,5 +1,14 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Large deployment artifacts
+deploy_temp/
+frontend.zip
+frontend-deploy.zip
+frontend-deploy.tar.gz
+backend-deploy.zip
+*.zip
+*.tar.gz
+
 # dependencies
 /node_modules
 /.pnp

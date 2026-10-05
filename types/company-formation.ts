@@ -122,7 +122,7 @@ export const COMPANY_FORM_RULES = {
   },
   "SARL-S": {
     minCapital: 1,
-    maxCapital: 100000,
+    maxCapital: 12000,
     requiresDirectors: false,
     requiresManagers: true,
     minManagers: 1,

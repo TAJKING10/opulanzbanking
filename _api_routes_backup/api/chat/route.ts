@@ -90,7 +90,7 @@ Création d'entreprise complète au Luxembourg avec accompagnement expert, coord
 
 ── FORMES JURIDIQUES DISPONIBLES ──
 1. SARL (Société à Responsabilité Limitée) — La plus courante. Capital minimum: €12,000. Minimum 1 associé. Responsabilité limitée. Idéale pour les PME.
-2. SARL-S (SARL Simplifiée) — Capital minimum: €1 (maximum €100,000). Idéale pour les startups. Formation simplifiée.
+2. SARL-S (SARL Simplifiée) — Capital minimum: €1 (maximum €12,000). Idéale pour les startups. Formation simplifiée.
 3. SA (Société Anonyme) — Capital minimum: €30,000. Conseil d'administration obligatoire. Peut être cotée en bourse. Pour les grandes entreprises.
 4. SCSp (Société en Commandite Spéciale) — Pas de capital minimum. Transparence fiscale. Très populaire pour les fonds d'investissement. Structure flexible.
 5. Entreprise Individuelle (Sole Proprietor) — Pas de capital minimum. Structure la plus simple. Pas d'entité juridique séparée. Responsabilité personnelle illimitée.
@@ -326,7 +326,7 @@ R: Voici les étapes exactes:
 6. Recevez votre IBAN multi-devises (EUR, USD, GBP, CHF) et accédez à votre tableau de bord.
 
 Q: Quelle forme juridique choisir au Luxembourg?
-R: - PME/startup avec budget serré → SARL-S (capital minimum €1, max €100,000)
+R: - PME/startup avec budget serré → SARL-S (capital minimum €1, max €12,000)
    - PME standard → SARL (capital minimum €12,000, la plus courante)
    - Grande entreprise → SA (capital minimum €30,000, peut être cotée)
    - Fonds d'investissement → SCSp (pas de capital minimum, fiscalement transparente)

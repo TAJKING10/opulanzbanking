@@ -49,7 +49,7 @@ const enContent = (
     <h2 className="text-2xl font-bold text-brand-dark mb-4">1. Website Publisher</h2>
 
     <h3 className="text-lg font-semibold text-brand-dark mb-3">
-      ADVENSYS INSURANCE-FINANCE — Principal Publisher (France)
+      ADVENSYS INSURANCE-FINANCE: Principal Publisher (France)
     </h3>
     <div className="text-brand-grayMed mb-6 space-y-1 pl-4 border-l-2 border-brand-gold/40">
       <p><strong>Company Name:</strong> Advensys Insurance-Finance SARL</p>
@@ -60,16 +60,16 @@ const enContent = (
       <p><strong>SIRET:</strong> 895 111 292 00010</p>
       <p><strong>RCS:</strong> Paris 895 111 292</p>
       <p><strong>EUID:</strong> FR7501.895111292</p>
-      <p><strong>APE / NAF:</strong> 6622Z — Other auxiliary activities of insurance and pension funding</p>
+      <p><strong>APE / NAF:</strong> 6622Z, Other auxiliary activities of insurance and pension funding</p>
       <p><strong>VAT Number:</strong> FR50895111292</p>
       <p><strong>Trade Name:</strong> Opulanz</p>
-      <p><strong>Publication Director:</strong> Manager — Advensys Insurance-Finance SARL</p>
+      <p><strong>Publication Director:</strong> Manager, Advensys Insurance-Finance SARL</p>
       <p><strong>Phone:</strong> +33 6 98 21 44 46</p>
       <p><strong>Email:</strong> contact@advensys-in-finance.com</p>
     </div>
 
     <h3 className="text-lg font-semibold text-brand-dark mb-3">
-      GROUPE ADVENSYS LUXEMBOURG S.A. — Operational Entity (Luxembourg)
+      GROUPE ADVENSYS LUXEMBOURG S.A.: Operational Entity (Luxembourg)
     </h3>
     <div className="text-brand-grayMed mb-6 space-y-1 pl-4 border-l-2 border-brand-gold/40">
       <p><strong>Company Name:</strong> Groupe Advensys Luxembourg S.A.</p>
@@ -78,7 +78,7 @@ const enContent = (
       <p><strong>Share Capital:</strong> EUR 31,000</p>
       <p><strong>Registered Office:</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg</p>
       <p><strong>RCS Luxembourg:</strong> B197138</p>
-      <p><strong>NACE Code:</strong> 69.200 — Accounting activities</p>
+      <p><strong>NACE Code:</strong> 69.200, Accounting activities</p>
       <p><strong>Incorporation Date:</strong> 12/05/2015</p>
       <p><strong>Sole Director:</strong> DULBERG Irvin Regnard</p>
       <p><strong>Email:</strong> contact@advensys-conseil.lu</p>
@@ -86,7 +86,7 @@ const enContent = (
     </div>
 
     <h3 className="text-lg font-semibold text-brand-dark mb-3">
-      OPULANZ SIA — Operational Entity (Latvia)
+      OPULANZ SIA: Operational Entity (Latvia)
     </h3>
     <div className="text-brand-grayMed mb-6 space-y-1 pl-4 border-l-2 border-brand-gold/40">
       <p><strong>Company Name:</strong> Opulanz SIA</p>
@@ -104,8 +104,8 @@ const enContent = (
     <h2 className="text-2xl font-bold text-brand-dark mb-4">2. Hosting</h2>
     <div className="text-brand-grayMed mb-6 space-y-1 pl-4 border-l-2 border-brand-gold/40">
       <p>The website www.opulanz.com is hosted by:</p>
-      <p><strong>Primary Host:</strong> Microsoft Azure — European Data Centers (EU)</p>
-      <p><strong>Secondary Host (France):</strong> OVH SAS — 2 rue Kellermann, 59100 Roubaix, France — SIRET: 424 761 419 00045</p>
+      <p><strong>Primary Host:</strong> Microsoft Azure, European Data Centers (EU)</p>
+      <p><strong>Secondary Host (France):</strong> OVH SAS, 2 rue Kellermann, 59100 Roubaix, France (SIRET: 424 761 419 00045)</p>
     </div>
 
     <h2 className="text-2xl font-bold text-brand-dark mb-4">3. Intellectual Property</h2>
@@ -147,7 +147,7 @@ const frContent = (
     <h2 className="text-2xl font-bold text-brand-dark mb-4">1. Éditeur du Site</h2>
 
     <h3 className="text-lg font-semibold text-brand-dark mb-3">
-      ADVENSYS INSURANCE-FINANCE — Éditeur principal (France)
+      ADVENSYS INSURANCE-FINANCE : Éditeur principal (France)
     </h3>
     <div className="text-brand-grayMed mb-6 space-y-1 pl-4 border-l-2 border-brand-gold/40">
       <p><strong>Dénomination sociale :</strong> Advensys Insurance-Finance SARL</p>
@@ -158,16 +158,16 @@ const frContent = (
       <p><strong>SIRET :</strong> 895 111 292 00010</p>
       <p><strong>RCS :</strong> Paris 895 111 292</p>
       <p><strong>EUID :</strong> FR7501.895111292</p>
-      <p><strong>APE / NAF :</strong> 6622Z — Autres activités auxiliaires d'assurance et de retraite</p>
+      <p><strong>APE / NAF :</strong> 6622Z, Autres activités auxiliaires d'assurance et de retraite</p>
       <p><strong>Numéro de TVA :</strong> FR50895111292</p>
       <p><strong>Nom commercial :</strong> Opulanz</p>
-      <p><strong>Directeur de publication :</strong> Gérant — Advensys Insurance-Finance SARL</p>
+      <p><strong>Directeur de publication :</strong> Gérant, Advensys Insurance-Finance SARL</p>
       <p><strong>Téléphone :</strong> +33 6 98 21 44 46</p>
       <p><strong>Email :</strong> contact@advensys-in-finance.com</p>
     </div>
 
     <h3 className="text-lg font-semibold text-brand-dark mb-3">
-      GROUPE ADVENSYS LUXEMBOURG S.A. — Entité opérationnelle (Luxembourg)
+      GROUPE ADVENSYS LUXEMBOURG S.A. : Entité opérationnelle (Luxembourg)
     </h3>
     <div className="text-brand-grayMed mb-6 space-y-1 pl-4 border-l-2 border-brand-gold/40">
       <p><strong>Dénomination sociale :</strong> Groupe Advensys Luxembourg S.A.</p>
@@ -176,7 +176,7 @@ const frContent = (
       <p><strong>Capital social :</strong> 31 000 EUR</p>
       <p><strong>Siège social :</strong> 49 Duarrefstrooss, L-9964 Huldange, Grand-Duché de Luxembourg</p>
       <p><strong>RCS Luxembourg :</strong> B197138</p>
-      <p><strong>Code NACE :</strong> 69.200 — Activités comptables</p>
+      <p><strong>Code NACE :</strong> 69.200, Activités comptables</p>
       <p><strong>Date de constitution :</strong> 12/05/2015</p>
       <p><strong>Administrateur unique :</strong> DULBERG Irvin Regnard</p>
       <p><strong>Email :</strong> contact@advensys-conseil.lu</p>
@@ -184,7 +184,7 @@ const frContent = (
     </div>
 
     <h3 className="text-lg font-semibold text-brand-dark mb-3">
-      OPULANZ SIA — Entité opérationnelle (Lettonie)
+      OPULANZ SIA : Entité opérationnelle (Lettonie)
     </h3>
     <div className="text-brand-grayMed mb-6 space-y-1 pl-4 border-l-2 border-brand-gold/40">
       <p><strong>Dénomination sociale :</strong> Opulanz SIA</p>
@@ -202,8 +202,8 @@ const frContent = (
     <h2 className="text-2xl font-bold text-brand-dark mb-4">2. Hébergement</h2>
     <div className="text-brand-grayMed mb-6 space-y-1 pl-4 border-l-2 border-brand-gold/40">
       <p>Le site www.opulanz.com est hébergé par :</p>
-      <p><strong>Hébergeur principal :</strong> Microsoft Azure — European Data Centers (EU)</p>
-      <p><strong>Hébergeur secondaire (France) :</strong> OVH SAS — 2 rue Kellermann, 59100 Roubaix, France — SIRET : 424 761 419 00045</p>
+      <p><strong>Hébergeur principal :</strong> Microsoft Azure, European Data Centers (EU)</p>
+      <p><strong>Hébergeur secondaire (France) :</strong> OVH SAS, 2 rue Kellermann, 59100 Roubaix, France (SIRET : 424 761 419 00045)</p>
     </div>
 
     <h2 className="text-2xl font-bold text-brand-dark mb-4">3. Propriété Intellectuelle</h2>

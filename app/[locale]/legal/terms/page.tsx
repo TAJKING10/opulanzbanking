@@ -67,7 +67,7 @@ const enContent = (
         <strong>Accounting, tax advisory &amp; company formation (combined with accounting mandate):</strong> Groupe Advensys Luxembourg S.A. (RCS Luxembourg B197138, NACE 69.200).
       </li>
       <li>
-        <strong>Company formation — standalone (without accounting mandate):</strong> Advensys Insurance-Finance SARL, under its CJA (Conseil Juridique et Administratif) qualification.
+        <strong>Company formation, standalone (without accounting mandate):</strong> Advensys Insurance-Finance SARL, under its CJA (Conseil Juridique et Administratif) qualification.
       </li>
       <li>
         <strong>Accounting software licences &amp; IT services:</strong> Opulanz SIA (Latvia, reg. 40203750214).
@@ -106,7 +106,7 @@ const enContent = (
     </p>
     <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
       <li>Business and personal payment account opening (via licensed EMI partners)</li>
-      <li>Company formation in Luxembourg (with or without accounting mandate — see eligibility per entity)</li>
+      <li>Company formation in Luxembourg (with or without accounting mandate; see eligibility per entity)</li>
       <li>Professional accounting and payroll services</li>
       <li>Accounting software licensing and invoice management</li>
       <li>Tax advisory for individuals and legal entities</li>
@@ -179,9 +179,9 @@ const enContent = (
     <p className="text-brand-grayMed mb-6">
       In the event of an unresolved dispute regarding investment advisory services, clients may refer the
       matter to the <strong>Médiateur de l'AMF</strong> (Autorité des Marchés Financiers). For banking
-      intermediation disputes, clients may contact <strong>CNPM Médiation Consommation</strong> — 27 avenue
-      de la Libération, 42400 Saint-Chamond — website: www.cnpm-mediation-consommation.eu — email:
-      contact-admin@cnpm-mediation-consommation.eu.
+      intermediation disputes, clients may contact <strong>CNPM Médiation Consommation</strong>,
+      27 avenue de la Libération, 42400 Saint-Chamond, website: www.cnpm-mediation-consommation.eu,
+      email: contact-admin@cnpm-mediation-consommation.eu.
     </p>
 
     <p className="text-sm text-brand-grayMed mt-8 pt-6 border-t border-brand-grayLight">
@@ -227,7 +227,7 @@ const frContent = (
         Groupe Advensys Luxembourg S.A. (RCS Luxembourg B197138, NACE 69.200).
       </li>
       <li>
-        <strong>Création de société — seule (sans mandat comptable) :</strong> Advensys Insurance-Finance
+        <strong>Création de société, seule (sans mandat comptable) :</strong> Advensys Insurance-Finance
         SARL, au titre de sa qualification de Conseil Juridique et Administratif (CJA).
       </li>
       <li>
@@ -270,7 +270,7 @@ const frContent = (
     </p>
     <ul className="list-disc pl-6 text-brand-grayMed mb-6 space-y-2">
       <li>Ouverture de compte de paiement professionnel et personnel (via des partenaires EME agréés)</li>
-      <li>Création de société au Luxembourg (avec ou sans mandat comptable — voir éligibilité par entité)</li>
+      <li>Création de société au Luxembourg (avec ou sans mandat comptable ; voir l'éligibilité par entité)</li>
       <li>Services de comptabilité professionnelle et de gestion de la paie</li>
       <li>Licence de logiciel comptable et gestion des factures</li>
       <li>Conseil fiscal pour les particuliers et les personnes morales</li>
@@ -345,8 +345,8 @@ const frContent = (
       En cas de litige non résolu relatif aux services de conseil en investissement, les clients peuvent
       saisir le <strong>Médiateur de l'AMF</strong> (Autorité des Marchés Financiers). Pour les litiges
       relatifs à l'intermédiation bancaire, les clients peuvent contacter <strong>CNPM Médiation
-      Consommation</strong> — 27 avenue de la Libération, 42400 Saint-Chamond — site :
-      www.cnpm-mediation-consommation.eu — courriel : contact-admin@cnpm-mediation-consommation.eu.
+      Consommation</strong>, 27 avenue de la Libération, 42400 Saint-Chamond, site :
+      www.cnpm-mediation-consommation.eu, courriel : contact-admin@cnpm-mediation-consommation.eu.
     </p>
 
     <p className="text-sm text-brand-grayMed mt-8 pt-6 border-t border-brand-grayLight">

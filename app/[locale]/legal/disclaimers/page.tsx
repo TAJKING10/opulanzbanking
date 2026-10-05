@@ -51,7 +51,7 @@ function EnContent() {
   return (
     <>
       <h2 className="text-2xl font-bold text-brand-dark mb-4">
-        1. Investment Risk Warning (MiFID II — Mandatory)
+        1. Investment Risk Warning (MiFID II, Mandatory)
       </h2>
       <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
         <p className="text-brand-dark font-semibold mb-2">IMPORTANT RISK WARNING</p>
@@ -145,7 +145,7 @@ function FrContent() {
   return (
     <>
       <h2 className="text-2xl font-bold text-brand-dark mb-4">
-        1. Avertissement sur le Risque d&apos;Investissement (MiFID II — Obligatoire)
+        1. Avertissement sur le Risque d&apos;Investissement (MiFID II, Obligatoire)
       </h2>
       <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
         <p className="text-brand-dark font-semibold mb-2">AVERTISSEMENT IMPORTANT SUR LES RISQUES</p>

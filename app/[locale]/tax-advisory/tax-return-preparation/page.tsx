@@ -646,12 +646,14 @@ Contact: opulanz.banking@gmail.com
                 <p className="text-lg text-brand-grayMed mb-6">Fixed fee for tax return preparation service</p>
                 <p className="text-sm text-brand-grayMed mb-6">60-minute consultation with expert tax advisor</p>
                 <Button
-                  onClick={() => setStep('calendar')}
+                  asChild
                   size="lg"
                   className="relative bg-gradient-to-r from-brand-gold to-brand-goldDark text-white hover:from-brand-goldDark hover:to-brand-gold w-full sm:w-auto min-w-64 h-14 text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                 >
-                  <span className="relative z-10">Book Your Consultation Now</span>
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-2xl"></div>
+                  <Link href={`/${locale}/tax-advisory/booking?service=tax-return-preparation`}>
+                    <span className="relative z-10">Book Your Consultation Now</span>
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-2xl"></div>
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -742,6 +744,53 @@ Contact: opulanz.banking@gmail.com
         </div>
       </section>
 
+      {/* Required Documents Section from Luxembourg Form */}
+      <section className="relative bg-white py-12 md:py-16">
+        <div className="container mx-auto max-w-5xl px-6">
+          <SectionHeading
+            overline="DOCUMENTATION"
+            title="Required Supporting Documents (Copies)"
+            align="center"
+            className="mb-6"
+          />
+          <p className="text-center text-sm text-brand-grayMed max-w-2xl mx-auto mb-10">
+            To ensure swift and compliant preparation, please assemble copies of all applicable documents listed below. You can upload them directly during the booking process or provide them in PDF format.
+          </p>
+
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              "0. ID card or Passport for each person",
+              "1. Annual income certificates (Luxembourg & abroad)",
+              "2. Mortgage debit interest for primary residence (date of 1st occupancy)",
+              "3. Property income certificates (dividends, foreign income)",
+              "4. Proof of alimony paid to former spouse / children",
+              "5. Personal loan / credit card interest certificates (EU)",
+              "6. Civil liability & life insurance premium certificates",
+              "7. Private health insurance contributions proof",
+              "8. Private old-age pension scheme certificates (111bis LIR)",
+              "9. EU Housing Savings Plan statements (Épargne-logement)",
+              "10. Company pension plan personal contribution certificates",
+              "11. Donations to recognized charity organisations",
+              "12. Child care expenses receipts (crèche, daycare)",
+              "13. Household employee expenses receipts",
+              "14. Extraordinary expenses (healthcare, funeral, attorney)",
+              "15. Rental property mortgage loan interest certificates",
+              "15b. Rent received receipts, deed of purchase, notary invoice",
+              "15c. Rental property maintenance, insurance & tax documents",
+              "16. RSU / SHARE equity compensation certificates",
+              "17. Foreign tax return & income details (if applicable)",
+              "18. Investment income details (shares, funds, bonds)",
+              "19. Prior year Luxembourg tax return & assessment (bulletin)",
+            ].map((docItem) => (
+              <div key={docItem} className="p-3.5 rounded-xl border border-brand-grayLight/50 bg-gray-50/50 hover:bg-white hover:border-brand-gold/40 transition-all flex items-start gap-2.5">
+                <CheckCircle className="h-4 w-4 text-brand-gold flex-shrink-0 mt-0.5" />
+                <span className="text-xs font-medium text-brand-dark leading-snug">{docItem}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="hero-gradient py-12 md:py-16">
         <div className="container mx-auto max-w-4xl px-6 text-center">
@@ -753,11 +802,13 @@ Contact: opulanz.banking@gmail.com
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button
-              onClick={() => setStep('calendar')}
+              asChild
               size="lg"
               className="bg-white text-brand-dark hover:bg-gray-50 min-w-48"
             >
-              Book Consultation - €{totalPrice}
+              <Link href={`/${locale}/tax-advisory/booking?service=tax-return-preparation`}>
+                Book Consultation - €{totalPrice}
+              </Link>
             </Button>
             <Button
               asChild

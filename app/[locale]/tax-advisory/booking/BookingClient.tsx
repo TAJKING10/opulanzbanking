@@ -14,7 +14,7 @@ import { PayPalButtons } from "@/components/paypal-buttons";
 import {
   CheckCircle, Clock, Video, Shield,
   ArrowLeft, ArrowRight, Calendar, User, Mail, Phone, CreditCard,
-  Download, FileText, Sparkles, ExternalLink, AlertCircle
+  Download, FileText, Sparkles, ExternalLink, AlertCircle, Upload, Building, Home, Check, Trash2
 } from "lucide-react";
 import { PageGuidance } from "@/components/page-guidance";
 
@@ -27,9 +27,81 @@ const SERVICE_MAP: Record<string, { title: string; titleFr: string; price: numbe
 };
 const DEFAULT_SERVICE = { title: "Tax Advisory Consultation", titleFr: "Consultation fiscale", price: 150 };
 
-type Step = "contact" | "payment" | "calendar" | "confirmation";
+type Step = "contact" | "documents" | "payment" | "calendar" | "confirmation";
 
-interface ContactData { firstName: string; lastName: string; email: string; phone: string; }
+interface ContactData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  addressType: "residential" | "company";
+  address: string;
+  hasDifferentContactAddress?: boolean;
+  differentStreetNumber?: string;
+  differentPostalCodeCity?: string;
+  differentCountry?: string;
+  differentAddress?: string;
+  idDocumentName?: string;
+  idDocumentUrl?: string;
+  // Tax Return Specific Fields (Luxembourg individual tax return)
+  returnType?: "tax_return" | "tax_balance";
+  dateOfBirth?: string;
+  ssn?: string;
+  profession?: string;
+  placeOfBirth?: string;
+  dossierNumber?: string;
+  streetNumber?: string;
+  postalCodeCity?: string;
+  country?: string;
+  hasPartner?: "no" | "yes";
+  partnerLastName?: string;
+  partnerFirstName?: string;
+  partnerDateOfBirth?: string;
+  partnerSsn?: string;
+  partnerProfession?: string;
+  partnerPhone?: string;
+  partnerEmail?: string;
+  partnerPlaceOfBirth?: string;
+  partnerDossierNumber?: string;
+  relocatedSince2023?: "no" | "yes";
+  previousDateOfRelocation?: string;
+  previousStreetNumber?: string;
+  previousPostalCodeCity?: string;
+  previousCountry?: string;
+  previousAddress?: string;
+  bankAccountOwner?: string;
+  iban?: string;
+  swiftBic?: string;
+  civilStatus?: "single" | "married" | "partnership" | "divorced";
+  civilStatusDate?: string;
+  childrenCount?: "0" | "1" | "2" | "3" | "4";
+  childrenDetails?: { name: string; birth: string; ssn: string }[];
+  alimonyType?: "none" | "child_in_household" | "child_outside_household";
+  alimonyChildName?: string;
+  alimonyChildDob?: string;
+  alimonyChildAddress?: string;
+  alimonyAmount?: string;
+  hasAlimony?: "no" | "yes";
+  alimonyDetails?: string;
+  firstOccupancyDate?: string;
+  constructionCompletionDate?: string;
+  priorYearDossierNumber?: string;
+  taxDocuments?: Record<string, { name: string; url: string }> | { name: string; url: string }[];
+  // Rented Properties
+  hasRentedProperties?: "no" | "yes";
+  rentedProperties?: {
+    address: string;
+    cadastralReference: string;
+    completedOn: string;
+    purchasedOn: string;
+    soldOn: string;
+    hasUsufruct: "no" | "yes";
+    firstRentalDate: string;
+    owners: { name: string; nationalId: string; undividedShare: string; usufructPercent: string; bareOwnershipPercent: string; fullOwnershipPercent: string }[];
+    monthsRented2025: string;
+    rentsReceived2025: string;
+  }[];
+}
 interface CalendlyData {
   eventUri?: string;
   inviteeUri?: string;
@@ -69,10 +141,35 @@ export default function BookingClient() {
     ? "https://calendly.com/opulanz-banking/conseil-fiscal"
     : "https://calendly.com/opulanz-banking/tax-advisory";
 
-  // Sequence: contact -> payment -> calendar -> confirmation
+  // Sequence: contact -> documents (if tax-return-preparation) -> payment -> calendar -> confirmation
   const [step, setStep] = useState<Step>("contact");
-  const [contact, setContact] = useState<ContactData>({ firstName: "", lastName: "", email: "", phone: "" });
-  const [errors, setErrors] = useState<Partial<ContactData>>({});
+  const [contact, setContact] = useState<ContactData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    addressType: "residential",
+    address: "",
+    streetNumber: "",
+    postalCodeCity: "",
+    country: "Luxembourg",
+    idDocumentName: "",
+    idDocumentUrl: "",
+    returnType: "tax_return",
+    hasPartner: "no",
+    relocatedSince2023: "no",
+    civilStatus: "single",
+    childrenCount: "0",
+    childrenDetails: [],
+    alimonyType: "none",
+    hasAlimony: "no",
+    taxDocuments: {},
+    hasRentedProperties: "no",
+    rentedProperties: [],
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [uploadingId, setUploadingId] = useState(false);
+  const [uploadingDocKey, setUploadingDocKey] = useState<string | null>(null);
   const [calendly, setCalendly] = useState<CalendlyData>({});
   const [paypal, setPaypal] = useState<PaypalData>({});
   const [bookingId, setBookingId] = useState<number | string | null>(null);
@@ -99,21 +196,135 @@ export default function BookingClient() {
     }
   }
 
-  // ── Step 1: Validate contact & Proceed to Payment ─────────────────────────
+  // Handle ID document file upload
+  async function handleIdFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingId(true);
+    setErrors((prev) => {
+      const copy = { ...prev };
+      delete copy.idDocument;
+      return copy;
+    });
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", "id_document");
+      const res = await fetch(`${API}/api/upload`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success && data.data) {
+        setContact((prev) => ({
+          ...prev,
+          idDocumentName: data.data.fileName || file.name,
+          idDocumentUrl: data.data.fileUrl || data.data.url,
+        }));
+      } else {
+        setContact((prev) => ({
+          ...prev,
+          idDocumentName: file.name,
+          idDocumentUrl: URL.createObjectURL(file),
+        }));
+      }
+    } catch {
+      setContact((prev) => ({
+        ...prev,
+        idDocumentName: file.name,
+        idDocumentUrl: URL.createObjectURL(file),
+      }));
+    } finally {
+      setUploadingId(false);
+    }
+  }
+
+  function getTaxDoc(key: string, idx: number) {
+    if (!contact.taxDocuments) return undefined;
+    if (Array.isArray(contact.taxDocuments)) {
+      return (contact.taxDocuments as any)[idx] || (contact.taxDocuments as any)[key];
+    }
+    return (contact.taxDocuments as Record<string, { name: string; url: string }>)[key];
+  }
+
+  async function handleSingleTaxDocUpload(e: React.ChangeEvent<HTMLInputElement>, key: string) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingDocKey(key);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", "tax_document");
+      const res = await fetch(`${API}/api/upload`, { method: "POST", body: formData });
+      const data = await res.json().catch(() => ({}));
+      let uploadedDoc = { name: file.name, url: URL.createObjectURL(file) };
+      if (res.ok && data.success && data.data) {
+        uploadedDoc = { name: data.data.fileName || file.name, url: data.data.fileUrl || data.data.url };
+      }
+      setContact((prev) => {
+        const docs = { ...(prev.taxDocuments as any || {}) };
+        docs[key] = uploadedDoc;
+        return { ...prev, taxDocuments: docs };
+      });
+    } catch {
+      const uploadedDoc = { name: file.name, url: URL.createObjectURL(file) };
+      setContact((prev) => {
+        const docs = { ...(prev.taxDocuments as any || {}) };
+        docs[key] = uploadedDoc;
+        return { ...prev, taxDocuments: docs };
+      });
+    } finally {
+      setUploadingDocKey(null);
+    }
+  }
+
+  // ── Step 1: Validate contact & Proceed to next step ─────────────────────────
   function handleContactSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const errs: Partial<ContactData> = {};
+    const errs: Record<string, string> = {};
     if (!contact.firstName.trim()) errs.firstName = t("step1.firstNameRequired");
     if (!contact.lastName.trim())  errs.lastName  = t("step1.lastNameRequired");
     if (!contact.email.trim())     errs.email     = t("step1.emailRequired");
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)) errs.email = t("step1.emailInvalid");
     if (!contact.phone.trim())     errs.phone     = t("step1.phoneRequired");
+    
+    // Auto-compose address from structured fields if present
+    const combinedAddr = contact.address.trim() || [contact.streetNumber, contact.postalCodeCity, contact.country].filter(Boolean).join(", ").trim();
+    if (!combinedAddr) {
+      errs.address = t("step1.addressRequired");
+    } else if (!contact.address.trim()) {
+      setContact(prev => ({ ...prev, address: combinedAddr }));
+    }
+
+    if (!contact.idDocumentName)   errs.idDocument = t("step1.idDocumentRequired");
+
+    if (contact.hasRentedProperties === "yes") {
+      if (!contact.rentedProperties || contact.rentedProperties.length === 0) {
+        errs.rentedProperties = t("step1.rentedPropertiesRequired");
+      } else {
+        contact.rentedProperties.forEach((rp, idx) => {
+          if (!rp.address?.trim() || !rp.cadastralReference?.trim() || !rp.firstRentalDate?.trim() || !rp.rentsReceived2025?.trim()) {
+            errs[`rentedProperty_${idx}`] = t("step1.rentedPropertyFieldsRequired");
+          }
+        });
+      }
+    }
     setErrors(errs);
     if (Object.keys(errs).length) return;
+    if (serviceId === "tax-return-preparation") {
+      setStep("documents");
+    } else {
+      setStep("payment");
+    }
+  }
+
+  // ── Step 2: Documents Submit -> Proceed to Payment ───────────────────────
+  function handleDocumentsSubmit(e: React.FormEvent) {
+    e.preventDefault();
     setStep("payment");
   }
 
-  // ── Step 2: Payment Success -> Save Details in DB -> Move to Calendly ─────
+  // ── Step 3: Payment Success -> Save Details in DB -> Move to Calendly ─────
   async function handlePaymentSuccess(orderId: string, details: any) {
     setIsSavingPayment(true);
     const paymentDate = new Date().toISOString();
@@ -138,10 +349,7 @@ export default function BookingClient() {
           type: "tax_advisory",
           status: "confirmed",
           customer_info: {
-            firstName: contact.firstName,
-            lastName: contact.lastName,
-            email: contact.email,
-            phone: contact.phone,
+            ...contact,
           },
           service: {
             id: serviceId || "tax-advisory",
@@ -177,10 +385,7 @@ export default function BookingClient() {
     // Save preliminary booking info to sessionStorage
     try {
       sessionStorage.setItem("tax-advisory-booking", JSON.stringify({
-        firstName: contact.firstName,
-        lastName: contact.lastName,
-        email: contact.email,
-        phone: contact.phone,
+        ...contact,
         serviceId,
         serviceTitle,
         servicePrice: svc.price,
@@ -388,10 +593,7 @@ export default function BookingClient() {
         // Update sessionStorage
         try {
           sessionStorage.setItem("tax-advisory-booking", JSON.stringify({
-            firstName: contact.firstName,
-            lastName: contact.lastName,
-            email: contact.email,
-            phone: contact.phone,
+            ...contact,
             serviceId,
             serviceTitle,
             servicePrice: svc.price,
@@ -471,7 +673,18 @@ export default function BookingClient() {
     <div class="detail-row"><span class="detail-label">Client Name:</span><span class="detail-value">${fullName}</span></div>
     <div class="detail-row"><span class="detail-label">Email Address:</span><span class="detail-value">${contact.email}</span></div>
     <div class="detail-row"><span class="detail-label">Phone Number:</span><span class="detail-value">${contact.phone}</span></div>
+    ${contact.address ? `<div class="detail-row"><span class="detail-label">Address:</span><span class="detail-value">${contact.address}</span></div>` : ""}
   </div>
+  ${isTaxReturn ? `
+  <div class="section">
+    <div class="section-title">Tax Return Dossier Details</div>
+    <div class="detail-row"><span class="detail-label">Filing Request:</span><span class="detail-value">${contact.returnType === "tax_balance" ? "Bilan Fiscal (Tax Balance)" : "Déclaration d'impôt (Tax Return)"}</span></div>
+    ${contact.dossierNumber || contact.priorYearDossierNumber ? `<div class="detail-row"><span class="detail-label">Dossier Number:</span><span class="detail-value">${contact.dossierNumber || contact.priorYearDossierNumber}</span></div>` : ""}
+    ${contact.hasPartner === "yes" && contact.partnerFirstName ? `<div class="detail-row"><span class="detail-label">Spouse / Partner:</span><span class="detail-value">${contact.partnerFirstName} ${contact.partnerLastName || ""}</span></div>` : ""}
+    ${contact.childrenCount && contact.childrenCount !== "0" ? `<div class="detail-row"><span class="detail-label">Dependent Children:</span><span class="detail-value">${contact.childrenCount}</span></div>` : ""}
+    ${contact.firstOccupancyDate ? `<div class="detail-row"><span class="detail-label">First Occupancy Date:</span><span class="detail-value">${contact.firstOccupancyDate}</span></div>` : ""}
+  </div>
+  ` : ""}
   <div class="section">
     <div class="section-title">Consultation Service</div>
     <div class="detail-row"><span class="detail-label">Service:</span><span class="detail-value">${serviceTitle}</span></div>
@@ -510,12 +723,21 @@ export default function BookingClient() {
   }
 
   // ── Progress Steps Configuration ──────────────────────────────────────────
-  const stepsList: { key: Step; label: string }[] = [
-    { key: "contact", label: "1. Details" },
-    { key: "payment", label: "2. Payment" },
-    { key: "calendar", label: "3. Schedule" },
-    { key: "confirmation", label: "4. Confirmed" },
-  ];
+  const isTaxReturn = serviceId === "tax-return-preparation";
+  const stepsList: { key: Step; label: string }[] = isTaxReturn
+    ? [
+        { key: "contact", label: t("steps.details") },
+        { key: "documents", label: t("steps.taxDocuments") },
+        { key: "payment", label: t("steps.payment") },
+        { key: "calendar", label: t("steps.schedule") },
+        { key: "confirmation", label: t("steps.confirmed") },
+      ]
+    : [
+        { key: "contact", label: t("steps.details") },
+        { key: "payment", label: t("steps.payment") },
+        { key: "calendar", label: t("steps.schedule") },
+        { key: "confirmation", label: t("steps.confirmed") },
+      ];
   const currentStepIdx = stepsList.findIndex((s) => s.key === step);
 
   return (
@@ -546,8 +768,8 @@ export default function BookingClient() {
           <div className="mb-10">
             <div className="flex items-center justify-between max-w-2xl mx-auto">
               {stepsList.map((s, idx) => {
-                const isCompleted = idx < currentStepIdx;
-                const isCurrent = idx === currentStepIdx;
+                const isCompleted = idx < currentStepIdx || (s.key === "confirmation" && step === "confirmation");
+                const isCurrent = idx === currentStepIdx && !isCompleted;
                 return (
                   <React.Fragment key={s.key}>
                     <div className="flex flex-col items-center">
@@ -564,10 +786,10 @@ export default function BookingClient() {
                       </div>
                       <span
                         className={`mt-2 text-xs font-semibold ${
-                          isCurrent
-                            ? "text-brand-dark"
-                            : isCompleted
+                          isCompleted
                             ? "text-emerald-700"
+                            : isCurrent
+                            ? "text-brand-dark"
                             : "text-brand-grayMed"
                         }`}
                       >
@@ -577,7 +799,7 @@ export default function BookingClient() {
                     {idx < stepsList.length - 1 && (
                       <div
                         className={`h-1 flex-1 mx-3 rounded transition-all ${
-                          idx < currentStepIdx ? "bg-emerald-600" : "bg-brand-grayLight/60"
+                          idx < currentStepIdx || (step === "confirmation" && idx <= currentStepIdx) ? "bg-emerald-600" : "bg-brand-grayLight/60"
                         }`}
                       />
                     )}
@@ -659,6 +881,902 @@ export default function BookingClient() {
                       {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
                     </div>
 
+                    {/* Address Type Selection & Input */}
+                    <div className="space-y-3 pt-2">
+                      <Label className="text-brand-dark font-medium">
+                        {t("step1.addressLabel")} <span className="text-red-500">*</span>
+                      </Label>
+                      
+                      <div className="grid grid-cols-2 gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setContact((p) => ({ ...p, addressType: "residential" }))}
+                          className={`flex items-center gap-2 p-3 rounded-xl border text-sm font-medium transition-all text-left ${
+                            contact.addressType === "residential"
+                              ? "border-brand-gold bg-brand-gold/10 text-brand-dark shadow-sm"
+                              : "border-brand-grayLight/60 bg-white text-brand-grayMed hover:border-brand-gold/50"
+                          }`}
+                        >
+                          <Home className={`h-4 w-4 ${contact.addressType === "residential" ? "text-brand-gold" : "text-gray-400"}`} />
+                          <span>{t("step1.residentialAddress")}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setContact((p) => ({ ...p, addressType: "company" }))}
+                          className={`flex items-center gap-2 p-3 rounded-xl border text-sm font-medium transition-all text-left ${
+                            contact.addressType === "company"
+                              ? "border-brand-gold bg-brand-gold/10 text-brand-dark shadow-sm"
+                              : "border-brand-grayLight/60 bg-white text-brand-grayMed hover:border-brand-gold/50"
+                          }`}
+                        >
+                          <Building className={`h-4 w-4 ${contact.addressType === "company" ? "text-brand-gold" : "text-gray-400"}`} />
+                          <span>{t("step1.companyAddress")}</span>
+                        </button>
+                      </div>
+
+                      <div>
+                        {/* Residence / Company Address divided into 3 text boxes */}
+                        <div className="grid gap-3 sm:grid-cols-3 mt-1">
+                          <div>
+                            <Label className="text-xs text-brand-dark font-medium">{t("taxPayerDetails.streetNumber")}</Label>
+                            <Input
+                              placeholder="e.g. 24 Rue de la Gare"
+                              value={contact.streetNumber || ""}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setContact((p) => {
+                                  const next = { ...p, streetNumber: val };
+                                  next.address = [val, next.postalCodeCity, next.country].filter(Boolean).join(", ");
+                                  return next;
+                                });
+                              }}
+                              className={`mt-1 bg-white border-brand-grayLight/60 focus:border-brand-gold ${errors.address ? "border-red-500" : ""}`}
+                            />
+                          </div>
+
+                          <div>
+                            <Label className="text-xs text-brand-dark font-medium">{t("taxPayerDetails.postalCodeCity")}</Label>
+                            <Input
+                              placeholder="e.g. L-1610 Luxembourg"
+                              value={contact.postalCodeCity || ""}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setContact((p) => {
+                                  const next = { ...p, postalCodeCity: val };
+                                  next.address = [next.streetNumber, val, next.country].filter(Boolean).join(", ");
+                                  return next;
+                                });
+                              }}
+                              className={`mt-1 bg-white border-brand-grayLight/60 focus:border-brand-gold ${errors.address ? "border-red-500" : ""}`}
+                            />
+                          </div>
+
+                          <div>
+                            <Label className="text-xs text-brand-dark font-medium">{t("taxPayerDetails.country")}</Label>
+                            <Input
+                              placeholder="e.g. Luxembourg"
+                              value={contact.country || ""}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setContact((p) => {
+                                  const next = { ...p, country: val };
+                                  next.address = [next.streetNumber, next.postalCodeCity, val].filter(Boolean).join(", ");
+                                  return next;
+                                });
+                              }}
+                              className={`mt-1 bg-white border-brand-grayLight/60 focus:border-brand-gold ${errors.address ? "border-red-500" : ""}`}
+                            />
+                          </div>
+                        </div>
+                        {errors.address && <p className="mt-1 text-xs text-red-500">{errors.address}</p>}
+
+                        {/* Checkbox for Contact Address (if it's a different address) */}
+                        <div className="mt-3">
+                          <label className="inline-flex items-center gap-2 text-xs font-medium text-brand-dark cursor-pointer select-none">
+                            <input
+                              type="checkbox"
+                              checked={!!contact.hasDifferentContactAddress}
+                              onChange={(e) => {
+                                const checked = e.target.checked;
+                                setContact((p) => ({ ...p, hasDifferentContactAddress: checked }));
+                              }}
+                              className="rounded border-brand-grayLight text-brand-gold focus:ring-brand-gold h-4 w-4"
+                            />
+                            <span>{t("step1.contactAddressDifferent")}</span>
+                          </label>
+
+                          {contact.hasDifferentContactAddress && (
+                            <div className="mt-3 bg-brand-off p-4 rounded-xl border border-brand-grayLight/40 space-y-4">
+                              <h5 className="text-xs font-bold text-brand-dark flex items-center gap-1.5">
+                                <Home className="h-3.5 w-3.5 text-brand-gold" />
+                                {t("step1.contactAddressDifferent")}
+                              </h5>
+                              <div className="grid gap-3 sm:grid-cols-3">
+                                <div>
+                                  <Label className="text-xs text-brand-dark">{t("taxPayerDetails.streetNumber")}</Label>
+                                  <Input
+                                    placeholder="e.g. 24 Rue de la Gare"
+                                    value={contact.differentStreetNumber || ""}
+                                    onChange={(e) => {
+                                      const val = e.target.value;
+                                      setContact(p => {
+                                        const next = { ...p, differentStreetNumber: val };
+                                        next.differentAddress = [val, next.differentPostalCodeCity, next.differentCountry].filter(Boolean).join(", ");
+                                        return next;
+                                      });
+                                    }}
+                                    className="mt-1 bg-white text-xs"
+                                  />
+                                </div>
+                                <div>
+                                  <Label className="text-xs text-brand-dark">{t("taxPayerDetails.postalCodeCity")}</Label>
+                                  <Input
+                                    placeholder="e.g. L-1610 Luxembourg"
+                                    value={contact.differentPostalCodeCity || ""}
+                                    onChange={(e) => {
+                                      const val = e.target.value;
+                                      setContact(p => {
+                                        const next = { ...p, differentPostalCodeCity: val };
+                                        next.differentAddress = [next.differentStreetNumber, val, next.differentCountry].filter(Boolean).join(", ");
+                                        return next;
+                                      });
+                                    }}
+                                    className="mt-1 bg-white text-xs"
+                                  />
+                                </div>
+                                <div>
+                                  <Label className="text-xs text-brand-dark">{t("taxPayerDetails.country")}</Label>
+                                  <Input
+                                    placeholder="e.g. Luxembourg, France, Germany"
+                                    value={contact.differentCountry || ""}
+                                    onChange={(e) => {
+                                      const val = e.target.value;
+                                      setContact(p => {
+                                        const next = { ...p, differentCountry: val };
+                                        next.differentAddress = [next.differentStreetNumber, next.differentPostalCodeCity, val].filter(Boolean).join(", ");
+                                        return next;
+                                      });
+                                    }}
+                                    className="mt-1 bg-white text-xs"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Relocation Check inside Address card */}
+                              <div className="pt-3 border-t border-brand-grayLight/30">
+                                <Label className="text-brand-dark font-medium text-xs mb-2 block">{t("taxPayerDetails.relocated")}</Label>
+                                <div className="flex gap-4">
+                                  <label className="flex items-center gap-2 text-xs cursor-pointer">
+                                    <input
+                                      type="radio"
+                                      name="relocatedSince2023"
+                                      checked={contact.relocatedSince2023 === "no" || !contact.relocatedSince2023}
+                                      onChange={() => setContact(p => ({ ...p, relocatedSince2023: "no" }))}
+                                    />
+                                    {t("taxPayerDetails.no")}
+                                  </label>
+                                  <label className="flex items-center gap-2 text-xs cursor-pointer">
+                                    <input
+                                      type="radio"
+                                      name="relocatedSince2023"
+                                      checked={contact.relocatedSince2023 === "yes"}
+                                      onChange={() => setContact(p => ({ ...p, relocatedSince2023: "yes" }))}
+                                    />
+                                    {t("taxPayerDetails.yes")}
+                                  </label>
+                                </div>
+                                {contact.relocatedSince2023 === "yes" && (
+                                  <div className="mt-3 grid gap-3 sm:grid-cols-3 bg-white p-3 rounded-lg border border-brand-grayLight/40">
+                                    <h5 className="sm:col-span-3 text-xs font-bold text-brand-dark border-b border-brand-grayLight/20 pb-1.5">
+                                      {t("taxPayerDetails.relocationTitle")}
+                                    </h5>
+                                    <div className="sm:col-span-3">
+                                      <Label className="text-xs">{t("taxPayerDetails.relocationDate")}</Label>
+                                      <Input
+                                        type="date"
+                                        value={contact.previousDateOfRelocation || ""}
+                                        onChange={e => setContact(p => ({ ...p, previousDateOfRelocation: e.target.value }))}
+                                        className="mt-1 max-w-sm bg-white text-xs"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.previousStreetNumber")}</Label>
+                                      <Input
+                                        value={contact.previousStreetNumber || ""}
+                                        onChange={e => setContact(p => ({ ...p, previousStreetNumber: e.target.value, previousAddress: `${e.target.value}, ${p.previousPostalCodeCity || ''}, ${p.previousCountry || ''}` }))}
+                                        className="mt-1 bg-white text-xs"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.previousPostalCodeCity")}</Label>
+                                      <Input
+                                        value={contact.previousPostalCodeCity || ""}
+                                        onChange={e => setContact(p => ({ ...p, previousPostalCodeCity: e.target.value, previousAddress: `${p.previousStreetNumber || ''}, ${e.target.value}, ${p.previousCountry || ''}` }))}
+                                        className="mt-1 bg-white text-xs"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.previousCountry")}</Label>
+                                      <Input
+                                        value={contact.previousCountry || ""}
+                                        onChange={e => setContact(p => ({ ...p, previousCountry: e.target.value, previousAddress: `${p.previousStreetNumber || ''}, ${p.previousPostalCodeCity || ''}, ${e.target.value}` }))}
+                                        className="mt-1 bg-white text-xs"
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tax Return Specific Information */}
+                    {serviceId === "tax-return-preparation" && (
+                      <div className="pt-6 mt-6 border-t border-brand-grayLight/30 space-y-8">
+                        {/* Return Type Selection (Tax return vs Fiscal Balance) */}
+                        <div className="bg-brand-off p-5 rounded-xl border border-brand-gold/30">
+                          <Label className="text-brand-dark font-bold text-sm mb-3 block">
+                            {t("taxPayerDetails.returnTypeTitle")}
+                          </Label>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                              contact.returnType === "tax_return"
+                                ? "bg-white border-brand-gold shadow-xs"
+                                : "bg-white/60 border-brand-grayLight/60 hover:border-brand-gold/40"
+                            }`}>
+                              <input
+                                type="radio"
+                                name="returnType"
+                                checked={contact.returnType !== "tax_balance"}
+                                onChange={() => setContact(p => ({ ...p, returnType: "tax_return" }))}
+                                className="text-brand-gold focus:ring-brand-gold"
+                              />
+                              <span className="text-sm font-semibold text-brand-dark">
+                                {t("taxPayerDetails.returnTypeTaxReturn")}
+                              </span>
+                            </label>
+
+                            <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                              contact.returnType === "tax_balance"
+                                ? "bg-white border-brand-gold shadow-xs"
+                                : "bg-white/60 border-brand-grayLight/60 hover:border-brand-gold/40"
+                            }`}>
+                              <input
+                                type="radio"
+                                name="returnType"
+                                checked={contact.returnType === "tax_balance"}
+                                onChange={() => setContact(p => ({ ...p, returnType: "tax_balance" }))}
+                                className="text-brand-gold focus:ring-brand-gold"
+                              />
+                              <span className="text-sm font-semibold text-brand-dark">
+                                {t("taxPayerDetails.returnTypeTaxBalance")}
+                              </span>
+                            </label>
+                          </div>
+                          <p className="text-[11px] text-brand-grayMed mt-3 italic">
+                            ⓘ {t("taxPayerDetails.infoNotice")}
+                          </p>
+                        </div>
+
+                        {/* Primary Tax Payer Details */}
+                        <div>
+                          <h4 className="text-base font-bold text-brand-dark mb-4 flex items-center gap-2">
+                            <User className="h-4 w-4 text-brand-gold" />
+                            {t("taxPayerDetails.taxPayerSection")}
+                          </h4>
+                          <div className="grid gap-4 sm:grid-cols-2">
+                            <div>
+                              <Label className="text-brand-dark font-medium text-xs">{t("taxPayerDetails.dob")}</Label>
+                              <Input
+                                type="date"
+                                value={contact.dateOfBirth || ""}
+                                onChange={(e) => setContact(p => ({ ...p, dateOfBirth: e.target.value }))}
+                                className="mt-1"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-brand-dark font-medium text-xs">{t("taxPayerDetails.placeOfBirth")}</Label>
+                              <Input
+                                placeholder="City, Country"
+                                value={contact.placeOfBirth || ""}
+                                onChange={(e) => setContact(p => ({ ...p, placeOfBirth: e.target.value }))}
+                                className="mt-1"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-brand-dark font-medium text-xs">{t("taxPayerDetails.ssn")}</Label>
+                              <Input
+                                placeholder="13-digit Luxembourg matricule"
+                                value={contact.ssn || ""}
+                                onChange={(e) => setContact(p => ({ ...p, ssn: e.target.value }))}
+                                className="mt-1"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-brand-dark font-medium text-xs">{t("taxPayerDetails.profession")}</Label>
+                              <Input
+                                placeholder="e.g. Employee, Consultant, Director"
+                                value={contact.profession || ""}
+                                onChange={(e) => setContact(p => ({ ...p, profession: e.target.value }))}
+                                className="mt-1"
+                              />
+                            </div>
+                            <div className="sm:col-span-2">
+                              <Label className="text-brand-dark font-medium text-xs">{t("taxPayerDetails.dossierNumber")}</Label>
+                              <Input
+                                placeholder="e.g. 1985..."
+                                value={contact.dossierNumber || ""}
+                                onChange={(e) => setContact(p => ({ ...p, dossierNumber: e.target.value }))}
+                                className="mt-1 max-w-sm"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                        {/* Partner Details */}
+                        <div>
+                          <Label className="text-brand-dark font-medium mb-3 block">{t("taxPayerDetails.hasPartner")}</Label>
+                          <div className="flex gap-4">
+                            <label className="flex items-center gap-2 text-sm cursor-pointer">
+                              <input
+                                type="radio"
+                                name="hasPartner"
+                                checked={contact.hasPartner === "no"}
+                                onChange={() => setContact(p => ({ ...p, hasPartner: "no" }))}
+                              />
+                              {t("taxPayerDetails.no")}
+                            </label>
+                            <label className="flex items-center gap-2 text-sm cursor-pointer">
+                              <input
+                                type="radio"
+                                name="hasPartner"
+                                checked={contact.hasPartner === "yes"}
+                                onChange={() => setContact(p => ({ ...p, hasPartner: "yes" }))}
+                              />
+                              {t("taxPayerDetails.yes")}
+                            </label>
+                          </div>
+                          {contact.hasPartner === "yes" && (
+                            <div className="mt-4 grid gap-4 sm:grid-cols-2 bg-brand-off p-5 rounded-xl border border-brand-grayLight/40">
+                              <h5 className="sm:col-span-2 text-sm font-bold text-brand-dark border-b border-brand-grayLight/30 pb-2">
+                                {t("taxPayerDetails.partnerSectionTitle")}
+                              </h5>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.partnerFirstName")}</Label>
+                                <Input value={contact.partnerFirstName || ""} onChange={e => setContact(p => ({ ...p, partnerFirstName: e.target.value }))} className="mt-1 bg-white" />
+                              </div>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.partnerLastName")}</Label>
+                                <Input value={contact.partnerLastName || ""} onChange={e => setContact(p => ({ ...p, partnerLastName: e.target.value }))} className="mt-1 bg-white" />
+                              </div>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.partnerDob")}</Label>
+                                <Input type="date" value={contact.partnerDateOfBirth || ""} onChange={e => setContact(p => ({ ...p, partnerDateOfBirth: e.target.value }))} className="mt-1 bg-white" />
+                              </div>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.partnerPlaceOfBirth")}</Label>
+                                <Input placeholder="City, Country" value={contact.partnerPlaceOfBirth || ""} onChange={e => setContact(p => ({ ...p, partnerPlaceOfBirth: e.target.value }))} className="mt-1 bg-white" />
+                              </div>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.partnerSsn")}</Label>
+                                <Input placeholder="13-digit matricule" value={contact.partnerSsn || ""} onChange={e => setContact(p => ({ ...p, partnerSsn: e.target.value }))} className="mt-1 bg-white" />
+                              </div>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.partnerProfession")}</Label>
+                                <Input value={contact.partnerProfession || ""} onChange={e => setContact(p => ({ ...p, partnerProfession: e.target.value }))} className="mt-1 bg-white" />
+                              </div>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.partnerPhone")}</Label>
+                                <Input type="tel" value={contact.partnerPhone || ""} onChange={e => setContact(p => ({ ...p, partnerPhone: e.target.value }))} className="mt-1 bg-white" />
+                              </div>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.partnerEmail")}</Label>
+                                <Input type="email" value={contact.partnerEmail || ""} onChange={e => setContact(p => ({ ...p, partnerEmail: e.target.value }))} className="mt-1 bg-white" />
+                              </div>
+                              <div className="sm:col-span-2">
+                                <Label className="text-xs">{t("taxPayerDetails.partnerDossierNumber")}</Label>
+                                <Input placeholder="e.g. 1985..." value={contact.partnerDossierNumber || ""} onChange={e => setContact(p => ({ ...p, partnerDossierNumber: e.target.value }))} className="mt-1 max-w-sm bg-white" />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+
+
+                        {/* Civil Status */}
+                        <div>
+                          <Label className="text-brand-dark font-medium mb-3 block">{t("taxPayerDetails.civilStatus")}</Label>
+                          <select 
+                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background mt-1 bg-white border-brand-grayLight/60 focus:border-brand-gold max-w-sm"
+                            value={contact.civilStatus} 
+                            onChange={(e) => setContact(p => ({ ...p, civilStatus: e.target.value as any }))}
+                          >
+                            <option value="single">{t("taxPayerDetails.single")}</option>
+                            <option value="married">{t("taxPayerDetails.married")}</option>
+                            <option value="partnership">{t("taxPayerDetails.partnership")}</option>
+                            <option value="divorced">{t("taxPayerDetails.divorced")}</option>
+                          </select>
+                          {contact.civilStatus !== "single" && (
+                            <div className="mt-4">
+                              <Label className="text-xs">
+                                {t("taxPayerDetails.civilStatusDate", {
+                                  status: contact.civilStatus === "married"
+                                    ? t("taxPayerDetails.marriage")
+                                    : contact.civilStatus === "partnership"
+                                    ? t("taxPayerDetails.civilPartnership")
+                                    : t("taxPayerDetails.divorce")
+                                })}
+                              </Label>
+                              <Input
+                                type="date"
+                                value={contact.civilStatusDate || ""}
+                                onChange={e => setContact(p => ({ ...p, civilStatusDate: e.target.value }))}
+                                className="mt-1 max-w-sm bg-white"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Dependent Children */}
+                        <div>
+                          <Label className="text-brand-dark font-medium mb-3 block">{t("taxPayerDetails.childrenCount")}</Label>
+                          <select 
+                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background mt-1 bg-white border-brand-grayLight/60 focus:border-brand-gold max-w-sm"
+                            value={contact.childrenCount} 
+                            onChange={(e) => {
+                              const count = parseInt(e.target.value);
+                              setContact(p => {
+                                const currentKids = p.childrenDetails || [];
+                                const newKids = Array(count).fill(null).map((_, i) => currentKids[i] || { name: "", birth: "", ssn: "" });
+                                return { ...p, childrenCount: e.target.value as any, childrenDetails: newKids };
+                              });
+                            }}
+                          >
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                          </select>
+                          {contact.childrenCount !== "0" && contact.childrenDetails && contact.childrenDetails.length > 0 && (
+                            <div className="mt-4 space-y-4">
+                              {contact.childrenDetails.map((child, idx) => (
+                                <div key={idx} className="bg-brand-off p-4 rounded-xl border border-brand-grayLight/40">
+                                  <h5 className="font-semibold text-sm mb-3 text-brand-dark">{t("taxPayerDetails.childNumber", { number: idx + 1 })}</h5>
+                                  <div className="grid gap-4 sm:grid-cols-3">
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.fullName")}</Label>
+                                      <Input
+                                        placeholder="Last & First name"
+                                        value={child.name}
+                                        onChange={e => {
+                                          const newKids = [...(contact.childrenDetails || [])];
+                                          newKids[idx].name = e.target.value;
+                                          setContact(p => ({ ...p, childrenDetails: newKids }));
+                                        }}
+                                        className="mt-1 bg-white"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.dob")}</Label>
+                                      <Input
+                                        type="date"
+                                        value={child.birth}
+                                        onChange={e => {
+                                          const newKids = [...(contact.childrenDetails || [])];
+                                          newKids[idx].birth = e.target.value;
+                                          setContact(p => ({ ...p, childrenDetails: newKids }));
+                                        }}
+                                        className="mt-1 bg-white"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.ssn")}</Label>
+                                      <Input
+                                        placeholder="Matricule (if known)"
+                                        value={child.ssn}
+                                        onChange={e => {
+                                          const newKids = [...(contact.childrenDetails || [])];
+                                          newKids[idx].ssn = e.target.value;
+                                          setContact(p => ({ ...p, childrenDetails: newKids }));
+                                        }}
+                                        className="mt-1 bg-white"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Alimony / Child Maintenance (Rentes) matching PDF exactly */}
+                        <div className="bg-brand-off p-5 rounded-xl border border-brand-grayLight/40">
+                          <Label className="text-brand-dark font-bold text-sm mb-2 block">{t("taxPayerDetails.hasAlimony")}</Label>
+                          <p className="text-xs text-brand-grayMed mb-3">{t("taxPayerDetails.alimonyPrompt")}</p>
+                          
+                          <div className="space-y-2">
+                            <label className="flex items-center gap-2 text-xs sm:text-sm cursor-pointer">
+                              <input
+                                type="radio"
+                                name="alimonyType"
+                                checked={contact.alimonyType === "none" || !contact.alimonyType}
+                                onChange={() => setContact(p => ({ ...p, alimonyType: "none", hasAlimony: "no" }))}
+                              />
+                              <span>{t("taxPayerDetails.alimonyNone")}</span>
+                            </label>
+
+                            <label className="flex items-center gap-2 text-xs sm:text-sm cursor-pointer">
+                              <input
+                                type="radio"
+                                name="alimonyType"
+                                checked={contact.alimonyType === "child_in_household"}
+                                onChange={() => setContact(p => ({ ...p, alimonyType: "child_in_household", hasAlimony: "yes" }))}
+                              />
+                              <span>{t("taxPayerDetails.alimonyInHousehold")}</span>
+                            </label>
+
+                            <label className="flex items-center gap-2 text-xs sm:text-sm cursor-pointer">
+                              <input
+                                type="radio"
+                                name="alimonyType"
+                                checked={contact.alimonyType === "child_outside_household"}
+                                onChange={() => setContact(p => ({ ...p, alimonyType: "child_outside_household", hasAlimony: "yes" }))}
+                              />
+                              <span>{t("taxPayerDetails.alimonyOutsideHousehold")}</span>
+                            </label>
+                          </div>
+
+                          {contact.alimonyType && contact.alimonyType !== "none" && (
+                            <div className="mt-4 pt-4 border-t border-brand-grayLight/30 grid gap-3 sm:grid-cols-2">
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.alimonyChildName")}</Label>
+                                <Input
+                                  value={contact.alimonyChildName || ""}
+                                  onChange={e => setContact(p => ({ ...p, alimonyChildName: e.target.value }))}
+                                  placeholder="Last Name / First Name"
+                                  className="mt-1 bg-white"
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.alimonyChildDob")}</Label>
+                                <Input
+                                  type="date"
+                                  value={contact.alimonyChildDob || ""}
+                                  onChange={e => setContact(p => ({ ...p, alimonyChildDob: e.target.value }))}
+                                  className="mt-1 bg-white"
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.alimonyChildAddress")}</Label>
+                                <Input
+                                  value={contact.alimonyChildAddress || ""}
+                                  onChange={e => setContact(p => ({ ...p, alimonyChildAddress: e.target.value }))}
+                                  placeholder="Address"
+                                  className="mt-1 bg-white"
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-xs">{t("taxPayerDetails.alimonyAmount")}</Label>
+                                <Input
+                                  value={contact.alimonyAmount || ""}
+                                  onChange={e => setContact(p => ({ ...p, alimonyAmount: e.target.value, alimonyDetails: `${p.alimonyChildName || ''} - ${e.target.value}` }))}
+                                  placeholder="e.g. €350 / month"
+                                  className="mt-1 bg-white"
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Bank Account */}
+                        <div>
+                          <h4 className="text-base font-bold text-brand-dark mb-3 flex items-center gap-2">
+                            <CreditCard className="h-4 w-4 text-brand-gold" />
+                            {t("taxPayerDetails.bankAccountTitle")}
+                          </h4>
+                          <div className="grid gap-4 sm:grid-cols-2">
+                            <div className="sm:col-span-2">
+                              <Label className="text-xs">{t("taxPayerDetails.bankAccountOwner")}</Label>
+                              <Input
+                                value={contact.bankAccountOwner || ""}
+                                onChange={e => setContact(p => ({ ...p, bankAccountOwner: e.target.value }))}
+                                className="mt-1"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs">{t("taxPayerDetails.iban")}</Label>
+                              <Input
+                                placeholder="LU..."
+                                value={contact.iban || ""}
+                                onChange={e => setContact(p => ({ ...p, iban: e.target.value }))}
+                                className="mt-1"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs">{t("taxPayerDetails.swiftBic")}</Label>
+                              <Input
+                                placeholder="e.g. BGLLLULL"
+                                value={contact.swiftBic || ""}
+                                onChange={e => setContact(p => ({ ...p, swiftBic: e.target.value }))}
+                                className="mt-1"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Rented Properties */}
+                        <div className="bg-brand-off p-5 rounded-xl border border-brand-grayLight/40 mt-6">
+                          <Label className="text-brand-dark font-bold text-sm mb-3 block">{t("taxPayerDetails.hasRentedProperties")}</Label>
+                          <div className="flex gap-4">
+                            <label className="flex items-center gap-2 text-sm cursor-pointer">
+                              <input
+                                type="radio"
+                                name="hasRentedProperties"
+                                checked={contact.hasRentedProperties === "no"}
+                                onChange={() => setContact(p => ({ ...p, hasRentedProperties: "no" }))}
+                              />
+                              {t("taxPayerDetails.no")}
+                            </label>
+                            <label className="flex items-center gap-2 text-sm cursor-pointer">
+                              <input
+                                type="radio"
+                                name="hasRentedProperties"
+                                checked={contact.hasRentedProperties === "yes"}
+                                onChange={() => {
+                                  setContact(p => ({ 
+                                    ...p, 
+                                    hasRentedProperties: "yes",
+                                    rentedProperties: p.rentedProperties?.length ? p.rentedProperties : [{
+                                      address: "", cadastralReference: "", completedOn: "", purchasedOn: "", soldOn: "", hasUsufruct: "no", firstRentalDate: "", owners: [], monthsRented2025: "", rentsReceived2025: ""
+                                    }]
+                                  }));
+                                }}
+                              />
+                              {t("taxPayerDetails.yes")}
+                            </label>
+                          </div>
+                          
+                          {errors.rentedProperties && (
+                              <div className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700 font-medium flex items-center gap-2">
+                                <AlertCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
+                                <span>{errors.rentedProperties}</span>
+                              </div>
+                            )}
+
+                          {contact.hasRentedProperties === "yes" && contact.rentedProperties && (
+                            <div className="mt-4 space-y-6">
+                              {contact.rentedProperties.map((rp, idx) => (
+                                <div key={idx} className="border-t border-brand-grayLight/30 pt-4">
+                                  <div className="flex justify-between items-center mb-4">
+                                    <h5 className="font-semibold text-sm text-brand-dark">{t("taxPayerDetails.rentedPropertySection")} {idx + 1}</h5>
+                                    {errors[`rentedProperty_${idx}`] && (
+                                      <div className="mt-2 mb-2 rounded-lg border border-red-200 bg-red-50 p-2.5 text-xs text-red-700 font-medium flex items-center gap-2">
+                                        <AlertCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
+                                        <span>{errors[`rentedProperty_${idx}`]}</span>
+                                      </div>
+                                    )}
+                                    {contact.rentedProperties!.length > 1 && (
+                                      <button type="button" onClick={() => {
+                                        setContact(p => {
+                                          const next = [...(p.rentedProperties || [])];
+                                          next.splice(idx, 1);
+                                          return { ...p, rentedProperties: next };
+                                        });
+                                      }} className="text-xs text-red-500 font-medium">Remove</button>
+                                    )}
+                                  </div>
+                                  
+                                  <div className="grid gap-3 sm:grid-cols-2">
+                                    <div className="sm:col-span-2">
+                                      <Label className="text-xs">{t("taxPayerDetails.rpAddress")}</Label>
+                                      <Input value={rp.address} onChange={e => {
+                                        const next = [...(contact.rentedProperties || [])];
+                                        next[idx].address = e.target.value;
+                                        setContact(p => ({ ...p, rentedProperties: next }));
+                                      }} className="mt-1 bg-white" />
+                                    </div>
+                                    <div className="sm:col-span-2">
+                                      <Label className="text-xs">{t("taxPayerDetails.rpCadastral")}</Label>
+                                      <Input value={rp.cadastralReference} onChange={e => {
+                                        const next = [...(contact.rentedProperties || [])];
+                                        next[idx].cadastralReference = e.target.value;
+                                        setContact(p => ({ ...p, rentedProperties: next }));
+                                      }} className="mt-1 bg-white" />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.rpCompletedOn")}</Label>
+                                      <Input type="date" value={rp.completedOn} onChange={e => {
+                                        const next = [...(contact.rentedProperties || [])];
+                                        next[idx].completedOn = e.target.value;
+                                        setContact(p => ({ ...p, rentedProperties: next }));
+                                      }} className="mt-1 bg-white" />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.rpPurchasedOn")}</Label>
+                                      <Input type="date" value={rp.purchasedOn} onChange={e => {
+                                        const next = [...(contact.rentedProperties || [])];
+                                        next[idx].purchasedOn = e.target.value;
+                                        setContact(p => ({ ...p, rentedProperties: next }));
+                                      }} className="mt-1 bg-white" />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.rpSoldOn")}</Label>
+                                      <Input type="date" value={rp.soldOn} onChange={e => {
+                                        const next = [...(contact.rentedProperties || [])];
+                                        next[idx].soldOn = e.target.value;
+                                        setContact(p => ({ ...p, rentedProperties: next }));
+                                      }} className="mt-1 bg-white" />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.rpFirstRentalDate")}</Label>
+                                      <Input type="date" value={rp.firstRentalDate} onChange={e => {
+                                        const next = [...(contact.rentedProperties || [])];
+                                        next[idx].firstRentalDate = e.target.value;
+                                        setContact(p => ({ ...p, rentedProperties: next }));
+                                      }} className="mt-1 bg-white" />
+                                    </div>
+                                    <div className="sm:col-span-2 flex items-center gap-4 mt-2">
+                                      <Label className="text-xs font-semibold">{t("taxPayerDetails.rpHasUsufruct")}</Label>
+                                      <label className="flex items-center gap-1 text-xs cursor-pointer"><input type="radio" checked={rp.hasUsufruct === "yes"} onChange={() => { const next = [...(contact.rentedProperties || [])]; next[idx].hasUsufruct = "yes"; setContact(p => ({ ...p, rentedProperties: next })); }} />{t("taxPayerDetails.yes")}</label>
+                                      <label className="flex items-center gap-1 text-xs cursor-pointer"><input type="radio" checked={rp.hasUsufruct === "no"} onChange={() => { const next = [...(contact.rentedProperties || [])]; next[idx].hasUsufruct = "no"; setContact(p => ({ ...p, rentedProperties: next })); }} />{t("taxPayerDetails.no")}</label>
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.rpMonthsRented")}</Label>
+                                      <Input type="number" min="0" max="12" value={rp.monthsRented2025} onChange={e => {
+                                        const next = [...(contact.rentedProperties || [])];
+                                        next[idx].monthsRented2025 = e.target.value;
+                                        setContact(p => ({ ...p, rentedProperties: next }));
+                                      }} className="mt-1 bg-white" />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">{t("taxPayerDetails.rpRentsReceived")}</Label>
+                                      <Input type="number" value={rp.rentsReceived2025} onChange={e => {
+                                        const next = [...(contact.rentedProperties || [])];
+                                        next[idx].rentsReceived2025 = e.target.value;
+                                        setContact(p => ({ ...p, rentedProperties: next }));
+                                      }} className="mt-1 bg-white" />
+                                    </div>
+
+                                    {/* Ownership details for Indivision / Usufruct */}
+                                    <div className="sm:col-span-2 mt-2 bg-brand-gold/5 p-3 rounded-lg border border-brand-gold/20">
+                                      <div className="flex justify-between items-center mb-2">
+                                        <Label className="text-xs font-semibold text-brand-dark">{t("taxPayerDetails.rpOwnershipDetails")}</Label>
+                                        <button type="button" className="text-[10px] bg-white border px-2 py-1 rounded" onClick={() => {
+                                          const next = [...(contact.rentedProperties || [])];
+                                          next[idx].owners = [...(next[idx].owners || []), { name: "", nationalId: "", undividedShare: "", usufructPercent: "", bareOwnershipPercent: "", fullOwnershipPercent: "" }];
+                                          setContact(p => ({ ...p, rentedProperties: next }));
+                                        }}>+ Add Owner</button>
+                                      </div>
+                                      {rp.owners && rp.owners.map((owner, oIdx) => (
+                                        <div key={oIdx} className="grid grid-cols-2 gap-2 mt-2 p-3 bg-white rounded-lg border border-brand-grayLight/30 mb-2.5 shadow-xs">
+                                          <div className="col-span-2 flex justify-between items-center pb-2 border-b border-brand-grayLight/20">
+                                            <span className="text-[11px] font-bold text-brand-dark uppercase tracking-wider">Owner #{oIdx + 1}</span>
+                                            <button
+                                              type="button"
+                                              onClick={() => {
+                                                const next = [...(contact.rentedProperties || [])];
+                                                next[idx].owners = next[idx].owners.filter((_, i) => i !== oIdx);
+                                                setContact(p => ({ ...p, rentedProperties: next }));
+                                              }}
+                                              className="text-[11px] text-red-600 hover:text-red-800 hover:bg-red-50 px-2 py-0.5 rounded font-medium flex items-center gap-1 transition-colors"
+                                            >
+                                              <Trash2 className="h-3 w-3" /> Remove Owner
+                                            </button>
+                                          </div>
+                                          <div>
+                                            <Label className="text-[10px]">{t("taxPayerDetails.rpOwnerName")}</Label>
+                                            <Input value={owner.name} onChange={e => { const n = [...(contact.rentedProperties || [])]; n[idx].owners[oIdx].name = e.target.value; setContact(p => ({ ...p, rentedProperties: n })); }} className="h-7 text-xs bg-white" />
+                                          </div>
+                                          <div>
+                                            <Label className="text-[10px]">{t("taxPayerDetails.rpNationalId")}</Label>
+                                            <Input value={owner.nationalId} onChange={e => { const n = [...(contact.rentedProperties || [])]; n[idx].owners[oIdx].nationalId = e.target.value; setContact(p => ({ ...p, rentedProperties: n })); }} className="h-7 text-xs bg-white" />
+                                          </div>
+                                          <div>
+                                            <Label className="text-[10px]">{t("taxPayerDetails.rpUndividedShare")}</Label>
+                                            <Input type="number" placeholder="%" value={owner.undividedShare} onChange={e => { const n = [...(contact.rentedProperties || [])]; n[idx].owners[oIdx].undividedShare = e.target.value; setContact(p => ({ ...p, rentedProperties: n })); }} className="h-7 text-xs bg-white" />
+                                          </div>
+                                          <div>
+                                            <Label className="text-[10px]">{t("taxPayerDetails.rpUsufruct")}</Label>
+                                            <Input type="number" placeholder="%" value={owner.usufructPercent} onChange={e => { const n = [...(contact.rentedProperties || [])]; n[idx].owners[oIdx].usufructPercent = e.target.value; setContact(p => ({ ...p, rentedProperties: n })); }} className="h-7 text-xs bg-white" />
+                                          </div>
+                                          <div>
+                                            <Label className="text-[10px]">{t("taxPayerDetails.rpBareOwnership")}</Label>
+                                            <Input type="number" placeholder="%" value={owner.bareOwnershipPercent} onChange={e => { const n = [...(contact.rentedProperties || [])]; n[idx].owners[oIdx].bareOwnershipPercent = e.target.value; setContact(p => ({ ...p, rentedProperties: n })); }} className="h-7 text-xs bg-white" />
+                                          </div>
+                                          <div>
+                                            <Label className="text-[10px]">{t("taxPayerDetails.rpFullOwnership")}</Label>
+                                            <Input type="number" placeholder="%" value={owner.fullOwnershipPercent} onChange={e => { const n = [...(contact.rentedProperties || [])]; n[idx].owners[oIdx].fullOwnershipPercent = e.target.value; setContact(p => ({ ...p, rentedProperties: n })); }} className="h-7 text-xs bg-white" />
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                              
+                              <button type="button" onClick={() => {
+                                setContact(p => ({
+                                  ...p,
+                                  rentedProperties: [...(p.rentedProperties || []), {
+                                    address: "", cadastralReference: "", completedOn: "", purchasedOn: "", soldOn: "", hasUsufruct: "no", firstRentalDate: "", owners: [], monthsRented2025: "", rentsReceived2025: ""
+                                  }]
+                                }));
+                              }} className="text-xs font-semibold text-brand-gold bg-brand-gold/10 px-3 py-2 rounded hover:bg-brand-gold/20 transition-all">+ {t("taxPayerDetails.addRentedProperty")}</button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                    )}
+
+                    {/* ID Card / Passport Upload */}
+                    <div className="space-y-3 pt-2 mt-6">
+                      <Label className="text-brand-dark font-medium">
+                        {t("step1.idCardLabel")} <span className="text-red-500">*</span>
+                      </Label>
+                      <p className="text-xs text-brand-grayMed">
+                        {t("step1.idCardDesc")}
+                      </p>
+
+                      <div
+                        className={`relative rounded-xl border-2 border-dashed p-4 transition-all text-center ${
+                          contact.idDocumentName
+                            ? "border-emerald-500 bg-emerald-50/40"
+                            : errors.idDocument
+                            ? "border-red-500 bg-red-50/30"
+                            : "border-brand-grayLight/80 hover:border-brand-gold/60 bg-gray-50/50"
+                        }`}
+                      >
+                        <input
+                          id="idDocumentUpload"
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          onChange={handleIdFileUpload}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        />
+                        
+                        {contact.idDocumentName ? (
+                          <div className="flex items-center justify-between gap-3 px-2 py-1">
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                                <Check className="h-4 w-4 text-emerald-600" />
+                              </div>
+                              <div className="text-left min-w-0">
+                                <p className="text-xs font-semibold text-brand-dark truncate">{contact.idDocumentName}</p>
+                                <p className="text-[11px] text-emerald-600 font-medium">{t("step1.idDocumentReady")}</p>
+                              </div>
+                            </div>
+                            <span className="text-xs font-medium text-brand-gold hover:underline pointer-events-none">
+                              {t("step1.replaceFile")}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="py-2">
+                            <div className="mx-auto h-9 w-9 rounded-full bg-brand-gold/10 flex items-center justify-center mb-2">
+                              {uploadingId ? (
+                                <div className="h-4 w-4 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
+                              ) : (
+                                <Upload className="h-4 w-4 text-brand-gold" />
+                              )}
+                            </div>
+                            <p className="text-xs font-medium text-brand-dark">
+                              {uploadingId ? t("step1.uploading") : t("step1.uploadPrompt")}
+                            </p>
+                            <p className="text-[11px] text-brand-grayMed mt-0.5">
+                              {t("step1.uploadFormats")}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                      {errors.idDocument && <p className="text-xs text-red-500">{errors.idDocument}</p>}
+                    </div>
+
                     {/* Service & Price Banner */}
                     <div className="rounded-xl bg-brand-off p-5 border border-brand-gold/30 flex items-center justify-between">
                       <div>
@@ -685,7 +1803,7 @@ export default function BookingClient() {
                         type="submit"
                         className="bg-brand-gold text-white hover:bg-brand-goldDark font-semibold px-6 shadow-sm"
                       >
-                        Proceed to Payment <ArrowRight className="h-4 w-4 ml-2" />
+                        {serviceId === "tax-return-preparation" ? t("taxPayerDetails.proceedToDocs") : t("taxPayerDetails.proceedToPayment")} <ArrowRight className="h-4 w-4 ml-2" />
                       </Button>
                     </div>
                   </form>
@@ -708,6 +1826,216 @@ export default function BookingClient() {
                   </div>
                 ))}
               </div>
+            </>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════ */}
+          {/* STEP 2: Required Tax Documents                                   */}
+          {/* ═════════════════════════════════════════════════════════════════ */}
+          {step === "documents" && (
+            <>
+              <SectionHeading
+                overline={t("docsStep.overline")}
+                title={t("docsStep.title")}
+                description={t("docsStep.description")}
+              />
+
+              {/* Quality & Efficiency Notice from Advensys PDF */}
+              <div className="mt-8 rounded-2xl bg-amber-50/80 border border-amber-200/80 p-5 shadow-xs">
+                <div className="flex items-start gap-3">
+                  <div className="h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 text-amber-700">
+                    <AlertCircle className="h-4 w-4" />
+                  </div>
+                  <div className="text-xs sm:text-sm text-amber-900 space-y-1">
+                    <p className="font-semibold">{t("docsStep.qualityNotice")}</p>
+                    <p className="text-amber-700 text-xs italic">{t("docsStep.disclaimerNotice")}</p>
+                  </div>
+                </div>
+              </div>
+
+              <Card className="mt-6 border border-brand-grayLight/40 bg-white shadow-md rounded-2xl">
+                <CardContent className="p-6 sm:p-8">
+                  <form onSubmit={handleDocumentsSubmit} className="space-y-6">
+                    <div>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 border-b border-brand-grayLight/30 pb-3">
+                        <div>
+                          <Label className="text-brand-dark font-bold text-base block">{t("docsStep.checklistTitle")}</Label>
+                          <p className="text-xs text-brand-grayMed mt-0.5">
+                            {t("docsStep.checklistDesc")}
+                          </p>
+                        </div>
+                        <span className="text-xs font-semibold text-brand-gold bg-brand-gold/10 px-3 py-1 rounded-full self-start sm:self-auto">
+                          {contact.hasRentedProperties === "yes" ? "27 Checklist Items" : "20 Checklist Items"}
+                        </span>
+                      </div>
+
+                      <div className="space-y-3.5">
+                        {((t.raw("docsStep.items") as any[]) || [])
+                          .filter((rawItem) => {
+                            const item = typeof rawItem === "string" ? { num: "", title: rawItem, note: "" } : rawItem;
+                            if (item.num?.startsWith("rp-") && contact.hasRentedProperties !== "yes") return false;
+                            return true;
+                          })
+                          .map((rawItem, idx) => {
+                          const item = typeof rawItem === "string" ? { num: String(idx + 1), title: rawItem, note: "" } : rawItem;
+                          const itemKey = item.num || String(idx);
+                          const uploadedDoc = getTaxDoc(itemKey, idx);
+                          const isUploading = uploadingDocKey === itemKey;
+                          const isIdItem = item.num === "0";
+
+                          return (
+                            <div
+                              key={itemKey}
+                              className={`p-4 rounded-xl border transition-all shadow-2xs ${
+                                uploadedDoc || (isIdItem && contact.idDocumentName)
+                                  ? "border-emerald-300 bg-emerald-50/20"
+                                  : "border-brand-grayLight/60 bg-white hover:border-brand-gold/50"
+                              }`}
+                            >
+                              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                                <div className="flex items-start gap-3 min-w-0 flex-1">
+                                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-gold/15 text-[11px] font-bold text-brand-goldDark flex-shrink-0 mt-0.5">
+                                    {item.num}
+                                  </span>
+                                  <div className="min-w-0 flex-1">
+                                    <p className="text-xs sm:text-sm font-semibold text-brand-dark leading-snug">
+                                      {item.title}
+                                    </p>
+                                    {item.note && (
+                                      <p className="text-[11px] text-brand-grayMed mt-1 leading-relaxed">
+                                        {item.note}
+                                      </p>
+                                    )}
+
+                                    {/* Item 0: ID Document status from Step 1 */}
+                                    {isIdItem && contact.idDocumentName && !uploadedDoc && (
+                                      <p className="text-[11px] text-emerald-700 font-medium mt-1.5 flex items-center gap-1.5">
+                                        <Check className="h-3.5 w-3.5 flex-shrink-0 text-emerald-600" />
+                                        <span>{t("docsStep.uploadedInStep1")}: <strong className="font-semibold">{contact.idDocumentName}</strong></span>
+                                      </p>
+                                    )}
+
+                                    {/* Uploaded file confirmation */}
+                                    {uploadedDoc && (
+                                      <p className="text-[11px] text-emerald-700 font-semibold truncate mt-1.5 flex items-center gap-1.5">
+                                        <Check className="h-3.5 w-3.5 flex-shrink-0 text-emerald-600" />
+                                        <span>{uploadedDoc.name}</span>
+                                      </p>
+                                    )}
+
+                                    {/* Extra Specific Input (e.g. occupancy date, construction date, dossier no) */}
+                                    {item.extraField === "firstOccupancyDate" && (
+                                      <div className="mt-3 pt-2.5 border-t border-brand-grayLight/40 flex flex-col sm:flex-row sm:items-center gap-2">
+                                        <Label className="text-xs font-semibold text-red-600 whitespace-nowrap">
+                                          {item.extraFieldLabel || t("docsStep.firstOccupancyLabel")}:
+                                        </Label>
+                                        <Input
+                                          type="date"
+                                          value={contact.firstOccupancyDate || ""}
+                                          onChange={(e) => setContact(p => ({ ...p, firstOccupancyDate: e.target.value }))}
+                                          className="h-8 text-xs bg-white max-w-xs"
+                                        />
+                                      </div>
+                                    )}
+
+                                    {item.extraField === "constructionCompletionDate" && (
+                                      <div className="mt-3 pt-2.5 border-t border-brand-grayLight/40 flex flex-col sm:flex-row sm:items-center gap-2">
+                                        <Label className="text-xs font-semibold text-brand-dark whitespace-nowrap">
+                                          {item.extraFieldLabel || t("docsStep.constructionCompletionLabel")}:
+                                        </Label>
+                                        <Input
+                                          placeholder="MM / YYYY"
+                                          value={contact.constructionCompletionDate || ""}
+                                          onChange={(e) => setContact(p => ({ ...p, constructionCompletionDate: e.target.value }))}
+                                          className="h-8 text-xs bg-white max-w-xs"
+                                        />
+                                      </div>
+                                    )}
+
+                                    {item.extraField === "priorYearDossierNumber" && (
+                                      <div className="mt-3 pt-2.5 border-t border-brand-grayLight/40 flex flex-col sm:flex-row sm:items-center gap-2">
+                                        <Label className="text-xs font-semibold text-brand-dark whitespace-nowrap">
+                                          {item.extraFieldLabel || t("docsStep.dossierNoLabel")}:
+                                        </Label>
+                                        <Input
+                                          placeholder="e.g. 1985..."
+                                          value={contact.priorYearDossierNumber || contact.dossierNumber || ""}
+                                          onChange={(e) => setContact(p => ({ ...p, priorYearDossierNumber: e.target.value }))}
+                                          className="h-8 text-xs bg-white max-w-xs"
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-2 self-end sm:self-center flex-shrink-0 pt-1 sm:pt-0">
+                                  {uploadedDoc ? (
+                                    <button
+                                      type="button"
+                                      onClick={() => setContact(p => {
+                                        const docs = { ...(p.taxDocuments as any || {}) };
+                                        delete docs[itemKey];
+                                        return { ...p, taxDocuments: docs };
+                                      })}
+                                      className="text-xs text-red-500 hover:underline px-2 py-1"
+                                    >
+                                      {t("docsStep.remove")}
+                                    </button>
+                                  ) : null}
+
+                                  <label className={`relative inline-flex items-center justify-center px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all ${
+                                    uploadedDoc
+                                      ? "bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100"
+                                      : "bg-brand-off text-brand-dark border border-brand-grayLight/80 hover:bg-brand-gold/10 hover:border-brand-gold/60"
+                                  }`}>
+                                    <input
+                                      type="file"
+                                      accept=".pdf,.jpg,.jpeg,.png"
+                                      onChange={(e) => handleSingleTaxDocUpload(e, itemKey)}
+                                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                      disabled={isUploading}
+                                    />
+                                    {isUploading ? (
+                                      <span className="flex items-center gap-1.5">
+                                        <span className="h-3 w-3 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
+                                        {t("docsStep.uploading")}
+                                      </span>
+                                    ) : uploadedDoc ? (
+                                      t("docsStep.replace")
+                                    ) : (
+                                      <span className="flex items-center gap-1.5">
+                                        <Upload className="h-3 w-3 text-brand-gold" />
+                                        {isIdItem && contact.idDocumentName ? "Add Partner ID" : t("docsStep.uploadDoc")}
+                                      </span>
+                                    )}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-6 border-t border-brand-grayLight/30">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setStep("contact")}
+                        className="border-brand-grayLight/60 text-brand-dark hover:bg-brand-off"
+                      >
+                        <ArrowLeft className="h-4 w-4 mr-2" /> {t("docsStep.backToDetails")}
+                      </Button>
+                      <Button
+                        type="submit"
+                        className="bg-brand-gold text-white hover:bg-brand-goldDark font-semibold px-6 shadow-sm"
+                      >
+                        {t("docsStep.proceedToPayment")} <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </div>
+                  </form>
+                </CardContent>
+              </Card>
             </>
           )}
 
@@ -755,14 +2083,30 @@ export default function BookingClient() {
                       <h4 className="text-xs font-bold uppercase tracking-wider text-brand-grayMed">Client Information</h4>
                       <div className="space-y-1.5 text-xs">
                         <p className="font-semibold text-brand-dark flex items-center gap-2">
-                          <User className="h-3.5 w-3.5 text-brand-gold" /> {fullName}
+                          <User className="h-3.5 w-3.5 text-brand-gold flex-shrink-0" /> {fullName}
                         </p>
                         <p className="text-brand-grayMed flex items-center gap-2">
-                          <Mail className="h-3.5 w-3.5 text-brand-gold" /> {contact.email}
+                          <Mail className="h-3.5 w-3.5 text-brand-gold flex-shrink-0" /> {contact.email}
                         </p>
                         <p className="text-brand-grayMed flex items-center gap-2">
-                          <Phone className="h-3.5 w-3.5 text-brand-gold" /> {contact.phone}
+                          <Phone className="h-3.5 w-3.5 text-brand-gold flex-shrink-0" /> {contact.phone}
                         </p>
+                        {contact.address && (
+                          <p className="text-brand-grayMed flex items-start gap-2 pt-1 border-t border-brand-grayLight/20">
+                            {contact.addressType === "residential" ? (
+                              <Home className="h-3.5 w-3.5 text-brand-gold flex-shrink-0 mt-0.5" />
+                            ) : (
+                              <Building className="h-3.5 w-3.5 text-brand-gold flex-shrink-0 mt-0.5" />
+                            )}
+                            <span className="truncate">{contact.address}</span>
+                          </p>
+                        )}
+                        {contact.idDocumentName && (
+                          <p className="text-emerald-700 flex items-center gap-2 pt-1 border-t border-brand-grayLight/20 font-medium">
+                            <FileText className="h-3.5 w-3.5 text-emerald-600 flex-shrink-0" />
+                            <span className="truncate">{contact.idDocumentName}</span>
+                          </p>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -804,10 +2148,10 @@ export default function BookingClient() {
                         <div className="mt-6 flex justify-start border-t border-brand-grayLight/30 pt-4">
                           <Button
                             variant="outline"
-                            onClick={() => setStep("contact")}
+                            onClick={() => setStep(serviceId === "tax-return-preparation" ? "documents" : "contact")}
                             className="border-brand-grayLight/60 text-brand-dark hover:bg-brand-off"
                           >
-                            <ArrowLeft className="h-4 w-4 mr-2" /> Back to Details
+                            <ArrowLeft className="h-4 w-4 mr-2" /> {serviceId === "tax-return-preparation" ? t("paymentStep.backToDocs") : t("paymentStep.backToDetails")}
                           </Button>
                         </div>
                       )}

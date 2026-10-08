@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { MapPin, Building2, Maximize2, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { getProperties, type Property } from "@/lib/investment-api";
+import { getProperties, getCurrentInvestor, getInvestorInvestments, type Property } from "@/lib/investment-api";
 
 // Map Property to display format
 interface Offering {
@@ -37,12 +37,28 @@ export default function SpvOfferingsPage() {
   const locale = useLocale();
   const [activeFilter, setActiveFilter] = React.useState("all");
   const [offerings, setOfferings] = React.useState<Offering[]>([]);
+  const [investedPropertyIds, setInvestedPropertyIds] = React.useState<Set<number>>(new Set());
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     async function fetchProperties() {
       try {
-        const { data } = await getProperties();
+        const currentInvestor = getCurrentInvestor();
+        const [propsRes, userInvRes] = await Promise.all([
+          getProperties(),
+          currentInvestor ? getInvestorInvestments(currentInvestor.id) : Promise.resolve({ data: [] }),
+        ]);
+
+        if (userInvRes && userInvRes.data) {
+          const investedIds = new Set(
+            userInvRes.data
+              .filter((inv) => inv.status !== "cancelled")
+              .map((inv) => inv.property_id)
+          );
+          setInvestedPropertyIds(investedIds);
+        }
+
+        const data = propsRes.data || [];
         // Map database properties to offerings format
         // Filter out closed properties - they should not be visible to other investors
         const mapped: Offering[] = data
@@ -145,7 +161,12 @@ export default function SpvOfferingsPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                     {/* Status Badge */}
-                    <div className="absolute top-4 right-4">
+                    <div className="absolute top-4 right-4 flex items-center gap-2">
+                      {investedPropertyIds.has(offering.id) && (
+                        <span className="rounded-full px-3 py-1 text-xs font-semibold bg-brand-gold text-white shadow-sm flex items-center gap-1">
+                          {t("spvInvestment.portal.offerings.investedBadge")}
+                        </span>
+                      )}
                       <span className={cn("rounded-full px-3 py-1 text-xs font-semibold", config.color)}>
                         {t(`spvInvestment.portal.offerings.status.${config.label}`)}
                       </span>

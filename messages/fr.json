@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "getStarted": "Commencer",
     "learnMore": "En savoir plus",
@@ -28,7 +28,6 @@
     "investmentAdvisory": "Conseil en Investissement",
     "lifeInsurance": "Assurance Vie",
     "accountingInvoicing": "Comptabilité & Facturation",
-    "mortgage": "Crédit Immobilier",
     "investment": "Investissement",
     "individualAccount": "Compte Particulier",
     "companyAccount": "Compte Entreprise",
@@ -36,8 +35,8 @@
   },
   "hero": {
     "home": {
-      "title": "Finance. Business. Une seule plateforme.",
-      "subtitle": "Depuis le Luxembourg, Opulanz réunit les services financiers et business essentiels aux entreprises européennes.",
+      "title": "Tous vos services financiers, en un seul endroit",
+      "subtitle": "Paiements, comptabilité et facturation, assistance en constitution de sociétés, conseil en investissement et fiscal, et assurance.\n\nPour les entrepreneurs et les entreprises en France et au Luxembourg.",
       "primaryCta": "Ouvrir un compte",
       "secondaryCta": "En savoir plus"
     },
@@ -70,15 +69,15 @@
       "strength3Description": "IA pour des services plus simples et plus efficaces.",
       "licensesOverline": "NOS STATUTS",
       "licensesTitle": "Nos activités réglementées",
-      "licensesDescription": "Activités exercées par des entités agréées du Groupe Advensys Luxembourg, autorisées à travers l'Europe.",
-      "cert1Title": "Intermédiation Réglementée",
+      "licensesDescription": "Nos activités réglementées sont exercées par des entités agréées du groupe :",
+      "cert1Title": "Intermédiation (France)",
       "cert1Description": "Advensys Insurance-Finance, ORIAS n° 21003660 : courtier en opérations de banque, en services de paiement et en assurance sous le contrôle de l'ACPR, et Conseiller en Investissements Financiers, membre de La Compagnie CIF (association agréée par l'AMF), sous le contrôle de l'AMF.",
       "cert2Title": "Comptabilité (Luxembourg)",
       "cert2Description": "Exercée sous autorisation du Ministère de l'Économie du Grand-Duché de Luxembourg.",
       "cert3Title": "Comptes et paiements",
       "cert3Description": "Fournis via notre partenaire agréé, établissement de monnaie électronique (EME) agréé au sein de l'Union européenne.",
-      "cert4Title": "Assurance Vie",
-      "cert4Description": "Contrat d'assurance vie dédié luxembourgeois pour particuliers et entreprises",
+      "cert4Title": "Assurance RC Pro",
+      "cert4Description": "Advensys Insurance-Finance SARL est couvert par une assurance responsabilité civile professionnelle souscrite auprès de MMA IARD France.",
       "whyTitle": "Pourquoi Opulanz ?",
       "whyDescription": "Ce qui fait de nous votre partenaire de confiance",
       "benefit1Title": "Plateforme tout-en-un",
@@ -193,7 +192,7 @@
     "benefitsTitle": "Pourquoi vous faire accompagner par Opulanz ?",
     "benefits": {
       "expertTitle": "Accompagnement expert",
-      "expertDesc": "Notre équipe de spécialistes en création de sociétés au Luxembourg vous guide à chaque étape du processus.",
+      "expertDesc": "Notre équipe d'experts en droit des sociétés luxembourgeois vous guide à chaque étape du processus de création.",
       "fastTitle": "Rapide et efficace",
       "fastDesc": "Complétez l'assistant en ligne en quelques minutes. La plupart des créations sont finalisées en 2 à 3 semaines.",
       "fullServiceTitle": "Service complet",
@@ -219,7 +218,7 @@
           "capital": "Exigence de capital très faible",
           "formation": "Formation simplifiée",
           "startups": "Idéal pour les startups",
-          "max": "Capital social : 1 € à 12 000 €"
+          "max": "Capital maximum de 100 000 €"
         }
       },
       "sa": {
@@ -519,15 +518,15 @@
     },
     "investment": {
       "title": "Conseil en investissement",
-      "description": "Conseil en investissement personnalisé fourni en qualité de Conseiller en Investissements Financiers (CIF), sous le contrôle de l'AMF."
+      "description": "Conseil en investissement indépendant fourni en qualité de Conseiller en Investissements Financiers (CIF), sous le contrôle de l'AMF."
     },
     "lifeInsurance": {
       "title": "Assurance-vie",
       "description": "Services de courtage d'assurance experts vous connectant aux principaux fournisseurs"
     },
     "mortgage": {
-      "title": "Prêt immobilier",
-      "description": "Solutions de financement immobilier résidentiel et commercial pour les particuliers et les entreprises"
+      "title": "Services hypothécaires",
+      "description": "Solutions de financement immobilier au Luxembourg"
     },
     "spvInvestment": {
       "title": "Investissement",
@@ -577,12 +576,12 @@
     },
     "whyChooseUs": {
       "title": "Pourquoi Choisir Opulanz ?",
-      "paragraph1": "Opulanz réunit le meilleur de l'expertise financière traditionnelle et de l'innovation fintech moderne. En tant que groupe d'entités européennes réglementées avec une présence au Luxembourg et en France, nous offrons la sécurité et la fiabilité dont vous avez besoin, combinées à la flexibilité et l'innovation que vous souhaitez.",
+      "paragraph1": "Opulanz réunit le meilleur de l'expertise financière traditionnelle et de l'innovation fintech moderne. En tant qu'institution financière entièrement réglementée avec une présence au Luxembourg et en France, nous offrons la sécurité et la fiabilité dont vous avez besoin, combinées à la flexibilité et l'innovation que vous souhaitez.",
       "paragraph2": "Que vous soyez un particulier à la recherche de services de paiement et d'investissement, ou une entreprise à la recherche de solutions financières complètes, nous avons l'expertise et les services pour soutenir votre réussite.",
       "cta": "Commencer Aujourd'hui",
       "reasons": {
         "regulated": "Réglementé par l'ACPR et l'AMF pour votre tranquillité d'esprit",
-        "expertise": "19+ ans d'expertise combinée en services financiers",
+        "expertise": "Plus de 25 ans d'expertise combinée en services financiers",
         "personalized": "Service personnalisé avec des gestionnaires de compte dédiés",
         "competitive": "Tarifs compétitifs et structure de frais transparente",
         "multilingual": "Support multilingue en anglais et en français",
@@ -597,7 +596,7 @@
     },
     "cta": {
       "title": "Prêt à Découvrir l'Excellence Financière ?",
-      "subtitle": "Rejoignez plus de 500 clients satisfaits qui font confiance à Opulanz pour leurs besoins financiers. Ouvrez votre compte aujourd'hui et découvrez la différence.",
+      "subtitle": "Rejoignez des milliers de clients satisfaits qui font confiance à Opulanz pour leurs besoins financiers. Ouvrez votre compte aujourd'hui et découvrez la différence.",
       "openAccount": "Ouvrir un Compte",
       "contactUs": "Nous Contacter"
     }
@@ -885,7 +884,7 @@
         }
       },
       "cta": {
-        "title": "Avancez avec un conseil personnalisé",
+        "title": "Avancez avec un conseil indépendant",
         "description": "Notre équipe met son expérience des marchés au service de recommandations personnalisées. Que vous prépariez votre retraite ou cherchiez à structurer votre patrimoine, nous vous apportons un conseil clair et adapté.",
         "scheduleMeeting": "Prendre rendez-vous",
         "contactSupport": "Contacter le support"
@@ -985,11 +984,11 @@
         "capital": "Capital social",
         "capitalValue": "31 000 €",
         "address": "Adresse du siège social",
-        "addressValue": "49 Duarrefstrooss, L-9964 Huldange, Grand-Duché de Luxembourg",
+        "addressValue": "2 Rue Edward Steichen, L-2540 Luxembourg",
         "phone": "Téléphone",
         "phoneValue": "+352 20 33 10 70",
         "email": "E-mail",
-        "emailValue": "contact@advensys-conseil.lu",
+        "emailValue": "info@advensys.lu",
         "website": "Site web",
         "websiteValue": "www.opulanz.com",
         "siret": "SIRET",
@@ -1175,7 +1174,7 @@
     },
     "description": "La plateforme financière et de services tout-en-un pour les entreprises. Une marque du Groupe Advensys Luxembourg S.A., forte de plus de 19 ans d'expérience dans les solutions complètes aux entreprises en Europe.",
     "copyright": "© {year} Opulanz. Tous droits réservés.",
-    "regulated": "Opulanz est une marque de Groupe Advensys Luxembourg S.A. (RCS B197138). Les activités réglementées d'intermédiation sont fournies par Advensys Insurance-Finance SARL, immatriculée à l'ORIAS n°21003660 en qualité de COBSP, COA et CIF. AIF est membre de La Compagnie IOBSP, de CNCEF Assurance et de La Compagnie CIF et est soumise, selon l'activité concernée, au contrôle de l'ACPR ou de l'AMF. Opulanz n'est ni un établissement de crédit ni un établissement de monnaie électronique et ne détient pas les fonds des clients."
+    "regulated": "Opulanz est une marque du Groupe Advensys Luxembourg S.A. (RCS Luxembourg B197138). Services d'intermédiation fournis par Advensys Insurance-Finance SARL — ORIAS n° 21003660 : courtier en opérations de banque, en services de paiement et en assurance sous le contrôle de l'ACPR ; Conseiller en Investissements Financiers, membre de La Compagnie CIF, sous le contrôle de l'AMF. Opulanz n'est pas un établissement de crédit."
   },
   "home": {
     "services": {
@@ -1190,22 +1189,18 @@
       }
     },
     "trust": {
-      "title": "CADRE RÉGLEMENTAIRE EUROPÉEN",
-      "description": "Notre Structure Réglementaire",
-      "summary": "Un groupe constitué au Luxembourg, avec des entités d'intermédiation financière réglementées et autorisées à travers l'Europe."
+      "title": "STATUTS & CONTRÔLE",
+      "description": "Des activités encadrées",
+      "summary": "Nos activités réglementées sont exercées par des entités agréées du groupe, sous le contrôle des autorités françaises."
     },
     "regulatory": {
-      "block1Title": "Groupe Luxembourg",
-      "block1Desc": "Groupe Advensys Luxembourg S.A. — RCS Luxembourg B197138. Société holding constituée au Luxembourg, présente en Europe depuis plus de 19 ans.",
-      "block2Title": "Intermédiation Financière Réglementée",
-      "block2Desc": "Services d'intermédiation fournis par Advensys Insurance-Finance SARL — ORIAS n° 21003660 : courtier (COBSP/COA) sous contrôle de l'ACPR, Conseiller en Investissements Financiers (CIF) sous contrôle de l'AMF.",
       "france": "France",
       "acpr": "Courtier en opérations de banque, services de paiement et assurance. Advensys Insurance-Finance — ORIAS n° 21003660, sous le contrôle de l'ACPR.",
       "amf": "Conseiller en Investissements Financiers (CIF). Advensys Insurance-Finance — ORIAS n° 21003660, sous le contrôle de l'AMF."
     },
     "cta": {
       "title": "Prêt à commencer ?",
-      "description": "Ouvrez votre compte en quelques minutes et accédez à des services de paiement professionnels adaptés à votre entreprise.",
+      "description": "Ouvrez votre compte en quelques minutes et accédez à des services payements professionnels adaptés à votre entreprise.",
       "contact": "Contactez-nous"
     }
   },
@@ -1230,7 +1225,7 @@
       }
     },
     "formation": {
-      "cta": "Nous pouvons vous aider à établir votre société au Luxembourg avant d'ouvrir votre compte professionnel."
+      "cta": "Nous pouvons vous aider à assister pour établir votre société au Luxembourg avant d'ouvrir votre compte professionnel."
     },
     "referral": {
       "title": "Vous ne savez pas quel partenaire de paiement vous convient ?",
@@ -1346,9 +1341,9 @@
         "description": "Commençons l'ouverture de votre compte de paiement personnel. Cela devrait prendre environ 10 minutes.",
         "accountTypeQuestion": "Quel type de compte souhaitez-vous ouvrir ?",
         "currentTitle": "Compte courant",
-        "currentDesc": "Compte de paiement standard pour les transactions quotidiennes et les paiements. Adapté aux résidents et non-résidents.",
-        "privateTitle": "Mise en relation banque privée",
-        "privateDesc": "Opulanz agit en qualité d'apporteur d'affaires auprès de partenaires de banque privée réglementés. Les conseils en investissements financiers sont assurés par Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF, enregistrée auprès de l'AMF). Un minimum de 250 000 € d'actifs est généralement exigé par l'établissement partenaire.",
+        "currentDesc": "Compte de paiement standard pour les transactions quotidiennes, les paiements et l'épargne. Adapté aux résidents et non-résidents.",
+        "privateTitle": "Banque privée",
+        "privateDesc": "Services de gestion de patrimoine et de banque privée pour les particuliers fortunés. Dépôt minimum généralement requis.",
         "whatNext": "Que se passe-t-il ensuite ?",
         "nextStep1": "Nous collecterons vos informations personnelles",
         "nextStep2": "Vérifierons votre identité et vos coordonnées",
@@ -1387,8 +1382,8 @@
         "pepWarning": "Si vous êtes une PPE ou soumis à des sanctions, une vérification supplémentaire sera requise",
         "whyNeeded": "Pourquoi nous avons besoin de ces informations",
         "whyNeededDesc": "En fonction de votre statut de résidence et de votre localisation, nous vous mettrons en relation avec le Partenaire Opulanz le mieux adapté à vos besoins et conforme aux réglementations de paiement locales.",
-        "privateBankingNotice": "Mise en relation banque privée sélectionnée",
-        "privateBankingNoticeDesc": "Opulanz agit en qualité d'apporteur d'affaires auprès de partenaires de banque privée réglementés. Les conseils en investissements financiers sont assurés par Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF, enregistrée auprès de l'AMF). Un minimum de 250 000 € d'actifs est généralement exigé par l'établissement partenaire.",
+        "privateBankingNotice": "Banque privée sélectionnée",
+        "privateBankingNoticeDesc": "La banque privée nécessite généralement un dépôt minimum (250 000 € et plus) et offre une gestion de relation dédiée, des conseils en patrimoine et des services d'investissement.",
         "otherEuCountry": "Autre pays de l'UE"
       },
       "documents": {
@@ -1437,7 +1432,7 @@
         "need4": "Justificatif d'adresse professionnelle",
         "need5": "Détails de création de société (si nouvelle société)",
         "processingTime": "Délai de traitement",
-        "processingTimeDesc": "Les demandes de compte professionnel prennent généralement 3 à 5 jours ouvrables. Nous pourrions vous contacter pour des informations supplémentaires pendant le processus d'examen.",
+        "processingTimeDesc": "Les demandes de compte professionnel prennent généralement 5 à 10 jours ouvrables. Nous pourrions vous contacter pour des informations supplémentaires pendant le processus d'examen.",
         "startApplication": "Commencer la demande"
       },
       "companyStatus": {
@@ -2168,9 +2163,9 @@
         "description": "Investissez dans l'immobilier premium et les actifs alternatifs via des structures SPV.",
         "step1": "Bienvenue sur le Portail d'Investissement SPV. Cette section est destinée aux investisseurs qualifiés intéressés par l'immobilier et les actifs alternatifs via des Véhicules à Usage Spécial.",
         "step2Title": "Qu'est-ce qu'un SPV ?",
-        "step2Content": "Cette section explique le fonctionnement des structures SPV : comment elles isolent les actifs, protègent les investisseurs et permettent le co-investissement dans des opportunités premium.",
+        "step2Content": "Cette section explique le fonctionnement des structures SPV — comment elles isolent les actifs, protègent les investisseurs et permettent le co-investissement dans des opportunités premium.",
         "step3Title": "Exprimer votre intérêt",
-        "step3Content": "Utilisez ce formulaire pour enregistrer votre intérêt. Saisissez votre nom, e-mail et type d'investisseur ; notre équipe vous contactera pour discuter de votre éligibilité.",
+        "step3Content": "Utilisez ce formulaire pour enregistrer votre intérêt. Saisissez votre nom, e-mail et type d'investisseur — notre équipe vous contactera pour discuter de votre éligibilité.",
         "tip": "Les investissements SPV sont réservés aux investisseurs qualifiés et institutionnels uniquement."
       },
       "cta": {
@@ -2837,8 +2832,7 @@
         "title": "Avis RGPD",
         "text": "Vos données sont traitées conformément au RGPD de l'UE. Vous pouvez demander l'accès, la rectification ou la suppression à tout moment en contactant privacy@opulanz.com."
       },
-      "submit": "Soumettre la demande",
-      "submitting": "Envoi en cours..."
+      "submit": "Soumettre la demande"
     },
     "page": {
       "hero": {
@@ -3035,8 +3029,8 @@
       },
       "latvia": {
         "title": "Lettonie",
-        "address": "Vīlandes iela 5-36",
-        "city": "Rīga, LV-1010",
+        "address": "Vilandes Iela 5-36",
+        "city": "1010 Riga",
         "country": "Lettonie",
         "phone": "Téléphone",
         "email": "Email"
@@ -3049,7 +3043,7 @@
     },
     "individual": {
       "title": "Demande de compte particulier",
-      "description": "Remplissez le formulaire ci-dessous pour ouvrir votre compte de paiement personnel.",
+      "description": "Remplissez le formulaire ci-dessous pour ouvrir votre compte bancaire personnel.",
       "approved": {
         "message": "Félicitations ! Votre demande de compte particulier a été approuvée. Votre IBAN est prêt.",
         "nextSteps": {
@@ -3296,7 +3290,7 @@
           "backToHomepage": "Retour à l'accueil",
           "privateBanking": {
             "title": "Soumettre votre demande",
-            "description": "Votre demande de mise en relation avec une banque privée sera transmise à notre équipe à contact@opulanz.com. Un conseiller d'Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF) vous contactera pour vous présenter les partenaires disponibles et les prochaines étapes.",
+            "description": "Votre demande de banque privée sera transmise à notre équipe à contact@opulanz.com. Un gestionnaire de relation vous contactera directement.",
             "summary": "Résumé de la demande",
             "name": "Nom",
             "email": "E-mail",
@@ -3406,12 +3400,12 @@
     "overview": {
       "overline": "Presentation",
       "title": "Votre Courtier en Assurance Vie de Confiance",
-      "description": "Courtier en assurance proposant une analyse personnalisée de vos exigences et besoins, nous vous mettons en relation avec des solutions d'assurance vie adaptées disponibles auprès de notre panel de partenaires assureurs, en veillant à la protection financière de vos proches.",
-      "badge1": "Recommandations personnalisées",
+      "description": "En tant que courtier independant, nous travaillons en votre nom pour trouver et vous connecter avec les meilleures solutions d'assurance vie des principaux fournisseurs, en veillant a la protection financiere de vos proches.",
+      "badge1": "Conseils impartiaux",
       "badge2": "Plusieurs fournisseurs",
       "badge3": "Protection familiale",
       "whyBrokerTitle": "Pourquoi choisir un courtier ?",
-      "benefit1": "Courtier en assurance proposant une analyse personnalisée de vos exigences et besoins",
+      "benefit1": "Courtier independant representant vos interets",
       "benefit2": "Acces aux polices de plusieurs grands assureurs",
       "benefit3": "Analyse personnalisee de vos besoins et recommandations de couverture",
       "benefit4": "Conseils experts sur les fonctionnalites avancees et la planification successorale",
@@ -3465,7 +3459,7 @@
     "features": {
       "overline": "Ce qui nous differencie",
       "title": "Expertise Professionnelle en Courtage d'Assurance",
-      "description": "En tant que courtiers en assurance, nous fournissons des recommandations personnalisées et l'accès aux solutions adaptées disponibles auprès de notre panel de partenaires assureurs.",
+      "description": "En tant que courtiers independants, nous fournissons des conseils impartiaux et l'acces aux meilleures solutions d'assurance pour vos besoins.",
       "brokers": {
         "title": "Courtiers experts",
         "description": "Expertise specialisee pour vous connecter avec les bons produits d'assurance"
@@ -3586,22 +3580,22 @@
       }
     },
     "licenses": {
-      "title": "Statuts réglementaires & immatriculations",
-      "description": "Statuts réglementaires et immatriculations applicables aux services financiers fournis via Opulanz :",
+      "title": "Licences et Autorisations",
+      "description": "Opulanz détient les licences et autorisations nécessaires pour fournir des services financiers :",
       "banking": {
-        "title": "Intermédiation financière réglementée",
-        "authority": "Advensys Insurance-Finance SARL, immatriculée à l'ORIAS sous le n°21003660 en qualité de COBSP et COA, soumise au contrôle de l'ACPR.",
-        "note": "Les activités d'intermédiation réglementées sont fournies par Advensys Insurance-Finance SARL, membre de La Compagnie IOBSP et de CNCEF Assurance. Opulanz n'est pas un établissement de crédit et ne détient pas les fonds des clients."
+        "title": "Services Bancaires - France",
+        "authority": "Agréé et supervisé par l'ACPR (Autorité de Contrôle Prudentiel et de Résolution)",
+        "note": "Nos opérations bancaires françaises sont entièrement conformes au droit bancaire français et aux directives bancaires européennes."
       },
       "investment": {
-        "title": "Conseil en Investissements Financiers (CIF)",
-        "authority": "Advensys Insurance-Finance SARL, immatriculée à l'ORIAS sous le n°21003660, membre de La Compagnie CIF, association professionnelle agréée par l'AMF, soumise au contrôle de l'AMF pour son activité CIF.",
-        "note": "Services de conseil en investissement personnalisé fournis par Advensys Insurance-Finance SARL. L'immatriculation à l'ORIAS est distincte d'un agrément direct de l'AMF."
+        "title": "Services d'Investissement - France",
+        "authority": "Régulé par l'AMF (Autorité des Marchés Financiers)",
+        "note": "Nos services de conseil en investissement sont conformes aux réglementations MiFID II et aux exigences de l'AMF."
       },
       "payment": {
         "title": "Services de Paiement",
-        "authority": "Les comptes et services de paiement sont fournis par un partenaire agréé au titre de la réglementation applicable aux services de paiement.",
-        "note": "Opulanz n'est ni un établissement de crédit ni un établissement de monnaie électronique et ne détient pas les fonds des clients. L'identité du partenaire de paiement agréé est communiquée lors du parcours d'entrée en relation."
+        "authority": "Autorisé en vertu de la DSP2 (Directive sur les services de paiement 2)",
+        "note": "Nous fournissons des services de paiement sécurisés dans l'Espace économique européen conformément aux exigences de la DSP2."
       }
     },
     "contact": {
@@ -3743,9 +3737,9 @@
       "select": "Sélectionner"
     },
     "wizard": {
-      "stepTitle": "Étape {step} sur 8",
+      "stepTitle": "Étape {step} sur 8 — {label}",
       "changeClientType": "← Changer de type de client",
-      "previousStep": "Retour",
+      "previousStep": "← Étape précédente",
       "questionnaireTitle": "Questionnaire de Connaissance du Client",
       "startCTA": "Compléter votre QCC",
       "startDesc": "Questionnaire de Connaissance du Client (QCC) — disponible pour les personnes physiques et les personnes morales. Conforme MiFID II / DDA.",
@@ -3763,16 +3757,14 @@
       "mr": "M.",
       "mrs": "Mme",
       "lastName": "Nom",
-      "lastNamePlaceholder": "Entrez votre nom",
       "firstName": "Prénom(s)",
-      "firstNamePlaceholder": "Entrez votre(s) prénom(s)",
       "maidenName": "Nom de jeune fille",
       "nationality": "Nationalité",
-      "nationalityPlaceholder": "Entrez votre nationalité",
+      "nationalityPlaceholder": "Ex. : Française",
       "birthDate": "Date de naissance",
       "birthPlace": "Lieu de naissance",
       "address": "Adresse complète",
-      "addressPlaceholder": "Entrez votre adresse complète",
+      "addressPlaceholder": "N° rue, code postal, ville, pays",
       "email": "Email",
       "phone": "Téléphone",
       "fiscalResidence": "Résidence fiscale",
@@ -3800,13 +3792,13 @@
       "marriageDate": "Date du mariage",
       "marriageContractLabel": "Contrat de mariage",
       "marriageRegimeLabel": "Régime matrimonial",
-      "marriageRegimePlaceholder": "Entrez le régime matrimonial",
+      "marriageRegimePlaceholder": "Ex. : Communauté réduite aux acquêts",
       "pacsDate": "Date du PACS",
       "pacsConventionLabel": "Convention de PACS",
       "divorceDate": "Date du divorce",
       "numberOfChildren": "Nombre d'enfant(s)",
       "childrenAtCharge": "Dont à charge fiscalement",
-      "nextBtn": "Suivant",
+      "nextBtn": "Suivant — Situation financière",
       "errLastName": "Le nom du Titulaire 1 est requis.",
       "errFirstName": "Le prénom du Titulaire 1 est requis.",
       "errEmail": "L'email du Titulaire 1 est requis.",
@@ -3818,9 +3810,9 @@
       "t1Income": "Revenus moyens annuels globaux du foyer fiscal",
       "t1Patrimony": "Estimation globale du patrimoine (dettes exclues)",
       "t1Commitments": "Engagements financiers (% des revenus)",
-      "t1CommitmentsPlaceholder": "Entrez en pourcentage",
+      "t1CommitmentsPlaceholder": "Ex. : 30 %",
       "t1SavingsCapacity": "Capacité d'épargne estimée (€)",
-      "t1SavingsCapacityPlaceholder": "Montant mensuel estimé",
+      "t1SavingsCapacityPlaceholder": "Ex. : 1 000 €/mois",
       "t1FinancialPct": "Actifs financiers %",
       "t1RealEstatePct": "Actifs immobiliers %",
       "t1ProfessionalPct": "Actifs professionnels %",
@@ -3838,13 +3830,13 @@
       "financialInstruments": "Instruments financiers",
       "both": "Les deux",
       "amountToInvest": "Montant prévu des avoirs à investir",
-      "amountToInvestPlaceholder": "Montant prévu",
+      "amountToInvestPlaceholder": "Ex. : 50 000 €",
       "fundOrigins": "Origine économique des avoirs",
       "bankOrigin": "Établissement bancaire d'origine",
       "bankOriginPlaceholder": "Nom de la banque",
       "additionalInfo": "Informations complémentaires",
       "additionalInfoPlaceholder": "Évolution professionnelle, projets, informations utiles...",
-      "nextBtn": "Suivant",
+      "nextBtn": "Suivant — Documents",
       "fundOriginRevenusPro": "Revenus professionnels",
       "fundOriginCessionActifsPro": "Cession(s) d'actifs professionnels",
       "fundOriginCessionImmo": "Cession(s) immobilière(s)",
@@ -3879,7 +3871,7 @@
       "checkedCount": "Documents cochés",
       "uploadBtn": "Ajouter un fichier",
       "requiredNote": "Les champs marqués en rouge * sont obligatoires. Les autres documents peuvent être transmis lors de votre rendez-vous.",
-      "nextBtn": "Suivant",
+      "nextBtn": "Suivant — Connaissance & expérience",
       "groupFamilial": "Situation familiale",
       "groupFiscalite": "Fiscalité & patrimoine",
       "docIdCard": "Carte d'identité (recto/verso) ou passeport — Titulaire 1",
@@ -3932,7 +3924,7 @@
       "fatca": "Un des actionnaires de la société est-il américain (US Person) ?",
       "yesUC": "OUI",
       "noUC": "NON",
-      "nextBtn": "Suivant",
+      "nextBtn": "Suivant — Situation financière",
       "errCompanyName": "La dénomination de la société est requise.",
       "errLegalForm": "La forme juridique est requise.",
       "errAddress": "L'adresse / siège social est requis.",
@@ -3947,13 +3939,13 @@
       "financialTitle": "Données financières (dernier exercice clos)",
       "fiscalYearEnd": "Date de clôture de l'exercice",
       "totalBalance": "Montant total du bilan (€)",
-      "totalBalancePlaceholder": "Entrez le total du bilan",
+      "totalBalancePlaceholder": "Ex. : 2 500 000 €",
       "revenue": "Chiffre d'affaires net ou résultat net (€)",
-      "revenuePlaceholder": "Chiffre d'affaires annuel",
+      "revenuePlaceholder": "Ex. : 800 000 €",
       "equity": "Capitaux propres (€)",
-      "equityPlaceholder": "Montant des capitaux propres",
+      "equityPlaceholder": "Ex. : 1 200 000 €",
       "financialCommitments": "Engagements financiers (% des revenus annuels)",
-      "financialCommitmentsPlaceholder": "Entrez en pourcentage",
+      "financialCommitmentsPlaceholder": "Ex. : 25 %",
       "taxType": "Type d'imposition",
       "taxIS": "Impôt sur les sociétés (IS)",
       "taxIR": "Impôt sur le revenu (IR)",
@@ -3972,7 +3964,7 @@
       "financialInstruments": "Instruments financiers",
       "both": "Les deux",
       "amountToInvest": "Montant prévu des avoirs à investir",
-      "amountToInvestPlaceholder": "Montant prévu",
+      "amountToInvestPlaceholder": "Ex. : 200 000 €",
       "fundOrigins": "Origine économique des avoirs",
       "bankOrigin": "Établissement bancaire d'origine",
       "bankOriginPlaceholder": "Nom de la banque",
@@ -3980,7 +3972,7 @@
       "portfolioTransfer": "Transfert de portefeuille",
       "check": "Chèque",
       "wire": "Virement",
-      "nextBtn": "Suivant",
+      "nextBtn": "Suivant — Documents",
       "fundOriginRevenusPro": "Revenus professionnels",
       "fundOriginCessionActifsPro": "Cession(s) d'actifs professionnels",
       "fundOriginCessionImmo": "Cession(s) immobilière(s)",
@@ -4001,7 +3993,7 @@
       "uploadBtn": "Ajouter un fichier",
       "companyDocsTitle": "Pièces justificatives — Société",
       "requiredNote": "Les champs en rouge sont obligatoires. Les autres pièces peuvent être transmises lors de l'entrée en relation.",
-      "nextBtn": "Suivant",
+      "nextBtn": "Suivant — Connaissance & expérience",
       "docKbis": "Extrait K-bis original de moins de 3 mois",
       "docSignatoryList": "Liste des signataires autorisés",
       "docFinancialStatements": "Derniers états financiers disponibles certifiés conformes",
@@ -4040,7 +4032,7 @@
       "readsPress": "Lisez-vous la presse ou l'actualité financière spécialisée ?",
       "followsMarkets": "Regardez-vous régulièrement les cours de la Bourse ?",
       "checksMonthly": "Regardez-vous au moins tous les mois vos relevés bancaires ?",
-      "nextBtn": "Suivant",
+      "nextBtn": "Suivant — Objectifs & risque",
       "productMonetary": "Produits monétaires et fonds euros (Livret A, PEL, fonds euros, assurance vie)",
       "productBonds": "Obligations et fonds obligataires (titres de créance, OPC obligataires)",
       "productStocks": "Actions et fonds actions admis à la négociation sur marchés réglementés",
@@ -4138,7 +4130,7 @@
       "patrimony25to50": "25 % – 50 %",
       "patrimony50to75": "50 % – 75 %",
       "patrimonyAbove75": "Plus de 75 %",
-      "nextBtn": "Suivant",
+      "nextBtn": "Suivant — Investissements durables",
       "errRiskProfile": "Veuillez sélectionner votre profil de risque (A, B ou C).",
       "errHorizon": "Veuillez indiquer votre horizon d'investissement.",
       "errMaxLoss": "Veuillez indiquer le niveau de perte maximale acceptable."
@@ -4157,7 +4149,7 @@
       "taxonomyWarning": "Actuellement, peu de produits financiers ESG ont une part significative d'investissements durables alignée avec la Taxonomie européenne. Si vous sélectionnez ce critère, l'offre disponible peut être limitée, mais s'améliorera progressivement.",
       "yes": "Oui",
       "no": "Non",
-      "nextBtn": "Suivant",
+      "nextBtn": "Suivant — Prise de rendez-vous",
       "errWantsESG": "Veuillez indiquer si vous souhaitez intégrer des critères de durabilité.",
       "impact": {
         "ghg": "Gaz à effet de serre",
@@ -4179,7 +4171,7 @@
       "calendarSync": "Synchronisation automatique avec Google Calendar / Outlook · Confirmation par email",
       "openInNewTab": "Ouvrir le calendrier dans un nouvel onglet",
       "confirmLabel": "Je confirme avoir sélectionné un créneau de consultation dans le calendrier ci-dessus. J'ai reçu (ou vais recevoir) un email de confirmation avec les détails du rendez-vous.",
-      "nextBtn": "Suivant",
+      "nextBtn": "Suivant — Récapitulatif & Signature",
       "errNotBooked": "Veuillez confirmer que vous avez pris rendez-vous avant de continuer."
     },
     "review": {
@@ -4311,450 +4303,6 @@
       "professions_liberales": "Professions libérales juridiques/médicales",
       "religion_associatif": "Religion, Activité associative",
       "autre": "Autre"
-    },
-    "page": {
-      "testBadge": "Prototype de revue interne — non publié, non référencé sur aucune page en ligne",
-      "heroTitle": "Un conseil en investissement centré sur vos objectifs",
-      "heroSubtitle": "Rencontrez un conseiller certifié AMF pour examiner vos objectifs, votre situation financière, votre expérience d'investissement, votre horizon de placement et votre profil de risque. Recevez des recommandations personnalisées appuyées par un rapport de pertinence formel.",
-      "heroPrimaryBtn": "Démarrer votre demande de conseil",
-      "heroSecondaryBtn": "Comment cela fonctionne",
-      "heroAdvisoryNote": "Services de conseil fournis par Advensys Insurance Finance, France.",
-      "introOverline": "NOTRE APPROCHE",
-      "introTitle": "Un conseil personnalisé pour vos décisions d'investissement importantes",
-      "introP1": "Les décisions d'investissement doivent refléter bien plus que les rendements attendus. Notre processus de conseil prend en compte vos objectifs financiers, votre expérience, votre horizon de placement, vos besoins en liquidités, vos contraintes personnelles et votre capacité à accepter le risque.",
-      "introP2": "Au travers d'une consultation structurée et d'une évaluation MiFID II, votre conseiller peut apprécier si les solutions d'investissement proposées sont adaptées à votre situation.",
-      "benefits": [
-        {
-          "title": "Évaluation personnalisée",
-          "description": "Examen de vos objectifs, expériences, revenus, actifs, engagements et préférences d'investissement."
-        },
-        {
-          "title": "Accompagnement professionnel",
-          "description": "Discutez de votre situation financière avec un conseiller en investissement certifié AMF."
-        },
-        {
-          "title": "Recommandations documentées",
-          "description": "Recevez un rapport de pertinence formel expliquant les recommandations formulées durant le processus de conseil."
-        }
-      ],
-      "processOverline": "LE PROCESSUS",
-      "processTitle": "Votre parcours de conseil en investissement",
-      "process": [
-        {
-          "title": "Complétez votre profil investisseur",
-          "description": "Répondez aux questions sur vos connaissances, votre expérience, votre situation financière, vos objectifs, votre horizon de placement, vos besoins en liquidités et votre tolérance au risque."
-        },
-        {
-          "title": "Fournissez les informations complémentaires",
-          "description": "Transmettez en toute sécurité les informations pertinentes, notamment votre portefeuille actuel, vos revenus et vos contraintes personnelles ou financières."
-        },
-        {
-          "title": "Rencontrez votre conseiller",
-          "description": "Planifiez une consultation avec un conseiller certifié AMF pour examiner votre situation et discuter des options d'investissement adaptées."
-        },
-        {
-          "title": "Recevez et signez votre rapport",
-          "description": "Recevez votre rapport de pertinence au format PDF, puis relisez-le et signez-le électroniquement."
-        }
-      ],
-      "profileOverline": "ÉVALUATION MIFID II",
-      "profileTitle": "Une évaluation MiFID II structurée",
-      "profileDesc": "Avant de formuler toute recommandation, nous devons comprendre votre profil financier et vos besoins en matière d'investissement.",
-      "profileItems": [
-        "Objectifs d'investissement",
-        "Horizon de placement",
-        "Connaissances et expérience",
-        "Portefeuille actuel",
-        "Revenus et engagements financiers",
-        "Besoins en liquidités",
-        "Capacité à supporter des pertes",
-        "Tolérance au risque",
-        "Restrictions d'investissement",
-        "Préférences durables, le cas échéant"
-      ],
-      "profileNoteStrong": "À noter : ",
-      "profileNote": "Vos réponses aident le conseiller à évaluer si une recommandation est adaptée à votre situation. Le fait de compléter le questionnaire ne garantit pas qu'un produit d'investissement particulier sera recommandé.",
-      "docsOverline": "DOCUMENTATION",
-      "docsTitle": "Informations susceptibles de vous être demandées",
-      "docItems": [
-        "Portefeuille d'investissement actuel",
-        "Informations sur les revenus",
-        "Actifs et engagements financiers",
-        "Relevés d'investissements existants",
-        "Documents d'identification et de conformité",
-        "Informations relatives aux restrictions d'investissement",
-        "Documents complémentaires demandés par le conseiller"
-      ],
-      "docsNote": "La documentation exacte requise peut dépendre de votre profil, de votre pays de résidence et de la nature de la demande de conseil.",
-      "regOverline": "INFORMATIONS IMPORTANTES",
-      "regTitle": "Notice réglementaire",
-      "regItems": [
-        "Les services de conseil en investissement sont fournis par Advensys Insurance Finance en France.",
-        "La valeur des investissements peut fluctuer à la hausse comme à la baisse. Les performances passées ne garantissent pas les résultats futurs.",
-        "Toute recommandation doit être fondée sur une évaluation de la situation individuelle du client, de ses objectifs, de ses connaissances, de son expérience, de sa situation financière, de sa tolérance au risque et de sa capacité à supporter des pertes.",
-        "Les informations présentées sur cette page de test sont générales et ne constituent pas un conseil en investissement personnalisé, une offre ou une recommandation d'achat ou de vente d'un instrument financier.",
-        "Cette page est un prototype de revue interne et ne confirme pas la disponibilité actuelle du service."
-      ],
-      "legalNotice": "Mentions légales",
-      "termsConditions": "Conditions générales",
-      "privacyPolicy": "Politique de confidentialité",
-      "disclaimers": "Avertissements",
-      "regulatoryInfo": "Informations réglementaires",
-      "techOverline": "REVUE INTERNE",
-      "techTitle": "Exigences techniques et de conformité",
-      "techDesc": "Cette section est destinée à la revue interne uniquement et décrit les exigences de production envisagées. Elle ne constitue pas une garantie juridique ou commerciale.",
-      "techInternalNote": "Revue interne uniquement. Les informations ci-dessous décrivent les exigences de production envisagées. Cette section est destinée à la revue de gestion et ne constitue pas une garantie juridique, réglementaire ou commerciale.",
-      "techSections": [
-        {
-          "title": "Calendly / Prise de rendez-vous",
-          "items": [
-            "Consultation vidéo de 60 minutes par session",
-            "Synchronisation calendrier (Google Calendar, Outlook)",
-            "Email de confirmation ICS au client",
-            "Règles de reprogrammation à définir en production",
-            "Gestion des fuseaux horaires : CET/CEST (Europe/Paris)"
-          ]
-        },
-        {
-          "title": "Paiement",
-          "items": [
-            "Prestataire de services de paiement : à confirmer",
-            "Entité de facturation : Advensys Insurance Finance, France",
-            "Processus de facturation en production : à confirmer",
-            "Traitement TVA/fiscal : sous réserve de validation juridique finale",
-            "Aucune donnée de carte n'est collectée sur cette page de démonstration"
-          ]
-        },
-        {
-          "title": "Stockage des documents",
-          "items": [
-            "Stockage chiffré sécurisé requis en production",
-            "Contrôles d'accès basés sur les rôles requis",
-            "Règles de conservation : environ 5 à 10 ans (sous réserve de validation juridique finale)",
-            "Analyse anti-malware requise pour tous les téléchargements",
-            "Journalisation complète des accès et modifications"
-          ]
-        },
-        {
-          "title": "DocuSign — Signature électronique",
-          "items": [
-            "Environnement développeur requis lors de l'implémentation",
-            "Intégration en production uniquement après approbation écrite",
-            "Rapport de pertinence signé conservé comme document final",
-            "Piste d'audit de signature complète (horodatages, IP, identité)",
-            "Archivage sécurisé conforme aux exigences MiFID II",
-            "Aucune clé API ou clé d'intégration DocuSign n'est présente dans ce prototype"
-          ]
-        },
-        {
-          "title": "Conformité et réglementation",
-          "items": [
-            "Évaluation de l'adéquation MiFID II (Article 25)",
-            "Journalisation des décisions : la justification du conseiller doit être documentée",
-            "Registre des conflits d'intérêts tenu par Advensys Insurance Finance",
-            "Conservation des données : environ 5 à 10 ans (sous réserve de validation juridique finale)",
-            "Gestion du consentement RGPD et processus des droits des personnes concernées requis",
-            "Modèle de conseil non indépendant : divulgué au client avant tout engagement"
-          ]
-        }
-      ],
-      "faqOverline": "FAQ",
-      "faqTitle": "Questions fréquentes",
-      "faq": [
-        {
-          "q": "Qui fournit le service de conseil en investissement ?",
-          "a": "Les services de conseil en investissement sont fournis par Advensys Insurance Finance, une société réglementée en France sous la supervision de l'AMF. Opulanz facilite l'accès à ce service pour le compte de ses clients."
-        },
-        {
-          "q": "Quelles informations devrai-je fournir ?",
-          "a": "Il vous sera demandé de compléter un questionnaire de profil investisseur MiFID II portant sur vos objectifs, votre expérience, votre situation financière, votre horizon de placement, vos besoins en liquidités et votre tolérance au risque."
-        },
-        {
-          "q": "Pourquoi un questionnaire MiFID II est-il requis ?",
-          "a": "La réglementation MiFID II impose aux conseillers en investissement de recueillir suffisamment d'informations sur la situation d'un client avant de formuler une recommandation personnelle."
-        },
-        {
-          "q": "Qu'est-ce qu'un rapport de pertinence ?",
-          "a": "Un document formel expliquant le profil client considéré, les recommandations discutées, les risques associés et la raison pour laquelle l'approche proposée peut être adaptée à votre situation."
-        },
-        {
-          "q": "Le fait de compléter le questionnaire garantit-il une recommandation ?",
-          "a": "Non. Une recommandation ne sera formulée que si le conseiller détermine qu'une approche d'investissement appropriée peut être identifiée sur la base des informations que vous fournissez."
-        },
-        {
-          "q": "Puis-je mettre à jour mes informations avant la consultation ?",
-          "a": "Oui. Vous pouvez mettre à jour les informations fournies à tout moment avant la tenue de la consultation."
-        },
-        {
-          "q": "Comment mes documents seront-ils protégés ?",
-          "a": "Tous les documents et informations personnelles sont traités conformément aux réglementations applicables en matière de protection des données, dont le RGPD."
-        }
-      ],
-      "ctaTitle": "Prêt à discuter de vos objectifs d'investissement ?",
-      "ctaSubtitle": "Complétez la demande initiale et notre équipe vous accompagnera dans les prochaines étapes.",
-      "ctaRequestBtn": "Demander une consultation",
-      "ctaContactBtn": "Nous contacter"
-    }
-  },
-  "mortgage": {
-    "hero": {
-      "title": "Votre prêt immobilier, entre de bonnes mains.",
-      "subtitle": "Opulanz rassemble votre profil financier et vos pièces justificatives, puis soumet votre dossier à notre réseau de banques partenaires au Luxembourg et en France, pour que vous receviez des offres adaptées disponibles auprès des établissements consultés, sans la charge administrative.",
-      "primaryCta": "Commencer ma demande",
-      "secondaryCta": "Comment ça fonctionne"
-    },
-    "overview": {
-      "overline": "Services Hypothécaires",
-      "title": "Un intermédiaire de confiance vers des conditions adaptées à votre profil et à votre projet",
-      "description": "En tant qu'intermédiaire en crédit réglementé, nous travaillons pour votre compte afin de soumettre votre dossier à notre réseau de banques partenaires au Luxembourg et en France, pour que vous receviez des offres adaptées disponibles auprès des établissements consultés, sans charge administrative.",
-      "badge1": "Luxembourg & France",
-      "badge2": "Sécurisé RGPD",
-      "badge3": "Accès Multi-banques",
-      "whyTitle": "Pourquoi Opulanz pour votre prêt ?",
-      "benefit1": "Plus de 19 ans d'expertise en services financiers européens",
-      "benefit2": "Accès simultané à plusieurs banques partenaires",
-      "benefit3": "Spécialistes des dossiers transfrontaliers et non-résidents",
-      "benefit4": "Documents chiffrés. conformité RGPD totale",
-      "benefit5": "Suivi en temps réel du dossier, du dépôt à la signature"
-    },
-    "howItWorks": {
-      "overline": "Le Processus",
-      "title": "Quatre étapes vers votre offre de prêt",
-      "step1": {
-        "title": "Pré-qualification",
-        "description": "Décrivez votre projet. type de bien, prix, apport, revenus et situation professionnelle. Nous vérifions votre éligibilité avant tout contact bancaire."
-      },
-      "step2": {
-        "title": "Collecte des documents",
-        "description": "Déposez vos pièces justificatives en toute sécurité. Votre dossier est automatiquement vérifié selon notre checklist prête pour les banques."
-      },
-      "step3": {
-        "title": "Soumission aux banques",
-        "description": "Avec votre accord, votre dossier complet est transmis aux banques partenaires. chiffré, conforme et entièrement confidentiel."
-      },
-      "step4": {
-        "title": "Offre & Signature",
-        "description": "Recevez les offres bancaires depuis votre tableau de bord Opulanz. Comparez, choisissez la meilleure option et signez."
-      }
-    },
-    "features": {
-      "overline": "Pourquoi Nous Choisir",
-      "title": "Expertise professionnelle en courtage immobilier",
-      "description": "En tant qu'intermédiaire en crédit réglementé, nous vous offrons conseils d'experts et accès multi-banques pour votre financement immobilier au Luxembourg et en France.",
-      "expertise": {
-        "title": "Expertise locale",
-        "description": "Connaissance approfondie des critères d'octroi au Luxembourg et en France, y compris les profils transfrontaliers et non-résidents."
-      },
-      "secure": {
-        "title": "Sécurisé & RGPD",
-        "description": "Documents chiffrés sur infrastructure Azure, traités en conformité totale avec le RGPD et supprimés après traitement."
-      },
-      "multibank": {
-        "title": "Accès multi-banques",
-        "description": "Soumission simultanée à plusieurs banques partenaires pour maximiser vos chances et comparer les conditions compétitives parmi les établissements consultés."
-      },
-      "tracking": {
-        "title": "Suivi en temps réel",
-        "description": "Suivez chaque étape de votre demande. du dépôt des documents à la signature de l'offre. depuis votre espace Opulanz."
-      }
-    },
-    "markets": {
-      "overline": "Couverture",
-      "title": "Luxembourg & France",
-      "description": "Courtage immobilier spécialisé sur les deux marchés, avec expertise transfrontalière pour les profils internationaux et de la Grande Région.",
-      "lu": {
-        "title": "Luxembourg",
-        "subtitle": "Bureau de Clervaux. réglementé CSSF",
-        "fact1": "LTV typique jusqu'à 80% pour les résidents ; ajusté pour les non-résidents",
-        "fact2": "Durées jusqu'à 30 ans ; taux variable et fixe disponibles",
-        "fact3": "Banques partenaires : BGL BNP Paribas, ING, Spuerkeess, Post Luxembourg",
-        "fact4": "Encadré par la CSSF et le droit financier luxembourgeois"
-      },
-      "fr": {
-        "title": "France",
-        "subtitle": "Bureau de Paris. ACPR / ORIAS n° 21003660",
-        "fact1": "Loi Scrivener : délai légal de réflexion de 11 jours avant signature",
-        "fact2": "Conformité au Taux d'Usure vérifiée sur toutes les offres",
-        "fact3": "Financement jusqu'à 110% frais de notaire inclus pour profils éligibles",
-        "fact4": "Processus entièrement réglementé ACPR sous ORIAS n° 21003660"
-      },
-      "crossborder": {
-        "title": "Profils transfrontaliers & internationaux",
-        "description": "Opulanz est spécialisé dans les dossiers transfrontaliers. que vous soyez résident luxembourgeois achetant en France, ressortissant français acquérant un bien au Luxembourg, ou professionnel international actif dans la Grande Région. Nos conseillers gèrent la complexité réglementaire à votre place."
-      }
-    },
-    "cta": {
-      "title": "Prêt à déposer votre demande de prêt ?",
-      "description": "Déposez votre demande en ligne en quelques minutes. Notre équipe examine votre dossier et vous contacte sous 24 heures pour convenir de la suite.",
-      "primaryButton": "Commencer ma demande",
-      "secondaryButton": "Parler à un conseiller",
-      "badge1": "Réponse 24h",
-      "badge2": "Sécurisé RGPD",
-      "badge3": "Sans engagement"
-    },
-    "simulator": {
-      "overline": "Simulateur Hypothécaire",
-      "title": "Quelle est votre capacité d'emprunt ?",
-      "description": "Ajustez les paramètres pour obtenir une estimation instantanée de votre capacité d'emprunt et de vos mensualités.",
-      "inputs": {
-        "title": "Vos informations",
-        "sectionApplicant": "Demandeur",
-        "sectionLoan": "Détails du prêt",
-        "solo": "Emprunteur seul",
-        "withCoApplicant": "Avec co-emprunteur",
-        "income": "Revenu mensuel net",
-        "incomeCombined": "Revenu mensuel net du foyer",
-        "dependents": "Nombre de personnes à charge",
-        "dep0": "0",
-        "dep1": "1",
-        "dep2": "2",
-        "dep3": "3+",
-        "dependentNote": "−{amount} €/mois déduits du revenu éligible",
-        "duration": "Durée du prêt",
-        "years": "ans",
-        "rate": "Taux d'intérêt",
-        "downPayment": "Apport personnel",
-        "downPaymentNote1": "Apport minimum à partir de 15 %.",
-        "downPaymentNote2": "L'apport peut ne pas être nécessaire si vous mettez en garantie votre propre bien.",
-        "contribution": "Apport personnel",
-        "existing": "Mensualités de crédits existants"
-      },
-      "warnings": {
-        "minIncomeSolo": "Le revenu minimum requis est de 900 €/mois pour un emprunteur seul.",
-        "minIncomeJoint": "Le revenu combiné minimum requis est de 1 200 €/mois avec un co-emprunteur.",
-        "minLoan": "Le montant estimé est inférieur au minimum de 20 000 €. Essayez d'augmenter votre revenu ou la durée du prêt.",
-        "negativeDTI": "Vos mensualités existantes dépassent la limite de 33 % d'endettement. Réduisez-les pour débloquer votre capacité d'emprunt."
-      },
-      "results": {
-        "budget": "Budget immobilier",
-        "budgetSub": "Prêt + votre apport de",
-        "maxLoan": "Montant max du prêt",
-        "monthly": "Mensualité",
-        "perMonth": "par mois",
-        "dti": "Taux d'endettement",
-        "dtiNote": "Max 33 % en France et au Luxembourg — les banques vérifient aussi le reste à vivre",
-        "jointApplication": "Demande conjointe",
-        "ctaText": "Prêt à déposer votre dossier ? Nos conseillers s'occupent du reste.",
-        "ctaButton": "Démarrer votre demande",
-        "emptyIncome": "Saisissez votre revenu mensuel pour estimer votre capacité d'emprunt.",
-        "emptyDTI": "Vos mensualités existantes dépassent le seuil indicatif de 33 % utilisé dans ce simulateur. Les critères réels varient selon l'établissement prêteur, la juridiction et le profil de l'emprunteur."
-      },
-      "disclaimer": "Le taux d'endettement de 33 % utilisé dans ce simulateur constitue une hypothèse indicative interne et non un plafond réglementaire. Les critères réels varient selon l'établissement prêteur, la juridiction, le profil de l'emprunteur et la nature du financement. Opulanz agit en tant qu'intermédiaire en crédit réglementé (ORIAS n°21003660)."
-    },
-    "lombard": {
-      "overline": "Crédit Lombard",
-      "title": "Mobilisez les liquidités de votre portefeuille — sans le céder",
-      "description": "Le crédit lombard est une facilité de financement adossée à la valeur de votre portefeuille de titres. Vous accédez à des capitaux tout en maintenant vos positions investies et en préservant la continuité de votre stratégie patrimoniale.",
-      "howWeHelp": {
-        "title": "Notre intervention",
-        "description": "Opulanz intervient en qualité d'intermédiaire en crédit réglementé. Nous constituons votre dossier, le soumettons à notre réseau de banques partenaires au Luxembourg et en France, et vous accompagnons dans la comparaison des conditions proposées. La facilité de crédit est accordée par l'établissement prêteur retenu — et non par Opulanz."
-      },
-      "uses": {
-        "title": "Principales utilisations",
-        "item1": "Financer une acquisition immobilière sans désinvestir votre portefeuille",
-        "item2": "Répondre à un besoin ponctuel de liquidités",
-        "item3": "Financer un projet d'entreprise ou une opportunité d'investissement sous contrainte de temps",
-        "item4": "Optimiser votre trésorerie sans déclencher de cession fiscalement imposable"
-      },
-      "features": {
-        "title": "Caractéristiques de la facilité",
-        "item1": "Ligne de crédit garantie par des titres éligibles — actions, obligations et fonds d'investissement",
-        "item2": "Quotité de financement déterminée selon la nature et la qualité de crédit des actifs nantis",
-        "item3": "Modalités de tirage et de remboursement adaptées à votre situation",
-        "item4": "Intérêts calculés uniquement sur les montants effectivement tirés"
-      },
-      "important": {
-        "title": "Information sur les risques — À lire avant toute démarche",
-        "body": "Le crédit lombard comporte des risques significatifs. Si la valeur de marché de votre portefeuille nanti venait à baisser, la banque prêteuse pourrait émettre un appel de marge, vous imposant de constituer des garanties complémentaires ou de rembourser partiellement l'encours. En cas d'impossibilité d'y répondre, la banque pourrait procéder à la liquidation forcée de vos titres, potentiellement dans des conditions de marché défavorables et à perte. Les taux d'intérêt sont susceptibles de varier. L'effet de levier amplifie aussi bien les gains que les pertes. Cette facilité n'est pas adaptée à tous les profils d'investisseurs ; l'éligibilité est appréciée au regard de la composition et de la qualité de votre portefeuille.",
-        "legal": "Opulanz agit en qualité d'intermédiaire en crédit et non en qualité de prêteur. Toute facilité de crédit est soumise à l'approbation et aux conditions de l'établissement prêteur. Lorsque le financement s'inscrit dans le cadre d'une stratégie d'investissement, le conseil est délivré au titre de notre statut de Conseiller en Investissements Financiers (CIF). Advensys Insurance-Finance SARL — ORIAS n° 21003660 — exerce en qualité de courtier sous contrôle de l'ACPR et de CIF membre de La Compagnie CIF, sous le contrôle de l'AMF."
-      }
-    },
-    "legal": "Opulanz agit en qualité d'intermédiaire en crédit et non en tant que prêteur. Tout financement immobilier est soumis à l'approbation bancaire et aux conditions standard d'octroi de crédit. ORIAS n° 21003660",
-    "apply": {
-      "overline": "Demande de Crédit Immobilier",
-      "title": "Démarrer votre demande de crédit",
-      "backToMortgage": "Retour au Crédit Immobilier",
-      "errors": {
-        "required": "Ce champ est obligatoire",
-        "invalidEmail": "Veuillez saisir une adresse e-mail valide",
-        "requiredDocs": "Veuillez télécharger tous les documents obligatoires avant de continuer",
-        "consent": "Vous devez donner votre consentement pour soumettre la demande"
-      },
-      "step1": {
-        "title": "Pré-qualification",
-        "market": "Marché cible",
-        "markets": {
-          "france": "France",
-          "luxembourg": "Luxembourg"
-        },
-        "propertyType": "Type de bien",
-        "propertyTypes": {
-          "primary": "Résidence principale",
-          "secondary": "Résidence secondaire",
-          "investment": "Bien locatif"
-        },
-        "purchasePrice": "Prix d’acquisition",
-        "contribution": "Apport personnel",
-        "ltvLabel": "Ratio prêt/valeur estimé (LTV)",
-        "monthlyIncome": "Revenus nets mensuels",
-        "employment": "Situation professionnelle",
-        "selectEmployment": "Sélectionner une situation",
-        "employmentTypes": {
-          "employee": "Salarié",
-          "selfEmployed": "Indépendant / TNS",
-          "civilServant": "Fonctionnaire",
-          "retired": "Retraité"
-        },
-        "contactTitle": "Vos coordonnées",
-        "firstName": "Prénom",
-        "lastName": "Nom",
-        "name": "Nom",
-        "email": "Adresse e-mail",
-        "phone": "Téléphone (optionnel)",
-        "ltv": "LTV"
-      },
-      "step2": {
-        "title": "Collecte de documents",
-        "required": "Obligatoire",
-        "optional": "Optionnel",
-        "upload": "Télécharger",
-        "fileHint": "PDF, JPG ou PNG, max 10 Mo",
-        "securityNote": "Vos documents sont chiffrés et conservés de manière sécurisée sur l’infrastructure Azure, en pleine conformité RGPD.",
-        "docs": {
-          "id": "Pièce d’identité officielle (passeport ou carte nationale)",
-          "payslips": "3 derniers bulletins de salaire ou justificatifs de revenus",
-          "bankStatements": "3 derniers relevés de compte bancaire",
-          "proofAddress": "Justificatif de domicile (facture ou bail, daté de moins de 3 mois)",
-          "taxReturn": "Dernier avis d’imposition",
-          "propertyDetails": "Détails du bien ou promesse de vente (si disponible)"
-        }
-      },
-      "step3": {
-        "title": "Révision et envoi",
-        "summaryTitle": "Récapitulatif de la demande",
-        "consentText": "Je consens à ce qu’Opulanz (Groupe Advensys Luxembourg S.A., ORIAS n°…21003660) collecte et traite mes données personnelles et mes documents aux fins d’évaluation et de soumission de ma demande de crédit immobilier auprès de ses banques partenaires.",
-        "legalNote": "Opulanz agit en qualité d’intermédiaire en crédit et non en tant que prêteur. Réglementé par l’ACPR sous ORIAS n°…21003660."
-      },
-      "step4": {
-        "title": "Offre et Signature",
-        "what1": "Une fois votre dossier soumis, les conseillers Opulanz le prépareront et le transmettront aux banques partenaires dans les 24 heures.",
-        "what2": "Votre dossier est soumis simultanément à notre réseau de banques partenaires. Vous recevrez une vue consolidée de toutes les offres dans votre espace Opulanz.",
-        "what3": "Comparez les offres reçues et votre conseiller vous accompagnera jusqu’à la signature.",
-        "note": "Délai moyen entre soumission et première offre : 5 à 8 jours ouvrables."
-      },
-      "nav": {
-        "back": "Retour",
-        "cancel": "Annuler",
-        "next": "Continuer",
-        "submit": "Soumettre la demande"
-      },
-      "success": {
-        "title": "Demande soumise",
-        "line1": "Merci. Votre demande de crédit immobilier a bien été reçue.",
-        "line2": "Votre conseiller Opulanz vous contactera dans les 24 heures pour discuter des prochaines étapes.",
-        "summaryTitle": "Votre soumission",
-        "back": "Retour à la page Crédit Immobilier"
-      }
     }
   }
 }

@@ -85,35 +85,43 @@ export default function SpvDashboardPage() {
 
   const stats = [
     {
-      label: "Total Invested",
+      label: t("spvInvestment.portal.dashboard.totalInvested"),
       value: summary ? `€${summary.total_invested.toLocaleString()}` : "€0",
       icon: Wallet,
-      change: hasInvestments ? `${investments.length} active investment${investments.length > 1 ? 's' : ''}` : "No investments yet",
+      change: hasInvestments
+        ? investments.length > 1
+          ? t("spvInvestment.portal.dashboard.activeInvestmentsPlural", { count: investments.length })
+          : t("spvInvestment.portal.dashboard.activeInvestments", { count: investments.length })
+        : t("spvInvestment.portal.dashboard.noInvestmentsYet"),
       color: "text-brand-gold",
     },
     {
-      label: "Portfolio Value",
+      label: t("spvInvestment.portal.dashboard.portfolioValue"),
       value: summary ? `€${summary.portfolio_value.toLocaleString()}` : "€0",
       icon: PieChart,
       change: hasInvestments
         ? summary?.overall_status === 'profit'
-          ? `+€${summary.total_returns.toLocaleString()} returns`
-          : `€${summary?.total_returns.toLocaleString()} returns`
-        : "Start investing to see value",
+          ? `+€${summary.total_returns.toLocaleString()} ${t("spvInvestment.portal.dashboard.returns", { amount: "" }).trim()}`
+          : `€${summary?.total_returns.toLocaleString()} ${t("spvInvestment.portal.dashboard.returns", { amount: "" }).trim()}`
+        : t("spvInvestment.portal.dashboard.startInvesting"),
       color: summary?.overall_status === 'profit' ? "text-green-600" : "text-red-600",
     },
     {
-      label: "Portfolio ROI",
+      label: t("spvInvestment.portal.dashboard.portfolioRoi"),
       value: summary ? `${summary.portfolio_roi.toFixed(1)}%` : "—",
       icon: TrendingUp,
-      change: hasInvestments ? "Overall return rate" : "Invest to see returns",
+      change: hasInvestments
+        ? t("spvInvestment.portal.dashboard.overallReturnRate")
+        : t("spvInvestment.portal.dashboard.investToSeeReturns"),
       color: (summary?.portfolio_roi || 0) >= 0 ? "text-green-600" : "text-red-600",
     },
     {
-      label: "Distributions Received",
+      label: t("spvInvestment.portal.dashboard.distributionsReceived"),
       value: summary ? `€${summary.total_distributions.toLocaleString()}` : "€0",
       icon: DollarSign,
-      change: hasInvestments ? "Total dividends paid" : "Distributions will appear here",
+      change: hasInvestments
+        ? t("spvInvestment.portal.dashboard.totalDividendsPaid")
+        : t("spvInvestment.portal.dashboard.distributionsPlaceholder"),
       color: "text-green-600",
     },
   ];
@@ -134,15 +142,17 @@ export default function SpvDashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-brand-dark md:text-3xl">
-                Welcome back, {investor?.name?.split(' ')[0] || 'Investor'}
+                {t("spvInvestment.portal.dashboard.welcome", {
+                  name: investor?.name?.split(' ')[0] || t("spvInvestment.portal.dashboard.welcomeDefault"),
+                })}
               </h1>
               <p className="mt-1 text-sm text-brand-grayMed">
-                Here's an overview of your SPV investment portfolio
+                {t("spvInvestment.portal.dashboard.subtitle")}
               </p>
             </div>
             <div className="hidden md:flex items-center gap-2 text-sm text-brand-grayMed">
               <Calendar className="h-4 w-4" />
-              {new Date().toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+              {new Date().toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </div>
           </div>
         </div>
@@ -180,13 +190,13 @@ export default function SpvDashboardPage() {
           <div className="lg:col-span-2">
             <Card className="border-none shadow-sm">
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-lg">Your Investments</CardTitle>
+                <CardTitle className="text-lg">{t("spvInvestment.portal.dashboard.yourInvestments")}</CardTitle>
                 {hasInvestments && (
                   <Link
                     href={`/${locale}/spv-investment/portal/offerings`}
                     className="text-sm font-medium text-brand-gold hover:text-brand-goldDark"
                   >
-                    View All Offerings
+                    {t("spvInvestment.portal.dashboard.viewAllOfferings")}
                   </Link>
                 )}
               </CardHeader>
@@ -194,14 +204,16 @@ export default function SpvDashboardPage() {
                 {!hasInvestments ? (
                   <div className="text-center py-12">
                     <Building2 className="mx-auto h-12 w-12 text-brand-grayLight" />
-                    <h3 className="mt-4 text-lg font-semibold text-brand-dark">No Investments Yet</h3>
+                    <h3 className="mt-4 text-lg font-semibold text-brand-dark">
+                      {t("spvInvestment.portal.dashboard.noInvestmentsTitle")}
+                    </h3>
                     <p className="mt-2 text-sm text-brand-grayMed max-w-sm mx-auto">
-                      Start building your real estate portfolio by exploring our current SPV investment opportunities.
+                      {t("spvInvestment.portal.dashboard.noInvestmentsDesc")}
                     </p>
                     <Button asChild className="mt-6 bg-brand-gold hover:bg-brand-goldDark">
                       <Link href={`/${locale}/spv-investment/portal/offerings`}>
                         <Building2 className="mr-2 h-4 w-4" />
-                        Browse Offerings
+                        {t("spvInvestment.portal.dashboard.browseOfferings")}
                       </Link>
                     </Button>
                   </div>
@@ -274,12 +286,12 @@ export default function SpvDashboardPage() {
                                   </h4>
                                   {isMulti && (
                                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-brand-gold/15 text-brand-gold">
-                                      {group.items.length} investments
+                                      {t("spvInvestment.portal.dashboard.investmentsCount", { count: group.items.length })}
                                     </span>
                                   )}
                                 </div>
                                 <p className="text-xs text-brand-grayMed mt-0.5">
-                                  {group.property_location} • {group.total_ownership.toFixed(2)}% total ownership
+                                  {group.property_location} • {t("spvInvestment.portal.dashboard.totalOwnership", { percentage: group.total_ownership.toFixed(2) })}
                                 </p>
                                 <div className="mt-1 flex items-center gap-3 text-xs">
                                   <span className={cn(
@@ -298,7 +310,9 @@ export default function SpvDashboardPage() {
                                   </span>
                                   {!isMulti && group.items[0] && (
                                     <span className="text-brand-grayMed">
-                                      Invested: {formatInvestmentDate(group.items[0])}
+                                      {t("spvInvestment.portal.dashboard.investedOn", {
+                                        date: formatInvestmentDate(group.items[0]),
+                                      })}
                                     </span>
                                   )}
                                 </div>
@@ -310,7 +324,7 @@ export default function SpvDashboardPage() {
                                   €{group.total_amount.toLocaleString()}
                                 </p>
                                 <p className="text-xs text-brand-grayMed">
-                                  {group.total_returns >= 0 ? '+' : ''}€{group.total_returns.toLocaleString()} returns
+                                  {group.total_returns >= 0 ? '+' : ''}€{group.total_returns.toLocaleString()} {t("spvInvestment.portal.dashboard.returns", { amount: "" }).trim()}
                                 </p>
                               </div>
 
@@ -340,7 +354,7 @@ export default function SpvDashboardPage() {
                             {isMulti && isExpanded && (
                               <div className="border-t border-brand-grayLight/30 bg-brand-off/30 px-4 py-3 divide-y divide-brand-grayLight/20">
                                 <div className="text-xs font-semibold text-brand-grayMed uppercase tracking-wider mb-2 px-2">
-                                  Investment History ({group.items.length})
+                                  {t("spvInvestment.portal.dashboard.investmentHistory", { count: group.items.length })}
                                 </div>
                                 {group.items.map((inv: any, idx: number) => (
                                   <div
@@ -392,24 +406,24 @@ export default function SpvDashboardPage() {
             {/* Quick Actions */}
             <Card className="border-none shadow-sm">
               <CardHeader>
-                <CardTitle className="text-lg">Quick Actions</CardTitle>
+                <CardTitle className="text-lg">{t("spvInvestment.portal.dashboard.quickActions.title")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button asChild variant="primary" className="w-full justify-between">
                   <Link href={`/${locale}/spv-investment/portal/offerings`}>
-                    Browse Offerings
+                    {t("spvInvestment.portal.dashboard.quickActions.viewOfferings")}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" className="w-full justify-between">
                   <Link href={`/${locale}/spv-investment/portal/documents`}>
-                    View Documents
+                    {t("spvInvestment.portal.dashboard.quickActions.downloadDocuments")}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" className="w-full justify-between">
                   <Link href={`/${locale}/support`}>
-                    Contact Advisor
+                    {t("spvInvestment.portal.dashboard.quickActions.contactAdvisor")}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -419,24 +433,24 @@ export default function SpvDashboardPage() {
             {/* Account Info */}
             <Card className="border-none shadow-sm">
               <CardHeader>
-                <CardTitle className="text-lg">Your Account</CardTitle>
+                <CardTitle className="text-lg">{t("spvInvestment.portal.dashboard.yourAccount")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-brand-grayMed">Name</span>
+                    <span className="text-brand-grayMed">{t("spvInvestment.portal.dashboard.name")}</span>
                     <span className="font-medium text-brand-dark">{investor?.name || "—"}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-brand-grayMed">Email</span>
+                    <span className="text-brand-grayMed">{t("spvInvestment.portal.dashboard.email")}</span>
                     <span className="font-medium text-brand-dark truncate ml-2">{investor?.email || "—"}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-brand-grayMed">Investor Type</span>
+                    <span className="text-brand-grayMed">{t("spvInvestment.portal.dashboard.investorType")}</span>
                     <span className="font-medium text-brand-dark capitalize">{investor?.investor_type || "—"}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-brand-grayMed">Status</span>
+                    <span className="text-brand-grayMed">{t("spvInvestment.portal.dashboard.status")}</span>
                     <span className={cn(
                       "px-2 py-0.5 rounded-full text-xs font-medium",
                       investor?.status === 'active' ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
@@ -452,7 +466,7 @@ export default function SpvDashboardPage() {
             {hasInvestments && (
               <Card className="border-none shadow-sm">
                 <CardHeader>
-                  <CardTitle className="text-lg">Recent Activity</CardTitle>
+                  <CardTitle className="text-lg">{t("spvInvestment.portal.dashboard.recentActivity")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -461,10 +475,12 @@ export default function SpvDashboardPage() {
                         <CheckCircle className="h-4 w-4 text-green-600 shrink-0 mt-0.5" />
                         <div>
                           <p className="text-brand-dark">
-                            Investment in {inv.property_title?.substring(0, 20)}...
+                            {t("spvInvestment.portal.dashboard.investmentIn", {
+                              title: inv.property_title?.substring(0, 20) || "",
+                            })}
                           </p>
                           <p className="text-xs text-brand-grayMed">
-                            {new Date(inv.investment_date).toLocaleDateString('en-GB')}
+                            {new Date(inv.investment_date).toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-GB')}
                           </p>
                         </div>
                       </div>

@@ -31,15 +31,25 @@ export function VideoPopup({
   const initialVideoSrc = isFr ? frVideoUrl : enVideoUrl;
   const fallbackVideoSrc = isFr ? "/videos/FR.mp4" : "/videos/EN.mp4";
 
-  // Hydration safety & check sessionStorage & start autoplay on load
+  // Hydration safety & check 5-day localStorage dismissal & start autoplay on load
   React.useEffect(() => {
     setIsMounted(true);
     setActiveVideoSrc(initialVideoSrc);
+
+    let dismissed = false;
     try {
-      localStorage.removeItem("support_video_dismissed");
+      const dismissedUntilStr = localStorage.getItem("support_video_dismissed_until");
+      if (dismissedUntilStr) {
+        const dismissedUntil = parseInt(dismissedUntilStr, 10);
+        if (!isNaN(dismissedUntil) && Date.now() < dismissedUntil) {
+          dismissed = true;
+        }
+      }
+      if (!dismissed) {
+        dismissed = sessionStorage.getItem("support_video_dismissed") === "true";
+      }
     } catch (_) {}
 
-    const dismissed = sessionStorage.getItem("support_video_dismissed") === "true";
     setIsDismissed(dismissed);
 
     if (!dismissed && previewVideoRef.current) {
@@ -84,6 +94,10 @@ export function VideoPopup({
     setIsDismissed(true);
     setIsOpen(false);
     try {
+      // 5 Days dismissal in milliseconds
+      const FIVE_DAYS_MS = 5 * 24 * 60 * 60 * 1000;
+      const dismissUntil = Date.now() + FIVE_DAYS_MS;
+      localStorage.setItem("support_video_dismissed_until", dismissUntil.toString());
       sessionStorage.setItem("support_video_dismissed", "true");
     } catch (_) {}
     if (triggerRef.current) {

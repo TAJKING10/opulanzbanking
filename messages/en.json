@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "getStarted": "Get Started",
     "learnMore": "Learn More",
@@ -28,7 +28,6 @@
     "investmentAdvisory": "Investment Advisory",
     "lifeInsurance": "Life Insurance",
     "accountingInvoicing": "Accounting & Invoicing",
-    "mortgage": "Mortgages",
     "investment": "Investment",
     "individualAccount": "Individual Account",
     "companyAccount": "Company Account",
@@ -36,8 +35,8 @@
   },
   "hero": {
     "home": {
-      "title": "Finance. Business. One Platform.",
-      "subtitle": "Based in Luxembourg, Opulanz brings together essential financial and business services for companies across Europe.",
+      "title": "Payment services for modern businesses",
+      "subtitle": "Trusted digital payment services, company formation assistance, investment fund, and consulting services for entrepreneurs and businesses in France and Luxembourg",
       "primaryCta": "Open Account",
       "secondaryCta": "Learn More"
     },
@@ -70,15 +69,15 @@
       "strength3Description": "AI for simpler and more efficient services.",
       "licensesOverline": "OUR REGULATORY STATUS",
       "licensesTitle": "Our Regulated Activities",
-      "licensesDescription": "Activities carried out by licensed entities of the Groupe Advensys Luxembourg, authorised across Europe.",
-      "cert1Title": "Regulated Intermediation",
+      "licensesDescription": "Our regulated activities are carried out by licensed entities within the group:",
+      "cert1Title": "Intermediation (France)",
       "cert1Description": "Advensys Insurance-Finance, ORIAS n° 21003660: broker (banking operations, payment services, insurance) under ACPR supervision, and Investment Adviser (CIF) under AMF supervision.",
       "cert2Title": "Accounting (Luxembourg)",
       "cert2Description": "Carried out under authorisation of the Ministry of Economy of the Grand Duchy of Luxembourg.",
       "cert3Title": "Accounts & Payments",
       "cert3Description": "Provided through our licensed partner, an Electronic Money Institution (EMI) authorised within the European Union.",
-      "cert4Title": "Life Insurance",
-      "cert4Description": "Luxembourg based dedicated life insurance contract for private people and companies",
+      "cert4Title": "Professional Indemnity",
+      "cert4Description": "Advensys Insurance-Finance SARL holds professional indemnity insurance with MMA IARD France, covering all regulated intermediation activities.",
       "whyTitle": "Why Opulanz?",
       "whyDescription": "What makes us your trusted partner",
       "benefit1Title": "All-in-One Platform",
@@ -193,7 +192,7 @@
     "benefitsTitle": "Why get incorporation assistance from Opulanz?",
     "benefits": {
       "expertTitle": "Expert Guidance",
-      "expertDesc": "Our team of Luxembourg corporate formation specialists guide you through every step of the formation process.",
+      "expertDesc": "Our team of Luxembourg corporate law experts guide you through every step of the formation process.",
       "fastTitle": "Fast & Efficient",
       "fastDesc": "Complete the online wizard in minutes. Most formations completed within 2-3 weeks.",
       "fullServiceTitle": "Full Service",
@@ -219,7 +218,7 @@
           "capital": "Very low capital requirement",
           "formation": "Simplified formation",
           "startups": "Ideal for startups",
-          "max": "Share capital: €1 to €12,000"
+          "max": "Max capital €100,000"
         }
       },
       "sa": {
@@ -519,15 +518,15 @@
     },
     "investment": {
       "title": "Investment Advisory",
-      "description": "Personalised investment advice provided as a registered Financial Investment Advisor (CIF), under AMF oversight."
+      "description": "Independent investment advice provided as a registered Financial Investment Advisor (CIF), under AMF oversight."
     },
     "lifeInsurance": {
       "title": "Life Insurance",
       "description": "Expert insurance brokerage services connecting you with leading providers"
     },
     "mortgage": {
-      "title": "Mortgages",
-      "description": "Residential and commercial property financing solutions for individuals and businesses"
+      "title": "Mortgage Services",
+      "description": "Home financing solutions in Luxembourg"
     },
     "spvInvestment": {
       "title": "Investment",
@@ -577,12 +576,12 @@
     },
     "whyChooseUs": {
       "title": "Why Choose Opulanz?",
-      "paragraph1": "Opulanz brings together the best of traditional financial expertise and modern fintech innovation. As a group of regulated European entities with presence in Luxembourg and France, we offer the security and reliability you need, combined with the flexibility and innovation you want.",
+      "paragraph1": "Opulanz brings together the best of traditional financial expertise and modern fintech innovation. As a fully regulated financial institution with presence in Luxembourg and France, we offer the security and reliability you need, combined with the flexibility and innovation you want.",
       "paragraph2": "Whether you're an individual looking for payment and investment services, or a business seeking comprehensive financial solutions, we have the expertise and services to support your success.",
       "cta": "Get Started Today",
       "reasons": {
         "regulated": "Regulated by ACPR and AMF for your peace of mind",
-        "expertise": "19+ years of combined expertise in financial services",
+        "expertise": "Over 25 years of combined expertise in financial services",
         "personalized": "Personalized service from dedicated account managers",
         "competitive": "Competitive rates and transparent fee structure",
         "multilingual": "Multi-lingual support in English and French",
@@ -597,7 +596,7 @@
     },
     "cta": {
       "title": "Ready to Experience Financial Excellence?",
-      "subtitle": "Join 500+ satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
+      "subtitle": "Join thousands of satisfied clients who trust Opulanz for their financial needs. Open your account today and discover the difference.",
       "openAccount": "Open an Account",
       "contactUs": "Contact Us"
     }
@@ -885,7 +884,7 @@
         }
       },
       "cta": {
-        "title": "Advance with personalised advice",
+        "title": "Advance with independent advice",
         "description": "Our team brings market experience to personalised recommendations. Whether you are planning for retirement or looking to structure your wealth, we provide clear and tailored advice.",
         "scheduleMeeting": "Schedule Meeting",
         "contactSupport": "Contact Support"
@@ -985,11 +984,11 @@
         "capital": "Share Capital",
         "capitalValue": "â‚¬31,000",
         "address": "Registered Address",
-        "addressValue": "49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg",
+        "addressValue": "2 Rue Edward Steichen, L-2540 Luxembourg",
         "phone": "Phone",
         "phoneValue": "+352 20 33 10 70",
         "email": "Email",
-        "emailValue": "contact@advensys-conseil.lu",
+        "emailValue": "info@advensys.lu",
         "website": "Website",
         "websiteValue": "www.opulanz.com",
         "siret": "SIRET",
@@ -1175,7 +1174,7 @@
     },
     "description": "The all-in-one financial and business platform for companies. A brand of the Groupe Advensys Luxembourg S.A., with over 19 years of experience in comprehensive business solutions across Europe.",
     "copyright": "© {year} Opulanz. All rights reserved.",
-    "regulated": "Opulanz is a brand of Groupe Advensys Luxembourg S.A. (RCS B197138). Regulated intermediation activities are provided by Advensys Insurance-Finance SARL, registered with ORIAS under no. 21003660 as COBSP, COA and CIF. AIF is a member of La Compagnie IOBSP, CNCEF Assurance and La Compagnie CIF and is subject, depending on the relevant activity, to ACPR or AMF oversight. Opulanz is neither a credit institution nor an electronic money institution and does not hold client funds."
+    "regulated": "Opulanz is a brand of Groupe Advensys Luxembourg S.A. (RCS Luxembourg B197138). Intermediation services provided by Advensys Insurance-Finance SARL — ORIAS no. 21003660: broker (COBSP/COA) under ACPR oversight, Financial Investment Advisor (CIF) under AMF oversight. Opulanz is not a credit institution."
   },
   "home": {
     "services": {
@@ -1190,15 +1189,11 @@
       }
     },
     "trust": {
-      "title": "EUROPEAN REGULATORY FRAMEWORK",
-      "description": "Our Regulatory Structure",
-      "summary": "A Luxembourg-incorporated group with regulated financial intermediation entities authorised across Europe."
+      "title": "STATUS & OVERSIGHT",
+      "description": "Regulated activities",
+      "summary": "Our regulated activities are carried out by licensed group entities, under the oversight of the French authorities."
     },
     "regulatory": {
-      "block1Title": "Luxembourg Group",
-      "block1Desc": "Groupe Advensys Luxembourg S.A. — RCS Luxembourg B197138. Holding company incorporated in Luxembourg with over 19 years of experience in business solutions across Europe.",
-      "block2Title": "Regulated Financial Intermediation",
-      "block2Desc": "Intermediation services provided by Advensys Insurance-Finance SARL — ORIAS no. 21003660: broker (COBSP/COA) under ACPR oversight, Financial Investment Advisor (CIF) under AMF oversight.",
       "france": "France",
       "acpr": "Broker in banking operations, payment services and insurance. Advensys Insurance-Finance — ORIAS no. 21003660, under ACPR oversight.",
       "amf": "Financial Investment Advisor (CIF). Advensys Insurance-Finance — ORIAS no. 21003660, under AMF oversight."
@@ -1346,9 +1341,9 @@
         "description": "Let's get started with opening your personal payment account. This should take about 10 minutes.",
         "accountTypeQuestion": "What type of account are you opening?",
         "currentTitle": "Current / Everyday Account",
-        "currentDesc": "Standard personal payment account for daily transactions and payments. Suitable for residents and non-residents.",
-        "privateTitle": "Private Banking Introduction",
-        "privateDesc": "Opulanz acts as an introducer to regulated private banking partners. Investment advisory services are provided by Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF, AMF registered). Minimum assets of €250,000+ typically required by the partner institution.",
+        "currentDesc": "Standard personal payment account for daily transactions, payments, and savings. Suitable for residents and non-residents.",
+        "privateTitle": "Private Banking",
+        "privateDesc": "Wealth management and private banking services for high-net-worth individuals. Minimum deposit typically required.",
         "whatNext": "What happens next?",
         "nextStep1": "We'll collect your personal information",
         "nextStep2": "Verify your identity and contact details",
@@ -1387,8 +1382,8 @@
         "pepWarning": "If you are a PEP or subject to sanctions, additional verification will be required",
         "whyNeeded": "Why we need this information",
         "whyNeededDesc": "Based on your residence status and location, we'll match you with Opulanz Partner that can best serve your needs and comply with local payment regulations.",
-        "privateBankingNotice": "Private banking referral selected",
-        "privateBankingNoticeDesc": "Opulanz acts as an introducer to regulated private banking partners. Investment advisory services are provided by Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF, AMF registered). A minimum of €250,000 in assets is typically required by the partner institution.",
+        "privateBankingNotice": "Private bank selected",
+        "privateBankingNoticeDesc": "Private banking typically requires a minimum deposit (€250,000+) and provides dedicated relationship management, wealth advisory, and investment services.",
         "otherEuCountry": "Other EU Country"
       },
       "documents": {
@@ -1437,7 +1432,7 @@
         "need4": "Proof of business address",
         "need5": "Company formation details (if starting a new company)",
         "processingTime": "Processing Time",
-        "processingTimeDesc": "Business account applications typically take 3-5 business days to review. We may contact you for additional information during the review process.",
+        "processingTimeDesc": "Business account applications typically take 5-10 business days to review. We may contact you for additional information during the review process.",
         "startApplication": "Start Application"
       },
       "companyStatus": {
@@ -2168,9 +2163,9 @@
         "description": "Invest in premium real estate and alternative assets through SPV structures.",
         "step1": "Welcome to the SPV Investment Portal. This section is for qualified investors interested in real estate and alternative assets through Special Purpose Vehicles.",
         "step2Title": "What is an SPV?",
-        "step2Content": "This section explains how SPV structures work: how they isolate assets, protect investors, and enable co-investment in premium deals.",
+        "step2Content": "This section explains how SPV structures work — how they isolate assets, protect investors, and enable co-investment in premium deals.",
         "step3Title": "Express Interest",
-        "step3Content": "Use this form to register your interest. Enter your name, email, and investor type; our team will reach out to discuss eligibility.",
+        "step3Content": "Use this form to register your interest. Enter your name, email, and investor type — our team will reach out to discuss eligibility.",
         "tip": "SPV investments are reserved for qualified and institutional investors only."
       },
       "cta": {
@@ -2837,8 +2832,7 @@
         "title": "GDPR Notice",
         "text": "Your data is processed in accordance with EU GDPR. You may request access, rectification, or deletion at any time by contacting privacy@opulanz.com."
       },
-      "submit": "Submit Application",
-      "submitting": "Submitting..."
+      "submit": "Submit Application"
     },
     "page": {
       "hero": {
@@ -2887,7 +2881,7 @@
       },
       "cta": {
         "title": "Ready to Streamline Your Finances?",
-        "description": "Join hundreds of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
+        "description": "Join thousands of businesses that trust us with their accounting and invoicing needs. Get started today and experience the difference.",
         "getStarted": "Get Started",
         "contactSales": "Contact Us"
       },
@@ -3035,8 +3029,8 @@
       },
       "latvia": {
         "title": "Latvia",
-        "address": "Vīlandes iela 5-36",
-        "city": "Rīga, LV-1010",
+        "address": "Vilandes Iela 5-36",
+        "city": "1010 Riga",
         "country": "Latvia",
         "phone": "Phone",
         "email": "Email"
@@ -3049,7 +3043,7 @@
     },
     "individual": {
       "title": "Individual Account Application",
-      "description": "Complete the form below to apply for your personal payment account.",
+      "description": "Complete the form below to apply for your personal banking account.",
       "approved": {
         "message": "Congratulations! Your individual account application has been approved. Your IBAN is ready.",
         "nextSteps": {
@@ -3296,7 +3290,7 @@
           "backToHomepage": "Back to Homepage",
           "privateBanking": {
             "title": "Submit Your Application",
-            "description": "Your private banking referral request will be forwarded to our team at contact@opulanz.com. An adviser from Advensys Insurance-Finance SARL (ORIAS n° 21003660, CIF) will contact you to discuss available private banking partners and next steps.",
+            "description": "Your private banking application will be sent to our team at contact@opulanz.com. A relationship manager will reach out to you directly.",
             "summary": "Application Summary",
             "name": "Name",
             "email": "Email",
@@ -3406,12 +3400,12 @@
     "overview": {
       "overline": "Overview",
       "title": "Your Trusted Life Insurance Broker",
-      "description": "As an insurance broker, we propose a personalised analysis of your requirements and needs and connect you with suitable life insurance solutions available through our panel of partner providers, ensuring your loved ones are financially protected.",
-      "badge1": "Personalised Recommendations",
+      "description": "As an independent insurance broker, we work on your behalf to find and connect you with the best life insurance solutions from leading providers, ensuring your loved ones are financially protected.",
+      "badge1": "Unbiased Advice",
       "badge2": "Multiple Providers",
       "badge3": "Family Protection",
       "whyBrokerTitle": "Why Choose a Broker?",
-      "benefit1": "Insurance broker providing personalised analysis of your requirements and needs",
+      "benefit1": "Independent broker representing your interests",
       "benefit2": "Access to policies from multiple leading insurance providers",
       "benefit3": "Personalized needs analysis and coverage recommendations",
       "benefit4": "Expert guidance on advanced features and estate planning",
@@ -3465,7 +3459,7 @@
     "features": {
       "overline": "Why We Are Different",
       "title": "Professional Insurance Brokerage Expertise",
-      "description": "As insurance brokers, we provide personalised recommendations and access to suitable solutions available through our partner panel.",
+      "description": "As independent brokers, we provide unbiased advice and access to the best insurance solutions for your needs.",
       "brokers": {
         "title": "Expert Brokers",
         "description": "Specialized knowledge to connect you with the right insurance products"
@@ -3586,22 +3580,22 @@
       }
     },
     "licenses": {
-      "title": "Regulatory statuses & registrations",
-      "description": "Regulatory statuses and registrations applicable to the financial services provided through Opulanz:",
+      "title": "Licenses and Authorizations",
+      "description": "Opulanz holds the necessary licenses and authorizations to provide financial services:",
       "banking": {
-        "title": "Regulated Financial Intermediation",
-        "authority": "Advensys Insurance-Finance SARL, registered with ORIAS under no. 21003660 as COBSP and COA, subject to ACPR oversight.",
-        "note": "Regulated intermediation activities are provided by Advensys Insurance-Finance SARL, a member of La Compagnie IOBSP and CNCEF Assurance. Opulanz is not a credit institution and does not hold client funds."
+        "title": "Banking Services - France",
+        "authority": "Licensed and supervised by ACPR (Autorité de Contrôle Prudentiel et de Résolution)",
+        "note": "Our French banking operations are fully compliant with French banking law and European banking directives."
       },
       "investment": {
-        "title": "Financial Investment Advisory (CIF)",
-        "authority": "Advensys Insurance-Finance SARL, registered with ORIAS under no. 21003660, member of La Compagnie CIF, an AMF-approved professional association, subject to AMF oversight for its CIF activity.",
-        "note": "Personalised investment advisory services provided by Advensys Insurance-Finance SARL. ORIAS registration is distinct from direct AMF authorisation."
+        "title": "Investment Services - France",
+        "authority": "Regulated by AMF (Autorité des Marchés Financiers)",
+        "note": "Our investment advisory services comply with MiFID II regulations and AMF requirements."
       },
       "payment": {
         "title": "Payment Services",
-        "authority": "Payment accounts and payment services are provided by a licensed partner under applicable payment services regulations.",
-        "note": "Opulanz is neither a credit institution nor an electronic money institution and does not hold client funds. The identity of the licensed payment partner is disclosed in the onboarding journey."
+        "authority": "Authorized under PSD2 (Payment Services Directive 2)",
+        "note": "We provide secure payment services across the European Economic Area in compliance with PSD2 requirements."
       }
     },
     "contact": {
@@ -3743,9 +3737,9 @@
       "select": "Select"
     },
     "wizard": {
-      "stepTitle": "Step {step} of 8",
+      "stepTitle": "Step {step} of 8 — {label}",
       "changeClientType": "← Change client type",
-      "previousStep": "Back",
+      "previousStep": "← Previous step",
       "questionnaireTitle": "Client Knowledge Questionnaire",
       "startCTA": "Complete your CKQ",
       "startDesc": "Client Knowledge Questionnaire (CKQ) — available for individuals and legal entities. MiFID II / IDD compliant.",
@@ -3763,16 +3757,14 @@
       "mr": "Mr.",
       "mrs": "Mrs.",
       "lastName": "Last Name",
-      "lastNamePlaceholder": "Enter your last name",
       "firstName": "First Name(s)",
-      "firstNamePlaceholder": "Enter your first name(s)",
       "maidenName": "Maiden name",
       "nationality": "Nationality",
-      "nationalityPlaceholder": "Enter your nationality",
+      "nationalityPlaceholder": "E.g.: French",
       "birthDate": "Date of birth",
       "birthPlace": "Place of birth",
       "address": "Full address",
-      "addressPlaceholder": "Enter your full address",
+      "addressPlaceholder": "No., street, postcode, city, country",
       "email": "Email",
       "phone": "Phone",
       "fiscalResidence": "Tax residence",
@@ -3800,13 +3792,13 @@
       "marriageDate": "Date of marriage",
       "marriageContractLabel": "Marriage contract",
       "marriageRegimeLabel": "Matrimonial regime",
-      "marriageRegimePlaceholder": "Enter matrimonial regime",
+      "marriageRegimePlaceholder": "E.g.: Community property",
       "pacsDate": "Date of PACS",
       "pacsConventionLabel": "PACS agreement",
       "divorceDate": "Date of divorce",
       "numberOfChildren": "Number of children",
       "childrenAtCharge": "Of which tax dependants",
-      "nextBtn": "Next",
+      "nextBtn": "Next — Financial Situation",
       "errLastName": "Last name of Account Holder 1 is required.",
       "errFirstName": "First name of Account Holder 1 is required.",
       "errEmail": "Email of Account Holder 1 is required.",
@@ -3818,9 +3810,9 @@
       "t1Income": "Average annual household income",
       "t1Patrimony": "Total estimated assets (excluding debts)",
       "t1Commitments": "Financial commitments (% of income)",
-      "t1CommitmentsPlaceholder": "Enter as percentage",
+      "t1CommitmentsPlaceholder": "E.g.: 30 %",
       "t1SavingsCapacity": "Estimated savings capacity (€)",
-      "t1SavingsCapacityPlaceholder": "Enter monthly amount",
+      "t1SavingsCapacityPlaceholder": "E.g.: €1,000/month",
       "t1FinancialPct": "Financial assets %",
       "t1RealEstatePct": "Real estate assets %",
       "t1ProfessionalPct": "Business assets %",
@@ -3838,13 +3830,13 @@
       "financialInstruments": "Financial instruments",
       "both": "Both",
       "amountToInvest": "Planned amount to invest",
-      "amountToInvestPlaceholder": "Enter the planned amount",
+      "amountToInvestPlaceholder": "E.g.: €50,000",
       "fundOrigins": "Economic origin of assets",
       "bankOrigin": "Bank of origin",
       "bankOriginPlaceholder": "Bank name",
       "additionalInfo": "Additional information",
       "additionalInfoPlaceholder": "Career developments, projects, useful information...",
-      "nextBtn": "Next",
+      "nextBtn": "Next — Documents",
       "fundOriginRevenusPro": "Professional income",
       "fundOriginCessionActifsPro": "Sale of business assets",
       "fundOriginCessionImmo": "Property sale(s)",
@@ -3879,7 +3871,7 @@
       "checkedCount": "Documents checked",
       "uploadBtn": "Add a file",
       "requiredNote": "Fields marked in red * are mandatory. Other documents can be provided at your appointment.",
-      "nextBtn": "Next",
+      "nextBtn": "Next — Knowledge & Experience",
       "groupFamilial": "Family situation",
       "groupFiscalite": "Taxation & assets",
       "docIdCard": "Identity card (front/back) or passport — Account Holder 1",
@@ -3932,7 +3924,7 @@
       "fatca": "Is any shareholder of the company a US Person?",
       "yesUC": "YES",
       "noUC": "NO",
-      "nextBtn": "Next",
+      "nextBtn": "Next — Financial Situation",
       "errCompanyName": "Company name is required.",
       "errLegalForm": "Legal form is required.",
       "errAddress": "Address / Registered office is required.",
@@ -3947,13 +3939,13 @@
       "financialTitle": "Financial data (last closed financial year)",
       "fiscalYearEnd": "Financial year-end date",
       "totalBalance": "Total balance sheet (€)",
-      "totalBalancePlaceholder": "Enter total balance",
+      "totalBalancePlaceholder": "E.g.: €2,500,000",
       "revenue": "Net turnover or net income (€)",
-      "revenuePlaceholder": "Enter annual revenue",
+      "revenuePlaceholder": "E.g.: €800,000",
       "equity": "Shareholders' equity (€)",
-      "equityPlaceholder": "Enter equity amount",
+      "equityPlaceholder": "E.g.: €1,200,000",
       "financialCommitments": "Financial commitments (% of annual income)",
-      "financialCommitmentsPlaceholder": "Enter as percentage",
+      "financialCommitmentsPlaceholder": "E.g.: 25 %",
       "taxType": "Type of taxation",
       "taxIS": "Corporate tax (IS)",
       "taxIR": "Income tax (IR)",
@@ -3972,7 +3964,7 @@
       "financialInstruments": "Financial instruments",
       "both": "Both",
       "amountToInvest": "Planned amount of assets to invest",
-      "amountToInvestPlaceholder": "Enter the planned amount",
+      "amountToInvestPlaceholder": "E.g.: €200,000",
       "fundOrigins": "Economic origin of assets",
       "bankOrigin": "Bank of origin",
       "bankOriginPlaceholder": "Bank name",
@@ -3980,7 +3972,7 @@
       "portfolioTransfer": "Portfolio transfer",
       "check": "Cheque",
       "wire": "Bank transfer",
-      "nextBtn": "Next",
+      "nextBtn": "Next — Documents",
       "fundOriginRevenusPro": "Professional income",
       "fundOriginCessionActifsPro": "Sale of business assets",
       "fundOriginCessionImmo": "Property sale(s)",
@@ -4001,7 +3993,7 @@
       "uploadBtn": "Add a file",
       "companyDocsTitle": "Supporting documents — Company",
       "requiredNote": "Red fields are mandatory. Other documents can be provided at the start of the relationship.",
-      "nextBtn": "Next",
+      "nextBtn": "Next — Knowledge & Experience",
       "docKbis": "Original K-bis extract less than 3 months old",
       "docSignatoryList": "List of authorised signatories",
       "docFinancialStatements": "Latest available certified financial statements",
@@ -4040,7 +4032,7 @@
       "readsPress": "Do you read specialist financial press or news?",
       "followsMarkets": "Do you regularly check stock market prices?",
       "checksMonthly": "Do you check your bank statements at least once a month?",
-      "nextBtn": "Next",
+      "nextBtn": "Next — Objectives & Risk",
       "productMonetary": "Money market products and euro funds (Livret A, PEL, euro funds, life insurance)",
       "productBonds": "Bonds and bond funds (debt securities, bond funds)",
       "productStocks": "Equities and equity funds listed on regulated markets",
@@ -4138,7 +4130,7 @@
       "patrimony25to50": "25 % – 50 %",
       "patrimony50to75": "50 % – 75 %",
       "patrimonyAbove75": "More than 75 %",
-      "nextBtn": "Next",
+      "nextBtn": "Next — Sustainable Investments",
       "errRiskProfile": "Please select your risk profile (A, B or C).",
       "errHorizon": "Please indicate your investment horizon.",
       "errMaxLoss": "Please indicate the maximum acceptable level of loss."
@@ -4157,7 +4149,7 @@
       "taxonomyWarning": "Currently, few ESG financial products have a significant proportion of sustainable investments aligned with the European Taxonomy. If you select this criterion, the available offer may be limited, but will progressively improve.",
       "yes": "Yes",
       "no": "No",
-      "nextBtn": "Next",
+      "nextBtn": "Next — Book an Appointment",
       "errWantsESG": "Please indicate whether you wish to incorporate sustainability criteria.",
       "impact": {
         "ghg": "Greenhouse gas emissions",
@@ -4179,7 +4171,7 @@
       "calendarSync": "Automatic sync with Google Calendar / Outlook · Email confirmation",
       "openInNewTab": "Open calendar in a new tab",
       "confirmLabel": "I confirm that I have selected a consultation time slot in the calendar above. I have received (or will receive) a confirmation email with the appointment details.",
-      "nextBtn": "Next",
+      "nextBtn": "Next — Summary & Signature",
       "errNotBooked": "Please confirm that you have booked an appointment before continuing."
     },
     "review": {
@@ -4311,450 +4303,6 @@
       "professions_liberales": "Legal / Medical professions",
       "religion_associatif": "Religion, Non-profit activity",
       "autre": "Other"
-    },
-    "page": {
-      "testBadge": "Internal Review Prototype — not published, not linked from any live page",
-      "heroTitle": "Investment Advice Built Around Your Goals",
-      "heroSubtitle": "Meet with an AMF-certified advisor to review your objectives, financial situation, investment experience, time horizon, and risk profile. Receive personalised recommendations supported by a formal suitability report.",
-      "heroPrimaryBtn": "Start Your Advisory Request",
-      "heroSecondaryBtn": "How It Works",
-      "heroAdvisoryNote": "Advisory services provided by Advensys Insurance Finance, France.",
-      "introOverline": "OUR APPROACH",
-      "introTitle": "Personalised Advice for Important Investment Decisions",
-      "introP1": "Investment decisions should reflect more than expected returns. Our advisory process considers your financial objectives, experience, investment horizon, liquidity needs, personal constraints, and ability to accept risk.",
-      "introP2": "Through a structured consultation and MiFID II assessment, your advisor can evaluate whether proposed investment solutions are appropriate for your circumstances.",
-      "benefits": [
-        {
-          "title": "Personalised Assessment",
-          "description": "Review your objectives, experience, income, assets, commitments, and investment preferences."
-        },
-        {
-          "title": "Professional Guidance",
-          "description": "Discuss your financial situation with an AMF-certified investment advisor."
-        },
-        {
-          "title": "Documented Recommendations",
-          "description": "Receive a formal suitability report explaining the recommendations made during the advisory process."
-        }
-      ],
-      "processOverline": "THE PROCESS",
-      "processTitle": "Your Investment Advisory Journey",
-      "process": [
-        {
-          "title": "Complete Your Investor Profile",
-          "description": "Answer questions about your knowledge, experience, financial situation, objectives, investment horizon, liquidity needs, and risk tolerance."
-        },
-        {
-          "title": "Provide Supporting Information",
-          "description": "Securely provide relevant information, including your current portfolio, income details, and any personal or financial constraints."
-        },
-        {
-          "title": "Meet Your Advisor",
-          "description": "Book a consultation with an AMF-certified advisor to review your circumstances and discuss suitable investment options."
-        },
-        {
-          "title": "Receive and Sign Your Report",
-          "description": "Receive your suitability report in PDF format and review and sign it electronically."
-        }
-      ],
-      "profileOverline": "MIFID II ASSESSMENT",
-      "profileTitle": "A Structured MiFID II Assessment",
-      "profileDesc": "Before recommendations can be provided, we need to understand your financial profile and investment needs.",
-      "profileItems": [
-        "Investment objectives",
-        "Investment time horizon",
-        "Knowledge and experience",
-        "Current portfolio",
-        "Income and financial commitments",
-        "Liquidity requirements",
-        "Capacity to bear losses",
-        "Risk tolerance",
-        "Investment restrictions",
-        "Sustainability preferences, where applicable"
-      ],
-      "profileNoteStrong": "Please note: ",
-      "profileNote": "Your responses help the advisor assess whether a recommendation is suitable for your circumstances. Completing the questionnaire does not guarantee that a particular investment product will be recommended.",
-      "docsOverline": "DOCUMENTATION",
-      "docsTitle": "Information You May Be Asked to Provide",
-      "docItems": [
-        "Current investment portfolio",
-        "Income information",
-        "Assets and financial commitments",
-        "Existing investment statements",
-        "Identification and compliance documents",
-        "Investment restriction information",
-        "Additional documents requested by the advisor"
-      ],
-      "docsNote": "The exact documentation required may depend on your profile, country of residence, and the nature of the advisory request.",
-      "regOverline": "IMPORTANT INFORMATION",
-      "regTitle": "Regulatory Notice",
-      "regItems": [
-        "Investment advisory services are provided by Advensys Insurance Finance in France.",
-        "Investment values can rise or fall. Past performance does not guarantee future results.",
-        "Any recommendation must be based on an assessment of the client's individual circumstances, objectives, knowledge, experience, financial situation, risk tolerance, and capacity to bear losses.",
-        "The information presented on this test page is general and does not constitute personal investment advice, an offer, or a recommendation to purchase or sell any financial instrument.",
-        "This page is a management-review prototype and does not confirm that the service is currently available."
-      ],
-      "legalNotice": "Legal Notice",
-      "termsConditions": "Terms & Conditions",
-      "privacyPolicy": "Privacy Policy",
-      "disclaimers": "Disclaimers",
-      "regulatoryInfo": "Regulatory Information",
-      "techOverline": "INTERNAL REVIEW",
-      "techTitle": "Technical & Compliance Requirements",
-      "techDesc": "This section is for management review only and describes the intended production requirements. It does not make unsupported legal guarantees.",
-      "techInternalNote": "Internal review only. The information below describes the intended production requirements. This section is for management review and does not constitute legal, regulatory, or commercial guarantees.",
-      "techSections": [
-        {
-          "title": "Calendly / Appointment Scheduling",
-          "items": [
-            "60-minute video consultation per session",
-            "Calendar synchronisation (Google Calendar, Outlook)",
-            "ICS confirmation email to client",
-            "Rescheduling rules to be defined at production stage",
-            "Time zone handling: CET/CEST (Europe/Paris)"
-          ]
-        },
-        {
-          "title": "Payment",
-          "items": [
-            "Payment-service provider: to be confirmed",
-            "Billing entity: Advensys Insurance Finance, France",
-            "Production invoice process: to be confirmed",
-            "VAT/tax treatment: subject to final legal validation",
-            "No card data is collected on this demonstration page"
-          ]
-        },
-        {
-          "title": "Document Storage",
-          "items": [
-            "Secure encrypted storage required for production",
-            "Role-based access controls required",
-            "File-retention rules: approximately 5-10 years (subject to final legal validation)",
-            "Malware scanning required for all uploads",
-            "Full audit logging of access and modifications"
-          ]
-        },
-        {
-          "title": "DocuSign — Electronic Signature",
-          "items": [
-            "Developer environment required during implementation",
-            "Production integration only after written approval",
-            "Signed suitability report stored as final record",
-            "Full signature audit trail (timestamps, IP, identity)",
-            "Secure archival in compliance with MiFID II requirements",
-            "No DocuSign API keys or integration keys are present in this prototype"
-          ]
-        },
-        {
-          "title": "Compliance and Regulatory",
-          "items": [
-            "MiFID II suitability assessment (Article 25)",
-            "Decision journaling: advisor rationale must be documented",
-            "Conflict-of-interest register maintained by Advensys Insurance Finance",
-            "Record retention: approximately 5-10 years (subject to final legal validation)",
-            "GDPR consent management and data-subject rights process required",
-            "Non-independent advisory model: disclosed to client before engagement"
-          ]
-        }
-      ],
-      "faqOverline": "FAQ",
-      "faqTitle": "Frequently Asked Questions",
-      "faq": [
-        {
-          "q": "Who provides the investment advisory service?",
-          "a": "Investment advisory services are provided by Advensys Insurance Finance, a regulated firm in France operating under AMF supervision. Opulanz facilitates access to this service on behalf of clients."
-        },
-        {
-          "q": "What information will I need to provide?",
-          "a": "You will be asked to complete a MiFID II investor profile questionnaire covering your objectives, experience, financial situation, time horizon, liquidity needs, and risk tolerance."
-        },
-        {
-          "q": "Why is a MiFID II questionnaire required?",
-          "a": "MiFID II regulations require investment advisors to gather sufficient information about a client's circumstances before providing a personal recommendation."
-        },
-        {
-          "q": "What is a suitability report?",
-          "a": "A formal document explaining the client profile considered, the recommendations discussed, the associated risks, and why a proposed approach may be suitable for your circumstances."
-        },
-        {
-          "q": "Does completing the questionnaire guarantee a recommendation?",
-          "a": "No. A recommendation will only be provided if the advisor determines that a suitable investment approach can be identified based on the information you provide."
-        },
-        {
-          "q": "Can I update my information before the consultation?",
-          "a": "Yes. You can update the information provided at any time before the consultation takes place."
-        },
-        {
-          "q": "How will my documents be protected?",
-          "a": "All documents and personal information are handled in accordance with applicable data protection regulations, including the GDPR."
-        }
-      ],
-      "ctaTitle": "Ready to Discuss Your Investment Objectives?",
-      "ctaSubtitle": "Complete the initial request and our team will help guide you through the next steps.",
-      "ctaRequestBtn": "Request a Consultation",
-      "ctaContactBtn": "Contact Us"
-    }
-  },
-  "mortgage": {
-    "hero": {
-      "title": "Your mortgage, handled by experts.",
-      "subtitle": "Opulanz gathers your financial profile and supporting documents, then submits your case to our partner bank network in Luxembourg and France, so you receive suitable offers available from the institutions consulted, without the paperwork burden.",
-      "primaryCta": "Start My Application",
-      "secondaryCta": "How It Works"
-    },
-    "overview": {
-      "overline": "Mortgage Services",
-      "title": "A trusted bridge to conditions suited to your profile and project",
-      "description": "As a regulated credit intermediary, we work on your behalf to submit your dossier to our network of partner banks in Luxembourg and France, so you can compare suitable offers available from the institutions consulted, without the administrative burden.",
-      "badge1": "Luxembourg & France",
-      "badge2": "GDPR Secure",
-      "badge3": "Multibank Access",
-      "whyTitle": "Why Opulanz for your mortgage?",
-      "benefit1": "19+ years of European financial services expertise",
-      "benefit2": "Access to multiple partner banks simultaneously",
-      "benefit3": "Cross-border and non-resident case specialists",
-      "benefit4": "Encrypted document handling with full GDPR compliance",
-      "benefit5": "Live case tracking from document upload to signed offer"
-    },
-    "howItWorks": {
-      "overline": "The Process",
-      "title": "Four steps to your mortgage offer",
-      "step1": {
-        "title": "Pre-Qualification",
-        "description": "Tell us about your project. property type, price, contribution, income, and employment. We review your eligibility before any bank is contacted."
-      },
-      "step2": {
-        "title": "Document Collection",
-        "description": "Upload your supporting documents securely. Your file is automatically checked against our bank-ready checklist."
-      },
-      "step3": {
-        "title": "Bank Submission",
-        "description": "With your consent, your complete file is transmitted to partner banks. encrypted, compliant, and fully confidential."
-      },
-      "step4": {
-        "title": "Offer and Signature",
-        "description": "Receive bank offers in your Opulanz dashboard. Compare, choose the best option, and proceed to signature."
-      }
-    },
-    "features": {
-      "overline": "Why Choose Us",
-      "title": "Professional mortgage brokerage expertise",
-      "description": "As a regulated credit intermediary, we provide expert guidance and multi-bank access for your property financing in Luxembourg and France.",
-      "expertise": {
-        "title": "Local Expertise",
-        "description": "Deep knowledge of lending requirements in Luxembourg and France, including cross-border and non-resident profiles."
-      },
-      "secure": {
-        "title": "Secure and GDPR",
-        "description": "Documents encrypted on Azure infrastructure, processed in full GDPR compliance, and purged after completion."
-      },
-      "multibank": {
-        "title": "Multi-Bank Access",
-        "description": "Simultaneous submission to multiple partner banks to maximise your chances and compare competitive terms among the institutions consulted."
-      },
-      "tracking": {
-        "title": "Live Case Tracking",
-        "description": "Follow every step of your application, from document upload to signed offer, directly in your Opulanz account."
-      }
-    },
-    "markets": {
-      "overline": "Coverage",
-      "title": "Luxembourg & France",
-      "description": "Specialised mortgage brokerage across both markets, with cross-border expertise for international and frontier-zone profiles.",
-      "lu": {
-        "title": "Luxembourg",
-        "subtitle": "CSSF Regulated · Clervaux Office",
-        "fact1": "Typical LTV up to 80% for residents; adjusted for non-residents",
-        "fact2": "Loan terms up to 30 years; variable and fixed rates available",
-        "fact3": "Partner banks: BGL BNP Paribas, ING, Spuerkeess, Post Luxembourg",
-        "fact4": "Governed by CSSF and Luxembourg financial law"
-      },
-      "fr": {
-        "title": "France",
-        "subtitle": "ACPR Regulated · ORIAS n° 21003660 · Paris Office",
-        "fact1": "Loi Scrivener: mandatory 11-day reflection period before signing",
-        "fact2": "Taux d'Usure compliance verified on all offers",
-        "fact3": "Financing up to 110% including notary fees for eligible profiles",
-        "fact4": "Full ACPR-regulated process under ORIAS n° 21003660"
-      },
-      "crossborder": {
-        "title": "Cross-Border and International Profiles",
-        "description": "Opulanz specialises in cross-border mortgage cases. whether you are a Luxembourg resident purchasing in France, a French national acquiring property in Luxembourg, or an international professional working in the Greater Region. Our advisors handle the regulatory complexity so you don't have to."
-      }
-    },
-    "cta": {
-      "title": "Ready to start your mortgage application?",
-      "description": "Submit your application online in a few minutes. Our team will review your file and contact you within 24 hours to discuss next steps.",
-      "primaryButton": "Start My Application",
-      "secondaryButton": "Speak to an Advisor",
-      "badge1": "24h Response",
-      "badge2": "GDPR Secure",
-      "badge3": "No Commitment"
-    },
-    "simulator": {
-      "overline": "Mortgage Simulator",
-      "title": "What can you afford to borrow?",
-      "description": "Adjust the inputs to get an instant estimate of your borrowing capacity and monthly payments.",
-      "inputs": {
-        "title": "Your Details",
-        "sectionApplicant": "Applicant",
-        "sectionLoan": "Loan details",
-        "solo": "Solo applicant",
-        "withCoApplicant": "With co-applicant",
-        "income": "Net monthly income",
-        "incomeCombined": "Family total monthly net income",
-        "dependents": "Number of dependents",
-        "dep0": "0",
-        "dep1": "1",
-        "dep2": "2",
-        "dep3": "3+",
-        "dependentNote": "−€{amount}/month deducted from qualifying income",
-        "duration": "Loan duration",
-        "years": "years",
-        "rate": "Interest rate",
-        "downPayment": "Down payment",
-        "downPaymentNote1": "Down payment starting from 15%.",
-        "downPaymentNote2": "Down payment may not be needed if you collateralize your own property.",
-        "contribution": "Personal contribution",
-        "existing": "Existing loan payments"
-      },
-      "warnings": {
-        "minIncomeSolo": "Minimum qualifying income is €900/month for a sole applicant.",
-        "minIncomeJoint": "Minimum combined qualifying income is €1,200/month with a co-applicant.",
-        "minLoan": "Estimated loan is below the €20,000 minimum. Try increasing your income or loan term.",
-        "negativeDTI": "Your existing loan payments exceed the 33% debt limit. Reduce them to unlock borrowing capacity."
-      },
-      "results": {
-        "budget": "Property budget",
-        "budgetSub": "Loan + your contribution of",
-        "maxLoan": "Max loan",
-        "monthly": "Monthly payment",
-        "perMonth": "per month",
-        "dti": "Debt-to-income ratio",
-        "dtiNote": "Max 33% in France & Luxembourg — lenders also verify minimum disposable income",
-        "jointApplication": "Joint application",
-        "ctaText": "Ready to apply? Start your file — our advisors will handle the rest.",
-        "ctaButton": "Start your application",
-        "emptyIncome": "Enter your monthly income above to see your estimated borrowing capacity.",
-        "emptyDTI": "Your existing loan payments exceed the 33% indicative threshold used in this simulator. Actual lending criteria vary by lender, jurisdiction and borrower profile."
-      },
-      "disclaimer": "The 33% debt-service ratio used in this simulator is an internal indicative assumption and not a regulatory ceiling. Actual lending criteria vary according to the lender, jurisdiction, borrower profile and type of financing. Opulanz acts as a regulated credit intermediary (ORIAS n°21003660)."
-    },
-    "lombard": {
-      "overline": "Lombard Credit",
-      "title": "Unlock Liquidity from Your Portfolio — Without Liquidating It",
-      "description": "A Lombard facility allows you to borrow against the value of your investment portfolio, giving you access to capital while your assets remain invested and your long-term strategy stays intact.",
-      "howWeHelp": {
-        "title": "Our Role",
-        "description": "Opulanz acts as a regulated credit intermediary. We structure your application, present your file to our network of partner banks across Luxembourg and France, and guide you through a comparison of available terms. The credit facility is extended by the selected lending institution — not by Opulanz."
-      },
-      "uses": {
-        "title": "Common Applications",
-        "item1": "Financing a real estate acquisition without disrupting your investment portfolio",
-        "item2": "Addressing a short-term liquidity requirement",
-        "item3": "Funding a business venture or a time-sensitive investment opportunity",
-        "item4": "Optimising cash flow without triggering a taxable disposal event"
-      },
-      "features": {
-        "title": "Facility Characteristics",
-        "item1": "Secured credit line against eligible securities — equities, bonds and investment funds",
-        "item2": "Advance rate determined by the nature and credit quality of the pledged assets",
-        "item3": "Flexible drawdown and repayment schedule tailored to your needs",
-        "item4": "Interest accrues only on amounts actually drawn"
-      },
-      "important": {
-        "title": "Risk Disclosure — Please Read Before Proceeding",
-        "body": "A Lombard facility carries material risk. Should the market value of your pledged portfolio decline, the lending bank may issue a margin call, requiring you to post additional collateral or partially repay the outstanding balance. Failure to meet a margin call may result in the forced sale of your securities, potentially at an inopportune time and below fair value. Interest rates are subject to change. Leverage amplifies both investment gains and losses. This facility may not be appropriate for all investors; suitability is assessed on the specific composition and quality of your portfolio.",
-        "legal": "Opulanz acts as a credit intermediary and not as a lender. All credit facilities are subject to the approval and conditions of the lending institution. Where the financing relates to an investment strategy, advisory services are provided in our capacity as a registered Financial Investment Advisor (CIF). Advensys Insurance-Finance SARL — ORIAS n° 21003660 — operates as a broker under ACPR oversight and as a CIF member of La Compagnie CIF, under the supervision of the AMF."
-      }
-    },
-    "legal": "Opulanz acts as a credit intermediary and not as a lender. Mortgage financing is subject to bank approval and standard credit conditions. ORIAS n° 21003660",
-    "apply": {
-      "overline": "Mortgage Application",
-      "title": "Start your mortgage application",
-      "backToMortgage": "Back to Mortgage",
-      "errors": {
-        "required": "This field is required",
-        "invalidEmail": "Please enter a valid email address",
-        "requiredDocs": "Please upload all required documents before continuing",
-        "consent": "You must give your consent to submit the application"
-      },
-      "step1": {
-        "title": "Pre-Qualification",
-        "market": "Target market",
-        "markets": {
-          "france": "France",
-          "luxembourg": "Luxembourg"
-        },
-        "propertyType": "Property type",
-        "propertyTypes": {
-          "primary": "Primary Residence",
-          "secondary": "Secondary Home",
-          "investment": "Investment Property"
-        },
-        "purchasePrice": "Purchase price",
-        "contribution": "Personal contribution",
-        "ltvLabel": "Estimated loan-to-value (LTV)",
-        "monthlyIncome": "Net monthly income",
-        "employment": "Employment type",
-        "selectEmployment": "Select employment type",
-        "employmentTypes": {
-          "employee": "Salaried Employee",
-          "selfEmployed": "Self-Employed",
-          "civilServant": "Civil Servant",
-          "retired": "Retired"
-        },
-        "contactTitle": "Your contact details",
-        "firstName": "First name",
-        "lastName": "Last name",
-        "name": "Name",
-        "email": "Email address",
-        "phone": "Phone number (optional)",
-        "ltv": "LTV"
-      },
-      "step2": {
-        "title": "Document Collection",
-        "required": "Required",
-        "optional": "Optional",
-        "upload": "Upload file",
-        "fileHint": "PDF, JPG or PNG, max 10 MB",
-        "securityNote": "Your documents are encrypted and stored securely on Azure infrastructure in full GDPR compliance. They are accessible only to your assigned Opulanz advisor.",
-        "docs": {
-          "id": "Government-issued ID (passport or national ID)",
-          "payslips": "Last 3 payslips or proof of income",
-          "bankStatements": "Last 3 bank statements",
-          "proofAddress": "Proof of address (utility bill or lease, dated within 3 months)",
-          "taxReturn": "Last tax return",
-          "propertyDetails": "Property details or sales agreement (if available)"
-        }
-      },
-      "step3": {
-        "title": "Review & Submit",
-        "summaryTitle": "Application summary",
-        "consentText": "I consent to Opulanz (Groupe Advensys Luxembourg S.A., ORIAS n°…21003660) collecting and processing my personal data and documents for the purpose of assessing and submitting my mortgage application to its partner banks in France and Luxembourg. I understand that my data will be processed in accordance with the GDPR and Opulanz’s Privacy Policy.",
-        "legalNote": "Opulanz acts as a credit intermediary and not as a lender. Financing is subject to bank approval. Regulated by ACPR under ORIAS n°…21003660 and the Luxembourg Ministry of Economy."
-      },
-      "step4": {
-        "title": "Offer and Signature",
-        "what1": "Once your file is submitted, Opulanz advisors will review and prepare your complete dossier for bank submission within 24 hours.",
-        "what2": "Your file is simultaneously submitted to our partner bank network. You will receive a consolidated view of all offers directly in your Opulanz dashboard.",
-        "what3": "Compare the offers received and your Opulanz advisor will accompany you through to signature and final completion.",
-        "note": "Average time from file submission to first offer: 5–8 business days, depending on the bank and market."
-      },
-      "nav": {
-        "back": "Back",
-        "cancel": "Cancel",
-        "next": "Continue",
-        "submit": "Submit Application"
-      },
-      "success": {
-        "title": "Application submitted",
-        "line1": "Thank you. Your mortgage application has been received.",
-        "line2": "Your Opulanz advisor will review your file and contact you within 24 hours to discuss next steps.",
-        "summaryTitle": "Your submission",
-        "back": "Back to Mortgage page"
-      }
     }
   }
 }

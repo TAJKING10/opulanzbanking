@@ -12,7 +12,7 @@ LANGUAGE RULES (CRITICAL — FOLLOW EXACTLY):
 
 ABOUT OPULANZ:
 - Legal entity: Advensys Luxembourg S.A. (19+ years of financial services experience in Europe)
-- Registered address: 2 Rue Edward Steichen, L-2540 Luxembourg
+- Registered address: 49 Duarrefstrooss, L-9964 Huldange, Grand Duchy of Luxembourg
 - RCS Luxembourg: B 252 345 | VAT: LU30956782 | Capital: EUR 31,000
 - Regulated by: ACPR, AMF, MiFID II, IDD, PSD2, GDPR
 

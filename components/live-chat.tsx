@@ -162,13 +162,7 @@ export function LiveChat() {
   const humanMessagesEndRef = React.useRef<HTMLDivElement>(null);
   const humanInputRef = React.useRef<HTMLInputElement>(null);
 
-  // Auto-open on homepage
-  const isHomePage = /^\/[a-z]{2}\/?$/.test(pathname ?? "");
-  React.useEffect(() => {
-    if (!isHomePage) return;
-    const timer = setTimeout(() => setOpen(true), 2500);
-    return () => clearTimeout(timer);
-  }, [isHomePage]);
+
 
   // External open trigger
   React.useEffect(() => {

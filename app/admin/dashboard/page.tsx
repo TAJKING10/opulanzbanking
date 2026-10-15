@@ -4034,7 +4034,7 @@ function HelpTab() {
             <p className="font-semibold text-gray-700 pt-1">Key Compliance Obligations:</p>
             <Bullets items={[
               '<strong>Anti-Money Laundering (AML / CFT)</strong> — Verify source of funds, purpose of company creation, and screen UBOs against PEP (Politically Exposed Persons) and sanctions watchlists.',
-              '<strong>GDPR / Data Minimization</strong> — Only collect and retain documents necessary for compliance. Never share client identity records outside authorized channels.',
+              '<strong>GDPR / Data Minimization</strong> — Only collect and retain documents necessary for compliance. Never share client identity records outside authorised channels.',
               '<strong>Right to Erasure (RTBF)</strong> — GDPR deletion requests must be escalated to the Data Protection Officer (DPO). Mandatory statutory financial records are retained as required by Luxembourg law.',
               '<strong>Audit Trail</strong> — Every status update, document generation, and email dispatch is timestamped and recorded in the database audit log.',
             ]} />

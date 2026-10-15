@@ -100,7 +100,7 @@ export default function ScheduleConsultationPage() {
               </div>
               <h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Guidance</h3>
               <p className="text-sm text-brand-grayMed">
-                Personalized advice from certified tax professionals
+                Personalised advice from certified tax professionals
               </p>
             </div>
           </div>

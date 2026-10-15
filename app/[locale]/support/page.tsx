@@ -20,10 +20,10 @@ export default function SupportPage() {
       <PageGuidance
         pageKey="support"
         locale={locale}
-        title="Help Center"
+        title="Help Centre"
         description="Find answers to common questions and check service status."
         steps={[
-          { content: "Welcome to the Opulanz Help Center. Browse the FAQ for quick answers or check service status." },
+          { content: "Welcome to the Opulanz Help Centre. Browse the FAQ for quick answers or check service status." },
           { title: "FAQ", content: "Click any question to expand the answer.", target: "#faq", position: "bottom" },
         ]}
         tip="Most questions are answered in the FAQ below."

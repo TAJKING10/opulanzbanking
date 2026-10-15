@@ -190,7 +190,7 @@ Contact: opulanz.banking@gmail.com
   };
 
   const features = [
-    "Personalized tax advice for high-net-worth individuals",
+    "Personalised tax advice for high-net-worth individuals",
     "Expatriate tax planning and compliance",
     "Personal income tax optimization",
     "Wealth and estate tax planning",
@@ -284,7 +284,7 @@ Contact: opulanz.banking@gmail.com
                   <div className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-brand-gold/10"><UserCheck className="h-6 w-6 text-brand-gold" /></div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-brand-dark mb-2">Personal Tax Advisory</h3>
-                    <p className="text-sm text-brand-grayMed mb-2">Personalized tax advice for individuals</p>
+                    <p className="text-sm text-brand-grayMed mb-2">Personalised tax advice for individuals</p>
                     <p className="text-sm text-brand-grayMed">Duration: 60 minutes</p>
                   </div>
                 </div>
@@ -361,7 +361,7 @@ Contact: opulanz.banking@gmail.com
             <div className="grid gap-8 md:grid-cols-3 mb-8">
               <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><Clock className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">60-Minute Consultation</h3><p className="text-sm text-brand-grayMed">Personal consultation session</p></div>
               <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><Euro className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">€{totalPrice} Fee</h3><p className="text-sm text-brand-grayMed">Fixed price for personal tax advisory</p></div>
-              <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><UserCheck className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Service</h3><p className="text-sm text-brand-grayMed">Personalized tax advice</p></div>
+              <div className="text-center"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-goldLight"><UserCheck className="h-6 w-6 text-brand-goldDark" /></div><h3 className="mb-2 text-lg font-bold text-brand-dark">Expert Service</h3><p className="text-sm text-brand-grayMed">Personalised tax advice</p></div>
             </div>
             <div key={locale} className="calendly-inline-widget" data-url={`${calendlyUrl}?hide_event_type_details=1&primary_color=d8ba4a`} style={{ minWidth: '320px', height: '700px' }} />
           </div>
@@ -371,7 +371,7 @@ Contact: opulanz.banking@gmail.com
 
   return (
     <>
-      <Hero title="Personal Tax Advisory" subtitle="Personalized tax advice for high-net-worth individuals" />
+      <Hero title="Personal Tax Advisory" subtitle="Personalised tax advice for high-net-worth individuals" />
       <section className="relative bg-gradient-to-b from-brand-goldLight/10 to-white py-12 md:py-16 overflow-hidden">
         <div className="container mx-auto max-w-4xl px-6 relative z-10">
           <div className="text-center mb-8">
@@ -390,7 +390,7 @@ Contact: opulanz.banking@gmail.com
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
               <SectionHeading overline="SERVICE DETAILS" title="Personal Tax Advisory" align="left" className="mb-8" />
-              <p className="mb-6 text-lg text-brand-grayMed">Get personalized tax advice tailored to your unique situation and goals.</p>
+              <p className="mb-6 text-lg text-brand-grayMed">Get personalised tax advice tailored to your unique situation and goals.</p>
             </div>
             <div>
               <h3 className="mb-6 text-xl font-bold text-brand-dark">What's Included</h3>
@@ -407,7 +407,7 @@ Contact: opulanz.banking@gmail.com
       </section>
       <section className="hero-gradient py-12">
         <div className="container mx-auto max-w-4xl px-6 text-center">
-          <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl">Ready for Personalized Tax Advice?</h2>
+          <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl">Ready for Personalised Tax Advice?</h2>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-white/90">Book your consultation now.</p>
           <div className="flex flex-col items-center gap-4 sm:flex-row justify-center">
             <Button onClick={() => setStep('calendar')} size="lg" className="bg-white text-brand-dark hover:bg-gray-50 min-w-48">Book - €{totalPrice}</Button>

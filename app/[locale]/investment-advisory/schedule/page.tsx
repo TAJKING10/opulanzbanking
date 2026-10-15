@@ -435,7 +435,7 @@ export default function InvestmentAdvisorySchedulePage({ params: { locale } }: {
                   </h3>
                 </div>
                 <p className="text-sm text-brand-grayMed mb-5 leading-relaxed">
-                  To allow our certified advisors to prepare your personalized investment strategy and fulfill European regulatory compliance before your consultation, please complete your investor profile and sign the engagement mandate electronically via DocuSign.
+                  To allow our certified advisors to prepare your personalised investment strategy and fulfil European regulatory compliance before your consultation, please complete your investor profile and sign the engagement mandate electronically via DocuSign.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button

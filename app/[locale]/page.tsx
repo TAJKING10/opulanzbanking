@@ -151,7 +151,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           },
           {
             title: "Investment Advisory",
-            content: "MiFID II-compliant investment advice and portfolio management. Our advisors build personalized strategies covering equities, bonds, ETFs, and ESG investments.",
+            content: "MiFID II-compliant investment advice and portfolio management. Our advisors build personalised strategies covering equities, bonds, ETFs, and ESG investments.",
             target: "#svc-investment",
             position: "left",
           },

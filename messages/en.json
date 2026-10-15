@@ -549,7 +549,7 @@
     "features": {
       "overline": "Why Opulanz",
       "title": "Your Trusted Financial Partner",
-      "description": "We provide comprehensive financial solutions with the expertise, security, and personalized service you deserve.",
+      "description": "We provide comprehensive financial solutions with the expertise, security, and Personalised service you deserve.",
       "expertFinancial": {
         "title": "Expert Financial Services",
         "description": "Professional accounting, bookkeeping, and financial management services tailored to your business."
@@ -560,7 +560,7 @@
       },
       "investmentManagement": {
         "title": "Investment Management",
-        "description": "Personalized investment strategies and wealth management to help you achieve your financial goals."
+        "description": "Personalised investment strategies and wealth management to help you achieve your financial goals."
       },
       "insuranceSolutions": {
         "title": "Insurance Solutions",
@@ -583,7 +583,7 @@
       "reasons": {
         "regulated": "Regulated by ACPR and AMF for your peace of mind",
         "expertise": "Over 25 years of combined expertise in financial services",
-        "personalized": "Personalized service from dedicated account managers",
+        "Personalised": "Personalised service from dedicated account managers",
         "competitive": "Competitive rates and transparent fee structure",
         "multilingual": "Multi-lingual support in English and French",
         "digital": "Cutting-edge digital platforms for 24/7 access",
@@ -941,7 +941,7 @@
       "paymentFailed": "Payment failed. Please try again.",
       "paymentError": "There was an error processing your payment. Please contact support.",
       "contactTitle": "Your Contact Details",
-      "contactSubtitle": "Please provide your name and email so we can personalize your consultation.",
+      "contactSubtitle": "Please provide your name and email so we can Personalise your consultation.",
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email Address",
@@ -1018,7 +1018,7 @@
       },
       "intellectualProperty": {
         "title": "Intellectual Property",
-        "trademark": "The Opulanz brand, logo, and all associated trademarks are the exclusive property of Advensys Luxembourg S.A. Unauthorized use is strictly prohibited.",
+        "trademark": "The Opulanz brand, logo, and all associated trademarks are the exclusive property of Advensys Luxembourg S.A. Unauthorised use is strictly prohibited.",
         "ownership": "All content on this website, including text, graphics, logos, and software, is the property of Advensys Luxembourg S.A. and is protected by Luxembourg and international copyright laws."
       },
       "generalConditions": {
@@ -1035,7 +1035,7 @@
         "development": "Platform Development",
         "developmentValue": "Advensys Technology Division",
         "hosting": "Cloud Hosting",
-        "hostingValue": "Microsoft Azure – European Data Centers"
+        "hostingValue": "Microsoft Azure – European Data Centres"
       },
       "footer": {
         "disclaimer": "This document was last reviewed and approved by the Legal & Compliance Department of Advensys Luxembourg S.A.",
@@ -1105,7 +1105,7 @@
       },
       "s11": {
         "title": "11. Security Disclaimer",
-        "content": "While we implement industry-standard security measures, no system is completely secure. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account. We are not liable for unauthorized access resulting from your failure to maintain security, disclosure of credentials, or use of compromised devices or networks."
+        "content": "While we implement industry-standard security measures, no system is completely secure. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account. We are not liable for Unauthorised access resulting from your failure to maintain security, disclosure of credentials, or use of compromised devices or networks."
       },
       "s12": {
         "title": "12. Transaction Disclaimer",
@@ -1117,7 +1117,7 @@
       },
       "s14": {
         "title": "14. Limitation of Liability",
-        "content": "To the maximum extent permitted by law, Opulanz, its directors, employees, partners, and affiliates shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from: your use or inability to use our services, unauthorized access to your account, errors or omissions in content, delays or interruptions in service, or any decisions made based on information provided on our platform."
+        "content": "To the maximum extent permitted by law, Opulanz, its directors, employees, partners, and affiliates shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from: your use or inability to use our services, Unauthorised access to your account, errors or omissions in content, delays or interruptions in service, or any decisions made based on information provided on our platform."
       },
       "s15": {
         "title": "15. Changes to Disclaimers",
@@ -1460,7 +1460,7 @@
         "chooseJurisdiction": "Choose a jurisdiction",
         "jurisdictionHelp": "This determines which payment partner and regulatory framework will apply",
         "jurisdictionInfo": "Jurisdiction Information",
-        "luxembourgInfo": "Luxembourg: Premier financial center with favorable tax regime for holding companies. Corporate tax rate: ~24%.",
+        "luxembourgInfo": "Luxembourg: Premier financial centre with favorable tax regime for holding companies. Corporate tax rate: ~24%.",
         "luxembourgCapital": "Minimum share capital: EUR 12,000 for S.a r.l. (limited liability company)",
         "franceInfo": "France: Large economy with access to EU market. Corporate tax rate: ~25%.",
         "franceCapital": "Minimum share capital: â‚¬1 for SAS/SARL (most common structures)",
@@ -1668,14 +1668,14 @@
       },
       "personal": {
         "title": "Personal Tax Advisory",
-        "description": "Personalized tax advice for high-net-worth individuals, expatriates, and estate planning"
+        "description": "Personalised tax advice for high-net-worth individuals, expatriates, and estate planning"
       }
     },
     "benefits": {
       "1": "Luxembourg-qualified tax advisors with decades of experience",
       "2": "Expertise in cross-border and international tax structures",
       "3": "Proactive compliance monitoring and regulatory updates",
-      "4": "Personalized strategies for individuals and businesses",
+      "4": "Personalised strategies for individuals and businesses",
       "5": "Comprehensive VAT and indirect tax advisory",
       "6": "Tax-efficient corporate restructuring guidance",
       "7": "Confidential and discreet advisory services"
@@ -2134,11 +2134,11 @@
     },
     "personalTax": {
       "title": "Personal Tax Advisory",
-      "subtitle": "Personalized tax advice for high-net-worth individuals",
+      "subtitle": "Personalised tax advice for high-net-worth individuals",
       "serviceDetailsTitle": "Personal Tax Advisory",
-      "serviceDetailsDesc1": "Get personalized tax advice tailored to your unique situation and goals.",
+      "serviceDetailsDesc1": "Get Personalised tax advice tailored to your unique situation and goals.",
       "features": {
-        "1": "Personalized tax advice for high-net-worth individuals",
+        "1": "Personalised tax advice for high-net-worth individuals",
         "2": "Expatriate tax planning and compliance",
         "3": "Personal income tax optimization",
         "4": "Wealth and estate tax planning",
@@ -2153,8 +2153,8 @@
         "4": "Tailored solutions for your needs"
       },
       "feeDesc": "Fixed fee for personal tax advisory",
-      "expertServiceDesc": "Personalized tax advice",
-      "ctaTitle": "Ready for Personalized Tax Advice?",
+      "expertServiceDesc": "Personalised tax advice",
+      "ctaTitle": "Ready for Personalised Tax Advice?",
       "ctaDesc": "Book your consultation now."
     }
   },
@@ -2248,7 +2248,7 @@
   "compliance": {
     "FR": {
       "banking": "Opulanz is a digital banking platform. Banking services are provided by licensed partners regulated by ACPR (AutoritÃ© de ContrÃ´le Prudentiel et de RÃ©solution).",
-      "investment": "Investment services are subject to MiFID II regulations and provided by advisors authorized by AMF (AutoritÃ© des MarchÃ©s Financiers).",
+      "investment": "Investment services are subject to MiFID II regulations and provided by advisors Authorised by AMF (AutoritÃ© des MarchÃ©s Financiers).",
       "insurance": "Insurance distribution is subject to IDD (Insurance Distribution Directive) requirements. Opulanz acts as an insurance intermediary.",
       "mortgage": "Mortgage services are provided by licensed credit intermediaries. Subject to responsible lending requirements."
     },
@@ -3070,7 +3070,7 @@
   },
   "supportPage": {
     "hero": {
-      "title": "Help Center",
+      "title": "Help Centre",
       "subtitle": "Find answers in our FAQ or check service status."
     },
     "contactMethods": {
@@ -3169,9 +3169,9 @@
         "button": "Browse Docs"
       },
       "helpCenter": {
-        "title": "Help Center",
+        "title": "Help Centre",
         "description": "Step-by-step articles and tutorials covering all features and services.",
-        "button": "Visit Help Center"
+        "button": "Visit Help Centre"
       },
       "status": {
         "title": "Service Status",
@@ -3578,7 +3578,7 @@
       "whyBrokerTitle": "Why Choose a Broker?",
       "benefit1": "Independent broker representing your interests",
       "benefit2": "Access to policies from multiple leading insurance providers",
-      "benefit3": "Personalized needs analysis and coverage recommendations",
+      "benefit3": "Personalised needs analysis and coverage recommendations",
       "benefit4": "Expert guidance on advanced features and estate planning",
       "benefit5": "Ongoing policy management and support"
     },
@@ -3637,7 +3637,7 @@
       },
       "analysis": {
         "title": "Needs Analysis",
-        "description": "Personalized assessment to find the perfect coverage from multiple providers"
+        "description": "Personalised assessment to find the perfect coverage from multiple providers"
       },
       "wealth": {
         "title": "Wealth Building",
@@ -3650,7 +3650,7 @@
     },
     "cta": {
       "title": "Protect Your Family Future Today",
-      "subtitle": "Get started with a personalized consultation. We will help you compare options from leading insurance providers to find the solution that best fits your family needs and financial goals.",
+      "subtitle": "Get started with a Personalised consultation. We will help you compare options from leading insurance providers to find the solution that best fits your family needs and financial goals.",
       "badge1": "Free Consultation",
       "badge2": "Compare Multiple Providers",
       "badge3": "Expert Guidance",
@@ -3751,8 +3751,8 @@
       }
     },
     "licenses": {
-      "title": "Licenses and Authorizations",
-      "description": "Opulanz holds the necessary licenses and authorizations to provide financial services:",
+      "title": "Licenses and Authorisations",
+      "description": "Opulanz holds the necessary licenses and Authorisations to provide financial services:",
       "banking": {
         "title": "Banking Services - France",
         "authority": "Licensed and supervised by ACPR (Autorité de Contrôle Prudentiel et de Résolution)",
@@ -3765,7 +3765,7 @@
       },
       "payment": {
         "title": "Payment Services",
-        "authority": "Authorized under PSD2 (Payment Services Directive 2)",
+        "authority": "Authorised under PSD2 (Payment Services Directive 2)",
         "note": "We provide secure payment services across the European Economic Area in compliance with PSD2 requirements."
       }
     },

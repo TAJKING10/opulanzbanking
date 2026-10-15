@@ -69,7 +69,7 @@ export default function ServicesPage({ params: { locale } }: { params: { locale:
   const reasonKeys = [
     "regulated",
     "expertise",
-    "personalized",
+    "personalised",
     "competitive",
     "multilingual",
     "digital",

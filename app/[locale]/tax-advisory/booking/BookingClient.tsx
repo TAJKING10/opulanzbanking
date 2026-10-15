@@ -2137,35 +2137,6 @@ export default function BookingClient() {
                         />
                       </div>
 
-                      {/* ── DEV-ONLY: Demo Payment Bypass ── */}
-                      {process.env.NODE_ENV === "development" && (
-                        <div className="mt-4 border-t border-dashed border-amber-300 pt-4">
-                          <p className="text-[11px] font-semibold text-amber-700 uppercase tracking-wide mb-2">
-                            Dev mode — demo payment
-                          </p>
-                          <button
-                            type="button"
-                            disabled={isSavingPayment}
-                            onClick={() =>
-                              handlePaymentSuccess(`DEMO-${Date.now()}`, {
-                                id: `DEMO-${Date.now()}`,
-                                status: "COMPLETED",
-                                payer: {
-                                  name: { given_name: contact.firstName, surname: contact.lastName },
-                                  email_address: contact.email,
-                                },
-                              })
-                            }
-                            className="w-full max-w-md mx-auto block rounded-lg bg-amber-400 hover:bg-amber-500 disabled:opacity-50 text-amber-950 font-bold text-sm py-3 px-6 transition-colors"
-                          >
-                            {isSavingPayment ? "Saving…" : `Skip Payment & Save (€${svc.price.toFixed(2)})`}
-                          </button>
-                          <p className="text-[10px] text-amber-600 mt-1.5">
-                            Calls the same save-to-admin path as a real PayPal payment. Hidden in production.
-                          </p>
-                        </div>
-                      )}
-
                       {isSavingPayment && (
                         <div className="mt-6 flex flex-col items-center gap-2 text-sm text-brand-grayMed">
                           <div className="h-6 w-6 animate-spin rounded-full border-2 border-brand-gold border-t-transparent" />

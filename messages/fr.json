@@ -3052,10 +3052,26 @@
       }
     }
   },
+  "contactPage": {
+    "hero": {
+      "title": "Contactez-nous",
+      "subtitle": "Choisissez le canal d'assistance qui vous convient le mieux."
+    },
+    "guidance": {
+      "title": "Prenez contact",
+      "description": "Contactez-nous par téléphone, e-mail, chat en direct ou visitez l'un de nos bureaux.",
+      "step1": "Choisissez la méthode de contact qui vous convient — téléphone, e-mail ou chat.",
+      "step2Title": "Canaux de contact",
+      "step2Content": "Utilisez les cartes ci-dessous pour nous appeler, envoyer un e-mail ou démarrer un chat.",
+      "step3Title": "Envoyer un message",
+      "step3Content": "Remplissez le formulaire et nous répondrons dans les 24 heures.",
+      "tip": "La plupart des demandes sont traitées dans les 2 heures ouvrables."
+    }
+  },
   "supportPage": {
     "hero": {
-      "title": "Comment pouvons-nous vous aider ?",
-      "subtitle": "Notre équipe d'assistance est là pour vous. Contactez-nous par téléphone, e-mail ou chat en direct."
+      "title": "Centre d'aide",
+      "subtitle": "Consultez notre FAQ pour des réponses rapides ou vérifiez l'état des services."
     },
     "contactMethods": {
       "title": "Nous contacter",

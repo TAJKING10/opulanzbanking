@@ -179,7 +179,7 @@ export function Footer({ locale }: FooterProps) {
               </li>
               <li>
                 <Link
-                  href={`/${locale}/support`}
+                  href={`/${locale}/contact`}
                   className="block py-1.5 text-sm leading-6 text-brand-grayMed transition-colors hover:text-brand-gold md:py-0"
                 >
                   {t("footer.links.company.contact")}

@@ -3052,10 +3052,26 @@
       }
     }
   },
+  "contactPage": {
+    "hero": {
+      "title": "Contact Us",
+      "subtitle": "Choose the support channel that works best for you."
+    },
+    "guidance": {
+      "title": "Get in touch",
+      "description": "Reach us by phone, email, live chat, or visit one of our offices.",
+      "step1": "Choose the contact method that suits you best — phone, email, or live chat.",
+      "step2Title": "Contact channels",
+      "step2Content": "Use the cards below to call us, send an email, or start a live chat.",
+      "step3Title": "Send a message",
+      "step3Content": "Fill in the form and we will respond within 24 hours.",
+      "tip": "Most inquiries are resolved within 2 business hours during weekdays."
+    }
+  },
   "supportPage": {
     "hero": {
-      "title": "How Can We Help You?",
-      "subtitle": "Our support team is here for you. Reach out by phone, email, or live chat."
+      "title": "Help Center",
+      "subtitle": "Find answers in our FAQ or check service status."
     },
     "contactMethods": {
       "title": "Contact Us",

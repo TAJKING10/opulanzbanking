@@ -141,6 +141,8 @@ const nextConfig = {
       { source: '/services',       destination: '/en/services',       permanent: true },
       { source: '/support',        destination: '/en/support',        permanent: true },
       { source: '/open-account',   destination: '/en/open-account',   permanent: true },
+      { source: '/contact',        destination: '/en/contact',        permanent: true },
+      { source: '/contact/',       destination: '/en/contact',        permanent: true },
     ];
   },
   async headers() {

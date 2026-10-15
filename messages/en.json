@@ -2267,7 +2267,7 @@
       "heroTitle": "Real Estate SPV Investment",
       "heroSubtitle": "Access carefully selected European real estate opportunities through professionally managed Special Purpose Vehicle (SPV) structures, available exclusively to qualified investors.",
       "whatIsSpv": {
-        "overline": "About SPV Investment",
+        "overline": "About SPV investment",
         "title": "What is an SPV?",
         "description": "A Special Purpose Vehicle (SPV) is a dedicated legal entity created specifically to hold and manage a real estate asset. Each SPV isolates the investment, providing clear legal separation, professional governance, and transparent reporting for investors.",
         "benefits": {
@@ -2290,8 +2290,8 @@
         }
       },
       "howItWorks": {
-        "overline": "How It Works",
-        "title": "A Private, Invitation-Based Process",
+        "overline": "How it works",
+        "title": "A private, invitation-based process",
         "description": "Our SPV investment opportunities are available exclusively through a private, invitation-based process to ensure regulatory compliance and investor suitability.",
         "steps": {
           "contact": {
@@ -2323,13 +2323,13 @@
         "tip": "SPV investments are reserved for qualified and institutional investors only."
       },
       "cta": {
-        "title": "Interested in SPV Investment Opportunities?",
+        "title": "Interested in SPV investment opportunities?",
         "description": "Contact our advisory team to learn more about current and upcoming real estate SPV investment opportunities. Access is available by invitation only.",
         "contactButton": "Contact Our Team",
         "portalAccess": "Investor Portal"
       },
       "contactForm": {
-        "title": "Request Information",
+        "title": "Request information",
         "description": "Provide your details and our team will be in touch to discuss SPV investment opportunities.",
         "fullName": "Full Name",
         "email": "Email Address",

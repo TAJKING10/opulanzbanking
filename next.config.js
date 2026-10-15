@@ -125,8 +125,9 @@ const nextConfig = {
     }
     return config;
   },
-  // Legacy URL redirects — permanent 301s so search engines update their index
+  // redirects and headers are not supported in static export mode
   async redirects() {
+    if (isMobileBuild) return [];
     return [
       { source: '/legal-mention',  destination: '/en/legal/mentions', permanent: true },
       { source: '/legal-mention/', destination: '/en/legal/mentions', permanent: true },
@@ -142,8 +143,8 @@ const nextConfig = {
       { source: '/open-account',   destination: '/en/open-account',   permanent: true },
     ];
   },
-  // Attach security headers to every response
   async headers() {
+    if (isMobileBuild) return [];
     return [
       {
         source: '/(.*)',
